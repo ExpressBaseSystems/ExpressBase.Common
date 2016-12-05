@@ -1,0 +1,20 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "JavaScriptEngineSwitcher.ChakraCore": "2.1.2",
+    "JavaScriptEngineSwitcher.Core": "2.1.2",
+    "JavaScriptEngineSwitcher.Jint": "2.1.2",
+    "JavaScriptEngineSwitcher.Msie": "2.1.2",
+    "JavaScriptEngineSwitcher.Vroom": "2.1.2",
+    "JSPool": "2.0.0",
+    "NETStandard.Library": "1.6.1",
+    "protobuf-net": "2.1.0"
+  },
+
+  "frameworks": {
+    "netstandard1.6.1": {
+      "imports": "dnxcore50"
+    }
+  }
+}
