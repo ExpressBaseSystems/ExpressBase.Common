@@ -15,7 +15,7 @@ namespace ExpressBase.Common
         MONGODB,
     }
 
-    public enum EB_Databases
+    public enum EbDatabases
     {
         EB_OBJECTS,
         EB_DATA,
