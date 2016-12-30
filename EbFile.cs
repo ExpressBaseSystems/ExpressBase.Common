@@ -21,7 +21,7 @@ namespace ExpressBase.Common
         {
             byte[] bytea = null;
 
-            using (var fileStream = File.Open(path, FileMode.Open))
+            using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 bytea = new byte[(int)fileStream.Length];
                 fileStream.Read(bytea, 0, (int)fileStream.Length);
