@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace ExpressBase.Common
 {
+    public enum EbClientTiers
+    {
+        Free,
+        Professional,
+        Enterprise,
+        Unlimited
+    }
+
     public enum DatabaseVendors
     {
         PGSQL,
@@ -15,12 +23,18 @@ namespace ExpressBase.Common
         MONGODB,
     }
 
-    public enum EbDatabases
+    public enum EbDatabaseTypes
     {
-        EB_OBJECTS,
-        EB_DATA,
-        EB_LOGS,
-        EB_ATTACHMENTS,
+        EbINFRA,
+        EbINFRA_RO,
+        EbOBJECTS,
+        EbOBJECTS_RO,
+        EbDATA,
+        EbDATA_RO,
+        EbLOGS,
+        EbLOGS_RO,
+        EbFILES,
+        EbFILES_RO
     }
 
     public enum StudioFormTypes

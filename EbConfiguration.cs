@@ -7,24 +7,41 @@ using System.Threading.Tasks;
 
 namespace ExpressBase.Common
 {
+    public interface IEbConf
+    {
+        EbDatabaseConfCollection DatabaseConfigurations { get; set; }
+    }
+
     [ProtoBuf.ProtoContract]
-    public class EbConfiguration
+    public class EbInfraDBConf: IEbConf
     {
         [ProtoBuf.ProtoMember(1)]
-        public string ClientID { get; set; }
+        public EbDatabaseConfCollection DatabaseConfigurations { get; set; }
+
+        public EbInfraDBConf()
+        {
+            DatabaseConfigurations = new EbDatabaseConfCollection(2);
+        }
+    }
+
+    [ProtoBuf.ProtoContract]
+    public class EbClientConf : IEbConf
+    {
+        [ProtoBuf.ProtoMember(1)]
+        public Int64 ClientID { get; set; }
 
         [ProtoBuf.ProtoMember(2)]
         public string ClientName { get; set; }
 
         [ProtoBuf.ProtoMember(3)]
-        public string LicenseKey { get; set; }
+        public EbClientTiers EbClientTier { get; set; }
 
         [ProtoBuf.ProtoMember(4)]
-        public EB_DatabaseConfigurationCollection DatabaseConfigurations { get; set; }
+        public EbDatabaseConfCollection DatabaseConfigurations { get; set; }
 
-        public EbConfiguration()
+        public EbClientConf()
         {
-            DatabaseConfigurations = new EB_DatabaseConfigurationCollection();
+            DatabaseConfigurations = new EbDatabaseConfCollection(8);
         }
     }
 
@@ -32,7 +49,7 @@ namespace ExpressBase.Common
     public class EbDatabaseConfiguration
     {
         [ProtoBuf.ProtoMember(1)]
-        public EbDatabases EB_Database { get; set; }
+        public EbDatabaseTypes EbDatabaseType { get; set; }
 
         [ProtoBuf.ProtoMember(2)]
         public DatabaseVendors DatabaseVendor { get; set; }
@@ -57,22 +74,22 @@ namespace ExpressBase.Common
 
         public EbDatabaseConfiguration() { }
 
-        public EbDatabaseConfiguration(EbDatabases eb_db, DatabaseVendors db_v, string db_n, string svr, int prt, string uname, string pwd, int tout)
+        public EbDatabaseConfiguration(EbDatabaseTypes eb_db, DatabaseVendors db_v, string db_n, string svr, int prt, string uname, string pwd, int tout)
         {
-            EB_Database = eb_db;
-            DatabaseVendor = db_v;
-            DatabaseName = db_n;
-            Server = svr;
-            Port = prt;
-            UserName = uname;
-            Password = pwd;
-            Timeout = tout;
+            this.EbDatabaseType = eb_db;
+            this.DatabaseVendor = db_v;
+            this.DatabaseName = db_n;
+            this.Server = svr;
+            this.Port = prt;
+            this.UserName = uname;
+            this.Password = pwd;
+            this.Timeout = tout;
         }
     }
 
-    public class EB_DatabaseConfigurationCollection : Dictionary<EbDatabases, EbDatabaseConfiguration>
+    public class EbDatabaseConfCollection : Dictionary<EbDatabaseTypes, EbDatabaseConfiguration>
     {
-
+        public EbDatabaseConfCollection(int capacity) : base(capacity) { }
     }
 }
 
