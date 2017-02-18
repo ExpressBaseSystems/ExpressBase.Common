@@ -15,13 +15,21 @@ namespace ExpressBase.Common
     [ProtoBuf.ProtoContract]
     public class EbInfraDBConf: IEbConf
     {
+        private EbDatabaseConfCollection _configurations;
         [ProtoBuf.ProtoMember(1)]
-        public EbDatabaseConfCollection DatabaseConfigurations { get; set; }
-
-        public EbInfraDBConf()
+        public EbDatabaseConfCollection DatabaseConfigurations
         {
-            DatabaseConfigurations = new EbDatabaseConfCollection(2);
+            get
+            {
+                if (_configurations == null)
+                    _configurations = new EbDatabaseConfCollection(2);
+
+                return _configurations;
+            }
+            set { _configurations = value; }
         }
+
+        public EbInfraDBConf() { }
     }
 
     [ProtoBuf.ProtoContract]
@@ -36,13 +44,21 @@ namespace ExpressBase.Common
         [ProtoBuf.ProtoMember(3)]
         public EbClientTiers EbClientTier { get; set; }
 
+        private EbDatabaseConfCollection _configurations;
         [ProtoBuf.ProtoMember(4)]
-        public EbDatabaseConfCollection DatabaseConfigurations { get; set; }
-
-        public EbClientConf()
+        public EbDatabaseConfCollection DatabaseConfigurations
         {
-            DatabaseConfigurations = new EbDatabaseConfCollection(8);
+            get
+            {
+                if (_configurations == null)
+                    _configurations = new EbDatabaseConfCollection(8);
+
+                return _configurations;
+            }
+            set { _configurations = value; }
         }
+
+        public EbClientConf() { }
     }
 
     [ProtoBuf.ProtoContract]
