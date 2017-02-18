@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ExpressBase.Common
 {
+    [ProtoBuf.ProtoContract]
+    [ProtoBuf.ProtoInclude(1, typeof(EbInfraDBConf))]
+    [ProtoBuf.ProtoInclude(2, typeof(EbClientConf))]
     public interface IEbConf
     {
         EbDatabaseConfCollection DatabaseConfigurations { get; set; }
@@ -103,8 +106,11 @@ namespace ExpressBase.Common
         }
     }
 
+    [ProtoBuf.ProtoContract]
     public class EbDatabaseConfCollection : Dictionary<EbDatabaseTypes, EbDatabaseConfiguration>
     {
+        public EbDatabaseConfCollection() { }
+
         public EbDatabaseConfCollection(int capacity) : base(capacity) { }
     }
 }
