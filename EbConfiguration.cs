@@ -39,7 +39,7 @@ namespace ExpressBase.Common
     public class EbClientConf : IEbConf
     {
         [ProtoBuf.ProtoMember(1)]
-        public Int64 ClientID { get; set; }
+        public string ClientID { get; set; }
 
         [ProtoBuf.ProtoMember(2)]
         public string ClientName { get; set; }
