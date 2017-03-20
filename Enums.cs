@@ -45,6 +45,14 @@ namespace ExpressBase.Common
         UserControl
     }
 
+    public enum WebPageLoginStateTypes
+    {
+        TenantExt,
+        TenantInt,
+        TenantUserExt,
+        TenantUserInt
+    }
+
     class Enums
     {
     }
