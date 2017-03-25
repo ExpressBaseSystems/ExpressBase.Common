@@ -16,7 +16,7 @@
     "netstandard1.6.1": {
       "imports": "dnxcore50"
     },
-    "netcoreapp1.1": {
+    "netcoreapp1.1.1": {
       "imports": "dnxcore50"
     }
   },
