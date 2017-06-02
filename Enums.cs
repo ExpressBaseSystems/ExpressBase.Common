@@ -53,8 +53,20 @@ namespace ExpressBase.Common
         TenantUserInt
     }
 
+    public enum SystemRoles
+    {
+        Eb_Admin,
+        Eb_ReadOnlyUser,
+        Account_Owner,
+        Account_Admin,
+        Account_Developer,
+        Account_Tester,
+        Account_PM
+    }
+
     class Enums
     {
     }
+
 }
 
