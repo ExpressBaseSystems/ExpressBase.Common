@@ -8,12 +8,12 @@
     "JavaScriptEngineSwitcher.Msie": "2.3.2",
     "JavaScriptEngineSwitcher.Vroom": "2.2.0",
     "JSPool": "2.0.1",
-    "NETStandard.Library": "1.6.1",
+    "NETStandard.Library": "1.6",
     "protobuf-net": "2.1.0"
   },
 
   "frameworks": {
-    "netstandard1.6.1": {
+    "netstandard1.6": {
       "imports": "dnxcore50"
     },
     "netcoreapp1.1.1": {
