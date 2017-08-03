@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace ExpressBase.Common
 {
@@ -30,6 +31,24 @@ namespace ExpressBase.Common
             {
                 obj = ProtoBuf.Serializer.Deserialize<T>(mem2);
             }
+
+            return (T)obj;
+        }
+
+        public static string Json_Serialize(object obj)
+        {
+            string json = null;
+
+            json = JsonConvert.SerializeObject(obj, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+
+            return json;
+        }
+
+        public static T Json_Deserialize<T>(string json)
+        {
+            object obj = null;
+
+            obj = JsonConvert.DeserializeObject(json, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
 
             return (T)obj;
         }

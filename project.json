@@ -9,6 +9,7 @@
     "JavaScriptEngineSwitcher.Vroom": "2.2.0",
     "JSPool": "2.0.1",
     "NETStandard.Library": "1.6",
+    "Newtonsoft.Json": "10.0.1",
     "protobuf-net": "2.1.0"
   },
 
