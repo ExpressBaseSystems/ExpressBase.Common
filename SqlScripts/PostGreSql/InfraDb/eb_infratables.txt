@@ -1,0 +1,88 @@
+﻿-- Table: public.eb_tenants
+
+-- DROP TABLE public.eb_tenants;
+
+CREATE TABLE public.eb_tenants
+(
+    cname text COLLATE pg_catalog."default",
+    id bigint NOT NULL DEFAULT nextval('eb_clients_id_seq'::regclass),
+    firstname text COLLATE pg_catalog."default",
+    jobtitle text COLLATE pg_catalog."default",
+    company text COLLATE pg_catalog."default",
+    phone text COLLATE pg_catalog."default",
+    zipcode text COLLATE pg_catalog."default",
+    language text COLLATE pg_catalog."default",
+    password text COLLATE pg_catalog."default",
+    employees text COLLATE pg_catalog."default",
+    gender text COLLATE pg_catalog."default",
+    birthday date,
+    location text COLLATE pg_catalog."default",
+    socialid text COLLATE pg_catalog."default",
+    country text COLLATE pg_catalog."default",
+    profileimg text COLLATE pg_catalog."default",
+    prolink text COLLATE pg_catalog."default",
+    CONSTRAINT eb_clients_pkey PRIMARY KEY (id),
+    CONSTRAINT socialkey UNIQUE (socialid)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.eb_tenants
+    OWNER to postgres;
+
+	-----------------------------------------------------------------------------------------------
+	-- Table: public.eb_tenantaccount
+
+-- DROP TABLE public.eb_tenantaccount;
+
+CREATE TABLE public.eb_tenantaccount
+(
+    id integer NOT NULL DEFAULT nextval('eb_tenantaccount_id_seq'::regclass),
+    accountname text COLLATE pg_catalog."default",
+    cid text COLLATE pg_catalog."default",
+    address text COLLATE pg_catalog."default",
+    phone text COLLATE pg_catalog."default",
+    email text COLLATE pg_catalog."default",
+    website text COLLATE pg_catalog."default",
+    config bytea,
+    tier text COLLATE pg_catalog."default",
+    tenantname text COLLATE pg_catalog."default",
+    tenantid integer,
+    profilelogo text COLLATE pg_catalog."default",
+    createdat timestamp without time zone,
+    validtill timestamp without time zone,
+    CONSTRAINT eb_tenantaccount_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.eb_tenantaccount
+    OWNER to postgres;
+	-----------------------------------------------------------------------------------------------------
+
+	-- Table: public.eb_userpreferences
+
+-- DROP TABLE public.eb_userpreferences;
+
+CREATE TABLE public.eb_userpreferences
+(
+    id integer NOT NULL DEFAULT nextval('eb_userpreferences_id_seq'::regclass),
+    locale text COLLATE pg_catalog."default",
+    dateformat text COLLATE pg_catalog."default",
+    numberformat text COLLATE pg_catalog."default",
+    userid integer,
+    cid text COLLATE pg_catalog."default",
+    tenantid integer,
+    CONSTRAINT eb_userpreferences_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.eb_userpreferences
+    OWNER to postgres;

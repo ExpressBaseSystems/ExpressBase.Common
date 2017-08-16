@@ -10,7 +10,10 @@
     "JSPool": "2.0.1",
     "NETStandard.Library": "1.6",
     "Newtonsoft.Json": "10.0.1",
-    "protobuf-net": "2.1.0"
+    "Npgsql": "3.2.5",
+    "protobuf-net": "2.1.0",
+    "ServiceStack.Core": "1.0.40",
+    "ServiceStack.Redis.Core": "1.0.40"
   },
 
   "frameworks": {

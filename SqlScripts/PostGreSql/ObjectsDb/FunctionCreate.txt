@@ -1,0 +1,59 @@
+﻿CREATE OR REPLACE FUNCTION getallroles( uname text,pwd text )
+RETURNS TABLE (role_id integer, role_name text) AS $$
+BEGIN
+	RETURN QUERY
+SELECT 
+    _roles.id,
+    _roles.role_name 
+FROM 
+    eb_roles _roles
+WHERE 
+    id = ANY(
+				(SELECT _r2user.role_id FROM eb_role2user _r2user WHERE _r2user.user_id = ANY (SELECT _usertbl.id FROM eb_users _usertbl WHERE _usertbl.email= $1 AND _usertbl.pwd = $2))
+                UNION ALL
+				(WITH RECURSIVE role2role(role1_id, role2_id) AS 
+				(
+					(SELECT 
+						a.role1_id, a.role2_id 
+					FROM 
+						eb_role2role a 
+					WHERE 
+						a.role1_id = ANY(SELECT _r2user1.role_id FROM eb_role2user _r2user1 WHERE _r2user1.user_id = ANY (SELECT _usertbl.id FROM eb_users _usertbl WHERE _usertbl.email= $1 AND _usertbl.pwd = $2)))
+					UNION ALL 
+						SELECT b.role1_id, b.role2_id FROM eb_role2role b, role2role c  WHERE b.role1_id = c.role2_id)
+					SELECT DISTINCT role2_id FROM role2role
+				)
+			);
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+CREATE OR REPLACE FUNCTION getallpermissions( uname text,pwd text)
+RETURNS TABLE (pid integer, oid integer, opid integer ) AS $$
+BEGIN
+	RETURN QUERY 
+SELECT 
+	_per.id,
+	_per.object_id,
+	_per.operation_id 
+FROM 
+	eb_permissions _per
+WHERE id = ANY (
+					SELECT DISTINCT _per2role.permission_id FROM eb_permission2role _per2role WHERE _per2role.role_id = ANY 
+        ((SELECT _r2user.role_id FROM eb_role2user _r2user WHERE _r2user.user_id = ANY (SELECT _usertbl.id FROM eb_users _usertbl WHERE _usertbl.email= $1 AND _usertbl.pwd = $2))
+            UNION
+            (WITH RECURSIVE role2role(role1_id, role2_id) AS  
+                (SELECT a.role1_id, a.role2_id FROM eb_role2role a  
+                WHERE a.role1_id  IN(SELECT _r2user1.role_id FROM eb_role2user _r2user1 WHERE _r2user1.user_id = ANY (SELECT _usertbl1.id FROM eb_users _usertbl1 WHERE _usertbl1.email= $1 AND _usertbl1.pwd = $2))
+                UNION ALL 
+                    SELECT b.role1_id, b.role2_id FROM eb_role2role b, role2role c 
+                    	WHERE b.role1_id = c.role2_id) 
+                SELECT DISTINCT role2_id FROM role2role))
+			);
+END;
+$$ LANGUAGE plpgsql;
+
