@@ -1,0 +1,43 @@
+﻿-- FUNCTION: public.eb_create_or_update_rbac_manageroles(integer, integer, integer, text, text, integer[], integer[], text[])
+
+-- DROP FUNCTION public.eb_create_or_update_rbac_manageroles(integer, integer, integer, text, text, integer[], integer[], text[]);
+
+CREATE OR REPLACE FUNCTION public.eb_create_or_update_rbac_manageroles(
+	roleid integer,
+	applicationid integer,
+	userid integer,
+	role_name text,
+	description text,
+	users integer[],
+	dependantroles integer[],
+	permissions text[])
+    RETURNS integer
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE 
+    ROWS 0
+AS $BODY$
+
+BEGIN
+   IF permissions != '{}' THEN
+      IF roleid > 0 THEN 
+      	PERFORM  eb_create_or_update_role(applicationid, role_name, description, userid, permissions, roleid);
+      ELSE
+        PERFORM  eb_create_or_update_role(applicationid, role_name, description, userid, permissions);
+      END IF;
+    END IF;
+    IF users != '{}' THEN
+    	PERFORM  eb_create_or_update_role2user(roleid, userid, users);
+    END IF;
+   IF dependantroles != '{}' THEN
+       PERFORM  eb_create_or_update_role2role(roleid, userid, dependantroles);
+    END IF;    
+RETURN 0;
+
+END;
+
+$BODY$;
+
+ALTER FUNCTION public.eb_create_or_update_rbac_manageroles(integer, integer, integer, text, text, integer[], integer[], text[])
+    OWNER TO postgres;
+
