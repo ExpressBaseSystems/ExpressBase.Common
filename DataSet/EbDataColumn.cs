@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,13 +11,13 @@ namespace ExpressBase.Data
     {
         public EbDataColumn() { }
 
-        public EbDataColumn(string columnname, Type type)
+        public EbDataColumn(string columnname, DbType type)
         {
             this.ColumnName = columnname;
             this.Type = type;
         }
 
-        public EbDataColumn(int index, string columnname, Type type)
+        public EbDataColumn(int index, string columnname, DbType type)
         {
             this.ColumnIndex = index;
             this.ColumnName = columnname;
@@ -30,7 +31,7 @@ namespace ExpressBase.Data
         public string ColumnName { get; set; }
 
         [ProtoBuf.ProtoMember(3)]
-        public Type Type { get; set; }
+        public DbType Type { get; set; }
     }
 
     [ProtoBuf.ProtoContract]

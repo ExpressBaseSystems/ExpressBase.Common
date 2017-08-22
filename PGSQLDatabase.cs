@@ -185,10 +185,28 @@ namespace ExpressBase.Data
             foreach (NpgsqlDbColumn drow in reader.GetColumnSchema())
             {
                 string columnName = System.Convert.ToString(drow["ColumnName"]);
-                EbDataColumn column = new EbDataColumn(columnName, (Type)(drow["DataType"]));
+                EbDataColumn column = new EbDataColumn(columnName, ConvertToDbType((Type)(drow["DataType"])));
                 column.ColumnIndex = pos++;
                 dt.Columns.Add(column);
             }
+        }
+
+        private DbType ConvertToDbType(Type _typ)
+        {
+            if (_typ == typeof(DateTime))
+                return DbType.DateTime;
+            else if (_typ == typeof(string))
+                return DbType.String;
+            else if (_typ == typeof(bool))
+                return DbType.Boolean;
+            else if (_typ == typeof(decimal))
+                return DbType.Decimal;
+            else if (_typ == typeof(int) || _typ == typeof(Int32))
+                return DbType.Int32;
+            else if (_typ == typeof(Int64))
+                return DbType.Int64;
+
+            return DbType.String;
         }
 
         private void PrepareDataTable(NpgsqlDataReader reader, EbDataTable dt)
