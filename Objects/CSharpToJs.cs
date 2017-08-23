@@ -15,9 +15,9 @@ namespace ExpressBase.Common.Objects
         {
             public string Meta;
             public string JsObjects;
-            public string TypeRegister;
+            public string TypeRegister; // Factory method to create appropriate JsObj
             public string ToolBoxHtml;
-            public string XXX;
+            public string JsonToJsObjectFuncs; //Attach functions etc. in edit mode
         }
 
         public static JsResult GenerateJs<T>(BuilderType _builderType, Type[] types)
@@ -30,7 +30,7 @@ namespace ExpressBase.Common.Objects
 
             string _controlsStr = "var EbObjects = {};";
 
-            string xxx = @"
+            string __jsonToJsObjectFunc = @"
 function Proc(jsonObj, rootContainerObj) {
     ProcRecur(jsonObj.Controls, rootContainerObj.Controls);
     setTimeout(function () {
@@ -75,7 +75,7 @@ function ProcRecur(src_controls, dest_controls) {
             _result.JsObjects = _controlsStr;
             _result.ToolBoxHtml = _toolsHtml;
             _result.TypeRegister = _typeInfos + " };";
-            _result.XXX = xxx;
+            _result.JsonToJsObjectFuncs = __jsonToJsObjectFunc;
 
             return _result;
         }
