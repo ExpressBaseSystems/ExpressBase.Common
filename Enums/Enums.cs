@@ -64,9 +64,7 @@ namespace ExpressBase.Common
         Account_PM
     }
 
-    class Enums
-    {
-    }
+    
 
 }
 
