@@ -76,4 +76,18 @@ namespace ExpressBase.Common.Objects
         Offline,
         Obsolete
     }
+
+    public enum HorizontalAlignment
+    {
+       Left,
+       Right,
+       Center
+    }
+
+    public enum VerticalAlignment
+    {
+       Top,
+       Bottom,
+       Middle
+    }
 }
