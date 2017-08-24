@@ -53,6 +53,7 @@ namespace ExpressBase.Common.Objects
         MobileForm = 13,
         UserControl = 14,
         Report = 3,
+        DVBuilder = 11,
     }
 
     [ProtoBuf.ProtoContract]
