@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ExpressBase.Data
+namespace ExpressBase.Common
 {
     [ProtoBuf.ProtoContract]
     public class EbDataTable
