@@ -109,6 +109,8 @@ function ProcRecur(src_controls, dest_controls) {
 
                     foreach (Attribute attr in propattrs)
                     {
+                        if (attr is Alias)
+                            meta.alias = (attr as Alias).Name;
                         if (attr is PropertyGroup)
                             meta.group = (attr as PropertyGroup).Name;
                         else if (attr is HelpText)

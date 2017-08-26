@@ -32,6 +32,16 @@ namespace ExpressBase.Common.Objects.Attributes
         }
     }
 
+    public class Alias : Attribute
+    {
+        public string Name { get; set; }
+
+        public Alias(string alias)
+        {
+            this.Name = alias;
+        }
+    }
+
     public class PropertyEditor : Attribute
     {
         public PropertyEditorType PropertyEditorType { get; set; }
@@ -41,7 +51,6 @@ namespace ExpressBase.Common.Objects.Attributes
             this.PropertyEditorType = type;
         }
     }
-
     public class PropertyGroup : Attribute
     {
         public string Name { get; set; }

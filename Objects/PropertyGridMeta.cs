@@ -10,6 +10,8 @@ namespace ExpressBase.Common.Objects
     {
         public string name { get; set; }
 
+        public string alias { get; set; }
+
         public string group { get; set; }
 
         public PropertyEditorType editor { get; set; }
