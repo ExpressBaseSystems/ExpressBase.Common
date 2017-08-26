@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="FOSS.ServiceStack.Core" Version="1.0.43" />
     <PackageReference Include="FOSS.ServiceStack.Redis.Core" Version="1.0.43" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="Npgsql" Version="3.2.5" />
     <PackageReference Include="protobuf-net" Version="2.3.2" />
   </ItemGroup>
