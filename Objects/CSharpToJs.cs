@@ -111,10 +111,12 @@ function ProcRecur(src_controls, dest_controls) {
                     {
                         if (attr is Alias)
                             meta.alias = (attr as Alias).Name;
-                        if (attr is PropertyGroup)
+                        else if(attr is PropertyGroup)
                             meta.group = (attr as PropertyGroup).Name;
                         else if (attr is HelpText)
                             meta.helpText = (attr as HelpText).value;
+                        else if (attr is OnChangeExec)
+                            meta.OnChangeExec = "function(pg){" + (attr as OnChangeExec).JsCode + "}";
 
                         //set corresponding editor
                         else if (attr is PropertyEditor)
@@ -242,6 +244,27 @@ EbObjects.@NameObj = function @NameObj(id, jsonObj) {
                 return PropertyEditorType.Boolean;
 
             return PropertyEditorType.Text;
+        }
+    }
+
+    public class FunctionSerializer : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return (objectType == typeof(string));
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            string valueAsString = Convert.ToString(value);
+
+            if (!string.IsNullOrWhiteSpace(valueAsString))
+                writer.WriteRawValue(valueAsString);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ExpressBase.Common.Objects.Attributes;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,5 +22,8 @@ namespace ExpressBase.Common.Objects
         public bool IsUIproperty { get; set; }
 
         public string helpText { get; set; }
+
+        [JsonConverter(typeof(FunctionSerializer))]
+        public string OnChangeExec { get; set; }
     }
 }

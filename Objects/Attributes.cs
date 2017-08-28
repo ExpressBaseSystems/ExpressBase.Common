@@ -42,6 +42,17 @@ namespace ExpressBase.Common.Objects.Attributes
         }
     }
 
+
+    public class OnChangeExec : Attribute
+    {
+        public string JsCode { get; set; }
+
+        public OnChangeExec(string jsCode)
+        {
+            this.JsCode = jsCode;
+        }
+    }
+
     public class PropertyEditor : Attribute
     {
         public PropertyEditorType PropertyEditorType { get; set; }
