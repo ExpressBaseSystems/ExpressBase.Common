@@ -15,6 +15,7 @@ namespace ExpressBase.Common.Objects.Attributes
         Text,
         Collection,
         Columns,
+        DateTime
     }
 
     public class HideInToolBox : Attribute { }
