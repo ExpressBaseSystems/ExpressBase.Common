@@ -162,27 +162,17 @@ function ProcRecur(src_controls, dest_controls) {
 .Replace("@MetaCollection", JsonConvert.SerializeObject(MetaCollection));
 
             ControlsStr += @"
-EbObjects.@NameObj = function @NameObj(id, jsonObj) {
+EbObjects.@Name = function @Name(id, jsonObj) {
     this.$type = '@Type, ExpressBase.Objects';
     this.EbSid = id;
     @Props
     @InitFunc
     this.Html = function () { return @html.replace(/@id/g, id); };
-    var MyName = this.constructor.name.slice(0, -3);
-    this.RenderMe = function () {
-        var NewHtml = this.Html();
-        var me = this;
-        var metas = AllMetas[MyName];
-        $.each(metas, function (i, meta) {
-            var name = meta.name;
-            if (meta.IsUIproperty) { NewHtml = NewHtml.replace('@' + name + ' ', me[name]); }
-        });
-        if(!this.IsContainer)
-            $('#' + id + ' .Eb-ctrlContainer').html($(NewHtml).html());
-    };
-
+    var MyName = this.constructor.name;
+    this.RenderMe = function () { var NewHtml = this.Html(), me = this, metas = AllMetas[MyName]; $.each(metas, function (i, meta) { var name = meta.name; if (meta.IsUIproperty) { NewHtml = NewHtml.replace('@' + name + ' ', me[name]); } }); if(!this.IsContainer) $('#' + id + ' .Eb-ctrlContainer').html($(NewHtml).html()); };
     if (jsonObj){
-        jsonObj.Controls  = new EbControlCollection( {} );
+        if(jsonObj.IsContainer)
+            jsonObj.Controls  = new EbControlCollection( {} );
         jsonObj.RenderMe  = this.RenderMe;
         jsonObj.Html  = this.Html;
         jsonObj.Init   = this.Init;
