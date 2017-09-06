@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ExpressBase.Common.Data
 {
-    interface INoSQLDatabase
+    public interface INoSQLDatabase
     {
         DbConnection GetNewConnection();
     }

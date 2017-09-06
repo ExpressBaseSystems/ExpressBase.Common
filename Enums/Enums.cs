@@ -20,7 +20,13 @@ namespace ExpressBase.Common
         MYSQL,
         MSSQL,
         ORACLE,
-        MONGODB,
+    }
+
+    public enum FilesDbVendors
+    {
+        MongoDB,
+        Cloudinary,
+        Cloudfront,
     }
 
     public enum EbConnectionTypes
@@ -32,7 +38,6 @@ namespace ExpressBase.Common
         EbDATA,
         EbDATA_RO,
         EbFILES,
-        EbFILES_RO, 
         Email,
         SMS,
         Slack,
