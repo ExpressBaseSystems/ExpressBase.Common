@@ -68,7 +68,7 @@ namespace ExpressBase.Common
     public class EbDatabaseConfiguration
     {
         [ProtoBuf.ProtoMember(1)]
-        public EbDatabaseTypes EbDatabaseType { get; set; }
+        public EbConnectionTypes EbDatabaseType { get; set; }
 
         [ProtoBuf.ProtoMember(2)]
         public DatabaseVendors DatabaseVendor { get; set; }
@@ -93,7 +93,7 @@ namespace ExpressBase.Common
 
         public EbDatabaseConfiguration() { }
 
-        public EbDatabaseConfiguration(EbDatabaseTypes eb_db, DatabaseVendors db_v, string db_n, string svr, int prt, string uname, string pwd, int tout)
+        public EbDatabaseConfiguration(EbConnectionTypes eb_db, DatabaseVendors db_v, string db_n, string svr, int prt, string uname, string pwd, int tout)
         {
             this.EbDatabaseType = eb_db;
             this.DatabaseVendor = db_v;
@@ -107,7 +107,7 @@ namespace ExpressBase.Common
     }
 
     [ProtoBuf.ProtoContract]
-    public class EbDatabaseConfCollection : Dictionary<EbDatabaseTypes, EbDatabaseConfiguration>
+    public class EbDatabaseConfCollection : Dictionary<EbConnectionTypes, EbDatabaseConfiguration>
     {
         public EbDatabaseConfCollection() { }
 

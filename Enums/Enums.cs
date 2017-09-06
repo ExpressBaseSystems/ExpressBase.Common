@@ -23,18 +23,19 @@ namespace ExpressBase.Common
         MONGODB,
     }
 
-    public enum EbDatabaseTypes
+    public enum EbConnectionTypes
     {
         EbINFRA,
-        EbINFRA_RO,
+        EbINFRA_FILES,
+        EbINFRA_LOGS,
         EbOBJECTS,
-        EbOBJECTS_RO,
         EbDATA,
         EbDATA_RO,
-        EbLOGS,
-        EbLOGS_RO,
         EbFILES,
-        EbFILES_RO
+        EbFILES_RO, 
+        Email,
+        SMS,
+        Slack,
     }
 
     public enum StudioFormTypes

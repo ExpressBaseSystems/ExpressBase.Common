@@ -63,25 +63,17 @@ namespace ExpressBase.Common
                 switch (databaseType)
                 {
                     case DatabaseVendors.PGSQL:
-                        if (dbconf.EbDatabaseType == EbDatabaseTypes.EbINFRA)
-                            _InfraDB = new PGSQLDatabase(dbconf);
-                        else if (dbconf.EbDatabaseType == EbDatabaseTypes.EbINFRA_RO)
-                            _InfraDB_RO = new PGSQLDatabase(dbconf);
-                        else if (dbconf.EbDatabaseType == EbDatabaseTypes.EbOBJECTS)
+                        if (dbconf.EbDatabaseType == EbConnectionTypes.EbINFRA)
+                            _InfraDB = new PGSQLDatabase(dbconf);                      
+                        else if (dbconf.EbDatabaseType == EbConnectionTypes.EbOBJECTS)
                             _ObjectsDB = new PGSQLDatabase(dbconf);
-                        else if (dbconf.EbDatabaseType == EbDatabaseTypes.EbDATA)
+                        else if (dbconf.EbDatabaseType == EbConnectionTypes.EbDATA)
                             _DataDatabase = new PGSQLDatabase(dbconf);
-                        else if (dbconf.EbDatabaseType == EbDatabaseTypes.EbLOGS)
-                            _LogsDatabase = new PGSQLDatabase(dbconf);
-                        else if (dbconf.EbDatabaseType == EbDatabaseTypes.EbFILES)
+                        else if (dbconf.EbDatabaseType == EbConnectionTypes.EbFILES)
                             _FilesDatabase = new PGSQLDatabase(dbconf);
-                        else if (dbconf.EbDatabaseType == EbDatabaseTypes.EbOBJECTS_RO)
-                            _ObjectsDB_RO = new PGSQLDatabase(dbconf);
-                        else if (dbconf.EbDatabaseType == EbDatabaseTypes.EbDATA_RO)
+                        else if (dbconf.EbDatabaseType == EbConnectionTypes.EbDATA_RO)
                             _DataDatabase_RO = new PGSQLDatabase(dbconf);
-                        else if (dbconf.EbDatabaseType == EbDatabaseTypes.EbLOGS_RO)
-                            _LogsDatabase_RO = new PGSQLDatabase(dbconf);
-                        else if (dbconf.EbDatabaseType == EbDatabaseTypes.EbFILES_RO)
+                        else if (dbconf.EbDatabaseType == EbConnectionTypes.EbFILES_RO)
                             _FilesDatabase_RO = new PGSQLDatabase(dbconf);
                         break;
                     default:
@@ -117,10 +109,9 @@ namespace ExpressBase.Common
                 switch (databaseType)
                 {
                     case DatabaseVendors.PGSQL:
-                        if (dbconf.EbDatabaseType == EbDatabaseTypes.EbINFRA)
+                        if (dbconf.EbDatabaseType == EbConnectionTypes.EbINFRA)
                             _InfraDB = new PGSQLDatabase(dbconf);
-                        else if (dbconf.EbDatabaseType == EbDatabaseTypes.EbINFRA_RO)
-                            _InfraDB_RO = new PGSQLDatabase(dbconf);
+                      
                         break;
                     default:
                         throw new NotImplementedException();
