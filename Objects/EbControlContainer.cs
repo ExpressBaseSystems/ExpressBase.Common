@@ -21,10 +21,9 @@ namespace ExpressBase.Common.Objects
 
     public class EbControlContainer : EbControl
     {
-        [ProtoBuf.ProtoMember(1)]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog)]
-        [HideInPropertyGrid]
-        public List<EbControl> Controls { get; set; }
+        //[HideInPropertyGrid]
+        public virtual List<EbControl> Controls { get; set; }
 
         [HideInPropertyGrid]
         //public EbTable Table { get; set; }

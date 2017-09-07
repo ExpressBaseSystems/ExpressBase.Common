@@ -7,15 +7,15 @@ namespace ExpressBase.Common.Objects.Attributes
 {
     public enum PropertyEditorType
     {
-        Boolean,
-        DropDown,
-        Number,
-        Color,
-        Label,
-        Text,
-        Collection,
-        Columns,
-        DateTime
+        Boolean = 0,
+        DropDown = 1,
+        Number = 2,
+        Color = 3,
+        Label = 4,
+        Text = 5,
+        DateTime = 6,
+        Collection = 7,
+        JS = 8
     }
 
     public class HideInToolBox : Attribute { }
