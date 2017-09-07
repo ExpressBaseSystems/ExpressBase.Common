@@ -1,4 +1,5 @@
 ﻿using ExpressBase.Common;
+using ExpressBase.Common.Connections;
 using Npgsql;
 using Npgsql.Schema;
 using System;
@@ -16,7 +17,14 @@ namespace ExpressBase.Data
     {
         private string _cstr;
 
+        //To be removed
         public PGSQLDatabase(EbDatabaseConfiguration dbconf)
+        {
+            _cstr = "Host={0}; Port={1}; Database={2}; Username={3}; Password={4}; SSL Mode=Require; Use SSL Stream=true; Trust Server Certificate=true; Pooling=true; CommandTimeout={5};";
+            _cstr = String.Format(_cstr, dbconf.Server, dbconf.Port, dbconf.DatabaseName, dbconf.UserName, dbconf.Password, dbconf.Timeout);
+        }
+
+        public PGSQLDatabase(EbBaseDbConnection dbconf)
         {
             _cstr = "Host={0}; Port={1}; Database={2}; Username={3}; Password={4}; SSL Mode=Require; Use SSL Stream=true; Trust Server Certificate=true; Pooling=true; CommandTimeout={5};";
             _cstr = String.Format(_cstr, dbconf.Server, dbconf.Port, dbconf.DatabaseName, dbconf.UserName, dbconf.Password, dbconf.Timeout);

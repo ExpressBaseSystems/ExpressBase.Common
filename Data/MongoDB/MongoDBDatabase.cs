@@ -5,18 +5,19 @@ using System.Text;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
+using ExpressBase.Common.Connections;
 
 namespace ExpressBase.Common.Data.MongoDB
 {
     public class MongoDBDatabase : INoSQLDatabase
     {
-        private string mongodb_url;
+      //  private string mongodb_url;
         private IMongoDatabase mongoDatabase;
 
-        public MongoDBDatabase(EbDatabaseConfiguration dbconf)
+        public MongoDBDatabase(EbFilesDbConnection dbconf)
         {
-            mongodb_url = String.Format("mongodb://{0}:{1}@{2}:{3}", dbconf.UserName, dbconf.Password, dbconf.Server, dbconf.Port);
-            mongoDatabase = (new MongoClient(mongodb_url)).GetDatabase("dbname");
+           // mongodb_url = String.Format("mongodb://{0}:{1}@{2}:{3}", dbconf.UserName, dbconf.Password, dbconf.Server, dbconf.Port);
+            //mongoDatabase = (new MongoClient(dbconf.MongoDB_url)).GetDatabase("test");
         }
 
         public DbConnection GetNewConnection()

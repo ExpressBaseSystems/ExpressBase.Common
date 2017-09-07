@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExpressBase.Common
 {
-    public enum EbClientTiers
+    public enum EbTiers
     {
         Free,
         Professional,
@@ -31,13 +31,11 @@ namespace ExpressBase.Common
 
     public enum EbConnectionTypes
     {
-        EbINFRA,
-        EbINFRA_FILES,
-        EbINFRA_LOGS,
         EbOBJECTS,
         EbDATA,
         EbDATA_RO,
         EbFILES,
+        EbLOGS,
         Email,
         SMS,
         Slack,

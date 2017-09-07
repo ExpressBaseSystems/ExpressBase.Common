@@ -1,49 +1,84 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ExpressBase.Common.Connections
 {
-    [ProtoBuf.ProtoContract]
-    public abstract class EbBaseDatabaseConnection
+    public abstract class EbBaseDbConnection
     {
-        [ProtoBuf.ProtoMember(1)]
         public string DatabaseName { get; set; }
 
-        [ProtoBuf.ProtoMember(2)]
         public string Server { get; set; }
 
-        [ProtoBuf.ProtoMember(3)]
         public int Port { get; set; }
 
-        [ProtoBuf.ProtoMember(4)]
         public string UserName { get; set; }
 
-        [ProtoBuf.ProtoMember(5)]
         public string Password { get; set; }
 
-        [ProtoBuf.ProtoMember(6)]
         public int Timeout { get; set; }
     }
 
-    [ProtoBuf.ProtoContract]
-    public class EbObjectsDatabaseConnection: EbBaseDatabaseConnection
+    public class EbObjectsDbConnection: EbBaseDbConnection
     {
-        [ProtoBuf.ProtoMember(1)]
         public DatabaseVendors DatabaseVendor { get; set; }
     }
 
-    [ProtoBuf.ProtoContract]
-    public class EbDataDatabaseConnection: EbBaseDatabaseConnection
+    // For Infra T-Data, Tenant T-Data
+    public class EbDataDbConnection: EbBaseDbConnection
     {
-        [ProtoBuf.ProtoMember(1)]
         public DatabaseVendors DatabaseVendor { get; set; }
     }
 
-    [ProtoBuf.ProtoContract]
-    public class EbFilesDatabaseConnection : EbBaseDatabaseConnection
+    // For Infra Files, Tenant Files
+    public class EbFilesDbConnection
     {
-        [ProtoBuf.ProtoMember(1)]
-        public FilesDbVendors DatabaseVendor { get; set; }
+        [JsonConverter(typeof(CustomBase64Converter))]
+        public string MongoDB_url { get; set; }
+    }
+
+    public class EbLogsDbConnection : EbBaseDbConnection
+    {
+        public DatabaseVendors DatabaseVendor { get; set; }
+    }
+
+    internal class CustomBase64Converter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return true;
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            return System.Text.Encoding.UTF8.GetString((Convert.FromBase64String((string)reader.Value)));
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            writer.WriteValue(Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes((string)value)));
+        }
+    }
+
+    public class Base64Serializer : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return (objectType == typeof(string));
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            return Convert.FromBase64String(reader.Value.ToString());
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            string valueAsString = Convert.ToBase64String(Encoding.ASCII.GetBytes(value.ToString()));
+
+            if (!string.IsNullOrWhiteSpace(valueAsString))
+                writer.WriteValue(valueAsString);
+        }
     }
 }

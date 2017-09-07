@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExpressBase.Common.Connections;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,10 +10,12 @@ namespace ExpressBase.Common
 {
     [ProtoBuf.ProtoContract]
     [ProtoBuf.ProtoInclude(1, typeof(EbInfraDBConf))]
-    [ProtoBuf.ProtoInclude(2, typeof(EbClientConf))]
+    //[ProtoBuf.ProtoInclude(2, typeof(EbClientConf))]
     public interface IEbConf
     {
         EbDatabaseConfCollection DatabaseConfigurations { get; set; }
+
+        EbFilesDbConnection FilesDbConnection { get; set; }
     }
 
     [ProtoBuf.ProtoContract]
@@ -32,11 +35,16 @@ namespace ExpressBase.Common
             set { _configurations = value; }
         }
 
+        public EbFilesDbConnection FilesDbConnection
+        {
+            get; set;
+        }
+
         public EbInfraDBConf() { }
     }
 
     [ProtoBuf.ProtoContract]
-    public class EbClientConf : IEbConf
+    public class EbClientConf 
     {
         [ProtoBuf.ProtoMember(1)]
         public string ClientID { get; set; }
@@ -45,7 +53,7 @@ namespace ExpressBase.Common
         public string ClientName { get; set; }
 
         [ProtoBuf.ProtoMember(3)]
-        public EbClientTiers EbClientTier { get; set; }
+        public EbTiers EbClientTier { get; set; }
 
         private EbDatabaseConfCollection _configurations;
         [ProtoBuf.ProtoMember(4)]
