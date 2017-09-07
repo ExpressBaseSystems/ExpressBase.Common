@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExpressBase.Common
 {
-    public enum EbClientTiers
+    public enum EbTiers
     {
         Free,
         Professional,
@@ -20,21 +20,25 @@ namespace ExpressBase.Common
         MYSQL,
         MSSQL,
         ORACLE,
-        MONGODB,
     }
 
-    public enum EbDatabaseTypes
+    public enum FilesDbVendors
     {
-        EbINFRA,
-        EbINFRA_RO,
+        MongoDB,
+        Cloudinary,
+        Cloudfront,
+    }
+
+    public enum EbConnectionTypes
+    {
         EbOBJECTS,
-        EbOBJECTS_RO,
         EbDATA,
         EbDATA_RO,
-        EbLOGS,
-        EbLOGS_RO,
         EbFILES,
-        EbFILES_RO
+        EbLOGS,
+        Email,
+        SMS,
+        Slack,
     }
 
     public enum StudioFormTypes
