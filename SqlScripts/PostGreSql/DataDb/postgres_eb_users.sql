@@ -1,7 +1,11 @@
 CREATE SEQUENCE IF NOT EXISTS eb_users_id_seq START 1;
 --Table: public.eb_users
 
-CREATE TABLE IF NOT EXISTS public.eb_users
+-- Table: public.eb_users
+
+-- DROP TABLE public.eb_users;
+
+CREATE TABLE public.eb_users
 (
     id integer NOT NULL DEFAULT nextval('eb_users_id_seq'::regclass),
     email text COLLATE pg_catalog."default",
@@ -17,13 +21,12 @@ CREATE TABLE IF NOT EXISTS public.eb_users
     extension text COLLATE pg_catalog."default",
     locale text COLLATE pg_catalog."default",
     alternateemail text COLLATE pg_catalog."default",
-    profileimg bytea,
     dateformat text COLLATE pg_catalog."default" DEFAULT 'DD/MM/YYYY'::text,
     timezone text COLLATE pg_catalog."default" DEFAULT 'UTC+05:30'::text,
     numformat text COLLATE pg_catalog."default" DEFAULT '0,000.00'::text,
     timezoneabbre text COLLATE pg_catalog."default",
     timezonefull text COLLATE pg_catalog."default",
-    fullname text COLLATE pg_catalog."default",
+    profileimg text COLLATE pg_catalog."default",
     CONSTRAINT eb_users_pkey PRIMARY KEY (id)
 )
 WITH (
