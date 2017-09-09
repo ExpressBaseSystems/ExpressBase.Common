@@ -15,7 +15,11 @@ namespace ExpressBase.Common.Objects.Attributes
         Text = 5,
         DateTime = 6,
         Collection = 7,
-        JS = 8
+        JS = 8,
+        SQL = 9,
+        ObjectSelector = 10,
+        FontSelector =  11
+
     }
 
     public class HideInToolBox : Attribute { }
