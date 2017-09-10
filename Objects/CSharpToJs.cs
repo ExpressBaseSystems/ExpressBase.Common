@@ -205,16 +205,19 @@ EbObjects.@Name = function @Name(id, jsonObj) {
                 else
                     return string.Format(s, prop.Name, (prop.Name == "Name" || prop.Name == "EbSid") ? "id" : "''");
             }
+            else if (prop.Name == "Controls")
+                return string.Format(_c, JsonConvert.SerializeObject((obj as EbControlContainer).Controls, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All }));
             else if (prop.PropertyType == (typeof(int)) || prop.PropertyType == (typeof(float)))
                 return string.Format(s, prop.Name, ((prop.Name == "Id") ? "id" : "0"));
             else if (prop.PropertyType == typeof(bool))
                 return string.Format(s, prop.Name, "false");
             else if (prop.PropertyType.GetTypeInfo().IsEnum)
                 return string.Format(s, prop.Name, "''");
+            else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
+                return string.Format(s, prop.Name, "[]");
             else
             {
-                if (prop.Name == "Controls")
-                    return string.Format(_c, JsonConvert.SerializeObject((obj as EbControlContainer).Controls, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All }));
+                
 
                 return string.Format(s, prop.Name, "null");
             }
