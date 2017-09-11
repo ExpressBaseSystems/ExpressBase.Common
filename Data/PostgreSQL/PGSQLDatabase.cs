@@ -211,17 +211,9 @@ namespace ExpressBase.Data
                 for (int i = 0; i < _fieldCount; i++)
                 {
                     var _typ = reader.GetFieldType(i);
-                    var _coln = dt.Columns[i].ColumnName;
                     if (_typ == typeof(DateTime))
                     {
-                        var _val = reader.IsDBNull(i) ? DateTime.Now : reader.GetDateTime(i);
-                        if (_coln == "trndate")
-                            dr[i] = _val.ToString("dd-MMM-yyyy");
-                        else if (_coln == "sys_submitted_ts" || _coln == "sys_last_modified_ts")
-                            dr[i] = _val.ToString("dd-MMM-yyyy HH:mm:ss tt");
-                        else
-                            dr[i] = _val.ToString("dd-MMM-yyyy");
-
+                        dr[i] = reader.IsDBNull(i) ? DateTime.Now : reader.GetDateTime(i);
                         continue;
                     }
                     else if (_typ == typeof(string))
