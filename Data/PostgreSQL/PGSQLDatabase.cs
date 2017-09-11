@@ -3,26 +3,15 @@ using ExpressBase.Common.Connections;
 using Npgsql;
 using Npgsql.Schema;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ExpressBase.Data
 {
     public class PGSQLDatabase : IDatabase
     {
         private string _cstr;
-
-        //To be removed
-        //public PGSQLDatabase(EbDatabaseConfiguration dbconf)
-        //{
-        //    _cstr = "Host={0}; Port={1}; Database={2}; Username={3}; Password={4}; SSL Mode=Require; Use SSL Stream=true; Trust Server Certificate=true; Pooling=true; CommandTimeout={5};";
-        //    _cstr = String.Format(_cstr, dbconf.Server, dbconf.Port, dbconf.DatabaseName, dbconf.UserName, dbconf.Password, dbconf.Timeout);
-        //}
 
         public PGSQLDatabase(EbBaseDbConnection dbconf)
         {
@@ -42,16 +31,12 @@ namespace ExpressBase.Data
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, DbType type, object value)
         {
-            NpgsqlParameter param = new NpgsqlParameter(parametername, type);
-            param.Value = value;
-            return param;
+            return new NpgsqlParameter(parametername, type) { Value = value };
         }
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, NpgsqlTypes.NpgsqlDbType type, object value)
         {
-            NpgsqlParameter param = new NpgsqlParameter(parametername, type);
-            param.Value = value;
-            return param;
+            return new NpgsqlParameter(parametername, type) { Value = value };
         }
 
         public T DoQuery<T>(string query, params DbParameter[] parameters)
