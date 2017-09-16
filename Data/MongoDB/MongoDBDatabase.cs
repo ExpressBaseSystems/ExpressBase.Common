@@ -7,19 +7,23 @@ namespace ExpressBase.Common.Data.MongoDB
 {
     public class MongoDBDatabase : INoSQLDatabase
     {
-        private string mongodb_url;
+        private MongoUrl mongoUrl;
         private MongoClient mongoClient;
         private IMongoDatabase mongoDatabase;
         private IGridFSBucket bucket;
+        private string TenantId { get; set; }
 
-        public MongoDBDatabase(EbFilesDbConnection dbconf)
+        public MongoDBDatabase(string tenantId, EbFilesDbConnection dbconf)
         {
-            mongodb_url = "mongodb://ahammedunni:Opera754$@cluster0-shard-00-00-lbath.mongodb.net:27017,cluster0-shard-00-01-lbath.mongodb.net:27017,cluster0-shard-00-02-lbath.mongodb.net:27017/admin?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin";
-            mongoClient = new MongoClient(mongodb_url);
-            mongoDatabase = mongoClient.GetDatabase("eb_images");
+            this.TenantId = tenantId;
+            //mongodb_url = "mongodb://ahammedunni:Opera754$@cluster0-shard-00-00-lbath.mongodb.net:27017,cluster0-shard-00-01-lbath.mongodb.net:27017,cluster0-shard-00-02-lbath.mongodb.net:27017/admin?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin";
+            mongoUrl = new MongoUrl("mongodb://ahammedunni:Opera754$@cluster0-shard-00-00-lbath.mongodb.net:27017,cluster0-shard-00-01-lbath.mongodb.net:27017,cluster0-shard-00-02-lbath.mongodb.net:27017/admin?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin");
+            
+            mongoClient = new MongoClient(mongoUrl);
+            mongoDatabase = mongoClient.GetDatabase(tenantId);
             bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
             {
-                BucketName = "images",
+                BucketName = "files",
                 ChunkSizeBytes = 1048576, // 1MB
                 WriteConcern = WriteConcern.WMajority,
                 ReadPreference = ReadPreference.Secondary

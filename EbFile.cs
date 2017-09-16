@@ -11,6 +11,10 @@ namespace ExpressBase.Common
     {
         public static void Bytea_ToFile(byte[] bytea, string path)
         {
+            string _dir = System.IO.Path.GetDirectoryName(path);
+            if (!System.IO.Directory.Exists(_dir))
+                System.IO.Directory.CreateDirectory(_dir);
+
             using (var fileStream = File.Create(path))
             {
                 fileStream.Write(bytea, 0, bytea.Length);
