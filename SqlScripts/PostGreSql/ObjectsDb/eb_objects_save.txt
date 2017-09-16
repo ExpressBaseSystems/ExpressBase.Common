@@ -1,0 +1,54 @@
+-- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text[])
+
+-- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text[]);
+
+CREATE OR REPLACE FUNCTION public.eb_objects_save(
+	idv text,
+	obj_namev text,
+	obj_descv text,
+	obj_typev integer,
+	obj_jsonv json,
+	commit_uidv integer,
+	src_pid text,
+	cur_pid text,
+	relationsv text[])
+    RETURNS text
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE 
+    ROWS 0
+AS $BODY$
+
+DECLARE refidunique text; inserted_objid integer; inserted_obj_ver_id integer;objid integer;
+BEGIN
+SELECT eb_objects_id FROM eb_objects_ver into objid WHERE refid=idv;
+ 	UPDATE eb_objects SET obj_name = obj_namev, obj_desc = obj_descv WHERE id = objid RETURNING id INTO inserted_objid;
+    UPDATE eb_objects_ver SET obj_json = obj_jsonv WHERE eb_objects_id = objid AND commit_uid IS NULL AND ver_num = -1;
+    
+    refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, inserted_objid, inserted_obj_ver_id);                                 
+	UPDATE eb_objects_ver SET refid = refidunique WHERE id = inserted_obj_ver_id;
+	UPDATE eb_objects_relations 
+      SET 
+        eb_del = TRUE, removed_by= commit_uidv , removed_at=NOW()
+      WHERE 
+        dominant IN(
+            SELECT unnest(ARRAY(select dominant from eb_objects_relations WHERE dependant = refidunique)) 
+        EXCEPT 
+            SELECT unnest(ARRAY[relationsv]));
+            
+            INSERT INTO eb_objects_relations 
+        (dominant, dependant) 
+    SELECT 
+      dominantvals, refidunique
+      FROM UNNEST(array(SELECT unnest(ARRAY[relationsv])
+        EXCEPT 
+      SELECT unnest(array(select dominant from eb_objects_relations 
+                            WHERE dependant = refidunique )))) as dominantvals;
+    RETURN refidunique;
+END;
+
+$BODY$;
+
+ALTER FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text[])
+    OWNER TO postgres;
+
