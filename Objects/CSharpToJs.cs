@@ -61,7 +61,7 @@ function ProcRecur(src_controls, dest_controls) {
                             _toolsHtml += GetToolHtml(tool.Name.Substring(2));
 
                         var toolObj = (T)Activator.CreateInstance(tool);
-                        _typeInfos += string.Format("if (jsonObj['$type'].includes('{0}')) return new EbObjects.{1}Obj(jsonObj.EbSid, jsonObj); ", toolObj.GetType().FullName, toolObj.GetType().Name);
+                        _typeInfos += string.Format("if (jsonObj['$type'].includes('{0}')) return new EbObjects.{1}(jsonObj.EbSid, jsonObj); ", toolObj.GetType().FullName, toolObj.GetType().Name);
                         GetJsObject(_builderType, toolObj, ref _metaStr, ref _controlsStr);
                     }
                 }
