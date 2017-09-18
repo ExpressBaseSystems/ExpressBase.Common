@@ -124,6 +124,20 @@ function ProcRecur(src_controls, dest_controls) {
                             meta.editor = (attr as PropertyEditor).PropertyEditorType;
                             if (prop.PropertyType.GetTypeInfo().IsEnum)
                                 meta.options = Enum.GetNames(prop.PropertyType);
+                            else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
+                            {
+                                Type itemType = prop.PropertyType.GetGenericArguments()[0];
+                                if (itemType.Name != typeof(EbControl).Name)
+                                {
+                                    var subClasses = itemType.Assembly.GetTypes().Where(type => type.IsSubclassOf(itemType));
+                                    List<string> _sa = new List<string>();
+                                    if (!itemType.IsAbstract)
+                                        _sa.Add(itemType.Name);
+                                    foreach (Type type in subClasses)
+                                        _sa.Add(type.Name);
+                                    meta.options = _sa.ToArray<string>();
+                                }
+                            }
                         }
                     }
 
@@ -137,12 +151,6 @@ function ProcRecur(src_controls, dest_controls) {
                     //if prop is of primitive type set corresponding editor
                     if (!prop.IsDefined(typeof(PropertyEditor)) && !prop.PropertyType.GetTypeInfo().IsEnum && prop.PropertyType != typeof(List<EbControl>))
                         meta.editor = GetTypeOf(prop);
-
-                    ////if prop is of List type set collection editor
-                    //if (prop.PropertyType == typeof(List<EbControl>))
-                    //{
-                    //    meta.editor = PropertyEditorType.Columns;
-                    //}
 
                     //if no helpText attribut is set, set as empty string
                     if (!prop.IsDefined(typeof(HelpText)))
