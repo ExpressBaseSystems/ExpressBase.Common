@@ -47,6 +47,16 @@ namespace ExpressBase.Common.Objects.Attributes
         }
     }
 
+    public class OSE_ObjectTypes : Attribute
+    {
+        public EbObjectType[] ObjectTypes { get; set; }
+
+        public OSE_ObjectTypes(params EbObjectType[] objectTypes)
+        {
+            this.ObjectTypes = objectTypes;
+        }
+    }
+
 
     public class OnChangeExec : Attribute
     {

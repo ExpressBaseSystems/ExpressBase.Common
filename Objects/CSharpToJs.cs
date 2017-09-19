@@ -124,6 +124,11 @@ function ProcRecur(src_controls, dest_controls) {
                             meta.editor = (attr as PropertyEditor).PropertyEditorType;
                             if (prop.PropertyType.GetTypeInfo().IsEnum)
                                 meta.options = Enum.GetNames(prop.PropertyType);
+                            else if (meta.editor == PropertyEditorType.ObjectSelector)
+                            {
+                                if (prop.IsDefined(typeof(OSE_ObjectTypes)))
+                                    meta.options = prop.GetCustomAttribute<OSE_ObjectTypes>().ObjectTypes.Select(a => a.ToString()).ToArray();
+                            }
                             else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
                             {
                                 Type itemType = prop.PropertyType.GetGenericArguments()[0];
