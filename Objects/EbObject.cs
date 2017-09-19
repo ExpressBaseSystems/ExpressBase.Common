@@ -21,7 +21,7 @@ namespace ExpressBase.Objects
         public EbObjectType EbObjectType { get; set; }
 
         [Description("Identity")]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.DVBuilder)]
         public virtual string Name { get; set; }
 
         public string ChangeLog { get; set; }
