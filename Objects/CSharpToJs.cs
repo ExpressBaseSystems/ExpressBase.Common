@@ -164,6 +164,9 @@ function ProcRecur(src_controls, dest_controls) {
                     //if UIproperty attribut is set, set as true
                     meta.IsUIproperty = prop.IsDefined(typeof(UIproperty));
 
+                    //if UIproperty attribut is set, set as true
+                    meta.IsRequired = prop.IsDefined(typeof(Attributes.Required));
+
                     if (!prop.IsDefined(typeof(HideInPropertyGrid)))
                         MetaCollection.Add(meta);
                 }

@@ -101,4 +101,9 @@ namespace ExpressBase.Common.Objects.Attributes
     {
         public UIproperty() { }
     }
+
+    public class Required : Attribute
+    {
+        public Required() { }
+    }
 }

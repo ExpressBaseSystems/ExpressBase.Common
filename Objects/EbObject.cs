@@ -22,6 +22,7 @@ namespace ExpressBase.Objects
 
         [Description("Identity")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog)]
+        [Required]
         public virtual string Name { get; set; }
 
         public string ChangeLog { get; set; }
