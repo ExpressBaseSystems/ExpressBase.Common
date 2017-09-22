@@ -18,6 +18,7 @@ namespace ExpressBase.Common.Objects
             public string TypeRegister; // Factory method to create appropriate JsObj
             public string ToolBoxHtml;
             public string JsonToJsObjectFuncs; //Attach functions etc. in edit mode
+            public string EbObjectTypes; // EbObjectType enum as JSobject
         }
 
         public static JsResult GenerateJs<T>(BuilderType _builderType, Type[] types)
@@ -67,17 +68,35 @@ function ProcRecur(src_controls, dest_controls) {
                 }
             }
 
-            _metaStr += "}";
+           
 
+
+            _metaStr += "}";
             _controlsStr += "";
 
             _result.Meta = _metaStr;
             _result.JsObjects = _controlsStr;
             _result.ToolBoxHtml = _toolsHtml;
             _result.TypeRegister = _typeInfos + " };";
+
+            _result.EbObjectTypes = "var EbObjectTypes = " + Get_EbObjTypesStr();
+
             _result.JsonToJsObjectFuncs = __jsonToJsObjectFunc;
 
             return _result;
+        }
+
+        private static string Get_EbObjTypesStr()
+        {
+            Dictionary<string, int> _dic = new Dictionary<string, int>();
+            foreach (string enumString in Enum.GetNames(typeof(EbObjectType)))
+            {
+                EbObjectType _type;
+                Enum.TryParse(enumString, out _type);
+                _dic.Add(enumString, (int)_type);
+            }
+
+            return EbSerializers.Json_Serialize(_dic);
         }
 
         private static string GetToolHtml(string tool_name)
