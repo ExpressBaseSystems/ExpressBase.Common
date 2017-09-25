@@ -35,7 +35,7 @@ namespace ExpressBase.Common.Connections
     public class EbFilesDbConnection
     {
         [JsonConverter(typeof(CustomBase64Converter))]
-        public string MongoDB_url { get; set; }
+        public string FilesDB_url { get; set; }
     }
 
     public class EbLogsDbConnection : EbBaseDbConnection
