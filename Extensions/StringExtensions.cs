@@ -38,5 +38,15 @@ namespace ExpressBase.Common.Extensions
 
             return strBuilder.ToString();
         }
+
+        public static string ToBase64(this string plainText)
+        {
+            return System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(plainText));
+        }
+
+        public static string FromBase64(this string base64EncodedData)
+        {
+            return System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(base64EncodedData));
+        }
     }
 }
