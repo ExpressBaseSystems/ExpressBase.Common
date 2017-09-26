@@ -16,11 +16,12 @@ CREATE OR REPLACE FUNCTION public.eb_objects_create_minor_version(
     ROWS 0
 AS $BODY$
 
-DECLARE refidunique text; inserted_objid integer; inserted_obj_ver_id integer;objid integer;committed_refidunique text;minor integer;major integer;patch integer; version_number text;
+DECLARE refidunique text; inserted_objid integer; inserted_obj_ver_id integer; objid integer; committed_refidunique text; minor integer;major integer; version_number text;
 
 BEGIN
 
-	SELECT eb_objects_id,major_ver_num, minor_ver_num, patch_ver_num into objid, major, minor, patch FROM eb_objects_ver WHERE refid=idv;
+	SELECT eb_objects_id, major_ver_num into objid, major FROM eb_objects_ver WHERE refid=idv;
+	SELECT MAX(minor_ver_num) into minor FROM eb_objects_ver WHERE eb_objects_id = objid AND major_ver_num = major;
 
 	INSERT INTO 
 		eb_objects_ver (eb_objects_id, obj_json, major_ver_num)
@@ -32,11 +33,11 @@ BEGIN
 		refid=idv
    RETURNING id INTO inserted_obj_ver_id;
 		
-		version_number := CONCAT_WS('.',major,minor+1,patch,'w');
+		version_number := CONCAT_WS('.', major, minor+1, 0, 'w');
 		
 	UPDATE eb_objects_ver
 		SET
-		version_num = version_number,working_mode = true,minor_ver_num=minor+1, patch_ver_num=0
+		commit_ts = NOW(), commit_uid = commit_uidv, version_num = version_number, working_mode = true, minor_ver_num = minor+1, patch_ver_num = 0
 	WHERE
 			id = inserted_obj_ver_id ;
 	
@@ -47,7 +48,7 @@ BEGIN
     
 	UPDATE eb_objects_relations 
       SET 
-        eb_del = TRUE, removed_by= commit_uidv , removed_at=NOW()
+        eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
       WHERE 
         dominant IN(
             SELECT unnest(ARRAY(select dominant from eb_objects_relations WHERE dependant = refidunique)) 
