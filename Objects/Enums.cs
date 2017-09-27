@@ -49,6 +49,7 @@ namespace ExpressBase.Common.Objects
     public enum BuilderType
     {
         DisplayBlock = 1,
+        DataSource = 2,
         FilterDialog = 12,
         WebForm = 0,
         MobileForm = 13,
