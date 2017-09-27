@@ -45,7 +45,7 @@ BEGIN
     refid_of_commit_version:=refidunique;                       
 	UPDATE eb_objects_ver SET refid = refidunique, version_num = version_number WHERE id = inserted_obj_ver_id;
     
-	INSERT INTO eb_objects_status(refid, status, change_uid, change_ts) VALUES(refidunique, 0, commit_uidv, NOW());
+	INSERT INTO eb_objects_status(refid, status, uid, ts) VALUES(refidunique, 0, commit_uidv, NOW());
     
     INSERT INTO eb_objects_relations (dominant,dependant) VALUES (UNNEST(relationsv),refidunique);
 		
