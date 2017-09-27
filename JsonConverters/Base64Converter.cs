@@ -15,7 +15,10 @@ namespace ExpressBase.Common.JsonConverters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            return System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(reader.Value.ToString()));
+            if (reader.Value != null)
+                return System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(reader.Value.ToString()));
+            else
+                return null;
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
