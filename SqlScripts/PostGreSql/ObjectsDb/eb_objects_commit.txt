@@ -20,11 +20,11 @@ CREATE OR REPLACE FUNCTION public.eb_objects_commit(
     ROWS 0
 AS $BODY$
 
-DECLARE refidunique text; inserted_obj_ver_id integer;objid integer;committed_refidunique text;major integer;minor integer;patch integer;version_number text;
+DECLARE refidunique text; inserted_obj_ver_id integer; objid integer; committed_refidunique text; major integer; minor integer; patch integer; version_number text;
 
 BEGIN
 
-SELECT eb_objects_id,major_ver_num,minor_ver_num into objid,major,minor,patch FROM eb_objects_ver WHERE refid=idv;
+SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, major, minor, patch FROM eb_objects_ver WHERE refid=idv;
 
   	UPDATE eb_objects 
 	SET 
@@ -43,12 +43,12 @@ SELECT eb_objects_id,major_ver_num,minor_ver_num into objid,major,minor,patch FR
 	UPDATE eb_objects_ver SET refid = refidunique WHERE id = inserted_obj_ver_id;  
 	
 	--majorversion.minorversion.patchversion
-	version_number := CONCAT_WS('.',major,minor,patch);
-   UPDATE eb_objects_ver SET version_num= version_number,working_mode=false WHERE refid=refidunique;
+	version_number := CONCAT_WS('.', major, minor, patch);
+   UPDATE eb_objects_ver SET version_num = version_number, working_mode = false WHERE refid = refidunique;
 
 	UPDATE eb_objects_relations 
       SET 
-        eb_del = TRUE, removed_by= commit_uidv , removed_at=NOW()
+        eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
       WHERE 
         dominant IN(
             SELECT unnest(ARRAY(select dominant from eb_objects_relations WHERE dependant = refidunique)) 
