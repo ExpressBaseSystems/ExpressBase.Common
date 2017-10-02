@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Web;
 
 namespace ExpressBase.Common.JsonConverters
 {
@@ -23,7 +24,7 @@ namespace ExpressBase.Common.JsonConverters
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            string valueAsString = Convert.ToString(value);
+            string valueAsString = (value != null) ? Convert.ToString(value) : string.Empty;
 
             if (!string.IsNullOrWhiteSpace(valueAsString))
                 writer.WriteValue(valueAsString.ToBase64());
