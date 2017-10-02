@@ -2,6 +2,8 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ExpressBase.Common.Data.MongoDB
 {
@@ -18,7 +20,7 @@ namespace ExpressBase.Common.Data.MongoDB
             this.TenantId = tenantId;
             //mongodb_url = "mongodb://ahammedunni:Opera754$@cluster0-shard-00-00-lbath.mongodb.net:27017,cluster0-shard-00-01-lbath.mongodb.net:27017,cluster0-shard-00-02-lbath.mongodb.net:27017/admin?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin";
             mongoUrl = new MongoUrl("mongodb://ahammedunni:Opera754$@cluster0-shard-00-00-lbath.mongodb.net:27017,cluster0-shard-00-01-lbath.mongodb.net:27017,cluster0-shard-00-02-lbath.mongodb.net:27017/admin?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin");
-            
+
             mongoClient = new MongoClient(mongoUrl);
             mongoDatabase = mongoClient.GetDatabase(tenantId);
             bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
@@ -30,7 +32,7 @@ namespace ExpressBase.Common.Data.MongoDB
             });
         }
 
-        public ObjectId UploadFile(string filename, byte[] bytea, BsonDocument metaData = null)
+        public ObjectId UploadFile(string filename, byte[] bytea, BsonDocument metaData)
         {
             var options = new GridFSUploadOptions
             {
@@ -44,6 +46,26 @@ namespace ExpressBase.Common.Data.MongoDB
         public byte[] DownloadFile(string objectid)
         {
             return bucket.DownloadAsBytes(new ObjectId(objectid), new GridFSDownloadOptions() { CheckMD5 = true });
+        }
+
+        public List<GridFSFileInfo> FindFilesByTags(KeyValuePair<string, string> Filter)
+        {
+            var filter = Builders<GridFSFileInfo>.Filter.And(Builders<GridFSFileInfo>.Filter.AnyEq(Filter.Key, Filter.Value));
+
+            var sort = Builders<GridFSFileInfo>.Sort.Descending(x => x.UploadDateTime);
+
+            var options = new GridFSFindOptions
+            {
+                Limit = 20,
+                Sort = sort
+            };
+
+            using (var cursor = bucket.Find(filter, options))
+            {
+                var fileInfo = cursor.ToList();
+
+                return fileInfo;
+            }
         }
     }
 }

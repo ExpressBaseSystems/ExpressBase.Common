@@ -1,8 +1,6 @@
 ﻿using MongoDB.Bson;
-using System;
+using MongoDB.Driver.GridFS;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Text;
 
 namespace ExpressBase.Common.Data
 {
@@ -11,5 +9,7 @@ namespace ExpressBase.Common.Data
         ObjectId UploadFile(string filename, byte[] bytea, BsonDocument metaData);
 
         byte[] DownloadFile(string objectid);
+
+        List<GridFSFileInfo> FindFilesByTags(KeyValuePair<string, string> Filter);
     }
 }
