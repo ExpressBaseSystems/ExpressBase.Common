@@ -249,10 +249,21 @@ EbObjects.@Name = function @Name(id, jsonObj) {
             else if (prop.PropertyType.GetTypeInfo().IsEnum)
                 return string.Format(s, prop.Name, "''");
             else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
-                return string.Format(s, prop.Name, "[]");
+            {
+                var args = prop.PropertyType.GetGenericArguments();
+                if (args.Length > 1)
+                {
+                    Type itemType = args[0];
+                    return string.Format(s, prop.Name, "{\"$type\":\"System.Collections.Generic.List`1[[@typeName, ExpressBase.Objects]], System.Private.CoreLib\",\"$values\":[]}".Replace("@typeName", itemType.FullName));
+                }
+                else
+                {
+                    return string.Format(s, prop.Name, "[]");
+                }
+            }
             else
             {
-                
+
 
                 return string.Format(s, prop.Name, "null");
             }
