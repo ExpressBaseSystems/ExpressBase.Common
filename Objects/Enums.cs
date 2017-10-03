@@ -23,7 +23,9 @@ namespace ExpressBase.Common.Objects
         FilterDialog = 12,
         MobileForm = 13,
         UserControl = 14,
-        EmailBuilder = 15
+        EmailBuilder = 15,
+        TableVisualization = 16,
+        ChartVisualization = 17,
     }
 
     [ProtoBuf.ProtoContract]
