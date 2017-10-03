@@ -17,10 +17,11 @@ namespace ExpressBase.Common.Objects.Attributes
         Collection = 7,
         CollectionFrmSrc = 8,
         CollectionFrmSrcPG = 9,
-        JS = 10,
-        SQL = 11,
-        ObjectSelector = 12,
-        FontSelector = 13
+        CollectionA2C = 10,
+        JS = 11,
+        SQL = 12,
+        ObjectSelector = 13,
+        FontSelector = 14
 
     }
 
