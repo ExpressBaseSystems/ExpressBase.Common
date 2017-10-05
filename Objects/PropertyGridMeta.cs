@@ -27,6 +27,8 @@ namespace ExpressBase.Common.Objects
         public string OnChangeExec { get; set; }
 
         public bool IsRequired { get; set; }
+
+        public string source{ get; set; }
     }
 
     public class FunctionSerializer : JsonConverter

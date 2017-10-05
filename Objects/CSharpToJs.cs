@@ -141,6 +141,7 @@ function ProcRecur(src_controls, dest_controls) {
                         else if (attr is PropertyEditor)
                         {
                             meta.editor = (attr as PropertyEditor).PropertyEditorType;
+                            meta.source = (attr as PropertyEditor).PropertyEditorSource;
                             if (prop.PropertyType.GetTypeInfo().IsEnum)
                                 meta.options = Enum.GetNames(prop.PropertyType);
                             else if (meta.editor == PropertyEditorType.ObjectSelector)
