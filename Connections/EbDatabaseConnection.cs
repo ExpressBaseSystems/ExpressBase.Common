@@ -34,6 +34,8 @@ namespace ExpressBase.Common.Connections
     // For Infra Files, Tenant Files
     public class EbFilesDbConnection
     {
+        public bool IsDef { get; set; } //for distinguish between our server and a custom MongoDB server 
+
         [JsonConverter(typeof(CustomBase64Converter))]
         public string FilesDB_url { get; set; }
     }

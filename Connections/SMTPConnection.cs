@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ExpressBase.Common.Connections
+﻿namespace ExpressBase.Common.Connections
 {
     public class SMTPConnection
     {
