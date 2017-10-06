@@ -33,19 +33,9 @@ namespace ExpressBase.Common.Objects
     {
         Form = 0,
         Report = 3,
-        Table = 4,
-        Application = 9,
-        ApplicationModule = 10,
-        DataVisualization = 11,
+        TableVisualization = 16,
+        ChartVisualization = 17,
         FilterDialog = 12
-    }
-
-    [ProtoBuf.ProtoContract]
-    public enum EbObjectTypesNonVer
-    {
-        Application = 9,
-        ApplicationModule = 10,
-        DataVisualization = 11
     }
 
     public enum BuilderType
