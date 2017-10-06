@@ -17,10 +17,11 @@ namespace ExpressBase.Common.Objects.Attributes
         Collection = 7,
         CollectionFrmSrc = 8,
         CollectionFrmSrcPG = 9,
-        JS = 10,
-        SQL = 11,
-        ObjectSelector = 12,
-        FontSelector = 13
+        CollectionA2C = 10,
+        JS = 11,
+        SQL = 12,//not completed
+        ObjectSelector = 13,
+        FontSelector = 14//not completed
 
     }
 
@@ -74,9 +75,17 @@ namespace ExpressBase.Common.Objects.Attributes
     {
         public PropertyEditorType PropertyEditorType { get; set; }
 
+        public string PropertyEditorSource{ get; set; }
+
         public PropertyEditor(PropertyEditorType type)
         {
             this.PropertyEditorType = type;
+        }
+
+        public PropertyEditor(PropertyEditorType type, string source)
+        {
+            this.PropertyEditorType = type;
+            this.PropertyEditorSource = source;
         }
     }
     public class PropertyGroup : Attribute
