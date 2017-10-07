@@ -68,7 +68,12 @@ namespace ExpressBase.Common
         Account_PM
     }
 
-    
+    public enum EbSystemRoles
+    {
+        Eb_Admin,
+        Eb_ReadOnlyUser,
+        Eb_User
+    }
 
 }
 
