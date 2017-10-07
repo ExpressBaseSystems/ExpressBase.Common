@@ -43,9 +43,14 @@ namespace ExpressBase.Common.Data.MongoDB
             return bucket.UploadFromBytes(filename, bytea, options);
         }
 
-        public byte[] DownloadFile(string objectid)
+        public byte[] DownloadFile(ObjectId objectid)
         {
-            return bucket.DownloadAsBytes(new ObjectId(objectid), new GridFSDownloadOptions() { CheckMD5 = true });
+            return bucket.DownloadAsBytes(objectid, new GridFSDownloadOptions() { CheckMD5 = true });
+        }
+
+        public byte[] DownloadFile(string filename)
+        {
+            return bucket.DownloadAsBytesByName(filename);
         }
 
         public List<GridFSFileInfo> FindFilesByTags(KeyValuePair<string, string> Filter)
