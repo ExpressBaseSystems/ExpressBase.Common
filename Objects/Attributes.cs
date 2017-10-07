@@ -21,7 +21,8 @@ namespace ExpressBase.Common.Objects.Attributes
         JS = 11,
         SQL = 12,//not completed
         ObjectSelector = 13,
-        FontSelector = 14//not completed
+        FontSelector = 14,//not completed
+        Expandable = 15
 
     }
 

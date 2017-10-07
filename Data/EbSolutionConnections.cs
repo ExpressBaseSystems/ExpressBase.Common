@@ -19,7 +19,7 @@ namespace ExpressBase.Common.Data
 
         public EbLogsDbConnection LogsDbConnection { get; set; }
 
-        public SMTPConnection EmailConnection { get; set; }
+        public SMTPConnection SMTPConnection { get; set; }
 
         public SMSConnection SMSConnection { get; set; }
     }

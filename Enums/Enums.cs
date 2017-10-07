@@ -31,14 +31,14 @@ namespace ExpressBase.Common
 
     public enum EbConnectionTypes
     {
-        EbOBJECTS,
-        EbDATA,
-        EbDATA_RO,
-        EbFILES,
-        EbLOGS,
-        Email,
-        SMS,
-        Slack,
+        EbOBJECTS = 1,
+        EbDATA = 2,
+        EbDATA_RO = 3,
+        EbFILES = 4,
+        EbLOGS = 5,
+        SMTP = 6,
+        SMS = 7,
+        Slack = 8,
     }
 
     public enum StudioFormTypes
@@ -68,7 +68,12 @@ namespace ExpressBase.Common
         Account_PM
     }
 
-    
+    public enum EbSystemRoles
+    {
+        Eb_Admin,
+        Eb_ReadOnlyUser,
+        Eb_User
+    }
 
 }
 

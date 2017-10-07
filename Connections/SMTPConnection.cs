@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ExpressBase.Common.Connections
+﻿namespace ExpressBase.Common.Connections
 {
     public class SMTPConnection
     {
@@ -10,7 +6,7 @@ namespace ExpressBase.Common.Connections
 
         public string Smtp { get; set; }
 
-        public string Port { get; set; }
+        public int Port { get; set; }
 
         public string NickName { get; set; }
 

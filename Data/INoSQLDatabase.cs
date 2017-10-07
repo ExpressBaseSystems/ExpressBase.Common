@@ -8,7 +8,9 @@ namespace ExpressBase.Common.Data
     {
         ObjectId UploadFile(string filename, byte[] bytea, BsonDocument metaData);
 
-        byte[] DownloadFile(string objectid);
+        byte[] DownloadFile(ObjectId objectid);
+
+        byte[] DownloadFile(string filename);
 
         List<GridFSFileInfo> FindFilesByTags(KeyValuePair<string, string> Filter);
     }

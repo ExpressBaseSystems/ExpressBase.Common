@@ -117,6 +117,10 @@ function ProcRecur(src_controls, dest_controls) {
 
             foreach (var prop in props)
             {
+                if(prop.Name == "Position")
+                {
+                    ;
+                }
                 var propattrs = prop.GetCustomAttributes();
 
                 if (prop.IsDefined(typeof(EnableInBuilder))
@@ -262,12 +266,32 @@ EbObjects.@Name = function @Name(id, jsonObj) {
                     return string.Format(s, prop.Name, "[]");
                 }
             }
+            else if (prop.PropertyType.IsClass)
+            {
+                string _MetaStr = string.Empty;
+                string _ControlsStr = string.Empty;
+                var Obj = Activator.CreateInstance(prop.PropertyType);
+                GetJsObject(BuilderType.WebForm, Obj, ref _MetaStr, ref _ControlsStr);
+                //[ 
+                //{
+                //  "X":{meta}
+                //  "Y":{meta}
+                //}
+                //]
+
+                return string.Format(s, prop.Name, "{}");
+            }
             else
             {
 
 
                 return string.Format(s, prop.Name, "null");
             }
+        }
+
+        private string GetSubMeta()
+        {
+            return "";
         }
 
         private static PropertyEditorType GetTypeOf(PropertyInfo prop)

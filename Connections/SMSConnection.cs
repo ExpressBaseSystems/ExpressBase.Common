@@ -4,8 +4,12 @@ using System.Text;
 
 namespace ExpressBase.Common.Connections
 {
-    [ProtoBuf.ProtoContract]
     public class SMSConnection
     {
+        public string NickName { get; set; }
+
+        public string UserName { get; set; }
+
+        public string Password { get; set; }
     }
 }
