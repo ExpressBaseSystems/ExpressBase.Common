@@ -9,7 +9,6 @@ namespace ExpressBase.Common.Data.MongoDB
 {
     public class MongoDBDatabase : INoSQLDatabase
     {
-        private MongoUrl mongoUrl;
         private MongoClient mongoClient;
         private IMongoDatabase mongoDatabase;
         private IGridFSBucket bucket;
@@ -19,21 +18,23 @@ namespace ExpressBase.Common.Data.MongoDB
         {
             this.TenantId = tenantId;
             //mongodb_url = "mongodb://ahammedunni:Opera754$@cluster0-shard-00-00-lbath.mongodb.net:27017,cluster0-shard-00-01-lbath.mongodb.net:27017,cluster0-shard-00-02-lbath.mongodb.net:27017/admin?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin";
-            mongoUrl = new MongoUrl("mongodb://ahammedunni:Opera754$@cluster0-shard-00-00-lbath.mongodb.net:27017,cluster0-shard-00-01-lbath.mongodb.net:27017,cluster0-shard-00-02-lbath.mongodb.net:27017/admin?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin");
+            //mongoUrl = new MongoUrl("mongodb://ahammedunni:Opera754$@cluster0-shard-00-00-lbath.mongodb.net:27017,cluster0-shard-00-01-lbath.mongodb.net:27017,cluster0-shard-00-02-lbath.mongodb.net:27017/admin?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin");
 
-            mongoClient = new MongoClient(mongoUrl);
+            mongoClient = new MongoClient(dbconf.FilesDB_url);
             mongoDatabase = mongoClient.GetDatabase(tenantId);
+            
+        }
+
+        public ObjectId UploadFile(string filename, byte[] bytea, string bucketName, BsonDocument metaData)
+        {
             bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
             {
-                BucketName = "files",
+                BucketName = bucketName,
                 ChunkSizeBytes = 1048576, // 1MB
                 WriteConcern = WriteConcern.WMajority,
                 ReadPreference = ReadPreference.Secondary
             });
-        }
 
-        public ObjectId UploadFile(string filename, byte[] bytea, BsonDocument metaData)
-        {
             var options = new GridFSUploadOptions
             {
                 ChunkSizeBytes = 64512, // 63KB
@@ -43,13 +44,29 @@ namespace ExpressBase.Common.Data.MongoDB
             return bucket.UploadFromBytes(filename, bytea, options);
         }
 
-        public byte[] DownloadFile(ObjectId objectid)
+        public byte[] DownloadFile(ObjectId objectid, string bucketName)
         {
+            bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
+            {
+                BucketName = bucketName,
+                ChunkSizeBytes = 1048576, // 1MB
+                WriteConcern = WriteConcern.WMajority,
+                ReadPreference = ReadPreference.Secondary
+            });
+
             return bucket.DownloadAsBytes(objectid, new GridFSDownloadOptions() { CheckMD5 = true });
         }
 
-        public byte[] DownloadFile(string filename)
+        public byte[] DownloadFile(string filename, string bucketName)
         {
+            bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
+            {
+                BucketName = bucketName,
+                ChunkSizeBytes = 1048576, // 1MB
+                WriteConcern = WriteConcern.WMajority,
+                ReadPreference = ReadPreference.Secondary
+            });
+
             return bucket.DownloadAsBytesByName(filename);
         }
 
