@@ -19,6 +19,8 @@ namespace ExpressBase.Common.Objects
 
         public string[] options { get; set; }
 
+        public List<Meta> submeta { get; set; }
+
         public bool IsUIproperty { get; set; }
 
         public string helpText { get; set; }
