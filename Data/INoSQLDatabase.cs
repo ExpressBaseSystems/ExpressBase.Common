@@ -12,6 +12,6 @@ namespace ExpressBase.Common.Data
 
         byte[] DownloadFile(string filename, string bucketname);
 
-        List<GridFSFileInfo> FindFilesByTags(KeyValuePair<string, string> Filter);
+        List<GridFSFileInfo> FindFilesByTags(KeyValuePair<string, List<string>> Filter);
     }
 }
