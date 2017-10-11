@@ -68,7 +68,7 @@ function ProcRecur(src_controls, dest_controls) {
                 }
             }
 
-           
+
 
 
             _metaStr += "}";
@@ -104,95 +104,118 @@ function ProcRecur(src_controls, dest_controls) {
             return @"<div eb-type='@toolName' class='tool'>@toolName</div>".Replace("@toolName", tool_name);
         }
 
+        private static List<Meta> GetMetaCollection(BuilderType bType, object obj)
+        {
+            List<Meta> MetaCollection = new List<Meta>();
+
+            var props = obj.GetType().GetAllProperties();
+            foreach (var prop in props)
+            {
+                var propattrs = prop.GetCustomAttributes();
+
+                Meta _meta = null;
+                if (prop.IsDefined(typeof(EnableInBuilder)) && prop.GetCustomAttribute<EnableInBuilder>().BuilderTypes.Contains(bType))
+                {
+                    _meta = GetMeta(bType, obj, prop);
+                }
+
+                if (!prop.IsDefined(typeof(HideInPropertyGrid)))
+                    MetaCollection.Add(_meta);
+            }
+
+            return MetaCollection;
+        }
+
+        private static Meta GetMeta(BuilderType bType, object obj, PropertyInfo prop)
+        {
+            var meta = new Meta { name = prop.Name };
+
+            var propattrs = prop.GetCustomAttributes();
+            foreach (Attribute attr in propattrs)
+            {
+                if (attr is Alias)
+                    meta.alias = (attr as Alias).Name;
+                else if (attr is PropertyGroup)
+                    meta.group = (attr as PropertyGroup).Name;
+                else if (attr is HelpText)
+                    meta.helpText = (attr as HelpText).value;
+                else if (attr is OnChangeExec)
+                    meta.OnChangeExec = "function(pg){" + (attr as OnChangeExec).JsCode + "}";
+                else if (attr is Attributes.Required)
+                    meta.IsRequired = true;
+                else if (attr is UIproperty)
+                    meta.IsUIproperty = true;
+                else if (attr is PropertyEditor)
+                {
+                    meta.editor = (attr as PropertyEditor).PropertyEditorType;
+                    meta.source = (attr as PropertyEditor).PropertyEditorSource;
+
+                    if (prop.PropertyType.GetTypeInfo().IsEnum)
+                        meta.options = Enum.GetNames(prop.PropertyType);
+                    else if (meta.editor == PropertyEditorType.ObjectSelector)
+                    {
+                        if (prop.IsDefined(typeof(OSE_ObjectTypes)))
+                            meta.options = prop.GetCustomAttribute<OSE_ObjectTypes>().ObjectTypes.Select(a => a.ToString()).ToArray();
+                    }
+                    else if (meta.editor == PropertyEditorType.Expandable && prop.PropertyType.GetTypeInfo().IsClass)
+                    {
+                        meta.submeta = GetMetaCollection(bType, prop.GetValue(obj));
+                    }
+                    else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
+                    {
+                        Type itemType = prop.PropertyType.GetGenericArguments()[0];
+                        if (itemType.Name != typeof(EbControl).Name)
+                        {
+                            var subClasses = itemType.Assembly.GetTypes().Where(type => type.IsSubclassOf(itemType));
+                            List<string> _sa = new List<string>();
+                            if (!itemType.IsAbstract)
+                                _sa.Add(itemType.Name);
+                            foreach (Type type in subClasses)
+                                _sa.Add(type.Name);
+                            meta.options = _sa.ToArray<string>();
+                        }
+                    }
+                }
+            }
+
+            //if prop is of primitive type set corresponding editor
+            if (!prop.IsDefined(typeof(PropertyEditor)))
+            {
+                if (prop.PropertyType.GetTypeInfo().IsEnum)
+                {
+                    meta.editor = PropertyEditorType.DropDown;
+                    meta.options = Enum.GetNames(prop.PropertyType);
+                }
+                else if (prop.PropertyType != typeof(List<EbControl>))
+                    meta.editor = GetTypeOf(prop);
+            }
+                
+            ////if no helpText attribut is set, set as empty string
+            //if (!prop.IsDefined(typeof(HelpText)))
+            //    meta.helpText = string.Empty;
+
+            return meta;
+        }
+
         private static void GetJsObject(BuilderType _builderType, object obj, ref string MetaStr, ref string ControlsStr)
         {
             string _props = string.Empty;
 
             var props = obj.GetType().GetAllProperties();
 
-            List<Meta> MetaCollection = new List<Meta>();
+            List<Meta> MetaCollection = GetMetaCollection(_builderType, obj);
 
             if (obj is EbControlContainer)
                 _props += @"this.IsContainer = true;";
 
             foreach (var prop in props)
             {
-                if(prop.Name == "Position")
-                {
-                    ;
-                }
                 var propattrs = prop.GetCustomAttributes();
 
                 if (prop.IsDefined(typeof(EnableInBuilder))
                              && prop.GetCustomAttribute<EnableInBuilder>().BuilderTypes.Contains(_builderType))
                 {
                     _props += JsVarDecl(prop, obj);
-
-                    var meta = new Meta { name = prop.Name };
-
-                    foreach (Attribute attr in propattrs)
-                    {
-                        if (attr is Alias)
-                            meta.alias = (attr as Alias).Name;
-                        else if(attr is PropertyGroup)
-                            meta.group = (attr as PropertyGroup).Name;
-                        else if (attr is HelpText)
-                            meta.helpText = (attr as HelpText).value;
-                        else if (attr is OnChangeExec)
-                            meta.OnChangeExec = "function(pg){" + (attr as OnChangeExec).JsCode + "}";
-
-                        //set corresponding editor
-                        else if (attr is PropertyEditor)
-                        {
-                            meta.editor = (attr as PropertyEditor).PropertyEditorType;
-                            meta.source = (attr as PropertyEditor).PropertyEditorSource;
-                            if (prop.PropertyType.GetTypeInfo().IsEnum)
-                                meta.options = Enum.GetNames(prop.PropertyType);
-                            else if (meta.editor == PropertyEditorType.ObjectSelector)
-                            {
-                                if (prop.IsDefined(typeof(OSE_ObjectTypes)))
-                                    meta.options = prop.GetCustomAttribute<OSE_ObjectTypes>().ObjectTypes.Select(a => a.ToString()).ToArray();
-                            }
-                            else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
-                            {
-                                Type itemType = prop.PropertyType.GetGenericArguments()[0];
-                                if (itemType.Name != typeof(EbControl).Name)
-                                {
-                                    var subClasses = itemType.Assembly.GetTypes().Where(type => type.IsSubclassOf(itemType));
-                                    List<string> _sa = new List<string>();
-                                    if (!itemType.IsAbstract)
-                                        _sa.Add(itemType.Name);
-                                    foreach (Type type in subClasses)
-                                        _sa.Add(type.Name);
-                                    meta.options = _sa.ToArray<string>();
-                                }
-                            }
-                        }
-                    }
-
-                    //if prop is of enum type set DD editor
-                    if (prop.PropertyType.GetTypeInfo().IsEnum)
-                    {
-                        meta.editor = PropertyEditorType.DropDown;
-                        meta.options = Enum.GetNames(prop.PropertyType);
-                    }
-
-                    //if prop is of primitive type set corresponding editor
-                    if (!prop.IsDefined(typeof(PropertyEditor)) && !prop.PropertyType.GetTypeInfo().IsEnum && prop.PropertyType != typeof(List<EbControl>))
-                        meta.editor = GetTypeOf(prop);
-
-                    //if no helpText attribut is set, set as empty string
-                    if (!prop.IsDefined(typeof(HelpText)))
-                        meta.helpText = string.Empty;
-
-                    //if UIproperty attribut is set, set as true
-                    meta.IsUIproperty = prop.IsDefined(typeof(UIproperty));
-
-                    //if UIproperty attribut is set, set as true
-                    meta.IsRequired = prop.IsDefined(typeof(Attributes.Required));
-
-                    if (!prop.IsDefined(typeof(HideInPropertyGrid)))
-                        MetaCollection.Add(meta);
                 }
             }
 
@@ -268,30 +291,22 @@ EbObjects.@Name = function @Name(id, jsonObj) {
             }
             else if (prop.PropertyType.IsClass)
             {
-                string _MetaStr = string.Empty;
-                string _ControlsStr = string.Empty;
-                var Obj = Activator.CreateInstance(prop.PropertyType);
-                GetJsObject(BuilderType.WebForm, Obj, ref _MetaStr, ref _ControlsStr);
-                //[ 
-                //{
-                //  "X":{meta}
-                //  "Y":{meta}
-                //}
-                //]
+                //string _ControlsStr = GetSubObj(prop);
 
-                return string.Format(s, prop.Name, "{}");
+                var Obj = Activator.CreateInstance(prop.PropertyType);
+                //string _MetaStr = GetSubMeta(Obj);
+
+                //return string.Format(s, prop.Name,
+                //    "{\"$type\":\"ExpressBase.Objects.@typeName, ExpressBase.Objects]], System.Private.CoreLib\",\"$values\":[{" + _ControlsStr + "}]}"
+                //    .Replace("@typeName", prop.GetType().FullName));
+
+                return string.Format(s, prop.Name,
+                       "{\"$type\":\"ExpressBase.Objects.Position, ExpressBase.Objects]], System.Private.CoreLib\",\"$values\":{ \"X\":40, \"Y\":30}}");
             }
             else
             {
-
-
                 return string.Format(s, prop.Name, "null");
             }
-        }
-
-        private string GetSubMeta()
-        {
-            return "";
         }
 
         private static PropertyEditorType GetTypeOf(PropertyInfo prop)

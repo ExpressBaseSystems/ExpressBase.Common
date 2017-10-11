@@ -1,12 +1,48 @@
-﻿using Newtonsoft.Json;
+﻿using ExpressBase.Common.Data;
+using MongoDB.Driver;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Text;
 
 namespace ExpressBase.Common.Connections
 {
-    public abstract class EbBaseDbConnection
+    public abstract class IEbConnection
     {
+        public virtual EbConnectionTypes EbConnectionType { get; }
+
+        public string NickName { get; set; }
+
+        public virtual void Persist(string TenantAccountId, ITenantDbFactory dbconf, bool IsNew)
+        {
+            if (IsNew)
+            {
+                string sql = "INSERT INTO eb_connections (con_type, solution_id, nick_name, con_obj) VALUES (@con_type, @solution_id, @nick_name, @con_obj) RETURNING id";
+                DbParameter[] parameters = { dbconf.DataDB.GetNewParameter("con_type", System.Data.DbType.String, EbConnectionType),
+                                    dbconf.DataDB.GetNewParameter("solution_id", System.Data.DbType.String, TenantAccountId),
+                                    dbconf.DataDB.GetNewParameter("nick_name", System.Data.DbType.String, !(string.IsNullOrEmpty(NickName))?NickName:string.Empty),
+                                    dbconf.DataDB.GetNewParameter("con_obj", NpgsqlTypes.NpgsqlDbType.Json,EbSerializers.Json_Serialize(this) )};
+                var iCount = dbconf.DataDB.DoQuery(sql, parameters);
+            }
+
+            else if (!IsNew)
+            {
+                string sql = @"UPDATE eb_connections SET eb_del = true WHERE con_type = @con_type AND solution_id = @solution_id; 
+                                      INSERT INTO eb_connections (con_type, solution_id, nick_name, con_obj) VALUES (@con_type, @solution_id, @nick_name, @con_obj)";
+                DbParameter[] parameters = { dbconf.DataDB.GetNewParameter("con_type", System.Data.DbType.String, EbConnectionType),
+                                    dbconf.DataDB.GetNewParameter("solution_id", System.Data.DbType.String, TenantAccountId),
+                                    dbconf.DataDB.GetNewParameter("nick_name", System.Data.DbType.String, !(string.IsNullOrEmpty(NickName))?NickName:string.Empty),
+                                    dbconf.DataDB.GetNewParameter("con_obj", NpgsqlTypes.NpgsqlDbType.Json,EbSerializers.Json_Serialize(this) )};
+                var iCount = dbconf.DataDB.DoNonQuery(sql, parameters);
+            }
+        }
+    }
+
+    public abstract class EbBaseDbConnection : IEbConnection
+    {
+        public DatabaseVendors DatabaseVendor { get; set; }
+
         public string DatabaseName { get; set; }
 
         public string Server { get; set; }
@@ -20,29 +56,30 @@ namespace ExpressBase.Common.Connections
         public int Timeout { get; set; }
     }
 
-    public class EbObjectsDbConnection: EbBaseDbConnection
+    public class EbObjectsDbConnection : EbBaseDbConnection
     {
-        public DatabaseVendors DatabaseVendor { get; set; }
+        public override EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.EbOBJECTS; } }
     }
 
     // For Infra T-Data, Tenant T-Data
-    public class EbDataDbConnection: EbBaseDbConnection
+    public class EbDataDbConnection : EbBaseDbConnection
     {
-        public DatabaseVendors DatabaseVendor { get; set; }
+        public override EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.EbDATA; } }
     }
 
     // For Infra Files, Tenant Files
-    public class EbFilesDbConnection
+    public class EbFilesDbConnection : IEbConnection
     {
         public bool IsDef { get; set; } //for distinguish between our server and a custom MongoDB server 
 
         [JsonConverter(typeof(CustomBase64Converter))]
         public string FilesDB_url { get; set; }
+
+        public override EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.EbFILES; } }
     }
 
     public class EbLogsDbConnection : EbBaseDbConnection
     {
-        public DatabaseVendors DatabaseVendor { get; set; }
     }
 
     internal class CustomBase64Converter : JsonConverter
