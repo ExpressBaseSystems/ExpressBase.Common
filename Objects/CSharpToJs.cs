@@ -111,16 +111,13 @@ function ProcRecur(src_controls, dest_controls) {
             var props = obj.GetType().GetAllProperties();
             foreach (var prop in props)
             {
-                var propattrs = prop.GetCustomAttributes();
-
                 Meta _meta = null;
                 if (prop.IsDefined(typeof(EnableInBuilder)) && prop.GetCustomAttribute<EnableInBuilder>().BuilderTypes.Contains(bType))
                 {
                     _meta = GetMeta(bType, obj, prop);
+                    if (!prop.IsDefined(typeof(HideInPropertyGrid)))
+                        MetaCollection.Add(_meta);
                 }
-
-                if (!prop.IsDefined(typeof(HideInPropertyGrid)))
-                    MetaCollection.Add(_meta);
             }
 
             return MetaCollection;
@@ -158,9 +155,7 @@ function ProcRecur(src_controls, dest_controls) {
                             meta.options = prop.GetCustomAttribute<OSE_ObjectTypes>().ObjectTypes.Select(a => a.ToString()).ToArray();
                     }
                     else if (meta.editor == PropertyEditorType.Expandable && prop.PropertyType.GetTypeInfo().IsClass)
-                    {
-                        meta.submeta = GetMetaCollection(bType, prop.GetValue(obj));
-                    }
+                        meta.submeta = GetMetaCollection(bType, Activator.CreateInstance(prop.PropertyType));
                     else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
                     {
                         Type itemType = prop.PropertyType.GetGenericArguments()[0];
@@ -294,14 +289,15 @@ EbObjects.@Name = function @Name(id, jsonObj) {
                 //string _ControlsStr = GetSubObj(prop);
 
                 var Obj = Activator.CreateInstance(prop.PropertyType);
+                return string.Format(s, prop.Name, EbSerializers.Json_Serialize(Obj));
                 //string _MetaStr = GetSubMeta(Obj);
 
                 //return string.Format(s, prop.Name,
                 //    "{\"$type\":\"ExpressBase.Objects.@typeName, ExpressBase.Objects]], System.Private.CoreLib\",\"$values\":[{" + _ControlsStr + "}]}"
                 //    .Replace("@typeName", prop.GetType().FullName));
 
-                return string.Format(s, prop.Name,
-                       "{\"$type\":\"ExpressBase.Objects.Position, ExpressBase.Objects]], System.Private.CoreLib\",\"$values\":{ \"X\":40, \"Y\":30}}");
+                //return string.Format(s, prop.Name,
+                //       "{\"$type\":\"ExpressBase.Objects.Position, ExpressBase.Objects]], System.Private.CoreLib\",\"$values\":{ \"X\":40, \"Y\":30}}");
             }
             else
             {
