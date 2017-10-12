@@ -36,7 +36,8 @@ namespace ExpressBase.Common.Data.MongoDB
 
             this.Metadata = new BsonDocument();
 
-            this.Metadata.AddRange(MetaDataPair as IDictionary);
+            if(MetaDataPair != null)
+                this.Metadata.AddRange(MetaDataPair as IDictionary);
 
             var options = new GridFSUploadOptions
             {
