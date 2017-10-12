@@ -37,7 +37,7 @@ namespace ExpressBase.Common.Data.MongoDB
             this.Metadata = new BsonDocument();
 
             this.Metadata.AddRange(MetaDataPair as IDictionary);
-            
+
             var options = new GridFSUploadOptions
             {
                 ChunkSizeBytes = 64512, // 63KB
@@ -88,7 +88,7 @@ namespace ExpressBase.Common.Data.MongoDB
                 FilterDef.Add(Builders<GridFSFileInfo>.Filter.AnyEq(Filter.Key, tag));
             }
 
-            IEnumerable<FilterDefinition < GridFSFileInfo >> FilterFinal = new List<FilterDefinition<GridFSFileInfo>>(FilterDef);
+            IEnumerable<FilterDefinition<GridFSFileInfo>> FilterFinal = new List<FilterDefinition<GridFSFileInfo>>(FilterDef);
 
             var filter = Builders<GridFSFileInfo>.Filter.And(FilterFinal);
             var sort = Builders<GridFSFileInfo>.Sort.Descending(x => x.UploadDateTime);
@@ -98,7 +98,7 @@ namespace ExpressBase.Common.Data.MongoDB
                 Sort = sort
             };
 
-            bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions { BucketName = Bucketname});
+            bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions { BucketName = Bucketname });
 
             using (var cursor = bucket.Find(filter, options))
             {
@@ -106,5 +106,6 @@ namespace ExpressBase.Common.Data.MongoDB
                 return fileInfo;
             }
         }
+        
     }
 }
