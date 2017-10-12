@@ -2,6 +2,8 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,6 +15,7 @@ namespace ExpressBase.Common.Data.MongoDB
         private IMongoDatabase mongoDatabase;
         private IGridFSBucket bucket;
         private string TenantId { get; set; }
+        private BsonDocument Metadata { get; set; }
 
         public MongoDBDatabase(string tenantId, EbFilesDbConnection dbconf)
         {
@@ -21,7 +24,7 @@ namespace ExpressBase.Common.Data.MongoDB
             mongoDatabase = mongoClient.GetDatabase(tenantId);
         }
 
-        public ObjectId UploadFile(string filename, byte[] bytea, string bucketName, BsonDocument metaData)
+        public ObjectId UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, string bucketName)
         {
             bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
             {
@@ -31,13 +34,23 @@ namespace ExpressBase.Common.Data.MongoDB
                 ReadPreference = ReadPreference.Secondary
             });
 
+            this.Metadata = new BsonDocument();
+
+            this.Metadata.AddRange(MetaDataPair as IDictionary);
+            
             var options = new GridFSUploadOptions
             {
                 ChunkSizeBytes = 64512, // 63KB
-                Metadata = metaData
+                Metadata = Metadata
             };
-
-            return bucket.UploadFromBytes(filename, bytea, options);
+            try
+            {
+                return bucket.UploadFromBytes(filename, bytea, options);
+            }
+            catch (Exception e)
+            {
+                return new ObjectId("Error");
+            }
         }
 
         public byte[] DownloadFile(ObjectId objectid, string bucketName)
@@ -66,39 +79,30 @@ namespace ExpressBase.Common.Data.MongoDB
             return bucket.DownloadAsBytesByName(filename);
         }
 
-        public List<GridFSFileInfo> FindFilesByTags(KeyValuePair<string, List<string>> Filter)
+        public List<GridFSFileInfo> FindFilesByTags(KeyValuePair<string, List<string>> Filter, string Bucketname)
         {
-            IEnumerable<FilterDefinition<GridFSFileInfo>> FilterDef = new List<FilterDefinition<GridFSFileInfo>>()
+            List<FilterDefinition<GridFSFileInfo>> FilterDef = new List<FilterDefinition<GridFSFileInfo>>();
+
+            foreach (string tag in Filter.Value)
             {
-                Builders<GridFSFileInfo>.Filter.AnyEq(Filter.Key, Filter.Value[0]),
-                Builders<GridFSFileInfo>.Filter.AnyEq(Filter.Key, Filter.Value[1])
-            };
+                FilterDef.Add(Builders<GridFSFileInfo>.Filter.AnyEq(Filter.Key, tag));
+            }
 
-            //FilterDef.Append(Builders<GridFSFileInfo>.Filter.AnyEq(Filter.Key, "test"));
-            //foreach (string tag in Filter.Value)
-            //{
-            //    FilterDef.Append(Builders<GridFSFileInfo>.Filter.Eq(Filter.Key, tag));
-            //}
+            IEnumerable<FilterDefinition < GridFSFileInfo >> FilterFinal = new List<FilterDefinition<GridFSFileInfo>>(FilterDef);
 
-            //var filter = Builders<GridFSFileInfo>.Filter.And(FilterDef);
-
-            var filter = Builders<GridFSFileInfo>.Filter.And(FilterDef);
-            //var filter = Builders<GridFSFileInfo>.Filter.And(Builders<GridFSFileInfo>.Filter.AnyEq(Filter.Key, Filter.Value));
-
+            var filter = Builders<GridFSFileInfo>.Filter.And(FilterFinal);
             var sort = Builders<GridFSFileInfo>.Sort.Descending(x => x.UploadDateTime);
-
             var options = new GridFSFindOptions
             {
                 Limit = 20,
                 Sort = sort
             };
 
-            bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions { BucketName = "images" });
+            bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions { BucketName = Bucketname});
 
             using (var cursor = bucket.Find(filter, options))
             {
                 var fileInfo = cursor.ToList();
-
                 return fileInfo;
             }
         }

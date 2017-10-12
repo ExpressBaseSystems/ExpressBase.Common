@@ -184,10 +184,10 @@ function ProcRecur(src_controls, dest_controls) {
                 else if (prop.PropertyType != typeof(List<EbControl>))
                     meta.editor = GetTypeOf(prop);
             }
-                
-            ////if no helpText attribut is set, set as empty string
-            //if (!prop.IsDefined(typeof(HelpText)))
-            //    meta.helpText = string.Empty;
+
+            //if no helpText attribut is set, set as empty string
+            if (!prop.IsDefined(typeof(HelpText)))
+                meta.helpText = string.Empty;
 
             return meta;
         }

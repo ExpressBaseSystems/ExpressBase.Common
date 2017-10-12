@@ -6,12 +6,12 @@ namespace ExpressBase.Common.Data
 {
     public interface INoSQLDatabase
     {
-        ObjectId UploadFile(string filename, byte[] bytea, string bucketName, BsonDocument metaData);
+        ObjectId UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, string bucketName);
 
         byte[] DownloadFile(ObjectId objectid, string bucketname);
 
         byte[] DownloadFile(string filename, string bucketname);
 
-        List<GridFSFileInfo> FindFilesByTags(KeyValuePair<string, List<string>> Filter);
+        List<GridFSFileInfo> FindFilesByTags(KeyValuePair<string, List<string>> Filter, string BucketName);
     }
 }
