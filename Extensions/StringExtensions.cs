@@ -7,7 +7,7 @@ namespace ExpressBase.Common.Extensions
 {
     public static class StringExtensions
     {
-        public static string Quoted(this string str)
+        public static string SingleQuoted(this string str)
         {
             return "'" + str + "'";
         }
