@@ -123,20 +123,19 @@ else
         [ProtoBuf.ProtoMember(28)]
         [System.ComponentModel.Category("Accessibility")]
         public virtual int TabIndex { get; set; }
-
-        [ProtoBuf.ProtoMember(29)]
+        
         [EnableInBuilder(BuilderType.WebForm)]
         [PropertyGroup("Appearance")]
         [PropertyEditor(PropertyEditorType.Color)]
         [UIproperty]
         public virtual string BackColor { get; set; }
 
-        [ProtoBuf.ProtoMember(30)]
         [EnableInBuilder(BuilderType.WebForm)]
         [PropertyGroup("Appearance")]
         [PropertyEditor(PropertyEditorType.Color)]
         [UIproperty]
         [System.ComponentModel.Category("Accessibility")]
+        [Attributes.DefaultValue("#333333")]
         public virtual string ForeColor { get; set; }
 
 
@@ -150,6 +149,7 @@ else
         [EnableInBuilder(BuilderType.WebForm)]
         [PropertyGroup("Appearance")]
         [PropertyEditor(PropertyEditorType.Color)]
+        [Attributes.DefaultValue("#333333")]
         [UIproperty]
         public virtual string LabelForeColor { get; set; }
 

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using ExpressBase.Common.Extensions;
 
 namespace ExpressBase.Common.Objects
 {
@@ -255,6 +256,21 @@ EbObjects.@Name = function @Name(id, jsonObj) {
         {
             string s = @"this.{0} = {1};";
             string _c = @"this.Controls = new EbControlCollection(JSON.parse('{0}'));";
+
+            if (prop.IsDefined(typeof(DefaultValue)))
+            {
+                var EditorAttr = prop.GetCustomAttribute<PropertyEditor>();
+                var EditorType = (EditorAttr as PropertyEditor).PropertyEditorType;
+
+                var DefaultAttr = prop.GetCustomAttribute<DefaultValue>();
+                var Defaulval = (DefaultAttr as DefaultValue).Value;
+
+                if (EditorType is PropertyEditorType.Text || EditorType is PropertyEditorType.Color || EditorType is PropertyEditorType.Label
+                    || EditorType is PropertyEditorType.DateTime || EditorType is PropertyEditorType.ObjectSelector || EditorType is PropertyEditorType.FontSelector)
+                    Defaulval = Defaulval.SingleQuoted();
+
+                return string.Format(s, prop.Name, Defaulval);
+            }
 
             if (prop.PropertyType == typeof(string))
             {

@@ -10,18 +10,18 @@ namespace ExpressBase.Common.Objects.Attributes
         Boolean = 0,
         DropDown = 1,
         Number = 2,
-        Color = 3,
-        Label = 4,
-        Text = 5,
-        DateTime = 6,
+        Color = 3,//--
+        Label = 4,//--
+        Text = 5,//--
+        DateTime = 6,//--
         Collection = 7,
         CollectionFrmSrc = 8,
         CollectionFrmSrcPG = 9,
         CollectionA2C = 10,
         JS = 11,
         SQL = 12,//not completed
-        ObjectSelector = 13,
-        FontSelector = 14,//not completed
+        ObjectSelector = 13,//--
+        FontSelector = 14,//--  //not completed
         Expandable = 15
 
     }
@@ -35,30 +35,21 @@ namespace ExpressBase.Common.Objects.Attributes
     {
         public BuilderType[] BuilderTypes { get; set; }
 
-        public EnableInBuilder(params BuilderType[] types)
-        {
-            this.BuilderTypes = types;
-        }
+        public EnableInBuilder(params BuilderType[] types) { this.BuilderTypes = types; }
     }
 
     public class Alias : Attribute
     {
         public string Name { get; set; }
 
-        public Alias(string alias)
-        {
-            this.Name = alias;
-        }
+        public Alias(string alias) { this.Name = alias; }
     }
 
     public class OSE_ObjectTypes : Attribute
     {
         public EbObjectType[] ObjectTypes { get; set; }
 
-        public OSE_ObjectTypes(params EbObjectType[] objectTypes)
-        {
-            this.ObjectTypes = objectTypes;
-        }
+        public OSE_ObjectTypes(params EbObjectType[] objectTypes) { this.ObjectTypes = objectTypes; }
     }
 
 
@@ -66,10 +57,7 @@ namespace ExpressBase.Common.Objects.Attributes
     {
         public string JsCode { get; set; }
 
-        public OnChangeExec(string jsCode)
-        {
-            this.JsCode = jsCode;
-        }
+        public OnChangeExec(string jsCode) { this.JsCode = jsCode; }
     }
 
     public class PropertyEditor : Attribute
@@ -78,10 +66,7 @@ namespace ExpressBase.Common.Objects.Attributes
 
         public string PropertyEditorSource{ get; set; }
 
-        public PropertyEditor(PropertyEditorType type)
-        {
-            this.PropertyEditorType = type;
-        }
+        public PropertyEditor(PropertyEditorType type) { this.PropertyEditorType = type; }
 
         public PropertyEditor(PropertyEditorType type, string source)
         {
@@ -93,29 +78,24 @@ namespace ExpressBase.Common.Objects.Attributes
     {
         public string Name { get; set; }
 
-        public PropertyGroup(string groupName)
-        {
-            this.Name = groupName;
-        }
+        public PropertyGroup(string groupName) { this.Name = groupName; }
     }
 
-    public class HelpText : Attribute
+    public class DefaultValue : Attribute
+    {
+        public string Value { get; set; }
+
+        public DefaultValue(string val) { this.Value = val; }
+    }
+
+    public class HelpText : Attribute 
     {
         public string value { get; set; }
 
-        public HelpText(string value)
-        {
-            this.value = value;
-        }
+        public HelpText(string value) { this.value = value; }
     }
 
-    public class UIproperty : Attribute
-    {
-        public UIproperty() { }
-    }
+    public class UIproperty : Attribute { public UIproperty() { } }
 
-    public class Required : Attribute
-    {
-        public Required() { }
-    }
+    public class Required : Attribute { public Required() { } }
 }
