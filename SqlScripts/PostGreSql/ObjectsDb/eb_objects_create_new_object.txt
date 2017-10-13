@@ -1,6 +1,6 @@
--- FUNCTION: public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text[], boolean)
+-- FUNCTION: public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text[], boolean, text)
 
--- DROP FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text[], boolean);
+-- DROP FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text[], boolean, text);
 
 CREATE OR REPLACE FUNCTION public.eb_objects_create_new_object(
 	obj_namev text,
@@ -12,7 +12,8 @@ CREATE OR REPLACE FUNCTION public.eb_objects_create_new_object(
 	src_pid text,
 	cur_pid text,
 	relationsv text[],
-	issave boolean)
+	issave boolean,
+	tagsv text)
     RETURNS text
     LANGUAGE 'plpgsql'
     COST 100
@@ -23,14 +24,14 @@ AS $BODY$
 DECLARE refidunique text; inserted_objid integer; inserted_obj_ver_id integer; refid_of_commit_version text; version_number text;
 BEGIN   
     INSERT INTO eb_objects 
-        (obj_name, obj_desc, obj_type, obj_cur_status) 
+        (obj_name, obj_desc, obj_type, obj_cur_status, obj_tags) 
     VALUES
-        (obj_namev, obj_descv, obj_typev, obj_cur_statusv) RETURNING id INTO inserted_objid;
+        (obj_namev, obj_descv, obj_typev, obj_cur_statusv, tagsv) RETURNING id INTO inserted_objid;
 
     INSERT INTO eb_objects_ver
-        (eb_objects_id, ver_num, obj_json, commit_uid, commit_ts, major_ver_num, minor_ver_num, patch_ver_num, working_mode) 
+        (eb_objects_id, obj_json, commit_uid, commit_ts, major_ver_num, minor_ver_num, patch_ver_num, working_mode) 
     VALUES
-        (inserted_objid, 1, obj_jsonv, commit_uidv, NOW(),1,0,0,issave)RETURNING id INTO inserted_obj_ver_id;
+        (inserted_objid, obj_jsonv, commit_uidv, NOW(),1,0,0,issave)RETURNING id INTO inserted_obj_ver_id;
 		
     --majorversion.minorversion.patchversion
     IF issave = TRUE THEN
@@ -45,7 +46,7 @@ BEGIN
     refid_of_commit_version:=refidunique;                       
 	UPDATE eb_objects_ver SET refid = refidunique, version_num = version_number WHERE id = inserted_obj_ver_id;
     
-	INSERT INTO eb_objects_status(refid, status, uid, ts) VALUES(refidunique, 0, commit_uidv, NOW());
+	INSERT INTO eb_objects_status(eb_obj_ver_id, status, uid, ts) VALUES(inserted_obj_ver_id, 0, commit_uidv, NOW());
     
     INSERT INTO eb_objects_relations (dominant,dependant) VALUES (UNNEST(relationsv),refidunique);
 		
@@ -54,6 +55,6 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text[], boolean)
+ALTER FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text[], boolean, text)
     OWNER TO postgres;
 
