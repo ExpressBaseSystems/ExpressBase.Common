@@ -65,7 +65,7 @@ namespace ExpressBase.Common.Objects
     [ProtoBuf.ProtoContract]
     public enum ObjectLifeCycleStatus
     {
-        Development,
+        Dev,
         Test,
         UAT,
         Live,
