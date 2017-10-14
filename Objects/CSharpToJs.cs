@@ -149,7 +149,10 @@ function ProcRecur(src_controls, dest_controls) {
                     meta.source = (attr as PropertyEditor).PropertyEditorSource;
 
                     if (prop.PropertyType.GetTypeInfo().IsEnum)
-                        meta.options = Enum.GetNames(prop.PropertyType);
+                    {
+                        foreach (dynamic enumStr in Enum.GetValues(prop.PropertyType))
+                            meta.enumoptions.Add((int)enumStr, enumStr.ToString());
+                    }
                     else if (meta.editor == PropertyEditorType.ObjectSelector)
                     {
                         if (prop.IsDefined(typeof(OSE_ObjectTypes)))
@@ -180,7 +183,8 @@ function ProcRecur(src_controls, dest_controls) {
                 if (prop.PropertyType.GetTypeInfo().IsEnum)
                 {
                     meta.editor = PropertyEditorType.DropDown;
-                    meta.options = Enum.GetNames(prop.PropertyType);
+                    foreach (dynamic enumStr in Enum.GetValues(prop.PropertyType))
+                        meta.enumoptions.Add((int)enumStr, enumStr.ToString());
                 }
                 else if (prop.PropertyType != typeof(List<EbControl>))
                     meta.editor = GetTypeOf(prop);
@@ -286,7 +290,7 @@ EbObjects.@Name = function @Name(id, jsonObj) {
             else if (prop.PropertyType == typeof(bool))
                 return string.Format(s, prop.Name, "false");
             else if (prop.PropertyType.GetTypeInfo().IsEnum)
-                return string.Format(s, prop.Name, "''");
+                return string.Format(s, prop.Name, "0");
             else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
             {
                 var args = prop.PropertyType.GetGenericArguments();
