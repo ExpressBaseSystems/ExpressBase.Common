@@ -14,18 +14,18 @@ namespace ExpressBase.Objects
 {
     public class EbObject
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
 
-        public string RefId { get; set; }
+        //public string RefId { get; set; }
 
-        public EbObjectType EbObjectType { get; set; }
+        //public EbObjectType EbObjectType { get; set; }
 
         [Description("Identity")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataSource)]
         [Required]
         public virtual string Name { get; set; }
 
-        public string ChangeLog { get; set; }
+        //public string ChangeLog { get; set; }
 
         public EbObject() { }
 
