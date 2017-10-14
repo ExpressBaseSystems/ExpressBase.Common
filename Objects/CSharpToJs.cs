@@ -261,13 +261,18 @@ EbObjects.@Name = function @Name(id, jsonObj) {
             string s = @"this.{0} = {1};";
             string _c = @"this.Controls = new EbControlCollection(JSON.parse('{0}'));";
 
-            if (prop.IsDefined(typeof(DefaultValue)))
+            if (prop.IsDefined(typeof(DefaultPropValue)))
             {
-                var EditorAttr = prop.GetCustomAttribute<PropertyEditor>();
-                var EditorType = (EditorAttr as PropertyEditor).PropertyEditorType;
+                Attribute EditorAttr = prop.GetCustomAttribute<PropertyEditor>();
+                PropertyEditorType EditorType = PropertyEditorType.DropDown;
 
-                var DefaultAttr = prop.GetCustomAttribute<DefaultValue>();
-                var Defaulval = (DefaultAttr as DefaultValue).Value;
+                if (prop.PropertyType.GetTypeInfo().IsEnum)
+                    EditorType = PropertyEditorType.DropDown;
+                else
+                    EditorType = (EditorAttr as PropertyEditor).PropertyEditorType;
+
+                var DefaultAttr = prop.GetCustomAttribute<DefaultPropValue>();
+                var Defaulval = (DefaultAttr as DefaultPropValue).Value;
 
                 if (EditorType is PropertyEditorType.Text || EditorType is PropertyEditorType.Color || EditorType is PropertyEditorType.Label
                     || EditorType is PropertyEditorType.DateTime || EditorType is PropertyEditorType.ObjectSelector || EditorType is PropertyEditorType.FontSelector)
