@@ -302,23 +302,11 @@ EbObjects.@Name = function @Name(id, jsonObj) {
             }
             else if (prop.PropertyType.IsClass)
             {
-                //string _ControlsStr = GetSubObj(prop);
-
                 var Obj = Activator.CreateInstance(prop.PropertyType);
                 return string.Format(s, prop.Name, EbSerializers.Json_Serialize(Obj));
-                //string _MetaStr = GetSubMeta(Obj);
-
-                //return string.Format(s, prop.Name,
-                //    "{\"$type\":\"ExpressBase.Objects.@typeName, ExpressBase.Objects]], System.Private.CoreLib\",\"$values\":[{" + _ControlsStr + "}]}"
-                //    .Replace("@typeName", prop.GetType().FullName));
-
-                //return string.Format(s, prop.Name,
-                //       "{\"$type\":\"ExpressBase.Objects.Position, ExpressBase.Objects]], System.Private.CoreLib\",\"$values\":{ \"X\":40, \"Y\":30}}");
             }
             else
-            {
                 return string.Format(s, prop.Name, "null");
-            }
         }
 
         private static PropertyEditorType GetTypeOf(PropertyInfo prop)
