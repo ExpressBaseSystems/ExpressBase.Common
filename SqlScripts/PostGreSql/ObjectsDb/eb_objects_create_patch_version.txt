@@ -45,6 +45,8 @@ WHERE
 
 UPDATE eb_objects_ver SET refid = refidunique WHERE id = inserted_obj_ver_id;
 
+INSERT INTO eb_objects_status(eb_obj_ver_id, status, uid, ts) VALUES(inserted_obj_ver_id, 0, commit_uidv, NOW());
+
 UPDATE eb_objects_relations 
 SET 
 	eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
