@@ -52,6 +52,15 @@ namespace ExpressBase.Common
 
             return (T)obj;
         }
+
+        public static dynamic Json_Deserialize(string json)
+        {
+            object obj = null;
+
+            obj = JsonConvert.DeserializeObject(json, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+
+            return obj;
+        }
     }
 }
 
