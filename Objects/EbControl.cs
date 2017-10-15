@@ -135,7 +135,7 @@ else
         [PropertyEditor(PropertyEditorType.Color)]
         [UIproperty]
         [System.ComponentModel.Category("Accessibility")]
-        [Attributes.DefaultValue("#333333")]
+        [Attributes.DefaultPropValue("#333333")]
         public virtual string ForeColor { get; set; }
 
 
@@ -149,7 +149,7 @@ else
         [EnableInBuilder(BuilderType.WebForm)]
         [PropertyGroup("Appearance")]
         [PropertyEditor(PropertyEditorType.Color)]
-        [Attributes.DefaultValue("#333333")]
+        [Attributes.DefaultPropValue("#333333")]
         [UIproperty]
         public virtual string LabelForeColor { get; set; }
 
