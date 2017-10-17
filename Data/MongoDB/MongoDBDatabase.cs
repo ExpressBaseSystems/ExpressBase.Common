@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ExpressBase.Common.Data.MongoDB
 {
@@ -13,7 +14,7 @@ namespace ExpressBase.Common.Data.MongoDB
     {
         private MongoClient mongoClient;
         private IMongoDatabase mongoDatabase;
-        private IGridFSBucket bucket;
+        private IGridFSBucket Bucket;
         private string TenantId { get; set; }
         private BsonDocument Metadata { get; set; }
 
@@ -26,7 +27,7 @@ namespace ExpressBase.Common.Data.MongoDB
 
         public ObjectId UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, string bucketName)
         {
-            bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
+            Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
             {
                 BucketName = bucketName,
                 ChunkSizeBytes = 1048576, // 1MB
@@ -46,7 +47,7 @@ namespace ExpressBase.Common.Data.MongoDB
             };
             try
             {
-                return bucket.UploadFromBytes(filename, bytea, options);
+                return Bucket.UploadFromBytes(filename, bytea, options);
             }
             catch (Exception e)
             {
@@ -56,7 +57,7 @@ namespace ExpressBase.Common.Data.MongoDB
 
         public byte[] DownloadFile(ObjectId objectid, string bucketName)
         {
-            bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
+            Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
             {
                 BucketName = bucketName,
                 ChunkSizeBytes = 1048576, // 1MB
@@ -64,12 +65,12 @@ namespace ExpressBase.Common.Data.MongoDB
                 ReadPreference = ReadPreference.Secondary
             });
 
-            return bucket.DownloadAsBytes(objectid, new GridFSDownloadOptions() { CheckMD5 = true });
+            return Bucket.DownloadAsBytes(objectid, new GridFSDownloadOptions() { CheckMD5 = true });
         }
 
         public byte[] DownloadFile(string filename, string bucketName)
         {
-            bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
+            Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
             {
                 BucketName = bucketName,
                 ChunkSizeBytes = 1048576, // 1MB
@@ -77,7 +78,21 @@ namespace ExpressBase.Common.Data.MongoDB
                 ReadPreference = ReadPreference.Secondary
             });
 
-            return bucket.DownloadAsBytesByName(filename);
+            return Bucket.DownloadAsBytesByName(filename);
+        }
+
+        public async Task<bool> DeleteFileAsync(ObjectId objectid, string bucketName)
+        {
+            try
+            {
+                Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions { BucketName = bucketName });
+                await Bucket.DeleteAsync(objectid);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
         public List<GridFSFileInfo> FindFilesByTags(KeyValuePair<string, List<string>> Filter, string Bucketname)
@@ -99,9 +114,9 @@ namespace ExpressBase.Common.Data.MongoDB
                 Sort = sort
             };
 
-            bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions { BucketName = Bucketname });
+            Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions { BucketName = Bucketname });
 
-            using (var cursor = bucket.Find(filter, options))
+            using (var cursor = Bucket.Find(filter, options))
             {
                 var fileInfo = cursor.ToList();
                 return fileInfo;

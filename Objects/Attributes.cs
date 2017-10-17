@@ -81,11 +81,11 @@ namespace ExpressBase.Common.Objects.Attributes
         public PropertyGroup(string groupName) { this.Name = groupName; }
     }
 
-    public class DefaultValue : Attribute
+    public class DefaultPropValue : Attribute
     {
         public string Value { get; set; }
 
-        public DefaultValue(string val) { this.Value = val; }
+        public DefaultPropValue(string val) { this.Value = val; }
     }
 
     public class HelpText : Attribute 
