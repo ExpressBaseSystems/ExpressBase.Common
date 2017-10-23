@@ -177,7 +177,7 @@ function ProcRecur(src_controls, dest_controls) {
                 }
             }
 
-            //if prop is of primitive type set corresponding editor
+            //if prop is of primitive type set corresponding editor  
             if (!prop.IsDefined(typeof(PropertyEditor)))
             {
                 if (prop.PropertyType.GetTypeInfo().IsEnum)
