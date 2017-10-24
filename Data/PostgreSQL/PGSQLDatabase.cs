@@ -3,6 +3,7 @@ using ExpressBase.Common.Connections;
 using Npgsql;
 using Npgsql.Schema;
 using System;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
 using System.Net.Sockets;
@@ -83,7 +84,7 @@ namespace ExpressBase.Data
 
                         using (var reader = cmd.ExecuteReader())
                         {
-                            this.AddColumns(dt, reader);
+                            this.AddColumns(dt, reader.GetColumnSchema());
 
                             PrepareDataTable(reader, dt);
                         }
@@ -115,7 +116,7 @@ namespace ExpressBase.Data
                             do
                             {
                                 EbDataTable dt = new EbDataTable();
-                                this.AddColumns(dt, reader);
+                                this.AddColumns(dt, reader.GetColumnSchema());
                                 
                                 PrepareDataTable(reader, dt);
                                 ds.Tables.Add(dt);
@@ -172,10 +173,10 @@ namespace ExpressBase.Data
             return false;
         }
 
-        private void AddColumns(EbDataTable dt, NpgsqlDataReader reader)
+        private void AddColumns(EbDataTable dt, ReadOnlyCollection<NpgsqlDbColumn> schema)
         {
             int pos = 0;
-            foreach (NpgsqlDbColumn drow in reader.GetColumnSchema())
+            foreach (NpgsqlDbColumn drow in schema)
             {
                 string columnName = System.Convert.ToString(drow["ColumnName"]);
                 EbDataColumn column = new EbDataColumn(columnName, ConvertToDbType((Type)(drow["DataType"])));
