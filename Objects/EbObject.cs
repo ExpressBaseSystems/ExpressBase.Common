@@ -27,6 +27,10 @@ namespace ExpressBase.Objects
 
         //public string ChangeLog { get; set; }
 
+        public string VersionNumber { get; set; }
+
+        public string Status { get; set; }
+
         public EbObject() { }
 
         public virtual void BeforeRedisSet() { }
