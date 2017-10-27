@@ -34,6 +34,8 @@ namespace ExpressBase.Common.Objects
 
             string __jsonToJsObjectFunc = @"
 function Proc(jsonObj, rootContainerObj) {
+    $.extend(rootContainerObj, jsonObj);
+    rootContainerObj.Controls = new EbControlCollection({});
     ProcRecur(jsonObj.Controls, rootContainerObj.Controls);
     setTimeout(function () {
         console.log(' attached rootContainerObj.Controls :' + JSON.stringify(rootContainerObj.Controls));
@@ -230,7 +232,7 @@ EbObjects.@Name = function @Name(id, jsonObj) {
     this.EbSid = id;
     @Props
     @InitFunc
-    this.Html = function () { return @html.replace(/@id/g, id); };
+    this.Html = function () { return @html.replace(/@id/g, this.EbSid); };
     var MyName = this.constructor.name;
     this.RenderMe = function () { var NewHtml = this.Html(), me = this, metas = AllMetas[MyName]; $.each(metas, function (i, meta) { var name = meta.name; if (meta.IsUIproperty) { NewHtml = NewHtml.replace('@' + name + ' ', me[name]); } }); if(!this.IsContainer) $('#' + id + ' .Eb-ctrlContainer').html($(NewHtml).html()); };
     if (jsonObj){

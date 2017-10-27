@@ -196,7 +196,7 @@ else
     [ProtoBuf.ProtoContract]
     public class EbValidator
     {
-        [ProtoBuf.ProtoMember(1)]
+        [Description("WebForm")]
         public string Name { get; set; }
 
         [ProtoBuf.ProtoMember(2)]

@@ -22,8 +22,9 @@ namespace ExpressBase.Common.Objects.Attributes
         SQL = 12,//not completed
         ObjectSelector = 13,//--
         FontSelector = 14,//--  //not completed
-        Expandable = 15
-
+        Expandable = 15,
+        String =16,
+        ImageSeletor = 17
     }
 
     public class HideInToolBox : Attribute { }
