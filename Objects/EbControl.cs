@@ -19,6 +19,7 @@ namespace ExpressBase.Common.Objects
         [System.ComponentModel.Category("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog)]
         [UIproperty]
+        [Unique]
         public virtual string Label { get; set; }
 
         [ProtoBuf.ProtoMember(11)]

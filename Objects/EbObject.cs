@@ -22,7 +22,8 @@ namespace ExpressBase.Objects
 
         [Description("Identity")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataSource)]
-        [Required]
+        [EbRequired]
+        [Unique]
         public virtual string Name { get; set; }
 
         //public string ChangeLog { get; set; }
