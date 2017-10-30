@@ -17,6 +17,10 @@ namespace ExpressBase.Common.Objects
         private Type[] TypeArray { get; set; }
         private Type TypeOfTopEbObjectParent { get; set; }
 
+        private DateTime? start { get; set; }
+        private DateTime? end { get; set; }
+        public int MilliSeconds { get; private set; }
+
         public string AllMetas { get; private set; }
         public string JsObjects { get; private set; }
         public string ToolBoxHtml { get; private set; }
@@ -37,7 +41,27 @@ namespace ExpressBase.Common.Objects
             this.JsonToJsObjectFuncs = string.Empty;
             this.EbObjectTypes = string.Empty;
 
+            DateTime start = DateTime.Now;
             this.GenerateJs();
+            DateTime end = DateTime.Now;
+
+            this.MilliSeconds = (end - start).Milliseconds;
+        }
+
+        ~Context2Js()
+        {
+            this.start = null;
+            this.end = null;
+
+            this.TypeArray = null;
+            this.TypeOfTopEbObjectParent = null;
+
+            this.AllMetas = null;
+            this.JsObjects = null;
+            this.ToolBoxHtml = null;
+            this.TypeRegister = null;
+            this.JsonToJsObjectFuncs = null;
+            this.EbObjectTypes = null;
         }
 
         private void GenerateJs()
@@ -94,7 +118,6 @@ function ProcRecur(src_controls, dest_controls) {
             }
 
             this.AllMetas += "}";
-            this.JsObjects += "";
             this.TypeRegister += " };";
             this.EbObjectTypes = "var EbObjectTypes = " + Get_EbObjTypesStr();
         }
@@ -109,8 +132,6 @@ function ProcRecur(src_controls, dest_controls) {
             string _props = string.Empty;
 
             var props = obj.GetType().GetAllProperties();
-
-            List<Meta> MetaCollection = GetMetaCollection(obj);
 
             if (obj is EbControlContainer)
                 _props += @"this.IsContainer = true;";
@@ -129,7 +150,7 @@ function ProcRecur(src_controls, dest_controls) {
             this.AllMetas += @"
 '@Name'  : @MetaCollection,"
 .Replace("@Name", obj.GetType().Name)
-.Replace("@MetaCollection", JsonConvert.SerializeObject(MetaCollection));
+.Replace("@MetaCollection", JsonConvert.SerializeObject(this.GetMetaCollection(obj)));
 
             this.JsObjects += @"
 EbObjects.@Name = function @Name(id, jsonObj) {
@@ -186,23 +207,17 @@ var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
             return EbSerializers.Json_Serialize(_dic);
         }
 
-        private List<Meta> GetMetaCollection(object obj)
+        private IEnumerable<Meta> GetMetaCollection(object obj)
         {
-            List<Meta> MetaCollection = new List<Meta>();
-
             var props = obj.GetType().GetAllProperties();
             foreach (var prop in props)
             {
-                Meta _meta = null;
                 if (prop.IsDefined(typeof(EnableInBuilder)) && prop.GetCustomAttribute<EnableInBuilder>().BuilderTypes.Contains(this.BuilderType))
                 {
-                    _meta = GetMeta(obj, prop);
                     if (!prop.IsDefined(typeof(HideInPropertyGrid)))
-                        MetaCollection.Add(_meta);
+                        yield return GetMeta(obj, prop);
                 }
             }
-
-            return MetaCollection;
         }
 
         private Meta GetMeta(object obj, PropertyInfo prop)
@@ -242,7 +257,7 @@ var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
                             meta.options = prop.GetCustomAttribute<OSE_ObjectTypes>().ObjectTypes.Select(a => a.ToString()).ToArray();
                     }
                     else if (meta.editor == PropertyEditorType.Expandable && prop.PropertyType.GetTypeInfo().IsClass)
-                        meta.submeta = this.GetMetaCollection(Activator.CreateInstance(prop.PropertyType));
+                        meta.submeta = this.GetMetaCollection(Activator.CreateInstance(prop.PropertyType)).ToList<Meta>();
                     else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
                     {
                         Type itemType = prop.PropertyType.GetGenericArguments()[0];
