@@ -31,6 +31,8 @@ namespace ExpressBase.Common.Objects.Attributes
 
     public class HideInPropertyGrid : Attribute { }
 
+    public class Unique : Attribute { }
+
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, Inherited = false)]
     public class EnableInBuilder : Attribute
     {
@@ -98,5 +100,5 @@ namespace ExpressBase.Common.Objects.Attributes
 
     public class UIproperty : Attribute { public UIproperty() { } }
 
-    public class Required : Attribute { public Required() { } }
+    public class EbRequired : Attribute { public EbRequired() { } }
 }

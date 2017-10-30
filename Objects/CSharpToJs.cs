@@ -141,10 +141,12 @@ function ProcRecur(src_controls, dest_controls) {
                     meta.helpText = (attr as HelpText).value;
                 else if (attr is OnChangeExec)
                     meta.OnChangeExec = "function(pg){" + (attr as OnChangeExec).JsCode + "}";
-                else if (attr is Attributes.Required)
+                else if (attr is Attributes.EbRequired)
                     meta.IsRequired = true;
                 else if (attr is UIproperty)
                     meta.IsUIproperty = true;
+                else if (attr is Unique)
+                    meta.IsUnique = true;
                 else if (attr is PropertyEditor)
                 {
                     meta.editor = (attr as PropertyEditor).PropertyEditorType;
@@ -234,7 +236,17 @@ EbObjects.@Name = function @Name(id, jsonObj) {
     @InitFunc
     this.Html = function () { return @html.replace(/@id/g, this.EbSid); };
     var MyName = this.constructor.name;
-    this.RenderMe = function () { var NewHtml = this.Html(), me = this, metas = AllMetas[MyName]; $.each(metas, function (i, meta) { var name = meta.name; if (meta.IsUIproperty) { NewHtml = NewHtml.replace('@' + name + ' ', me[name]); } }); if(!this.IsContainer) $('#' + id + ' .Eb-ctrlContainer').html($(NewHtml).html()); };
+    this.RenderMe = function () { 
+var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
+    $.each(metas, function (i, meta) { 
+        var name = meta.name;
+        if (meta.IsUIproperty){
+            NewHtml = NewHtml.replace('@' + name + ' ', me[name]);
+        }
+    });
+    if(!this.IsContainer)
+        $('#' + id).html($(NewHtml).html());
+};
     if (jsonObj){
         if(jsonObj.IsContainer)
             jsonObj.Controls  = new EbControlCollection( {} );

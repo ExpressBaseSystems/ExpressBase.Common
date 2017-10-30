@@ -25,6 +25,8 @@ namespace ExpressBase.Common.Objects
 
         public bool IsUIproperty { get; set; }
 
+        public bool IsUnique { get; set; }
+
         public string helpText { get; set; }
 
         [JsonConverter(typeof(FunctionSerializer))]
