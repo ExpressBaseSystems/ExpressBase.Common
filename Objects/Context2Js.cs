@@ -22,6 +22,7 @@ namespace ExpressBase.Common.Objects
         public int MilliSeconds { get; private set; }
 
         public string AllMetas { get; private set; }
+        public string EbEnums { get; private set; }
         public string JsObjects { get; private set; }
         public string ToolBoxHtml { get; private set; }
         public string TypeRegister { get; private set; }
@@ -35,6 +36,7 @@ namespace ExpressBase.Common.Objects
             this.TypeOfTopEbObjectParent = topObjectParentType;
 
             this.AllMetas = string.Empty;
+            this.EbEnums = string.Empty;
             this.JsObjects = string.Empty;
             this.ToolBoxHtml = string.Empty;
             this.TypeRegister = string.Empty;
@@ -67,6 +69,7 @@ namespace ExpressBase.Common.Objects
         private void GenerateJs()
         {
             this.AllMetas = "var AllMetas = {";
+            this.EbEnums= "var EbEnums = {";
             this.JsObjects = "var EbObjects = {};";
 
             this.JsonToJsObjectFuncs = @"
@@ -117,7 +120,7 @@ function ProcRecur(src_controls, dest_controls) {
                 }
             }
 
-            this.AllMetas += "}";
+            this.AllMetas += "};" + this.EbEnums + "};";
             this.TypeRegister += " };";
             this.EbObjectTypes = "var EbObjectTypes = " + Get_EbObjTypesStr();
         }
@@ -223,6 +226,7 @@ var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
         private Meta GetMeta(object obj, PropertyInfo prop)
         {
             var meta = new Meta { name = prop.Name };
+            //Dictionary<string, Dictionary<int, string>> EnumDict = new Dictionary<string, Dictionary<int, string>>(); 
 
             var propattrs = prop.GetCustomAttributes();
             foreach (Attribute attr in propattrs)
@@ -248,8 +252,13 @@ var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
 
                     if (prop.PropertyType.GetTypeInfo().IsEnum)
                     {
+                        this.EbEnums += "'" + prop.Name + "': {";
                         foreach (dynamic enumStr in Enum.GetValues(prop.PropertyType))
+                        {
                             meta.enumoptions.Add((int)enumStr, enumStr.ToString());
+                            this.EbEnums += "'" + enumStr.ToString() + "':" + "'" + (int)enumStr + "', ";
+                        }
+                        this.EbEnums += "}, ";
                     }
                     else if (meta.editor == PropertyEditorType.ObjectSelector)
                     {
@@ -281,8 +290,13 @@ var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
                 if (prop.PropertyType.GetTypeInfo().IsEnum)
                 {
                     meta.editor = PropertyEditorType.DropDown;
+                    this.EbEnums += "'" + prop.Name + "': {";
                     foreach (dynamic enumStr in Enum.GetValues(prop.PropertyType))
+                    {
                         meta.enumoptions.Add((int)enumStr, enumStr.ToString());
+                        this.EbEnums += "'" + enumStr.ToString() + "':" + "'" + (int)enumStr + "', ";
+                    }
+                    this.EbEnums += "}, ";
                 }
                 else if (prop.PropertyType != typeof(List<EbControl>))
                     meta.editor = this.GetTypeOf(prop);
@@ -291,7 +305,6 @@ var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
             //if no helpText attribut is set, set as empty string
             if (!prop.IsDefined(typeof(HelpText)))
                 meta.helpText = string.Empty;
-
             return meta;
         }
 
