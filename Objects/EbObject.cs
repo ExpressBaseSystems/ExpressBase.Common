@@ -26,6 +26,9 @@ namespace ExpressBase.Objects
         [Unique]
         public virtual string Name { get; set; }
 
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataSource)]
+        public string Description { get; set; }
+
         //public string ChangeLog { get; set; }
 
         public string VersionNumber { get; set; }
