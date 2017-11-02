@@ -50,6 +50,10 @@ namespace ExpressBase.Common.Objects
             this.MilliSeconds = (end - start).Milliseconds;
         }
 
+        public Context2Js()
+        {
+        }
+
         ~Context2Js()
         {
             this.start = null;
@@ -252,7 +256,7 @@ var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
 
                     if (prop.PropertyType.GetTypeInfo().IsEnum)
                     {
-                        this.EbEnums += "'" + prop.Name + "': {";
+                        this.EbEnums += "'" + prop.PropertyType.GetTypeInfo().Name + "': {";
                         foreach (dynamic enumStr in Enum.GetValues(prop.PropertyType))
                         {
                             meta.enumoptions.Add((int)enumStr, enumStr.ToString());
@@ -290,7 +294,7 @@ var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
                 if (prop.PropertyType.GetTypeInfo().IsEnum)
                 {
                     meta.editor = PropertyEditorType.DropDown;
-                    this.EbEnums += "'" + prop.Name + "': {";
+                    this.EbEnums += "'" + prop.PropertyType.GetTypeInfo().Name + "': {";
                     foreach (dynamic enumStr in Enum.GetValues(prop.PropertyType))
                     {
                         meta.enumoptions.Add((int)enumStr, enumStr.ToString());
