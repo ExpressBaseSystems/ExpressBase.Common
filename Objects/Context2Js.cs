@@ -226,7 +226,6 @@ var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
         private Meta GetMeta(object obj, PropertyInfo prop)
         {
             var meta = new Meta { name = prop.Name };
-            //Dictionary<string, Dictionary<int, string>> EnumDict = new Dictionary<string, Dictionary<int, string>>(); 
 
             var propattrs = prop.GetCustomAttributes();
             foreach (Attribute attr in propattrs)
