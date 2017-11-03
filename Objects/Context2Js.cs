@@ -73,7 +73,7 @@ namespace ExpressBase.Common.Objects
         private void GenerateJs()
         {
             this.AllMetas = "var AllMetas = {";
-            this.EbEnums= "var EbEnums = {";
+            this.EbEnums = "var EbEnums = {";
             this.JsObjects = "var EbObjects = {};";
 
             this.JsonToJsObjectFuncs = @"
@@ -334,24 +334,22 @@ var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
 
             if (prop.IsDefined(typeof(DefaultPropValue)))
             {
-                Attribute EditorAttr = prop.GetCustomAttribute<PropertyEditor>();
-                PropertyEditorType EditorType = PropertyEditorType.DropDown;
 
-                if (prop.PropertyType.GetTypeInfo().IsEnum)
-                    EditorType = PropertyEditorType.DropDown;
-                else
-                    EditorType = (EditorAttr as PropertyEditor).PropertyEditorType;
+                string DefaultVal = prop.GetCustomAttribute<DefaultPropValue>().Value;
+                if (prop.Name == "Text")
+                    ;
+                // For Object Selector
+                if (prop.GetType().GetTypeInfo().IsDefined(typeof(PropertyEditor)) && prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == PropertyEditorType.ObjectSelector)
+                {
+                    Attribute EditorAttr = prop.GetCustomAttribute<PropertyEditor>();
+                    PropertyEditorType EditorType = (EditorAttr as PropertyEditor).PropertyEditorType;
 
-                Attribute DefaultAttr = prop.GetCustomAttribute<DefaultPropValue>();
-                string DefaultVal = (DefaultAttr as DefaultPropValue).Value;
-
-                if (EditorType is PropertyEditorType.Text || EditorType is PropertyEditorType.Color || EditorType is PropertyEditorType.Label
-                    || EditorType is PropertyEditorType.DateTime || EditorType is PropertyEditorType.ObjectSelector || EditorType is PropertyEditorType.FontSelector)
+                    if (EditorType is PropertyEditorType.ObjectSelector)
+                        DefaultVal = DefaultVal.SingleQuoted();
+                }
+                //for Others
+                else if (prop.PropertyType == typeof(string) || prop.PropertyType == typeof(DateTime))
                     DefaultVal = DefaultVal.SingleQuoted();
-
-                //if (prop.PropertyType == typeof(string))
-                //    DefaultVal = DefaultVal.SingleQuoted();
-
 
                 return string.Format(s, prop.Name, DefaultVal);
             }
