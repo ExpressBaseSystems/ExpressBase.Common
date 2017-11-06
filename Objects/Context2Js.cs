@@ -73,7 +73,7 @@ namespace ExpressBase.Common.Objects
         private void GenerateJs()
         {
             this.AllMetas = "var AllMetas = {";
-            this.EbEnums= "var EbEnums = {";
+            this.EbEnums = "var EbEnums = {";
             this.JsObjects = "var EbObjects = {};";
 
             this.JsonToJsObjectFuncs = @"
@@ -98,13 +98,13 @@ function ProcRecur(src_controls, dest_controls) {
 };";
             this.TypeRegister = "function ObjectFactory(jsonObj) { ";
 
-            foreach (var tool in this.TypeArray)
+            foreach (Type tool in this.TypeArray)
             {
                 if (tool.GetTypeInfo().IsSubclassOf(this.TypeOfTopEbObjectParent))
                 {
                     try
                     {
-                        var _typeInfo = tool.GetTypeInfo();
+                        TypeInfo _typeInfo = tool.GetTypeInfo();
                         var _enableInBuider = _typeInfo.GetCustomAttribute<EnableInBuilder>();
 
                         if (_enableInBuider != null && _enableInBuider.BuilderTypes.Contains(this.BuilderType))
@@ -112,7 +112,7 @@ function ProcRecur(src_controls, dest_controls) {
                             if (!_typeInfo.IsDefined(typeof(HideInToolBox)))
                                 this.ToolBoxHtml += this.GetToolHtml(tool.Name.Substring(2));
 
-                            var toolObj = Activator.CreateInstance(tool);
+                            object toolObj = Activator.CreateInstance(tool);
                             this.TypeRegister += string.Format("if (jsonObj['$type'].includes('{0}')) return new EbObjects.{1}(jsonObj.EbSid, jsonObj); ", toolObj.GetType().FullName, toolObj.GetType().Name);
                             this.GetJsObject(toolObj);
                         }
@@ -138,14 +138,14 @@ function ProcRecur(src_controls, dest_controls) {
         {
             string _props = string.Empty;
 
-            var props = obj.GetType().GetAllProperties();
+            PropertyInfo[] props = obj.GetType().GetAllProperties();
 
             if (obj is EbControlContainer)
                 _props += @"this.IsContainer = true;";
 
-            foreach (var prop in props)
+            foreach (PropertyInfo prop in props)
             {
-                var propattrs = prop.GetCustomAttributes();
+                IEnumerable<Attribute> propattrs = prop.GetCustomAttributes();////////////////
 
                 if (prop.IsDefined(typeof(EnableInBuilder))
                              && prop.GetCustomAttribute<EnableInBuilder>().BuilderTypes.Contains(this.BuilderType))
@@ -216,8 +216,8 @@ var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
 
         private IEnumerable<Meta> GetMetaCollection(object obj)
         {
-            var props = obj.GetType().GetAllProperties();
-            foreach (var prop in props)
+            PropertyInfo[] props = obj.GetType().GetAllProperties();
+            foreach (PropertyInfo prop in props)
             {
                 if (prop.IsDefined(typeof(EnableInBuilder)) && prop.GetCustomAttribute<EnableInBuilder>().BuilderTypes.Contains(this.BuilderType))
                 {
@@ -229,10 +229,9 @@ var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
 
         private Meta GetMeta(object obj, PropertyInfo prop)
         {
-            var meta = new Meta { name = prop.Name };
-            //Dictionary<string, Dictionary<int, string>> EnumDict = new Dictionary<string, Dictionary<int, string>>(); 
+            Meta meta = new Meta { name = prop.Name };
 
-            var propattrs = prop.GetCustomAttributes();
+            IEnumerable<Attribute> propattrs = prop.GetCustomAttributes();
             foreach (Attribute attr in propattrs)
             {
                 if (attr is Alias)
@@ -276,7 +275,7 @@ var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
                         Type itemType = prop.PropertyType.GetGenericArguments()[0];
                         if (itemType.Name != typeof(EbControl).Name)
                         {
-                            var subClasses = itemType.Assembly.GetTypes().Where(type => type.IsSubclassOf(itemType));
+                            IEnumerable<Type> subClasses = itemType.Assembly.GetTypes().Where(type => type.IsSubclassOf(itemType));
                             List<string> _sa = new List<string>();
                             if (!itemType.IsAbstract)
                                 _sa.Add(itemType.Name);
@@ -314,7 +313,7 @@ var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
 
         private PropertyEditorType GetTypeOf(PropertyInfo prop)
         {
-            var type = prop.PropertyType;
+            Type type = prop.PropertyType;
 
             if (type == typeof(int) || type == typeof(Int16) || type == typeof(Int32) || type == typeof(Int64) || type == typeof(decimal) || type == typeof(double) || type == typeof(Single))
                 return PropertyEditorType.Number;
@@ -335,22 +334,24 @@ var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
 
             if (prop.IsDefined(typeof(DefaultPropValue)))
             {
-                Attribute EditorAttr = prop.GetCustomAttribute<PropertyEditor>();
-                PropertyEditorType EditorType = PropertyEditorType.DropDown;
 
-                if (prop.PropertyType.GetTypeInfo().IsEnum)
-                    EditorType = PropertyEditorType.DropDown;
-                else
-                    EditorType = (EditorAttr as PropertyEditor).PropertyEditorType;
+                string DefaultVal = prop.GetCustomAttribute<DefaultPropValue>().Value;
+                if (prop.Name == "Text")
+                    ;
+                // For Object Selector
+                if (prop.GetType().GetTypeInfo().IsDefined(typeof(PropertyEditor)) && prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == PropertyEditorType.ObjectSelector)
+                {
+                    Attribute EditorAttr = prop.GetCustomAttribute<PropertyEditor>();
+                    PropertyEditorType EditorType = (EditorAttr as PropertyEditor).PropertyEditorType;
 
-                var DefaultAttr = prop.GetCustomAttribute<DefaultPropValue>();
-                var Defaulval = (DefaultAttr as DefaultPropValue).Value;
+                    if (EditorType is PropertyEditorType.ObjectSelector)
+                        DefaultVal = DefaultVal.SingleQuoted();
+                }
+                //for Others
+                else if (prop.PropertyType == typeof(string) || prop.PropertyType == typeof(DateTime))
+                    DefaultVal = DefaultVal.SingleQuoted();
 
-                if (EditorType is PropertyEditorType.Text || EditorType is PropertyEditorType.Color || EditorType is PropertyEditorType.Label
-                    || EditorType is PropertyEditorType.DateTime || EditorType is PropertyEditorType.ObjectSelector || EditorType is PropertyEditorType.FontSelector)
-                    Defaulval = Defaulval.SingleQuoted();
-
-                return string.Format(s, prop.Name, Defaulval);
+                return string.Format(s, prop.Name, DefaultVal);
             }
 
             if (prop.PropertyType == typeof(string))
@@ -370,7 +371,7 @@ var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
                 return string.Format(s, prop.Name, "0");
             else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
             {
-                var args = prop.PropertyType.GetGenericArguments();
+                Type[] args = prop.PropertyType.GetGenericArguments();
                 if (args.Length > 1)
                 {
                     Type itemType = args[0];
@@ -383,7 +384,7 @@ var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
             }
             else if (prop.PropertyType.IsClass)
             {
-                var Obj = Activator.CreateInstance(prop.PropertyType);
+                object Obj = Activator.CreateInstance(prop.PropertyType);
                 return string.Format(s, prop.Name, EbSerializers.Json_Serialize(Obj));
             }
             else
