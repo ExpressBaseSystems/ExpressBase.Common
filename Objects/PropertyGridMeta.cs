@@ -19,7 +19,7 @@ namespace ExpressBase.Common.Objects
 
         public string[] options { get; set; }
 
-        public Dictionary<int, string>  enumoptions{ get; set; }
+        public Dictionary<int, string> enumoptions { get; set; }
 
         public List<Meta> submeta { get; set; }
 
@@ -34,7 +34,9 @@ namespace ExpressBase.Common.Objects
 
         public bool IsRequired { get; set; }
 
-        public string source{ get; set; }
+        public string source { get; set; }
+
+        public string regexCheck { get; set; }
 
         public Meta()
         {

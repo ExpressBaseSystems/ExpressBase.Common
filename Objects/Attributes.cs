@@ -31,6 +31,21 @@ namespace ExpressBase.Common.Objects.Attributes
 
     public class HideInPropertyGrid : Attribute { }
 
+    public class regexCheck : Attribute {
+        string regex { set; get; }
+
+        public regexCheck()
+        {
+            this.regex = "[a-z][a-z0-9]*(_[a-z0-9]+)*";
+        }
+
+        public regexCheck( string regex)
+        {
+            this.regex = regex;
+        }
+    }
+    
+
     public class Unique : Attribute { }
 
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, Inherited = false)]
