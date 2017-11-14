@@ -1,6 +1,6 @@
--- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text)
+-- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer)
 
--- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text);
+-- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer);
 
 CREATE OR REPLACE FUNCTION public.eb_objects_commit(
 	idv text,
@@ -13,7 +13,8 @@ CREATE OR REPLACE FUNCTION public.eb_objects_commit(
 	src_pid text,
 	cur_pid text,
 	relationsv text[],
-	tagsv text)
+	tagsv text,
+	app_id integer)
     RETURNS text
     LANGUAGE 'plpgsql'
     COST 100
@@ -29,7 +30,7 @@ SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, ma
 
   	UPDATE eb_objects 
 	SET 
-    	obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv
+    	obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv, applicationid = app_id
 	WHERE 
     	id = objid; 
 		
@@ -37,7 +38,8 @@ SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, ma
 	SET
     	obj_json = obj_jsonv, obj_changelog = obj_changelogv, commit_uid= commit_uidv, commit_ts = NOW()
 	WHERE
-    	eb_objects_id= objid AND major_ver_num=major AND working_mode=true RETURNING id INTO inserted_obj_ver_id;
+    	--eb_objects_id= objid AND major_ver_num=major AND working_mode=true 
+		refid = idv RETURNING id INTO inserted_obj_ver_id;
     
     refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, objid, inserted_obj_ver_id);  
      committed_refidunique:=refidunique;
@@ -70,6 +72,6 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text)
+ALTER FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer)
     OWNER TO postgres;
 

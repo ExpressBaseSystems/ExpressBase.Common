@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE FUNCTION public.eb_objects_exploreobject(
 	_id integer)
-    RETURNS TABLE(idv integer, namev text, typev integer, status integer, description text, changelog text, commitat text, commitby text, refidv text, ver_num text, work_mode boolean, workingcopies text[], json_wc json, json_lc json, major_ver integer, minor_ver integer, patch_ver integer, tags text) 
+    RETURNS TABLE(idval integer, nameval text, typeval integer, statusval integer, descriptionval text, changelogval text, commitatval text, commitbyval text, refidval text, ver_numval text, work_modeval boolean, workingcopiesval text[], json_wcval json, json_lcval json, major_verval integer, minor_verval integer, patch_verval integer, tagsval text, app_idval integer, lastversionrefidval text, lastversionnumberval text, lastversioncommit_tsval text, lastversion_statusvalv integer, lastversioncommit_byname text, lastversioncommit_byid integer, liveversionrefidval text, liveversionnumberval text, liveversioncommit_tsval text, liveversion_statusval integer, liveversioncommit_byname text, liveversioncommit_byid integer) 
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE 
@@ -12,95 +12,50 @@ CREATE OR REPLACE FUNCTION public.eb_objects_exploreobject(
 AS $BODY$
 
 DECLARE
-	workingcopies text[];
-	json_wc json; json_lc json; no_of_workcopies integer;
-	idv integer; namev text; typev integer; status integer;
-	description text; changelog text; commitat text;commitby text;refidv text; ver_num text; work_mode boolean;
-	major_ver integer; minor_ver integer; patch_ver integer; tags text;vid integer;
+	workingcopiesval text[];
+	json_wcval json; json_lcval json;
+	idval integer; nameval text; typeval integer; statusval integer;
+	descriptionval text; changelogval text; commitatval text; commitbyval text; refidval text; ver_numval text; work_modeval boolean;
+	major_verval integer; minor_verval integer; patch_verval integer; tagsval text; app_idval integer;
+	lastversionrefidval text; lastversionnumberval text; lastversioncommit_tsval text; lastversion_statusval integer; lastversioncommit_byname text;lastversioncommit_byid integer;
+	liveversionrefidval text; liveversionnumberval text; liveversioncommit_tsval text; liveversion_statusval integer; liveversioncommit_byname text;liveversioncommit_byid integer;
  
 BEGIN
 
-	workingcopies := NULL;
-	json_wc := NULL;
-	json_lc :=NULL;
-
-SELECT 
-	string_to_array(string_agg((json_build_object( version_num, refid)::text),','),',') INTO workingcopies
-FROM 
-	eb_objects_ver 
-WHERE 
-	eb_objects_id=_id AND working_mode=true;
-			
-no_of_workcopies := COALESCE(array_length(workingcopies, 1), 0);
-
-IF no_of_workcopies = 1 THEN
-	SELECT 
-			EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc,
-			EOV.obj_json, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.version_num, EOV.working_mode, 
-			EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags
-	INTO	idv, namev, typev, status, description, json_wc, changelog, commitat, refidv, ver_num, work_mode, commitby, major_ver, minor_ver, patch_ver, tags
-	FROM 
-			 eb_objects EO, eb_objects_ver EOV
-	LEFT JOIN
-		eb_users EU
-	ON 
-		EOV.commit_uid=EU.id
-	LEFT JOIN
-		eb_objects_status EOS
-	ON 
-		EOS.eb_obj_ver_id = EOV.id										 
-	WHERE 
-			EO.id = _id AND EOV.eb_objects_id = EO.id AND working_mode=true
-			AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id);
-			
-ELSIF no_of_workcopies = 0 THEN
-        SELECT 
-                EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc,
-                EOV.obj_json, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.version_num, EOV.working_mode, 
-				EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags
-        INTO	idv, namev, typev, status, description, json_lc, changelog, commitat, refidv, ver_num,  work_mode, commitby, major_ver, minor_ver, patch_ver, tags
-        FROM  
-                eb_objects EO, eb_objects_ver EOV
-        LEFT JOIN
-                eb_users EU
-        ON 
-                EOV.commit_uid=EU.id	
-		LEFT JOIN
-			eb_objects_status EOS
-		ON 
-			EOS.eb_obj_ver_id = EOV.id									 
-        WHERE 
-                EO.id = _id AND EOV.eb_objects_id = EO.id  AND
-                major_ver_num=(Select max(major_ver_num) from eb_objects_ver where eb_objects_id=_id) AND 
-                minor_ver_num=(Select max(minor_ver_num) from eb_objects_ver where eb_objects_id=_id AND  major_ver_num=(Select max(major_ver_num) from eb_objects_ver where eb_objects_id=_id)) AND
-                COALESCE(working_mode, FALSE) <> true
-				AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id);    
-				
- -- multiple workingcopies
-ELSE
-SELECT 
-			EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc,
-			EOV.obj_json, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.version_num, EOV.working_mode, 
-			EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags, EOS.id
-	 INTO	idv, namev, typev, status, description, json_lc, changelog, commitat, refidv, ver_num,  work_mode, commitby, major_ver, minor_ver, patch_ver, tags
-	FROM 
-			 eb_objects EO, eb_objects_ver EOV
-	LEFT JOIN
-		eb_users EU
-	ON 
-		EOV.commit_uid=EU.id
-	LEFT JOIN
-		eb_objects_status EOS
-	ON 
-		EOS.eb_obj_ver_id = EOV.id		
-	WHERE 
-		EO.id = _id AND EOV.eb_objects_id = EO.id AND working_mode=true
-		AND EOV.id = (SELECT MAX(EOV.id) FROM eb_objects_ver EOV WHERE EOV.eb_objects_id = _id AND working_mode=true)
-		AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS, eb_objects_ver EOV WHERE EOS.eb_obj_ver_id = (SELECT MAX(EOV.id) FROM eb_objects_ver EOV WHERE EOV.eb_objects_id = _id AND working_mode=true) AND EOV.working_mode=true);
-
-END IF;
+--Live version details
+SELECT
+    EOV.version_num, EOV.refid, EOV.commit_ts, EOS.status, EOV.commit_uid, EU.firstname INTO
+	liveversionnumberval, liveversionrefidval, liveversioncommit_tsval, liveversion_statusval,liveversioncommit_byid,liveversioncommit_byname
+FROM
+    eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO, eb_users EU
+WHERE
+    EO.id = _id AND EOV.eb_objects_id = _id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id;
+	
+--Latest commited vaersion details
+SELECT
+    EOV.version_num, EOV.refid, EOV.commit_ts, EOS.status, EU.firstname,  EOV.commit_uid
+	INTO lastversionnumberval, lastversionrefidval, lastversioncommit_tsval, lastversion_statusval, lastversioncommit_byname, lastversioncommit_byid
+FROM
+    eb_objects_ver EOV, eb_objects_status EOS, eb_users EU
+WHERE
+    EOV.eb_objects_id = 816 AND EOS.eb_obj_ver_id = EOV.id AND EOV.commit_uid = EU.id
+    ORDER BY commit_ts DESC LIMIT 1;
+	
+SELECT idv, namev, typev, status, description, changelog, commitat, commitby, refidv, ver_num, COALESCE(work_mode,false), workingcopies,
+		json_wc, json_lc, major_ver, minor_ver, patch_ver, tags, app_id
+    FROM 
+		eb_objects_getversiontoopen(_id) 
+	INTO
+		idval, nameval, typeval, statusval, descriptionval, changelogval, commitatval, commitbyval, refidval,
+		ver_numval, work_modeval, workingcopiesval,
+		json_wcval, json_lcval, major_verval, minor_verval, patch_verval, tagsval, app_idval;
+	
 RETURN QUERY
-	SELECT idv, namev, typev, status, description, changelog, commitat, commitby, refidv, ver_num, COALESCE(work_mode,false), workingcopies, json_wc, json_lc,major_ver, minor_ver, patch_ver, tags;
+	SELECT idval, nameval, typeval, statusval, descriptionval, changelogval, commitatval, commitbyval, refidval, 
+	ver_numval, work_modeval, workingcopiesval, json_wcval, json_lcval, major_verval, minor_verval, patch_verval,
+	tagsval, app_idval,
+    lastversionrefidval, lastversionnumberval, lastversioncommit_tsval, lastversion_statusval, lastversioncommit_byname,lastversioncommit_byid,
+	liveversionrefidval, liveversionnumberval, liveversioncommit_tsval, liveversion_statusval, liveversioncommit_byname,liveversioncommit_byid;
 END
 
 $BODY$;

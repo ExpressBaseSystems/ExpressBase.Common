@@ -1,0 +1,70 @@
+﻿-- FUNCTION: public.eb_objects_update_dashboard(text)
+
+-- DROP FUNCTION public.eb_objects_update_dashboard(text);
+
+CREATE OR REPLACE FUNCTION public.eb_objects_update_dashboard(
+	_refid text)
+    RETURNS TABLE(namev text, status integer, ver_num text, work_mode boolean, workingcopies text[], major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id integer, liveversionnumber text, liveversionrefid text) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+DECLARE
+	workingcopies text[]; _id integer;
+    namev text; status integer;
+	description text; changelog text; ver_num text; work_mode boolean;
+	major_ver integer; minor_ver integer; patch_ver integer; tags text; app_id integer;
+	lastversionnumber text; lastversionrefid text; liveversionnumber text; liveversionrefid text;
+ 
+BEGIN
+
+	workingcopies := NULL;
+
+SELECT eb_objects_id INTO _id FROM eb_objects_ver WHERE refid = _refid;
+SELECT 
+	string_to_array(string_agg((json_build_object( version_num, refid)::text),','),',') INTO workingcopies
+FROM 
+	eb_objects_ver 
+WHERE 
+	eb_objects_id=_id AND working_mode=true;
+
+SELECT
+    EOV.version_num, EOV.refid INTO liveversionnumber, liveversionrefid
+FROM
+    eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
+WHERE
+    EO.id = _id AND EOV.eb_objects_id = _id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id;
+	
+
+	SELECT 
+			EO.obj_name, EOS.status, EO.applicationid, EOV.version_num, EOV.working_mode,
+		    EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags
+	INTO	namev, status, app_id, ver_num, work_mode,
+			 major_ver, minor_ver, patch_ver, tags
+	FROM 
+			 eb_objects EO, eb_objects_ver EOV
+	LEFT JOIN
+		eb_users EU
+	ON 
+		EOV.commit_uid=EU.id
+	LEFT JOIN
+		eb_objects_status EOS
+	ON 
+		EOS.eb_obj_ver_id = EOV.id										 
+	WHERE 
+			EOV.refid = _refid AND EOV.eb_objects_id = EO.id
+			AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id);
+			
+RETURN QUERY
+	SELECT namev, status, ver_num,
+	COALESCE(work_mode,false), workingcopies, major_ver, minor_ver, patch_ver, tags,
+	app_id, liveversionnumber, liveversionrefid;
+END
+
+$BODY$;
+
+ALTER FUNCTION public.eb_objects_update_dashboard(text)
+    OWNER TO postgres;
+
