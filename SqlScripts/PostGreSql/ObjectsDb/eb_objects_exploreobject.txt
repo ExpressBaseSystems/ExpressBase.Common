@@ -29,7 +29,7 @@ SELECT
 FROM
     eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO, eb_users EU
 WHERE
-    EO.id = _id AND EOV.eb_objects_id = _id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id;
+    EO.id = _id AND EOV.eb_objects_id = _id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id AND EOV.commit_uid = EU.id;
 	
 --Latest commited vaersion details
 SELECT
