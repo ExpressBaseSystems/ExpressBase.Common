@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE FUNCTION public.eb_objects_update_dashboard(
 	_refid text)
-    RETURNS TABLE(namev text, status integer, ver_num text, work_mode boolean, workingcopies text[], major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id integer, liveversionnumber text, liveversionrefid text) 
+    RETURNS TABLE(namev text, status integer, ver_num text, work_mode boolean, workingcopies text[], major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id integer, lastversionrefidval text, lastversionnumberval text, lastversioncommit_tsval text, lastversion_statusval integer, lastversioncommit_byname text, lastversioncommit_byid integer, liveversionrefidval text, liveversionnumberval text, liveversioncommit_tsval text, liveversion_statusval integer, liveversioncommit_byname text, liveversioncommit_byid integer, owner_uidval integer, owner_tsval text, owner_nameval text) 
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE 
@@ -16,7 +16,10 @@ DECLARE
     namev text; status integer;
 	description text; changelog text; ver_num text; work_mode boolean;
 	major_ver integer; minor_ver integer; patch_ver integer; tags text; app_id integer;
-	lastversionnumber text; lastversionrefid text; liveversionnumber text; liveversionrefid text;
+	lastversionrefidval text; lastversionnumberval text; lastversioncommit_tsval text;
+	lastversion_statusval integer; lastversioncommit_byname text; lastversioncommit_byid integer; liveversionrefidval text;
+	liveversionnumberval text; liveversioncommit_tsval text; liveversion_statusval integer; liveversioncommit_byname text;
+	liveversioncommit_byid integer; owner_uidVal integer; owner_tsVal text; owner_nameVal text;
  
 BEGIN
 
@@ -30,12 +33,34 @@ FROM
 WHERE 
 	eb_objects_id=_id AND working_mode=true;
 
+--Live version details
 SELECT
-    EOV.version_num, EOV.refid INTO liveversionnumber, liveversionrefid
+    EOV.version_num, EOV.refid, EOV.commit_ts, EOS.status, EOV.commit_uid, EU.firstname INTO
+	liveversionnumberval, liveversionrefidval, liveversioncommit_tsval, liveversion_statusval,liveversioncommit_byid,liveversioncommit_byname
 FROM
-    eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
+    eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO, eb_users EU
 WHERE
-    EO.id = _id AND EOV.eb_objects_id = _id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id;
+    EO.id = _id AND EOV.eb_objects_id = _id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id AND EOV.commit_uid = EU.id;
+	
+--Latest commited vaersion details
+SELECT
+    EOV.version_num, EOV.refid, EOV.commit_ts, EOS.status, EU.firstname,  EOV.commit_uid
+    INTO lastversionnumberval, lastversionrefidval, lastversioncommit_tsval, lastversion_statusval, lastversioncommit_byname, lastversioncommit_byid
+FROM
+    eb_objects_ver EOV, eb_objects_status EOS, eb_users EU
+WHERE
+    EOV.eb_objects_id = _id AND EOS.eb_obj_ver_id = EOV.id AND EOV.commit_uid = EU.id AND COALESCE(EOV.working_mode,false) = false
+    ORDER BY commit_ts DESC LIMIT 1;
+
+-- Owner details
+SELECT  
+	EO.owner_uid, EO.owner_ts, EU.firstname
+INTO 
+	owner_uidVal, owner_tsVal, owner_nameVal
+FROM 
+	eb_objects EO, eb_users EU
+WHERE 
+	EO.id = _id AND EU.id = EO.owner_uid;
 	
 
 	SELECT 
@@ -59,8 +84,10 @@ WHERE
 			
 RETURN QUERY
 	SELECT namev, status, ver_num,
-	COALESCE(work_mode,false), workingcopies, major_ver, minor_ver, patch_ver, tags,
-	app_id, liveversionnumber, liveversionrefid;
+	COALESCE(work_mode,false), workingcopies, major_ver, minor_ver, patch_ver, tags, app_id,
+	lastversionrefidval, lastversionnumberval, lastversioncommit_tsval, lastversion_statusval, lastversioncommit_byname,lastversioncommit_byid,
+	liveversionrefidval, liveversionnumberval, liveversioncommit_tsval, liveversion_statusval, liveversioncommit_byname,liveversioncommit_byid,
+	owner_uidVal, owner_tsVal, owner_nameVal;
 END
 
 $BODY$;
