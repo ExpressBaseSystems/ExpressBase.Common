@@ -1,0 +1,27 @@
+-- FUNCTION: public.eb_getpermissions(integer[])
+
+-- DROP FUNCTION public.eb_getpermissions(integer[]);
+
+CREATE OR REPLACE FUNCTION public.eb_getpermissions(
+	roles integer[])
+    RETURNS TABLE(permissions text) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+BEGIN
+	RETURN QUERY 
+SELECT 
+   array_to_string(array_agg(_per.permissionname), ',') 
+FROM 
+	eb_role2permission _per
+WHERE role_id = ANY(roles);
+END;
+
+$BODY$;
+
+ALTER FUNCTION public.eb_getpermissions(integer[])
+    OWNER TO postgres;
+

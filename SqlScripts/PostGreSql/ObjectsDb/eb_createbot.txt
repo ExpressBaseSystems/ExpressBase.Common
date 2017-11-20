@@ -1,0 +1,46 @@
+-- FUNCTION: public.eb_createbot(text, text, text, text, integer)
+
+-- DROP FUNCTION public.eb_createbot(text, text, text, text, integer);
+
+CREATE OR REPLACE FUNCTION public.eb_createbot(
+	_sol_id text,
+	_name text,
+	_url text,
+	_wel_msg text,
+	_userid integer)
+    RETURNS text
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE 
+    ROWS 0
+AS $BODY$
+
+DECLARE _botid text; insertedid integer; insertedbotid text;
+
+BEGIN
+	
+INSERT INTO 
+	eb_bots (name, url, welcome_msg, modified_by, created_by, created_at, modified_at)
+VALUES
+	(_name, _url, _wel_msg, _userid, _userid, NOW(), NOW() )
+RETURNING id INTO insertedid;
+
+	_botid := CONCAT_WS('-', _sol_id, insertedid, _url);
+	
+UPDATE eb_bots
+	SET
+	botid = _botid
+WHERE
+		id = insertedid 
+		RETURNING botid INTO insertedbotid;
+
+	                           
+RETURN insertedbotid; 	
+
+END;
+
+$BODY$;
+
+ALTER FUNCTION public.eb_createbot(text, text, text, text, integer)
+    OWNER TO postgres;
+

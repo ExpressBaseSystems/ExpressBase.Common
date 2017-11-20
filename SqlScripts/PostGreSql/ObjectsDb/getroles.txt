@@ -1,0 +1,41 @@
+-- FUNCTION: public.eb_getroles(integer)
+
+-- DROP FUNCTION public.eb_getroles(integer);
+
+CREATE OR REPLACE FUNCTION public.eb_getroles(
+	userid integer)
+    RETURNS TABLE(roles text, rolename text) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+BEGIN
+	RETURN QUERY  
+    SELECT 
+    	array_to_string(array_agg(id), ','), 
+        array_to_string(array_agg(role_name), ',') FROM eb_roles WHERE id = ANY(
+    SELECT role_id FROM eb_role2user WHERE user_id=userid
+	UNION ALL
+	(WITH RECURSIVE role2role AS 
+	(
+    	SELECT 
+        	role2_id AS role_id
+    	FROM 
+        	eb_role2role
+    	WHERE 
+        	role1_id = ANY(SELECT role_id FROM eb_role2user WHERE user_id=userid)
+    	UNION ALL
+    	SELECT e.role2_id FROM eb_role2role e, role2role r WHERE e.role1_id = r.role_id
+	) SELECT * FROM role2role)
+	ORDER BY 
+		role_id);
+
+END;
+
+$BODY$;
+
+ALTER FUNCTION public.eb_getroles(integer)
+    OWNER TO postgres;
+

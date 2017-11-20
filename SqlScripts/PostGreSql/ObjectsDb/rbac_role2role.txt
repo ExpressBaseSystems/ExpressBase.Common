@@ -1,4 +1,4 @@
-﻿-- FUNCTION: public.eb_create_or_update_role2role(integer, integer, integer[])
+-- FUNCTION: public.eb_create_or_update_role2role(integer, integer, integer[])
 
 -- DROP FUNCTION public.eb_create_or_update_role2role(integer, integer, integer[]);
 
