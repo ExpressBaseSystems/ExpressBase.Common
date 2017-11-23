@@ -304,7 +304,7 @@ var NewHtml = this.Html(), me = this, metas = AllMetas[MyName];
             }
             else if (prop.Name == "Controls")
                 return string.Format(_c, JsonConvert.SerializeObject((obj as EbControlContainer).Controls, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All }));
-            else if (prop.PropertyType == typeof(int) || prop.PropertyType == typeof(float) || prop.PropertyType == typeof(decimal))
+            else if (prop.PropertyType == (typeof(int)) || prop.PropertyType == (typeof(float)) || prop.PropertyType == (typeof(decimal)))
                 return string.Format(s, prop.Name, ((prop.Name == "Id") ? "id" : "0"));
             else if (prop.PropertyType == typeof(bool))
                 return string.Format(s, prop.Name, "false");
