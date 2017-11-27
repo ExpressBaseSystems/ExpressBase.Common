@@ -48,7 +48,8 @@ namespace ExpressBase.Common.Objects
         UserControl = 14,
         Report = 3,
         DVBuilder = 11,
-        EmailBuilder = 15
+        EmailBuilder = 15,
+        ChatForm = 16
     }
 
     [ProtoBuf.ProtoContract]
