@@ -338,8 +338,6 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             {
 
                 string DefaultVal = prop.GetCustomAttribute<DefaultPropValue>().Value;
-                if (prop.Name == "Text")
-                    ;
                 // For Object Selector
                 if (prop.GetType().GetTypeInfo().IsDefined(typeof(PropertyEditor)) && prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == PropertyEditorType.ObjectSelector)
                 {

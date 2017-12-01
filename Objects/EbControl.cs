@@ -17,7 +17,7 @@ namespace ExpressBase.Common.Objects
         [ProtoBuf.ProtoMember(10)]
         [Description("Labels")]
         [System.ComponentModel.Category("Behavior")]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         [UIproperty]
         [Unique]
         public virtual string Label { get; set; }
@@ -25,14 +25,14 @@ namespace ExpressBase.Common.Objects
         [ProtoBuf.ProtoMember(11)]
         [System.ComponentModel.Category("Behavior")]
         [Description("Labels")]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         [UIproperty]
         public virtual string HelpText { get; set; }
 
         [ProtoBuf.ProtoMember(12)]
         [System.ComponentModel.Category("Behavior")]
         [Description("Labels")]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public virtual string ToolTipText { get; set; }
 
         [ProtoBuf.ProtoMember(13)]
@@ -125,13 +125,13 @@ else
         [System.ComponentModel.Category("Accessibility")]
         public virtual int TabIndex { get; set; }
         
-        [EnableInBuilder(BuilderType.WebForm)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm)]
         [PropertyGroup("Appearance")]
         [PropertyEditor(PropertyEditorType.Color)]
         [UIproperty]
         public virtual string BackColor { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm)]
         [PropertyGroup("Appearance")]
         [PropertyEditor(PropertyEditorType.Color)]
         [UIproperty]
@@ -140,27 +140,27 @@ else
         public virtual string ForeColor { get; set; }
 
 
-        [EnableInBuilder(BuilderType.WebForm)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm)]
         [PropertyGroup("Appearance")]
         [PropertyEditor(PropertyEditorType.Color)]
         [UIproperty]
         public virtual string LabelBackColor { get; set; }
 
 
-        [EnableInBuilder(BuilderType.WebForm)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm)]
         [PropertyGroup("Appearance")]
         [PropertyEditor(PropertyEditorType.Color)]
         [Attributes.DefaultPropValue("#333333")]
         [UIproperty]
         public virtual string LabelForeColor { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm)]
         [PropertyGroup("Appearance")]
         [UIproperty]
         [PropertyEditor(PropertyEditorType.Label)]
         public virtual string FontFamily { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm)]
         [PropertyGroup("Appearance")]
         [UIproperty]
         public virtual float FontSize { get; set; }

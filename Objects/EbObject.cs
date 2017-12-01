@@ -21,7 +21,7 @@ namespace ExpressBase.Objects
         //public EbObjectType EbObjectType { get; set; }
 
         [Description("Identity")]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataSource, BuilderType.Report)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataSource, BuilderType.Report, BuilderType.BotForm)]
         [EbRequired]
         [Unique]
         [regexCheck]

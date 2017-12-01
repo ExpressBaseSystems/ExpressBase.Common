@@ -21,7 +21,7 @@ namespace ExpressBase.Common.Objects
 
     public class EbControlContainer : EbControl
     {
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         //[HideInPropertyGrid]
         public virtual List<EbControl> Controls { get; set; }
 
