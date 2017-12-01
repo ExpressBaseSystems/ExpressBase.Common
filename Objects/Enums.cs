@@ -26,6 +26,7 @@ namespace ExpressBase.Common.Objects
         EmailBuilder = 15,
         TableVisualization = 16,
         ChartVisualization = 17,
+        BotForm = 18
     }
 
     [ProtoBuf.ProtoContract]
@@ -49,7 +50,7 @@ namespace ExpressBase.Common.Objects
         Report = 3,
         DVBuilder = 11,
         EmailBuilder = 15,
-        ChatForm = 16
+        BotForm = 18
     }
 
     [ProtoBuf.ProtoContract]
