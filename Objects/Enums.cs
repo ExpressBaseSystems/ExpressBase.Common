@@ -36,7 +36,8 @@ namespace ExpressBase.Common.Objects
         Report = 3,
         TableVisualization = 16,
         ChartVisualization = 17,
-        FilterDialog = 12
+        FilterDialog = 12,
+        BotForm = 18
     }
 
     public enum BuilderType
