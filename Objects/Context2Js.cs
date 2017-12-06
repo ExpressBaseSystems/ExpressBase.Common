@@ -166,7 +166,7 @@ EbObjects.@Name = function @Name(id, jsonObj) {
     @Props
     @InitFunc
     this.$Control = $( @html.replace(/@id/g, this.EbSid) );
-    this.$BareControl = $( @bareHtml.replace(/@id/g, this.EbSid) );
+    this.BareControlHtml = `@bareHtml`.replace(/@id/g, this.EbSid);
     var MyName = this.constructor.name;
     this.RenderMe = function () { 
 var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName];
@@ -199,7 +199,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
 .Replace("@Props", _props)
 .Replace("@InitFunc", (obj as EbObject).GetJsInitFunc())
 .Replace("@html", (obj as EbObject).GetDesignHtml())
-.Replace("@bareHtml", (obj as EbObject).GetBareHtml());
+.Replace("@bareHtml", (obj as EbObject).GetBareHtml()); //(obj as EbObject).GetDesignHtml());//
 
         }
 
