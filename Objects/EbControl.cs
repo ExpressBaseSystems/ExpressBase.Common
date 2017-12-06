@@ -14,7 +14,6 @@ namespace ExpressBase.Common.Objects
 {
     public class EbControl : EbObject
     {
-        [ProtoBuf.ProtoMember(10)]
         [Description("Labels")]
         [System.ComponentModel.Category("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
@@ -22,7 +21,14 @@ namespace ExpressBase.Common.Objects
         [Unique]
         public virtual string Label { get; set; }
 
-        [ProtoBuf.ProtoMember(11)]
+        [HideInPropertyGrid]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+        public virtual string EbSid { get; set; }
+
+        [HideInPropertyGrid]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+        public virtual string BareControlHtml { get; set; }        
+
         [System.ComponentModel.Category("Behavior")]
         [Description("Labels")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
