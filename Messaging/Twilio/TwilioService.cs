@@ -12,7 +12,7 @@ namespace ExpressBase.Common.Messaging.Twilio
     {
         private string accountSid { get; set; }
         private string authToken { get; set; }
-        List<PhoneNumber> from { get; set; }
+        private PhoneNumber from { get; set; }
 
         private List<Uri> mediaUrl;
 
@@ -22,6 +22,7 @@ namespace ExpressBase.Common.Messaging.Twilio
         {
             accountSid = SMSConnection.UserName;
             authToken = SMSConnection.Password;
+            from = new PhoneNumber(SMSConnection.From);
         }
 
         public Dictionary<string, string> SentSMS(string sTo, string sFrom, string body)
@@ -31,14 +32,14 @@ namespace ExpressBase.Common.Messaging.Twilio
             {
                 TwilioClient.Init(accountSid, authToken);
                 PhoneNumber to = new PhoneNumber(sTo);
-                PhoneNumber from = new PhoneNumber(sFrom);
                 MessageResource msg = MessageResource.Create(to,
                                              from: from,
-                                             body: body
+                                             body: body,
+                                             statusCallback: new Uri("https://sms.expressbase.com/SMS/CallBack")
                                              );
                 msgStatus.Add("To", msg.To.ToString());
-                msgStatus.Add("From", msg.To.ToString());
-                msgStatus.Add("MessageId", msg.MessagingServiceSid);
+                msgStatus.Add("From", msg.From.ToString());
+                msgStatus.Add("Uri", msg.Uri);
                 msgStatus.Add("Body", msg.Body);
                 msgStatus.Add("Status", msg.Status.ToString());
                 msgStatus.Add("SentTime", msg.DateSent.ToString());

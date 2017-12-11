@@ -12,6 +12,8 @@ namespace ExpressBase.Common.Connections
     {
         public virtual EbConnectionTypes EbConnectionType { get; }
 
+        public bool IsDefault { get; set; }
+
         public string NickName { get; set; }
 
         public virtual void Persist(string TenantAccountId, ITenantDbFactory dbconf, bool IsNew)
@@ -54,6 +56,7 @@ namespace ExpressBase.Common.Connections
         public string Password { get; set; }
 
         public int Timeout { get; set; }
+
     }
 
     public class EbObjectsDbConnection : EbBaseDbConnection
@@ -70,8 +73,6 @@ namespace ExpressBase.Common.Connections
     // For Infra Files, Tenant Files
     public class EbFilesDbConnection : IEbConnection
     {
-        public bool IsDef { get; set; } //for distinguish between our server and a custom MongoDB server 
-
         [JsonConverter(typeof(CustomBase64Converter))]
         public string FilesDB_url { get; set; }
 
