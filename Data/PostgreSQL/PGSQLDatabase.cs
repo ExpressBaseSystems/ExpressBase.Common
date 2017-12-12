@@ -8,16 +8,23 @@ using System.Data;
 using System.Data.Common;
 using System.Net.Sockets;
 
-namespace ExpressBase.Data
+namespace ExpressBase.Common
 {
     public class PGSQLDatabase : IDatabase
     {
+        private const string CONNECTION_STRING_BARE = "Host={0}; Port={1}; Database={2}; Username={3}; Password={4}; SSL Mode=Require; Use SSL Stream=true; Trust Server Certificate=true; Pooling=true; CommandTimeout={5};";
         private string _cstr;
+        private EbBaseDbConnection EbBaseDbConnection { get; set; }
 
         public PGSQLDatabase(EbBaseDbConnection dbconf)
         {
-            _cstr = "Host={0}; Port={1}; Database={2}; Username={3}; Password={4}; SSL Mode=Require; Use SSL Stream=true; Trust Server Certificate=true; Pooling=true; CommandTimeout={5};";
-            _cstr = String.Format(_cstr, dbconf.Server, dbconf.Port, dbconf.DatabaseName, dbconf.UserName, dbconf.Password, dbconf.Timeout);
+            this.EbBaseDbConnection = dbconf;
+            _cstr = string.Format(CONNECTION_STRING_BARE, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port, this.EbBaseDbConnection.DatabaseName, this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password, this.EbBaseDbConnection.Timeout);
+        }
+
+        public DbConnection GetNewConnection(string dbName)
+        {
+            return new NpgsqlConnection(string.Format(CONNECTION_STRING_BARE, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port, dbName, this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password, this.EbBaseDbConnection.Timeout));
         }
 
         public DbConnection GetNewConnection()
