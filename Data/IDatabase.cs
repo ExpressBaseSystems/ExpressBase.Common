@@ -11,6 +11,7 @@ namespace ExpressBase.Common
     public interface IDatabase
     {
         DbConnection GetNewConnection();
+        DbConnection GetNewConnection(string dbName);
         DbCommand GetNewCommand(DbConnection con, string sql);
         DbParameter GetNewParameter(string parametername, DbType type, object value);
         DbParameter GetNewParameter(string parametername, NpgsqlTypes.NpgsqlDbType type, object value);
