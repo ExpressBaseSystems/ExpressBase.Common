@@ -1,4 +1,5 @@
 ﻿using ExpressBase.Common.Connections;
+using ExpressBase.Common.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -35,5 +36,7 @@ namespace ExpressBase.Common.Data
         INoSQLDatabase FilesDB { get; }
 
         IDatabase LogsDB { get; }
+
+        ISMSService SMSService { get; }
     }
 }
