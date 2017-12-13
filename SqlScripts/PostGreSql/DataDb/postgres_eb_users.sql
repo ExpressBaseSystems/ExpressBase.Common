@@ -1,5 +1,207 @@
+CREATE SEQUENCE IF NOT EXISTS eb_role2role_id_seq START 1;
+
+-- Table: public.eb_role2role
+
+-- DROP TABLE public.eb_role2role;
+
+CREATE TABLE public.eb_role2role
+(
+    id integer NOT NULL DEFAULT nextval('eb_role2role_id_seq'::regclass),
+    role1_id integer,
+    role2_id integer,
+    eb_del boolean DEFAULT false,
+    createdby integer,
+    createdat timestamp without time zone,
+    revokedby integer,
+    revokedat timestamp without time zone,
+    CONSTRAINT eb_role2role_id_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.eb_role2role
+    OWNER to postgres;
+
+-- Index: eb_role2role_id_idx
+
+-- DROP INDEX public.eb_role2role_id_idx;
+
+CREATE UNIQUE INDEX IF NOT EXISTS eb_role2role_id_idx
+    ON public.eb_role2role USING btree
+    (id)
+    TABLESPACE pg_default;
+	
+--........................................................................................................
+
+CREATE SEQUENCE IF NOT EXISTS eb_role2permission_id_seq START 1;
+
+-- Table: public.eb_role2permission
+
+-- DROP TABLE public.eb_role2permission;
+
+CREATE TABLE public.eb_role2permission
+(
+    id integer NOT NULL DEFAULT nextval('eb_role2permission_id_seq'::regclass),
+    role_id integer,
+    eb_del boolean DEFAULT false,
+    permissionname text COLLATE pg_catalog."default",
+    createdby integer,
+    createdat timestamp without time zone,
+    obj_id integer,
+    op_id integer,
+    revokedby integer,
+    revokedat timestamp without time zone,
+    CONSTRAINT eb_role2permission_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.eb_role2permission
+    OWNER to postgres;
+	
+CREATE UNIQUE INDEX IF NOT EXISTS  eb_role2permission_id_idx
+    ON public.eb_role2role USING btree
+    (id)
+    TABLESPACE pg_default;
+--....................................................................................................
+
+
+CREATE SEQUENCE IF NOT EXISTS eb_role2user_id_seq START 1;
+
+-- Table: public.eb_role2user
+
+-- DROP TABLE public.eb_role2user;
+
+CREATE TABLE public.eb_role2user
+(
+    id integer NOT NULL DEFAULT nextval('eb_role2user_id_seq'::regclass),
+    role_id integer,
+    user_id integer,
+    eb_del boolean DEFAULT false,
+    createdby integer,
+    createdat timestamp without time zone,
+    revokedby integer,
+    revokedat timestamp without time zone,
+    CONSTRAINT eb_role2user_id_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.eb_role2user
+    OWNER to postgres;
+
+-- Index: eb_role2user_id_idx
+
+-- DROP INDEX public.eb_role2user_id_idx;
+
+CREATE UNIQUE INDEX IF NOT EXISTS eb_role2user_id_idx
+    ON public.eb_role2user USING btree
+    (id)
+    TABLESPACE pg_default;
+	
+--.......................................................................................................
+CREATE SEQUENCE IF NOT EXISTS eb_roles_id_seq START 100;
+
+-- Table: public.eb_roles
+
+-- DROP TABLE public.eb_roles;
+
+CREATE TABLE public.eb_roles
+(
+    id integer NOT NULL DEFAULT nextval('eb_roles_id_seq'::regclass),
+    role_name text COLLATE pg_catalog."default" NOT NULL,
+    eb_del boolean,
+    applicationname text COLLATE pg_catalog."default",
+    applicationid integer,
+    description text COLLATE pg_catalog."default",
+    CONSTRAINT eb_roles_id_pkey PRIMARY KEY (id),
+    CONSTRAINT eb_rolename_unique UNIQUE (role_name)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.eb_roles
+    OWNER to postgres;
+
+-- Index: eb_roles_id_idx
+
+-- DROP INDEX public.eb_roles_id_idx;
+
+CREATE UNIQUE INDEX IF NOT EXISTS eb_roles_id_idx
+    ON public.eb_roles USING btree
+    (id)
+    TABLESPACE pg_default;
+	
+--...................................................................................................
+CREATE SEQUENCE IF NOT EXISTS eb_user2usergroup_id_seq START 1;
+
+-- Table: public.eb_user2usergroup
+
+-- DROP TABLE public.eb_user2usergroup;
+
+CREATE TABLE public.eb_user2usergroup
+(
+    id integer NOT NULL DEFAULT nextval('eb_user2usergroup_id_seq'::regclass),
+    userid integer,
+    groupid integer,
+    eb_del boolean DEFAULT false,
+    createdby integer,
+    createdat timestamp without time zone,
+    revokedby integer,
+    revokedat timestamp without time zone,
+    CONSTRAINT eb_user2usergroup_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.eb_user2usergroup
+    OWNER to postgres;
+	
+CREATE UNIQUE INDEX IF NOT EXISTS eb_user2usergroup_id_idx
+    ON public.eb_role2role USING btree
+    (id)
+    TABLESPACE pg_default;
+	
+--........................................................................................................
+CREATE SEQUENCE IF NOT EXISTS eb_usergroup_id_seq START 1;
+
+-- Table: public.eb_usergroup
+
+-- DROP TABLE public.eb_usergroup;
+
+CREATE TABLE public.eb_usergroup
+(
+    id integer NOT NULL DEFAULT nextval('eb_usergroup_id_seq'::regclass),
+    name text COLLATE pg_catalog."default",
+    description text COLLATE pg_catalog."default",
+    eb_del boolean,
+    CONSTRAINT eb_usergroup_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.eb_usergroup
+    OWNER to postgres;
+	
+CREATE UNIQUE INDEX IF NOT EXISTS eb_usergroup_id_idx
+    ON public.eb_role2role USING btree
+    (id)
+    TABLESPACE pg_default;
+	
+--.......................................................................................................
 CREATE SEQUENCE IF NOT EXISTS eb_users_id_seq START 1;
---Table: public.eb_users
 
 -- Table: public.eb_users
 
@@ -27,6 +229,10 @@ CREATE TABLE public.eb_users
     timezoneabbre text COLLATE pg_catalog."default",
     timezonefull text COLLATE pg_catalog."default",
     profileimg text COLLATE pg_catalog."default",
+    slackjson json,
+    prolink text COLLATE pg_catalog."default",
+    loginattempts integer DEFAULT 1,
+    socialid text COLLATE pg_catalog."default",
     CONSTRAINT eb_users_pkey PRIMARY KEY (id)
 )
 WITH (
@@ -37,39 +243,29 @@ TABLESPACE pg_default;
 ALTER TABLE public.eb_users
     OWNER to postgres;
 
+-- Index: eb_users_email_idx
+
+-- DROP INDEX public.eb_users_email_idx;
+
+CREATE INDEX IF NOT EXISTS eb_users_email_idx
+    ON public.eb_users USING btree
+    (email COLLATE pg_catalog."default")
+    TABLESPACE pg_default;
+
 -- Index: eb_users_id_idx
 
 -- DROP INDEX public.eb_users_id_idx;
 
-CREATE UNIQUE INDEX eb_users_id_idx
+CREATE UNIQUE INDEX IF NOT EXISTS eb_users_id_idx
     ON public.eb_users USING btree
     (id)
     TABLESPACE pg_default;
 
-CREATE SEQUENCE IF NOT EXISTS eb_role2user_id_seq START 1;
+-- Index: eb_users_pwd_idx
 
--- Table: public.eb_role2user
+-- DROP INDEX public.eb_users_pwd_idx;
 
-CREATE TABLE IF NOT EXISTS public.eb_role2user
-(
-    id integer NOT NULL DEFAULT nextval('eb_role2user_id_seq'::regclass),
-    role_id integer,
-    user_id integer,
-    eb_del boolean,
-    CONSTRAINT eb_role2user_id_pkey PRIMARY KEY (id)
-   
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
-
-ALTER TABLE public.eb_role2user
-    OWNER to postgres;
-
--- Index: eb_role2user_id_idx
-
-CREATE UNIQUE INDEX  eb_role2user_id_idx
-    ON public.eb_role2user USING btree
-    (id)
+CREATE INDEX IF NOT EXISTS eb_users_pwd_idx
+    ON public.eb_users USING btree
+    (pwd COLLATE pg_catalog."default")
     TABLESPACE pg_default;
