@@ -32,8 +32,15 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/postgres_eb_users.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/Functions.sql" />
+    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/Create_Eb_User.sql" />
+    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/Alter_Eb_User_Sequences.sql" />
+    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/Create_Eb_User_Indexes.sql" />
+    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/Create_Eb_User_Functions.sql" />
+
+    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/Create_Eb_Objects.sql" />
+    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/Alter_Eb_Object_Sequences.sql" />
+    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/Create_Eb_Object_Indexes.sql" />
+    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/Create_Eb_Object_Functions.sql" />
   </ItemGroup>
 
 </Project>
