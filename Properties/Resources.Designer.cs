@@ -61,6 +61,168 @@ namespace ExpressBase.Common.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to --........eb_objects...............
+        ///CREATE SEQUENCE IF NOT EXISTS eb_objects_id_seq START 1;
+        ///
+        ///--...........eb_objects_relations...............
+        ///CREATE SEQUENCE IF NOT EXISTS eb_objects_relations_id_seq START 1;
+        ///
+        ///--.............eb_objects_status...............
+        ///CREATE SEQUENCE IF NOT EXISTS eb_objects_status_id_seq START 1;
+        ///
+        ///--................eb_objects_ver................
+        ///CREATE SEQUENCE IF NOT EXISTS eb_objects_ver_id_seq START 1;
+        ///
+        ///--.............eb_applications.....................
+        ///CREATE SEQUE [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Alter_Eb_Object_Sequences {
+            get {
+                return ResourceManager.GetString("Alter_Eb_Object_Sequences", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE SEQUENCE IF NOT EXISTS eb_role2role_id_seq START 1;
+        ///
+        ///CREATE SEQUENCE IF NOT EXISTS eb_role2permission_id_seq START 1;
+        ///
+        ///CREATE SEQUENCE IF NOT EXISTS eb_role2user_id_seq START 1;
+        ///
+        ///CREATE SEQUENCE IF NOT EXISTS eb_roles_id_seq START 100;
+        ///
+        ///CREATE SEQUENCE IF NOT EXISTS eb_user2usergroup_id_seq START 1;
+        ///
+        ///CREATE SEQUENCE IF NOT EXISTS eb_usergroup_id_seq START 1;
+        ///
+        ///CREATE SEQUENCE IF NOT EXISTS eb_users_id_seq START 1;
+        ///
+        ///.
+        /// </summary>
+        internal static string Alter_Eb_User_Sequences {
+            get {
+                return ResourceManager.GetString("Alter_Eb_User_Sequences", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.cur_val(text)
+        ///
+        ///-- DROP FUNCTION public.cur_val(text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.cur_val(
+        ///	text)
+        ///    RETURNS integer
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///    
+        ///AS $BODY$
+        ///
+        ///DECLARE seq ALIAS FOR $1;
+        ///DECLARE result integer;
+        ///BEGIN
+        ///result := 0;
+        ///EXECUTE &apos;SELECT currval(&apos;&apos;&apos; || seq || &apos;&apos;&apos;)&apos; INTO result;
+        ///RETURN result;
+        ///EXCEPTION WHEN OTHERS THEN
+        ///--do nothing
+        ///RETURN result;
+        ///END;
+        ///
+        ///$BODY$;
+        ///
+        ///ALTER FUNCTION public.cur_val(text)
+        ///    OWNER TO postgres;
+        ///
+        ///--............................ [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Create_Eb_Object_Functions {
+            get {
+                return ResourceManager.GetString("Create_Eb_Object_Functions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE UNIQUE INDEX eb_objects_id_idx
+        ///    ON public.eb_objects USING btree
+        ///    (id)
+        ///    TABLESPACE pg_default;
+        ///	
+        ///--.........................................
+        ///CREATE UNIQUE INDEX eb_objects_relations_id_idx
+        ///    ON public.eb_objects_relations USING btree
+        ///    (id)
+        ///    TABLESPACE pg_default;
+        ///	
+        ///--........................................
+        ///CREATE UNIQUE INDEX eb_objects_status_id_idx
+        ///    ON public.eb_objects_status USING btree
+        ///    (id)
+        ///    TABLESPACE pg_default;
+        ///	
+        ///--................................. [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Create_Eb_Object_Indexes {
+            get {
+                return ResourceManager.GetString("Create_Eb_Object_Indexes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///-- Table: public.eb_objects
+        ///
+        ///-- DROP TABLE public.eb_objects;
+        ///
+        ///CREATE TABLE public.eb_objects
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_objects_id_seq&apos;::regclass),
+        ///    obj_name text COLLATE pg_catalog.&quot;default&quot;,
+        ///    obj_type integer,
+        ///    obj_cur_status integer,
+        ///    obj_desc text COLLATE pg_catalog.&quot;default&quot;,
+        ///    applicationid integer,
+        ///    obj_tags text COLLATE pg_catalog.&quot;default&quot;,
+        ///    owner_uid integer,
+        ///    owner_ts timestamp without time zone,
+        ///    CONSTRAINT eb_objects_pkey PRIMARY KE [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Create_Eb_Objects {
+            get {
+                return ResourceManager.GetString("Create_Eb_Objects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///-- Table: public.eb_role2role
+        ///
+        ///-- DROP TABLE public.eb_role2role;
+        ///
+        ///CREATE TABLE public.eb_role2role
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_role2role_id_seq&apos;::regclass),
+        ///    role1_id integer,
+        ///    role2_id integer,
+        ///    eb_del boolean DEFAULT false,
+        ///    createdby integer,
+        ///    createdat timestamp without time zone,
+        ///    revokedby integer,
+        ///    revokedat timestamp without time zone,
+        ///    CONSTRAINT eb_role2role_id_pkey PRIMARY KEY (id)
+        ///)
+        ///WITH (
+        ///    OIDS = FALSE
+        ///)
+        ///TABLESPACE pg_default;
+        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Create_Eb_User {
+            get {
+                return ResourceManager.GetString("Create_Eb_User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to -- FUNCTION: public.eb_authenticateuser(text, text, text)
         ///
         ///-- DROP FUNCTION public.eb_authenticateuser(text, text, text);
@@ -78,34 +240,33 @@ namespace ExpressBase.Common.Properties {
         ///DECLARE firstname TEXT;
         ///DECL [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string Functions {
+        internal static string Create_Eb_User_Functions {
             get {
-                return ResourceManager.GetString("Functions", resourceCulture);
+                return ResourceManager.GetString("Create_Eb_User_Functions", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE SEQUENCE IF NOT EXISTS eb_role2role_id_seq START 1;
+        ///   Looks up a localized string similar to CREATE UNIQUE INDEX IF NOT EXISTS eb_role2role_id_idx
+        ///    ON public.eb_role2role USING btree
+        ///    (id)
+        ///    TABLESPACE pg_default;
+        ///	
+        ///--.......................................................
+        ///CREATE UNIQUE INDEX IF NOT EXISTS  eb_role2permission_id_idx
+        ///    ON public.eb_role2permission USING btree
+        ///    (id)
+        ///    TABLESPACE pg_default;
         ///
-        ///-- Table: public.eb_role2role
-        ///
-        ///-- DROP TABLE public.eb_role2role;
-        ///
-        ///CREATE TABLE public.eb_role2role
-        ///(
-        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_role2role_id_seq&apos;::regclass),
-        ///    role1_id integer,
-        ///    role2_id integer,
-        ///    eb_del boolean DEFAULT false,
-        ///    createdby integer,
-        ///    createdat timestamp without time zone,
-        ///    revokedby integer,
-        ///    revokedat timestamp without time zone,
-        ///    CONSTRAINT eb_role2role_id_pkey PRIMARY KEY (i [rest of string was truncated]&quot;;.
+        ///--....................................
+        ///CREATE UNIQUE INDEX IF NOT EXISTS eb_role2user_id_idx
+        ///    ON public.eb_role2user USING btree
+        ///    (id)
+        ///    TABLESPACE pg_defaul [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string postgres_eb_users {
+        internal static string Create_Eb_User_Indexes {
             get {
-                return ResourceManager.GetString("postgres_eb_users", resourceCulture);
+                return ResourceManager.GetString("Create_Eb_User_Indexes", resourceCulture);
             }
         }
     }

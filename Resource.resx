@@ -118,10 +118,28 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="postgres_eb_users" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\postgres_eb_users.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="Alter_Eb_Object_Sequences" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PostGreSql\ObjectsDb\Alter_Eb_Object_Sequences.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="postgres_eb_objects" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\postgres_eb_objects.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="Alter_Eb_User_Sequences" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PostGreSql\DataDb\Alter_Eb_User_Sequences.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Create_Eb_Objects" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PostGreSql\ObjectsDb\Create_Eb_Objects.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Create_Eb_Object_Functions" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PostGreSql\ObjectsDb\Create_Eb_Object_Functions.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Create_Eb_Object_Indexes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PostGreSql\ObjectsDb\Create_Eb_Object_Indexes.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Create_Eb_User" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PostGreSql\DataDb\Create_Eb_User.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Create_Eb_User_Functions" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PostGreSql\DataDb\Create_Eb_User_Functions.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Create_Eb_User_Indexes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PostGreSql\DataDb\Create_Eb_User_Indexes.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>
