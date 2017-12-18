@@ -221,7 +221,7 @@ namespace ExpressBase.Common
                     var _typ = reader.GetFieldType(i);
                     if (_typ == typeof(DateTime))
                     {
-                        dr[i] = reader.IsDBNull(i) ? DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"): reader.GetDateTime(i).ToString("MM/dd/yyyy HH:mm:ss");
+                        dr[i] = reader.IsDBNull(i) ? DateTime.Now: reader.GetDateTime(i);
                         continue;
                     }
                     else if (_typ == typeof(string))
