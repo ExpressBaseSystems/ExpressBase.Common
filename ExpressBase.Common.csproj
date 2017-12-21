@@ -19,4 +19,9 @@
     <Folder Include="ServiceStack\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!--<ProjectReference Include="..\ServiceStack.Core\ServiceStack.Redis\ServiceStack.Redis.csproj" />
+    <ProjectReference Include="..\ServiceStack.Core\ServiceStack\ServiceStack.csproj" />-->
+  </ItemGroup>
+
 </Project>

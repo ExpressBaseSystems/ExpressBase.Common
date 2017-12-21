@@ -35,7 +35,7 @@ namespace ExpressBase.Common.Messaging.Twilio
                 MessageResource msg = MessageResource.Create(to,
                                              from: from,
                                              body: body,
-                                             statusCallback: new Uri("https://sms.expressbase.com/SMS/CallBack")
+                                             statusCallback: new Uri("http://eb_roby_dev.expressbase.azurewebsites.net/smscallback?apikey=GATblcTqWNFI9ljZRWX-aUtidVYjJwoj")
                                              );
                 msgStatus.Add("To", msg.To.ToString());
                 msgStatus.Add("From", msg.From.ToString());
