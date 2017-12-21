@@ -32,12 +32,11 @@ namespace ExpressBase.Common.Objects
     [ProtoBuf.ProtoContract]
     public enum EbObjectTypesUI
     {
-        Form = 0,
-        Report = 3,
-        TableVisualization = 16,
-        ChartVisualization = 17,
-        FilterDialog = 12,
-        BotForm = 18
+        EbWebForm = 0,
+        EbReport = 3,
+        EbTableVisualization = 16,
+        EbChartVisualization = 17,
+        EbBotForm = 18
     }
 
     public enum BuilderType
