@@ -43,4 +43,9 @@
     <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/Create_Eb_Object_Functions.sql" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!--<ProjectReference Include="..\ServiceStack.Core\ServiceStack.Redis\ServiceStack.Redis.csproj" />
+    <ProjectReference Include="..\ServiceStack.Core\ServiceStack\ServiceStack.csproj" />-->
+  </ItemGroup>
+
 </Project>
