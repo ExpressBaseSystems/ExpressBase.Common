@@ -17,6 +17,11 @@ namespace ExpressBase.Common.Extensions
             return '"' + str + '"';
         }
 
+        public static string GraveAccentQuoted(this string str)
+        {
+            return '`' + str + '`';
+        }
+
         public static string RemoveCR(this string str)
         {
             return str.Replace("\r\n", string.Empty);
