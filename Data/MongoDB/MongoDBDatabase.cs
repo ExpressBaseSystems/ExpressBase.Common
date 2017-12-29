@@ -70,16 +70,25 @@ namespace ExpressBase.Common.Data.MongoDB
 
         public byte[] DownloadFile(string filename, string bucketName)
         {
-            Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
+            try
             {
-                BucketName = bucketName,
-                ChunkSizeBytes = 1048576, // 1MB
-                WriteConcern = WriteConcern.WMajority,
-                ReadPreference = ReadPreference.Secondary
-            });
+                Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
+                {
+                    BucketName = bucketName,
+                    ChunkSizeBytes = 1048576, // 1MB
+                    WriteConcern = WriteConcern.WMajority,
+                    ReadPreference = ReadPreference.Secondary
+                });
 
-            return Bucket.DownloadAsBytesByName(filename);
-        }
+                return Bucket.DownloadAsBytesByName(filename);
+
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+            
+            }
 
         public async Task<bool> DeleteFileAsync(ObjectId objectid, string bucketName)
         {
