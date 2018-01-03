@@ -42,6 +42,8 @@ namespace ExpressBase.Objects
 
         public virtual void AfterRedisGet(RedisClient Redis) { }
 
+        public virtual void AfterRedisGet(RedisClient Redis, IServiceClient client) { }
+
         public virtual void Init4Redis(IRedisClient redisclient, IServiceClient serviceclient) { }
 
         protected IRedisClient Redis { get; set; }
