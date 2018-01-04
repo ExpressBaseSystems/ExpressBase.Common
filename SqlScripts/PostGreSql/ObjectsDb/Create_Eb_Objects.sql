@@ -130,6 +130,27 @@ ALTER TABLE public.eb_objects_ver
 
 -- DROP TABLE public.eb_applications;
 
+--CREATE TABLE public.eb_applications
+--(
+--    id integer NOT NULL DEFAULT nextval('eb_applications_id_seq'::regclass),
+--    application_name text COLLATE pg_catalog."default",
+--    application_type text COLLATE pg_catalog."default",
+--    description text COLLATE pg_catalog."default",
+--    eb_del boolean DEFAULT false,
+--    CONSTRAINT eb_applications_pkey PRIMARY KEY (id)
+--)
+--WITH (
+--    OIDS = FALSE
+--)
+--TABLESPACE pg_default;
+
+--ALTER TABLE public.eb_applications
+--    OWNER to postgres;
+
+-- Table: public.eb_applications
+
+-- DROP TABLE public.eb_applications;
+
 CREATE TABLE public.eb_applications
 (
     id integer NOT NULL DEFAULT nextval('eb_applications_id_seq'::regclass),
@@ -137,6 +158,7 @@ CREATE TABLE public.eb_applications
     application_type text COLLATE pg_catalog."default",
     description text COLLATE pg_catalog."default",
     eb_del boolean DEFAULT false,
+    app_icon text COLLATE pg_catalog."default",
     CONSTRAINT eb_applications_pkey PRIMARY KEY (id)
 )
 WITH (
@@ -146,7 +168,5 @@ TABLESPACE pg_default;
 
 ALTER TABLE public.eb_applications
     OWNER to postgres;
-
-
 	
 	
