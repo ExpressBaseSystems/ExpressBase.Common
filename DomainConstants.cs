@@ -24,6 +24,8 @@ namespace ExpressBase.Common
         public const string INDEX = "Index";
         public const string USERSIGNIN2UC = "UsrSignIn";
 
+        public const string BEARER_TOKEN = "bToken";
+        public const string REFRESH_TOKEN = "rToken";
 
         public const int HOSTPARTSLEN_IS_3 = 3;
         public const int HOSTPARTSLEN_IS_2 = 2;
