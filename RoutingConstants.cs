@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ExpressBase.Common
 {
-    public class DomainConstants
+    public class RoutingConstants
     {
         public const char DOT = '.';
         public const char BACKSLASH = '/';
