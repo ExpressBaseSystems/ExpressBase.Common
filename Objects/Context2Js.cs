@@ -16,6 +16,7 @@ namespace ExpressBase.Common.Objects
         private BuilderType BuilderType { get; set; }
         private Type[] TypeArray { get; set; }
         private Type TypeOfTopEbObjectParent { get; set; }
+        private Type TypeOfTopEbObjectParent2 { get; set; }
 
         private DateTime? start { get; set; }
         private DateTime? end { get; set; }
@@ -28,12 +29,14 @@ namespace ExpressBase.Common.Objects
         public string TypeRegister { get; private set; }
         public string JsonToJsObjectFuncs { get; private set; }
         public string EbObjectTypes { get; private set; }
+        private DateTime Start { get; set; }
+        private DateTime End { get; set; }
 
-        public Context2Js(Type[] _typeArray, BuilderType _builderType, Type topObjectParentType)
+        public void Init(Type[] _typeArray, BuilderType _builderType)
         {
             this.BuilderType = _builderType;
             this.TypeArray = _typeArray;
-            this.TypeOfTopEbObjectParent = topObjectParentType;
+            this.TypeOfTopEbObjectParent2 = null;
 
             this.AllMetas = string.Empty;
             this.EbEnums = string.Empty;
@@ -43,11 +46,27 @@ namespace ExpressBase.Common.Objects
             this.JsonToJsObjectFuncs = string.Empty;
             this.EbObjectTypes = string.Empty;
 
-            DateTime start = DateTime.Now;
-            this.GenerateJs();
-            DateTime end = DateTime.Now;
+            this.Start = DateTime.Now;
+        }
 
-            this.MilliSeconds = (end - start).Milliseconds;
+        public Context2Js(Type[] _typeArray, BuilderType _builderType, Type topObjectParentType)
+        {
+            this.Init(_typeArray, _builderType);
+            this.TypeOfTopEbObjectParent = topObjectParentType;
+            this.GenerateJs();
+            this.End = DateTime.Now;
+
+            this.MilliSeconds = (this.End - this.Start).Milliseconds;
+        }
+        public Context2Js(Type[] _typeArray, BuilderType _builderType, Type topObjectParentType, Type topObjectParentType2)
+        {
+            this.Init(_typeArray, _builderType);
+            this.TypeOfTopEbObjectParent = topObjectParentType;
+            this.TypeOfTopEbObjectParent2 = topObjectParentType2;
+            this.GenerateJs();
+            this.End = DateTime.Now;
+
+            this.MilliSeconds = (this.End - this.Start).Milliseconds;
         }
 
         public Context2Js()
@@ -61,6 +80,7 @@ namespace ExpressBase.Common.Objects
 
             this.TypeArray = null;
             this.TypeOfTopEbObjectParent = null;
+            this.TypeOfTopEbObjectParent2 = null;
 
             this.AllMetas = null;
             this.JsObjects = null;
@@ -100,7 +120,7 @@ function ProcRecur(src_controls, dest_controls) {
 
             foreach (Type tool in this.TypeArray)
             {
-                if (tool.GetTypeInfo().IsSubclassOf(this.TypeOfTopEbObjectParent))
+                if (tool.GetTypeInfo().IsSubclassOf(this.TypeOfTopEbObjectParent) || ((this.TypeOfTopEbObjectParent2 != null) ? tool.GetTypeInfo().IsSubclassOf(this.TypeOfTopEbObjectParent2) : false))
                 {
                     try
                     {
