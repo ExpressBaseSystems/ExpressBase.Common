@@ -169,4 +169,24 @@ TABLESPACE pg_default;
 ALTER TABLE public.eb_applications
     OWNER to postgres;
 	
-	
+	------------------------------------------------------
+-- Table: public.eb_objects2application
+
+-- DROP TABLE public.eb_objects2application;
+
+CREATE TABLE public.eb_objects2application
+(
+    app_id integer,
+    id integer NOT NULL DEFAULT nextval('eb_objects2application_id_seq'::regclass),
+    obj_id integer,
+    eb_del boolean DEFAULT false,
+    removed_by integer,
+    removed_at timestamp without time zone
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.eb_objects2application
+    OWNER to postgres;

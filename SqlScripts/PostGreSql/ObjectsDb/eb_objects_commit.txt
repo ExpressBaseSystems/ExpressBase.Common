@@ -1,6 +1,6 @@
--- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer)
+-- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer[])
 
--- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer);
+-- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer[]);
 
 CREATE OR REPLACE FUNCTION public.eb_objects_commit(
 	idv text,
@@ -14,7 +14,7 @@ CREATE OR REPLACE FUNCTION public.eb_objects_commit(
 	cur_pid text,
 	relationsv text[],
 	tagsv text,
-	app_id integer)
+	apps integer[])
     RETURNS text
     LANGUAGE 'plpgsql'
     COST 100
@@ -30,7 +30,7 @@ SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, ma
 
   	UPDATE eb_objects 
 	SET 
-    	obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv, applicationid = app_id
+    	obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv
 	WHERE 
     	id = objid; 
 		
@@ -49,6 +49,7 @@ SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, ma
 	version_number := CONCAT_WS('.', major, minor, patch);
    UPDATE eb_objects_ver SET version_num = version_number, working_mode = false WHERE refid = refidunique;
 
+   --relations table
 	UPDATE eb_objects_relations 
       SET 
         eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
@@ -65,13 +66,32 @@ SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, ma
       FROM UNNEST(array(SELECT unnest(ARRAY[relationsv])
         EXCEPT 
       SELECT unnest(array(select dominant from eb_objects_relations 
-                            WHERE dependant = refidunique )))) as dominantvals;                            
+                            WHERE dependant = refidunique )))) as dominantvals;  
+
+--application table
+UPDATE eb_objects2application 
+    SET 
+        eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
+    WHERE 
+        app_id IN(
+        SELECT unnest(ARRAY(select app_id from eb_objects2application WHERE obj_id = objid)) 
+        EXCEPT 
+        SELECT unnest(ARRAY[apps]));
+            
+        INSERT INTO eb_objects2application (app_id, obj_id) 
+        SELECT 
+     		appvals, objid
+      	FROM UNNEST(array(SELECT unnest(ARRAY[apps])
+        EXCEPT 
+      	SELECT unnest(array(select app_id from eb_objects2application WHERE obj_id = objid )))) as appvals;
+									
     RETURN committed_refidunique; 	
 
 END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer)
+ALTER FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer[])
     OWNER TO postgres;
 
+s
