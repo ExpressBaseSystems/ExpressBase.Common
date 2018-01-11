@@ -209,10 +209,16 @@ CREATE TABLE public.eb_users
     timezonefull text COLLATE pg_catalog."default",
     profileimg text COLLATE pg_catalog."default",
     slackjson json,
+    u_token text COLLATE pg_catalog."default",
+    socialid text COLLATE pg_catalog."default",
     prolink text COLLATE pg_catalog."default",
     loginattempts integer DEFAULT 1,
-    socialid text COLLATE pg_catalog."default",
-    CONSTRAINT eb_users_pkey PRIMARY KEY (id)
+    company text COLLATE pg_catalog."default",
+    employees text COLLATE pg_catalog."default",
+    designation text COLLATE pg_catalog."default",
+    country text COLLATE pg_catalog."default",
+    CONSTRAINT eb_users_pkey PRIMARY KEY (id),
+    CONSTRAINT socialid_unique_key UNIQUE (socialid)
 )
 WITH (
     OIDS = FALSE
@@ -221,7 +227,6 @@ TABLESPACE pg_default;
 
 ALTER TABLE public.eb_users
     OWNER to postgres;
-
 -- Index: eb_users_email_idx
 
 -- DROP INDEX public.eb_users_email_idx;
