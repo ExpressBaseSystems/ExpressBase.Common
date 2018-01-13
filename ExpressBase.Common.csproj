@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FOSS.ServiceStack.Core" Version="1.0.43" />
-    <PackageReference Include="FOSS.ServiceStack.Redis.Core" Version="1.0.43" />
+    <PackageReference Include="FOSS.ServiceStack.Core" Version="5.0.2" />
+    <PackageReference Include="FOSS.ServiceStack.Redis.Core" Version="5.0.2" />
     <PackageReference Include="MongoDB.Driver" Version="2.4.4" />
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.4.4" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />

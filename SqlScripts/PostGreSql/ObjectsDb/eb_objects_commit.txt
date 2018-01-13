@@ -19,7 +19,6 @@ CREATE OR REPLACE FUNCTION public.eb_objects_commit(
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE 
-    ROWS 0
 AS $BODY$
 
 DECLARE refidunique text; inserted_obj_ver_id integer; objid integer; committed_refidunique text; major integer; minor integer; patch integer; version_number text;
@@ -74,16 +73,16 @@ UPDATE eb_objects2application
         eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
     WHERE 
         app_id IN(
-        SELECT unnest(ARRAY(select app_id from eb_objects2application WHERE obj_id = objid)) 
+        SELECT unnest(ARRAY(select app_id from eb_objects2application WHERE obj_id = objid AND eb_del=FALSE)) 
         EXCEPT 
-        SELECT unnest(ARRAY[apps]));
+        SELECT unnest(ARRAY[COALESCE(apps, ARRAY[0])]));
             
         INSERT INTO eb_objects2application (app_id, obj_id) 
         SELECT 
      		appvals, objid
-      	FROM UNNEST(array(SELECT unnest(ARRAY[apps])
+      	FROM UNNEST(array(SELECT unnest(ARRAY[COALESCE(apps, ARRAY[0])])
         EXCEPT 
-      	SELECT unnest(array(select app_id from eb_objects2application WHERE obj_id = objid )))) as appvals;
+      	SELECT unnest(array(select app_id from eb_objects2application WHERE obj_id = objid AND eb_del=FALSE)))) as appvals;
 									
     RETURN committed_refidunique; 	
 
@@ -94,4 +93,3 @@ $BODY$;
 ALTER FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer[])
     OWNER TO postgres;
 
-s

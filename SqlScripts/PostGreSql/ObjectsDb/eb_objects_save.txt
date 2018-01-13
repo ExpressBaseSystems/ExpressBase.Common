@@ -18,7 +18,6 @@ CREATE OR REPLACE FUNCTION public.eb_objects_save(
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE 
-    ROWS 0
 AS $BODY$
 
 DECLARE refidunique text; inserted_objid integer; inserted_obj_ver_id integer; objid integer;
@@ -53,16 +52,16 @@ SELECT eb_objects_id FROM eb_objects_ver into objid WHERE refid=refidv;
         eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
     WHERE 
         app_id IN(
-        SELECT unnest(ARRAY(select app_id from eb_objects2application WHERE obj_id = inserted_objid)) 
+        SELECT unnest(ARRAY(select app_id from eb_objects2application WHERE obj_id = inserted_objid AND eb_del=FALSE)) 
         EXCEPT 
-        SELECT unnest(ARRAY[apps]));
+        SELECT unnest(ARRAY[COALESCE(apps, ARRAY[0])]));
             
         INSERT INTO eb_objects2application (app_id, obj_id) 
         SELECT 
      		appvals, inserted_objid
-      	FROM UNNEST(array(SELECT unnest(ARRAY[apps])
+      	FROM UNNEST(array(SELECT unnest(ARRAY[COALESCE(apps, ARRAY[0])])
         EXCEPT 
-      	SELECT unnest(array(select app_id from eb_objects2application WHERE obj_id = inserted_objid )))) as appvals;
+      	SELECT unnest(array(select app_id from eb_objects2application WHERE obj_id = inserted_objid AND eb_del=FALSE)))) as appvals;
         
   RETURN refidunique;
 END;

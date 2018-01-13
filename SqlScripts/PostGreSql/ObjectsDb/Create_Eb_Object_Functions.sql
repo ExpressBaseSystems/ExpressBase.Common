@@ -69,9 +69,9 @@ ALTER FUNCTION public.eb_objects_change_status(text, integer, integer, text)
     OWNER TO postgres;
 
 --........................................................................
--- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer)
+-- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer[])
 
--- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer);
+-- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer[]);
 
 CREATE OR REPLACE FUNCTION public.eb_objects_commit(
 	idv text,
@@ -85,10 +85,11 @@ CREATE OR REPLACE FUNCTION public.eb_objects_commit(
 	cur_pid text,
 	relationsv text[],
 	tagsv text,
-	app_id integer)
+	apps integer[])
     RETURNS text
     LANGUAGE 'plpgsql'
-    
+    COST 100
+    VOLATILE 
 AS $BODY$
 
 DECLARE refidunique text; inserted_obj_ver_id integer; objid integer; committed_refidunique text; major integer; minor integer; patch integer; version_number text;
@@ -99,7 +100,7 @@ SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, ma
 
   	UPDATE eb_objects 
 	SET 
-    	obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv, applicationid = app_id
+    	obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv
 	WHERE 
     	id = objid; 
 		
@@ -118,6 +119,7 @@ SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, ma
 	version_number := CONCAT_WS('.', major, minor, patch);
    UPDATE eb_objects_ver SET version_num = version_number, working_mode = false WHERE refid = refidunique;
 
+   --relations table
 	UPDATE eb_objects_relations 
       SET 
         eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
@@ -134,15 +136,34 @@ SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, ma
       FROM UNNEST(array(SELECT unnest(ARRAY[relationsv])
         EXCEPT 
       SELECT unnest(array(select dominant from eb_objects_relations 
-                            WHERE dependant = refidunique )))) as dominantvals;                            
+                            WHERE dependant = refidunique )))) as dominantvals;  
+
+--application table
+UPDATE eb_objects2application 
+    SET 
+        eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
+    WHERE 
+        app_id IN(
+        SELECT unnest(ARRAY(select app_id from eb_objects2application WHERE obj_id = objid AND eb_del=FALSE)) 
+        EXCEPT 
+        SELECT unnest(ARRAY[COALESCE(apps, ARRAY[0])]));
+            
+        INSERT INTO eb_objects2application (app_id, obj_id) 
+        SELECT 
+     		appvals, objid
+      	FROM UNNEST(array(SELECT unnest(ARRAY[COALESCE(apps, ARRAY[0])])
+        EXCEPT 
+      	SELECT unnest(array(select app_id from eb_objects2application WHERE obj_id = objid AND eb_del=FALSE)))) as appvals;
+									
     RETURN committed_refidunique; 	
 
 END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer)
+ALTER FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer[])
     OWNER TO postgres;
+
 
 --....................................................................................
 -- FUNCTION: public.eb_objects_create_major_version(text, integer, integer, text, text, text[])
@@ -297,9 +318,9 @@ ALTER FUNCTION public.eb_objects_create_minor_version(text, integer, integer, te
     OWNER TO postgres;
 
 --..........................................................................
--- FUNCTION: public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text[], boolean, text, integer)
+-- FUNCTION: public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text[], boolean, text, integer[])
 
--- DROP FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text[], boolean, text, integer);
+-- DROP FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text[], boolean, text, integer[]);
 
 CREATE OR REPLACE FUNCTION public.eb_objects_create_new_object(
 	obj_namev text,
@@ -313,18 +334,19 @@ CREATE OR REPLACE FUNCTION public.eb_objects_create_new_object(
 	relationsv text[],
 	issave boolean,
 	tagsv text,
-	app_id integer)
+	apps integer[])
     RETURNS text
     LANGUAGE 'plpgsql'
-    
+    COST 100
+    VOLATILE 
 AS $BODY$
 
 DECLARE refidunique text; inserted_objid integer; inserted_obj_ver_id integer; refid_of_commit_version text; version_number text;
 BEGIN   
     INSERT INTO eb_objects 
-        (obj_name, obj_desc, obj_type, obj_cur_status, obj_tags, applicationid, owner_uid, owner_ts)
+        (obj_name, obj_desc, obj_type, obj_cur_status, obj_tags, owner_uid, owner_ts)
     VALUES
-        (obj_namev, obj_descv, obj_typev, obj_cur_statusv, tagsv, app_id, commit_uidv, NOW()) RETURNING id INTO inserted_objid;
+        (obj_namev, obj_descv, obj_typev, obj_cur_statusv, tagsv, commit_uidv, NOW()) RETURNING id INTO inserted_objid;
 
     INSERT INTO eb_objects_ver
         (eb_objects_id, obj_json, commit_uid, commit_ts, major_ver_num, minor_ver_num, patch_ver_num, working_mode) 
@@ -345,16 +367,22 @@ BEGIN
 	UPDATE eb_objects_ver SET refid = refidunique, version_num = version_number WHERE id = inserted_obj_ver_id;
     
 	INSERT INTO eb_objects_status(eb_obj_ver_id, status, uid, ts, changelog) VALUES(inserted_obj_ver_id, 0, commit_uidv, NOW(), 'Created');
-    
+	
+    --relations table
     INSERT INTO eb_objects_relations (dominant,dependant) VALUES (UNNEST(relationsv),refidunique);
+	
+	--applications table
+	INSERT INTO eb_objects2application (app_id,obj_id) VALUES (UNNEST(apps),inserted_objid);
 		
 	RETURN refid_of_commit_version;
 END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text[], boolean, text, integer)
+ALTER FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text[], boolean, text, integer[])
     OWNER TO postgres;
+
+
 
 --..............................................................
 -- FUNCTION: public.eb_objects_create_patch_version(text, integer, integer, text, text, text[])
@@ -436,9 +464,11 @@ ALTER FUNCTION public.eb_objects_create_patch_version(text, integer, integer, te
 
 CREATE OR REPLACE FUNCTION public.eb_objects_exploreobject(
 	_id integer)
-    RETURNS TABLE(idval integer, nameval text, typeval integer, statusval integer, descriptionval text, changelogval text, commitatval text, commitbyval text, refidval text, ver_numval text, work_modeval boolean, workingcopiesval text[], json_wcval json, json_lcval json, major_verval integer, minor_verval integer, patch_verval integer, tagsval text, app_idval integer, lastversionrefidval text, lastversionnumberval text, lastversioncommit_tsval text, lastversion_statusvalv integer, lastversioncommit_byname text, lastversioncommit_byid integer, liveversionrefidval text, liveversionnumberval text, liveversioncommit_tsval text, liveversion_statusval integer, liveversioncommit_byname text, liveversioncommit_byid integer, owner_uidval integer, owner_tsval text, owner_nameval text) 
+    RETURNS TABLE(idval integer, nameval text, typeval integer, statusval integer, descriptionval text, changelogval text, commitatval text, commitbyval text, refidval text, ver_numval text, work_modeval boolean, workingcopiesval text[], json_wcval json, json_lcval json, major_verval integer, minor_verval integer, patch_verval integer, tagsval text, app_idval text, lastversionrefidval text, lastversionnumberval text, lastversioncommit_tsval text, lastversion_statusvalv integer, lastversioncommit_byname text, lastversioncommit_byid integer, liveversionrefidval text, liveversionnumberval text, liveversioncommit_tsval text, liveversion_statusval integer, liveversioncommit_byname text, liveversioncommit_byid integer, owner_uidval integer, owner_tsval text, owner_nameval text) 
     LANGUAGE 'plpgsql'
-    
+    COST 100
+    VOLATILE 
+    ROWS 1000
 AS $BODY$
 
 DECLARE
@@ -446,7 +476,7 @@ DECLARE
 	json_wcval json; json_lcval json;
 	idval integer; nameval text; typeval integer; statusval integer;
 	descriptionval text; changelogval text; commitatval text; commitbyval text; refidval text; ver_numval text; work_modeval boolean;
-	major_verval integer; minor_verval integer; patch_verval integer; tagsval text; app_idval integer;
+	major_verval integer; minor_verval integer; patch_verval integer; tagsval text; app_idval text;
 	lastversionrefidval text; lastversionnumberval text; lastversioncommit_tsval text; lastversion_statusval integer; lastversioncommit_byname text;lastversioncommit_byid integer;
 	liveversionrefidval text; liveversionnumberval text; liveversioncommit_tsval text; liveversion_statusval integer; liveversioncommit_byname text;liveversioncommit_byid integer;
 	owner_uidVal integer; owner_tsVal text; owner_nameVal text;
@@ -505,6 +535,7 @@ $BODY$;
 ALTER FUNCTION public.eb_objects_exploreobject(integer)
     OWNER TO postgres;
 
+
 --............................................................
 -- FUNCTION: public.eb_objects_getversiontoopen(integer)
 
@@ -512,9 +543,11 @@ ALTER FUNCTION public.eb_objects_exploreobject(integer)
 
 CREATE OR REPLACE FUNCTION public.eb_objects_getversiontoopen(
 	_id integer)
-    RETURNS TABLE(idv integer, namev text, typev integer, status integer, description text, changelog text, commitat text, commitby text, refidv text, ver_num text, work_mode boolean, workingcopies text[], json_wc json, json_lc json, major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id integer) 
+    RETURNS TABLE(idv integer, namev text, typev integer, status integer, description text, changelog text, commitat text, commitby text, refidv text, ver_num text, work_mode boolean, workingcopies text[], json_wc json, json_lc json, major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id text) 
     LANGUAGE 'plpgsql'
-    
+    COST 100
+    VOLATILE 
+    ROWS 1000
 AS $BODY$
 
 DECLARE
@@ -522,7 +555,7 @@ DECLARE
 	json_wc json; json_lc json; no_of_workcopies integer;
 	idv integer; namev text; typev integer; status integer;
 	description text; changelog text; commitat text; commitby text; refidv text; ver_num text; work_mode boolean;
-	major_ver integer; minor_ver integer; patch_ver integer; tags text; app_id integer;
+	major_ver integer; minor_ver integer; patch_ver integer; tags text; app_id text;
 	lastversionnumber text; lastversionrefid text; liveversionnumber text; liveversionrefid text;
 BEGIN
 
@@ -539,13 +572,16 @@ WHERE
 			
 no_of_workcopies := COALESCE(array_length(workingcopies, 1), 0);
 
+ select string_agg(EA.applicationname,',') INTO app_id from eb_objects2application E2O ,eb_applications EA where 
+ obj_id = _id and E2O.eb_del = false and EA.id = E2O.app_id ;
+
 --one working copy	
 IF no_of_workcopies = 1 THEN
 	SELECT 
-			EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc, EO.applicationid,
+			EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc,
 			EOV.obj_json, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.version_num, EOV.working_mode, 
 			EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags
-	INTO	idv, namev, typev, status, description, app_id, json_wc, changelog, commitat, refidv, ver_num, work_mode, commitby,
+	INTO	idv, namev, typev, status, description, json_wc, changelog, commitat, refidv, ver_num, work_mode, commitby,
 			major_ver, minor_ver, patch_ver, tags
 	FROM 
 			 eb_objects EO, eb_objects_ver EOV
@@ -564,10 +600,10 @@ IF no_of_workcopies = 1 THEN
 --No working copy			
 ELSIF no_of_workcopies = 0 THEN
         SELECT 
-                EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc, EO.applicationid,
+                EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc, 
                 EOV.obj_json, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.version_num, EOV.working_mode, 
 				EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags
-        INTO	idv, namev, typev, status, description, app_id, json_lc, changelog, commitat, refidv, ver_num, work_mode,
+        INTO	idv, namev, typev, status, description, json_lc, changelog, commitat, refidv, ver_num, work_mode,
 				commitby, major_ver, minor_ver, patch_ver, tags
         FROM  
                 eb_objects EO, eb_objects_ver EOV
@@ -590,10 +626,10 @@ ELSIF no_of_workcopies = 0 THEN
  -- multiple workingcopies
 ELSE
 SELECT 
-			EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc, EO.applicationid,
+			EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc,
 			EOV.obj_json, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.version_num, EOV.working_mode, 
 			EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags, EOS.id
-	 INTO	idv, namev, typev, status, description, app_id, json_lc, changelog, commitat, refidv, ver_num, work_mode,
+	 INTO	idv, namev, typev, status, description, json_lc, changelog, commitat, refidv, ver_num, work_mode,
 			commitby, major_ver, minor_ver, patch_ver, tags
 	FROM 
 			 eb_objects EO, eb_objects_ver EOV
@@ -622,9 +658,9 @@ ALTER FUNCTION public.eb_objects_getversiontoopen(integer)
     OWNER TO postgres;
 
 --............................................................
--- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text[], text, integer)
+-- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text[], text, integer[])
 
--- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text[], text, integer);
+-- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text[], text, integer[]);
 
 CREATE OR REPLACE FUNCTION public.eb_objects_save(
 	refidv text,
@@ -637,20 +673,23 @@ CREATE OR REPLACE FUNCTION public.eb_objects_save(
 	cur_pid text,
 	relationsv text[],
 	tagsv text,
-	app_id integer)
+	apps integer[])
     RETURNS text
     LANGUAGE 'plpgsql'
-    
+    COST 100
+    VOLATILE 
 AS $BODY$
 
 DECLARE refidunique text; inserted_objid integer; inserted_obj_ver_id integer; objid integer;
 BEGIN
 SELECT eb_objects_id FROM eb_objects_ver into objid WHERE refid=refidv;
- 	UPDATE eb_objects SET obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv, applicationid = app_id  WHERE id = objid RETURNING id INTO inserted_objid;
+ 	UPDATE eb_objects SET obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv WHERE id = objid RETURNING id INTO inserted_objid;
     UPDATE eb_objects_ver SET obj_json = obj_jsonv WHERE refid=refidv RETURNING id INTO inserted_obj_ver_id;
     
     refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, inserted_objid, inserted_obj_ver_id);                                 
 	UPDATE eb_objects_ver SET refid = refidunique WHERE id = inserted_obj_ver_id;
+    
+    --relations table
 	UPDATE eb_objects_relations 
     SET 
         eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
@@ -666,13 +705,33 @@ SELECT eb_objects_id FROM eb_objects_ver into objid WHERE refid=refidv;
       	FROM UNNEST(array(SELECT unnest(ARRAY[relationsv])
         EXCEPT 
       	SELECT unnest(array(select dominant from eb_objects_relations WHERE dependant = refidunique )))) as dominantvals;
-    RETURN refidunique;
+
+--applications table 
+  UPDATE eb_objects2application 
+    SET 
+        eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
+    WHERE 
+        app_id IN(
+        SELECT unnest(ARRAY(select app_id from eb_objects2application WHERE obj_id = inserted_objid AND eb_del=FALSE)) 
+        EXCEPT 
+        SELECT unnest(ARRAY[COALESCE(apps, ARRAY[0])]));
+            
+        INSERT INTO eb_objects2application (app_id, obj_id) 
+        SELECT 
+     		appvals, inserted_objid
+      	FROM UNNEST(array(SELECT unnest(ARRAY[COALESCE(apps, ARRAY[0])])
+        EXCEPT 
+      	SELECT unnest(array(select app_id from eb_objects2application WHERE obj_id = inserted_objid AND eb_del=FALSE)))) as appvals;
+        
+  RETURN refidunique;
 END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text[], text, integer)
+ALTER FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text[], text, integer[])
     OWNER TO postgres;
+
+
 
 --.................................................................................
 -- FUNCTION: public.eb_objects_update_dashboard(text)
@@ -681,16 +740,18 @@ ALTER FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, 
 
 CREATE OR REPLACE FUNCTION public.eb_objects_update_dashboard(
 	_refid text)
-    RETURNS TABLE(namev text, status integer, ver_num text, work_mode boolean, workingcopies text[], major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id integer, lastversionrefidval text, lastversionnumberval text, lastversioncommit_tsval text, lastversion_statusval integer, lastversioncommit_byname text, lastversioncommit_byid integer, liveversionrefidval text, liveversionnumberval text, liveversioncommit_tsval text, liveversion_statusval integer, liveversioncommit_byname text, liveversioncommit_byid integer, owner_uidval integer, owner_tsval text, owner_nameval text) 
+    RETURNS TABLE(namev text, status integer, ver_num text, work_mode boolean, workingcopies text[], major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id text, lastversionrefidval text, lastversionnumberval text, lastversioncommit_tsval text, lastversion_statusval integer, lastversioncommit_byname text, lastversioncommit_byid integer, liveversionrefidval text, liveversionnumberval text, liveversioncommit_tsval text, liveversion_statusval integer, liveversioncommit_byname text, liveversioncommit_byid integer, owner_uidval integer, owner_tsval text, owner_nameval text) 
     LANGUAGE 'plpgsql'
-    
+    COST 100
+    VOLATILE 
+    ROWS 1000
 AS $BODY$
 
 DECLARE
 	workingcopies text[]; _id integer;
     namev text; status integer;
 	description text; changelog text; ver_num text; work_mode boolean;
-	major_ver integer; minor_ver integer; patch_ver integer; tags text; app_id integer;
+	major_ver integer; minor_ver integer; patch_ver integer; tags text; app_id text;
 	lastversionrefidval text; lastversionnumberval text; lastversioncommit_tsval text;
 	lastversion_statusval integer; lastversioncommit_byname text; lastversioncommit_byid integer; liveversionrefidval text;
 	liveversionnumberval text; liveversioncommit_tsval text; liveversion_statusval integer; liveversioncommit_byname text;
@@ -701,6 +762,10 @@ BEGIN
 	workingcopies := NULL;
 
 SELECT eb_objects_id INTO _id FROM eb_objects_ver WHERE refid = _refid;
+
+select string_agg(EA.applicationname,',') INTO app_id from eb_objects2application E2O ,eb_applications EA where 
+ obj_id = _id and E2O.eb_del = false and EA.id = E2O.app_id ;
+ 
 SELECT 
 	string_to_array(string_agg((json_build_object( version_num, refid)::text),','),',') INTO workingcopies
 FROM 
@@ -739,9 +804,9 @@ WHERE
 	
 
 	SELECT 
-			EO.obj_name, EOS.status, EO.applicationid, EOV.version_num, EOV.working_mode,
+			EO.obj_name, EOS.status,EOV.version_num, EOV.working_mode,
 		    EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags
-	INTO	namev, status, app_id, ver_num, work_mode,
+	INTO	namev, status, ver_num, work_mode,
 			 major_ver, minor_ver, patch_ver, tags
 	FROM 
 			 eb_objects EO, eb_objects_ver EOV
