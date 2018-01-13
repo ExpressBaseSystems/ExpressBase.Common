@@ -55,6 +55,14 @@ namespace ExpressBase.Common.Connections
 
         public string Password { get; set; }
 
+        public string ReadWriteUserName { get; set; }
+
+        public string ReadWritePassword { get; set; }
+
+        public string ReadOnlyUserName { get; set; }
+
+        public string ReadOnlyPassword { get; set; }
+
         public int Timeout { get; set; }
 
     }
