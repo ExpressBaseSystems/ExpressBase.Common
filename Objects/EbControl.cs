@@ -27,7 +27,7 @@ namespace ExpressBase.Common.Objects
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
-        public virtual string Type { get; set; }
+        public virtual string ObjType { get; set; }
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
