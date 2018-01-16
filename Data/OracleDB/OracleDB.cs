@@ -1,20 +1,22 @@
 ﻿using ExpressBase.Common.Connections;
 using Npgsql;
-using Oracle.ManagedDataAccess.Client;
+//using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Data.OracleClient;
 using System.Net.Sockets;
 using System.Text;
 
 namespace ExpressBase.Common.Data.OracleDB
 {
-    class OracleDB
+    public class OracleDB : IDatabase
     {
         //private const string CONNECTION_STRING_BARE = "Host={0}; Port={1}; Database={2}; Username={3}; Password={4}; SSL Mode=Require; Use SSL Stream=true; Trust Server Certificate=true; Pooling=true; CommandTimeout={5};";
         private string CONNECTION_STRING_BARE = "Host=139.59.12.145; Port=1521; Username=MASTERTEX; Password=master;";
-        // private const string oradb = "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = 139.59.12.145)(PORT = 1521))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= MASTERTEX;Password=master";
+        //private const string oradb = "Host=139.59.12.145; username=MASTERTEX; password=master; port=1521;";
+        private const string oradb = "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = 139.59.12.145)(PORT = 1521))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= MASTERTEX;Password=master";
         private string _cstr;
         private EbBaseDbConnection EbBaseDbConnection { get; set; }
 
@@ -37,7 +39,7 @@ namespace ExpressBase.Common.Data.OracleDB
 
         public DbConnection GetNewConnection()
         {
-            return new OracleConnection(_cstr);
+            return new OracleConnection(oradb);
         }
 
         public System.Data.Common.DbCommand GetNewCommand(DbConnection con, string sql)
@@ -55,7 +57,7 @@ namespace ExpressBase.Common.Data.OracleDB
             return new NpgsqlParameter();
         }
 
-        public System.Data.Common.DbParameter GetNewParameter(string parametername, OracleDbType type, object value)
+        public System.Data.Common.DbParameter GetNewParameter(string parametername, OracleType type, object value)
         {
             return new OracleParameter(parametername, type) { Value = value };
         }
