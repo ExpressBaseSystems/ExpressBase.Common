@@ -13,32 +13,28 @@ namespace ExpressBase.Common.Data.OracleDB
 {
     public class OracleDB : IDatabase
     {
-        //private const string CONNECTION_STRING_BARE = "Host={0}; Port={1}; Database={2}; Username={3}; Password={4}; SSL Mode=Require; Use SSL Stream=true; Trust Server Certificate=true; Pooling=true; CommandTimeout={5};";
-        private string CONNECTION_STRING_BARE = "Host=139.59.12.145; Port=1521; Username=MASTERTEX; Password=master;";
-        //private const string oradb = "Host=139.59.12.145; username=MASTERTEX; password=master; port=1521;";
-        private const string oradb = "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = 139.59.12.145)(PORT = 1521))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= MASTERTEX;Password=master";
+        private const string CONNECTION_STRING_BARE = "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= {2};Password={3}";
         private string _cstr;
         private EbBaseDbConnection EbBaseDbConnection { get; set; }
 
         public OracleDB(EbBaseDbConnection dbconf)
         {
             this.EbBaseDbConnection = dbconf;
-            _cstr = string.Format(CONNECTION_STRING_BARE, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port, this.EbBaseDbConnection.DatabaseName, this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password, this.EbBaseDbConnection.Timeout);
+            _cstr = string.Format(CONNECTION_STRING_BARE, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port,  this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password);
         }
 
         public OracleDB()
-        { }
+        {
+        }
 
         public DbConnection GetNewConnection(string dbName)
         {
-            //return new OracleConnection(oradb);
-            //return new OracleConnection(string.Format(CONNECTION_STRING_BARE, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port, dbName, this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password, this.EbBaseDbConnection.Timeout));
-            return null;
+            return new OracleConnection(_cstr);
         }
 
         public DbConnection GetNewConnection()
         {
-            return new OracleConnection(oradb);
+            return new OracleConnection(_cstr);
         }
 
         public System.Data.Common.DbCommand GetNewCommand(DbConnection con, string sql)
@@ -49,12 +45,7 @@ namespace ExpressBase.Common.Data.OracleDB
         public System.Data.Common.DbParameter GetNewParameter(string parametername, DbType type, object value)
         {
             return new OracleParameter(parametername, type) { Value = value };
-        }
-
-        public System.Data.Common.DbParameter GetNewParameter(string parametername, NpgsqlTypes.NpgsqlDbType type, object value)
-        {
-            return new NpgsqlParameter();
-        }
+        }    
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, OracleType type, object value)
         {
