@@ -27,14 +27,13 @@ namespace ExpressBase.Common.Data.OracleDB
         }
 
         public OracleDB()
-        {
-            _cstr = string.Format(CONNECTION_STRING_BARE);
-        }
+        { }
 
         public DbConnection GetNewConnection(string dbName)
         {
             //return new OracleConnection(oradb);
-            return new OracleConnection(string.Format(CONNECTION_STRING_BARE, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port, dbName, this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password, this.EbBaseDbConnection.Timeout));
+            //return new OracleConnection(string.Format(CONNECTION_STRING_BARE, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port, dbName, this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password, this.EbBaseDbConnection.Timeout));
+            return null;
         }
 
         public DbConnection GetNewConnection()
