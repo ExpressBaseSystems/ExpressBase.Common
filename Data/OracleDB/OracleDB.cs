@@ -41,7 +41,10 @@ namespace ExpressBase.Common.Data.OracleDB
         {
             return new OracleCommand(sql, (OracleConnection)con);
         }
-
+        public DbParameter GetNewParameter(string parametername, NpgsqlTypes.NpgsqlDbType type, object value)
+        {
+            return null;
+        }
         public System.Data.Common.DbParameter GetNewParameter(string parametername, DbType type, object value)
         {
             return new OracleParameter(parametername, type) { Value = value };
