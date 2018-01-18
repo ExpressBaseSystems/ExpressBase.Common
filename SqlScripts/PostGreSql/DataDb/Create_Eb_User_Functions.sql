@@ -47,7 +47,6 @@ $BODY$;
 ALTER FUNCTION public.eb_authenticateuser(text, text, text)
     OWNER TO postgres;
 
---........................................................................................................................................
 
 -- FUNCTION: public.eb_create_or_update_rbac_manageroles(integer, integer, integer, text, text, integer[], integer[], text[])
 
@@ -92,7 +91,6 @@ $BODY$;
 ALTER FUNCTION public.eb_create_or_update_rbac_manageroles(integer, integer, integer, text, text, integer[], integer[], text[])
     OWNER TO postgres;
 
---.......................................................................................................................................................
 
 -- FUNCTION: public.eb_create_or_update_role2role(integer, integer, integer[])
 
@@ -135,7 +133,6 @@ $BODY$;
 ALTER FUNCTION public.eb_create_or_update_role2role(integer, integer, integer[])
     OWNER TO postgres;
 
---...................................................................................................................................................
 
 -- FUNCTION: public.eb_create_or_update_role2user(integer, integer, integer[])
 
@@ -177,7 +174,6 @@ $BODY$;
 ALTER FUNCTION public.eb_create_or_update_role2user(integer, integer, integer[])
     OWNER TO postgres;
 
---..............................................................................................................................................
 
 -- FUNCTION: public.eb_create_or_update_role(integer, text, text, integer, text[], integer)
 
@@ -194,8 +190,6 @@ CREATE OR REPLACE FUNCTION public.eb_create_or_update_role(
     LANGUAGE 'plpgsql'
     
 AS $BODY$
-
-   
 
 DECLARE rid INTEGER; DECLARE errornum INTEGER;
 
@@ -244,7 +238,6 @@ $BODY$;
 ALTER FUNCTION public.eb_create_or_update_role(integer, text, text, integer, text[], integer)
     OWNER TO postgres;
 
---...................................................................................................................................................
 
 -- FUNCTION: public.eb_getpermissions(integer[])
 
@@ -271,7 +264,6 @@ $BODY$;
 ALTER FUNCTION public.eb_getpermissions(integer[])
     OWNER TO postgres;
 
---....................................................................................................................................
 
 -- FUNCTION: public.eb_getroles(integer)
 

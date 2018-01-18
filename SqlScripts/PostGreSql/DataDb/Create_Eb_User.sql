@@ -15,21 +15,9 @@ CREATE TABLE public.eb_role2role
     revokedat timestamp without time zone,
     CONSTRAINT eb_role2role_id_pkey PRIMARY KEY (id)
 )
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+WITH (OIDS = FALSE) TABLESPACE pg_default;
 
-ALTER TABLE public.eb_role2role
-    OWNER to postgres;
-
--- Index: eb_role2role_id_idx
-
--- DROP INDEX public.eb_role2role_id_idx;
-
-
---........................................................................................................
-
+ALTER TABLE public.eb_role2role OWNER to postgres;
 
 
 -- Table: public.eb_role2permission
@@ -50,19 +38,10 @@ CREATE TABLE public.eb_role2permission
     revokedat timestamp without time zone,
     CONSTRAINT eb_role2permission_pkey PRIMARY KEY (id)
 )
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+WITH (OIDS = FALSE) TABLESPACE pg_default;
 
-ALTER TABLE public.eb_role2permission
-    OWNER to postgres;
+ALTER TABLE public.eb_role2permission OWNER to postgres;
 	
-
---....................................................................................................
-
-
-
 
 -- Table: public.eb_role2user
 
@@ -80,21 +59,9 @@ CREATE TABLE public.eb_role2user
     revokedat timestamp without time zone,
     CONSTRAINT eb_role2user_id_pkey PRIMARY KEY (id)
 )
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+WITH (OIDS = FALSE) TABLESPACE pg_default;
 
-ALTER TABLE public.eb_role2user
-    OWNER to postgres;
-
--- Index: eb_role2user_id_idx
-
--- DROP INDEX public.eb_role2user_id_idx;
-
-
-	
---.......................................................................................................
+ALTER TABLE public.eb_role2user OWNER to postgres;
 
 
 -- Table: public.eb_roles
@@ -112,21 +79,9 @@ CREATE TABLE public.eb_roles
     CONSTRAINT eb_roles_id_pkey PRIMARY KEY (id),
     CONSTRAINT eb_rolename_unique UNIQUE (role_name)
 )
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+WITH (OIDS = FALSE) TABLESPACE pg_default;
 
-ALTER TABLE public.eb_roles
-    OWNER to postgres;
-
--- Index: eb_roles_id_idx
-
--- DROP INDEX public.eb_roles_id_idx;
-
-
-	
---...................................................................................................
+ALTER TABLE public.eb_roles OWNER to postgres;
 
 
 -- Table: public.eb_user2usergroup
@@ -145,18 +100,10 @@ CREATE TABLE public.eb_user2usergroup
     revokedat timestamp without time zone,
     CONSTRAINT eb_user2usergroup_pkey PRIMARY KEY (id)
 )
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+WITH (OIDS = FALSE) TABLESPACE pg_default;
 
-ALTER TABLE public.eb_user2usergroup
-    OWNER to postgres;
+ALTER TABLE public.eb_user2usergroup OWNER to postgres;
 	
-
-	
---........................................................................................................
-
 
 -- Table: public.eb_usergroup
 
@@ -170,17 +117,10 @@ CREATE TABLE public.eb_usergroup
     eb_del boolean,
     CONSTRAINT eb_usergroup_pkey PRIMARY KEY (id)
 )
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+WITH (OIDS = FALSE) TABLESPACE pg_default;
 
-ALTER TABLE public.eb_usergroup
-    OWNER to postgres;
-	
+ALTER TABLE public.eb_usergroup OWNER to postgres;
 
-	
---.......................................................................................................
 
 -- Table: public.eb_users
 
@@ -220,14 +160,7 @@ CREATE TABLE public.eb_users
     CONSTRAINT eb_users_pkey PRIMARY KEY (id),
     CONSTRAINT socialid_unique_key UNIQUE (socialid)
 )
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+WITH (OIDS = FALSE) TABLESPACE pg_default;
 
-ALTER TABLE public.eb_users
-    OWNER to postgres;
--- Index: eb_users_email_idx
-
--- DROP INDEX public.eb_users_email_idx;
+ALTER TABLE public.eb_users OWNER to postgres;
 

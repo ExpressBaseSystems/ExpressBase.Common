@@ -24,12 +24,6 @@ TABLESPACE pg_default;
 ALTER TABLE public.eb_objects
     OWNER to postgres;
 
--- Index: eb_objects_id_idx
-
--- DROP INDEX public.eb_objects_id_idx;
-
-
---.......................................................................................
 
 -- Table: public.eb_objects_relations
 
@@ -54,9 +48,6 @@ ALTER TABLE public.eb_objects_relations
     OWNER to postgres;
 	
 
-	
---.......................................................................................
-
 -- Table: public.eb_objects_status
 
 -- DROP TABLE public.eb_objects_status;
@@ -80,8 +71,6 @@ TABLESPACE pg_default;
 ALTER TABLE public.eb_objects_status
     OWNER to postgres;
 	
-
---......................................................................................
 
 -- Table: public.eb_objects_ver
 
@@ -113,39 +102,6 @@ TABLESPACE pg_default;
 ALTER TABLE public.eb_objects_ver
     OWNER to postgres;
 
--- Index: eb_objects_ver_eb_objects_id_idx
-
--- DROP INDEX public.eb_objects_ver_eb_objects_id_idx;
-
-
-
---.....................................................................................
-
--- Table: public.eb_applications
-
--- DROP TABLE public.eb_applications;
-
-
--- Table: public.eb_applications
-
--- DROP TABLE public.eb_applications;
-
---CREATE TABLE public.eb_applications
---(
---    id integer NOT NULL DEFAULT nextval('eb_applications_id_seq'::regclass),
---    application_name text COLLATE pg_catalog."default",
---    application_type text COLLATE pg_catalog."default",
---    description text COLLATE pg_catalog."default",
---    eb_del boolean DEFAULT false,
---    CONSTRAINT eb_applications_pkey PRIMARY KEY (id)
---)
---WITH (
---    OIDS = FALSE
---)
---TABLESPACE pg_default;
-
---ALTER TABLE public.eb_applications
---    OWNER to postgres;
 
 -- Table: public.eb_applications
 
@@ -168,8 +124,7 @@ TABLESPACE pg_default;
 
 ALTER TABLE public.eb_applications
     OWNER to postgres;
-	
-	------------------------------------------------------
+
 -- Table: public.eb_objects2application
 
 -- DROP TABLE public.eb_objects2application;
