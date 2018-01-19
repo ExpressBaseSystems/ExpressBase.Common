@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace ExpressBase.Common
@@ -47,6 +48,13 @@ namespace ExpressBase.Common
     public class RowColletion : List<EbDataRow>
     {
         internal EbDataTable Table { get; set; }
+
+        [OnDeserialized]
+        public void OnDeserializedMethod(StreamingContext context)
+        {
+            foreach (EbDataRow dr in this)
+                dr.Rows = this;
+        }
 
         public RowColletion() { }
 

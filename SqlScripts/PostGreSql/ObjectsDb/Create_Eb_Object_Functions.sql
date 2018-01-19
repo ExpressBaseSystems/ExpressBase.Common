@@ -2,30 +2,29 @@
 
 -- DROP FUNCTION public.cur_val(text);
 
-CREATE OR REPLACE FUNCTION public.cur_val(
-	text)
-    RETURNS integer
-    LANGUAGE 'plpgsql'
+--CREATE OR REPLACE FUNCTION public.cur_val(
+--	text)
+--    RETURNS integer
+--    LANGUAGE 'plpgsql'
     
-AS $BODY$
+--AS $BODY$
 
-DECLARE seq ALIAS FOR $1;
-DECLARE result integer;
-BEGIN
-result := 0;
-EXECUTE 'SELECT currval(''' || seq || ''')' INTO result;
-RETURN result;
-EXCEPTION WHEN OTHERS THEN
---do nothing
-RETURN result;
-END;
+--DECLARE seq ALIAS FOR $1;
+--DECLARE result integer;
+--BEGIN
+--result := 0;
+--EXECUTE 'SELECT currval(''' || seq || ''')' INTO result;
+--RETURN result;
+--EXCEPTION WHEN OTHERS THEN
+----do nothing
+--RETURN result;
+--END;
 
-$BODY$;
+--$BODY$;
 
-ALTER FUNCTION public.cur_val(text)
-    OWNER TO postgres;
+--ALTER FUNCTION public.cur_val(text)
+--    OWNER TO postgres;
 
---....................................................................................
 -- FUNCTION: public.eb_objects_change_status(text, integer, integer, text)
 
 -- DROP FUNCTION public.eb_objects_change_status(text, integer, integer, text);
@@ -68,7 +67,7 @@ $BODY$;
 ALTER FUNCTION public.eb_objects_change_status(text, integer, integer, text)
     OWNER TO postgres;
 
---........................................................................
+
 -- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer[])
 
 -- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer[]);
@@ -165,7 +164,6 @@ ALTER FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, i
     OWNER TO postgres;
 
 
---....................................................................................
 -- FUNCTION: public.eb_objects_create_major_version(text, integer, integer, text, text, text[])
 
 -- DROP FUNCTION public.eb_objects_create_major_version(text, integer, integer, text, text, text[]);
@@ -241,7 +239,7 @@ $BODY$;
 ALTER FUNCTION public.eb_objects_create_major_version(text, integer, integer, text, text, text[])
     OWNER TO postgres;
 
---.........................................................................
+
 -- FUNCTION: public.eb_objects_create_minor_version(text, integer, integer, text, text, text[])
 
 -- DROP FUNCTION public.eb_objects_create_minor_version(text, integer, integer, text, text, text[]);
@@ -317,7 +315,7 @@ $BODY$;
 ALTER FUNCTION public.eb_objects_create_minor_version(text, integer, integer, text, text, text[])
     OWNER TO postgres;
 
---..........................................................................
+
 -- FUNCTION: public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text[], boolean, text, integer[])
 
 -- DROP FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text[], boolean, text, integer[]);
@@ -383,8 +381,6 @@ ALTER FUNCTION public.eb_objects_create_new_object(text, text, integer, integer,
     OWNER TO postgres;
 
 
-
---..............................................................
 -- FUNCTION: public.eb_objects_create_patch_version(text, integer, integer, text, text, text[])
 
 -- DROP FUNCTION public.eb_objects_create_patch_version(text, integer, integer, text, text, text[]);
@@ -457,7 +453,7 @@ $BODY$;
 ALTER FUNCTION public.eb_objects_create_patch_version(text, integer, integer, text, text, text[])
     OWNER TO postgres;
 
---..................................................
+
 -- FUNCTION: public.eb_objects_exploreobject(integer)
 
 -- DROP FUNCTION public.eb_objects_exploreobject(integer);
@@ -536,7 +532,6 @@ ALTER FUNCTION public.eb_objects_exploreobject(integer)
     OWNER TO postgres;
 
 
---............................................................
 -- FUNCTION: public.eb_objects_getversiontoopen(integer)
 
 -- DROP FUNCTION public.eb_objects_getversiontoopen(integer);
@@ -657,7 +652,7 @@ $BODY$;
 ALTER FUNCTION public.eb_objects_getversiontoopen(integer)
     OWNER TO postgres;
 
---............................................................
+
 -- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text[], text, integer[])
 
 -- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text[], text, integer[]);
@@ -732,8 +727,6 @@ ALTER FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, 
     OWNER TO postgres;
 
 
-
---.................................................................................
 -- FUNCTION: public.eb_objects_update_dashboard(text)
 
 -- DROP FUNCTION public.eb_objects_update_dashboard(text);
@@ -835,7 +828,6 @@ $BODY$;
 ALTER FUNCTION public.eb_objects_update_dashboard(text)
     OWNER TO postgres;
 
---..........................................................
 -- FUNCTION: public.eb_update_rel(integer, text[])
 
 -- DROP FUNCTION public.eb_update_rel(integer, text[]);
