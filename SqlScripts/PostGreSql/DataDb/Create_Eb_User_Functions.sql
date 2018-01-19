@@ -273,14 +273,18 @@ CREATE OR REPLACE FUNCTION public.eb_getroles(
 	userid integer)
     RETURNS TABLE(roles text, rolename text) 
     LANGUAGE 'plpgsql'
-    
+    COST 100
+    VOLATILE 
+    ROWS 1000
 AS $BODY$
 
 BEGIN
 	RETURN QUERY  
     SELECT 
     	array_to_string(array_agg(id), ','), 
-        array_to_string(array_agg(role_name), ',') FROM eb_roles WHERE id = ANY(
+        array_to_string(array_agg(role_name), ',') FROM 
+    (SELECT 
+    	id, role_name FROM eb_roles WHERE id>=100 AND id = ANY(
     SELECT role_id FROM eb_role2user WHERE user_id=userid
 	UNION ALL
 	(WITH RECURSIVE role2role AS 
@@ -295,7 +299,10 @@ BEGIN
     	SELECT e.role2_id FROM eb_role2role e, role2role r WHERE e.role1_id = r.role_id
 	) SELECT * FROM role2role)
 	ORDER BY 
-		role_id);
+		role_id)
+    UNION
+    SELECT role_id as id, CAST('SysRole' as text) as role_name FROM eb_role2user  
+    where user_id=userid AND role_id<100 AND eb_del='false') as ROLES;
 
 END;
 
