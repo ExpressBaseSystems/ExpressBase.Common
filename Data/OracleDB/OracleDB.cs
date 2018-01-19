@@ -21,8 +21,7 @@ namespace ExpressBase.Common.Data.OracleDB
         {
             this.EbBaseDbConnection = dbconf;
             _cstr = string.Format(CONNECTION_STRING_BARE, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port,  this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password);
-        }
-
+        }   
         public OracleDB()
         {
         }
