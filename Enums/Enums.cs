@@ -70,5 +70,12 @@
         Eb_User
     }
 
+	public enum EbUserStatus
+	{
+		Active,
+		Deactivated,
+		Terminated
+	}
+
 }
 
