@@ -2,28 +2,28 @@
 
 -- DROP FUNCTION public.cur_val(text);
 
-CREATE OR REPLACE FUNCTION public.cur_val(
-	text)
-    RETURNS integer
-    LANGUAGE 'plpgsql'
+--CREATE OR REPLACE FUNCTION public.cur_val(
+--	text)
+--    RETURNS integer
+--    LANGUAGE 'plpgsql'
     
-AS $BODY$
+--AS $BODY$
 
-DECLARE seq ALIAS FOR $1;
-DECLARE result integer;
-BEGIN
-result := 0;
-EXECUTE 'SELECT currval(''' || seq || ''')' INTO result;
-RETURN result;
-EXCEPTION WHEN OTHERS THEN
---do nothing
-RETURN result;
-END;
+--DECLARE seq ALIAS FOR $1;
+--DECLARE result integer;
+--BEGIN
+--result := 0;
+--EXECUTE 'SELECT currval(''' || seq || ''')' INTO result;
+--RETURN result;
+--EXCEPTION WHEN OTHERS THEN
+----do nothing
+--RETURN result;
+--END;
 
-$BODY$;
+--$BODY$;
 
-ALTER FUNCTION public.cur_val(text)
-    OWNER TO postgres;
+--ALTER FUNCTION public.cur_val(text)
+--    OWNER TO postgres;
 
 -- FUNCTION: public.eb_objects_change_status(text, integer, integer, text)
 

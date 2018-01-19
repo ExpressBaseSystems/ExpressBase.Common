@@ -38,10 +38,20 @@
     <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/Create_Eb_User_Indexes.sql" />
     <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/Create_Eb_User_Functions.sql" />
 
+    <EmbeddedResource Include="SqlScripts/Oracle/DataDb/Alter_Eb_User_SequencesOracle.sql" />
+    <EmbeddedResource Include="SqlScripts/Oracle/DataDb/Create_Eb_UserOracle.sql" />
+    <EmbeddedResource Include="SqlScripts/Oracle/DataDb/Create_Eb_user_TriggerOracle.sql" />
+    <EmbeddedResource Include="SqlScripts/Oracle/DataDb/Create_Eb_User_FunctionsOracle.sql" />
+
     <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/Create_Eb_Objects.sql" />
     <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/Alter_Eb_Object_Sequences.sql" />
     <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/Create_Eb_Object_Indexes.sql" />
     <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/Create_Eb_Object_Functions.sql" />
+
+    <EmbeddedResource Include="SqlScripts/Oracle/ObjectsDb/Create_Eb_ObjectsOracle.sql" />
+    <EmbeddedResource Include="SqlScripts/Oracle/ObjectsDb/Create_Eb_Object_TriggerOracle.sql" />
+    <EmbeddedResource Include="SqlScripts/Oracle/ObjectsDb/Create_Eb_Object_FunctionsOracle.sql" />
+    <EmbeddedResource Include="SqlScripts/Oracle/ObjectsDb/Alter_Eb_Object_SequencesOracle.sql" />
   </ItemGroup>
 
   <ItemGroup>
