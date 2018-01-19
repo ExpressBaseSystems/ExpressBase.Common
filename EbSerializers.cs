@@ -65,19 +65,19 @@ namespace ExpressBase.Common
     }
 
     [ProtoContract]
-    public class StreamObject
+    public class MemorystreamWrapper
     {
-        public StreamObject() : this(new MemoryStream()) { }
+        public MemorystreamWrapper() : this(new MemoryStream()) { }
 
-        public StreamObject(MemoryStream stream)
+        public MemorystreamWrapper(MemoryStream stream)
         {
             if (stream == null)
                 throw new ArgumentNullException();
-            this.StreamProperty = stream;
+            this.Memorystream = stream;
         }
 
         [ProtoIgnore]
-        public MemoryStream StreamProperty { get; set; }
+        public MemoryStream Memorystream { get; set; }
 
         internal static event EventHandler OnDataReadBegin;
 
@@ -96,7 +96,7 @@ namespace ExpressBase.Common
                 while (true)
                 {
                     byte[] buffer = new byte[ChunkSize];
-                    int read = StreamProperty.Read(buffer, 0, buffer.Length);
+                    int read = Memorystream.Read(buffer, 0, buffer.Length);
                     if (read <= 0)
                     {
                         break;
@@ -121,7 +121,7 @@ namespace ExpressBase.Common
                 if (value == null)
                     return;
                 foreach (var buffer in value)
-                    StreamProperty.Write(buffer.Data, 0, buffer.Data.Length);
+                    Memorystream.Write(buffer.Data, 0, buffer.Data.Length);
             }
         }
     }
