@@ -36,6 +36,7 @@ namespace ExpressBase.Common.Data.OracleDB
         public DbConnection GetNewConnection()
         {
             return new OracleConnection(_cstr);
+
         }
 
         public System.Data.Common.DbCommand GetNewCommand(DbConnection con, string sql)
@@ -51,7 +52,7 @@ namespace ExpressBase.Common.Data.OracleDB
             return new OracleParameter(parametername, type) { Value = value };
         }    
 
-        public System.Data.Common.DbParameter GetNewParameter(string parametername, OracleType type, object value)
+        public System.Data.Common.DbParameter GetNewParameter(string parametername,OracleType type, object value)
         {
             return new OracleParameter(parametername, type) { Value = value };
         }
