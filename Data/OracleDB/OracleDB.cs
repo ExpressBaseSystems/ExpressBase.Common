@@ -24,10 +24,12 @@ namespace ExpressBase.Common.Data.OracleDB
         }   
         public OracleDB()
         {
+            _cstr= "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = 139.59.12.145)(PORT = 1521))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= MASTERTEX;Password=2742371";
         }
 
         public DbConnection GetNewConnection(string dbName)
         {
+            //System.Data.Common.DbConnection con = new OracleConnection();
             return new OracleConnection(_cstr);
         }
 
