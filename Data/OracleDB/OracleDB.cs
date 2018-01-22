@@ -43,6 +43,12 @@ namespace ExpressBase.Common.Data.OracleDB
         {
             return new OracleCommand(sql, (OracleConnection)con);
         }
+
+        public System.Data.Common.DbCommand GetNewCommand(DbConnection con, string sql,DbTransaction trans)
+        {
+            return new OracleCommand(sql, (OracleConnection)con,(OracleTransaction)trans);
+        }
+
         public DbParameter GetNewParameter(string parametername, NpgsqlTypes.NpgsqlDbType type, object value)
         {
             return null;

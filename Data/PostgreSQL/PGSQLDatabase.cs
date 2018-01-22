@@ -37,6 +37,11 @@ namespace ExpressBase.Common
             return new NpgsqlCommand(sql, (NpgsqlConnection)con);
         }
 
+        public System.Data.Common.DbCommand GetNewCommand(DbConnection con, string sql,DbTransaction trans)
+        {
+            return new NpgsqlCommand(sql, (NpgsqlConnection)con, (NpgsqlTransaction)trans);
+        }
+
         public System.Data.Common.DbParameter GetNewParameter(string parametername, DbType type, object value)
         {
             return new NpgsqlParameter(parametername, type) { Value = value };
