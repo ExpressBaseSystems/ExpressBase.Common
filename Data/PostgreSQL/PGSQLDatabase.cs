@@ -109,36 +109,51 @@ namespace ExpressBase.Common
             return dt;
         }
 
+        public DbDataReader DoQueriesBasic(string query, params DbParameter[] parameters)
+        {
+            var con = GetNewConnection() as NpgsqlConnection;
+            try
+            {
+                con.Open();
+                using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
+                {
+                    if (parameters != null && parameters.Length > 0)
+                        cmd.Parameters.AddRange(parameters);
+
+                    return cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                }
+            }
+            catch (Npgsql.NpgsqlException npgse) { }
+
+            return null;
+        }
+
         public EbDataSet DoQueries(string query, params DbParameter[] parameters)
         {
             EbDataSet ds = new EbDataSet();
 
-            using (var con = GetNewConnection() as NpgsqlConnection)
+            try
             {
-                try
+                using (var reader = this.DoQueriesBasic(query, parameters))
                 {
-                    con.Open();
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
+                    do
                     {
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
-
-                        using (var reader = cmd.ExecuteReader())
+                        try
                         {
-                            do
-                            {
-                                EbDataTable dt = new EbDataTable();
-                                this.AddColumns(dt, reader.GetColumnSchema());
-                                
-                                PrepareDataTable(reader, dt);
-                                ds.Tables.Add(dt);
-                            }
-                            while (reader.NextResult());
+                            EbDataTable dt = new EbDataTable();
+                            this.AddColumns(dt, (reader as NpgsqlDataReader).GetColumnSchema());
+                            PrepareDataTable((reader as NpgsqlDataReader), dt);
+                            ds.Tables.Add(dt);
+                        }
+                        catch (Exception ee)
+                        {
+
                         }
                     }
+                    while (reader.NextResult());
                 }
-                catch (Npgsql.NpgsqlException npgse) { }
             }
+            catch (Npgsql.NpgsqlException npgse) { }
 
             return ds;
         }
