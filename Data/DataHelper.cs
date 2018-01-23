@@ -22,19 +22,19 @@ namespace ExpressBase.Common.Data
 
       //  }
 
-        public static IEnumerable<System.Data.Common.DbParameter> GetParams(TenantDbFactory factory, bool isPaged, List<Dictionary<string, string>> reqParams)
+        public static IEnumerable<System.Data.Common.DbParameter> GetParams(TenantDbFactory factory, bool isPaged, List<Dictionary<string, string>> reqParams, int iLimit, int iOffset)
         {
             if (isPaged)
             {
                 var _dicLimit = new Dictionary<string, string>();
                 _dicLimit.Add("name", "@limit");
                 _dicLimit.Add("type", ((int)System.Data.DbType.Int32).ToString());
-                _dicLimit.Add("value", "0");
+                _dicLimit.Add("value", iLimit.ToString());
 
                 var _dicOffset = new Dictionary<string, string>();
                 _dicOffset.Add("name", "@offset");
                 _dicOffset.Add("type", ((int)System.Data.DbType.Int32).ToString());
-                _dicOffset.Add("value", "0");
+                _dicOffset.Add("value", iOffset.ToString());
 
                 if (reqParams == null)
                     reqParams = new List<Dictionary<string, string>>();
