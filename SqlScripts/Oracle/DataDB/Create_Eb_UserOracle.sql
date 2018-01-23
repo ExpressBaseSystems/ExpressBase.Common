@@ -1,4 +1,5 @@
-﻿CREATE TABLE eb_role2role
+﻿
+CREATE TABLE eb_role2role
 (
     id integer,
     role1_id number,

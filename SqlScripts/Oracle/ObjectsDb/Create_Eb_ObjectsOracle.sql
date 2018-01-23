@@ -1,4 +1,5 @@
-﻿CREATE TABLE eb_objects
+﻿
+CREATE TABLE eb_objects
 (
     id integer NOT NULL,
     obj_name varchar(30),
