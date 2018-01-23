@@ -27,12 +27,12 @@ namespace ExpressBase.Common.Data
             if (isPaged)
             {
                 var _dicLimit = new Dictionary<string, string>();
-                _dicLimit.Add("name", "@limit");
+                _dicLimit.Add("name", "limit");
                 _dicLimit.Add("type", ((int)System.Data.DbType.Int32).ToString());
                 _dicLimit.Add("value", iLimit.ToString());
 
                 var _dicOffset = new Dictionary<string, string>();
-                _dicOffset.Add("name", "@offset");
+                _dicOffset.Add("name", "offset");
                 _dicOffset.Add("type", ((int)System.Data.DbType.Int32).ToString());
                 _dicOffset.Add("value", iOffset.ToString());
 
