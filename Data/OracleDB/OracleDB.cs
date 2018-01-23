@@ -9,7 +9,7 @@ using System.Data.OracleClient;
 using System.Net.Sockets;
 using System.Text;
 
-namespace ExpressBase.Common.Data.OracleDB
+namespace ExpressBase.Common.Data
 {
     public class OracleDB : IDatabase
     {
