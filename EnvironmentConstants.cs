@@ -6,12 +6,12 @@ namespace ExpressBase.Common
 {
     public class EnvironmentConstants
     {
-        public const string SERVICESTACKEXTURL = "ServiceStackExtUrl";
-        public const string SERVICESTACKINTURL = "ServiceStackIntUrl";
+        public const string SERVICESTACK_EXT_URL = "SERVICESTACK_EXT_URL";
+        public const string SERVICESTACK_INT_URL = "SERVICESTACK_INT_URL";
 
-        public const string REDISSERVER = "RedisServer";
-        public const string REDISPORT = "RedisPort";
-        public const string REDISPASSWORD = "RedisPassword";
+        public const string REDIS_SERVER = "REDIS_SERVER";
+        public const string REDIS_PORT = "REDIS_PORT";
+        public const string REDIS_PASSWORD = "REDIS_PASSWORD";
 
 
     }
