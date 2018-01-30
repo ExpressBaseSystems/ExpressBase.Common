@@ -41,6 +41,7 @@ namespace ExpressBase.Common.Connections
                 var iCount = dbconf.DataDB.DoNonQuery(sql, parameters);
             }
         }
+
     }
 
     public abstract class EbBaseDbConnection : IEbConnection
@@ -89,6 +90,7 @@ namespace ExpressBase.Common.Connections
         public string FilesDB_url { get; set; }
 
         public override EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.EbFILES; } }
+
     }
 
     public class EbLogsDbConnection : EbBaseDbConnection
