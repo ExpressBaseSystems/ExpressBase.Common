@@ -8,7 +8,7 @@ using ServiceStack.Redis;
 
 namespace ExpressBase.Common.Data
 {
-    public class TenantDbFactory : ITenantDbFactory
+    public class TenantDbFactory : IEbTenantDbFactory
     {
         public IDatabase ObjectsDB { get; private set; }
 
@@ -55,6 +55,13 @@ namespace ExpressBase.Common.Data
                 _config = this.Redis.Get<EbSolutionConnections>(string.Format("EbSolutionConnections_{0}", this.TenantId));
 
                 InitDatabases();
+                if (this.TenantId == "expressbase")
+                {
+                    InfraDbFactory _infra = new InfraDbFactory();
+                    DataDB = _infra.DataDB;
+                    LogsDB = _infra.LogsDB;
+                    FilesDB = _infra.FilesDB;
+                }
             }
         }
 

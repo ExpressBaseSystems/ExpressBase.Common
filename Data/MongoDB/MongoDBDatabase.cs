@@ -18,11 +18,18 @@ namespace ExpressBase.Common.Data.MongoDB
         private string TenantId { get; set; }
         private BsonDocument Metadata { get; set; }
 
+        public MongoDBDatabase(EbFilesDbConnection dbconf)
+        {
+            this.TenantId = EnvironmentConstants.EB_INFRASTRUCTURE;
+            mongoClient = new MongoClient(dbconf.FilesDB_url);
+            mongoDatabase = mongoClient.GetDatabase(this.TenantId);
+        }
+
         public MongoDBDatabase(string tenantId, EbFilesDbConnection dbconf)
         {
             this.TenantId = tenantId;
             mongoClient = new MongoClient(dbconf.FilesDB_url);
-            mongoDatabase = mongoClient.GetDatabase(tenantId);
+            mongoDatabase = mongoClient.GetDatabase(this.TenantId);
         }
 
         public ObjectId UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, string bucketName)

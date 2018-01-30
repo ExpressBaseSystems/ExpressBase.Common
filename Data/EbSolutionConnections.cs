@@ -24,19 +24,4 @@ namespace ExpressBase.Common.Data
 
         public SMSConnection SMSConnection { get; set; }
     }
-
-    public interface ITenantDbFactory
-    {
-        IDatabase ObjectsDB { get; }
-
-        IDatabase DataDB { get; }
-
-        IDatabase DataDBRO { get; }
-
-        INoSQLDatabase FilesDB { get; }
-
-        IDatabase LogsDB { get; }
-
-        ISMSService SMSService { get; }
-    }
 }
