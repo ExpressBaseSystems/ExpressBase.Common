@@ -16,7 +16,7 @@ namespace ExpressBase.Common.Connections
 
         public string NickName { get; set; }
 
-        public virtual void Persist(string TenantAccountId, IEbInfraDbFactory dbconf, bool IsNew, int UserId)
+        public virtual void Persist(string TenantAccountId, IEbConnectionFactory dbconf, bool IsNew, int UserId)
         {
             if (IsNew)
             {

@@ -4,8 +4,8 @@ using System.Text;
 
 namespace ExpressBase.Common.Messaging
 {
-    public interface ISMSService
+    public interface ISMSConnection
     {
-        Dictionary<string, string> SentSMS(string to, string from, string body);
+        Dictionary<string, string> SendSMS(string to, string from, string body);
     }
 }

@@ -8,7 +8,7 @@ using Twilio.Types;
 
 namespace ExpressBase.Common.Messaging.Twilio
 {
-    public class TwilioService : ISMSService
+    public class TwilioService : ISMSConnection
     {
         private string accountSid { get; set; }
         private string authToken { get; set; }
@@ -25,7 +25,7 @@ namespace ExpressBase.Common.Messaging.Twilio
             from = new PhoneNumber(SMSConnection.From);
         }
 
-        public Dictionary<string, string> SentSMS(string sTo, string sFrom, string body)
+        public Dictionary<string, string> SendSMS(string sTo, string sFrom, string body)
         {
             Dictionary<string, string> msgStatus = new Dictionary<string, string>();
             try

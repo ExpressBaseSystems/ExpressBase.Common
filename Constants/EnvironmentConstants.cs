@@ -19,6 +19,8 @@ namespace ExpressBase.Common
         public const string EB_INFRA_DB_PORT = "EB_INFRA_DB_PORT";
         public const string EB_INFRA_DB_TIMEOUT = "EB_INFRA_DB_TIMEOUT";
 
+        public const string EB_INFRA_DBNAME = "EB_INFRA_DBNAME";
+
         public const string EB_INFRA_DB_RO_USER = "EB_INFRA_DB_RO_USER";
         public const string EB_INFRA_DB_RO_PASSWORD = "EB_INFRA_DB_RO_PASSWORD";
         public const string EB_INFRA_DB_RW_USER = "EB_INFRA_DB_RW_USER";

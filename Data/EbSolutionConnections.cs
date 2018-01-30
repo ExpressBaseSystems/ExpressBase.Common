@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ExpressBase.Common.Data
 {
-    public class EbSolutionConnections
+    public class EbConnections
     {
         public string SolutionId { get; set; }
 
