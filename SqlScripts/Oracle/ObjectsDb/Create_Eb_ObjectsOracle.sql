@@ -1,5 +1,9 @@
-﻿
-CREATE TABLE eb_objects
+﻿DECLARE
+eb_del varchar(10);  
+
+BEGIN
+  eb_del := 'F'; 
+EXECUTE IMMEDIATE 'CREATE TABLE eb_objects
 (
     id integer NOT NULL,
     obj_name varchar(30),
@@ -11,9 +15,9 @@ CREATE TABLE eb_objects
     owner_uid integer,
     owner_ts timestamp,
     CONSTRAINT eb_objects_pkey PRIMARY KEY (id)
-);
+)';
 
-CREATE TABLE eb_objects_relations
+EXECUTE IMMEDIATE 'CREATE TABLE eb_objects_relations
 (
     dominant varchar(30),
     dependant varchar(30),
@@ -22,31 +26,31 @@ CREATE TABLE eb_objects_relations
     removed_by integer,
     removed_at timestamp,
     CONSTRAINT eb_objects_relations_pkey PRIMARY KEY (id)
-);
+)';
 
-CREATE TABLE eb_applications
+EXECUTE IMMEDIATE 'CREATE TABLE eb_applications
 (
     id integer NOT NULL,
     application_name varchar(30),
     application_type varchar(20),
     description varchar(200),
-    eb_del char DEFAULT 'F',
+    eb_del char DEFAULT '''|| eb_del ||''',
     app_icon varchar(20),
     CONSTRAINT eb_applications_pkey PRIMARY KEY (id)
-)
+)';
 
-CREATE TABLE eb_objects2application
+EXECUTE IMMEDIATE 'CREATE TABLE eb_objects2application
 (
     app_id integer,
     id integer NOT NULL,
     obj_id integer,
-    eb_del char DEFAULT 'F',
+    eb_del char DEFAULT '''|| eb_del ||''',
     removed_by integer,
     removed_at timestamp,
 	CONSTRAINT eb_objects2application_pkey PRIMARY KEY (id)
-);
+)';
 
-CREATE TABLE eb_objects_status
+EXECUTE IMMEDIATE 'CREATE TABLE eb_objects_status
 (
     id integer NOT NULL,
     refid varchar(20),
@@ -56,9 +60,9 @@ CREATE TABLE eb_objects_status
     eb_obj_ver_id integer,
     changelog varchar(20),
     CONSTRAINT eb_objects_status_pkey PRIMARY KEY (id)
-);
+)';
 
-CREATE TABLE eb_objects_ver
+EXECUTE IMMEDIATE 'CREATE TABLE eb_objects_ver
 (
     id integer NOT NULL,
     eb_objects_id integer,
@@ -71,7 +75,8 @@ CREATE TABLE eb_objects_ver
     major_ver_num integer,
     minor_ver_num integer,
     patch_ver_num integer,
-    working_mode char DEFAULT 'F',
+    working_mode char DEFAULT '''|| eb_del ||''',
     status_id integer,
     CONSTRAINT eb_objects_ver_pkey PRIMARY KEY (id)
-);
+)';
+END;
