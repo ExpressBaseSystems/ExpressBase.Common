@@ -31,7 +31,10 @@ namespace ExpressBase.Common.Data
 
         private string TenantId { get; set; }
 
-        private ILog Logger { get { return LogManager.GetLogger(GetType()); } }
+        private ILog Logger
+        {
+            get { return LogManager.GetLogger(GetType()); }
+        }
 
         private EbConnections _connections = null;
         private EbConnections Connections
@@ -127,6 +130,19 @@ namespace ExpressBase.Common.Data
             this.Redis = c.Resolve<IRedisClientsManager>().GetClient() as RedisClient;
 
             InitDatabases();
+        }
+
+        ~EbConnectionFactory()
+        {
+            this.ObjectsDB = null;
+            this.DataDB = null;
+            this.DataDBRO = null;
+            this.FilesDB = null;
+            this.LogsDB = null;
+            this.SMSConnection = null;
+            this.SMTPConnection = null;
+            this.TenantId = null;
+            this._connections = null;
         }
 
         private void InitDatabases()
