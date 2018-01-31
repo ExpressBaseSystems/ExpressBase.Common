@@ -22,7 +22,7 @@ namespace ExpressBase.Common.Data
 
       //  }
 
-        public static IEnumerable<System.Data.Common.DbParameter> GetParams(TenantDbFactory factory, bool isPaged, List<Dictionary<string, string>> reqParams, int iLimit, int iOffset)
+        public static IEnumerable<System.Data.Common.DbParameter> GetParams(EbConnectionFactory factory, bool isPaged, List<Dictionary<string, string>> reqParams, int iLimit, int iOffset)
         {
             if (isPaged)
             {

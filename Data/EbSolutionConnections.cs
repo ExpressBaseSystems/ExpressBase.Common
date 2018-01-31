@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ExpressBase.Common.Data
 {
-    public class EbSolutionConnections
+    public class EbConnections
     {
         public string SolutionId { get; set; }
 
@@ -23,20 +23,5 @@ namespace ExpressBase.Common.Data
         public SMTPConnection SMTPConnection { get; set; }
 
         public SMSConnection SMSConnection { get; set; }
-    }
-
-    public interface ITenantDbFactory
-    {
-        IDatabase ObjectsDB { get; }
-
-        IDatabase DataDB { get; }
-
-        IDatabase DataDBRO { get; }
-
-        INoSQLDatabase FilesDB { get; }
-
-        IDatabase LogsDB { get; }
-
-        ISMSService SMSService { get; }
     }
 }
