@@ -87,10 +87,11 @@ namespace ExpressBase.Common.Data
         }
 
         // TO CREATE NEW SOLUTION DB IN DATA CENTER
-        public EbConnectionFactory(EbConnectionsConfig config)
+        public EbConnectionFactory(EbConnectionsConfig config, string solutionId)
         {
+            this.SolutionId = solutionId;
             this.Connections = config;
-
+            
             InitDatabases();
         }
 

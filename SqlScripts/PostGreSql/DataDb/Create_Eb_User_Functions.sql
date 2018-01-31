@@ -300,7 +300,7 @@ BEGIN
 	) SELECT * FROM role2role)
 	ORDER BY 
 		role_id)
-    UNION
+	UNION
     SELECT role_id as id, CAST('SysRole' as text) as role_name FROM eb_role2user  
     where user_id=userid AND role_id<100 AND eb_del='false') as ROLES;
 
@@ -310,4 +310,95 @@ $BODY$;
 
 ALTER FUNCTION public.eb_getroles(integer)
     OWNER TO postgres;
+
+
+-- FUNCTION: public.eb_authenticateuser1(text, text)
+
+-- DROP FUNCTION public.eb_authenticateuser1(text, text);
+
+CREATE OR REPLACE FUNCTION public.eb_authenticateuser1(
+	uname text,
+	passwrd text)
+    RETURNS TABLE(userid integer, email text, firstname text, profileimage text, prolink text, roles_a text, rolename_a text, permissions text, loginattempts integer) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+DECLARE userid INTEGER;
+DECLARE email TEXT;
+DECLARE firstname TEXT;
+DECLARE profileimage TEXT;
+DECLARE prolink TEXT;
+DECLARE roles_a TEXT;
+DECLARE rolename_a TEXT;
+DECLARE permissions TEXT;
+DECLARE loginattempts INTEGER;
+BEGIN
+
+	SELECT eb_users.id, eb_users.email,eb_users.firstname,eb_users.profileimg,eb_users.prolink,eb_users.loginattempts  
+		FROM eb_users WHERE eb_users.email = uname AND pwd = passwrd INTO userid, email, firstname, profileimage, prolink, loginattempts;
+
+    SELECT roles, rolename FROM eb_getroles(userid) INTO roles_a, rolename_a;
+    
+    SELECT eb_getpermissions(string_to_array(roles_a, ',')::int[]) INTO permissions;
+    
+    IF userid > 0 THEN
+    RETURN QUERY
+    	SELECT userid, email, firstname,profileimage,prolink, roles_a, rolename_a, permissions, loginattempts;
+   	END IF;
+
+END;
+
+$BODY$;
+
+ALTER FUNCTION public.eb_authenticateuser1(text, text)
+    OWNER TO postgres;
+
+-- FUNCTION: public.eb_authenticateuser2(text)
+
+-- DROP FUNCTION public.eb_authenticateuser2(text);
+
+CREATE OR REPLACE FUNCTION public.eb_authenticateuser2(
+	_socialid text)
+    RETURNS TABLE(userid integer, email text, firstname text, profileimage text, prolink text, roles_a text, rolename_a text, permissions text, loginattempts integer) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+DECLARE userid INTEGER;
+DECLARE email TEXT;
+DECLARE firstname TEXT;
+DECLARE profileimage TEXT;
+DECLARE prolink TEXT;
+DECLARE roles_a TEXT;
+DECLARE rolename_a TEXT;
+DECLARE permissions TEXT;
+DECLARE loginattempts INTEGER;
+BEGIN
+
+    SELECT eb_users.id, eb_users.email,eb_users.firstname,eb_users.profileimg,eb_users.prolink,eb_users.loginattempts  
+		FROM eb_users WHERE eb_users.socialid = _socialid INTO userid, email, firstname, profileimage, prolink, loginattempts;
+
+    SELECT roles, rolename FROM eb_getroles(userid) INTO roles_a, rolename_a;
+    
+    SELECT eb_getpermissions(string_to_array(roles_a, ',')::int[]) INTO permissions;
+    
+    IF userid > 0 THEN
+    RETURN QUERY
+    	SELECT userid, email, firstname,profileimage,prolink, roles_a, rolename_a, permissions, loginattempts;
+   	END IF;
+
+END;
+
+$BODY$;
+
+ALTER FUNCTION public.eb_authenticateuser2(text)
+    OWNER TO postgres;
+
 
