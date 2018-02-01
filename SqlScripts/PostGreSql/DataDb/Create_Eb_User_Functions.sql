@@ -48,6 +48,146 @@ ALTER FUNCTION public.eb_authenticateuser(text, text, text)
     OWNER TO postgres;
 
 
+-- FUNCTION: public.eb_authenticatenormal(text, text)
+
+-- DROP FUNCTION public.eb_authenticatenormal(text, text);
+
+
+CREATE OR REPLACE FUNCTION public.eb_authenticatenormal(
+	uname text,
+	passwrd text)
+    RETURNS TABLE(userid integer, email text, firstname text, profileimage text, prolink text, roles_a text, rolename_a text, permissions text, loginattempts integer) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+DECLARE userid INTEGER;
+DECLARE email TEXT;
+DECLARE firstname TEXT;
+DECLARE profileimage TEXT;
+DECLARE prolink TEXT;
+DECLARE roles_a TEXT;
+DECLARE rolename_a TEXT;
+DECLARE permissions TEXT;
+DECLARE loginattempts INTEGER;
+BEGIN
+
+	SELECT eb_users.id, eb_users.email,eb_users.firstname,eb_users.profileimg,eb_users.prolink,eb_users.loginattempts  
+		FROM eb_users WHERE eb_users.email = uname AND pwd = passwrd INTO userid, email, firstname, profileimage, prolink, loginattempts;
+
+    SELECT roles, rolename FROM eb_getroles(userid) INTO roles_a, rolename_a;
+    
+    SELECT eb_getpermissions(string_to_array(roles_a, ',')::int[]) INTO permissions;
+    
+    IF userid > 0 THEN
+    RETURN QUERY
+    	SELECT userid, email, firstname,profileimage,prolink, roles_a, rolename_a, permissions, loginattempts;
+   	END IF;
+
+END;
+
+$BODY$;
+
+ALTER FUNCTION public.eb_authenticatenormal(text, text)
+    OWNER TO postgres;
+
+
+-- FUNCTION: public.eb_authenticatesocial(text)
+
+-- DROP FUNCTION public.eb_authenticatesocial(text);
+
+CREATE OR REPLACE FUNCTION public.eb_authenticatesocial(
+	_socialid text)
+    RETURNS TABLE(userid integer, email text, firstname text, profileimage text, prolink text, roles_a text, rolename_a text, permissions text, loginattempts integer) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+DECLARE userid INTEGER;
+DECLARE email TEXT;
+DECLARE firstname TEXT;
+DECLARE profileimage TEXT;
+DECLARE prolink TEXT;
+DECLARE roles_a TEXT;
+DECLARE rolename_a TEXT;
+DECLARE permissions TEXT;
+DECLARE loginattempts INTEGER;
+BEGIN
+
+    SELECT eb_users.id, eb_users.email,eb_users.firstname,eb_users.profileimg,eb_users.prolink,eb_users.loginattempts  
+		FROM eb_users WHERE eb_users.socialid = _socialid INTO userid, email, firstname, profileimage, prolink, loginattempts;
+
+    SELECT roles, rolename FROM eb_getroles(userid) INTO roles_a, rolename_a;
+    
+    SELECT eb_getpermissions(string_to_array(roles_a, ',')::int[]) INTO permissions;
+    
+    IF userid > 0 THEN
+    RETURN QUERY
+    	SELECT userid, email, firstname,profileimage,prolink, roles_a, rolename_a, permissions, loginattempts;
+   	END IF;
+
+END;
+
+$BODY$;
+
+ALTER FUNCTION public.eb_authenticatesocial(text)
+    OWNER TO postgres;
+
+
+-- FUNCTION: public.eb_authenticatesso(text)
+
+-- DROP FUNCTION public.eb_authenticatesso(text);
+
+CREATE OR REPLACE FUNCTION public.eb_authenticatesso(
+	uname text)
+    RETURNS TABLE(userid integer, email text, firstname text, profileimage text, prolink text, roles_a text, rolename_a text, permissions text, loginattempts integer) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+DECLARE userid INTEGER;
+DECLARE email TEXT;
+DECLARE firstname TEXT;
+DECLARE profileimage TEXT;
+DECLARE prolink TEXT;
+DECLARE roles_a TEXT;
+DECLARE rolename_a TEXT;
+DECLARE permissions TEXT;
+DECLARE loginattempts INTEGER;
+BEGIN
+
+	SELECT eb_users.id, eb_users.email,eb_users.firstname,eb_users.profileimg,eb_users.prolink,eb_users.loginattempts  
+		FROM eb_users WHERE eb_users.email = uname INTO userid, email, firstname, profileimage, prolink, loginattempts;
+
+    SELECT roles, rolename FROM eb_getroles(userid) INTO roles_a, rolename_a;
+    
+    SELECT eb_getpermissions(string_to_array(roles_a, ',')::int[]) INTO permissions;
+    
+    IF userid > 0 THEN
+    RETURN QUERY
+    	SELECT userid, email, firstname,profileimage,prolink, roles_a, rolename_a, permissions, loginattempts;
+   	END IF;
+
+END;
+
+$BODY$;
+
+ALTER FUNCTION public.eb_authenticatesso(text)
+    OWNER TO postgres;
+
+
+
+
+
 -- FUNCTION: public.eb_create_or_update_rbac_manageroles(integer, integer, integer, text, text, integer[], integer[], text[])
 
 -- DROP FUNCTION public.eb_create_or_update_rbac_manageroles(integer, integer, integer, text, text, integer[], integer[], text[]);
