@@ -26,6 +26,13 @@ namespace ExpressBase.Common
         public const string EB_INFRA_DB_RW_USER = "EB_INFRA_DB_RW_USER";
         public const string EB_INFRA_DB_RW_PASSWORD = "EB_INFRA_DB_RW_PASSWORD";
 
+        public const string EB_DATACENTRE_SERVER = "EB_DATACENTRE_SERVER";
+        public const string EB_DATACENTRE_PORT = "EB_DATACENTRE_PORT";
+        public const string EB_DATACENTRE_TIMEOUT = "EB_DATACENTRE_TIMEOUT";
+
+        public const string EB_DATACENTRE_ADMIN_USER = "EB_DATACENTRE_ADMIN_USER";
+        public const string EB_DATACENTRE_ADMIN_PASSWORD = "EB_DATACENTRE_ADMIN_PASSWORD";
+
         public const string EB_INFRA_FILES_DB_URL = "EB_INFRA_FILES_DB_URL";
 
         public const string EB_JWT_PRIVATE_KEY_XML = "EB_JWT_PRIVATE_KEY_XML";

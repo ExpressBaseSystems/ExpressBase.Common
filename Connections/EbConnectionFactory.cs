@@ -29,83 +29,40 @@ namespace ExpressBase.Common.Data
 
         private RedisClient Redis { get; set; }
 
-        private string TenantId { get; set; }
+        private string SolutionId { get; set; }
 
-        private ILog Logger { get { return LogManager.GetLogger(GetType()); } }
+        private ILog Logger
+        {
+            get { return LogManager.GetLogger(GetType()); }
+        }
 
-        private EbConnections _connections = null;
-        private EbConnections Connections
+        private EbConnectionsConfig _connections = null;
+        private EbConnectionsConfig Connections
         {
             get
             {
-                if (_connections == null && !string.IsNullOrEmpty(this.TenantId))
+                if (_connections == null && !string.IsNullOrEmpty(this.SolutionId))
                 {
-                    if (this.TenantId == CoreConstants.EXPRESSBASE)
-                        _connections = InfraConnections;
+                    if (this.SolutionId == CoreConstants.EXPRESSBASE)
+                        _connections = EbConnectionsConfigProvider.InfraConnections;
                     else
-                        _connections = this.Redis.Get<EbConnections>(string.Format(CoreConstants.SOLUTION_CONNECTION_REDIS_KEY, this.TenantId));
+                        _connections = this.Redis.Get<EbConnectionsConfig>(string.Format(CoreConstants.SOLUTION_CONNECTION_REDIS_KEY, this.SolutionId));
                 }
 
                 return _connections;
             }
-        }
 
-        private static EbConnections _infraConnections = null;
-        private static EbConnections InfraConnections
-        {
-            get
+            set
             {
-                if (_infraConnections == null)
-                {
-                    _infraConnections = new EbConnections
-                    {
-                        ObjectsDbConnection = new Connections.EbObjectsDbConnection
-                        {
-                            DatabaseVendor = DatabaseVendors.PGSQL,
-                            Server = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_SERVER),
-                            Port = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_PORT)),
-                            DatabaseName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DBNAME),
-                            UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_USER),
-                            Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_PASSWORD),
-                            Timeout = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_TIMEOUT))
-                        },
-                        DataDbConnection = new Connections.EbDataDbConnection
-                        {
-                            DatabaseVendor = DatabaseVendors.PGSQL,
-                            Server = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_SERVER),
-                            Port = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_PORT)),
-                            DatabaseName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DBNAME),
-                            UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_USER),
-                            Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_PASSWORD),
-                            Timeout = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_TIMEOUT))
-                        },
-                        LogsDbConnection = new Connections.EbLogsDbConnection
-                        {
-                            DatabaseVendor = DatabaseVendors.PGSQL,
-                            Server = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_SERVER),
-                            Port = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_PORT)),
-                            DatabaseName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DBNAME),
-                            UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_USER),
-                            Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_PASSWORD),
-                            Timeout = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_TIMEOUT))
-                        },
-                        FilesDbConnection = new Connections.EbFilesDbConnection
-                        {
-                            FilesDbVendor = FilesDbVendors.MongoDB,
-                            FilesDB_url = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_FILES_DB_URL)
-                        }
-                        //ADD EMAIL & SMS etc
-                    };
-                }
-
-                return _infraConnections;
+                _connections = value;
             }
         }
 
+        // RETURN EITHER INFA FAC OR SOLUTION FAC
         public EbConnectionFactory(string tenantId, IRedisClient redis)
         {
-            this.TenantId = tenantId;
-            if (string.IsNullOrEmpty(this.TenantId))
+            this.SolutionId = tenantId;
+            if (string.IsNullOrEmpty(this.SolutionId))
                 throw new Exception("Fatal Error :: Solution Id is null or Empty!");
 
             this.Redis = redis as RedisClient;
@@ -116,17 +73,39 @@ namespace ExpressBase.Common.Data
         //Call from ServiceStack
         public EbConnectionFactory(Container c)
         {
-            this.TenantId = CoreConstants.EXPRESSBASE; // REMOVE DANGER
+            this.SolutionId = CoreConstants.EXPRESSBASE; // REMOVE DANGER
 
             if (HostContext.RequestContext.Items.Contains(CoreConstants.SOLUTION_ID)) // check the security issue
-                this.TenantId = HostContext.RequestContext.Items[CoreConstants.SOLUTION_ID].ToString();
+                this.SolutionId = HostContext.RequestContext.Items[CoreConstants.SOLUTION_ID].ToString();
 
-            if (string.IsNullOrEmpty(this.TenantId))
+            if (string.IsNullOrEmpty(this.SolutionId))
                 throw new Exception("Fatal Error :: Solution Id is null or Empty!");
 
             this.Redis = c.Resolve<IRedisClientsManager>().GetClient() as RedisClient;
 
             InitDatabases();
+        }
+
+        // TO CREATE NEW SOLUTION DB IN DATA CENTER
+        public EbConnectionFactory(EbConnectionsConfig config, string solutionId)
+        {
+            this.SolutionId = solutionId;
+            this.Connections = config;
+            
+            InitDatabases();
+        }
+
+        ~EbConnectionFactory()
+        {
+            this.ObjectsDB = null;
+            this.DataDB = null;
+            this.DataDBRO = null;
+            this.FilesDB = null;
+            this.LogsDB = null;
+            this.SMSConnection = null;
+            this.SMTPConnection = null;
+            this.SolutionId = null;
+            this._connections = null;
         }
 
         private void InitDatabases()
@@ -152,12 +131,12 @@ namespace ExpressBase.Common.Data
                     DataDBRO = new OracleDB(Connections.DataDbConnection);
 
                 // LOGS DB
-                LogsDB = new PGSQLDatabase(InfraConnections.LogsDbConnection);
+                LogsDB = new PGSQLDatabase(EbConnectionsConfigProvider.InfraConnections.LogsDbConnection);
 
                 if (Connections.FilesDbConnection != null)
-                    FilesDB = new MongoDBDatabase(this.TenantId, Connections.FilesDbConnection);
+                    FilesDB = new MongoDBDatabase(this.SolutionId, Connections.FilesDbConnection);
                 else
-                    FilesDB = new MongoDBDatabase(this.TenantId, InfraConnections.FilesDbConnection);
+                    FilesDB = new MongoDBDatabase(this.SolutionId, EbConnectionsConfigProvider.InfraConnections.FilesDbConnection);
 
                 //if (Connections.SMTPConnection != null)
                 //    SMTPConnection = new EmailService(Connections.SMTPConnection);
