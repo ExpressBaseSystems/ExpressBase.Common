@@ -24,7 +24,8 @@ namespace ExpressBase.Common.Data
         }   
         public OracleDB()
         {
-            _cstr= "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = 139.59.12.145)(PORT = 1521))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= MASTERTEX;Password=2742371";
+            _cstr= "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = 35.200.241.84)(PORT = 1521))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= MASTERTEX;Password=master";
+            //_cstr = "Data Source = RHEL5; User ID = TEST; Password = Passw0rd1 ";
         }
 
         public DbConnection GetNewConnection(string dbName)
@@ -71,16 +72,20 @@ namespace ExpressBase.Common.Data
             {
                 try
                 {
+                    string[] sql_arr = query.Split(";");
                     con.Open();
-                    using (OracleCommand cmd = new OracleCommand(query, con))
+                    for (int i = 0; i < sql_arr.Length-1; i++)
                     {
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
-
-                        using (var reader = cmd.ExecuteReader())
+                        using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                         {
-                            while (reader.Read())
-                                obj = (T)reader.GetValue(0);
+                            if (parameters != null && parameters.Length > 0)
+                                cmd.Parameters.AddRange(parameters);
+
+                            using (var reader = cmd.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                    obj = (T)reader.GetValue(0);
+                            }
                         }
                     }
                 }
@@ -94,22 +99,26 @@ namespace ExpressBase.Common.Data
         public EbDataTable DoQuery(string query, params DbParameter[] parameters)
         {
             EbDataTable dt = new EbDataTable();
+            string[] sql_arr = query.Split(";");
 
             using (var con = GetNewConnection() as OracleConnection)
             {
                 try
                 {
                     con.Open();
-                    using (OracleCommand cmd = new OracleCommand(query, con))
+                    for (int i = 0; i < sql_arr.Length-1; i++)
                     {
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
-
-                        using (var reader = cmd.ExecuteReader())
+                        using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                         {
-                            DataTable schema = reader.GetSchemaTable();
-                            this.AddColumns(dt, schema);
-                            PrepareDataTable(reader, dt);
+                            if (parameters != null && parameters.Length > 0)
+                                cmd.Parameters.AddRange(parameters);
+
+                            using (var reader = cmd.ExecuteReader())
+                            {
+                                DataTable schema = reader.GetSchemaTable();
+                                this.AddColumns(dt, schema);
+                                PrepareDataTable(reader, dt);
+                            }
                         }
                     }
                 }
@@ -120,36 +129,57 @@ namespace ExpressBase.Common.Data
             return dt;
         }
 
+        public DbDataReader DoQueriesBasic(string query, params DbParameter[] parameters)
+        {
+            var con = GetNewConnection() as OracleConnection;
+            try
+            {
+                con.Open();
+                string[] sql_arr = query.Split(";");
+                for (int i = 0; i < sql_arr.Length - 1; i++)
+                {
+                    using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+
+                        return cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                    }
+                }
+            }
+            catch (OracleException ex) { }
+
+            return null;
+        }
+
+
         public EbDataSet DoQueries(string query, params DbParameter[] parameters)
         {
             EbDataSet ds = new EbDataSet();
+            string[] sql_arr = query.Split(";");
 
             using (var con = GetNewConnection() as OracleConnection)
             {
                 try
                 {
                     con.Open();
-                    using (OracleCommand cmd = new OracleCommand(query, con))
+                    for (int i = 0; i < sql_arr.Length-1; i++)
                     {
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
-
-                        using (var reader = cmd.ExecuteReader())
+                        using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                         {
-                            EbDataTable dt = new EbDataTable();
-                            DataTable schema = reader.GetSchemaTable();
-                            this.AddColumns(dt, schema);
-                            PrepareDataTable(reader, dt);
-                            ds.Tables.Add(dt);
-                            //do
-                            //{
-                            //    EbDataTable dt = new EbDataTable();
-                            //    this.AddColumns(dt, reader.GetColumnSchema());
+                            if (parameters != null && parameters.Length > 0)
+                                cmd.Parameters.AddRange(parameters);
 
-                            //    PrepareDataTable(reader, dt);
-                            //    ds.Tables.Add(dt);
-                            //}
-                            //while (reader.NextResult());
+                            using (var reader = cmd.ExecuteReader())
+                            {
+                                EbDataTable dt = new EbDataTable();
+                                DataTable schema = reader.GetSchemaTable();
+
+                                this.AddColumns(dt, schema);
+                                PrepareDataTable(reader, dt);
+                                ds.Tables.Add(dt);
+                               
+                            }
                         }
                     }
                 }
