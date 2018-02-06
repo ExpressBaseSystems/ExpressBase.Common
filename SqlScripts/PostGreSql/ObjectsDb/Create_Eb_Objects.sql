@@ -115,6 +115,7 @@ CREATE TABLE public.eb_applications
     description text COLLATE pg_catalog."default",
     eb_del boolean DEFAULT false,
     app_icon text COLLATE pg_catalog."default",
+    app_id text COLLATE pg_catalog."default",
     CONSTRAINT eb_applications_pkey PRIMARY KEY (id)
 )
 WITH (
