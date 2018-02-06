@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExpressBase.Common.Structures;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -63,11 +64,12 @@ namespace ExpressBase.Common.Objects.Attributes
         public Alias(string alias) { this.Name = alias; }
     }
 
-    public class OSE_ObjectTypes : Attribute
+	[AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
+	public class OSE_ObjectTypes : Attribute
     {
-        public EbObjectType[] ObjectTypes { get; set; }
+        public int[] ObjectTypes { get; set; }
 
-        public OSE_ObjectTypes(params EbObjectType[] objectTypes) { this.ObjectTypes = objectTypes; }
+        public OSE_ObjectTypes(params int[] objectTypes) { this.ObjectTypes = objectTypes; }
     }
 
 

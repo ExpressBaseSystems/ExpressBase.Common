@@ -226,12 +226,8 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
         private string Get_EbObjTypesStr()
         {
             Dictionary<string, int> _dic = new Dictionary<string, int>();
-            foreach (string enumString in Enum.GetNames(typeof(EbObjectType)))
-            {
-                EbObjectType _type;
-                Enum.TryParse(enumString, out _type);
-                _dic.Add(enumString, (int)_type);
-            }
+			foreach (Structures.EbObjectType objectType in Structures.EbObjectTypes.Enumerator)
+                _dic.Add(objectType.Name, objectType.IntCode);
 
             return EbSerializers.Json_Serialize(_dic);
         }
