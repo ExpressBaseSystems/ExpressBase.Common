@@ -940,17 +940,17 @@ CREATE OR REPLACE FUNCTION public.eb_getroles_test(
     ROWS 1000
 AS $BODY$
 
-	DECLARE app_type text[];
+	DECLARE app_type integer[];
 BEGIN
 	
     IF wc = 'tc' OR wc = 'dc' OR wc = 'uc' THEN
-    app_type:='{Web, Mobile, Bot}';
+    app_type:='{1, 2, 3}';
     END IF;
 	IF wc = 'mc' THEN
-    app_type:='{Mobile}';
+    app_type:='{2}';
     END IF;
-    IF wc = 'bt' THEN
-    app_type:='{Bot}';
+    IF wc = 'bc' THEN
+    app_type:='{3}';
     END IF;
     
 	RETURN QUERY  
