@@ -1,4 +1,6 @@
-﻿namespace ExpressBase.Common
+﻿using System.ComponentModel;
+
+namespace ExpressBase.Common
 {
 
 	public enum EbApplicationTypes
