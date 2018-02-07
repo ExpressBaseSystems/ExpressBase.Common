@@ -1,6 +1,14 @@
 ﻿namespace ExpressBase.Common
 {
-    public enum EbTiers
+
+	public enum EbApplicationTypes
+	{
+		Bot = 3,
+		Mobile = 2,
+		Web = 1
+	}
+
+	public enum EbTiers
     {
         Free,
         Professional,

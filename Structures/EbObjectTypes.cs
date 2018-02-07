@@ -5,13 +5,6 @@ using System.Text;
 
 namespace ExpressBase.Common.Structures
 {
-	public enum EbApplicationTypes
-	{
-		Bot,
-		Mobile,
-		Web
-	}
-
 	public struct EbObjectType
 	{
 		public readonly string Name;
