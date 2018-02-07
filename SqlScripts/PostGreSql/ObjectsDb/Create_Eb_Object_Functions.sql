@@ -869,14 +869,15 @@ ALTER FUNCTION public.eb_update_rel(integer, text[])
     OWNER TO postgres;
 
 
-	-- FUNCTION: public.eb_authenticate_unified(text, text, text)
+-- FUNCTION: public.eb_authenticate_unified_test(text, text, text, text)
 
--- DROP FUNCTION public.eb_authenticate_unified(text, text, text);
+-- DROP FUNCTION public.eb_authenticate_unified_test(text, text, text, text);
 
-CREATE OR REPLACE FUNCTION public.eb_authenticate_unified(
+CREATE OR REPLACE FUNCTION public.eb_authenticate_unified_test(
 	uname text DEFAULT NULL::text,
 	passwrd text DEFAULT NULL::text,
-	social text DEFAULT NULL::text)
+	social text DEFAULT NULL::text,
+	wc text DEFAULT NULL::text)
     RETURNS TABLE(userid integer, email text, firstname text, roles_a text, rolename_a text, permissions text) 
     LANGUAGE 'plpgsql'
 
@@ -910,7 +911,7 @@ BEGIN
     END IF;
 
 	IF userid > 0 THEN
-        SELECT roles, rolename FROM eb_getroles(userid) INTO roles_a, rolename_a;
+        SELECT roles, rolename FROM eb_getroles_test(userid, wc) INTO roles_a, rolename_a;
 
         SELECT eb_getpermissions(string_to_array(roles_a, ',')::int[]) INTO permissions;
 
@@ -920,6 +921,71 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_authenticate_unified(text, text, text)
+ALTER FUNCTION public.eb_authenticate_unified_test(text, text, text, text)
     OWNER TO postgres;
+
+
+	-- FUNCTION: public.eb_getroles_test(integer, text)
+
+-- DROP FUNCTION public.eb_getroles_test(integer, text);
+
+CREATE OR REPLACE FUNCTION public.eb_getroles_test(
+	userid integer,
+	wc text)
+    RETURNS TABLE(roles text, rolename text) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+	DECLARE app_type text[];
+BEGIN
+	
+    IF wc = 'tc' OR wc = 'dc' OR wc = 'uc' THEN
+    app_type:='{Web, Mobile, Bot}';
+    END IF;
+	IF wc = 'mc' THEN
+    app_type:='{Mobile}';
+    END IF;
+    IF wc = 'bt' THEN
+    app_type:='{Bot}';
+    END IF;
+    
+	RETURN QUERY  
+    SELECT 
+    	array_to_string(array_agg(id), ','), 
+        array_to_string(array_agg(role_name), ',') FROM 
+    (SELECT 
+    	id, role_name FROM eb_roles WHERE id>=100 AND
+    applicationid = ANY(SELECT id FROM eb_applications WHERE application_type=ANY(app_type)) AND
+    id = ANY(
+    SELECT role_id FROM eb_role2user WHERE user_id=userid
+	UNION ALL
+	(WITH RECURSIVE role2role AS 
+	(
+    	SELECT 
+        	role2_id AS role_id
+    	FROM 
+        	eb_role2role
+    	WHERE 
+        	role1_id = ANY(SELECT role_id FROM eb_role2user WHERE user_id=userid)
+    	UNION ALL
+    	SELECT e.role2_id FROM eb_role2role e, role2role r WHERE e.role1_id = r.role_id
+	) SELECT * FROM role2role)
+	ORDER BY 
+		role_id)
+    UNION
+    SELECT role_id as id, CAST('SysRole' as text) as role_name FROM eb_role2user  
+    where user_id=userid AND role_id<100 AND eb_del='false') as ROLES;
+
+END;
+
+$BODY$;
+
+ALTER FUNCTION public.eb_getroles_test(integer, text)
+    OWNER TO postgres;
+
+
 
