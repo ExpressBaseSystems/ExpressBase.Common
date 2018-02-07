@@ -164,6 +164,7 @@ ALTER FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, i
     OWNER TO postgres;
 
 
+
 -- FUNCTION: public.eb_objects_create_major_version(text, integer, integer, text, text, text[])
 
 -- DROP FUNCTION public.eb_objects_create_major_version(text, integer, integer, text, text, text[]);
@@ -867,4 +868,58 @@ $BODY$;
 ALTER FUNCTION public.eb_update_rel(integer, text[])
     OWNER TO postgres;
 
+
+	-- FUNCTION: public.eb_authenticate_unified(text, text, text)
+
+-- DROP FUNCTION public.eb_authenticate_unified(text, text, text);
+
+CREATE OR REPLACE FUNCTION public.eb_authenticate_unified(
+	uname text DEFAULT NULL::text,
+	passwrd text DEFAULT NULL::text,
+	social text DEFAULT NULL::text)
+    RETURNS TABLE(userid integer, email text, firstname text, roles_a text, rolename_a text, permissions text) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+DECLARE userid INTEGER;
+DECLARE email TEXT;
+DECLARE firstname TEXT;
+DECLARE roles_a TEXT;
+DECLARE rolename_a TEXT;
+DECLARE permissions TEXT;
+
+BEGIN
+	-- NORMAL
+	IF uname IS NOT NULL AND passwrd IS NOT NULL AND social IS NULL THEN
+        SELECT eb_users.id, eb_users.email, eb_users.firstname
+        FROM eb_users WHERE eb_users.email = uname AND pwd = passwrd INTO userid, email, firstname;
+    END IF;
+    -- SSO
+    IF uname IS NOT NULL AND passwrd IS NULL AND social IS NULL THEN
+        SELECT eb_users.id, eb_users.email, eb_users.firstname
+        FROM eb_users WHERE eb_users.email = uname INTO userid, email, firstname;
+    END IF;
+    -- SOCIAL
+    IF uname IS NULL AND passwrd IS NULL AND social IS NOT NULL THEN
+        SELECT eb_users.id, eb_users.email, eb_users.firstname
+        FROM eb_users WHERE eb_users.socialid = social INTO userid, email, firstname;
+    END IF;
+
+	IF userid > 0 THEN
+        SELECT roles, rolename FROM eb_getroles(userid) INTO roles_a, rolename_a;
+
+        SELECT eb_getpermissions(string_to_array(roles_a, ',')::int[]) INTO permissions;
+
+        RETURN QUERY SELECT userid, email, firstname, roles_a, rolename_a, permissions;
+   	END IF;
+END;
+
+$BODY$;
+
+ALTER FUNCTION public.eb_authenticate_unified(text, text, text)
+    OWNER TO postgres;
 
