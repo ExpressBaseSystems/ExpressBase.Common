@@ -1,11 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using ProtoBuf;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using ProtoBuf;
 
 namespace ExpressBase.Common
 {
@@ -38,29 +35,17 @@ namespace ExpressBase.Common
 
         public static string Json_Serialize(object obj)
         {
-            string json = null;
-
-            json = JsonConvert.SerializeObject(obj, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
-
-            return json;
+            return JsonConvert.SerializeObject(obj, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
         }
 
         public static T Json_Deserialize<T>(string json)
         {
-            object obj = null;
-
-            obj = JsonConvert.DeserializeObject(json, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
-
-            return (T)obj;
+            return (T)(JsonConvert.DeserializeObject(json, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All }));
         }
 
         public static dynamic Json_Deserialize(string json)
         {
-            object obj = null;
-
-            obj = JsonConvert.DeserializeObject(json, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
-
-            return obj;
+            return JsonConvert.DeserializeObject(json, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
         }
     }
 
