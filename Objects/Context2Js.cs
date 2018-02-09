@@ -333,7 +333,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
         {
             Type type = prop.PropertyType;
 
-            if (type == typeof(int) || type == typeof(Int16) || type == typeof(Int32) || type == typeof(Int64) || type == typeof(decimal) || type == typeof(double) || type == typeof(Single))
+            if (type == typeof(int) || type == typeof(Int16) || type == typeof(Int32) || type == typeof(Int64) || type == typeof(Decimal) || type == typeof(Double) || type == typeof(Single))
                 return PropertyEditorType.Number;
 
             else if (type == typeof(string))
