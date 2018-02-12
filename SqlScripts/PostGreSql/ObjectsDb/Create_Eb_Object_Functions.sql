@@ -829,6 +829,8 @@ $BODY$;
 ALTER FUNCTION public.eb_objects_update_dashboard(text)
     OWNER TO postgres;
 
+
+
 -- FUNCTION: public.eb_update_rel(integer, text[])
 
 -- DROP FUNCTION public.eb_update_rel(integer, text[]);
@@ -869,13 +871,14 @@ ALTER FUNCTION public.eb_update_rel(integer, text[])
     OWNER TO postgres;
 
 
--- FUNCTION: public.eb_authenticate_unified_test(text, text, text, text)
 
--- DROP FUNCTION public.eb_authenticate_unified_test(text, text, text, text);
+-- FUNCTION: public.eb_authenticate_unified(text, text, text, text)
 
-CREATE OR REPLACE FUNCTION public.eb_authenticate_unified_test(
+-- DROP FUNCTION public.eb_authenticate_unified(text, text, text, text);
+
+CREATE OR REPLACE FUNCTION public.eb_authenticate_unified(
 	uname text DEFAULT NULL::text,
-	passwrd text DEFAULT NULL::text,
+	password text DEFAULT NULL::text,
 	social text DEFAULT NULL::text,
 	wc text DEFAULT NULL::text)
     RETURNS TABLE(userid integer, email text, firstname text, roles_a text, rolename_a text, permissions text) 
@@ -895,23 +898,23 @@ DECLARE permissions TEXT;
 
 BEGIN
 	-- NORMAL
-	IF uname IS NOT NULL AND passwrd IS NOT NULL AND social IS NULL THEN
+	IF uname IS NOT NULL AND password IS NOT NULL AND social IS NULL THEN
         SELECT eb_users.id, eb_users.email, eb_users.firstname
-        FROM eb_users WHERE eb_users.email = uname AND pwd = passwrd INTO userid, email, firstname;
+        FROM eb_users WHERE eb_users.email = uname AND pwd = password INTO userid, email, firstname;
     END IF;
     -- SSO
-    IF uname IS NOT NULL AND passwrd IS NULL AND social IS NULL THEN
+    IF uname IS NOT NULL AND password IS NULL AND social IS NULL THEN
         SELECT eb_users.id, eb_users.email, eb_users.firstname
         FROM eb_users WHERE eb_users.email = uname INTO userid, email, firstname;
     END IF;
     -- SOCIAL
-    IF uname IS NULL AND passwrd IS NULL AND social IS NOT NULL THEN
+    IF uname IS NULL AND password IS NULL AND social IS NOT NULL THEN
         SELECT eb_users.id, eb_users.email, eb_users.firstname
         FROM eb_users WHERE eb_users.socialid = social INTO userid, email, firstname;
     END IF;
 
 	IF userid > 0 THEN
-        SELECT roles, rolename FROM eb_getroles_test(userid, wc) INTO roles_a, rolename_a;
+        SELECT roles, rolename FROM eb_getroles(userid, wc) INTO roles_a, rolename_a;
 
         SELECT eb_getpermissions(string_to_array(roles_a, ',')::int[]) INTO permissions;
 
@@ -921,15 +924,17 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_authenticate_unified_test(text, text, text, text)
+ALTER FUNCTION public.eb_authenticate_unified(text, text, text, text)
     OWNER TO postgres;
 
 
-	-- FUNCTION: public.eb_getroles_test(integer, text)
 
--- DROP FUNCTION public.eb_getroles_test(integer, text);
 
-CREATE OR REPLACE FUNCTION public.eb_getroles_test(
+-- FUNCTION: public.eb_getroles(integer, text)
+
+-- DROP FUNCTION public.eb_getroles(integer, text);
+
+CREATE OR REPLACE FUNCTION public.eb_getroles(
 	userid integer,
 	wc text)
     RETURNS TABLE(roles text, rolename text) 
@@ -943,8 +948,11 @@ AS $BODY$
 	DECLARE app_type integer[];
 BEGIN
 	
-    IF wc = 'tc' OR wc = 'dc' OR wc = 'uc' THEN
+    IF wc = 'tc' OR wc = 'dc' THEN
     app_type:='{1, 2, 3}';
+    END IF;
+    IF wc = 'uc' THEN
+    app_type:='{1}';
     END IF;
 	IF wc = 'mc' THEN
     app_type:='{2}';
@@ -984,7 +992,7 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_getroles_test(integer, text)
+ALTER FUNCTION public.eb_getroles(integer, text)
     OWNER TO postgres;
 
 
