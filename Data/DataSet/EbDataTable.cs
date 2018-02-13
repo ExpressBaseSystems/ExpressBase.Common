@@ -34,8 +34,8 @@ namespace ExpressBase.Common
 
         public EbDataRow NewDataRow()
         {
-            EbDataRow dr = new EbDataRow(this.Columns.Count);
-            return dr;
+            //EbDataRow dr = new EbDataRow(this.Columns.Count);
+            return new EbDataRow();
         }
     }
 

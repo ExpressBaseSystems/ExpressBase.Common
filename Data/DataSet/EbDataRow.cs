@@ -11,7 +11,7 @@ namespace ExpressBase.Common
     {
         internal RowColletion Rows { get; set; }
 
-        private EbDataRow() { }
+        internal EbDataRow() { }
 
         internal EbDataRow(int size) : base(size)
         {
@@ -28,7 +28,29 @@ namespace ExpressBase.Common
         {
             get
             {
-                return (index > -1) ? base[index] : null;
+                if (index > -1)
+                {
+                    if (base[index] == DBNull.Value)
+                    {
+                        if (this.Rows.Table.Columns[index].Type == System.Data.DbType.String)
+                            return string.Empty;
+                        else if (this.Rows.Table.Columns[index].Type == System.Data.DbType.Int32)
+                            return 0;
+                        else if (this.Rows.Table.Columns[index].Type == System.Data.DbType.Int64)
+                            return 0;
+                        else if (this.Rows.Table.Columns[index].Type == System.Data.DbType.Boolean)
+                            return false;
+                        else if (this.Rows.Table.Columns[index].Type == System.Data.DbType.Decimal)
+                            return 0;
+                        else if (this.Rows.Table.Columns[index].Type == System.Data.DbType.DateTime)
+                            return DateTime.Now;
+                    }
+                    else
+                        return base[index];
+                }
+                else
+                    return null;
+                return (index > -1) ? (base[index]) : null;
             }
             set
             {

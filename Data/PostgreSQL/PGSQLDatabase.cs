@@ -96,9 +96,9 @@ namespace ExpressBase.Common
 
                         using (var reader = cmd.ExecuteReader())
                         {
-                            this.AddColumns(dt, reader.GetColumnSchema());
+                            Type[] typeArray = this.AddColumns(dt, reader.GetColumnSchema());
 
-                            PrepareDataTable(reader, dt);
+                            PrepareDataTable(reader, dt, typeArray);
                         }
                     }
                 }
@@ -130,6 +130,7 @@ namespace ExpressBase.Common
 
         public EbDataSet DoQueries(string query, params DbParameter[] parameters)
         {
+            var dtStart = DateTime.Now;
             EbDataSet ds = new EbDataSet();
 
             try
@@ -141,8 +142,8 @@ namespace ExpressBase.Common
                         try
                         {
                             EbDataTable dt = new EbDataTable();
-                            this.AddColumns(dt, (reader as NpgsqlDataReader).GetColumnSchema());
-                            PrepareDataTable((reader as NpgsqlDataReader), dt);
+                            Type[] typeArray = this.AddColumns(dt, (reader as NpgsqlDataReader).GetColumnSchema());
+                            PrepareDataTable((reader as NpgsqlDataReader), dt, typeArray);
                             ds.Tables.Add(dt);
                         }
                         catch (Exception ee)
@@ -155,6 +156,9 @@ namespace ExpressBase.Common
             }
             catch (Npgsql.NpgsqlException npgse) { }
 
+            var dtEnd = DateTime.Now;
+            var ts = (dtEnd - dtStart).Milliseconds;
+            Console.WriteLine(string.Format("-------------------------------------> {0}", ts));
             return ds;
         }
 
@@ -200,16 +204,20 @@ namespace ExpressBase.Common
             return false;
         }
 
-        private void AddColumns(EbDataTable dt, ReadOnlyCollection<NpgsqlDbColumn> schema)
+        private Type[] AddColumns(EbDataTable dt, ReadOnlyCollection<NpgsqlDbColumn> schema)
         {
             int pos = 0;
+            Type[] typeArray = new Type[schema.Count];
             foreach (NpgsqlDbColumn drow in schema)
             {
                 string columnName = System.Convert.ToString(drow["ColumnName"]);
-                EbDataColumn column = new EbDataColumn(columnName, ConvertToDbType((Type)(drow["DataType"])));
+                typeArray[pos] = (Type)(drow["DataType"]);
+                EbDataColumn column = new EbDataColumn(columnName, ConvertToDbType(typeArray[pos]));
                 column.ColumnIndex = pos++;
                 dt.Columns.Add(column);
             }
+
+            return typeArray;
         }
 
         private DbType ConvertToDbType(Type _typ)
@@ -230,54 +238,61 @@ namespace ExpressBase.Common
             return DbType.String;
         }
 
-        private void PrepareDataTable(NpgsqlDataReader reader, EbDataTable dt)
+        private void PrepareDataTable(NpgsqlDataReader reader, EbDataTable dt, Type[] typeArray)
         {
             int _fieldCount = reader.FieldCount;
+
             while (reader.Read())
             {
                 EbDataRow dr = dt.NewDataRow();
-                for (int i = 0; i < _fieldCount; i++)
-                {
-                    var _typ = reader.GetFieldType(i);
-                    if (_typ == typeof(DateTime))
-                    {
-                        dr[i] = reader.IsDBNull(i) ? DateTime.Now: reader.GetDateTime(i);
-                        continue;
-                    }
-                    else if (_typ == typeof(string))
-                    {
-                        dr[i] = reader.IsDBNull(i) ? string.Empty : reader.GetString(i);
-                        continue;
-                    }
-                    else if (_typ == typeof(bool))
-                    {
-                        dr[i] = reader.IsDBNull(i) ? false : reader.GetBoolean(i);
-                        continue;
-                    }
-                    else if (_typ == typeof(decimal))
-                    {
-                        dr[i] = reader.IsDBNull(i) ? 0 : reader.GetDecimal(i);
-                        continue;
-                    }
-                    else if (_typ == typeof(int) || _typ == typeof(Int32))
-                    {
-                        dr[i] = reader.IsDBNull(i) ? 0 : reader.GetInt32(i);
-                        continue;
-                    }
-                    else if (_typ == typeof(Int64))
-                    {
-                        dr[i] = reader.IsDBNull(i) ? 0 : reader.GetInt64(i);
-                        continue;
-                    }
-                    else
-                    {
-                        dr[i] = reader.GetValue(i);
-                        continue;
-                    }
-                }
+                object[] oArray = new object[_fieldCount];
+                reader.GetValues(oArray);
+                dr.AddRange(oArray);
+                //for (int i = 0; i < _fieldCount; i++)
+                //{
+                //    //var _typ = reader.GetFieldType(i);
+                    
+                //    if (typeArray[i] == typeof(DateTime))
+                //    {
+                //        dr[i] = reader.IsDBNull(i) ? DateTime.Now: reader.GetDateTime(i);
+                //        continue;
+                //    }
+                //    else if (typeArray[i] == typeof(string))
+                //    {
+                //        dr[i] = reader.IsDBNull(i) ? string.Empty : reader.GetString(i);
+                //        continue;
+                //    }
+                //    else if (typeArray[i] == typeof(bool))
+                //    {
+                //        dr[i] = reader.IsDBNull(i) ? false : reader.GetBoolean(i);
+                //        continue;
+                //    }
+                //    else if (typeArray[i] == typeof(decimal))
+                //    {
+                //        dr[i] = reader.IsDBNull(i) ? 0 : reader.GetDecimal(i);
+                //        continue;
+                //    }
+                //    else if (typeArray[i] == typeof(int) || typeArray[i] == typeof(Int32))
+                //    {
+                //        dr[i] = reader.IsDBNull(i) ? 0 : reader.GetInt32(i);
+                //        continue;
+                //    }
+                //    else if (typeArray[i] == typeof(Int64))
+                //    {
+                //        dr[i] = reader.IsDBNull(i) ? 0 : reader.GetInt64(i);
+                //        continue;
+                //    }
+                //    else
+                //    {
+                //        dr[i] = reader.GetValue(i);
+                //        continue;
+                //    }
+                //}
 
                 dt.Rows.Add(dr);
             }
+
+            typeArray = null;
         }
 
         //-----------Sql queries
