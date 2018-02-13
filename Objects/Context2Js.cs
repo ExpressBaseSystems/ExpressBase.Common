@@ -1,5 +1,6 @@
 ﻿using ExpressBase.Common.Extensions;
 using ExpressBase.Common.Objects.Attributes;
+using ExpressBase.Common.Structures;
 using ExpressBase.Objects;
 using Newtonsoft.Json;
 using ServiceStack;
@@ -284,7 +285,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     else if (meta.editor == PropertyEditorType.ObjectSelector)
                     {
                         if (prop.IsDefined(typeof(OSE_ObjectTypes)))
-                            meta.options = prop.GetCustomAttribute<OSE_ObjectTypes>().ObjectTypes.Select(a => a.ToString()).ToArray();
+                            meta.options = prop.GetCustomAttribute<OSE_ObjectTypes>().ObjectTypes.Select(a => ((EbObjectType)a).Name).ToArray();
                     }
                     else if (meta.editor == PropertyEditorType.Expandable && prop.PropertyType.GetTypeInfo().IsClass)
                         meta.submeta = this.GetMetaCollection(Activator.CreateInstance(prop.PropertyType)).ToList<Meta>();
