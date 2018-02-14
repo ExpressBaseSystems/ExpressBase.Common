@@ -2,7 +2,9 @@
 using ProtoBuf;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
+using System.IO.Compression;
 
 namespace ExpressBase.Common
 {
@@ -46,6 +48,31 @@ namespace ExpressBase.Common
         public static dynamic Json_Deserialize(string json)
         {
             return JsonConvert.DeserializeObject(json, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+        }
+    }
+
+    public class DataSetCompressor
+    {
+        public static Byte[] Compress(DataSet dataset)
+        {
+            byte[] data;
+            MemoryStream mem = new MemoryStream();
+            GZipStream zip = new GZipStream(mem, CompressionMode.Compress);
+            dataset.WriteXml(zip, XmlWriteMode.WriteSchema);
+            zip.Close();
+            data = mem.ToArray();
+            mem.Close();
+            return data;
+        }
+        public static DataSet Decompress(byte[] data)
+        {
+            MemoryStream mem = new MemoryStream(data);
+            GZipStream zip = new GZipStream(mem, CompressionMode.Decompress);
+            DataSet dataset = new DataSet();
+            dataset.ReadXml(zip, XmlReadMode.ReadSchema);
+            zip.Close();
+            mem.Close();
+            return dataset;
         }
     }
 
