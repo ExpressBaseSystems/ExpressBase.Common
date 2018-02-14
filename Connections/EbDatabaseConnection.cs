@@ -1,4 +1,5 @@
 ﻿using ExpressBase.Common.Data;
+using ExpressBase.Common.Structures;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using System;
@@ -21,11 +22,11 @@ namespace ExpressBase.Common.Connections
             if (IsNew)
             {
                 string sql = "INSERT INTO eb_connections (con_type, solution_id, nick_name, con_obj,date_created,eb_user_id) VALUES (@con_type, @solution_id, @nick_name, @con_obj , NOW() , @eb_user_id) RETURNING id";
-                DbParameter[] parameters = { dbconf.DataDB.GetNewParameter("con_type", System.Data.DbType.String, EbConnectionType),
-                                    dbconf.DataDB.GetNewParameter("solution_id", System.Data.DbType.String, TenantAccountId),
-                                    dbconf.DataDB.GetNewParameter("nick_name", System.Data.DbType.String, !(string.IsNullOrEmpty(NickName))?NickName:string.Empty),
-                                    dbconf.DataDB.GetNewParameter("con_obj", NpgsqlTypes.NpgsqlDbType.Json,EbSerializers.Json_Serialize(this) ),
-                                    dbconf.DataDB.GetNewParameter("eb_user_id", NpgsqlTypes.NpgsqlDbType.Integer, UserId ) };
+                DbParameter[] parameters = { dbconf.DataDB.GetNewParameter("con_type", EbDbTypes.String, EbConnectionType),
+                                    dbconf.DataDB.GetNewParameter("solution_id", EbDbTypes.String, TenantAccountId),
+                                    dbconf.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(NickName))?NickName:string.Empty),
+                                    dbconf.DataDB.GetNewParameter("con_obj", EbDbTypes.Json,EbSerializers.Json_Serialize(this) ),
+                                    dbconf.DataDB.GetNewParameter("eb_user_id", EbDbTypes.Int32, UserId ) };
                 var iCount = dbconf.DataDB.DoQuery(sql, parameters);
             }
 
@@ -33,11 +34,11 @@ namespace ExpressBase.Common.Connections
             {
                 string sql = @"UPDATE eb_connections SET eb_del = true WHERE con_type = @con_type AND solution_id = @solution_id; 
                                       INSERT INTO eb_connections (con_type, solution_id, nick_name, con_obj, date_created, eb_user_id) VALUES (@con_type, @solution_id, @nick_name, @con_obj, NOW() , @eb_user_id)";
-                DbParameter[] parameters = { dbconf.DataDB.GetNewParameter("con_type", System.Data.DbType.String, EbConnectionType),
-                                    dbconf.DataDB.GetNewParameter("solution_id", System.Data.DbType.String, TenantAccountId),
-                                    dbconf.DataDB.GetNewParameter("nick_name", System.Data.DbType.String, !(string.IsNullOrEmpty(NickName))?NickName:string.Empty),
-                                    dbconf.DataDB.GetNewParameter("con_obj", NpgsqlTypes.NpgsqlDbType.Json,EbSerializers.Json_Serialize(this)),
-                                      dbconf.DataDB.GetNewParameter("eb_user_id", NpgsqlTypes.NpgsqlDbType.Integer, UserId )};
+                DbParameter[] parameters = { dbconf.DataDB.GetNewParameter("con_type", EbDbTypes.String, EbConnectionType),
+                                    dbconf.DataDB.GetNewParameter("solution_id", EbDbTypes.String, TenantAccountId),
+                                    dbconf.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(NickName))?NickName:string.Empty),
+                                    dbconf.DataDB.GetNewParameter("con_obj", EbDbTypes.Json,EbSerializers.Json_Serialize(this)),
+                                      dbconf.DataDB.GetNewParameter("eb_user_id", EbDbTypes.Int32, UserId )};
                 var iCount = dbconf.DataDB.DoNonQuery(sql, parameters);
             }
         }

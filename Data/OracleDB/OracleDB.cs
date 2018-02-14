@@ -1,4 +1,5 @@
 ﻿using ExpressBase.Common.Connections;
+using ExpressBase.Common.Structures;
 using Npgsql;
 //using Oracle.ManagedDataAccess.Client;
 using System;
@@ -50,20 +51,11 @@ namespace ExpressBase.Common.Data
             return new OracleCommand(sql, (OracleConnection)con,(OracleTransaction)trans);
         }
 
-        public DbParameter GetNewParameter(string parametername, NpgsqlTypes.NpgsqlDbType type, object value)
+        public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbType type, object value)
         {
-            return null;
+            return new OracleParameter(parametername, (OracleType)type.VendorSpecificIntCode(DatabaseVendors.ORACLE)) { Value = value };
         }
-        public System.Data.Common.DbParameter GetNewParameter(string parametername, DbType type, object value)
-        {
-            return new OracleParameter(parametername, type) { Value = value };
-        }    
-
-        public System.Data.Common.DbParameter GetNewParameter(string parametername,OracleType type, object value)
-        {
-            return new OracleParameter(parametername, type) { Value = value };
-        }
-
+       
         public T DoQuery<T>(string query, params DbParameter[] parameters)
         {
             T obj = default(T);
@@ -322,57 +314,10 @@ namespace ExpressBase.Common.Data
         }
 
         //-----------Sql queries
-        //-----------Insert queries
-        public string INSERT_EB_ROLES { get { return "INSERT INTO eb_roles (role_name, eb_del) VALUES ('{0}', false) RETURNING id;"; } }
-        public string INSERT_EB_OBJECTS { get { return "INSERT INTO eb_objects (object_name) VALUES ('{0}') RETURNING id;"; } }
-        public string INSERT_EB_OPERATIONS { get { return "INSERT INTO eb_operations (operation_name) VALUES ('{0}') RETURNING id"; } }
-        public string INSERT_EB_PERMISSIONS { get { return "INSERT INTO eb_permissions (object_id, operation_id) VALUES ({0},{1}) RETURNING id ;"; } }
-        public string INSERT_EB_USERS { get { return "INSERT INTO eb_users(email, pwd, firstname, lastname, middlename, dob, phnoprimary, phnosecondary, landline, extension, locale, alternateemail,profileimg) VALUES (@uname, @pwd,@fname,@lname,@mname,@dob,@pphno,@sphno,@land,@extension,@locale,@aemail,@imgprofile) RETURNING id;"; } }
 
-        //--------Delete queries
-
-        //--------Object delete
-        public string DELETE_OBJ_FROM_EB_OBJECTS { get { return "UPDATE eb_objects SET  eb_del= true WHERE id={0};"; } }
-        public string DELETE_OBJ_FROM_EB_PERMISSIONS { get { return "UPDATE eb_permissions SET eb_del=true WHERE object_id={0};"; } }
-        public string DELETE_OBJ_FROM_EB_PERMISSION2ROLE { get { return "UPDATE eb_permission2role SET eb_del= true WHERE permission_id IN (SELECT id FROM eb_permissions WHERE object_id= {0});"; } }
-
-        //--------Operation delete
-        public string DELETE_OP_FROM_EB_OPERATIONS { get { return "UPDATE eb_operations SET eb_del = true WHERE id = { 0 }; "; } }
-        public string DELETE_OP_FROM_EB_PERMISSIONS { get { return "UPDATE eb_permissions SET eb_del=true WHERE operation_id={0};"; } }
-        public string DELETE_OP_FROM_EB_PERMISSION2ROLE { get { return "UPDATE eb_permission2role SET eb_del=true WHERE permission_id IN (SELECT id FROM eb_permissions WHERE operation_id={0});"; } }
-
-        //--------Permission delete
-        public string DELETE_PER_FROM_EB_PERMISSIONS { get { return "UPDATE eb_permissions SET eb_del=TRUE where id={0};"; } }
-        public string DELETE_PER_FROM_EB_PERMISSION2ROLE { get { return "UPDATE eb_permission2role SET eb_del=TRUE where permission_id={0};"; } }
-
-        //--------Roles delete
-        public string DELETE_ROLE_FROM_EB_ROLES { get { return "UPDATE eb_roles SET eb_del=true WHERE id={0};"; } }
-        public string DELETE_ROLE_FROM_EB_ROLE2ROLE { get { return "UPDATE eb_role2role SET eb_del=true WHERE role1_id={0} OR role2_id={0};"; } }
-        public string DELETE_ROLE_FROM_EB_ROLE2USER { get { return " UPDATE eb_role2user SET eb_del = true WHERE role_id = {0} ;"; } }
-        public string DELETE_ROLE_FROM_EB_PERMISSION2ROLE { get { return "UPDATE eb_permission2role SET eb_del=true WHERE role_id={0};"; } }
-
-        //--------User delete
-        public string DELETE_USER_FROM_EB_USERS { get { return "UPDATE eb_users SET eb_del = true WHERE id = {0};"; } }
-        public string DELETE_USER_FROM_EB_ROLE2USER { get { return " UPDATE eb_role2user SET eb_del = true WHERE user_id = {0} ;"; } }
-
-        //--------Renaming Role
-        public string RENAME_ROLE_IN_EB_ROLES { get { return "UPDATE eb_roles SET role_name='{0}' WHERE id={1};"; } }
-
-        //-------Loading Queries
-        //Loading Roles
-        public string LOAD_ROLE_FROM_EB_ROLES { get { return "SELECT id,role_name FROM eb_roles WHERE id IN ( SELECT role2_id FROM eb_role2role WHERE role1_id = {0});"; } }
-
-        //Loading Permission
-        public string LOAD_PERMISSION_FROM_EB_PERMISSION { get { return "SELECT id, object_id, operation_id FROM eb_permissions WHERE id in (SELECT permission_id FROM eb_permission2role WHERE role_id = {0});"; } }
-
-        //Loading User's Roles                                
-        public string LOAD_USERROLE_FROM_EB_ROLES { get { return " SELECT id, role_name FROM eb_roles WHERE id IN ( SELECT role_id FROM eb_role2user WHERE user_id = ANY (SELECT id FROM eb_users  WHERE email= @uname AND pwd = @pass) );"; } }
-        public string LOAD_USERALLPERMISSION_FROM_EB_PERMISSIONS { get { return "SELECT getallPermissions.pid,getallpermissions.oid,getallpermissions.opid FROM getallpermissions(@uname, @pass);"; } }
-        public string LOAD_USERALLROLES_FROM_EB_ROLES { get { return "SELECT getallroles.role_id,getallroles.role_name FROM getallroles(@uname,@pass);"; } }
-
-        //Loading user
-
-        public string LOAD_USERALLDETAILS { get { return "SELECT  FROM getuser(@uname,@pass,ur,r,p);FETCH ALL FROM ur; FETCH ALL FROM r;FETCH ALL FROM p; "; } }
+        public string EB_AUTHETICATE_USER_NORMAL { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, passwrd => :pass,wc => :wc));"; } }
+        public string EB_AUTHENTICATEUSER_SOCIAL { get { return "SELECT * FROM table(eb_authenticate_unified(social => :social, wc => :wc));"; } }
+        public string EB_AUTHENTICATEUSER_SSO { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, wc => :wc));"; } }
 
     }
 }

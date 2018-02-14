@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExpressBase.Common.Structures;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Text;
@@ -45,7 +46,7 @@ namespace ExpressBase.Common.Data
             if (reqParams != null)
             {
                 foreach (Dictionary<string, string> param in reqParams)
-                    yield return factory.ObjectsDB.GetNewParameter(string.Format("@{0}", param["name"]), (System.Data.DbType)Convert.ToInt32(param["type"]), param["value"]);
+                    yield return factory.ObjectsDB.GetNewParameter(string.Format("@{0}", param["name"]), (EbDbType)Convert.ToInt32(param["type"]), param["value"]);
             }
         }
     }
