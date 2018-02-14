@@ -9,6 +9,7 @@ CREATE OR REPLACE FUNCTION public.eb_objects_change_status(
 	changelogv text)
     RETURNS SETOF void 
     LANGUAGE 'plpgsql'
+
     COST 100
     VOLATILE 
     ROWS 1000

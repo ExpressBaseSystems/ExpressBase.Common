@@ -1,6 +1,6 @@
--- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer[])
+-- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text, text, text)
 
--- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer[]);
+-- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text, text, text);
 
 CREATE OR REPLACE FUNCTION public.eb_objects_commit(
 	idv text,
@@ -12,19 +12,22 @@ CREATE OR REPLACE FUNCTION public.eb_objects_commit(
 	commit_uidv integer,
 	src_pid text,
 	cur_pid text,
-	relationsv text[],
+	relationsstring text,
 	tagsv text,
-	apps integer[])
+	appsstring text)
     RETURNS text
     LANGUAGE 'plpgsql'
+
     COST 100
     VOLATILE 
 AS $BODY$
 
-DECLARE refidunique text; inserted_obj_ver_id integer; objid integer; committed_refidunique text; major integer; minor integer; patch integer; version_number text;
+DECLARE refidunique text; inserted_obj_ver_id integer; objid integer; committed_refidunique text; major integer;
+minor integer; patch integer; version_number text; relationsv text[]; apps integer[];
 
 BEGIN
-
+ select string_to_array(relationsstring,',')::text[] into relationsv;
+ select string_to_array(appsstring,',')::int[] into apps;
 SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, major, minor, patch FROM eb_objects_ver WHERE refid=idv;
 
   	UPDATE eb_objects 
@@ -90,6 +93,6 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text[], text, integer[])
+ALTER FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text, text, text)
     OWNER TO postgres;
 

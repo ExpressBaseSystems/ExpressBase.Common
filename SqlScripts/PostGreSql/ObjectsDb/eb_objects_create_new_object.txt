@@ -1,6 +1,6 @@
--- FUNCTION: public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text[], boolean, text, integer[])
+-- FUNCTION: public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, boolean, text, text)
 
--- DROP FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text[], boolean, text, integer[]);
+-- DROP FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, boolean, text, text);
 
 CREATE OR REPLACE FUNCTION public.eb_objects_create_new_object(
 	obj_namev text,
@@ -11,19 +11,24 @@ CREATE OR REPLACE FUNCTION public.eb_objects_create_new_object(
 	commit_uidv integer,
 	src_pid text,
 	cur_pid text,
-	relationsv text[],
+	relationsstring text,
 	issave boolean,
 	tagsv text,
-	apps integer[])
+	appsstring text)
     RETURNS text
     LANGUAGE 'plpgsql'
+
     COST 100
     VOLATILE 
 AS $BODY$
 
-DECLARE refidunique text; inserted_objid integer; inserted_obj_ver_id integer; refid_of_commit_version text; version_number text;
+DECLARE refidunique text; inserted_objid integer; inserted_obj_ver_id integer; refid_of_commit_version text;
+version_number text; relationsv text[]; apps integer[];
 BEGIN   
-    INSERT INTO eb_objects 
+
+  select string_to_array(relationsstring,',')::text[] into relationsv;
+  select string_to_array(appsstring,',')::int[] into apps;
+    INSERT INTO eb_objects  
         (obj_name, obj_desc, obj_type, obj_cur_status, obj_tags, owner_uid, owner_ts)
     VALUES
         (obj_namev, obj_descv, obj_typev, obj_cur_statusv, tagsv, commit_uidv, NOW()) RETURNING id INTO inserted_objid;
@@ -59,6 +64,6 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text[], boolean, text, integer[])
+ALTER FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, boolean, text, text)
     OWNER TO postgres;
 
