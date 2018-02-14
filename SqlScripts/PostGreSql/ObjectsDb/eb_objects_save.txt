@@ -1,6 +1,6 @@
--- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text[], text, integer[])
+-- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text, text)
 
--- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text[], text, integer[]);
+-- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text, text);
 
 CREATE OR REPLACE FUNCTION public.eb_objects_save(
 	refidv text,
@@ -11,17 +11,20 @@ CREATE OR REPLACE FUNCTION public.eb_objects_save(
 	commit_uidv integer,
 	src_pid text,
 	cur_pid text,
-	relationsv text[],
+	relationsstring text,
 	tagsv text,
-	apps integer[])
+	appsstring text)
     RETURNS text
     LANGUAGE 'plpgsql'
+
     COST 100
     VOLATILE 
 AS $BODY$
 
-DECLARE refidunique text; inserted_objid integer; inserted_obj_ver_id integer; objid integer;
+DECLARE refidunique text; inserted_objid integer; inserted_obj_ver_id integer; objid integer; relationsv text[]; apps integer[];
 BEGIN
+ SELECT string_to_array(relationsstring,',')::text[] into relationsv;
+ SELECT string_to_array(appsstring,',')::int[] into apps;
 SELECT eb_objects_id FROM eb_objects_ver into objid WHERE refid=refidv;
  	UPDATE eb_objects SET obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv WHERE id = objid RETURNING id INTO inserted_objid;
     UPDATE eb_objects_ver SET obj_json = obj_jsonv WHERE refid=refidv RETURNING id INTO inserted_obj_ver_id;
@@ -68,6 +71,6 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text[], text, integer[])
+ALTER FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text, text)
     OWNER TO postgres;
 

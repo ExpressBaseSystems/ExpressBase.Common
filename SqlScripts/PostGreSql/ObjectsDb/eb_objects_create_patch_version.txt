@@ -1,6 +1,6 @@
--- FUNCTION: public.eb_objects_create_patch_version(text, integer, integer, text, text, text[])
+-- FUNCTION: public.eb_objects_create_patch_version(text, integer, integer, text, text, text)
 
--- DROP FUNCTION public.eb_objects_create_patch_version(text, integer, integer, text, text, text[]);
+-- DROP FUNCTION public.eb_objects_create_patch_version(text, integer, integer, text, text, text);
 
 CREATE OR REPLACE FUNCTION public.eb_objects_create_patch_version(
 	idv text,
@@ -8,18 +8,19 @@ CREATE OR REPLACE FUNCTION public.eb_objects_create_patch_version(
 	commit_uidv integer,
 	src_pid text,
 	cur_pid text,
-	relationsv text[])
+	relationsstring text)
     RETURNS text
     LANGUAGE 'plpgsql'
+
     COST 100
     VOLATILE 
-    ROWS 0
 AS $BODY$
 
-DECLARE refidunique text; inserted_obj_ver_id integer; objid integer; committed_refidunique text; major integer; minor integer; patch integer; version_number text;
+DECLARE refidunique text; inserted_obj_ver_id integer; objid integer; committed_refidunique text; major integer;
+minor integer; patch integer; version_number text; relationsv text[];
 
 BEGIN
-
+SELECT string_to_array(relationsstring,',')::text[] into relationsv;
 SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, major, minor, patch  FROM eb_objects_ver WHERE refid=idv;
 	
 INSERT INTO 
@@ -69,6 +70,6 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_create_patch_version(text, integer, integer, text, text, text[])
+ALTER FUNCTION public.eb_objects_create_patch_version(text, integer, integer, text, text, text)
     OWNER TO postgres;
 
