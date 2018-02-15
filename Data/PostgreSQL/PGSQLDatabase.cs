@@ -154,7 +154,7 @@ namespace ExpressBase.Common
             catch (Npgsql.NpgsqlException npgse) { }
 
             var dtEnd = DateTime.Now;
-            var ts = (dtEnd - dtStart).Milliseconds;
+            var ts = (dtEnd - dtStart).TotalMilliseconds;
             Console.WriteLine(string.Format("-------------------------------------> {0}", ts));
             return ds;
         }
