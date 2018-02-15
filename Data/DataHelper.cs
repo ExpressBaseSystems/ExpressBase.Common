@@ -23,29 +23,32 @@ namespace ExpressBase.Common.Data
 
       //  }
 
-        public static IEnumerable<System.Data.Common.DbParameter> GetParams(EbConnectionFactory factory, bool isPaged, List<Dictionary<string, string>> reqParams, int iLimit, int iOffset)
+        public static IEnumerable<System.Data.Common.DbParameter> GetParams(EbConnectionFactory factory, bool isPaged, List<Dictionary<string, object>> reqParams, int iLimit, int iOffset)
         {
             if (isPaged)
             {
-                var _dicLimit = new Dictionary<string, string>();
+                var _dicLimit = new Dictionary<string, object>();
                 _dicLimit.Add("name", "limit");
-                _dicLimit.Add("type", ((int)System.Data.DbType.Int32).ToString());
-                _dicLimit.Add("value", iLimit.ToString());
+                _dicLimit.Add("type", ((int)EbDbTypes.Int32).ToString());
+                if (iLimit != -1)
+                    _dicLimit.Add("value", iLimit);
+                else
+                    _dicLimit.Add("value", DBNull.Value);
 
-                var _dicOffset = new Dictionary<string, string>();
+                var _dicOffset = new Dictionary<string, object>();
                 _dicOffset.Add("name", "offset");
-                _dicOffset.Add("type", ((int)System.Data.DbType.Int32).ToString());
+                _dicOffset.Add("type", ((int)EbDbTypes.Int32).ToString());
                 _dicOffset.Add("value", iOffset.ToString());
 
                 if (reqParams == null)
-                    reqParams = new List<Dictionary<string, string>>();
+                    reqParams = new List<Dictionary<string, object>>();
 
-                reqParams.AddRange(new Dictionary<string, string>[] { _dicLimit, _dicOffset });
+                reqParams.AddRange(new Dictionary<string, object>[] { _dicLimit, _dicOffset });
             }
 
             if (reqParams != null)
             {
-                foreach (Dictionary<string, string> param in reqParams)
+                foreach (Dictionary<string, object> param in reqParams)
                     yield return factory.ObjectsDB.GetNewParameter(string.Format("@{0}", param["name"]), (EbDbType)Convert.ToInt32(param["type"]), param["value"]);
             }
         }
