@@ -269,45 +269,48 @@ namespace ExpressBase.Common.Data
             while (reader.Read())
             {
                 EbDataRow dr = dt.NewDataRow();
-                for (int i = 0; i < _fieldCount; i++)
-                {
-                    var _typ = reader.GetFieldType(i);
-                    if (_typ == typeof(DateTime))
-                    {
-                        dr[i] = reader.IsDBNull(i) ? DateTime.Now : reader.GetDateTime(i);
-                        continue;
-                    }
-                    else if (_typ == typeof(string))
-                    {
-                        dr[i] = reader.IsDBNull(i) ? string.Empty : reader.GetString(i);
-                        continue;
-                    }
-                    else if (_typ == typeof(bool))
-                    {
-                        dr[i] = reader.IsDBNull(i) ? false : reader.GetBoolean(i);
-                        continue;
-                    }
-                    else if (_typ == typeof(decimal))
-                    {
-                        dr[i] = reader.IsDBNull(i) ? 0 : reader.GetDecimal(i);
-                        continue;
-                    }
-                    else if (_typ == typeof(int) || _typ == typeof(Int32))
-                    {
-                        dr[i] = reader.IsDBNull(i) ? 0 : reader.GetInt32(i);
-                        continue;
-                    }
-                    else if (_typ == typeof(Int64))
-                    {
-                        dr[i] = reader.IsDBNull(i) ? 0 : reader.GetInt64(i);
-                        continue;
-                    }
-                    else
-                    {
-                        dr[i] = reader.GetValue(i);
-                        continue;
-                    }
-                }
+                object[] oArray = new object[_fieldCount];
+                reader.GetValues(oArray);
+                dr.AddRange(oArray);
+                //for (int i = 0; i < _fieldCount; i++)
+                //{
+                //    var _typ = reader.GetFieldType(i);
+                //    if (_typ == typeof(DateTime))
+                //    {
+                //        dr[i] = reader.IsDBNull(i) ? DateTime.Now : reader.GetDateTime(i);
+                //        continue;
+                //    }
+                //    else if (_typ == typeof(string))
+                //    {
+                //        dr[i] = reader.IsDBNull(i) ? string.Empty : reader.GetString(i);
+                //        continue;
+                //    }
+                //    else if (_typ == typeof(bool))
+                //    {
+                //        dr[i] = reader.IsDBNull(i) ? false : reader.GetBoolean(i);
+                //        continue;
+                //    }
+                //    else if (_typ == typeof(decimal))
+                //    {
+                //        dr[i] = reader.IsDBNull(i) ? 0 : reader.GetDecimal(i);
+                //        continue;
+                //    }
+                //    else if (_typ == typeof(int) || _typ == typeof(Int32))
+                //    {
+                //        dr[i] = reader.IsDBNull(i) ? 0 : reader.GetInt32(i);
+                //        continue;
+                //    }
+                //    else if (_typ == typeof(Int64))
+                //    {
+                //        dr[i] = reader.IsDBNull(i) ? 0 : reader.GetInt64(i);
+                //        continue;
+                //    }
+                //    else
+                //    {
+                //        dr[i] = reader.GetValue(i);
+                //        continue;
+                //    }
+                //}
 
                 dt.Rows.Add(dr);
             }
