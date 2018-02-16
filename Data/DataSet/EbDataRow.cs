@@ -43,7 +43,7 @@ namespace ExpressBase.Common
                         else if (this.Rows.Table.Columns[index].Type == System.Data.DbType.Decimal)
                             return 0;
                         else if (this.Rows.Table.Columns[index].Type == System.Data.DbType.DateTime)
-                            return DateTime.Now;
+                            return DateTime.MinValue;
                     }
                     else
                         return base[index];
