@@ -69,7 +69,7 @@ namespace ExpressBase.Common
     [ProtoBuf.ProtoContract]
     public class RowColletion : List<EbDataRow>
     {
-        internal EbDataTable Table { get; set; }
+        public EbDataTable Table { get; private set; }
 
         [OnDeserialized]
         public void OnDeserializedMethod(StreamingContext context)

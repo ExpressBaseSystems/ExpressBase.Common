@@ -7,9 +7,9 @@ CREATE OR REPLACE FUNCTION public.eb_update_rel(
 	relationsv text[])
     RETURNS integer
     LANGUAGE 'plpgsql'
+
     COST 100
     VOLATILE 
-    ROWS 0
 AS $BODY$
 
 BEGIN

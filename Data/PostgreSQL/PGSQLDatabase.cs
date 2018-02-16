@@ -70,8 +70,11 @@ namespace ExpressBase.Common
                         }
                     }
                 }
-                catch (Npgsql.NpgsqlException) { }
-                catch (SocketException) { }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    throw npgse;
+                }
+                catch (SocketException scket) { }
             }
 
             return obj;
@@ -99,8 +102,11 @@ namespace ExpressBase.Common
                         }
                     }
                 }
-                catch (Npgsql.NpgsqlException npgse) { }
-                catch(SocketException scket) { }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    throw npgse;
+                }
+                catch (SocketException scket) { }
             }
 
             return dt;
@@ -120,7 +126,11 @@ namespace ExpressBase.Common
                     return cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 }
             }
-            catch (Npgsql.NpgsqlException npgse) { }
+            catch (Npgsql.NpgsqlException npgse)
+            {
+                throw npgse;
+            }
+            catch (SocketException scket) { }
 
             return null;
         }
@@ -145,16 +155,20 @@ namespace ExpressBase.Common
                         }
                         catch (Exception ee)
                         {
-
+                            throw ee;
                         }
                     }
                     while (reader.NextResult());
                 }
             }
-            catch (Npgsql.NpgsqlException npgse) { }
+            catch (Npgsql.NpgsqlException npgse)
+            {
+                throw npgse;
+            }
+            catch (SocketException scket) { }
 
             var dtEnd = DateTime.Now;
-            var ts = (dtEnd - dtStart).Milliseconds;
+            var ts = (dtEnd - dtStart).TotalMilliseconds;
             Console.WriteLine(string.Format("-------------------------------------> {0}", ts));
             return ds;
         }
@@ -174,7 +188,11 @@ namespace ExpressBase.Common
                       return  cmd.ExecuteNonQuery();
                     }
                 }
-                catch (Npgsql.NpgsqlException npgse) { }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    throw npgse;
+                }
+                catch (SocketException scket) { }
 
                 return 0;
             }

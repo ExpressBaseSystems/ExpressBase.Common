@@ -998,15 +998,15 @@ ALTER FUNCTION public.eb_getroles(integer, text)
 
 
 
+-- FUNCTION: public.eb_authenticate_anonymous(text, text, text, integer, text)
 
--- FUNCTION: public.eb_authenticate_anonymous(text, text, text, text)
-
--- DROP FUNCTION public.eb_authenticate_anonymous(text, text, text, text);
+-- DROP FUNCTION public.eb_authenticate_anonymous(text, text, text, integer, text);
 
 CREATE OR REPLACE FUNCTION public.eb_authenticate_anonymous(
 	_socialid text DEFAULT NULL::text,
 	_emailid text DEFAULT NULL::text,
 	_phone text DEFAULT NULL::text,
+	_appid integer DEFAULT NULL::integer,
 	_wc text DEFAULT NULL::text)
     RETURNS TABLE(_userid integer, _email text, _firstname text, _roles_a text, _rolename_a text, _permissions text) 
     LANGUAGE 'plpgsql'
@@ -1036,11 +1036,13 @@ IF _socialid IS NOT NULL THEN
     
     IF _userid IS NULL THEN
     
-		SELECT A.id, A.email, A.name FROM eb_usersanonymous A WHERE A.socialid = _socialid 
+		SELECT A.id, A.email, A.name FROM eb_usersanonymous A WHERE A.socialid = _socialid AND appid = _appid
         INTO _userid, _email, _firstname;
             
 		IF _userid IS NULL THEN
-        	INSERT INTO eb_usersanonymous (socialid) VALUES (_socialid);
+        	INSERT INTO eb_usersanonymous (socialid, firstvisit, lastvisit, appid) VALUES (_socialid, NOW(), NOW(), _appid);
+		ELSE
+			UPDATE eb_usersanonymous SET lastvisit = NOW() WHERE id = _userid;
 		END IF;
        
         _is_anon_auth_req := TRUE;
@@ -1052,15 +1054,15 @@ ELSE
 	IF _emailid IS NOT NULL OR _phone IS NOT NULL THEN
     
     	SELECT A.id, A.email, A.name FROM eb_usersanonymous A 
-        WHERE A.email = _emailid OR A.phoneno = _phone INTO _userid, _email, _firstname;
+        WHERE (A.email = _emailid OR A.phoneno = _phone) AND appid = _appid INTO _userid, _email, _firstname;
         
         IF _userid IS NULL THEN
-        	INSERT INTO eb_usersanonymous (email, phoneno) VALUES (_emailid, _phone);
+        	INSERT INTO eb_usersanonymous (email, phoneno, firstvisit, lastvisit, appid) VALUES (_emailid, _phone, NOW(), NOW(), _appid);
         ELSE
         	IF _email IS NULL THEN
-            	UPDATE eb_usersanonymous SET email = _emailid WHERE phoneno = _phone;
+            	UPDATE eb_usersanonymous SET email = _emailid, lastvisit = NOW() WHERE phoneno = _phone;
             ELSE
-            	UPDATE eb_usersanonymous SET phoneno = _phone WHERE email = _emailid;
+            	UPDATE eb_usersanonymous SET phoneno = _phone, lastvisit = NOW() WHERE email = _emailid;
             END IF;
         END IF;
         
@@ -1072,7 +1074,7 @@ END IF;
 
 IF _is_anon_auth_req THEN
 	SELECT userid, email, firstname, roles_a, rolename_a, permissions 
-    FROM eb_authenticate_unified(uname => 'anonymous', password => '294de3557d9d00b3d2d8a1e6aab028cf', wc => _wc) 
+    FROM eb_authenticate_unified(uname => 'anonymous@anonym.com', password => '294de3557d9d00b3d2d8a1e6aab028cf', wc => _wc) 
     INTO _userid, _email, _firstname, _roles_a, _rolename_a, _permissions;
 END IF;
 
@@ -1083,9 +1085,8 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_authenticate_anonymous(text, text, text, text)
+ALTER FUNCTION public.eb_authenticate_anonymous(text, text, text, integer, text)
     OWNER TO postgres;
-
 
 
 

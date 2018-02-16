@@ -47,7 +47,7 @@ namespace ExpressBase.Common.Structures
                 if (vendor == DatabaseVendors.ORACLE)
                     return (int)OracleType.VarChar;
             }
-            else if ((DbType)this.IntCode == DbType.Date)
+            else if ((DbType)this.IntCode == DbType.DateTime)
             {
                 if (vendor == DatabaseVendors.PGSQL)
                     return (int)NpgsqlTypes.NpgsqlDbType.Date;
@@ -106,7 +106,7 @@ namespace ExpressBase.Common.Structures
         public static readonly EbDbType Int64 = new EbDbType((int)DbType.Int64);
         public static readonly EbDbType Json = new EbDbType((int)DbType.Object);
         public static readonly EbDbType Boolean = new EbDbType((int)DbType.Boolean);
-        public static readonly EbDbType Date = new EbDbType((int)DbType.Date);
+        public static readonly EbDbType Date = new EbDbType((int)DbType.DateTime);
 
         public static EbDbType Get(int intcode)
         {
@@ -124,7 +124,7 @@ namespace ExpressBase.Common.Structures
             get
             {
                 return new[] {
-                    String
+                    String,Decimal,Int32,Int64,Json,Boolean,Date
                 };
             }
         }
