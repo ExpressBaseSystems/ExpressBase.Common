@@ -100,7 +100,7 @@ namespace ExpressBase.Common.Objects
             this.JsonToJsObjectFuncs = @"
 function Proc(jsonObj, rootContainerObj) {
     $.extend(rootContainerObj, jsonObj);
-    rootContainerObj.Controls = new EbControlCollection({});
+    rootContainerObj.Controls = new EbControlCollection(jsonObj.Controls);
     ProcRecur(jsonObj.Controls, rootContainerObj.Controls);
     setTimeout(function () {
         console.log(' attached rootContainerObj.Controls :' + JSON.stringify(rootContainerObj.Controls));
@@ -109,8 +109,10 @@ function Proc(jsonObj, rootContainerObj) {
 
 function ProcRecur(src_controls, dest_controls) {
     $.each(src_controls.$values, function (i, control) {
+        if (i ===0)
+            dest_controls.$values=[];
         var newObj = ObjectFactory(control);
-            dest_controls.Append  (newObj);
+        dest_controls.Append  (newObj);
         if (control.IsContainer){
             newObj.Controls.$values=[];
             ProcRecur(control.Controls, newObj.Controls);
