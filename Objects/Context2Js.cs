@@ -391,7 +391,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
             {
                 Type[] args = prop.PropertyType.GetGenericArguments();
-                if (args.Length > 1)
+                if (args.Length > 0)
                 {
                     Type itemType = args[0];
                     return string.Format(s, prop.Name, "{\"$type\":\"System.Collections.Generic.List`1[[@typeName, ExpressBase.Objects]], System.Private.CoreLib\",\"$values\":[]}".Replace("@typeName", itemType.FullName));
