@@ -1,6 +1,6 @@
--- FUNCTION: public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, boolean, text, text)
+-- FUNCTION: public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text)
 
--- DROP FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, boolean, text, text);
+-- DROP FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text);
 
 CREATE OR REPLACE FUNCTION public.eb_objects_create_new_object(
 	obj_namev text,
@@ -12,7 +12,7 @@ CREATE OR REPLACE FUNCTION public.eb_objects_create_new_object(
 	src_pid text,
 	cur_pid text,
 	relationsstring text,
-	issave boolean,
+	issave text,
 	tagsv text,
 	appsstring text)
     RETURNS text
@@ -39,7 +39,7 @@ BEGIN
         (inserted_objid, obj_jsonv, commit_uidv, NOW(),1,0,0,issave)RETURNING id INTO inserted_obj_ver_id;
 		
     --majorversion.minorversion.patchversion
-    IF issave = TRUE THEN
+    IF issave = 'T' THEN
 		version_number := CONCAT_WS('.',1,0,0,'w');
     ELSE
     	version_number := CONCAT_WS('.',1,0,0);
@@ -64,6 +64,6 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, boolean, text, text)
+ALTER FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text)
     OWNER TO postgres;
 

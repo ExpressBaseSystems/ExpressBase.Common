@@ -324,7 +324,7 @@ namespace ExpressBase.Common
 
         public string EB_AUTHENTICATEUSER_SSO { get { return "SELECT * FROM eb_authenticate_unified(uname => @uname, wc => @wc);"; } }
 
-        public string EB_SIDEBARUSER_REQUEST{ get { return @"
+        public string EB_SIDEBARUSER_REQUEST { get { return @"
                 SELECT id, applicationname
                 FROM eb_applications;
                 SELECT
@@ -373,10 +373,178 @@ namespace ExpressBase.Common
 
 										SELECT A.id, A.firstname, A.email, B.id FROM eb_users A, eb_role2user B
 											WHERE A.id = B.user_id AND A.eb_del = 'F' AND B.eb_del = 'F' AND B.role_id = :id;"; } }
-        public string EB_SAVEROLES_QUERY { get { return "SELECT eb_create_or_update_rbac_manageroles(:role_id, :applicationid, :createdby, :role_name, :description, :is_anonym, :users, :dependants, :permission " +
-                    ");"; } }
+        public string EB_SAVEROLES_QUERY
+        {
+            get
+            {
+                return "SELECT eb_create_or_update_rbac_manageroles(:role_id, :applicationid, :createdby, :role_name, :description, :is_anonym, :users, :dependants, :permission " +
+");";
+            }
+        }
 
+        //.......OBJECTS QUERIES.....
+        public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
+        {
+            get
+            {
+                return @"SELECT 
+                        EOV.id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.commit_uid, EU.firstname
+                    FROM 
+                        eb_objects_ver EOV, eb_users EU
+                    WHERE
+                        EOV.commit_uid = EU.id AND
+                        EOV.eb_objects_id=(SELECT eb_objects_id FROM eb_objects_ver WHERE refid=@refid)
+                    ORDER BY
+                        EOV.id DESC; 
+                ";
+            }
+        }
 
+        public string EB_PARTICULAR_VERSION_OF_AN_OBJ
+        {
+            get
+            {
+                return @"SELECT
+                            obj_json, version_num, status, EO.obj_tags
+                        FROM
+                            eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
+                        WHERE
+                            EOV.refid=@refid AND EOS.eb_obj_ver_id = EOV.id AND EO.id=EOV.eb_objects_id
+                        ORDER BY
+	                        EOS.id DESC 
+                        LIMIT 1;
+                ";
+            }
+        }
+        public string EB_LATEST_COMMITTED_VERSION_OF_AN_OBJ
+        {
+            get
+            {
+                return @"SELECT 
+                        EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status, EO.obj_desc,
+                        EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.obj_json, EOV.refid
+                    FROM 
+                        eb_objects EO, eb_objects_ver EOV
+                    WHERE
+                        EO.id = EOV.eb_objects_id AND EOV.refid=@refid
+                    ORDER BY
+                        EO.obj_type;
+                ";
+            }
+        }
+        public string EB_ALL_LATEST_COMMITTED_VERSION_OF_AN_OBJ
+        {
+            get
+            {
+                return @"SELECT 
+                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
+                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog,EOV.commit_ts, EOV.commit_uid, EOV.refid,
+                            EU.firstname
+                        FROM 
+                            eb_objects EO, eb_objects_ver EOV
+                        LEFT JOIN
+	                        eb_users EU
+                        ON 
+	                        EOV.commit_uid=EU.id
+                        WHERE
+                            EO.id = EOV.eb_objects_id AND EO.obj_type=@type
+                        ORDER BY
+                            EO.obj_name; 
+                ";
+            }
+        }
+        public string EB_GET_LIVE_OBJ_RELATIONS
+        {
+            get
+            {
+                return @"SELECT 
+	                        EO.obj_name, EOV.refid, EOV.version_num, EO.obj_type,EOS.status
+                        FROM 
+	                        eb_objects EO, eb_objects_ver EOV,eb_objects_status EOS
+                        WHERE 
+	                        EO.id = ANY (SELECT eb_objects_id FROM eb_objects_ver WHERE refid IN(SELECT dependant FROM eb_objects_relations
+                                                  WHERE dominant=@dominant))
+                            AND EOV.refid =ANY(SELECT dependant FROM eb_objects_relations WHERE dominant=@dominant)    
+                            AND EO.id =EOV.eb_objects_id  AND EOS.eb_obj_ver_id = EOV.id AND EOS.status = 3 AND EO.obj_type IN(16 ,17); 
+                ";
+            }
+        }
+        public string EB_GET_ALL_COMMITTED_VERSION_LIST
+        {
+            get
+            {
+                return @"SELECT 
+                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
+                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.refid,
+                            EU.firstname
+                        FROM 
+                            eb_objects EO, eb_objects_ver EOV
+                        LEFT JOIN
+	                        eb_users EU
+                        ON 
+	                        EOV.commit_uid=EU.id
+                        WHERE
+                            EO.id = EOV.eb_objects_id  AND EO.obj_type=@type AND COALESCE(EOV.working_mode, 'F') <> 'T'
+                        ORDER BY
+                            EO.obj_name; 
+                ";
+            }
+        }
+        public string EB_GET_OBJ_LIST_FROM_EBOBJECTS
+        {
+            get
+            {
+                return @"SELECT 
+                    id, obj_name, obj_type, obj_cur_status, obj_desc  
+                FROM 
+                    eb_objects
+                WHERE
+                    obj_type=@type
+                ORDER BY
+                    obj_name;
+                ";
+            }
+        }
+        public string EB_GET_OBJ_STATUS_HISTORY
+        {
+            get
+            {
+                return @"SELECT 
+                            EOS.eb_obj_ver_id, EOS.status, EU.firstname, EOS.ts, EOS.changelog, EOV.commit_uid   
+                        FROM
+                            eb_objects_status EOS, eb_objects_ver EOV, eb_users EU
+                        WHERE
+                            eb_obj_ver_id = EOV.id AND EOV.refid = @refid AND EOV.commit_uid=EU.id
+                        ORDER BY 
+                        EOS.id DESC
+                ";
+            }
+        }
+        public string EB_LIVE_VERSION_OF_OBJS
+        {
+            get
+            {
+                return @"SELECT
+                            EO.id, EO.obj_name, EO.obj_type, EO.obj_desc,
+                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.obj_json, EOV.refid, EOS.status
+                        FROM
+                            eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
+                        WHERE
+                            EO.id = @id AND EOV.eb_objects_id = @id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id
+                ";
+            }
+        }
+        public string EB_GET_ALL_TAGS
+        {
+            get
+            {
+                return @"SELECT distinct(tags)
+                    FROM (SELECT unnest(string_to_array(obj_tags, ',')) AS tags
+	                      FROM eb_objects)
+                    AS tags
+                ";
+            }
+        }
     }
 }
 
