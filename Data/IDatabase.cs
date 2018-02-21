@@ -26,6 +26,7 @@ namespace ExpressBase.Common
         void RollbackTransaction();
         void CommitTransaction();
         bool IsInTransaction();
+        bool IsTableExists(string query, params DbParameter[] parameters);
 
         //---------------------sql query
 
