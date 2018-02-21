@@ -32,6 +32,23 @@ namespace ExpressBase.Common
         string EB_AUTHETICATE_USER_NORMAL { get; }
         string EB_AUTHENTICATEUSER_SOCIAL { get; }
         string EB_AUTHENTICATEUSER_SSO { get; }
+        string EB_SIDEBARUSER_REQUEST { get; }
+        string EB_GETROLESRESPONSE_QUERY { get; }
+        string GETMANAGEROLESRESPONSE_QUERY { get; }
+        string GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get; }
+
+
+        //........objects db query.....
+        string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ { get; }
+        string EB_PARTICULAR_VERSION_OF_AN_OBJ { get; }
+        string EB_LATEST_COMMITTED_VERSION_OF_AN_OBJ { get; }
+        string EB_ALL_LATEST_COMMITTED_VERSION_OF_AN_OBJ { get; }
+        string EB_GET_LIVE_OBJ_RELATIONS { get; }
+        string EB_GET_ALL_COMMITTED_VERSION_LIST { get; }
+        string EB_GET_OBJ_LIST_FROM_EBOBJECTS { get; }
+        string EB_GET_OBJ_STATUS_HISTORY { get; }
+        string EB_LIVE_VERSION_OF_OBJS { get; }
+        string EB_GET_ALL_TAGS { get; }
     }
 }
 
