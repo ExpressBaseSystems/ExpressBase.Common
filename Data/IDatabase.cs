@@ -32,6 +32,11 @@ namespace ExpressBase.Common
         string EB_AUTHETICATE_USER_NORMAL { get; }
         string EB_AUTHENTICATEUSER_SOCIAL { get; }
         string EB_AUTHENTICATEUSER_SSO { get; }
+        string EB_SIDEBARUSER_REQUEST { get; }
+        string EB_GETROLESRESPONSE_QUERY { get; }
+        string EB_GETMANAGEROLESRESPONSE_QUERY { get; }
+        string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get; }
+        string EB_SAVEROLES_QUERY { get; }
     }
 }
 

@@ -7,10 +7,11 @@ CREATE TABLE public.eb_tables
     id integer NOT NULL DEFAULT nextval('eb_tables_id_seq'::regclass),
     tablename text COLLATE pg_catalog."default",
     tbldescription text COLLATE pg_catalog."default",
-    eb_del boolean DEFAULT false,
+    eb_del "char" NOT NULL DEFAULT 'F'::"char",
     eb_void boolean DEFAULT false,
     eb_locked boolean DEFAULT false,
-    CONSTRAINT eb_tables_pkey PRIMARY KEY (id)
+    CONSTRAINT eb_tables_pkey PRIMARY KEY (id),
+	CONSTRAINT check_types CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
 )
 WITH (
     OIDS = FALSE
@@ -38,12 +39,13 @@ CREATE TABLE public.eb_tablecolumns
     id integer NOT NULL DEFAULT nextval('eb_tablecolumns_id_seq'::regclass),
     columnname text COLLATE pg_catalog."default",
     columntype integer,
-    eb_del boolean DEFAULT false,
+    eb_del "char" NOT NULL DEFAULT 'F'::"char",
     eb_lock boolean DEFAULT false,
     tablename text COLLATE pg_catalog."default",
     columntypename text COLLATE pg_catalog."default",
     table_id integer NOT NULL,
-    CONSTRAINT eb_columns_pkey PRIMARY KEY (id)
+    CONSTRAINT eb_columns_pkey PRIMARY KEY (id),
+	CONSTRAINT check_types CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
 )
 WITH (
     OIDS = FALSE

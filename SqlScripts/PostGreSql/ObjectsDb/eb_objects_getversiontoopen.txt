@@ -33,7 +33,7 @@ WHERE
 	eb_objects_id=_id AND working_mode=true;
 
  select string_agg(EA.applicationname,',') INTO app_id from eb_objects2application E2O ,eb_applications EA where 
- obj_id = _id and E2O.eb_del = false and EA.id = E2O.app_id ;
+ obj_id = _id and E2O.eb_del = 'F' and EA.id = E2O.app_id ;
 
 --one working copy	
 IF no_of_workcopies = 1 THEN

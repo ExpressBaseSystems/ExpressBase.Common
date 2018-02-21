@@ -9,6 +9,7 @@ using System.Data.Common;
 using System.Data.OracleClient;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ExpressBase.Common.Data
 {
@@ -21,11 +22,11 @@ namespace ExpressBase.Common.Data
         public OracleDB(EbBaseDbConnection dbconf)
         {
             this.EbBaseDbConnection = dbconf;
-            _cstr = string.Format(CONNECTION_STRING_BARE, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port,  this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password);
-        }   
+            _cstr = string.Format(CONNECTION_STRING_BARE, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port, this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password);
+        }
         public OracleDB()
         {
-            _cstr= "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = 35.200.241.84)(PORT = 1521))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= MASTERTEX;Password=master";
+            _cstr = "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = 35.200.241.84)(PORT = 1521))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= MASTERTEX;Password=master";
             //_cstr = "Data Source = RHEL5; User ID = TEST; Password = Passw0rd1 ";
         }
 
@@ -46,16 +47,16 @@ namespace ExpressBase.Common.Data
             return new OracleCommand(sql, (OracleConnection)con);
         }
 
-        public System.Data.Common.DbCommand GetNewCommand(DbConnection con, string sql,DbTransaction trans)
+        public System.Data.Common.DbCommand GetNewCommand(DbConnection con, string sql, DbTransaction trans)
         {
-            return new OracleCommand(sql, (OracleConnection)con,(OracleTransaction)trans);
+            return new OracleCommand(sql, (OracleConnection)con, (OracleTransaction)trans);
         }
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbType type, object value)
         {
             return new OracleParameter(parametername, (OracleType)type.VendorSpecificIntCode(DatabaseVendors.ORACLE)) { Value = value };
         }
-       
+
         public T DoQuery<T>(string query, params DbParameter[] parameters)
         {
             T obj = default(T);
@@ -66,7 +67,7 @@ namespace ExpressBase.Common.Data
                 {
                     string[] sql_arr = query.Split(";");
                     con.Open();
-                    for (int i = 0; i < sql_arr.Length-1; i++)
+                    for (int i = 0; i < sql_arr.Length - 1; i++)
                     {
                         using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                         {
@@ -98,7 +99,7 @@ namespace ExpressBase.Common.Data
                 try
                 {
                     con.Open();
-                    for (int i = 0; i < sql_arr.Length-1; i++)
+                    for (int i = 0; i < sql_arr.Length - 1; i++)
                     {
                         using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                         {
@@ -155,7 +156,7 @@ namespace ExpressBase.Common.Data
                 try
                 {
                     con.Open();
-                    for (int i = 0; i < sql_arr.Length-1; i++)
+                    for (int i = 0; i < sql_arr.Length - 1; i++)
                     {
                         using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                         {
@@ -170,7 +171,7 @@ namespace ExpressBase.Common.Data
                                 this.AddColumns(dt, schema);
                                 PrepareDataTable(reader, dt);
                                 ds.Tables.Add(dt);
-                               
+
                             }
                         }
                     }
@@ -321,6 +322,55 @@ namespace ExpressBase.Common.Data
         public string EB_AUTHETICATE_USER_NORMAL { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, passwrd => :pass,wc => :wc));"; } }
         public string EB_AUTHENTICATEUSER_SOCIAL { get { return "SELECT * FROM table(eb_authenticate_unified(social => :social, wc => :wc));"; } }
         public string EB_AUTHENTICATEUSER_SSO { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, wc => :wc));"; } }
+
+        public string EB_SIDEBARUSER_REQUEST { get { return @"
+                        SELECT id, application_name
+                        FROM eb_applications;
+                        SELECT
+                            EO.id, EO.obj_type, EO.obj_name,
+                            EOV.version_num, EOV.refid, EO2A.app_id,EO.obj_desc
+                        FROM
+                            eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
+                        WHERE
+                            EO.id = EOV.eb_objects_id 
+                        AND 
+                            EOS.eb_obj_ver_id = EOV.id 
+                        AND 
+                            EO.id = ANY(@Ids)  
+                        AND 
+                            EOS.status = 3 
+                        AND EO.id = EO2A.obj_id 
+                        AND EO2A.eb_del = 'F';"; } }
+        public string EB_GETROLESRESPONSE_QUERY
+        {
+            get
+            {
+                return
+@"SELECT R.id,R.role_name,R.description,A.application_name,
+                        (SELECT COUNT(role1_id) FROM eb_role2role WHERE role1_id=R.id AND eb_del='F') AS subrole_count,
+						(SELECT COUNT(user_id) FROM eb_role2user WHERE role_id=R.id AND eb_del='F') AS user_count,
+						(SELECT COUNT(distinct permissionname) FROM eb_role2permission RP, eb_objects2application OA WHERE role_id = R.id AND app_id=A.id AND RP.obj_id=OA.obj_id AND RP.eb_del = 'F' AND OA.eb_del = 'F') AS permission_count
+								FROM eb_roles R, eb_applications A
+								WHERE R.applicationid = A.id AND R.role_name LIKE  '%' || :searchtext || '%';";
+            }
+        }
+        public string EB_GETMANAGEROLESRESPONSE_QUERY { get { return @"
+                                                           SELECT id, application_name FROM eb_applications where eb_del = 'F' ORDER BY application_name;
+									SELECT DISTINCT EO.id, EO.obj_name, EO.obj_type, EO2A.app_id
+									FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
+									WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3 
+									AND EO.id = EO2A.obj_id AND EO2A.eb_del = 'F';
+
+									SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> :id ORDER BY role_name;
+									SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';"; } }
+        public string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get { return @"
+                                                        SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = :id;
+										                SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = :id AND eb_del = 'F';
+                										SELECT A.application_name, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = :id AND A.eb_del = 'F';
+										                SELECT A.id, A.firstname, A.email, B.id FROM eb_users A, eb_role2user B
+											                WHERE A.id = B.user_id AND A.eb_del = 'F' AND B.eb_del = 'F' AND B.role_id = :id;"; } }
+        public string EB_SAVEROLES_QUERY { get { return "SELECT eb_create_or_update_rbac_roles(:role_id, :applicationid, :createdby, :role_name, :description, :is_anonym, :users, :dependants, :permission) FROM dual;"; } }
+
 
     }
 }
