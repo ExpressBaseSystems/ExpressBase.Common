@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE FUNCTION public.eb_objects_getversiontoopen(
 	_id integer)
-    RETURNS TABLE(idv integer, namev text, typev integer, status integer, description text, changelog text, commitat text, commitby text, refidv text, ver_num text, work_mode boolean, workingcopies text[], json_wc json, json_lc json, major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id text) 
+    RETURNS TABLE(idv integer, namev text, typev integer, status integer, description text, changelog text, commitat text, commitby text, refidv text, ver_num text, work_mode boolean, workingcopies text, json_wc json, json_lc json, major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id text) 
     LANGUAGE 'plpgsql'
 
     COST 100
@@ -13,26 +13,24 @@ CREATE OR REPLACE FUNCTION public.eb_objects_getversiontoopen(
 AS $BODY$
 
 DECLARE
-    workingcopies text[];
+    workingcopies text;
 	json_wc json; json_lc json; no_of_workcopies integer;
 	idv integer; namev text; typev integer; status integer;
 	description text; changelog text; commitat text; commitby text; refidv text; ver_num text; work_mode boolean;
 	major_ver integer; minor_ver integer; patch_ver integer; tags text; app_id text;
 	lastversionnumber text; lastversionrefid text; liveversionnumber text; liveversionrefid text;
 BEGIN
-
+   
 	workingcopies := NULL;
 	json_wc := NULL;
 	json_lc :=NULL;
 --Fetching all working copies
 SELECT 
-	string_to_array(string_agg((json_build_object( version_num, refid)::text),','),',') INTO workingcopies
+	string_agg((json_build_object( version_num, refid)::text),','),count(*) INTO workingcopies, no_of_workcopies
 FROM 
 	eb_objects_ver 
 WHERE 
 	eb_objects_id=_id AND working_mode=true;
-			
-no_of_workcopies := COALESCE(array_length(workingcopies, 1), 0);
 
  select string_agg(EA.applicationname,',') INTO app_id from eb_objects2application E2O ,eb_applications EA where 
  obj_id = _id and E2O.eb_del = false and EA.id = E2O.app_id ;

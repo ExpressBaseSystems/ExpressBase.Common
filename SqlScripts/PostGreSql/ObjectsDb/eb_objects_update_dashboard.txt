@@ -4,15 +4,16 @@
 
 CREATE OR REPLACE FUNCTION public.eb_objects_update_dashboard(
 	_refid text)
-    RETURNS TABLE(namev text, status integer, ver_num text, work_mode boolean, workingcopies text[], major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id text, lastversionrefidval text, lastversionnumberval text, lastversioncommit_tsval text, lastversion_statusval integer, lastversioncommit_byname text, lastversioncommit_byid integer, liveversionrefidval text, liveversionnumberval text, liveversioncommit_tsval text, liveversion_statusval integer, liveversioncommit_byname text, liveversioncommit_byid integer, owner_uidval integer, owner_tsval text, owner_nameval text) 
+    RETURNS TABLE(namev text, status integer, ver_num text, work_mode boolean, workingcopies text, major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id text, lastversionrefidval text, lastversionnumberval text, lastversioncommit_tsval text, lastversion_statusval integer, lastversioncommit_byname text, lastversioncommit_byid integer, liveversionrefidval text, liveversionnumberval text, liveversioncommit_tsval text, liveversion_statusval integer, liveversioncommit_byname text, liveversioncommit_byid integer, owner_uidval integer, owner_tsval text, owner_nameval text) 
     LANGUAGE 'plpgsql'
+
     COST 100
     VOLATILE 
     ROWS 1000
 AS $BODY$
 
 DECLARE
-	workingcopies text[]; _id integer;
+	workingcopies text; _id integer;
     namev text; status integer;
 	description text; changelog text; ver_num text; work_mode boolean;
 	major_ver integer; minor_ver integer; patch_ver integer; tags text; app_id text;
@@ -31,7 +32,7 @@ select string_agg(EA.applicationname,',') INTO app_id from eb_objects2applicatio
  obj_id = _id and E2O.eb_del = false and EA.id = E2O.app_id ;
  
 SELECT 
-	string_to_array(string_agg((json_build_object( version_num, refid)::text),','),',') INTO workingcopies
+	string_agg((json_build_object( version_num, refid)::text),',') INTO workingcopies
 FROM 
 	eb_objects_ver 
 WHERE 
