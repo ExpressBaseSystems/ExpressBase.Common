@@ -100,7 +100,7 @@ namespace ExpressBase.Common.Objects
             this.JsonToJsObjectFuncs = @"
 function Proc(jsonObj, rootContainerObj) {
     $.extend(rootContainerObj, jsonObj);
-    rootContainerObj.Controls = new EbControlCollection({});
+    rootContainerObj.Controls = new EbControlCollection(jsonObj.Controls);
     ProcRecur(jsonObj.Controls, rootContainerObj.Controls);
     setTimeout(function () {
         console.log(' attached rootContainerObj.Controls :' + JSON.stringify(rootContainerObj.Controls));
@@ -109,8 +109,10 @@ function Proc(jsonObj, rootContainerObj) {
 
 function ProcRecur(src_controls, dest_controls) {
     $.each(src_controls.$values, function (i, control) {
+        if (i ===0)
+            dest_controls.$values=[];
         var newObj = ObjectFactory(control);
-            dest_controls.Append  (newObj);
+        dest_controls.Append  (newObj);
         if (control.IsContainer){
             newObj.Controls.$values=[];
             ProcRecur(control.Controls, newObj.Controls);
@@ -389,7 +391,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
             {
                 Type[] args = prop.PropertyType.GetGenericArguments();
-                if (args.Length > 1)
+                if (args.Length > 0)
                 {
                     Type itemType = args[0];
                     return string.Format(s, prop.Name, "{\"$type\":\"System.Collections.Generic.List`1[[@typeName, ExpressBase.Objects]], System.Private.CoreLib\",\"$values\":[]}".Replace("@typeName", itemType.FullName));
