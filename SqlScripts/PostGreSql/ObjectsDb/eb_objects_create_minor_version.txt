@@ -38,7 +38,7 @@ BEGIN
 		
 	UPDATE eb_objects_ver
 		SET
-		commit_ts = NOW(), commit_uid = commit_uidv, version_num = version_number, working_mode = true, minor_ver_num = minor+1, patch_ver_num = 0
+		commit_ts = NOW(), commit_uid = commit_uidv, version_num = version_number, working_mode = 'T', minor_ver_num = minor+1, patch_ver_num = 0
 	WHERE
 			id = inserted_obj_ver_id ;
 	
@@ -52,7 +52,7 @@ BEGIN
     
 	UPDATE eb_objects_relations 
       SET 
-        eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
+        eb_del = 'T', removed_by = commit_uidv , removed_at = NOW()
       WHERE 
         dominant IN(
             SELECT unnest(ARRAY(select dominant from eb_objects_relations WHERE dependant = refidunique)) 
