@@ -37,7 +37,7 @@ RETURNING id INTO inserted_obj_ver_id;
 	
 UPDATE eb_objects_ver
 	SET
-	commit_ts = NOW(), Commit_uid = commit_uidv, version_num = version_number, working_mode = true, patch_ver_num = patch + 1
+	commit_ts = NOW(), Commit_uid = commit_uidv, version_num = version_number, working_mode = 'T', patch_ver_num = patch + 1
 WHERE
 		id = inserted_obj_ver_id ;
 
@@ -50,7 +50,7 @@ INSERT INTO eb_objects_status(eb_obj_ver_id, status, uid, ts) VALUES(inserted_ob
 
 UPDATE eb_objects_relations 
 SET 
-	eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
+	eb_del = 'T', removed_by = commit_uidv , removed_at = NOW()
 WHERE 
 	dominant IN(
 	SELECT unnest(ARRAY(select dominant from eb_objects_relations WHERE dependant = refidunique)) 

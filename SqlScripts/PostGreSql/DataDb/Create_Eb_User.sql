@@ -8,12 +8,13 @@ CREATE TABLE public.eb_role2role
     id integer NOT NULL DEFAULT nextval('eb_role2role_id_seq'::regclass),
     role1_id integer,
     role2_id integer,
-    eb_del boolean DEFAULT false,
+	eb_del "char" NOT NULL DEFAULT 'F'::"char",
     createdby integer,
     createdat timestamp without time zone,
     revokedby integer,
     revokedat timestamp without time zone,
-    CONSTRAINT eb_role2role_id_pkey PRIMARY KEY (id)
+    CONSTRAINT eb_role2role_id_pkey PRIMARY KEY (id),
+	CONSTRAINT check_types CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
 )
 WITH (OIDS = FALSE) TABLESPACE pg_default;
 
@@ -28,7 +29,7 @@ CREATE TABLE public.eb_role2permission
 (
     id integer NOT NULL DEFAULT nextval('eb_role2permission_id_seq'::regclass),
     role_id integer,
-    eb_del boolean DEFAULT false,
+    eb_del "char" NOT NULL DEFAULT 'F'::"char",
     permissionname text COLLATE pg_catalog."default",
     createdby integer,
     createdat timestamp without time zone,
@@ -36,7 +37,8 @@ CREATE TABLE public.eb_role2permission
     op_id integer,
     revokedby integer,
     revokedat timestamp without time zone,
-    CONSTRAINT eb_role2permission_pkey PRIMARY KEY (id)
+    CONSTRAINT eb_role2permission_pkey PRIMARY KEY (id),
+	CONSTRAINT check_types CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
 )
 WITH (OIDS = FALSE) TABLESPACE pg_default;
 
@@ -52,12 +54,13 @@ CREATE TABLE public.eb_role2user
     id integer NOT NULL DEFAULT nextval('eb_role2user_id_seq'::regclass),
     role_id integer,
     user_id integer,
-    eb_del boolean DEFAULT false,
+    eb_del "char" NOT NULL DEFAULT 'F'::"char",
     createdby integer,
     createdat timestamp without time zone,
     revokedby integer,
     revokedat timestamp without time zone,
-    CONSTRAINT eb_role2user_id_pkey PRIMARY KEY (id)
+    CONSTRAINT eb_role2user_id_pkey PRIMARY KEY (id),
+	CONSTRAINT check_types CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
 )
 WITH (OIDS = FALSE) TABLESPACE pg_default;
 
@@ -72,12 +75,13 @@ CREATE TABLE public.eb_roles
 (
     id integer NOT NULL DEFAULT nextval('eb_roles_id_seq'::regclass),
     role_name text COLLATE pg_catalog."default" NOT NULL,
-    eb_del boolean,
+    eb_del "char" NOT NULL DEFAULT 'F'::"char",
     applicationname text COLLATE pg_catalog."default",
     applicationid integer,
     description text COLLATE pg_catalog."default",
     CONSTRAINT eb_roles_id_pkey PRIMARY KEY (id),
-    CONSTRAINT eb_rolename_unique UNIQUE (role_name)
+    CONSTRAINT eb_rolename_unique UNIQUE (role_name),
+	CONSTRAINT check_types CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
 )
 WITH (OIDS = FALSE) TABLESPACE pg_default;
 
@@ -93,12 +97,13 @@ CREATE TABLE public.eb_user2usergroup
     id integer NOT NULL DEFAULT nextval('eb_user2usergroup_id_seq'::regclass),
     userid integer,
     groupid integer,
-    eb_del boolean DEFAULT false,
+    eb_del "char" NOT NULL DEFAULT 'F'::"char",
     createdby integer,
     createdat timestamp without time zone,
     revokedby integer,
     revokedat timestamp without time zone,
-    CONSTRAINT eb_user2usergroup_pkey PRIMARY KEY (id)
+    CONSTRAINT eb_user2usergroup_pkey PRIMARY KEY (id),
+	CONSTRAINT check_types CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
 )
 WITH (OIDS = FALSE) TABLESPACE pg_default;
 
@@ -114,8 +119,9 @@ CREATE TABLE public.eb_usergroup
     id integer NOT NULL DEFAULT nextval('eb_usergroup_id_seq'::regclass),
     name text COLLATE pg_catalog."default",
     description text COLLATE pg_catalog."default",
-    eb_del boolean,
-    CONSTRAINT eb_usergroup_pkey PRIMARY KEY (id)
+     eb_del "char" NOT NULL DEFAULT 'F'::"char",
+    CONSTRAINT eb_usergroup_pkey PRIMARY KEY (id),
+	CONSTRAINT check_types CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
 )
 WITH (OIDS = FALSE) TABLESPACE pg_default;
 
@@ -131,7 +137,7 @@ CREATE TABLE public.eb_users
     id integer NOT NULL DEFAULT nextval('eb_users_id_seq'::regclass),
     email text COLLATE pg_catalog."default",
     pwd text COLLATE pg_catalog."default",
-    eb_del boolean DEFAULT false,
+    eb_del "char" NOT NULL DEFAULT 'F'::"char",
     firstname text COLLATE pg_catalog."default",
     lastname text COLLATE pg_catalog."default",
     middlename text COLLATE pg_catalog."default",
@@ -158,7 +164,8 @@ CREATE TABLE public.eb_users
     designation text COLLATE pg_catalog."default",
     country text COLLATE pg_catalog."default",
     CONSTRAINT eb_users_pkey PRIMARY KEY (id),
-    CONSTRAINT socialid_unique_key UNIQUE (socialid)
+    CONSTRAINT socialid_unique_key UNIQUE (socialid),
+	CONSTRAINT check_types CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
 )
 WITH (OIDS = FALSE) TABLESPACE pg_default;
 

@@ -28,10 +28,10 @@ errornum := 0;
 
     UPDATE eb_role2permission 
     SET 
-        eb_del = TRUE,revokedat = NOW(),revokedby = $4 
+        eb_del = 'T',revokedat = NOW(),revokedby = $4 
     WHERE 
         permissionname IN(
-            SELECT unnest(ARRAY(select permissionname from eb_role2permission WHERE role_id = $6 AND eb_del = FALSE)) 
+            SELECT unnest(ARRAY(select permissionname from eb_role2permission WHERE role_id = $6 AND eb_del = 'F')) 
         except 
             SELECT unnest(ARRAY[$5]));
 
@@ -43,7 +43,7 @@ errornum := 0;
         split_part(permissionname,'_',1)::int 
     FROM UNNEST(array(SELECT unnest(ARRAY[$5])
         except 
-        SELECT unnest(array(select permissionname from eb_role2permission WHERE role_id = $6 AND eb_del = FALSE)))) AS permissionname;
+        SELECT unnest(array(select permissionname from eb_role2permission WHERE role_id = $6 AND eb_del = 'F')))) AS permissionname;
 RETURN errornum;
 
 EXCEPTION WHEN unique_violation THEN errornum := 23505;
@@ -69,10 +69,10 @@ BEGIN
 
     UPDATE eb_role2role 
     SET 
-        eb_del = TRUE,revokedat = NOW(),revokedby = $2 
+        eb_del = 'T',revokedat = NOW(),revokedby = $2 
     WHERE 
         role2_id IN(
-            SELECT unnest(ARRAY(select role2_id from eb_role2role WHERE role1_id = $1 and eb_del = FALSE)) 
+            SELECT unnest(ARRAY(select role2_id from eb_role2role WHERE role1_id = $1 and eb_del = 'F')) 
         except 
             SELECT unnest(ARRAY[$3]));
 
@@ -83,7 +83,7 @@ BEGIN
         
     FROM UNNEST(array(SELECT unnest(ARRAY[$3])
         except 
-        SELECT unnest(array(select role2_id from eb_role2role WHERE role1_id = $1 and eb_del = FALSE)))) AS dependants;
+        SELECT unnest(array(select role2_id from eb_role2role WHERE role1_id = $1 and eb_del = 'F')))) AS dependants;
 RETURN 0;
 
 END;

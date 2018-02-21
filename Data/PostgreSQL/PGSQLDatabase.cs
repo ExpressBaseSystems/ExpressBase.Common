@@ -318,7 +318,7 @@ namespace ExpressBase.Common
 
         public string EB_AUTHENTICATEUSER_SSO { get { return "SELECT * FROM eb_authenticate_unified(uname => @uname, wc => @wc);"; } }
 
-        public string EB_SIDEBARUSER_REQUEST{ get { return @"
+        public string EB_SIDEBARUSER_REQUEST { get { return @"
                 SELECT id, applicationname
                 FROM eb_applications;
                 SELECT
@@ -335,7 +335,7 @@ namespace ExpressBase.Common
                 AND 
                     EOS.status = 3 
                 AND EO.id = EO2A.obj_id 
-                AND EO2A.eb_del = 'false';"; } }
+                AND EO2A.eb_del = 'F';"; } }
 
         public string EB_GETROLESRESPONSE_QUERY
         {
@@ -343,31 +343,38 @@ namespace ExpressBase.Common
             {
                 return
                     @"SELECT R.id,R.role_name,R.description,A.applicationname,
-									(SELECT COUNT(role1_id) FROM eb_role2role WHERE role1_id=R.id AND eb_del=false) AS subrole_count,
-									(SELECT COUNT(user_id) FROM eb_role2user WHERE role_id=R.id AND eb_del=false) AS user_count,
-									(SELECT COUNT(distinct permissionname) FROM eb_role2permission RP, eb_objects2application OA WHERE role_id = R.id AND app_id=A.id AND RP.obj_id=OA.obj_id AND RP.eb_del = FALSE AND OA.eb_del = FALSE) AS permission_count
+									(SELECT COUNT(role1_id) FROM eb_role2role WHERE role1_id=R.id AND eb_del='F') AS subrole_count,
+									(SELECT COUNT(user_id) FROM eb_role2user WHERE role_id=R.id AND eb_del='F') AS user_count,
+									(SELECT COUNT(distinct permissionname) FROM eb_role2permission RP, eb_objects2application OA WHERE role_id = R.id AND app_id=A.id AND RP.obj_id=OA.obj_id AND RP.eb_del = 'F' AND OA.eb_del = 'F') AS permission_count
 								FROM eb_roles R, eb_applications A
 								WHERE R.applicationid = A.id AND R.role_name ~* :searchtext;";
             }
         }
-        public string GETMANAGEROLESRESPONSE_QUERY { get { return @"
-                                                           SELECT id, applicationname FROM eb_applications where eb_del = FALSE ORDER BY applicationname;
+        public string EB_GETMANAGEROLESRESPONSE_QUERY { get { return @"
+                                                           SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY applicationname;
 
 									SELECT DISTINCT EO.id, EO.obj_name, EO.obj_type, EO2A.app_id
 									FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
 									WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3 
-									AND EO.id = EO2A.obj_id AND EO2A.eb_del = 'false';
+									AND EO.id = EO2A.obj_id AND EO2A.eb_del = 'F';
 
 									SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> :id ORDER BY role_name;
-									SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = FALSE;"; } }
-        public string GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get { return @"
+									SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';"; } }
+        public string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get { return @"
                                                        SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = :id;
-										SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = :id AND eb_del = FALSE;
-										SELECT A.applicationname, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = :id AND A.eb_del = FALSE;
+										SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = :id AND eb_del = 'F';
+										SELECT A.applicationname, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = :id AND A.eb_del = 'F';
 
 										SELECT A.id, A.firstname, A.email, B.id FROM eb_users A, eb_role2user B
-											WHERE A.id = B.user_id AND A.eb_del = FALSE AND B.eb_del = FALSE AND B.role_id = :id;"; } }
-
+											WHERE A.id = B.user_id AND A.eb_del = 'F' AND B.eb_del = 'F' AND B.role_id = :id;"; } }
+        public string EB_SAVEROLES_QUERY
+        {
+            get
+            {
+                return "SELECT eb_create_or_update_rbac_manageroles(:role_id, :applicationid, :createdby, :role_name, :description, :is_anonym, :users, :dependants, :permission " +
+");";
+            }
+        }
 
         //.......OBJECTS QUERIES.....
         public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ

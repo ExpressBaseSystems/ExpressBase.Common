@@ -39,7 +39,7 @@ BEGIN
         (inserted_objid, obj_jsonv, commit_uidv, NOW(),1,0,0,issave)RETURNING id INTO inserted_obj_ver_id;
 		
     --majorversion.minorversion.patchversion
-    IF issave = TRUE THEN
+    IF issave = 'T' THEN
 		version_number := CONCAT_WS('.',1,0,0,'w');
     ELSE
     	version_number := CONCAT_WS('.',1,0,0);

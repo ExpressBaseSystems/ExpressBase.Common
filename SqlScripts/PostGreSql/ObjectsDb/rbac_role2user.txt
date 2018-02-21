@@ -16,10 +16,10 @@ AS $BODY$
 BEGIN
     UPDATE eb_role2user 
     SET 
-        eb_del = TRUE,revokedat = NOW(),revokedby = $2 
+        eb_del = 'T',revokedat = NOW(),revokedby = $2 
     WHERE 
         user_id IN(
-            SELECT unnest(ARRAY(select user_id from eb_role2user WHERE role_id = $1 and eb_del = FALSE)) 
+            SELECT unnest(ARRAY(select user_id from eb_role2user WHERE role_id = $1 and eb_del = 'F')) 
         except 
             SELECT unnest(ARRAY[$3]));
 
@@ -30,7 +30,7 @@ BEGIN
         
     FROM UNNEST(array(SELECT unnest(ARRAY[$3])
         except 
-        SELECT unnest(array(select user_id from eb_role2user WHERE role_id = $1 and eb_del = FALSE)))) AS users;
+        SELECT unnest(array(select user_id from eb_role2user WHERE role_id = $1 and eb_del = 'F')))) AS users;
 RETURN 0;
 
 END;

@@ -15,7 +15,7 @@ AS $BODY$
 BEGIN
     UPDATE eb_objects_relations 
     SET 
-        eb_del = TRUE, removed_by= commit_uidv , removed_at=NOW()
+        eb_del = 'T', removed_by= commit_uidv , removed_at=NOW()
     WHERE 
         dominant IN(
             SELECT unnest(ARRAY(select dominant from eb_objects_relations WHERE dependant = 'eb_roby_dev-eb_roby_dev-2-429-788'  )) 

@@ -121,7 +121,7 @@ SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, ma
    --relations table
 	UPDATE eb_objects_relations 
       SET 
-        eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
+        eb_del = 'T', removed_by = commit_uidv , removed_at = NOW()
       WHERE 
         dominant IN(
             SELECT unnest(ARRAY(select dominant from eb_objects_relations WHERE dependant = refidunique)) 
@@ -140,10 +140,10 @@ SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, ma
 --application table
 UPDATE eb_objects2application 
     SET 
-        eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
+        eb_del = 'T', removed_by = commit_uidv , removed_at = NOW()
     WHERE 
         app_id IN(
-        SELECT unnest(ARRAY(select app_id from eb_objects2application WHERE obj_id = objid AND eb_del=FALSE)) 
+        SELECT unnest(ARRAY(select app_id from eb_objects2application WHERE obj_id = objid AND eb_del='F')) 
         EXCEPT 
         SELECT unnest(ARRAY[COALESCE(apps, ARRAY[0])]));
             
@@ -152,7 +152,7 @@ UPDATE eb_objects2application
      		appvals, objid
       	FROM UNNEST(array(SELECT unnest(ARRAY[COALESCE(apps, ARRAY[0])])
         EXCEPT 
-      	SELECT unnest(array(select app_id from eb_objects2application WHERE obj_id = objid AND eb_del=FALSE)))) as appvals;
+      	SELECT unnest(array(select app_id from eb_objects2application WHERE obj_id = objid AND eb_del='F')))) as appvals;
 									
     RETURN committed_refidunique; 	
 
@@ -216,7 +216,7 @@ SELECT eb_objects_id into objid FROM eb_objects_ver WHERE refid = idv;
     
 	UPDATE eb_objects_relations 
       SET 
-        eb_del = TRUE, removed_by= commit_uidv , removed_at=NOW()
+        eb_del = 'T', removed_by= commit_uidv , removed_at=NOW()
       WHERE 
         dominant IN(
             SELECT unnest(ARRAY(select dominant from eb_objects_relations WHERE dependant = refidunique)) 
@@ -292,7 +292,7 @@ BEGIN
     
 	UPDATE eb_objects_relations 
       SET 
-        eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
+        eb_del = 'T', removed_by = commit_uidv , removed_at = NOW()
       WHERE 
         dominant IN(
             SELECT unnest(ARRAY(select dominant from eb_objects_relations WHERE dependant = refidunique)) 
@@ -431,7 +431,7 @@ INSERT INTO eb_objects_status(eb_obj_ver_id, status, uid, ts) VALUES(inserted_ob
 
 UPDATE eb_objects_relations 
 SET 
-	eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
+	eb_del = 'T', removed_by = commit_uidv , removed_at = NOW()
 WHERE 
 	dominant IN(
 	SELECT unnest(ARRAY(select dominant from eb_objects_relations WHERE dependant = refidunique)) 
@@ -569,7 +569,7 @@ WHERE
 no_of_workcopies := COALESCE(array_length(workingcopies, 1), 0);
 
  select string_agg(EA.applicationname,',') INTO app_id from eb_objects2application E2O ,eb_applications EA where 
- obj_id = _id and E2O.eb_del = false and EA.id = E2O.app_id ;
+ obj_id = _id and E2O.eb_del = 'F' and EA.id = E2O.app_id ;
 
 --one working copy	
 IF no_of_workcopies = 1 THEN
@@ -688,7 +688,7 @@ SELECT eb_objects_id FROM eb_objects_ver into objid WHERE refid=refidv;
     --relations table
 	UPDATE eb_objects_relations 
     SET 
-        eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
+        eb_del = 'T', removed_by = commit_uidv , removed_at = NOW()
     WHERE 
         dominant IN(
         SELECT unnest(ARRAY(select dominant from eb_objects_relations WHERE dependant = refidunique)) 
@@ -705,10 +705,10 @@ SELECT eb_objects_id FROM eb_objects_ver into objid WHERE refid=refidv;
 --applications table 
   UPDATE eb_objects2application 
     SET 
-        eb_del = TRUE, removed_by = commit_uidv , removed_at = NOW()
+        eb_del = 'T', removed_by = commit_uidv , removed_at = NOW()
     WHERE 
         app_id IN(
-        SELECT unnest(ARRAY(select app_id from eb_objects2application WHERE obj_id = inserted_objid AND eb_del=FALSE)) 
+        SELECT unnest(ARRAY(select app_id from eb_objects2application WHERE obj_id = inserted_objid AND eb_del='F')) 
         EXCEPT 
         SELECT unnest(ARRAY[COALESCE(apps, ARRAY[0])]));
             
@@ -717,7 +717,7 @@ SELECT eb_objects_id FROM eb_objects_ver into objid WHERE refid=refidv;
      		appvals, inserted_objid
       	FROM UNNEST(array(SELECT unnest(ARRAY[COALESCE(apps, ARRAY[0])])
         EXCEPT 
-      	SELECT unnest(array(select app_id from eb_objects2application WHERE obj_id = inserted_objid AND eb_del=FALSE)))) as appvals;
+      	SELECT unnest(array(select app_id from eb_objects2application WHERE obj_id = inserted_objid AND eb_del='F')))) as appvals;
         
   RETURN refidunique;
 END;
@@ -758,7 +758,7 @@ BEGIN
 SELECT eb_objects_id INTO _id FROM eb_objects_ver WHERE refid = _refid;
 
 select string_agg(EA.applicationname,',') INTO app_id from eb_objects2application E2O ,eb_applications EA where 
- obj_id = _id and E2O.eb_del = false and EA.id = E2O.app_id ;
+ obj_id = _id and E2O.eb_del = 'F' and EA.id = E2O.app_id ;
  
 SELECT 
 	string_to_array(string_agg((json_build_object( version_num, refid)::text),','),',') INTO workingcopies
@@ -846,7 +846,7 @@ AS $BODY$
 BEGIN
     UPDATE eb_objects_relations 
     SET 
-        eb_del = TRUE, removed_by= commit_uidv , removed_at=NOW()
+        eb_del = 'T', removed_by= commit_uidv , removed_at=NOW()
     WHERE 
         dominant IN(
             SELECT unnest(ARRAY(select dominant from eb_objects_relations WHERE dependant = 'eb_roby_dev-eb_roby_dev-2-429-788'  )) 
@@ -986,7 +986,7 @@ BEGIN
 		role_id)
     UNION
     SELECT role_id as id, CAST('SysRole' as text) as role_name FROM eb_role2user  
-    where user_id=userid AND role_id<100 AND eb_del='false') as ROLES;
+    where user_id=userid AND role_id<100 AND eb_del='F') as ROLES;
 
 END;
 

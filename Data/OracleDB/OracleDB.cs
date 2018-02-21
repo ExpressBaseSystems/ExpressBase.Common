@@ -354,7 +354,7 @@ namespace ExpressBase.Common.Data
 								WHERE R.applicationid = A.id AND R.role_name LIKE  '%' || :searchtext || '%';";
             }
         }
-        public string GETMANAGEROLESRESPONSE_QUERY { get { return @"
+        public string EB_GETMANAGEROLESRESPONSE_QUERY { get { return @"
                                                            SELECT id, application_name FROM eb_applications where eb_del = 'F' ORDER BY application_name;
 									SELECT DISTINCT EO.id, EO.obj_name, EO.obj_type, EO2A.app_id
 									FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
@@ -363,12 +363,14 @@ namespace ExpressBase.Common.Data
 
 									SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> :id ORDER BY role_name;
 									SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';"; } }
-        public string GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get { return @"
+        public string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get { return @"
                                                         SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = :id;
 										                SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = :id AND eb_del = 'F';
                 										SELECT A.application_name, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = :id AND A.eb_del = 'F';
 										                SELECT A.id, A.firstname, A.email, B.id FROM eb_users A, eb_role2user B
 											                WHERE A.id = B.user_id AND A.eb_del = 'F' AND B.eb_del = 'F' AND B.role_id = :id;"; } }
+
+        public string EB_SAVEROLES_QUERY { get { return "SELECT eb_create_or_update_rbac_roles(:role_id, :applicationid, :createdby, :role_name, :description, :is_anonym, :users, :dependants, :permission) FROM dual;"; } }
 
 
 
