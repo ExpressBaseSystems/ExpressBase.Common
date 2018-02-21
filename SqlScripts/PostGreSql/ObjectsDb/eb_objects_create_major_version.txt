@@ -53,7 +53,7 @@ SELECT eb_objects_id into objid FROM eb_objects_ver WHERE refid = idv;
     
 	UPDATE eb_objects_relations 
       SET 
-        eb_del = TRUE, removed_by= commit_uidv , removed_at=NOW()
+        eb_del = 'T', removed_by= commit_uidv , removed_at=NOW()
       WHERE 
         dominant IN(
             SELECT unnest(ARRAY(select dominant from eb_objects_relations WHERE dependant = refidunique)) 

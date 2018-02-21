@@ -28,7 +28,7 @@ BEGIN
 SELECT eb_objects_id INTO _id FROM eb_objects_ver WHERE refid = _refid;
 
 select string_agg(EA.applicationname,',') INTO app_id from eb_objects2application E2O ,eb_applications EA where 
- obj_id = _id and E2O.eb_del = false and EA.id = E2O.app_id ;
+ obj_id = _id and E2O.eb_del = 'F' and EA.id = E2O.app_id ;
  
 SELECT 
 	string_to_array(string_agg((json_build_object( version_num, refid)::text),','),',') INTO workingcopies

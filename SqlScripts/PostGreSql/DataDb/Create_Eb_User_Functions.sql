@@ -194,10 +194,10 @@ BEGIN
 
     UPDATE eb_role2role 
     SET 
-        eb_del = TRUE,revokedat = NOW(),revokedby = $2 
+        eb_del = 'T',revokedat = NOW(),revokedby = $2 
     WHERE 
         role2_id IN(
-            SELECT unnest(ARRAY(select role2_id from eb_role2role WHERE role1_id = $1 and eb_del = FALSE)) 
+            SELECT unnest(ARRAY(select role2_id from eb_role2role WHERE role1_id = $1 and eb_del = 'F')) 
         except 
             SELECT unnest(ARRAY[$3]));
 
@@ -208,7 +208,7 @@ BEGIN
         
     FROM UNNEST(array(SELECT unnest(ARRAY[$3])
         except 
-        SELECT unnest(array(select role2_id from eb_role2role WHERE role1_id = $1 and eb_del = FALSE)))) AS dependants;
+        SELECT unnest(array(select role2_id from eb_role2role WHERE role1_id = $1 and eb_del = 'F')))) AS dependants;
 RETURN 0;
 
 END;
@@ -235,10 +235,10 @@ AS $BODY$
 BEGIN
     UPDATE eb_role2user 
     SET 
-        eb_del = TRUE,revokedat = NOW(),revokedby = $2 
+        eb_del = 'T',revokedat = NOW(),revokedby = $2 
     WHERE 
         user_id IN(
-            SELECT unnest(ARRAY(select user_id from eb_role2user WHERE role_id = $1 and eb_del = FALSE)) 
+            SELECT unnest(ARRAY(select user_id from eb_role2user WHERE role_id = $1 and eb_del = 'F')) 
         except 
             SELECT unnest(ARRAY[$3]));
 
@@ -249,7 +249,7 @@ BEGIN
         
     FROM UNNEST(array(SELECT unnest(ARRAY[$3])
         except 
-        SELECT unnest(array(select user_id from eb_role2user WHERE role_id = $1 and eb_del = FALSE)))) AS users;
+        SELECT unnest(array(select user_id from eb_role2user WHERE role_id = $1 and eb_del = 'F')))) AS users;
 RETURN 0;
 
 END;
@@ -295,10 +295,10 @@ errornum := 0;
 
     UPDATE eb_role2permission 
     SET 
-        eb_del = TRUE,revokedat = NOW(),revokedby = $4 
+        eb_del = 'T',revokedat = NOW(),revokedby = $4 
     WHERE 
         permissionname IN(
-            SELECT unnest(ARRAY(select permissionname from eb_role2permission WHERE role_id = $6 AND eb_del = FALSE)) 
+            SELECT unnest(ARRAY(select permissionname from eb_role2permission WHERE role_id = $6 AND eb_del = 'F')) 
         except 
             SELECT unnest(ARRAY[$5]));
 
@@ -310,7 +310,7 @@ errornum := 0;
         split_part(permissionname,'_',1)::int 
     FROM UNNEST(array(SELECT unnest(ARRAY[$5])
         except 
-        SELECT unnest(array(select permissionname from eb_role2permission WHERE role_id = $6 AND eb_del = FALSE)))) AS permissionname;
+        SELECT unnest(array(select permissionname from eb_role2permission WHERE role_id = $6 AND eb_del = 'F')))) AS permissionname;
 RETURN rid;
 
 EXCEPTION WHEN unique_violation THEN errornum := 23505;
@@ -387,7 +387,7 @@ BEGIN
 		role_id)
 	UNION
     SELECT role_id as id, CAST('SysRole' as text) as role_name FROM eb_role2user  
-    where user_id=userid AND role_id<100 AND eb_del='false') as ROLES;
+    where user_id=userid AND role_id<100 AND eb_del='F') as ROLES;
 
 END;
 

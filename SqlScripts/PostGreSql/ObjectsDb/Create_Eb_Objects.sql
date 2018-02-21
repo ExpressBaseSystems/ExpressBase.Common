@@ -34,10 +34,11 @@ CREATE TABLE public.eb_objects_relations
     dominant text COLLATE pg_catalog."default",
     dependant text COLLATE pg_catalog."default",
     id integer NOT NULL DEFAULT nextval('eb_objects_relations_id_seq'::regclass),
-    eb_del boolean,
+    eb_del "char" NOT NULL DEFAULT 'F'::"char",
     removed_by integer,
     removed_at timestamp without time zone,
-    CONSTRAINT eb_objects_relations_pkey PRIMARY KEY (id)
+    CONSTRAINT eb_objects_relations_pkey PRIMARY KEY (id),
+	CONSTRAINT check_types CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
 )
 WITH (
     OIDS = FALSE
@@ -112,11 +113,12 @@ CREATE TABLE public.eb_applications
     id integer NOT NULL DEFAULT nextval('eb_applications_id_seq'::regclass),
     application_name text COLLATE pg_catalog."default",
     description text COLLATE pg_catalog."default",
-    eb_del boolean DEFAULT false,
+    eb_del "char" NOT NULL DEFAULT 'F'::"char",
     app_icon text COLLATE pg_catalog."default",
     app_id text COLLATE pg_catalog."default",
     application_type integer,
-    CONSTRAINT eb_applications_pkey PRIMARY KEY (id)
+    CONSTRAINT eb_applications_pkey PRIMARY KEY (id),
+	CONSTRAINT check_types CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
 )
 WITH (
     OIDS = FALSE
@@ -135,9 +137,10 @@ CREATE TABLE public.eb_objects2application
     app_id integer,
     id integer NOT NULL DEFAULT nextval('eb_objects2application_id_seq'::regclass),
     obj_id integer,
-    eb_del boolean DEFAULT false,
+    eb_del "char" NOT NULL DEFAULT 'F'::"char",
     removed_by integer,
-    removed_at timestamp without time zone
+    removed_at timestamp without time zone,
+	CONSTRAINT check_types CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
 )
 WITH (
     OIDS = FALSE

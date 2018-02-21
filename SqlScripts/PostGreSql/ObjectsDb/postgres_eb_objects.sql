@@ -104,8 +104,9 @@ CREATE TABLE IF NOT EXISTS public.eb_roles
 (
     id integer NOT NULL DEFAULT nextval('eb_roles_id_seq'::regclass),
     role_name text COLLATE pg_catalog."default" NOT NULL,
-    eb_del boolean,
-    CONSTRAINT eb_roles_id_pkey PRIMARY KEY (id)
+    eb_del "char" NOT NULL DEFAULT 'F'::"char",
+    CONSTRAINT eb_roles_id_pkey PRIMARY KEY (id),
+	CONSTRAINT check_types CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
 )
 WITH (
     OIDS = FALSE
@@ -135,8 +136,9 @@ CREATE TABLE IF NOT EXISTS public.eb_permission2role
     id integer NOT NULL DEFAULT nextval('eb_permission2role_id_seq'::regclass),
     permission_id integer,
     role_id integer,
-    eb_del boolean,
+    eb_del "char" NOT NULL DEFAULT 'F'::"char",
     CONSTRAINT eb_permission2role_id_pkey PRIMARY KEY (id),
+	CONSTRAINT check_types CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char"),
     CONSTRAINT eb_permission2role_permission_id_fkey FOREIGN KEY (permission_id)
         REFERENCES public.eb_permissions (id) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -175,8 +177,9 @@ CREATE TABLE IF NOT EXISTS public.eb_role2role
     id integer NOT NULL DEFAULT nextval('eb_role2role_id_seq'::regclass),
     role1_id integer,
     role2_id integer,
-    eb_del boolean,
+    eb_del "char" NOT NULL DEFAULT 'F'::"char",
     CONSTRAINT eb_role2role_id_pkey PRIMARY KEY (id),
+	CONSTRAINT check_types CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char"),
     CONSTRAINT eb_role2role_role1_id_fkey FOREIGN KEY (role1_id)
         REFERENCES public.eb_roles (id) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -286,13 +289,13 @@ CREATE UNIQUE INDEX eb_objectstatus_id_idx     ON public.eb_objectstatus USING b
 
 	-- INSERT COMMANDS--
 
-	INSERT INTO eb_roles (id,role_name,eb_del) VALUES(1,'Eb_Admin',false);
-	INSERT INTO eb_roles (id,role_name,eb_del) VALUES(2,'Eb_ReadOnlyUser',false);
-	INSERT INTO eb_roles (id,role_name,eb_del) VALUES(3,'Account_Owner',false);
-	INSERT INTO eb_roles (id,role_name,eb_del) VALUES(4,'Account_Admin',false);
-	INSERT INTO eb_roles (id,role_name,eb_del) VALUES(5,'Account_Developer',false);
-	INSERT INTO eb_roles (id,role_name,eb_del) VALUES(6,'Account_Tester',false);
-	INSERT INTO eb_roles (id,role_name,eb_del) VALUES(7,'Account_PM',false);
+	INSERT INTO eb_roles (id,role_name,eb_del) VALUES(1,'Eb_Admin','F');
+	INSERT INTO eb_roles (id,role_name,eb_del) VALUES(2,'Eb_ReadOnlyUser','F');
+	INSERT INTO eb_roles (id,role_name,eb_del) VALUES(3,'Account_Owner','F');
+	INSERT INTO eb_roles (id,role_name,eb_del) VALUES(4,'Account_Admin','F');
+	INSERT INTO eb_roles (id,role_name,eb_del) VALUES(5,'Account_Developer','F');
+	INSERT INTO eb_roles (id,role_name,eb_del) VALUES(6,'Account_Tester','F');
+	INSERT INTO eb_roles (id,role_name,eb_del) VALUES(7,'Account_PM','F');
 
 
 CREATE OR REPLACE FUNCTION getallroles( uname text,pwd text )

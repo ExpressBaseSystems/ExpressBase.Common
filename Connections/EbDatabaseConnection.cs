@@ -32,7 +32,7 @@ namespace ExpressBase.Common.Connections
 
             else if (!IsNew)
             {
-                string sql = @"UPDATE eb_connections SET eb_del = true WHERE con_type = @con_type AND solution_id = @solution_id; 
+                string sql = @"UPDATE eb_connections SET eb_del = 'T' WHERE con_type = @con_type AND solution_id = @solution_id; 
                                       INSERT INTO eb_connections (con_type, solution_id, nick_name, con_obj, date_created, eb_user_id) VALUES (@con_type, @solution_id, @nick_name, @con_obj, NOW() , @eb_user_id)";
                 DbParameter[] parameters = { dbconf.DataDB.GetNewParameter("con_type", EbDbTypes.String, EbConnectionType),
                                     dbconf.DataDB.GetNewParameter("solution_id", EbDbTypes.String, TenantAccountId),

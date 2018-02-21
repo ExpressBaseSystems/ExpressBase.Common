@@ -35,7 +35,7 @@ WHERE
 no_of_workcopies := COALESCE(array_length(workingcopies, 1), 0);
 
  select string_agg(EA.applicationname,',') INTO app_id from eb_objects2application E2O ,eb_applications EA where 
- obj_id = _id and E2O.eb_del = false and EA.id = E2O.app_id ;
+ obj_id = _id and E2O.eb_del = 'F' and EA.id = E2O.app_id ;
 
 --one working copy	
 IF no_of_workcopies = 1 THEN
