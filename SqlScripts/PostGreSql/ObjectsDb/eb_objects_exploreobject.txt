@@ -40,7 +40,7 @@ SELECT
 FROM
     eb_objects_ver EOV, eb_objects_status EOS, eb_users EU
 WHERE
-    EOV.eb_objects_id = _id AND EOS.eb_obj_ver_id = EOV.id AND EOV.commit_uid = EU.id AND COALESCE(EOV.working_mode,false) = false
+    EOV.eb_objects_id = _id AND EOS.eb_obj_ver_id = EOV.id AND EOV.commit_uid = EU.id AND COALESCE(EOV.working_mode,'F') = 'F'
     ORDER BY commit_ts DESC LIMIT 1;
 
 -- Owner details
@@ -53,7 +53,7 @@ FROM
 WHERE 
 	EO.id = _id AND EU.id = EO.owner_uid;
 	
-SELECT idv, namev, typev, status, description, changelog, commitat, commitby, refidv, ver_num, COALESCE(work_mode,false), workingcopies,
+SELECT idv, namev, typev, status, description, changelog, commitat, commitby, refidv, ver_num, COALESCE(work_mode,'F'), workingcopies,
 		json_wc, json_lc, major_ver, minor_ver, patch_ver, tags, app_id
     FROM 
 		eb_objects_getversiontoopen(_id) 
