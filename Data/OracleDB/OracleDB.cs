@@ -82,8 +82,8 @@ namespace ExpressBase.Common.Data
                         }
                     }
                 }
-                catch (OracleException) { }
-                catch (SocketException) { }
+                catch (OracleException e) { Console.WriteLine("Exception:" + e.ToString()); }
+                catch (SocketException e) { Console.WriteLine("Exception:" + e.ToString()); }
             }
 
             return obj;
@@ -115,8 +115,8 @@ namespace ExpressBase.Common.Data
                         }
                     }
                 }
-                catch (OracleException orcl) { }
-                catch (SocketException scket) { }
+                catch (OracleException orcl) { Console.WriteLine("Exception:" + orcl.ToString()); }
+                catch (SocketException scket) { Console.WriteLine("Exception:" + scket.ToString()); }
             }
 
             return dt;
@@ -140,7 +140,7 @@ namespace ExpressBase.Common.Data
                     }
                 }
             }
-            catch (OracleException ex) { }
+            catch (OracleException ex) { Console.WriteLine("Exception:" + ex.ToString()); }
 
             return null;
         }
@@ -176,7 +176,7 @@ namespace ExpressBase.Common.Data
                         }
                     }
                 }
-                catch (OracleException orcl) { }
+                catch (OracleException orcl) { Console.WriteLine("Exception:" + orcl.ToString()); }
             }
 
             return ds;
@@ -197,7 +197,7 @@ namespace ExpressBase.Common.Data
                         return cmd.ExecuteNonQuery();
                     }
                 }
-                catch (OracleException orcl) { }
+                catch (OracleException orcl) { Console.WriteLine("Exception:" + orcl.ToString()); }
 
                 return 0;
             }
