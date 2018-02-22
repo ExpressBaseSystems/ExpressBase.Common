@@ -30,7 +30,7 @@ SELECT
 FROM 
 	eb_objects_ver 
 WHERE 
-	eb_objects_id=_id AND working_mode=true;
+	eb_objects_id=_id AND working_mode='T';
 
  select string_agg(EA.applicationname,',') INTO app_id from eb_objects2application E2O ,eb_applications EA where 
  obj_id = _id and E2O.eb_del = 'F' and EA.id = E2O.app_id ;
@@ -54,7 +54,7 @@ IF no_of_workcopies = 1 THEN
 	ON 
 		EOS.eb_obj_ver_id = EOV.id										 
 	WHERE 
-			EO.id = _id AND EOV.eb_objects_id = EO.id AND working_mode=true
+			EO.id = _id AND EOV.eb_objects_id = EO.id AND working_mode='T'
 			AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id);
 			
 --No working copy			
@@ -80,7 +80,7 @@ ELSIF no_of_workcopies = 0 THEN
                 major_ver_num=(Select max(major_ver_num) from eb_objects_ver where eb_objects_id=_id) AND 
                 minor_ver_num=(Select max(minor_ver_num) from eb_objects_ver where eb_objects_id=_id AND  
 				major_ver_num=(Select max(major_ver_num) from eb_objects_ver where eb_objects_id=_id)) AND
-                COALESCE(working_mode, FALSE) <> true
+                COALESCE(working_mode, 'F') <> 'T'
 				AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id);    
 				
  -- multiple workingcopies
@@ -102,13 +102,13 @@ SELECT
 	ON 
 		EOS.eb_obj_ver_id = EOV.id		
 	WHERE 
-		EO.id = _id AND EOV.eb_objects_id = EO.id AND working_mode=true
-		AND EOV.id = (SELECT MAX(EOV.id) FROM eb_objects_ver EOV WHERE EOV.eb_objects_id = _id AND working_mode=true)
-		AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS, eb_objects_ver EOV WHERE EOS.eb_obj_ver_id = (SELECT MAX(EOV.id) FROM eb_objects_ver EOV WHERE EOV.eb_objects_id = _id AND working_mode=true) AND EOV.working_mode=true);
+		EO.id = _id AND EOV.eb_objects_id = EO.id AND working_mode='T'
+		AND EOV.id = (SELECT MAX(EOV.id) FROM eb_objects_ver EOV WHERE EOV.eb_objects_id = _id AND working_mode='T')
+		AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS, eb_objects_ver EOV WHERE EOS.eb_obj_ver_id = (SELECT MAX(EOV.id) FROM eb_objects_ver EOV WHERE EOV.eb_objects_id = _id AND working_mode='T') AND EOV.working_mode='T');
 END IF;
 
 RETURN QUERY
-	SELECT idv, namev, typev, status, description, changelog, commitat, commitby, refidv, ver_num, COALESCE(work_mode,false), workingcopies,
+	SELECT idv, namev, typev, status, description, changelog, commitat, commitby, refidv, ver_num, COALESCE(work_mode,'F'), workingcopies,
 	json_wc, json_lc, major_ver, minor_ver, patch_ver, tags, app_id;
 END
 

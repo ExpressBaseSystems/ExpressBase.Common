@@ -36,7 +36,7 @@ SELECT
 FROM 
 	eb_objects_ver 
 WHERE 
-	eb_objects_id=_id AND working_mode=true;
+	eb_objects_id=_id AND working_mode='T';
 
 --Live version details
 SELECT
@@ -54,7 +54,7 @@ SELECT
 FROM
     eb_objects_ver EOV, eb_objects_status EOS, eb_users EU
 WHERE
-    EOV.eb_objects_id = _id AND EOS.eb_obj_ver_id = EOV.id AND EOV.commit_uid = EU.id AND COALESCE(EOV.working_mode,false) = false
+    EOV.eb_objects_id = _id AND EOS.eb_obj_ver_id = EOV.id AND EOV.commit_uid = EU.id AND COALESCE(EOV.working_mode,'F') = 'F'
     ORDER BY commit_ts DESC LIMIT 1;
 
 -- Owner details
@@ -89,7 +89,7 @@ WHERE
 			
 RETURN QUERY
 	SELECT namev, status, ver_num,
-	COALESCE(work_mode,false), workingcopies, major_ver, minor_ver, patch_ver, tags, app_id,
+	COALESCE(work_mode,'F'), workingcopies, major_ver, minor_ver, patch_ver, tags, app_id,
 	lastversionrefidval, lastversionnumberval, lastversioncommit_tsval, lastversion_statusval, lastversioncommit_byname,lastversioncommit_byid,
 	liveversionrefidval, liveversionnumberval, liveversioncommit_tsval, liveversion_statusval, liveversioncommit_byname,liveversioncommit_byid,
 	owner_uidVal, owner_tsVal, owner_nameVal;
