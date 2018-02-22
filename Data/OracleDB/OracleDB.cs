@@ -226,8 +226,17 @@ namespace ExpressBase.Common.Data
 
         public bool IsTableExists(string query, params DbParameter[] parameters)
         {
-            var x = this.DoQuery(query, parameters);
-            return true;
+            return false;
+        }
+
+        public void CreateTable(string query)
+        {
+            
+        }
+
+        public int InsertTable(string query, params DbParameter[] parameters)
+        {
+            return 0;
         }
 
         private void AddColumns(EbDataTable dt, DataTable schema)

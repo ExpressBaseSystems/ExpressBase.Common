@@ -10,6 +10,7 @@ using System.Reflection;
 using ExpressBase.Objects;
 using Newtonsoft.Json;
 using ExpressBase.Common.JsonConverters;
+using ExpressBase.Common.Structures;
 
 namespace ExpressBase.Common.Objects
 {

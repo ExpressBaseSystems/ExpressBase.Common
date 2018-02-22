@@ -27,6 +27,8 @@ namespace ExpressBase.Common
         void CommitTransaction();
         bool IsInTransaction();
         bool IsTableExists(string query, params DbParameter[] parameters);
+        void CreateTable(string query);
+        int InsertTable(string query, params DbParameter[] parameters);
 
         //---------------------sql query
 
