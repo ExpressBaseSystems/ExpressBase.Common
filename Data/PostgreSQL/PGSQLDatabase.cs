@@ -310,6 +310,12 @@ namespace ExpressBase.Common
             typeArray = null;
         }
 
+        public bool IsTableExists(string query, params DbParameter[] parameters)
+        {
+            var x = this.DoQuery(query, parameters);
+            return true;
+        }
+
         //-----------Sql queries
 
         public string EB_AUTHETICATE_USER_NORMAL { get { return "SELECT * FROM eb_authenticate_unified(uname => @uname, password => @pass, wc => @wc);"; } }
