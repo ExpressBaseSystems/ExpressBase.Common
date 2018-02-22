@@ -58,6 +58,7 @@ namespace ExpressBase.Common.Data.MongoDB
             }
             catch (Exception e)
             {
+                Console.WriteLine("Exception:" + e.ToString());
                 return new ObjectId("Error");
             }
         }
@@ -92,6 +93,7 @@ namespace ExpressBase.Common.Data.MongoDB
             }
             catch (Exception e)
             {
+                Console.WriteLine("Exception:" + e.ToString());
                 return null;
             }
             
@@ -107,6 +109,7 @@ namespace ExpressBase.Common.Data.MongoDB
             }
             catch (Exception e)
             {
+                Console.WriteLine("Exception:" + e.ToString());
                 return false;
             }
         }

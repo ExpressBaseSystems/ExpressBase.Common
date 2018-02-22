@@ -47,6 +47,7 @@ namespace ExpressBase.Common.Messaging.Twilio
             }
             catch (Exception e)
             {
+                Console.WriteLine("Exception:" + e.ToString());
                 msgStatus.Add("ErrorMessage", e.ToString());
             }
             
