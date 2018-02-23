@@ -154,15 +154,18 @@ namespace ExpressBase.Common.Data
             using (var con = GetNewConnection() as OracleConnection)
             {
                 try
-                {
+                {                   
                     con.Open();
                     for (int i = 0; i < sql_arr.Length - 1; i++)
                     {
                         using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                         {
-                            if (parameters != null && parameters.Length > 0)
-                                cmd.Parameters.AddRange(parameters);
-
+                           
+                            if ( Regex.IsMatch(sql_arr[i], @"\:+") && parameters != null && parameters.Length > 0)
+                            {
+                                cmd.Parameters.AddRange(parameters);                                
+                            }
+                            
                             using (var reader = cmd.ExecuteReader())
                             {
                                 EbDataTable dt = new EbDataTable();
@@ -173,6 +176,7 @@ namespace ExpressBase.Common.Data
                                 ds.Tables.Add(dt);
 
                             }
+                            cmd.Parameters.Clear();
                         }
                     }
                 }
