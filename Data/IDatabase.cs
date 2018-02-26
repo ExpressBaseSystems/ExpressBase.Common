@@ -40,6 +40,7 @@ namespace ExpressBase.Common
         string EB_GETMANAGEROLESRESPONSE_QUERY { get; }
         string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get; }
         string EB_SAVEROLES_QUERY { get; }
+        string EB_SAVEUSER_QUERY { get; }
 
         //........objects db query.....
         string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ { get; }

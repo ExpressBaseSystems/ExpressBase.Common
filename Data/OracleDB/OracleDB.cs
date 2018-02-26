@@ -343,7 +343,7 @@ namespace ExpressBase.Common.Data
         public string EB_AUTHENTICATEUSER_SSO { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, wc => :wc));"; } }
 
         public string EB_SIDEBARUSER_REQUEST { get { return @"
-                        SELECT id, application_name
+                        SELECT id, applicationname
                         FROM eb_applications;
                         SELECT
                             EO.id, EO.obj_type, EO.obj_name,
@@ -391,6 +391,8 @@ namespace ExpressBase.Common.Data
 
         public string EB_SAVEROLES_QUERY { get { return "SELECT eb_create_or_update_rbac_roles(:role_id, :applicationid, :createdby, :role_name, :description, :is_anonym, :users, :dependants, :permission) FROM dual;"; } }
 
+
+        public string EB_SAVEUSER_QUERY { get { return "SELECT eb_createormodifyuserandroles(:userid, :id, :fullname, :nickname, :email, :pwd, :dob, :sex, :alternateemail, :phprimary, :phsecondary, :phlandphone, :extension, :fbid, :fbname, :roles, :groups, :statusid, :hide, :anonymoususerid) FROM dual;"; } }
 
 
         //.......OBJECTS QUERIES.....
