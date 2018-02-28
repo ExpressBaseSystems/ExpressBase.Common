@@ -210,6 +210,22 @@ namespace ExpressBase.Common.Data
             }
         }
 
+        public bool IsTableExists(string query, params DbParameter[] parameters)
+        {
+            return false;
+        }
+
+        public void CreateTable(string query)
+        {
+
+        }
+
+        public int InsertTable(string query, params DbParameter[] parameters)
+        {
+            return 0;
+        }
+
+
         public void BeginTransaction()
         {
             // This is a place where you will use _mySQLDriver to begin transaction
@@ -229,12 +245,6 @@ namespace ExpressBase.Common.Data
         {
             // This is a place where you will use _mySQLDriver to check, whether you are in a transaction
             return false;
-        }
-
-        public bool IsTableExists(string query, params DbParameter[] parameters)
-        {
-            var x = this.DoQuery(query, parameters);
-            return true;
         }
 
         private void AddColumns(EbDataTable dt, DataTable schema)
@@ -595,9 +605,18 @@ namespace ExpressBase.Common.Data
             get
             {
                 return @"   
-                    SELECT * FROM TABLE(eb_objects_exploreobject(id => :id))
+                    SELECT * FROM TABLE(eb_objects_exploreobject(id => :id));
                 ";
             }
         }
+        //public string EB_UPDATE_DASHBOARD
+        //{
+        //    get
+        //    {
+        //        return @"   
+        //            SELECT * FROM TABLE(eb_objects_update_dashboard(:refid));
+        //        ";
+        //    }
+        //}
     }
 }

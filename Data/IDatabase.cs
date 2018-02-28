@@ -27,6 +27,9 @@ namespace ExpressBase.Common
         void CommitTransaction();
         bool IsInTransaction();
         bool IsTableExists(string query, params DbParameter[] parameters);
+        void CreateTable(string query);
+        int InsertTable(string query, params DbParameter[] parameters);
+
 
         //---------------------sql query
 
@@ -58,6 +61,7 @@ namespace ExpressBase.Common
         string EB_SAVE_OBJECT { get; }
         string EB_COMMIT_OBJECT { get; }
         string EB_EXPLORE_OBJECT { get; }
+        //string EB_UPDATE_DASHBOARD { get; }
     }
 }
 
