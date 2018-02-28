@@ -82,8 +82,8 @@ namespace ExpressBase.Common.Data
                         }
                     }
                 }
-                catch (OracleException e) { Console.WriteLine("Exception:" + e.ToString()); }
-                catch (SocketException e) { Console.WriteLine("Exception:" + e.ToString()); }
+                catch (OracleException) { }
+                catch (SocketException) { }
             }
 
             return obj;
@@ -115,8 +115,8 @@ namespace ExpressBase.Common.Data
                         }
                     }
                 }
-                catch (OracleException orcl) { Console.WriteLine("Exception:" + orcl.ToString()); }
-                catch (SocketException scket) { Console.WriteLine("Exception:" + scket.ToString()); }
+                catch (OracleException orcl) { }
+                catch (SocketException scket) { }
             }
 
             return dt;
@@ -140,7 +140,7 @@ namespace ExpressBase.Common.Data
                     }
                 }
             }
-            catch (OracleException ex) { Console.WriteLine("Exception:" + ex.ToString()); }
+            catch (OracleException ex) { }
 
             return null;
         }
@@ -176,7 +176,10 @@ namespace ExpressBase.Common.Data
                         }
                     }
                 }
-                catch (OracleException orcl) { Console.WriteLine("Exception:" + orcl.ToString()); }
+                catch (OracleException orcl)
+                {
+
+                }
             }
 
             return ds;
@@ -197,7 +200,7 @@ namespace ExpressBase.Common.Data
                         return cmd.ExecuteNonQuery();
                     }
                 }
-                catch (OracleException orcl) { Console.WriteLine("Exception:" + orcl.ToString()); }
+                catch (OracleException orcl) { }
 
                 return 0;
             }
@@ -226,17 +229,8 @@ namespace ExpressBase.Common.Data
 
         public bool IsTableExists(string query, params DbParameter[] parameters)
         {
-            return false;
-        }
-
-        public void CreateTable(string query)
-        {
-            
-        }
-
-        public int InsertTable(string query, params DbParameter[] parameters)
-        {
-            return 0;
+            var x = this.DoQuery(query, parameters);
+            return true;
         }
 
         private void AddColumns(EbDataTable dt, DataTable schema)
@@ -339,7 +333,7 @@ namespace ExpressBase.Common.Data
         public string EB_AUTHENTICATEUSER_SSO { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, wc => :wc));"; } }
 
         public string EB_SIDEBARUSER_REQUEST { get { return @"
-                        SELECT id, application_name
+                        SELECT id, applicationname
                         FROM eb_applications;
                         SELECT
                             EO.id, EO.obj_type, EO.obj_name,
@@ -351,7 +345,7 @@ namespace ExpressBase.Common.Data
                         AND 
                             EOS.eb_obj_ver_id = EOV.id 
                         AND 
-                            EO.id = ANY(@Ids)  
+                            EO.id = ANY(:Ids)  
                         AND 
                             EOS.status = 3 
                         AND EO.id = EO2A.obj_id 
@@ -553,6 +547,49 @@ namespace ExpressBase.Common.Data
                 return @"WITH obj_tags AS (SELECT LISTAGG(obj_tags,',')WITHIN GROUP(ORDER BY obj_tags) tags FROM eb_objects)SELECT DISTINCT  
                          REGEXP_SUBSTR (tags, '[^,]+', 1, LEVEL) DISTINCT_TAGS  FROM obj_tags 
                          CONNECT BY LEVEL <= (SELECT LENGTH (REPLACE (tags, ',', NULL)) FROM obj_tags)
+                ";
+            }
+        }
+        public string EB_GET_TAGGED_OBJECTS
+        {
+            get
+            {
+                return "SELECT * FROM TABLE(eb_get_tagged_object(:tag));";
+            }
+        }
+
+        //.....OBJECT FUNCTION CALLS
+        public string EB_CREATE_NEW_OBJECT
+        {
+            get
+            {
+                return "SELECT eb_objects_create_new_object(:obj_name, :obj_desc, :obj_type, :obj_cur_status, :obj_json, :commit_uid, :src_pid, :cur_pid, :relations, :issave, :tags, :app_id) FROM DUAL";
+            }
+        }
+        public string EB_SAVE_OBJECT
+        {
+            get
+            {
+                return @"
+                    SELECT eb_objects_save(:id, :obj_name, :obj_desc, :obj_type, :obj_json, :commit_uid, :src_pid, :cur_pid, :relations, :tags, :app_id) FROM DUAL
+                ";
+            }
+        }
+        public string EB_COMMIT_OBJECT
+        {
+            get
+            {
+                return @"
+                    SELECT eb_objects_commit(:id, :obj_name, :obj_desc, :obj_type, :obj_json, :obj_changelog,  :commit_uid, :src_pid, :cur_pid, :relations, :tags, :app_id) FROM DUAL
+                ";
+            }
+        }
+        public string EB_EXPLORE_OBJECT
+        {
+            get
+            {
+                return @"   
+                    SELECT * FROM TABLE(eb_objects_exploreobject(id => :id))
                 ";
             }
         }

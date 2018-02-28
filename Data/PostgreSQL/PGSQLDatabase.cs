@@ -312,72 +312,8 @@ namespace ExpressBase.Common
 
         public bool IsTableExists(string query, params DbParameter[] parameters)
         {
-            using (var con = GetNewConnection() as NpgsqlConnection)
-            {
-                try
-                {
-                    con.Open();
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
-                    {
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
-
-                        return Convert.ToBoolean(cmd.ExecuteScalar());
-                    }
-                }
-                catch (Npgsql.NpgsqlException npgse)
-                {
-                    throw npgse;
-                }
-                catch (SocketException scket) { }
-            }
-
-            return false;
-        }
-     
-        public void CreateTable(string query)
-        {
-            using (var con = GetNewConnection() as NpgsqlConnection)
-            {
-                try
-                {
-                    con.Open();
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
-                    {
-                         var xx = cmd.ExecuteNonQuery();
-                    }
-                }
-                catch (Npgsql.NpgsqlException npgse)
-                {
-                    throw npgse;
-                }
-                catch (SocketException scket) { }
-            }
-        }
-
-        public int InsertTable(string query, params DbParameter[] parameters)
-        {
-            using (var con = GetNewConnection() as NpgsqlConnection)
-            {
-                try
-                {
-                    con.Open();
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
-                    {
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
-
-                        return cmd.ExecuteNonQuery();
-                    }
-                }
-                catch (Npgsql.NpgsqlException npgse)
-                {
-                    throw npgse;
-                }
-                catch (SocketException scket) { }
-            }
-
-            return 0;
+            var x = this.DoQuery(query, parameters);
+            return true;
         }
 
         //-----------Sql queries
@@ -446,6 +382,8 @@ namespace ExpressBase.Common
             }
         }
 
+        
+        
         //.......OBJECTS QUERIES.....
         public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
         {
@@ -606,6 +544,60 @@ namespace ExpressBase.Common
                     FROM (SELECT unnest(string_to_array(obj_tags, ',')) AS tags
 	                      FROM eb_objects)
                     AS tags
+                ";
+            }
+        }
+        public string EB_GET_TAGGED_OBJECTS
+        {
+            get
+            {
+                return @"SELECT 
+	                    EO.obj_name, EOV.refid, EOV.version_num, EO.obj_type,EOS.status,EO.obj_tags
+                    FROM 
+	                    eb_objects EO, eb_objects_ver EOV,eb_objects_status EOS,unnest(string_to_array(EO.obj_tags, ',')) Tags
+                    WHERE 
+	                    Tags IN(@tag) AND EO.id =EOV.eb_objects_id
+                        AND EOS.eb_obj_ver_id = EOV.id AND EOS.status = 3 AND EO.obj_type IN(16 ,17)
+    
+                ";
+            }
+        }
+
+        //.....OBJECTS FUNCTION CALL......
+        public string EB_CREATE_NEW_OBJECT
+        {
+            get
+            {
+                return @"
+                    SELECT eb_objects_create_new_object(@obj_name, @obj_desc, @obj_type, @obj_cur_status, @obj_json::json, @commit_uid, @src_pid, @cur_pid, @relations, @issave, @tags, @app_id);
+
+                ";
+            }
+        }
+        public string EB_SAVE_OBJECT
+        {
+            get
+            {
+                return @"
+                    SELECT eb_objects_save(@id, @obj_name, @obj_desc, @obj_type, @obj_json, @commit_uid, @src_pid, @cur_pid, @relations, @tags, @app_id)
+                ";
+            }
+        }
+        public string EB_COMMIT_OBJECT
+        {
+            get
+            {
+                return @"
+                    SELECT eb_objects_commit(:id, :obj_name, :obj_desc, :obj_type, :obj_json, :obj_changelog,  :commit_uid, :src_pid, :cur_pid, :relations, :tags, :app_id)
+                ";
+            }
+        }
+        public string EB_EXPLORE_OBJECT
+        {
+            get
+            {
+                return @"
+                    SELECT * FROM public.eb_objects_exploreobject(:id)                    
                 ";
             }
         }
