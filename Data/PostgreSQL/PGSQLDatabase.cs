@@ -312,8 +312,72 @@ namespace ExpressBase.Common
 
         public bool IsTableExists(string query, params DbParameter[] parameters)
         {
-            var x = this.DoQuery(query, parameters);
-            return true;
+            using (var con = GetNewConnection() as NpgsqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+
+                        return Convert.ToBoolean(cmd.ExecuteScalar());
+                    }
+                }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    throw npgse;
+                }
+                catch (SocketException scket) { }
+            }
+
+            return false;
+        }
+
+        public void CreateTable(string query)
+        {
+            using (var con = GetNewConnection() as NpgsqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
+                    {
+                        var xx = cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    throw npgse;
+                }
+                catch (SocketException scket) { }
+            }
+        }
+
+        public int InsertTable(string query, params DbParameter[] parameters)
+        {
+            using (var con = GetNewConnection() as NpgsqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+
+                        return cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    throw npgse;
+                }
+                catch (SocketException scket) { }
+            }
+
+            return 0;
         }
 
         //-----------Sql queries
