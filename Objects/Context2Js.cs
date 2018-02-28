@@ -25,6 +25,7 @@ namespace ExpressBase.Common.Objects
 
         public string AllMetas { get; private set; }
         public string EbEnums { get; private set; }
+        public string CtrlCounters { get; private set; }
         public string JsObjects { get; private set; }
         public string ToolBoxHtml { get; private set; }
         public string TypeRegister { get; private set; }
@@ -41,6 +42,7 @@ namespace ExpressBase.Common.Objects
 
             this.AllMetas = string.Empty;
             this.EbEnums = string.Empty;
+            this.CtrlCounters = string.Empty;
             this.JsObjects = string.Empty;
             this.ToolBoxHtml = string.Empty;
             this.TypeRegister = string.Empty;
@@ -95,6 +97,7 @@ namespace ExpressBase.Common.Objects
         {
             this.AllMetas = "var AllMetas = {";
             this.EbEnums = "var EbEnums = {";
+            this.CtrlCounters = "var CtrlCounters = {";
             this.JsObjects = "var EbObjects = {};";
 
             this.JsonToJsObjectFuncs = @"
@@ -147,7 +150,7 @@ function ProcRecur(src_controls, dest_controls) {
                 }
             }
 
-            this.AllMetas += "};" + this.EbEnums + "};";
+            this.AllMetas += "};" + this.EbEnums + "};" + this.CtrlCounters + "};";
             this.TypeRegister += " };";
             this.EbObjectTypes = "var EbObjectTypes = " + Get_EbObjTypesStr();
         }
@@ -159,6 +162,7 @@ function ProcRecur(src_controls, dest_controls) {
 
         private void GetJsObject(object obj)
         {
+            this.CtrlCounters += obj.GetType().GetTypeInfo().Name.Substring(2) + "Counter : 0,";
             string _props = string.Empty;
 
             PropertyInfo[] props = obj.GetType().GetAllProperties();
@@ -229,7 +233,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
         private string Get_EbObjTypesStr()
         {
             Dictionary<string, int> _dic = new Dictionary<string, int>();
-			foreach (Structures.EbObjectType objectType in Structures.EbObjectTypes.Enumerator)
+            foreach (Structures.EbObjectType objectType in Structures.EbObjectTypes.Enumerator)
                 _dic.Add(objectType.Name, objectType.IntCode);
 
             return EbSerializers.Json_Serialize(_dic);
