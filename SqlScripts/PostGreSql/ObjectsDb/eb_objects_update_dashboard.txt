@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE FUNCTION public.eb_objects_update_dashboard(
 	_refid text)
-    RETURNS TABLE(namev text, status integer, ver_num text, work_mode boolean, workingcopies text, major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id text, lastversionrefidval text, lastversionnumberval text, lastversioncommit_tsval text, lastversion_statusval integer, lastversioncommit_byname text, lastversioncommit_byid integer, liveversionrefidval text, liveversionnumberval text, liveversioncommit_tsval text, liveversion_statusval integer, liveversioncommit_byname text, liveversioncommit_byid integer, owner_uidval integer, owner_tsval text, owner_nameval text) 
+    RETURNS TABLE(namev text, status integer, ver_num text, work_mode char, workingcopies text, major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id text, lastversionrefidval text, lastversionnumberval text, lastversioncommit_tsval text, lastversion_statusval integer, lastversioncommit_byname text, lastversioncommit_byid integer, liveversionrefidval text, liveversionnumberval text, liveversioncommit_tsval text, liveversion_statusval integer, liveversioncommit_byname text, liveversioncommit_byid integer, owner_uidval integer, owner_tsval text, owner_nameval text) 
     LANGUAGE 'plpgsql'
 
     COST 100
@@ -15,7 +15,7 @@ AS $BODY$
 DECLARE
 	workingcopies text; _id integer;
     namev text; status integer;
-	description text; changelog text; ver_num text; work_mode boolean;
+	description text; changelog text; ver_num text; work_mode char;
 	major_ver integer; minor_ver integer; patch_ver integer; tags text; app_id text;
 	lastversionrefidval text; lastversionnumberval text; lastversioncommit_tsval text;
 	lastversion_statusval integer; lastversioncommit_byname text; lastversioncommit_byid integer; liveversionrefidval text;
@@ -99,4 +99,5 @@ $BODY$;
 
 ALTER FUNCTION public.eb_objects_update_dashboard(text)
     OWNER TO postgres;
+
 
