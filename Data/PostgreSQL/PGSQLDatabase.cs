@@ -401,7 +401,7 @@ namespace ExpressBase.Common
                 AND 
                     EOS.eb_obj_ver_id = EOV.id 
                 AND 
-                    EO.id = ANY('{@Ids}')  
+                    EO.id = ANY('{:Ids}')  
                 AND 
                     EOS.status = 3 
                 AND EO.id = EO2A.obj_id 
@@ -447,6 +447,8 @@ namespace ExpressBase.Common
         }
 
         public string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_createormodifyuserandroles(:userid,:id,:fullname,:nickname,:email,:pwd,:dob,:sex,:alternateemail,:phprimary,:phsecondary,:phlandphone,:extension,:fbid,:fbname,:roles,:groups,:statusid,:hide,:anonymoususerid);"; } }
+        public string EB_SAVEUSERGROUP_QUERY { get { return "SELECT * FROM eb_createormodifyusergroup(:userid,:id,:name,:description,:users);"; } }
+
 
         //.......OBJECTS QUERIES.....
         public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
