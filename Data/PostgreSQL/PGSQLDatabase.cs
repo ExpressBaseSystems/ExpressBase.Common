@@ -445,7 +445,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_createormodifyuserandroles(:userid,:id,:fullname,:nickname,:email,:pwd,:dob,:sex,:alternateemail,:phprimary,:phsecondary,:phlandphone,:extension,:fbid,:fbname,:roles,:groups,:statusid,:hide,:anonymoususerid);"; } }
+        public string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_createormodifyuserandroles(:userid,:id,:fullname,:nickname,:email,:pwd,:dob,:sex,:alternateemail,:phprimary,:phsecondary,:phlandphone,:extension,:fbid,:fbname,:roles,:groups,:statusid,:hide,:anonymoususerid,:preference);"; } }
         public string EB_SAVEUSERGROUP_QUERY { get { return "SELECT * FROM eb_createormodifyusergroup(:userid,:id,:name,:description,:users);"; } }
 
 
