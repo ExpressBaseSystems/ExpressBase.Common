@@ -56,7 +56,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class UploadFileMqRequestTest : EbServiceStackRequest
+    public class UploadFileMqRequest : EbServiceStackRequest
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
