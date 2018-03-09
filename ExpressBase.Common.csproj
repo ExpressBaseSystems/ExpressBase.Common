@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="dotNetCore.Data.OracleClient" Version="1.0.0" />
     <PackageReference Include="FOSS.ServiceStack.Core" Version="5.0.2" />
     <PackageReference Include="FOSS.ServiceStack.Redis.Core" Version="5.0.2" />
+    <PackageReference Include="dotNetCore.Data.OracleClient" Version="1.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.4.4" />
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.4.4" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
@@ -48,6 +48,11 @@
     <EmbeddedResource Include="SqlScripts/Oracle/ObjectsDb/Create_Eb_Object_TriggerOracle.sql" />
     <EmbeddedResource Include="SqlScripts/Oracle/ObjectsDb/Create_Eb_Object_FunctionsOracle.sql" />
     <EmbeddedResource Include="SqlScripts/Oracle/ObjectsDb/Alter_Eb_Object_SequencesOracle.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--<ProjectReference Include="..\ServiceStack.Core\ServiceStack.Redis\ServiceStack.Redis.csproj" />
+    <ProjectReference Include="..\ServiceStack.Core\ServiceStack\ServiceStack.csproj" />-->
   </ItemGroup>
 
 </Project>
