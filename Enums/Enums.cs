@@ -81,8 +81,8 @@ namespace ExpressBase.Common
 	public enum EbUserStatus
 	{
 		Active,
-		Deactivated,
-		Terminated
+		Suspend,
+		Terminate
 	}
 
 }
