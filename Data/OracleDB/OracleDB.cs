@@ -165,7 +165,7 @@ namespace ExpressBase.Common.Data
                            
                             if ( Regex.IsMatch(sql_arr[i], @"\:+") && parameters != null && parameters.Length > 0)
                             {
-                                cmd.Parameters.AddRange(parameters);                                
+                                cmd.Parameters.AddRange(parameters);                                 
                             }
                             
                             using (var reader = cmd.ExecuteReader())
