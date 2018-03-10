@@ -23,6 +23,8 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         public string WhichConsole { get; set; }
     }
 
+    [ProtoBuf.ProtoContract]
+    //[ProtoBuf.ProtoInclude(1, typeof(DataSourceColumnsResponse))]
     public interface IEbSSResponse
     {
         ResponseStatus ResponseStatus { get; set; } //Exception gets serialized here

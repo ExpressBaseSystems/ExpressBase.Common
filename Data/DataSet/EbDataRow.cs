@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExpressBase.Common.Structures;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -32,17 +33,17 @@ namespace ExpressBase.Common
                 {
                     if (base[index] == DBNull.Value)
                     {
-                        if (this.Rows.Table.Columns[index].Type == System.Data.DbType.String)
+                        if ((int)this.Rows.Table.Columns[index].Type == EbDbTypes.String)
                             return string.Empty;
-                        else if (this.Rows.Table.Columns[index].Type == System.Data.DbType.Int32)
+                        else if ((int)this.Rows.Table.Columns[index].Type == EbDbTypes.Int32)
                             return 0;
-                        else if (this.Rows.Table.Columns[index].Type == System.Data.DbType.Int64)
+                        else if ((int)this.Rows.Table.Columns[index].Type == EbDbTypes.Int64)
                             return 0;
-                        else if (this.Rows.Table.Columns[index].Type == System.Data.DbType.Boolean)
+                        else if ((int)this.Rows.Table.Columns[index].Type == EbDbTypes.Boolean)
                             return false;
-                        else if (this.Rows.Table.Columns[index].Type == System.Data.DbType.Decimal)
+                        else if ((int)this.Rows.Table.Columns[index].Type == EbDbTypes.Decimal)
                             return 0;
-                        else if (this.Rows.Table.Columns[index].Type == System.Data.DbType.DateTime)
+                        else if ((int)this.Rows.Table.Columns[index].Type == EbDbTypes.Date)
                             return DateTime.MinValue;
                     }
                     else

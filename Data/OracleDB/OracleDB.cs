@@ -4,6 +4,7 @@ using Npgsql;
 //using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
 using System.Data.OracleClient;
@@ -89,31 +90,74 @@ namespace ExpressBase.Common.Data
             return obj;
         }
 
+        //public EbDataTable DoQuery(string query, params DbParameter[] parameters)
+        //{
+        //    EbDataTable dt = new EbDataTable();
+        //    string[] sql_arr = query.Split(";");
+
+        //    using (var con = GetNewConnection() as OracleConnection)
+        //    {
+        //        try
+        //        {
+        //            con.Open();
+        //            for (int i = 0; i < sql_arr.Length - 1; i++)
+        //            {
+        //                using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
+        //                {
+        //                    //if (parameters != null && parameters.Length > 0)
+        //                    //    cmd.Parameters.AddRange(parameters);
+
+        //                    if (Regex.IsMatch(sql_arr[i], @"\:+") && parameters != null && parameters.Length > 0)
+        //                    {
+        //                        cmd.Parameters.AddRange(parameters);
+        //                    }
+
+        //                    using (var reader = cmd.ExecuteReader())
+        //                    {
+        //                        DataTable schema = reader.GetSchemaTable();
+        //                        this.AddColumns(dt, schema);
+        //                        PrepareDataTable(reader, dt);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        catch (OracleException orcl) { }
+        //        catch (SocketException scket) { }
+        //    }
+
+        //    return dt;
+        //}
+
         public EbDataTable DoQuery(string query, params DbParameter[] parameters)
         {
             EbDataTable dt = new EbDataTable();
-            string[] sql_arr = query.Split(";");
+            //string[] sql_arr = query.Split(";");
 
             using (var con = GetNewConnection() as OracleConnection)
             {
                 try
                 {
                     con.Open();
-                    for (int i = 0; i < sql_arr.Length - 1; i++)
-                    {
-                        using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
+                    //for (int i = 0; i < sql_arr.Length - 1; i++)
+                    //{
+                        using (OracleCommand cmd = new OracleCommand(query, con))
                         {
-                            if (parameters != null && parameters.Length > 0)
+                            //if (parameters != null && parameters.Length > 0)
+                            //    cmd.Parameters.AddRange(parameters);
+
+                            if (Regex.IsMatch(query, @"\:+") && parameters != null && parameters.Length > 0)
+                            {
                                 cmd.Parameters.AddRange(parameters);
+                            }
 
                             using (var reader = cmd.ExecuteReader())
                             {
-                                DataTable schema = reader.GetSchemaTable();
-                                this.AddColumns(dt, schema);
-                                PrepareDataTable(reader, dt);
-                            }
+                            DataTable schema = reader.GetSchemaTable();
+                            this.AddColumns(dt, schema);
+                            PrepareDataTable(reader, dt);
                         }
-                    }
+                        }
+                   // }
                 }
                 catch (OracleException orcl) { }
                 catch (SocketException scket) { }
@@ -246,45 +290,53 @@ namespace ExpressBase.Common.Data
             // This is a place where you will use _mySQLDriver to check, whether you are in a transaction
             return false;
         }
+        //private Type[] AddColumns(EbDataTable dt, ReadOnlyCollection<DbColumn> schema)
+        //{
+        //    int pos = 0;
+        //    Type[] typeArray = new Type[schema.Count];
+        //    foreach (DbColumn drow in schema)
+        //    {
+        //        string columnName = System.Convert.ToString(drow["ColumnName"]);
+        //        typeArray[pos] = (Type)(drow["DataType"]);
+        //        EbDataColumn column = new EbDataColumn(columnName, ConvertToDbType(typeArray[pos]));
+        //        column.ColumnIndex = pos++;
+        //        dt.Columns.Add(column);
+        //    }
 
+        //    return typeArray;
+        //}
         private void AddColumns(EbDataTable dt, DataTable schema)
         {
             int pos = 0;
-            foreach (DataRow row in schema.Rows)
-            {
-                foreach (DataColumn column in schema.Columns)
-                {
-                    string columnName = column.ColumnName;
-                    EbDataColumn ebcolumn = new EbDataColumn(columnName, ConvertToDbType((Type)(row["DataType"])));
-                    ebcolumn.ColumnIndex = pos++;
-                    dt.Columns.Add(ebcolumn);
-                }
-            }
-            /*foreach (NpgsqlDbColumn drow in schema)
-            {
-                string columnName = System.Convert.ToString(drow["ColumnName"]);
-                EbDataColumn column = new EbDataColumn(columnName, ConvertToDbType((Type)(drow["DataType"])));
+             foreach(DataRow dr in schema.Rows)
+             {
+                
+                string columnName = System.Convert.ToString(dr["ColumnName"]);
+                Type type = (Type)(dr["DataType"]);
+                EbDataColumn column = new EbDataColumn(columnName,ConvertToDbType(type));
                 column.ColumnIndex = pos++;
+               
                 dt.Columns.Add(column);
-            }*/
+                
+            }
         }
 
-        private DbType ConvertToDbType(Type _typ)
+        private EbDbType ConvertToDbType(Type _typ)
         {
             if (_typ == typeof(DateTime))
-                return DbType.DateTime;
+                return EbDbTypes.Date;
             else if (_typ == typeof(string))
-                return DbType.String;
+                return EbDbTypes.String;
             else if (_typ == typeof(bool))
-                return DbType.Boolean;
+                return EbDbTypes.Boolean;
             else if (_typ == typeof(decimal))
-                return DbType.Decimal;
+                return EbDbTypes.Decimal;
             else if (_typ == typeof(int) || _typ == typeof(Int32))
-                return DbType.Int32;
+                return EbDbTypes.Int32;
             else if (_typ == typeof(Int64))
-                return DbType.Int64;
+                return EbDbTypes.Int64;
 
-            return DbType.String;
+            return EbDbTypes.String;
         }
 
         private void PrepareDataTable(OracleDataReader reader, EbDataTable dt)
@@ -296,45 +348,6 @@ namespace ExpressBase.Common.Data
                 object[] oArray = new object[_fieldCount];
                 reader.GetValues(oArray);
                 dr.AddRange(oArray);
-                //for (int i = 0; i < _fieldCount; i++)
-                //{
-                //    var _typ = reader.GetFieldType(i);
-                //    if (_typ == typeof(DateTime))
-                //    {
-                //        dr[i] = reader.IsDBNull(i) ? DateTime.Now : reader.GetDateTime(i);
-                //        continue;
-                //    }
-                //    else if (_typ == typeof(string))
-                //    {
-                //        dr[i] = reader.IsDBNull(i) ? string.Empty : reader.GetString(i);
-                //        continue;
-                //    }
-                //    else if (_typ == typeof(bool))
-                //    {
-                //        dr[i] = reader.IsDBNull(i) ? false : reader.GetBoolean(i);
-                //        continue;
-                //    }
-                //    else if (_typ == typeof(decimal))
-                //    {
-                //        dr[i] = reader.IsDBNull(i) ? 0 : reader.GetDecimal(i);
-                //        continue;
-                //    }
-                //    else if (_typ == typeof(int) || _typ == typeof(Int32))
-                //    {
-                //        dr[i] = reader.IsDBNull(i) ? 0 : reader.GetInt32(i);
-                //        continue;
-                //    }
-                //    else if (_typ == typeof(Int64))
-                //    {
-                //        dr[i] = reader.IsDBNull(i) ? 0 : reader.GetInt64(i);
-                //        continue;
-                //    }
-                //    else
-                //    {
-                //        dr[i] = reader.GetValue(i);
-                //        continue;
-                //    }
-                //}
 
                 dt.Rows.Add(dr);
             }
@@ -342,9 +355,9 @@ namespace ExpressBase.Common.Data
 
         //-----------Sql queries
 
-        public string EB_AUTHETICATE_USER_NORMAL { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, passwrd => :pass,wc => :wc));"; } }
-        public string EB_AUTHENTICATEUSER_SOCIAL { get { return "SELECT * FROM table(eb_authenticate_unified(social => :social, wc => :wc));"; } }
-        public string EB_AUTHENTICATEUSER_SSO { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, wc => :wc));"; } }
+        public string EB_AUTHETICATE_USER_NORMAL { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, passwrd => :pass,wc => :wc))"; } }
+        public string EB_AUTHENTICATEUSER_SOCIAL { get { return "SELECT * FROM table(eb_authenticate_unified(social => :social, wc => :wc))"; } }
+        public string EB_AUTHENTICATEUSER_SSO { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, wc => :wc))"; } }
 
         public string EB_SIDEBARUSER_REQUEST { get { return @"
                         SELECT id, applicationname
@@ -410,13 +423,12 @@ namespace ExpressBase.Common.Data
                         eb_objects_ver EOV, eb_users EU
                     WHERE
                         EOV.commit_uid = EU.id AND
-                        EOV.eb_objects_id=(SELECT eb_objects_id FROM eb_objects_ver WHERE refid=@refid)
+                        EOV.eb_objects_id=(SELECT eb_objects_id FROM eb_objects_ver WHERE refid=:refid)
                     ORDER BY
-                        EOV.id DESC; 
+                        EOV.id DESC 
                 ";
             }
         }
-
         public string EB_PARTICULAR_VERSION_OF_AN_OBJ
         {
             get
@@ -426,14 +438,13 @@ namespace ExpressBase.Common.Data
                     FROM
                         eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
                     WHERE
-                        EOV.refid=@refid AND EOS.eb_obj_ver_id = EOV.id AND EO.id=EOV.eb_objects_id
+                        EOV.refid=:refid AND EOS.eb_obj_ver_id = EOV.id AND EO.id=EOV.eb_objects_id
                         AND ROWNUM<=1
                     ORDER BY
-	                    EOS.id DESC ; 
+	                    EOS.id DESC  
                 ";
             }
         }
-
         public string EB_LATEST_COMMITTED_VERSION_OF_AN_OBJ
         {
             get
@@ -444,9 +455,9 @@ namespace ExpressBase.Common.Data
                     FROM 
                         eb_objects EO, eb_objects_ver EOV
                     WHERE
-                        EO.id = EOV.eb_objects_id AND EOV.refid=@refid
+                        EO.id = EOV.eb_objects_id AND EOV.refid=:refid
                     ORDER BY
-                        EO.obj_type; 
+                        EO.obj_type 
                 ";
             }
         }
@@ -465,13 +476,12 @@ namespace ExpressBase.Common.Data
                         ON 
 	                        EOV.commit_uid=EU.id
                         WHERE
-                            EO.id = EOV.eb_objects_id AND EO.obj_type=@type
+                            EO.id = EOV.eb_objects_id AND EO.obj_type=:type
                         ORDER BY
-                            EO.obj_name; 
+                            EO.obj_name 
                 ";
             }
         }
-
         public string EB_GET_LIVE_OBJ_RELATIONS
         {
             get
@@ -482,9 +492,9 @@ namespace ExpressBase.Common.Data
 	                        eb_objects EO, eb_objects_ver EOV,eb_objects_status EOS
                         WHERE 
 	                        EO.id = ANY (SELECT eb_objects_id FROM eb_objects_ver WHERE refid IN(SELECT dependant FROM eb_objects_relations
-                                                  WHERE dominant=@dominant))
-                            AND EOV.refid =ANY(SELECT dependant FROM eb_objects_relations WHERE dominant=@dominant)    
-                            AND EO.id =EOV.eb_objects_id  AND EOS.eb_obj_ver_id = EOV.id AND EOS.status = 3 AND EO.obj_type IN(16 ,17); 
+                                                  WHERE dominant=:dominant))
+                            AND EOV.refid =ANY(SELECT dependant FROM eb_objects_relations WHERE dominant=:dominant)    
+                            AND EO.id =EOV.eb_objects_id  AND EOS.eb_obj_ver_id = EOV.id AND EOS.status = 3 AND EO.obj_type IN(16 ,17) 
                 ";
             }
         }
@@ -503,13 +513,12 @@ namespace ExpressBase.Common.Data
                             ON 
 	                            EOV.commit_uid=EU.id
                             WHERE
-                                EO.id = EOV.eb_objects_id  AND EO.obj_type=@type AND COALESCE(EOV.working_mode, 'F') <> 'T'
+                                EO.id = EOV.eb_objects_id  AND EO.obj_type=:type AND COALESCE(EOV.working_mode, 'F') <> 'T'
                             ORDER BY
-                                EO.obj_name;
+                                EO.obj_name
                 ";
             }
         }
-
         public string EB_GET_OBJ_LIST_FROM_EBOBJECTS
         {
             get
@@ -519,13 +528,12 @@ namespace ExpressBase.Common.Data
                 FROM 
                     eb_objects
                 WHERE
-                    obj_type=@type
+                    obj_type=:type
                 ORDER BY
-                    obj_name;
+                    obj_name
                 ";
             }
         }
-
         public string EB_GET_OBJ_STATUS_HISTORY
         {
             get
@@ -535,13 +543,12 @@ namespace ExpressBase.Common.Data
                         FROM
                             eb_objects_status EOS, eb_objects_ver EOV, eb_users EU
                         WHERE
-                            eb_obj_ver_id = EOV.id AND EOV.refid = @refid AND EOV.commit_uid=EU.id
+                            eb_obj_ver_id = EOV.id AND EOV.refid = :refid AND EOV.commit_uid=EU.id
                         ORDER BY 
                         EOS.id DESC
                 ";
             }
         }
-
         public string EB_LIVE_VERSION_OF_OBJS
         {
             get
@@ -552,7 +559,7 @@ namespace ExpressBase.Common.Data
                         FROM
                             eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
                         WHERE
-                            EO.id = @id AND EOV.eb_objects_id = @id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id
+                            EO.id = :id AND EOV.eb_objects_id = :id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id
                 ";
             }
         }
@@ -570,7 +577,7 @@ namespace ExpressBase.Common.Data
         {
             get
             {
-                return "SELECT * FROM TABLE(eb_get_tagged_object(:tag));";
+                return "SELECT * FROM TABLE(eb_get_tagged_object(:tag))";
             }
         }
 
@@ -605,18 +612,54 @@ namespace ExpressBase.Common.Data
             get
             {
                 return @"   
-                    SELECT * FROM TABLE(eb_objects_exploreobject(id => :id));
+                    SELECT * FROM TABLE(eb_objects_exploreobject(:id))
                 ";
             }
         }
-        //public string EB_UPDATE_DASHBOARD
-        //{
-        //    get
-        //    {
-        //        return @"   
-        //            SELECT * FROM TABLE(eb_objects_update_dashboard(:refid));
-        //        ";
-        //    }
-        //}
+        public string EB_MAJOR_VERSION_OF_OBJECT
+        {
+            get
+            {
+                return @"   
+                    SELECT eb_object_create_major_version(:id, :obj_type, :commit_uid, :src_pid, :cur_pid, :relations) FROM DUAL
+                ";
+            }
+        }
+        public string EB_MINOR_VERSION_OF_OBJECT
+        {
+            get
+            {
+                return @"   
+                    SELECT eb_object_create_minor_version(:id, :obj_type, :commit_uid, :src_pid, :cur_pid, :relations) FROM DUAL
+                ";
+            }
+        }
+        public string EB_CHANGE_STATUS_OBJECT
+        {
+            get
+            {
+                return @"   
+                    SELECT eb_objects_change_status(:id, :status, :commit_uid, :obj_changelog) FROM DUAL
+                ";
+            }
+        }
+        public string EB_PATCH_VERSION_OF_OBJECT
+        {
+            get
+            {
+                return @"   
+                    SELECT eb_object_create_patch_version(:id, :obj_type, :commit_uid, :src_pid, :cur_pid, :relations) FROM DUAL
+                ";
+            }
+        }
+        public string EB_UPDATE_DASHBOARD
+        {
+            get
+            {
+                return @"   
+                    SELECT * FROM TABLE(eb_objects_update_dashboard(:refid))
+                ";
+            }
+        }
     }
 }

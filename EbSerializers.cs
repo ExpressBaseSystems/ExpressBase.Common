@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using ExpressBase.Common.Structures;
+using Newtonsoft.Json;
 using ProtoBuf;
+using ProtoBuf.Meta;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -23,6 +25,12 @@ namespace ExpressBase.Common
             return buffer;
         }
 
+        public static void ProtoBuf_Serialize(Stream stream, object obj)
+        {
+            RuntimeTypeModel.Default[typeof(EbDbType)].SetSurrogate(typeof(EbDbTypeSurrogate));
+            ProtoBuf.Serializer.Serialize(stream, obj);
+        }
+
         public static T ProtoBuf_DeSerialize<T>(byte[] bytea)
         {
             object obj = null;
@@ -31,6 +39,15 @@ namespace ExpressBase.Common
             {
                 obj = ProtoBuf.Serializer.Deserialize<T>(mem2);
             }
+
+            return (T)obj;
+        }
+
+        public static T ProtoBuf_DeSerialize<T>(Stream stream)
+        {
+            object obj = null;
+            RuntimeTypeModel.Default[typeof(EbDbType)].SetSurrogate(typeof(EbDbTypeSurrogate));
+            obj = ProtoBuf.Serializer.Deserialize<T>(stream);
 
             return (T)obj;
         }
@@ -48,6 +65,24 @@ namespace ExpressBase.Common
         public static dynamic Json_Deserialize(string json)
         {
             return JsonConvert.DeserializeObject(json, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+        }
+    }
+
+    [ProtoContract]
+    public class EbDbTypeSurrogate
+    {
+        [ProtoMember(1)]
+        public int IntCode { get; set; }
+
+        public static implicit operator EbDbTypeSurrogate(EbDbType myClass)
+        {
+            return
+                new EbDbTypeSurrogate { IntCode = myClass.IntCode };
+        }
+
+        public static implicit operator EbDbType(EbDbTypeSurrogate myClass)
+        {
+            return (EbDbType)myClass.IntCode;
         }
     }
 

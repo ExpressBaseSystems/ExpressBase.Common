@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="dotNetCore.Data.OracleClient" Version="1.0.0" />
-    <PackageReference Include="FOSS.ServiceStack.Core" Version="5.0.2" />
-    <PackageReference Include="FOSS.ServiceStack.Redis.Core" Version="5.0.2" />
+    <PackageReference Include="FOSS.ServiceStack.Core" Version="1.0.43" />
+    <PackageReference Include="FOSS.ServiceStack.Redis.Core" Version="1.0.43" />
     <PackageReference Include="MongoDB.Driver" Version="2.4.4" />
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.4.4" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
@@ -34,10 +34,10 @@
     <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/Create_Eb_User_Indexes.sql" />
     <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/Create_Eb_User_Functions.sql" />
 
-    <EmbeddedResource Include="SqlScripts/Oracle/DataDb/Alter_Eb_User_SequencesOracle.sql" />
-    <EmbeddedResource Include="SqlScripts/Oracle/DataDb/Create_Eb_UserOracle.sql" />
-    <EmbeddedResource Include="SqlScripts/Oracle/DataDb/Create_Eb_user_TriggerOracle.sql" />
-    <EmbeddedResource Include="SqlScripts/Oracle/DataDb/Create_Eb_User_FunctionsOracle.sql" />
+    <EmbeddedResource Include="SqlScripts\Oracle\DataDb\Alter_Eb_User_SequencesOracle.sql" />
+    <EmbeddedResource Include="SqlScripts\Oracle\DataDb\Create_Eb_UserOracle.sql" />
+    <EmbeddedResource Include="SqlScripts\Oracle\DataDb\Create_Eb_user_TriggerOracle.sql" />
+    <EmbeddedResource Include="SqlScripts\Oracle\DataDb\Create_Eb_User_FunctionsOracle.sql" />
 
     <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/Create_Eb_Objects.sql" />
     <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/Alter_Eb_Object_Sequences.sql" />
@@ -48,6 +48,13 @@
     <EmbeddedResource Include="SqlScripts/Oracle/ObjectsDb/Create_Eb_Object_TriggerOracle.sql" />
     <EmbeddedResource Include="SqlScripts/Oracle/ObjectsDb/Create_Eb_Object_FunctionsOracle.sql" />
     <EmbeddedResource Include="SqlScripts/Oracle/ObjectsDb/Alter_Eb_Object_SequencesOracle.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="SqlScripts\Oracle\DataDb\Functions\" />
+    <Folder Include="SqlScripts\Oracle\DataDb\Tables\" />
+    <Folder Include="SqlScripts\Oracle\InfraDb\" />
+    <Folder Include="SqlScripts\Oracle\ObjectsDb\Tables\" />
   </ItemGroup>
 
 </Project>

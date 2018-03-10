@@ -61,7 +61,11 @@ namespace ExpressBase.Common
         string EB_SAVE_OBJECT { get; }
         string EB_COMMIT_OBJECT { get; }
         string EB_EXPLORE_OBJECT { get; }
-        //string EB_UPDATE_DASHBOARD { get; }
+        string EB_MAJOR_VERSION_OF_OBJECT { get; }
+        string EB_MINOR_VERSION_OF_OBJECT { get; }
+        string EB_CHANGE_STATUS_OBJECT { get; }
+        string EB_PATCH_VERSION_OF_OBJECT { get; }
+        string EB_UPDATE_DASHBOARD { get; }
     }
 }
 
