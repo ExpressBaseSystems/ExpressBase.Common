@@ -66,6 +66,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 3)]
         public string BucketName { get; set; }
+
+        [DataMember(Order = 4)]
+        public string Token { get; set; }
     }
     
     [DataContract]
