@@ -9,10 +9,10 @@ CREATE OR REPLACE FUNCTION public.eb_authenticate_anonymous(
 	_phone text DEFAULT NULL::text,
 	_appid integer DEFAULT NULL::integer,
 	_wc text DEFAULT NULL::text)
-    RETURNS TABLE(_userid integer, _email text, _firstname text, _roles_a text, _rolename_a text, _permissions text) 
+    RETURNS TABLE(_userid integer, _email text, _firstname text, _roles_a text, _rolename_a text, _permissions text, _preferencesjson text) 
     LANGUAGE 'plpgsql'
 
-   
+  
 AS $BODY$
 
 DECLARE _userid INTEGER;
@@ -22,6 +22,7 @@ DECLARE _roles_a TEXT;
 DECLARE _rolename_a TEXT;
 DECLARE _permissions TEXT;
 DECLARE _is_anon_auth_req BOOL;
+DECLARE _preferencesjson TEXT;
 
 BEGIN
 
@@ -29,9 +30,9 @@ _is_anon_auth_req := false;
 
 IF _socialid IS NOT NULL THEN
 
-    SELECT userid, email, fullname, roles_a, rolename_a, permissions 
+    SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson
     FROM eb_authenticate_unified(social => _socialid, wc => _wc) 
-    INTO _userid, _email, _firstname, _roles_a, _rolename_a, _permissions;
+    INTO _userid, _email, _firstname, _roles_a, _rolename_a, _permissions, _preferencesjson;
     
     IF _userid IS NULL THEN
     
@@ -72,13 +73,13 @@ ELSE
 END IF;
 
 IF _is_anon_auth_req THEN
-	SELECT userid, email, fullname, roles_a, rolename_a, permissions 
+	SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson
     FROM eb_authenticate_unified(uname => 'anonymous@anonym.com', password => '294de3557d9d00b3d2d8a1e6aab028cf', wc => _wc) 
-    INTO _userid, _email, _firstname, _roles_a, _rolename_a, _permissions;
+    INTO _userid, _email, _firstname, _roles_a, _rolename_a, _permissions, _preferencesjson;
 END IF;
 
 RETURN QUERY
-    SELECT _userid, _email, _firstname, _roles_a, _rolename_a, _permissions;
+    SELECT _userid, _email, _firstname, _roles_a, _rolename_a, _permissions, _preferencesjson;
 
 END;
 

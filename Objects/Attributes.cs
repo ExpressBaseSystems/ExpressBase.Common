@@ -77,6 +77,11 @@ namespace ExpressBase.Common.Objects.Attributes
     }
 
 
+    public class HideForUser : Attribute
+    {
+    }
+
+
     public class OnChangeExec : Attribute
     {
         public string JsCode { get; set; }
