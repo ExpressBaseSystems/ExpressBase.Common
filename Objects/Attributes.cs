@@ -24,15 +24,19 @@ namespace ExpressBase.Common.Objects.Attributes
         ObjectSelector = 13,//--
         FontSelector = 14,//--  //not completed
         Expandable = 15,
-        String =16,
-        ImageSeletor = 17
+        String = 16,
+        ImageSeletor = 17,
+        ScriptEditorCS = 18,
+        ScriptEditorJS = 19,
+        ScriptEditorSQ = 20,
     }
 
     public class HideInToolBox : Attribute { }
 
     public class HideInPropertyGrid : Attribute { }
 
-    public class regexCheck : Attribute {
+    public class regexCheck : Attribute
+    {
         string regex { set; get; }
 
         public regexCheck()
@@ -40,12 +44,12 @@ namespace ExpressBase.Common.Objects.Attributes
             this.regex = "[a-z][a-z0-9]*(_[a-z0-9]+)*";
         }
 
-        public regexCheck( string regex)
+        public regexCheck(string regex)
         {
             this.regex = regex;
         }
     }
-    
+
 
     public class Unique : Attribute { }
 
@@ -64,8 +68,8 @@ namespace ExpressBase.Common.Objects.Attributes
         public Alias(string alias) { this.Name = alias; }
     }
 
-	[AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
-	public class OSE_ObjectTypes : Attribute
+    [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
+    public class OSE_ObjectTypes : Attribute
     {
         public int[] ObjectTypes { get; set; }
 
@@ -89,7 +93,7 @@ namespace ExpressBase.Common.Objects.Attributes
     {
         public PropertyEditorType PropertyEditorType { get; set; }
 
-        public string PropertyEditorSource{ get; set; }
+        public string PropertyEditorSource { get; set; }
 
         public PropertyEditor(PropertyEditorType type) { this.PropertyEditorType = type; }
 
@@ -113,7 +117,7 @@ namespace ExpressBase.Common.Objects.Attributes
         public DefaultPropValue(string val) { this.Value = val; }
     }
 
-    public class HelpText : Attribute 
+    public class HelpText : Attribute
     {
         public string value { get; set; }
 

@@ -64,27 +64,25 @@ namespace ExpressBase.Common
 
     public enum SystemRoles
     {
-        Eb_Admin,
-        Eb_ReadOnlyUser,
-        Account_Owner,
-        Account_Admin,
-        Account_Developer,
-        Account_Tester,
-        Account_PM
-    }
+        SolutionOwner,
+		SolutionAdmin,
+		SolutionDeveloper,
+		SolutionTester,
+		SolutionPM
+	}
 
     public enum EbSystemRoles
     {
-        Eb_Admin,
-        Eb_ReadOnlyUser,
-        Eb_User
+        EbAdmin,
+        EbReadOnlyUser,
+        EbUser
     }
 
 	public enum EbUserStatus
 	{
 		Active,
-		Deactivated,
-		Terminated
+		Suspend,
+		Terminate
 	}
 
 }
