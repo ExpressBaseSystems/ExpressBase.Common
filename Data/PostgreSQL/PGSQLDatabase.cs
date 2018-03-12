@@ -400,7 +400,7 @@ namespace ExpressBase.Common
                     EO.id = EOV.eb_objects_id 
                 AND 
                     EOS.eb_obj_ver_id = EOV.id 
-                AND EO.id = ANY('{@Ids}')  
+                AND EO.id = ANY('{:Ids}')  
                 AND 
                     EOS.status = 3 
                 AND EO.id = EO2A.obj_id 
@@ -434,7 +434,7 @@ namespace ExpressBase.Common
 										SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = :id AND eb_del = 'F';
 										SELECT A.applicationname, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = :id AND A.eb_del = 'F';
 
-										SELECT A.id, A.firstname, A.email, B.id FROM eb_users A, eb_role2user B
+										SELECT A.id, A.fullname, A.email, B.id FROM eb_users A, eb_role2user B
 											WHERE A.id = B.user_id AND A.eb_del = 'F' AND B.eb_del = 'F' AND B.role_id = :id;"; } }
         public string EB_SAVEROLES_QUERY
         {
@@ -445,7 +445,9 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_createormodifyuserandroles(:userid,:id,:fullname,:nickname,:email,:pwd,:dob,:sex,:alternateemail,:phprimary,:phsecondary,:phlandphone,:extension,:fbid,:fbname,:roles,:groups,:statusid,:hide,:anonymoususerid);"; } }
+        public string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_createormodifyuserandroles(:userid,:id,:fullname,:nickname,:email,:pwd,:dob,:sex,:alternateemail,:phprimary,:phsecondary,:phlandphone,:extension,:fbid,:fbname,:roles,:groups,:statusid,:hide,:anonymoususerid,:preference);"; } }
+        public string EB_SAVEUSERGROUP_QUERY { get { return "SELECT * FROM eb_createormodifyusergroup(:userid,:id,:name,:description,:users);"; } }
+
 
         //.......OBJECTS QUERIES.....
         public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
@@ -453,7 +455,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"SELECT 
-                        EOV.id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.commit_uid, EU.firstname
+                        EOV.id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.commit_uid, EU.fullname
                     FROM 
                         eb_objects_ver EOV, eb_users EU
                     WHERE
@@ -503,7 +505,7 @@ namespace ExpressBase.Common
                 return @"SELECT 
                             EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
                             EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog,EOV.commit_ts, EOV.commit_uid, EOV.refid,
-                            EU.firstname
+                            EU.fullname
                         FROM 
                             eb_objects EO, eb_objects_ver EOV
                         LEFT JOIN
@@ -540,7 +542,7 @@ namespace ExpressBase.Common
                 return @"SELECT 
                             EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
                             EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.refid,
-                            EU.firstname
+                            EU.fullname
                         FROM 
                             eb_objects EO, eb_objects_ver EOV
                         LEFT JOIN
@@ -574,7 +576,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"SELECT 
-                            EOS.eb_obj_ver_id, EOS.status, EU.firstname, EOS.ts, EOS.changelog, EOV.commit_uid   
+                            EOS.eb_obj_ver_id, EOS.status, EU.fullname, EOS.ts, EOS.changelog, EOV.commit_uid   
                         FROM
                             eb_objects_status EOS, eb_objects_ver EOV, eb_users EU
                         WHERE

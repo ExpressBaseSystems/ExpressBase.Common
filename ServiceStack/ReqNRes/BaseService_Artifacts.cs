@@ -20,6 +20,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         public int UserId { get; set; }
 
         [DataMember(Order = 3)]
+        public string UserAuthId { get; set; }
+
+        [DataMember(Order = 4)]
         public string WhichConsole { get; set; }
     }
 

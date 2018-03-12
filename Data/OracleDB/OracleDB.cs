@@ -207,7 +207,7 @@ namespace ExpressBase.Common.Data
                            
                             if ( Regex.IsMatch(sql_arr[i], @"\:+") && parameters != null && parameters.Length > 0)
                             {
-                                cmd.Parameters.AddRange(parameters);                                
+                                cmd.Parameters.AddRange(parameters);                                 
                             }
                             
                             using (var reader = cmd.ExecuteReader())
@@ -410,6 +410,8 @@ namespace ExpressBase.Common.Data
 
 
         public string EB_SAVEUSER_QUERY { get { return "SELECT eb_createormodifyuserandroles(:userid, :id, :fullname, :nickname, :email, :pwd, :dob, :sex, :alternateemail, :phprimary, :phsecondary, :phlandphone, :extension, :fbid, :fbname, :roles, :groups, :statusid, :hide, :anonymoususerid) FROM dual;"; } }
+
+        public string EB_SAVEUSERGROUP_QUERY { get { return "SELECT eb_createormodifyusergroup(:userid,:id,:name,:description,:users) FROM dual;"; } }
 
 
         //.......OBJECTS QUERIES.....

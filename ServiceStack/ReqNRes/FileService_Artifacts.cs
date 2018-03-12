@@ -28,7 +28,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class UploadFileRequest : EbServiceStackRequest, IReturn<string>
+    public class UploadFileMqRequest : EbServiceStackRequest, IReturn<string>
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
@@ -36,53 +36,26 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 2)]
         public byte[] FileByte { get; set; }
 
-        [DataMember(Order = 3)]
-        public bool IsAsync { get; set; }
-
     }
 
     [DataContract]
-    public class DeleteFileRequest : EbServiceStackRequest, IReturn<string>
+    public class DeleteFileMqRequest : EbServiceStackRequest, IReturn<string>
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
     }
 
     [DataContract]
-    public class DeleteFileMqRequest : EbServiceStackRequest
-    {
-        [DataMember(Order = 1)]
-        public FileMeta FileDetails { get; set; }
-    }
-
-    [DataContract]
-    public class UploadFileMqRequest : EbServiceStackRequest
-    {
-        [DataMember(Order = 1)]
-        public FileMeta FileDetails { get; set; }
-
-        [DataMember(Order = 2)]
-        public byte[] FileByte { get; set; }
-
-        [DataMember(Order = 3)]
-        public string BucketName { get; set; }
-    }
-    
-    [DataContract]
-    public class UploadImageRequest : EbServiceStackRequest, IReturn<string>
+    public class UploadImageMqRequest : EbServiceStackRequest, IReturn<string>
     {
         [DataMember(Order = 1)]
         public FileMeta ImageInfo { get; set; }
 
         [DataMember(Order = 2)]
         public byte[] ImageByte { get; set; }
-
-        [DataMember(Order = 3)]
-        public bool IsAsync { get; set; }
-
     }
 
-    public class UploadFileControllerResponse
+    public class UploadFileMqResponse
     {
         public string Uploaded { get; set; }
 
@@ -91,7 +64,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         public string objId { get; set; }
     }
 
-    public class UploadFileControllerError
+    public class UploadFileMqError
     {
         public string Uploaded { get; set; }
     }
@@ -111,26 +84,5 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         public bool IsImage { get; set; }
 
-    }
-
-    [DataContract]
-    public class ImageResizeMqRequest : EbServiceStackRequest
-    {
-        [DataMember(Order = 1)]
-        public FileMeta ImageInfo { get; set; }
-
-        [DataMember(Order = 2)]
-        public byte[] ImageByte { get; set; }
-
-    }
-
-    [DataContract]
-    public class FileMetaPersistMqRequest : EbServiceStackRequest
-    {
-        [DataMember(Order = 1)]
-        public FileMeta FileDetails { get; set; }
-
-        [DataMember(Order = 2)]
-        public string BucketName { get; set; }
     }
 }

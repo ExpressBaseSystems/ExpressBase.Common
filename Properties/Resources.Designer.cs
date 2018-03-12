@@ -61,114 +61,436 @@ namespace ExpressBase.Common.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to --........eb_objects...............
-        ///CREATE SEQUENCE IF NOT EXISTS eb_objects_id_seq START 1;
+        ///   Looks up a localized string similar to --SEQUENCE public.eb_applications_id_seq
         ///
-        ///--...........eb_objects_relations...............
-        ///CREATE SEQUENCE IF NOT EXISTS eb_objects_relations_id_seq START 1;
+        ///CREATE SEQUENCE public.eb_applications_id_seq
+        ///    INCREMENT 1
+        ///    START 40
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
         ///
-        ///--.............eb_objects_status...............
-        ///CREATE SEQUENCE IF NOT EXISTS eb_objects_status_id_seq START 1;
-        ///
-        ///--................eb_objects_ver................
-        ///CREATE SEQUENCE IF NOT EXISTS eb_objects_ver_id_seq START 1;
-        ///
-        ///--.............eb_applications.....................
-        ///CREATE SEQUE [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string Alter_Eb_Object_Sequences {
-            get {
-                return ResourceManager.GetString("Alter_Eb_Object_Sequences", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE SEQUENCE IF NOT EXISTS eb_role2role_id_seq START 1;
-        ///
-        ///CREATE SEQUENCE IF NOT EXISTS eb_role2permission_id_seq START 1;
-        ///
-        ///CREATE SEQUENCE IF NOT EXISTS eb_role2user_id_seq START 1;
-        ///
-        ///CREATE SEQUENCE IF NOT EXISTS eb_roles_id_seq START 100;
-        ///
-        ///CREATE SEQUENCE IF NOT EXISTS eb_user2usergroup_id_seq START 1;
-        ///
-        ///CREATE SEQUENCE IF NOT EXISTS eb_usergroup_id_seq START 1;
-        ///
-        ///CREATE SEQUENCE IF NOT EXISTS eb_users_id_seq START 1;
-        ///
-        ///.
-        /// </summary>
-        internal static string Alter_Eb_User_Sequences {
-            get {
-                return ResourceManager.GetString("Alter_Eb_User_Sequences", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.cur_val(text)
-        ///
-        ///-- DROP FUNCTION public.cur_val(text);
-        ///
-        ///CREATE OR REPLACE FUNCTION public.cur_val(
-        ///	text)
-        ///    RETURNS integer
-        ///    LANGUAGE &apos;plpgsql&apos;
-        ///    
-        ///AS $BODY$
-        ///
-        ///DECLARE seq ALIAS FOR $1;
-        ///DECLARE result integer;
-        ///BEGIN
-        ///result := 0;
-        ///EXECUTE &apos;SELECT currval(&apos;&apos;&apos; || seq || &apos;&apos;&apos;)&apos; INTO result;
-        ///RETURN result;
-        ///EXCEPTION WHEN OTHERS THEN
-        ///--do nothing
-        ///RETURN result;
-        ///END;
-        ///
-        ///$BODY$;
-        ///
-        ///ALTER FUNCTION public.cur_val(text)
+        ///ALTER SEQUENCE public.eb_applications_id_seq
         ///    OWNER TO postgres;
         ///
-        ///--............................ [rest of string was truncated]&quot;;.
+        ///-- Table: public.eb_applications
+        ///
+        ///-- DROP TABLE public.eb_applications;
+        ///
+        ///CREATE TABLE public.eb_applications
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_applications_id_seq&apos;::regclass),
+        ///    applicationname text COLLATE pg_catalog.&quot;default&quot;,
+        ///  [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string Create_Eb_Object_Functions {
+        internal static string eb_applications {
             get {
-                return ResourceManager.GetString("Create_Eb_Object_Functions", resourceCulture);
+                return ResourceManager.GetString("eb_applications", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE UNIQUE INDEX eb_objects_id_idx
-        ///    ON public.eb_objects USING btree
-        ///    (id)
-        ///    TABLESPACE pg_default;
-        ///	
-        ///--.........................................
-        ///CREATE UNIQUE INDEX eb_objects_relations_id_idx
-        ///    ON public.eb_objects_relations USING btree
-        ///    (id)
-        ///    TABLESPACE pg_default;
-        ///	
-        ///--........................................
-        ///CREATE UNIQUE INDEX eb_objects_status_id_idx
-        ///    ON public.eb_objects_status USING btree
-        ///    (id)
-        ///    TABLESPACE pg_default;
-        ///	
-        ///--................................. [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_authenticate_anonymous(text, text, text, text, integer, text)
+        ///
+        ///-- DROP FUNCTION public.eb_authenticate_anonymous(text, text, text, text, integer, text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_authenticate_anonymous(
+        ///	_socialid text DEFAULT NULL::text,
+        ///	_fullname text DEFAULT NULL::text,
+        ///	_emailid text DEFAULT NULL::text,
+        ///	_phone text DEFAULT NULL::text,
+        ///	_appid integer DEFAULT NULL::integer,
+        ///	_wc text DEFAULT NULL::text)
+        ///    RETURNS TABLE(_userid integer, _email text, _first [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string Create_Eb_Object_Indexes {
+        internal static string eb_authenticate_anonymous {
             get {
-                return ResourceManager.GetString("Create_Eb_Object_Indexes", resourceCulture);
+                return ResourceManager.GetString("eb_authenticate_anonymous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_authenticate_unified(text, text, text, text)
+        ///
+        ///-- DROP FUNCTION public.eb_authenticate_unified(text, text, text, text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_authenticate_unified(
+        ///	uname text DEFAULT NULL::text,
+        ///	password text DEFAULT NULL::text,
+        ///	social text DEFAULT NULL::text,
+        ///	wc text DEFAULT NULL::text)
+        ///    RETURNS TABLE(userid integer, email text, fullname text, roles_a text, rolename_a text, permissions text) 
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///    COST 100
+        ///    VOLATILE 
+        ///    R [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_authenticate_unified {
+            get {
+                return ResourceManager.GetString("eb_authenticate_unified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_botdetails(integer)
+        ///
+        ///-- DROP FUNCTION public.eb_botdetails(integer);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_botdetails(
+        ///	solutionid integer)
+        ///    RETURNS TABLE(botname text, returnurl text, returnbotid text, createdby text, createdat timestamp without time zone, modifiedby text, modifiedat timestamp without time zone, returnwelcome text) 
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///    COST 100
+        ///    VOLATILE 
+        ///    ROWS 1000
+        ///AS $BODY$
+        ///
+        ///  
+        ///BEGIN
+        ///    RETURN QUERY
+        ///	SELECT 
+        ///		name, 
+        ///		url, 
+        ///		 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_botdetails {
+            get {
+                return ResourceManager.GetString("eb_botdetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --SEQUENCE public.eb_bots_id_seq
+        ///
+        ///CREATE SEQUENCE public.eb_bots_id_seq
+        ///    INCREMENT 1
+        ///    START 119
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_bots_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_bots
+        ///
+        ///-- DROP TABLE public.eb_bots;
+        ///
+        ///CREATE TABLE public.eb_bots
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_bots_id_seq&apos;::regclass),
+        ///    name text COLLATE pg_catalog.&quot;default&quot;,
+        ///    url text COLLATE pg_catalog.&quot;default&quot;,
+        ///    welcome_msg text CO [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_bots {
+            get {
+                return ResourceManager.GetString("eb_bots", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_create_or_update_rbac_manageroles(integer, integer, integer, text, text, boolean, text, text, text)
+        ///
+        ///-- DROP FUNCTION public.eb_create_or_update_rbac_manageroles(integer, integer, integer, text, text, boolean, text, text, text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_create_or_update_rbac_manageroles(
+        ///	roleid integer,
+        ///	applicationid integer,
+        ///	userid integer,
+        ///	role_name text,
+        ///	description text,
+        ///	isanonym boolean,
+        ///	users text,
+        ///	dependantroles text,
+        ///	permissions text)
+        ///    RE [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_create_or_update_rbac_manageroles {
+            get {
+                return ResourceManager.GetString("eb_create_or_update_rbac_manageroles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_create_or_update_role(integer, text, text, boolean, integer, text[], integer)
+        ///
+        ///-- DROP FUNCTION public.eb_create_or_update_role(integer, text, text, boolean, integer, text[], integer);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_create_or_update_role(
+        ///	application_id integer,
+        ///	role_name text,
+        ///	role_desc text,
+        ///	isanonym boolean,
+        ///	userid integer,
+        ///	permissions text[],
+        ///	roleid integer DEFAULT 0)
+        ///    RETURNS integer
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///    COST 100
+        ///    VOLATILE 
+        ///    ROWS 0
+        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_create_or_update_role {
+            get {
+                return ResourceManager.GetString("eb_create_or_update_role", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_create_or_update_role2role(integer, integer, integer[])
+        ///
+        ///-- DROP FUNCTION public.eb_create_or_update_role2role(integer, integer, integer[]);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_create_or_update_role2role(
+        ///	roleid integer,
+        ///	userid integer,
+        ///	dependantroles integer[])
+        ///    RETURNS integer
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///    COST 100
+        ///    VOLATILE 
+        ///    ROWS 0
+        ///AS $BODY$
+        ///
+        ///BEGIN
+        ///
+        ///    UPDATE eb_role2role 
+        ///    SET 
+        ///        eb_del = &apos;T&apos;,revokedat = NOW(),revokedby = $2 
+        ///    WHERE         /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_create_or_update_role2role {
+            get {
+                return ResourceManager.GetString("eb_create_or_update_role2role", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_create_or_update_role2user(integer, integer, integer[])
+        ///
+        ///-- DROP FUNCTION public.eb_create_or_update_role2user(integer, integer, integer[]);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_create_or_update_role2user(
+        ///	roleid integer,
+        ///	userid integer,
+        ///	usersid integer[])
+        ///    RETURNS integer
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///    COST 100
+        ///    VOLATILE 
+        ///    ROWS 0
+        ///AS $BODY$
+        ///
+        ///BEGIN
+        ///    UPDATE eb_role2user 
+        ///    SET 
+        ///        eb_del = &apos;T&apos;,revokedat = NOW(),revokedby = $2 
+        ///    WHERE 
+        ///         [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_create_or_update_role2user {
+            get {
+                return ResourceManager.GetString("eb_create_or_update_role2user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_createbot(text, text, text, text, text, integer, integer)
+        ///
+        ///-- DROP FUNCTION public.eb_createbot(text, text, text, text, text, integer, integer);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_createbot(
+        ///	_sol_id text,
+        ///	_name text,
+        ///	_fullname text,
+        ///	_url text,
+        ///	_wel_msg text,
+        ///	_userid integer,
+        ///	_id integer)
+        ///    RETURNS text
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///    COST 100
+        ///    VOLATILE 
+        ///    ROWS 0
+        ///AS $BODY$
+        ///
+        ///DECLARE _botid text; insertedbotid text; returnid integer; appid integer;
+        ///
+        ///BEG [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_createbot {
+            get {
+                return ResourceManager.GetString("eb_createbot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_createormodifyuserandroles(integer, integer, text, text, text, text, date, text, text, text, text, text, text, text, text, text, text, integer, text, integer, text)
+        ///
+        ///-- DROP FUNCTION public.eb_createormodifyuserandroles(integer, integer, text, text, text, text, date, text, text, text, text, text, text, text, text, text, text, integer, text, integer, text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_createormodifyuserandroles(
+        ///	_userid integer,
+        ///	_id integer,
+        ///	_fullname text,
+        ///	_nickn [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_createormodifyuserandroles {
+            get {
+                return ResourceManager.GetString("eb_createormodifyuserandroles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_createormodifyusergroup(integer, integer, text, text, integer[])
+        ///
+        ///-- DROP FUNCTION public.eb_createormodifyusergroup(integer, integer, text, text, integer[]);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_createormodifyusergroup(
+        ///	_userid integer,
+        ///	_id integer,
+        ///	_name text,
+        ///	_description text,
+        ///	_users integer[])
+        ///    RETURNS TABLE(gid integer) 
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///    COST 100
+        ///    VOLATILE 
+        ///    ROWS 1000
+        ///AS $BODY$
+        ///
+        ///DECLARE gid integer;
+        ///BEGIN
+        ///gid:=_id;
+        ///IF _id &gt; 0 THEN
+        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_createormodifyusergroup {
+            get {
+                return ResourceManager.GetString("eb_createormodifyusergroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --SEQUENCE public.eb_files_id_seq
+        ///
+        ///CREATE SEQUENCE public.eb_files_id_seq
+        ///    INCREMENT 1
+        ///    START 280
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_files_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_files
+        ///
+        ///-- DROP TABLE public.eb_files;
+        ///
+        ///CREATE TABLE public.eb_files
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_files_id_seq&apos;::regclass),
+        ///    userid integer NOT NULL,
+        ///    objid text COLLATE pg_catalog.&quot;default&quot; NOT NULL,
+        ///    length bigint,
+        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_files {
+            get {
+                return ResourceManager.GetString("eb_files", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to 
+        ///-- FUNCTION: public.eb_getpermissions(integer[])
+        ///
+        ///-- DROP FUNCTION public.eb_getpermissions(integer[]);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_getpermissions(
+        ///	roles integer[])
+        ///    RETURNS TABLE(permissions text) 
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///    COST 100
+        ///    VOLATILE 
+        ///    ROWS 1000
+        ///AS $BODY$
+        ///
+        ///BEGIN
+        ///	RETURN QUERY 
+        ///SELECT 
+        ///   array_to_string(array_agg(_per.permissionname), &apos;,&apos;) 
+        ///FROM 
+        ///	eb_role2permission _per
+        ///WHERE role_id = ANY(roles) AND eb_del=&apos;F&apos;;
+        ///END;
+        ///
+        ///$BODY$;
+        ///
+        ///ALTER FUNCTION public [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_getpermissions {
+            get {
+                return ResourceManager.GetString("eb_getpermissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_getroles(integer, text)
+        ///
+        ///-- DROP FUNCTION public.eb_getroles(integer, text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_getroles(
+        ///	userid integer,
+        ///	wc text)
+        ///    RETURNS TABLE(roles text, role_name text) 
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///    COST 100
+        ///    VOLATILE 
+        ///    ROWS 1000
+        ///AS $BODY$
+        ///
+        ///	DECLARE app_type integer[];
+        ///BEGIN
+        ///	
+        ///    IF wc = &apos;tc&apos; OR wc = &apos;dc&apos; THEN
+        ///    app_type:=&apos;{1, 2, 3}&apos;;
+        ///    END IF;
+        ///    IF wc = &apos;uc&apos; THEN
+        ///    app_type:=&apos;{1}&apos;;
+        ///    END IF;
+        ///	IF wc = &apos;mc&apos; THEN
+        ///     [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_getroles {
+            get {
+                return ResourceManager.GetString("eb_getroles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE SEQUENCE public.eb_objects_id_seq
+        ///    INCREMENT 1
+        ///    START 1367
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_objects_id_seq
+        ///    OWNER TO postgres;
+        ///
         ///-- Table: public.eb_objects
         ///
         ///-- DROP TABLE public.eb_objects;
@@ -179,21 +501,405 @@ namespace ExpressBase.Common.Properties {
         ///    obj_name text COLLATE pg_catalog.&quot;default&quot;,
         ///    obj_type integer,
         ///    obj_cur_status integer,
-        ///    obj_desc text COLLATE pg_catalog.&quot;default&quot;,
-        ///    applicationid integer,
-        ///    obj_tags text COLLATE pg_catalog.&quot;default&quot;,
-        ///    owner_uid integer,
-        ///    owner_ts timestamp without time zone,
-        ///    CONSTRAINT eb_objects_pkey PRIMARY KE [rest of string was truncated]&quot;;.
+        ///    obj_desc text COLLATE pg [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string Create_Eb_Objects {
+        internal static string eb_objects {
             get {
-                return ResourceManager.GetString("Create_Eb_Objects", resourceCulture);
+                return ResourceManager.GetString("eb_objects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_change_status(text, integer, integer, text)
+        ///
+        ///-- DROP FUNCTION public.eb_objects_change_status(text, integer, integer, text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_objects_change_status(
+        ///	idv text,
+        ///	statusv integer,
+        ///	commit_uid integer,
+        ///	changelogv text)
+        ///    RETURNS SETOF void 
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///    COST 100
+        ///    VOLATILE 
+        ///    ROWS 1000
+        ///AS $BODY$
+        ///
+        ///DECLARE inserted_obj_ver_id integer;
+        ///BEGIN 
+        ///  
+        ///INSERT INTO
+        ///	eb_objects_status(eb_obj_ver_id)
+        ///SELECT
+        ///	id        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_objects_change_status {
+            get {
+                return ResourceManager.GetString("eb_objects_change_status", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to 
+        ///-- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text, text, text)
+        ///
+        ///-- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text, text, text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_objects_commit(
+        ///	idv text,
+        ///	obj_namev text,
+        ///	obj_descv text,
+        ///	obj_typev integer,
+        ///	obj_jsonv json,
+        ///	obj_changelogv text,
+        ///	commit_uidv integer,
+        ///	src_pid text,
+        ///	cur_pid text,
+        ///	relationsstring text,
+        ///	tagsv text,
+        ///	appsstrin [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_objects_commit {
+            get {
+                return ResourceManager.GetString("eb_objects_commit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_create_major_version(text, integer, integer, text, text, text)
+        ///
+        ///-- DROP FUNCTION public.eb_objects_create_major_version(text, integer, integer, text, text, text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_objects_create_major_version(
+        ///	idv text,
+        ///	obj_typev integer,
+        ///	commit_uidv integer,
+        ///	src_pid text,
+        ///	cur_pid text,
+        ///	relationsstring text)
+        ///    RETURNS text
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///    COST 100
+        ///    VOLATILE 
+        ///    ROWS 0
+        ///AS $BODY$
+        ///
+        ///DECLARE refidunique text; inserted_ [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_objects_create_major_version {
+            get {
+                return ResourceManager.GetString("eb_objects_create_major_version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_create_minor_version(text, integer, integer, text, text, text)
+        ///
+        ///-- DROP FUNCTION public.eb_objects_create_minor_version(text, integer, integer, text, text, text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_objects_create_minor_version(
+        ///	idv text,
+        ///	obj_typev integer,
+        ///	commit_uidv integer,
+        ///	src_pid text,
+        ///	cur_pid text,
+        ///	relationsstring text)
+        ///    RETURNS text
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///    COST 100
+        ///    VOLATILE 
+        ///    ROWS 0
+        ///AS $BODY$
+        ///
+        ///DECLARE refidunique text; inserted_ [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_objects_create_minor_version {
+            get {
+                return ResourceManager.GetString("eb_objects_create_minor_version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text)
+        ///
+        ///-- DROP FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_objects_create_new_object(
+        ///	obj_namev text,
+        ///	obj_descv text,
+        ///	obj_typev integer,
+        ///	obj_cur_statusv integer,
+        ///	obj_jsonv json,
+        ///	commit_uidv integer,
+        ///	src_pid text,
+        ///	cur_pid text,
+        ///	relationsstring te [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_objects_create_new_object {
+            get {
+                return ResourceManager.GetString("eb_objects_create_new_object", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_create_patch_version(text, integer, integer, text, text, text)
+        ///
+        ///-- DROP FUNCTION public.eb_objects_create_patch_version(text, integer, integer, text, text, text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_objects_create_patch_version(
+        ///	idv text,
+        ///	obj_typev integer,
+        ///	commit_uidv integer,
+        ///	src_pid text,
+        ///	cur_pid text,
+        ///	relationsstring text)
+        ///    RETURNS text
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///    COST 100
+        ///    VOLATILE 
+        ///    ROWS 0
+        ///AS $BODY$
+        ///
+        ///DECLARE refidunique text; inserted_ [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_objects_create_patch_version {
+            get {
+                return ResourceManager.GetString("eb_objects_create_patch_version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_exploreobject(integer)
+        ///
+        ///-- DROP FUNCTION public.eb_objects_exploreobject(integer);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_objects_exploreobject(
+        ///	_id integer)
+        ///    RETURNS TABLE(idval integer, nameval text, typeval integer, statusval integer, descriptionval text, changelogval text, commitatval text, commitbyval text, refidval text, ver_numval text, work_modeval character, workingcopiesval text, json_wcval json, json_lcval json, major_verval integer, minor_verval integer, p [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_objects_exploreobject {
+            get {
+                return ResourceManager.GetString("eb_objects_exploreobject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_getversiontoopen(integer)
+        ///
+        ///-- DROP FUNCTION public.eb_objects_getversiontoopen(integer);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_objects_getversiontoopen(
+        ///	_id integer)
+        ///    RETURNS TABLE(idv integer, namev text, typev integer, status integer, description text, changelog text, commitat text, commitby text, refidv text, ver_num text, work_mode character, workingcopies text, json_wc json, json_lc json, major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_objects_getversiontoopen {
+            get {
+                return ResourceManager.GetString("eb_objects_getversiontoopen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --SEQUENCE public.eb_objects_relations_id_seq
+        ///
+        ///CREATE SEQUENCE public.eb_objects_relations_id_seq
+        ///    INCREMENT 1
+        ///    START 1754
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_objects_relations_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_objects_relations
+        ///
+        ///-- DROP TABLE public.eb_objects_relations;
+        ///
+        ///CREATE TABLE public.eb_objects_relations
+        ///(
+        ///    dominant text COLLATE pg_catalog.&quot;default&quot;,
+        ///    dependant text COLLATE pg_catalog.&quot;default&quot;,
+        ///     [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_objects_relations {
+            get {
+                return ResourceManager.GetString("eb_objects_relations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text, text)
+        ///
+        ///-- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text, text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_objects_save(
+        ///	refidv text,
+        ///	obj_namev text,
+        ///	obj_descv text,
+        ///	obj_typev integer,
+        ///	obj_jsonv json,
+        ///	commit_uidv integer,
+        ///	src_pid text,
+        ///	cur_pid text,
+        ///	relationsstring text,
+        ///	tagsv text,
+        ///	appsstring text)
+        ///    RETURNS text
+        ///    LANGUAGE  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_objects_save {
+            get {
+                return ResourceManager.GetString("eb_objects_save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --SEQUENCE public.eb_objects_status_id_seq
+        ///
+        ///CREATE SEQUENCE public.eb_objects_status_id_seq
+        ///    INCREMENT 1
+        ///    START 1074
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_objects_status_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_objects_status
+        ///
+        ///-- DROP TABLE public.eb_objects_status;
+        ///
+        ///CREATE TABLE public.eb_objects_status
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_objects_status_id_seq&apos;::regclass),
+        ///    refid text COLLATE pg_catalog.&quot;defaul [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_objects_status {
+            get {
+                return ResourceManager.GetString("eb_objects_status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_update_dashboard(text)
+        ///
+        ///-- DROP FUNCTION public.eb_objects_update_dashboard(text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_objects_update_dashboard(
+        ///	_refid text)
+        ///    RETURNS TABLE(namev text, status integer, ver_num text, work_mode character, workingcopies text, major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id text, lastversionrefidval text, lastversionnumberval text, lastversioncommit_tsval text, lastversion_statusval integer, lastversioncommit_ [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_objects_update_dashboard {
+            get {
+                return ResourceManager.GetString("eb_objects_update_dashboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --SEQUENCE public.eb_objects_ver_id_seq
+        ///
+        ///CREATE SEQUENCE public.eb_objects_ver_id_seq
+        ///    INCREMENT 1
+        ///    START 2104
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_objects_ver_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_objects_ver
+        ///
+        ///-- DROP TABLE public.eb_objects_ver;
+        ///
+        ///CREATE TABLE public.eb_objects_ver
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_objects_ver_id_seq&apos;::regclass),
+        ///    eb_objects_id integer,
+        ///    obj_changelog text COLLATE pg_ [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_objects_ver {
+            get {
+                return ResourceManager.GetString("eb_objects_ver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --SEQUENCE public.eb_objects2application_id_seq
+        ///
+        ///CREATE SEQUENCE public.eb_objects2application_id_seq
+        ///    INCREMENT 1
+        ///    START 485
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_objects2application_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_objects2application
+        ///
+        ///-- DROP TABLE public.eb_objects2application;
+        ///
+        ///CREATE TABLE public.eb_objects2application
+        ///(
+        ///    app_id integer,
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_objects2application_id_seq&apos; [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_objects2application {
+            get {
+                return ResourceManager.GetString("eb_objects2application", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --SEQUENCE public.eb_role2permission_id_seq
+        ///
+        ///CREATE SEQUENCE public.eb_role2permission_id_seq
+        ///    INCREMENT 1
+        ///    START 346
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_role2permission_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_role2permission
+        ///
+        ///-- DROP TABLE public.eb_role2permission;
+        ///
+        ///CREATE TABLE public.eb_role2permission
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_role2permission_id_seq&apos;::regclass),
+        ///    role_id integer,
+        ///    eb_del1 b [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_role2permission {
+            get {
+                return ResourceManager.GetString("eb_role2permission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --SEQUENCE public.eb_role2role_id_seq
+        ///
+        ///CREATE SEQUENCE public.eb_role2role_id_seq
+        ///    INCREMENT 1
+        ///    START 108
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_role2role_id_seq
+        ///    OWNER TO postgres;
+        ///
         ///-- Table: public.eb_role2role
         ///
         ///-- DROP TABLE public.eb_role2role;
@@ -203,70 +909,249 @@ namespace ExpressBase.Common.Properties {
         ///    id integer NOT NULL DEFAULT nextval(&apos;eb_role2role_id_seq&apos;::regclass),
         ///    role1_id integer,
         ///    role2_id integer,
-        ///    eb_del boolean DEFAULT false,
-        ///    createdby integer,
-        ///    createdat timestamp without time zone,
-        ///    revokedby integer,
-        ///    revokedat timestamp without time zone,
-        ///    CONSTRAINT eb_role2role_id_pkey PRIMARY KEY (id)
-        ///)
-        ///WITH (
-        ///    OIDS = FALSE
-        ///)
-        ///TABLESPACE pg_default;
-        /// [rest of string was truncated]&quot;;.
+        ///    eb_del1 boolean DEFAULT fal [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string Create_Eb_User {
+        internal static string eb_role2role {
             get {
-                return ResourceManager.GetString("Create_Eb_User", resourceCulture);
+                return ResourceManager.GetString("eb_role2role", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_authenticateuser(text, text, text)
+        ///   Looks up a localized string similar to --SEQUENCE public.eb_role2user_id_seq
         ///
-        ///-- DROP FUNCTION public.eb_authenticateuser(text, text, text);
+        ///CREATE SEQUENCE public.eb_role2user_id_seq
+        ///    INCREMENT 1
+        ///    START 259
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
         ///
-        ///CREATE OR REPLACE FUNCTION public.eb_authenticateuser(
-        ///	uname text,
-        ///	passwrd text,
-        ///	_socialid text)
-        ///    RETURNS TABLE(userid integer, email text, firstname text, profileimage text, prolink text, roles_a text, rolename_a text, permissions text, loginattempts integer) 
+        ///ALTER SEQUENCE public.eb_role2user_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_role2user
+        ///
+        ///-- DROP TABLE public.eb_role2user;
+        ///
+        ///CREATE TABLE public.eb_role2user
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_role2user_id_seq&apos;::regclass),
+        ///    role_id integer,
+        ///    user_id integer,
+        ///    eb_del1 boolean DEFAULT false [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_role2user {
+            get {
+                return ResourceManager.GetString("eb_role2user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --SEQUENCE public.eb_roles_id_seq
+        ///
+        ///
+        ///CREATE SEQUENCE public.eb_roles_id_seq
+        ///    INCREMENT 1
+        ///    START 121
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_roles_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_roles
+        ///
+        ///-- DROP TABLE public.eb_roles;
+        ///
+        ///CREATE TABLE public.eb_roles
+        ///(
+        ///    id integer NOT NULL DEFAULT (nextval(&apos;eb_roles_id_seq&apos;::regclass) + 100),
+        ///    role_name text COLLATE pg_catalog.&quot;default&quot; NOT NULL,
+        ///    eb_del1 boolean,
+        ///    applicatio [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_roles {
+            get {
+                return ResourceManager.GetString("eb_roles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_update_rel(integer, text[])
+        ///
+        ///-- DROP FUNCTION public.eb_update_rel(integer, text[]);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_update_rel(
+        ///	commit_uidv integer,
+        ///	relationsv text[])
+        ///    RETURNS integer
         ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///    COST 100
+        ///    VOLATILE 
+        ///    ROWS 0
         ///AS $BODY$
         ///
-        ///DECLARE userid INTEGER;
-        ///DECLARE email TEXT;
-        ///DECLARE firstname TEXT;
-        ///DECL [rest of string was truncated]&quot;;.
+        ///BEGIN
+        ///    UPDATE eb_objects_relations 
+        ///    SET 
+        ///        eb_del = &apos;T&apos;, removed_by= commit_uidv , removed_at=NOW()
+        ///    WHERE 
+        ///        dominant IN(
+        ///            SELECT unnest(ARRAY(select dominant from  [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string Create_Eb_User_Functions {
+        internal static string eb_update_rel {
             get {
-                return ResourceManager.GetString("Create_Eb_User_Functions", resourceCulture);
+                return ResourceManager.GetString("eb_update_rel", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE UNIQUE INDEX IF NOT EXISTS eb_role2role_id_idx
-        ///    ON public.eb_role2role USING btree
-        ///    (id)
-        ///    TABLESPACE pg_default;
-        ///	
-        ///--.......................................................
-        ///CREATE UNIQUE INDEX IF NOT EXISTS  eb_role2permission_id_idx
-        ///    ON public.eb_role2permission USING btree
-        ///    (id)
-        ///    TABLESPACE pg_default;
+        ///   Looks up a localized string similar to -- SEQUENCE public.eb_user2usergroup_id_seq
         ///
-        ///--....................................
-        ///CREATE UNIQUE INDEX IF NOT EXISTS eb_role2user_id_idx
-        ///    ON public.eb_role2user USING btree
-        ///    (id)
-        ///    TABLESPACE pg_defaul [rest of string was truncated]&quot;;.
+        ///CREATE SEQUENCE public.eb_user2usergroup_id_seq
+        ///    INCREMENT 1
+        ///    START 72
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_user2usergroup_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_user2usergroup
+        ///
+        ///-- DROP TABLE public.eb_user2usergroup;
+        ///
+        ///CREATE TABLE public.eb_user2usergroup
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_user2usergroup_id_seq&apos;::regclass),
+        ///    userid integer,
+        ///    groupid integer,        /// [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string Create_Eb_User_Indexes {
+        internal static string eb_user2usergroup {
             get {
-                return ResourceManager.GetString("Create_Eb_User_Indexes", resourceCulture);
+                return ResourceManager.GetString("eb_user2usergroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --SEQUENCE public.eb_usersprospective_id_seq
+        ///
+        ///CREATE SEQUENCE public.eb_usersprospective_id_seq
+        ///    INCREMENT 1
+        ///    START 18
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_usersprospective_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_usersanonymous
+        ///
+        ///-- DROP TABLE public.eb_usersanonymous;
+        ///
+        ///CREATE TABLE public.eb_usersanonymous
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_usersprospective_id_seq&apos;::regclass),
+        ///    fullname text COLLATE pg_catalo [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_useranonymous {
+            get {
+                return ResourceManager.GetString("eb_useranonymous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- SEQUENCE public.eb_usergroup_id_seq
+        ///
+        ///CREATE SEQUENCE public.eb_usergroup_id_seq
+        ///    INCREMENT 1
+        ///    START 12
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_usergroup_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_usergroup
+        ///
+        ///-- DROP TABLE public.eb_usergroup;
+        ///
+        ///CREATE TABLE public.eb_usergroup
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_usergroup_id_seq&apos;::regclass),
+        ///    name text COLLATE pg_catalog.&quot;default&quot;,
+        ///    description text COLLATE pg_ [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_usergroup {
+            get {
+                return ResourceManager.GetString("eb_usergroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- SEQUENCE public.eb_users_id_seq
+        ///
+        ///CREATE SEQUENCE public.eb_users_id_seq
+        ///    INCREMENT 1
+        ///    START 86
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_users_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///
+        ///-- Table: public.eb_users
+        ///
+        ///-- DROP TABLE public.eb_users;
+        ///
+        ///CREATE TABLE public.eb_users
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_users_id_seq&apos;::regclass),
+        ///    email text COLLATE pg_catalog.&quot;default&quot;,
+        ///    pwd text COLLATE pg_catalog.&quot;default&quot;,
+        ///    eb_del1 b [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_users {
+            get {
+                return ResourceManager.GetString("eb_users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --SEQUENCE public.eb_userstatus_id_seq
+        ///
+        ///CREATE SEQUENCE public.eb_userstatus_id_seq
+        ///    INCREMENT 1
+        ///    START 12
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_userstatus_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_userstatus
+        ///
+        ///-- DROP TABLE public.eb_userstatus;
+        ///
+        ///CREATE TABLE public.eb_userstatus
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_userstatus_id_seq&apos;::regclass),
+        ///    createdby integer,
+        ///    createdat timestamp without time zone,
+        ///    [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string eb_userstatus {
+            get {
+                return ResourceManager.GetString("eb_userstatus", resourceCulture);
             }
         }
     }
