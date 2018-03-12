@@ -235,22 +235,22 @@ namespace ExpressBase.Common
             return typeArray;
         }
 
-        private EbDbType ConvertToDbType(Type _typ)
+        private DbType ConvertToDbType(Type _typ)
         {
             if (_typ == typeof(DateTime))
-                return EbDbTypes.Date;
+                return DbType.Date;
             else if (_typ == typeof(string))
-                return EbDbTypes.String;
+                return DbType.String;
             else if (_typ == typeof(bool))
-                return EbDbTypes.Boolean;
+                return DbType.Boolean;
             else if (_typ == typeof(decimal))
-                return EbDbTypes.Decimal;
+                return DbType.Decimal;
             else if (_typ == typeof(int) || _typ == typeof(Int32))
-                return EbDbTypes.Int32;
+                return DbType.Int32;
             else if (_typ == typeof(Int64))
-                return EbDbTypes.Int64;
+                return DbType.Int64;
 
-            return EbDbTypes.String;
+            return DbType.String;
         }
 
         private void PrepareDataTable(NpgsqlDataReader reader, EbDataTable dt, Type[] typeArray)
