@@ -38,6 +38,8 @@ namespace ExpressBase.Common.Objects
 
         public string regexCheck { get; set; }
 
+        public bool HideForUser { get; set; }
+
         public Meta()
         {
             this.enumoptions = new Dictionary<int, string>();
