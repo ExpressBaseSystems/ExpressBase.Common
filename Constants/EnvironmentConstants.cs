@@ -11,6 +11,10 @@ namespace ExpressBase.Common
         public const string EB_SERVICESTACK_EXT_URL = "EB_SERVICESTACK_EXT_URL";
         public const string EB_SERVICESTACK_INT_URL = "EB_SERVICESTACK_INT_URL";
 
+        public const string EB_SERVEREVENTS_EXT_URL = "EB_SERVEREVENTS_EXT_URL";
+        public const string EB_SERVEREVENTS_INT_URL = "EB_SERVEREVENTS_INT_URL";
+        public const string EB_MQ_URL = "EB_MQ_URL";
+
         public const string EB_REDIS_SERVER = "EB_REDIS_SERVER";
         public const string EB_REDIS_PORT = "EB_REDIS_PORT";
         public const string EB_REDIS_PASSWORD = "EB_REDIS_PASSWORD";

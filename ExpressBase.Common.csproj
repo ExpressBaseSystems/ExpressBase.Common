@@ -84,9 +84,4 @@
     <EmbeddedResource Include="SqlScripts/Oracle/ObjectsDb/Alter_Eb_Object_SequencesOracle.sql" />
   </ItemGroup>
 
-  <ItemGroup>
-    <!--<ProjectReference Include="..\ServiceStack.Core\ServiceStack.Redis\ServiceStack.Redis.csproj" />
-    <ProjectReference Include="..\ServiceStack.Core\ServiceStack\ServiceStack.csproj" />-->
-  </ItemGroup>
-
 </Project>
