@@ -39,67 +39,30 @@ namespace ExpressBase.Common
     }
 
     [ProtoBuf.ProtoContract(IgnoreListHandling = true)]
-    public class ColumnColletion 
+    public class ColumnColletion : List<EbDataColumn>
     {
-        [ProtoMember(1)]
-        public List<EbDataColumn> data { get; set; }
-
         internal EbDataTable Table { get; set; }
 
-        public ColumnColletion()
-        {
-            data = new List<EbDataColumn>();
-        }
+        public ColumnColletion(){ }
 
         public ColumnColletion(EbDataTable table)
         {
             this.Table = table;
-            data = new List<EbDataColumn>();
         }
-
-        public int Count
-        {
-            get
-            {
-                return data.Count;
-            }
-        }
-
-        public EbDataColumn this[int index]
-        {
-            get
-            {
-                return data[index];
-            }
-        }
-
+       
         public EbDataColumn this[string columnname]
         {
             get
             {
-                foreach (EbDataColumn column in data)
+                foreach (EbDataColumn column in this)
                 {
                     if (column.ColumnName == columnname)
                         return column;
                 }
 
-                return default(EbDataColumn);
+                return null;
             }
         }
-
-        public IEnumerator<EbDataColumn> GetEnumerator()
-        {
-            return ((IEnumerable<EbDataColumn>)data).GetEnumerator();
-        }
-
-        public void Add(EbDataColumn column)
-        {
-            data.Add(column);
-        }
-
-        public void Sort(Comparison<EbDataColumn> comparison)
-        {
-            data.Sort(comparison);
-        }
+       
     }
 }
