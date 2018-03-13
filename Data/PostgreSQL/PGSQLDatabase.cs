@@ -238,7 +238,7 @@ namespace ExpressBase.Common
         private DbType ConvertToDbType(Type _typ)
         {
             if (_typ == typeof(DateTime))
-                return DbType.DateTime;
+                return DbType.Date;
             else if (_typ == typeof(string))
                 return DbType.String;
             else if (_typ == typeof(bool))
@@ -460,13 +460,12 @@ namespace ExpressBase.Common
                         eb_objects_ver EOV, eb_users EU
                     WHERE
                         EOV.commit_uid = EU.id AND
-                        EOV.eb_objects_id=(SELECT eb_objects_id FROM eb_objects_ver WHERE refid=@refid)
+                        EOV.eb_objects_id=(SELECT eb_objects_id FROM eb_objects_ver WHERE refid=:refid)
                     ORDER BY
-                        EOV.id DESC; 
+                        EOV.id DESC 
                 ";
             }
         }
-
         public string EB_PARTICULAR_VERSION_OF_AN_OBJ
         {
             get
@@ -476,10 +475,10 @@ namespace ExpressBase.Common
                         FROM
                             eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
                         WHERE
-                            EOV.refid=@refid AND EOS.eb_obj_ver_id = EOV.id AND EO.id=EOV.eb_objects_id
+                            EOV.refid=:refid AND EOS.eb_obj_ver_id = EOV.id AND EO.id=EOV.eb_objects_id
                         ORDER BY
 	                        EOS.id DESC 
-                        LIMIT 1;
+                        LIMIT 1
                 ";
             }
         }
@@ -493,9 +492,9 @@ namespace ExpressBase.Common
                     FROM 
                         eb_objects EO, eb_objects_ver EOV
                     WHERE
-                        EO.id = EOV.eb_objects_id AND EOV.refid=@refid
+                        EO.id = EOV.eb_objects_id AND EOV.refid=:refid
                     ORDER BY
-                        EO.obj_type;
+                        EO.obj_type
                 ";
             }
         }
@@ -514,9 +513,9 @@ namespace ExpressBase.Common
                         ON 
 	                        EOV.commit_uid=EU.id
                         WHERE
-                            EO.id = EOV.eb_objects_id AND EO.obj_type=@type
+                            EO.id = EOV.eb_objects_id AND EO.obj_type=:type
                         ORDER BY
-                            EO.obj_name; 
+                            EO.obj_name
                 ";
             }
         }
@@ -530,9 +529,9 @@ namespace ExpressBase.Common
 	                        eb_objects EO, eb_objects_ver EOV,eb_objects_status EOS
                         WHERE 
 	                        EO.id = ANY (SELECT eb_objects_id FROM eb_objects_ver WHERE refid IN(SELECT dependant FROM eb_objects_relations
-                                                  WHERE dominant=@dominant))
-                            AND EOV.refid =ANY(SELECT dependant FROM eb_objects_relations WHERE dominant=@dominant)    
-                            AND EO.id =EOV.eb_objects_id  AND EOS.eb_obj_ver_id = EOV.id AND EOS.status = 3 AND EO.obj_type IN(16 ,17); 
+                                                  WHERE dominant=:dominant))
+                            AND EOV.refid =ANY(SELECT dependant FROM eb_objects_relations WHERE dominant=:dominant)    
+                            AND EO.id =EOV.eb_objects_id  AND EOS.eb_obj_ver_id = EOV.id AND EOS.status = 3 AND EO.obj_type IN(16 ,17)
                 ";
             }
         }
@@ -551,9 +550,9 @@ namespace ExpressBase.Common
                         ON 
 	                        EOV.commit_uid=EU.id
                         WHERE
-                            EO.id = EOV.eb_objects_id  AND EO.obj_type=@type AND COALESCE(EOV.working_mode, 'F') <> 'T'
+                            EO.id = EOV.eb_objects_id  AND EO.obj_type=:type AND COALESCE(EOV.working_mode, 'F') <> 'T'
                         ORDER BY
-                            EO.obj_name; 
+                            EO.obj_name 
                 ";
             }
         }
@@ -566,9 +565,9 @@ namespace ExpressBase.Common
                 FROM 
                     eb_objects
                 WHERE
-                    obj_type=@type
+                    obj_type=:type
                 ORDER BY
-                    obj_name;
+                    obj_name
                 ";
             }
         }
@@ -581,7 +580,7 @@ namespace ExpressBase.Common
                         FROM
                             eb_objects_status EOS, eb_objects_ver EOV, eb_users EU
                         WHERE
-                            eb_obj_ver_id = EOV.id AND EOV.refid = @refid AND EOV.commit_uid=EU.id
+                            eb_obj_ver_id = EOV.id AND EOV.refid = :refid AND EOV.commit_uid=EU.id
                         ORDER BY 
                         EOS.id DESC
                 ";
@@ -597,7 +596,7 @@ namespace ExpressBase.Common
                         FROM
                             eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
                         WHERE
-                            EO.id = @id AND EOV.eb_objects_id = @id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id
+                            EO.id = :id AND EOV.eb_objects_id = :id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id
                 ";
             }
         }
@@ -621,7 +620,7 @@ namespace ExpressBase.Common
                     FROM 
 	                    eb_objects EO, eb_objects_ver EOV,eb_objects_status EOS,unnest(string_to_array(EO.obj_tags, ',')) Tags
                     WHERE 
-	                    Tags IN(@tag) AND EO.id =EOV.eb_objects_id
+	                    Tags IN(:tag) AND EO.id =EOV.eb_objects_id
                         AND EOS.eb_obj_ver_id = EOV.id AND EOS.status = 3 AND EO.obj_type IN(16 ,17)
     
                 ";
@@ -634,7 +633,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"
-                    SELECT eb_objects_create_new_object(@obj_name, @obj_desc, @obj_type, @obj_cur_status, @obj_json::json, @commit_uid, @src_pid, @cur_pid, @relations, @issave, @tags, @app_id);
+                    SELECT eb_objects_create_new_object(:obj_name, :obj_desc, :obj_type, :obj_cur_status, :obj_json::json, :commit_uid, :src_pid, :cur_pid, :relations, :issave, :tags, :app_id)
 
                 ";
             }
@@ -644,7 +643,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"
-                    SELECT eb_objects_save(@id, @obj_name, @obj_desc, @obj_type, @obj_json, @commit_uid, @src_pid, @cur_pid, @relations, @tags, @app_id)
+                    SELECT eb_objects_save(:id, :obj_name, :obj_desc, :obj_type, :obj_json, :commit_uid, :src_pid, :cur_pid, :relations, :tags, :app_id)
                 ";
             }
         }
@@ -663,6 +662,51 @@ namespace ExpressBase.Common
             {
                 return @"
                     SELECT * FROM public.eb_objects_exploreobject(:id)                    
+                ";
+            }
+        }
+        public string EB_MAJOR_VERSION_OF_OBJECT
+        {
+            get
+            {
+                return @"   
+                    SELECT eb_objects_create_major_version(:id, :obj_type, :commit_uid, :src_pid, :cur_pid, :relations)
+                ";
+            }
+        }
+        public string EB_MINOR_VERSION_OF_OBJECT
+        {
+            get
+            {
+                return @"   
+                    SELECT eb_object_create_minor_version(:id, :obj_type, :commit_uid, :src_pid, :cur_pid, :relations)
+                ";
+            }
+        }
+        public string EB_CHANGE_STATUS_OBJECT
+        {
+            get
+            {
+                return @"   
+                    SELECT eb_objects_change_status(:id, :status, :commit_uid, :obj_changelog)
+                ";
+            }
+        }
+        public string EB_PATCH_VERSION_OF_OBJECT
+        {
+            get
+            {
+                return @" 
+                    SELECT eb_objects_create_patch_version(:id, :obj_type, :commit_uid, :src_pid, :cur_pid, :relations)
+                ";
+            }
+        }
+        public string EB_UPDATE_DASHBOARD
+        {
+            get
+            {
+                return @"   
+                    SELECT * FROM eb_objects_update_Dashboard(:refid)
                 ";
             }
         }

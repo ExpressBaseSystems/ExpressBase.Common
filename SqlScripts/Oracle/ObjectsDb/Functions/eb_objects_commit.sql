@@ -1,5 +1,4 @@
-
-CREATE OR REPLACE FUNCTION eb_objects_commit(
+create or replace FUNCTION eb_objects_commit(
 	idv varchar,
 	obj_namev CLOB,
 	obj_descv CLOB,
@@ -13,7 +12,9 @@ CREATE OR REPLACE FUNCTION eb_objects_commit(
 	tagsv CLOB,
 	apps VARCHAR)
     RETURN CLOB
-    AS refidunique VARCHAR(100); inserted_obj_ver_id NUMBER; objid NUMBER; committed_refidunique CLOB; major NUMBER; minor NUMBER; patch NUMBER; version_number CLOB;
+    IS
+    PRAGMA AUTONOMOUS_TRANSACTION;
+    refidunique VARCHAR(900); inserted_obj_ver_id NUMBER; objid NUMBER; committed_refidunique CLOB; major NUMBER; minor NUMBER; patch NUMBER; version_number CLOB;
 
 BEGIN
 
@@ -31,10 +32,12 @@ BEGIN
 	WHERE
 		refid = idv RETURNING id INTO inserted_obj_ver_id;
 
-       refidunique :=CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(src_pid,'-'),cur_pid),'-'),obj_typev),'-'),objid),'-'),inserted_obj_ver_id);
-        committed_refidunique:=refidunique;
-        UPDATE eb_objects_ver SET refid = refidunique WHERE id = inserted_obj_ver_id;  
-        
+       --refidunique :=CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(src_pid,'-'),cur_pid),'-'),obj_typev),'-'),objid),'-'),inserted_obj_ver_id);
+        --committed_refidunique:=refidunique;
+        --UPDATE eb_objects_ver SET refid = refidunique WHERE id = inserted_obj_ver_id;  
+
+        committed_refidunique:=idv;
+
 	--majorversion.minorversion.patchversion
         version_number := CONCAT(CONCAT(CONCAT(CONCAT(major,'.'),minor),'.'),patch);
         UPDATE eb_objects_ver SET version_num = version_number, working_mode = 'F' WHERE refid = refidunique;
@@ -45,7 +48,7 @@ BEGIN
         dominant IN(SELECT dominant FROM eb_objects_relations WHERE dependant = refidunique 
                     MINUS 
                     SELECT regexp_substr(relationsv,'[^,]+', 1, level)  from dual CONNECT BY regexp_substr(relationsv, '[^,]+', 1, level) is not null);
-                            
+
     INSERT INTO eb_objects_relations 
         (dominant, dependant) 
     SELECT 
@@ -55,14 +58,14 @@ BEGIN
       MINUS
       select dominant from eb_objects_relations WHERE dependant = refidunique
       );
-      
+
       --application table
        UPDATE eb_objects2application SET eb_del = 'T', removed_by= commit_uidv , removed_at=SYSTIMESTAMP
       WHERE 
         app_id IN(SELECT to_char(app_id) FROM eb_objects2application WHERE obj_id = objid AND eb_del='F' 
                     MINUS 
                     SELECT regexp_substr(apps,'[^,]+', 1, level) FROM dual CONNECT BY regexp_substr(apps, '[^,]+', 1, level) is not null);
-			
+
     INSERT INTO eb_objects2application 
         (app_id, obj_id) 
     SELECT 
@@ -72,7 +75,8 @@ BEGIN
       MINUS
       select to_char(app_id) from eb_objects2application WHERE obj_id = objid AND eb_del='F'
       );				
-                   
+
+    COMMIT;               
     RETURN committed_refidunique; 
     /*EXCEPTION
     WHEN NO_DATA_FOUND THEN 

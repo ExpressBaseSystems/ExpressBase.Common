@@ -73,10 +73,10 @@
     <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/FunctionCreate/eb_objects_update_dashboard.sql" />
     <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/FunctionCreate/eb_update_rel.sql" />
 
-    <EmbeddedResource Include="SqlScripts/Oracle/DataDb/Alter_Eb_User_SequencesOracle.sql" />
-    <EmbeddedResource Include="SqlScripts/Oracle/DataDb/Create_Eb_UserOracle.sql" />
-    <EmbeddedResource Include="SqlScripts/Oracle/DataDb/Create_Eb_user_TriggerOracle.sql" />
-    <EmbeddedResource Include="SqlScripts/Oracle/DataDb/Create_Eb_User_FunctionsOracle.sql" />
+    <EmbeddedResource Include="SqlScripts\Oracle\DataDb\Alter_Eb_User_SequencesOracle.sql" />
+    <EmbeddedResource Include="SqlScripts\Oracle\DataDb\Create_Eb_UserOracle.sql" />
+    <EmbeddedResource Include="SqlScripts\Oracle\DataDb\Create_Eb_user_TriggerOracle.sql" />
+    <EmbeddedResource Include="SqlScripts\Oracle\DataDb\Create_Eb_User_FunctionsOracle.sql" />
 
     <EmbeddedResource Include="SqlScripts/Oracle/ObjectsDb/Create_Eb_ObjectsOracle.sql" />
     <EmbeddedResource Include="SqlScripts/Oracle/ObjectsDb/Create_Eb_Object_TriggerOracle.sql" />
@@ -85,8 +85,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!--<ProjectReference Include="..\ServiceStack.Core\ServiceStack.Redis\ServiceStack.Redis.csproj" />
-    <ProjectReference Include="..\ServiceStack.Core\ServiceStack\ServiceStack.csproj" />-->
+    <Folder Include="SqlScripts\Oracle\DataDb\Functions\" />
+    <Folder Include="SqlScripts\Oracle\DataDb\Tables\" />
+    <Folder Include="SqlScripts\Oracle\InfraDb\" />
+    <Folder Include="SqlScripts\Oracle\ObjectsDb\Tables\" />
   </ItemGroup>
 
 </Project>

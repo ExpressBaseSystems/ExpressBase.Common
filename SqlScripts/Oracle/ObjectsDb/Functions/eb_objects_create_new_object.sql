@@ -1,4 +1,3 @@
-
 create or replace FUNCTION eb_objects_create_new_object(
 	obj_namev CLOB,
 	obj_descv CLOB,
@@ -12,7 +11,8 @@ create or replace FUNCTION eb_objects_create_new_object(
 	issave char,
 	tagsv CLOB,
 	apps VARCHAR)
-    RETURN CLOB as 
+    RETURN CLOB is 
+    PRAGMA AUTONOMOUS_TRANSACTION;
      refidunique CLOB; inserted_objid number; inserted_obj_ver_id number; refid_of_commit_version CLOB; version_number CLOB;rel CLOB;app number;
 BEGIN   
 
@@ -41,7 +41,7 @@ BEGIN
 	UPDATE eb_objects_ver SET refid = refidunique, version_num = version_number WHERE id = inserted_obj_ver_id;
 
 	INSERT INTO eb_objects_status(eb_obj_ver_id, status, USERID, ts, changelog) VALUES(inserted_obj_ver_id, 0, commit_uidv, SYSTIMESTAMP, 'Created');
-    
+
     --relations table
     INSERT INTO eb_objects_relations 
         (dominant, dependant) 
@@ -50,7 +50,7 @@ BEGIN
       FROM (
       SELECT regexp_substr(relationsv,'[^,]+', 1, level)  AS dominantvals from dual CONNECT BY regexp_substr(relationsv, '[^,]+', 1, level) is not null
       );
-      
+
 	--applications table     
 		INSERT INTO eb_objects2application 
         (app_id,obj_id)
@@ -60,5 +60,6 @@ BEGIN
       SELECT regexp_substr(apps,'[^,]+', 1, level)  AS appid from dual CONNECT BY regexp_substr(apps, '[^,]+', 1, level) is not null
       );
 
+    COMMIT;
 	RETURN refid_of_commit_version;
 END;

@@ -27,15 +27,8 @@ create or replace type obj_dashboard_record as object (
 );
 /
 
-
 create or replace type obj_dashboard_table as table of obj_dashboard_record;
 /
-
--- FUNCTION: public.eb_objects_update_dashboard(text)
-
--- DROP FUNCTION public.eb_objects_update_dashboard(text);
-
-
 
 CREATE OR REPLACE FUNCTION eb_objects_update_dashboard(
 	refid_ varchar)
