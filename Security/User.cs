@@ -166,20 +166,23 @@ namespace ExpressBase.Security
 
         public static User GetDetailsAnonymous(IDatabase df, string socialId, string emailId, string phone, int appid, string context)
         {
-            string sql = @"SELECT * FROM eb_authenticate_anonymous(";
+            string parameters = "";
+
             if (!string.IsNullOrEmpty(socialId))
-                sql += "_socialid => @socialId, ";
+                parameters += "in_socialid => :socialId, ";
             if (!string.IsNullOrEmpty(emailId))
-                sql += "_emailid => @emailId, ";
+                parameters += "in_emailid => :emailId, ";
             if (!string.IsNullOrEmpty(phone))
-                sql += "_phone => @phone, ";
-			sql += "_appid => @appid ,_wc => @wc);";
+                parameters += "in_phone => :phone, ";
+
+            string sql = df.EB_AUTHENTICATE_ANONYMOUS.Replace("@params",parameters);
+
             var ds = df.DoQuery(sql, new DbParameter[] {
-                df.GetNewParameter("@socialId",EbDbTypes.String, socialId),
-                df.GetNewParameter("@emailId", EbDbTypes.String, emailId),
-                df.GetNewParameter("@phone", EbDbTypes.String, phone),
-				df.GetNewParameter("@appid", EbDbTypes.Int32, appid),
-				df.GetNewParameter("@wc", EbDbTypes.String, context) });
+                df.GetNewParameter("socialId",EbDbTypes.String, socialId),
+                df.GetNewParameter("emailId", EbDbTypes.String, emailId),
+                df.GetNewParameter("phone", EbDbTypes.String, phone),
+				df.GetNewParameter("appid", EbDbTypes.Int32, appid),
+				df.GetNewParameter("wc", EbDbTypes.String, context) });
             return InitUserObject(ds);
         }
 
