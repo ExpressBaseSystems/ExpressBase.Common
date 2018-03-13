@@ -409,8 +409,15 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             }
             else if (prop.PropertyType.IsClass)
             {
-                object Obj = Activator.CreateInstance(prop.PropertyType);
-                return string.Format(s, prop.Name, EbSerializers.Json_Serialize(Obj));
+                if (prop.PropertyType == typeof(EbFont))
+                {
+                    return string.Format(s, prop.Name, "null");
+                }
+                else
+                {
+                    object Obj = Activator.CreateInstance(prop.PropertyType);
+                    return string.Format(s, prop.Name, EbSerializers.Json_Serialize(Obj));
+                }
             }
             else
                 return string.Format(s, prop.Name, "null");

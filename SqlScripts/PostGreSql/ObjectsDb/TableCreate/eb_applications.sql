@@ -2,7 +2,7 @@
 
 CREATE SEQUENCE public.eb_applications_id_seq
     INCREMENT 1
-    START 40
+    START 1
     MINVALUE 1
     MAXVALUE 9223372036854775807
     CACHE 1;
