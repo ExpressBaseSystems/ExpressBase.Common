@@ -19,8 +19,6 @@ CREATE TABLE public.eb_applications
     id integer NOT NULL DEFAULT nextval('eb_applications_id_seq'::regclass),
     applicationname text COLLATE pg_catalog."default",
     description text COLLATE pg_catalog."default",
-    eb_del1 boolean DEFAULT false,
-    application_type_old text COLLATE pg_catalog."default",
     app_icon text COLLATE pg_catalog."default",
     application_type integer,
     eb_del "char" NOT NULL DEFAULT 'F'::"char",
