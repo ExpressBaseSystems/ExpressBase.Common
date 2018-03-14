@@ -38,7 +38,13 @@ namespace ExpressBase.Security
 		[DataMember(Order = 7)]
 		public Preferences Preference { get; set; }
 
-		private List<string> _ebObjectIds = null;
+        [DataMember(Order = 8)]
+        public override string Email { get; set; }
+
+        [DataMember(Order = 9)]
+        public override string FullName { get; set; }
+
+        private List<string> _ebObjectIds = null;
         public List<string> EbObjectIds
         {
             get
