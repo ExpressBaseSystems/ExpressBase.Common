@@ -250,7 +250,7 @@ namespace ExpressBase.Security
                     {
                         UserId = userid,
                         Email = ds.Rows[0][1].ToString(),
-                        FirstName = ds.Rows[0][2].ToString(),
+                        FullName = ds.Rows[0][2].ToString(),
                         Roles = rolesname,
                         Permissions = ds.Rows[0][5].ToString().Split(',').ToList(),
 						Preference = JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][6].ToString())
