@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Reflection;
 using ServiceStack.Redis;
 using ExpressBase.Common.Objects.Attributes;
+using ServiceStack;
 
 namespace ExpressBase.Common.Objects
 {
@@ -33,7 +34,7 @@ namespace ExpressBase.Common.Objects
             this.Controls = new List<EbControl>();
         }
 
-        public override void Init4Redis(IRedisClient redisclient, ServiceStack.IServiceClient serviceclient)
+        public override void Init4Redis(IRedisClient redisclient, IServiceClient serviceclient)
         {
             base.Redis = redisclient;
             base.ServiceStackClient = serviceclient;

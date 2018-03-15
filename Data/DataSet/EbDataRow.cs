@@ -12,7 +12,7 @@ namespace ExpressBase.Common
     {
         internal RowColletion Rows { get; set; }
 
-        internal EbDataRow() { }
+        public EbDataRow() { }
 
         internal EbDataRow(int size) : base(size)
         {

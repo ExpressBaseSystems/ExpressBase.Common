@@ -68,7 +68,8 @@ namespace ExpressBase.Common
 		SolutionAdmin,
 		SolutionDeveloper,
 		SolutionTester,
-		SolutionPM
+		SolutionPM,
+        SolutionUser
 	}
 
     public enum EbSystemRoles
