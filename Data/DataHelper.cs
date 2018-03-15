@@ -46,7 +46,7 @@ namespace ExpressBase.Common.Data
                 reqParams.AddRange(new Dictionary<string, object>[] { _dicLimit, _dicOffset });
             }
 
-            if (reqParams != null)
+            if (reqParams != null && reqParams.Count > 0)
             {
                 foreach (Dictionary<string, object> param in reqParams)
                     yield return factory.ObjectsDB.GetNewParameter(string.Format("@{0}", param["name"]), (EbDbType)Convert.ToInt32(param["type"]), param["value"]);
