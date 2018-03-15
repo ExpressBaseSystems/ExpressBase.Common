@@ -359,6 +359,8 @@ namespace ExpressBase.Common.Data
         public string EB_AUTHENTICATEUSER_SOCIAL { get { return "SELECT * FROM table(eb_authenticate_unified(social => :social, wc => :wc))"; } }
         public string EB_AUTHENTICATEUSER_SSO { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, wc => :wc))"; } }
 
+        public string EB_AUTHENTICATE_ANONYMOUS { get { return "SELECT * FROM table(eb_authenticate_anonymous(@params in_appid => :appid ,in_wc => :wc));"; } }
+
         public string EB_SIDEBARUSER_REQUEST { get { return @"
                         SELECT id, applicationname
                         FROM eb_applications;

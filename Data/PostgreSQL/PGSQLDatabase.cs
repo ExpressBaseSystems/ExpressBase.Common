@@ -388,6 +388,8 @@ namespace ExpressBase.Common
 
         public string EB_AUTHENTICATEUSER_SSO { get { return "SELECT * FROM eb_authenticate_unified(uname => @uname, wc => @wc);"; } }
 
+        public string EB_AUTHENTICATE_ANONYMOUS { get { return "SELECT * FROM eb_authenticate_anonymous(@params in_appid => :appid ,in_wc => :wc);"; } }
+
         public string EB_SIDEBARUSER_REQUEST { get { return @"
                 SELECT id, applicationname
                 FROM eb_applications;
