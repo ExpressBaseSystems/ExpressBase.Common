@@ -1,9 +1,8 @@
-﻿using ExpressBase.Common.ServiceStack.Auth0;
-using ExpressBase.Security;
+﻿using ExpressBase.Security;
 using ServiceStack.Auth;
 using ServiceStack.Redis;
 
-namespace ExpressBase.Common.ServiceStack
+namespace ExpressBase.Common.ServiceStack.Auth
 {
     public class MyRedisAuthRepository: RedisAuthRepository
     {
