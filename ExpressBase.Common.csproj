@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!--<PackageReference Include="FOSS.ServiceStack.Core" Version="5.0.2" />
-    <PackageReference Include="FOSS.ServiceStack.Redis.Core" Version="5.0.2" />-->
+    <PackageReference Include="FOSS.ServiceStack.Core" Version="5.0.2" />
+    <PackageReference Include="FOSS.ServiceStack.Redis.Core" Version="5.0.2" />
     <PackageReference Include="dotNetCore.Data.OracleClient" Version="1.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.4.4" />
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.4.4" />
@@ -90,10 +90,4 @@
     <Folder Include="SqlScripts\Oracle\InfraDb\" />
     <Folder Include="SqlScripts\Oracle\ObjectsDb\Tables\" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ServiceStack.Redis\src\ServiceStack.Redis\ServiceStack.Redis.csproj" />
-    <ProjectReference Include="..\ServiceStack\src\ServiceStack\ServiceStack.csproj" />
-  </ItemGroup>
-
 </Project>
