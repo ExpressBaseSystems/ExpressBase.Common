@@ -38,7 +38,13 @@ namespace ExpressBase.Security
 		[DataMember(Order = 7)]
 		public Preferences Preference { get; set; }
 
-		private List<string> _ebObjectIds = null;
+        [DataMember(Order = 8)]
+        public override string Email { get; set; }
+
+        [DataMember(Order = 9)]
+        public override string FullName { get; set; }
+
+        private List<string> _ebObjectIds = null;
         public List<string> EbObjectIds
         {
             get
@@ -244,7 +250,7 @@ namespace ExpressBase.Security
                     {
                         UserId = userid,
                         Email = ds.Rows[0][1].ToString(),
-                        FirstName = ds.Rows[0][2].ToString(),
+                        FullName = ds.Rows[0][2].ToString(),
                         Roles = rolesname,
                         Permissions = ds.Rows[0][5].ToString().Split(',').ToList(),
 						Preference = JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][6].ToString())
