@@ -15,7 +15,7 @@ namespace ExpressBase.Common.ServiceClients
         {
             this.BaseUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_SERVEREVENTS_INT_URL);
             var req = HostContext.TryGetCurrentRequest();
-            this.BearerToken = (req != null) ? req.Headers[HttpHeaders.Authorization] : null;
+            this.BearerToken = (req != null) ? req.Authorization.Replace("Bearer", string.Empty).Trim() : null;
         }
     }
 }
