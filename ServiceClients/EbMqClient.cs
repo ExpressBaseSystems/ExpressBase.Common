@@ -1,4 +1,5 @@
-﻿using Funq;
+﻿using ExpressBase.Common.EbServiceStack.ReqNRes;
+using Funq;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,11 @@ namespace ExpressBase.Common.ServiceClients
         {
             this.BaseUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_MQ_URL);
             var req = HostContext.TryGetCurrentRequest();
-            this.BearerToken = (req != null) ? req.Headers[HttpHeaders.Authorization] : null;
+            if(req != null )
+            {
+                this.BearerToken = req.Authorization.Replace("Bearer", string.Empty).Trim();
+            }
+            
         }
     }
 }

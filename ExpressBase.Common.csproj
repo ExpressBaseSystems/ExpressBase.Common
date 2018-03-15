@@ -8,12 +8,12 @@
     <PackageReference Include="FOSS.ServiceStack.Core" Version="5.0.2" />
     <PackageReference Include="FOSS.ServiceStack.Redis.Core" Version="5.0.2" />
     <PackageReference Include="dotNetCore.Data.OracleClient" Version="1.0.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.4.4" />
-    <PackageReference Include="MongoDB.Driver.GridFS" Version="2.4.4" />
+    <PackageReference Include="MongoDB.Driver" Version="2.5.0" />
+    <PackageReference Include="MongoDB.Driver.GridFS" Version="2.5.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
     <PackageReference Include="Npgsql" Version="3.2.5" />
     <PackageReference Include="protobuf-net" Version="2.3.2" />
-    <PackageReference Include="Twilio" Version="5.9.1" />
+    <PackageReference Include="Twilio" Version="5.9.8" />
   </ItemGroup>
 
   <ItemGroup>
