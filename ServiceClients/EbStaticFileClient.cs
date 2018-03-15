@@ -13,13 +13,20 @@ namespace ExpressBase.Common.ServiceClients
         public EbStaticFileClient()
         {
             this.BaseUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_STATICFILESERVER_INT_URL);
+            this.RefreshTokenUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_GET_ACCESS_TOKEN_URL);
         }
 
         public EbStaticFileClient(Container c)
         {
             this.BaseUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_STATICFILESERVER_INT_URL);
+            this.RefreshTokenUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_GET_ACCESS_TOKEN_URL);
+
             var req = HostContext.TryGetCurrentRequest();
-            this.BearerToken = (req != null) ? req.Headers[HttpHeaders.Authorization].Replace("Bearer", string.Empty).Trim() : null;
+            if (req != null)
+            {
+                this.RefreshToken = (req.Headers["rToken"] != null) ? req.Headers["rToken"] : null;
+                this.BearerToken = (req.Authorization != null) ? req.Authorization.Replace("Bearer", string.Empty).Trim() : null;
+            }
         }
     }
 }

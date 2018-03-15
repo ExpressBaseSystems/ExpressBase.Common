@@ -17,17 +17,21 @@ namespace ExpressBase.Common.ServiceClients
         public EbMqClient()
         {
             this.BaseUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_MQ_URL);
+            this.RefreshTokenUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_GET_ACCESS_TOKEN_URL);
         }
 
         public EbMqClient(Container c)
         {
+
             this.BaseUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_MQ_URL);
+            this.RefreshTokenUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_GET_ACCESS_TOKEN_URL);
+
             var req = HostContext.TryGetCurrentRequest();
-            if(req != null )
+            if (req != null)
             {
-                this.BearerToken = req.Authorization.Replace("Bearer", string.Empty).Trim();
+                this.RefreshToken = (req.Headers["rToken"] != null) ? req.Headers["rToken"] : null;
+                this.BearerToken = (req.Authorization != null) ? req.Authorization.Replace("Bearer", string.Empty).Trim() : null;
             }
-            
         }
     }
 }

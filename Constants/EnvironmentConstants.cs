@@ -19,6 +19,8 @@ namespace ExpressBase.Common
 
         public const string EB_MQ_URL = "EB_MQ_URL";
 
+        public const string EB_GET_ACCESS_TOKEN_URL = "EB_GET_ACCESS_TOKEN_URL";
+
         public const string EB_REDIS_SERVER = "EB_REDIS_SERVER";
         public const string EB_REDIS_PORT = "EB_REDIS_PORT";
         public const string EB_REDIS_PASSWORD = "EB_REDIS_PASSWORD";
