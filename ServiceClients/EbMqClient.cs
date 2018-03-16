@@ -31,6 +31,7 @@ namespace ExpressBase.Common.ServiceClients
             {
                 this.RefreshToken = (req.Headers["rToken"] != null) ? req.Headers["rToken"] : null;
                 this.BearerToken = (req.Authorization != null) ? req.Authorization.Replace("Bearer", string.Empty).Trim() : null;
+                this.Headers.Add("rToken", this.RefreshToken);
             }
         }
     }

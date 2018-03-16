@@ -13,7 +13,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class UploadFileRequest : EbServiceStackRequest
+    public class UploadFileRequests : EbServiceStackRequest
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
@@ -25,7 +25,10 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         public string BucketName { get; set; }
 
         [DataMember(Order = 4)]
-        public string Token { get; set; }
+        public string BToken { get; set; }
+
+        [DataMember(Order = 5)]
+        public string RToken { get; set; }
     }
 
     [DataContract]
