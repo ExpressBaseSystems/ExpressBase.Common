@@ -38,7 +38,13 @@ namespace ExpressBase.Security
 		[DataMember(Order = 7)]
 		public Preferences Preference { get; set; }
 
-		private List<string> _ebObjectIds = null;
+        [DataMember(Order = 8)]
+        public override string Email { get; set; }
+
+        [DataMember(Order = 9)]
+        public override string FullName { get; set; }
+
+        private List<string> _ebObjectIds = null;
         public List<string> EbObjectIds
         {
             get
@@ -164,23 +170,52 @@ namespace ExpressBase.Security
             return InitUserObject(ds);
         }
 
-        public static User GetDetailsAnonymous(IDatabase df, string socialId, string emailId, string phone, int appid, string context)
+        public static User GetDetailsAnonymous(IDatabase df, string socialId, string emailId, string phone, int appid, string context, string user_ip, string user_name, string user_browser, string city, string region, string country, string latitude, string longitude, string timezone, string iplocationjson)
         {
             string parameters = "";
-
-            if (!string.IsNullOrEmpty(socialId))
+			if (!string.IsNullOrEmpty(socialId))
                 parameters += "in_socialid => :socialId, ";
             if (!string.IsNullOrEmpty(emailId))
                 parameters += "in_emailid => :emailId, ";
             if (!string.IsNullOrEmpty(phone))
                 parameters += "in_phone => :phone, ";
+			if (!string.IsNullOrEmpty(user_ip))
+				parameters += "in_user_ip => :user_ip, ";
+			if (!string.IsNullOrEmpty(user_name))
+				parameters += "in_fullname => :user_name, ";
+			if (!string.IsNullOrEmpty(user_browser))
+				parameters += "in_user_browser => :user_browser, ";
+			if (!string.IsNullOrEmpty(city))
+				parameters += "in_city => :city, ";
+			if (!string.IsNullOrEmpty(region))
+				parameters += "in_region => :region, ";
+			if (!string.IsNullOrEmpty(country))
+				parameters += "in_country => :country, ";
+			if (!string.IsNullOrEmpty(latitude))
+				parameters += "in_latitude => :latitude, ";
+			if (!string.IsNullOrEmpty(longitude))
+				parameters += "in_longitude => :longitude, ";
+			if (!string.IsNullOrEmpty(timezone))
+				parameters += "in_timezone => :timezone, ";
+			if (!string.IsNullOrEmpty(iplocationjson))
+                parameters += "in_iplocationjson => :iplocationjson, ";
 
-            string sql = df.EB_AUTHENTICATE_ANONYMOUS.Replace("@params",parameters);
+			string sql = df.EB_AUTHENTICATE_ANONYMOUS.Replace("@params",parameters);
 
             var ds = df.DoQuery(sql, new DbParameter[] {
                 df.GetNewParameter("socialId",EbDbTypes.String, socialId),
                 df.GetNewParameter("emailId", EbDbTypes.String, emailId),
                 df.GetNewParameter("phone", EbDbTypes.String, phone),
+				df.GetNewParameter("user_ip", EbDbTypes.String, user_ip),
+				df.GetNewParameter("user_name", EbDbTypes.String, user_name),
+				df.GetNewParameter("user_browser", EbDbTypes.String, user_browser),
+				df.GetNewParameter("city", EbDbTypes.String, city),
+				df.GetNewParameter("region", EbDbTypes.String, region),
+				df.GetNewParameter("country", EbDbTypes.String, country),
+				df.GetNewParameter("latitude", EbDbTypes.String, latitude),
+				df.GetNewParameter("longitude", EbDbTypes.String, longitude),
+				df.GetNewParameter("timezone", EbDbTypes.String, timezone),
+				df.GetNewParameter("iplocationjson", EbDbTypes.String, iplocationjson),
 				df.GetNewParameter("appid", EbDbTypes.Int32, appid),
 				df.GetNewParameter("wc", EbDbTypes.String, context) });
             return InitUserObject(ds);
@@ -215,7 +250,7 @@ namespace ExpressBase.Security
                     {
                         UserId = userid,
                         Email = ds.Rows[0][1].ToString(),
-                        FirstName = ds.Rows[0][2].ToString(),
+                        FullName = ds.Rows[0][2].ToString(),
                         Roles = rolesname,
                         Permissions = ds.Rows[0][5].ToString().Split(',').ToList(),
 						Preference = JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][6].ToString())

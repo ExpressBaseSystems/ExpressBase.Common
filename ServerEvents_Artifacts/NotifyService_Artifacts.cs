@@ -14,7 +14,7 @@ namespace ExpressBase.Common.ServerEvents_Artifacts
         public string Selector { get; set; }
 
         [DataMember(Order = 2)]
-        public string Msg { get; set; }
+        public object Msg { get; set; }
 
         [DataMember(Order = 3)]
         public string ToUserAuthId { get; set; }
@@ -31,7 +31,7 @@ namespace ExpressBase.Common.ServerEvents_Artifacts
         public string Selector { get; set; }
 
         [DataMember(Order = 2)]
-        public string Msg { get; set; }
+        public object Msg { get; set; }
     }
 
     [DataContract]
@@ -44,7 +44,7 @@ namespace ExpressBase.Common.ServerEvents_Artifacts
         public string Selector { get; set; }
 
         [DataMember(Order = 2)]
-        public string Msg { get; set; }
+        public object Msg { get; set; }
 
         [DataMember(Order = 3)]
         public string ToSubId { get; set; }
@@ -57,7 +57,7 @@ namespace ExpressBase.Common.ServerEvents_Artifacts
         public string Selector { get; set; }
 
         [DataMember(Order = 1)]
-        public string Msg { get; set; }
+        public object Msg { get; set; }
     }
 }
 
