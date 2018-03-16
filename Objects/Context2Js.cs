@@ -275,6 +275,8 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     meta.IsUnique = true;
                 else if (attr is HideForUser)
                     meta.HideForUser = true;
+                else if (attr is MetaOnly)
+                    meta.MetaOnly = true;
                 else if (attr is PropertyEditor)
                 {
                     meta.editor = (attr as PropertyEditor).PropertyEditorType;
