@@ -321,22 +321,22 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        private DbType ConvertToDbType(Type _typ)
+        private EbDbType ConvertToDbType(Type _typ)
         {
             if (_typ == typeof(DateTime))
-                return DbType.Date;
+                return EbDbTypes.Date;
             else if (_typ == typeof(string))
-                return DbType.String;
+                return EbDbTypes.String;
             else if (_typ == typeof(bool))
-                return DbType.Boolean;
+                return EbDbTypes.Boolean;
             else if (_typ == typeof(decimal))
-                return DbType.Decimal;
+                return EbDbTypes.Decimal;
             else if (_typ == typeof(int) || _typ == typeof(Int32))
-                return DbType.Int32;
+                return EbDbTypes.Int32;
             else if (_typ == typeof(Int64))
-                return DbType.Int64;
+                return EbDbTypes.Int64;
 
-            return DbType.String;
+            return EbDbTypes.String;
         }
 
         private void PrepareDataTable(OracleDataReader reader, EbDataTable dt)
