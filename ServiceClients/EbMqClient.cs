@@ -1,11 +1,6 @@
-﻿using ExpressBase.Common.EbServiceStack.ReqNRes;
-using Funq;
-using ServiceStack;
-using ServiceStack.Logging;
+﻿using ServiceStack;
 using ServiceStack.Web;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ExpressBase.Common.ServiceClients
 {
@@ -52,13 +47,11 @@ namespace ExpressBase.Common.ServiceClients
             {
                 if (req != null)
                 {
-                    Console.WriteLine("Request Not Null");
                     this.RefreshToken = (req.Headers["rToken"] != null) ? req.Headers["rToken"] : null;
                     this.BearerToken = (req.Headers[HttpHeaders.Authorization] != null) ? req.Headers[HttpHeaders.Authorization].Replace("Bearer", string.Empty).Trim() : null;
                     if (!(String.IsNullOrEmpty(this.RefreshToken)))
                         this.Headers.Add("rToken", this.RefreshToken);
                 }
-                Console.WriteLine(String.Format("MQClient: \nBaseUri: {0}\nBearer Token: {1}\n RefreshToken: {2}\n Headers: {3}", this.BaseUri, this.BearerToken, this.RefreshToken, this.Headers.ToJson()));
             }
             catch (Exception e)
             {
