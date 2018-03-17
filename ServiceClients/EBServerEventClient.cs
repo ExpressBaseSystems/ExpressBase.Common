@@ -12,6 +12,12 @@ namespace ExpressBase.Common.ServiceClients
 
     public class EbServerEventClient : JsonServiceClient, IEbServerEventClient
     {
+        public EbServerEventClient()
+        {
+            this.BaseUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_SERVEREVENTS_INT_URL);
+            this.RefreshTokenUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_GET_ACCESS_TOKEN_URL);
+        }
+
         //public EbServerEventClient(Container c)
         //{
         //    Console.WriteLine("Inside Server Client Constructor");
