@@ -40,23 +40,23 @@ BEGIN
 
 	--majorversion.minorversion.patchversion
         version_number := CONCAT(CONCAT(CONCAT(CONCAT(major,'.'),minor),'.'),patch);
-        UPDATE eb_objects_ver SET version_num = version_number, working_mode = 'F' WHERE refid = refidunique;
+        UPDATE eb_objects_ver SET version_num = version_number, working_mode = 'F' WHERE refid = idv;
 
    --relations table
     UPDATE eb_objects_relations SET eb_del = 'T', removed_by= commit_uidv , removed_at=SYSTIMESTAMP
       WHERE 
-        dominant IN(SELECT dominant FROM eb_objects_relations WHERE dependant = refidunique 
+        dominant IN(SELECT dominant FROM eb_objects_relations WHERE dependant = idv 
                     MINUS 
                     SELECT regexp_substr(relationsv,'[^,]+', 1, level)  from dual CONNECT BY regexp_substr(relationsv, '[^,]+', 1, level) is not null);
 
     INSERT INTO eb_objects_relations 
         (dominant, dependant) 
     SELECT 
-      dominantvals, refidunique 
+      dominantvals, idv 
       FROM (
       SELECT regexp_substr(relationsv,'[^,]+', 1, level)  AS dominantvals from dual CONNECT BY regexp_substr(relationsv, '[^,]+', 1, level) is not null
       MINUS
-      select dominant from eb_objects_relations WHERE dependant = refidunique
+      select dominant from eb_objects_relations WHERE dependant = idv
       );
 
       --application table
@@ -78,8 +78,6 @@ BEGIN
 
     COMMIT;               
     RETURN committed_refidunique; 
-    /*EXCEPTION
-    WHEN NO_DATA_FOUND THEN 
-        RETURN NULL;*/
+
 
 END;
