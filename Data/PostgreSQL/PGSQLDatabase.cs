@@ -49,6 +49,18 @@ namespace ExpressBase.Common
             return new NpgsqlParameter(parametername, (NpgsqlTypes.NpgsqlDbType)type.VendorSpecificIntCode(DatabaseVendors.PGSQL)) { Value = value };
         }
 
+        public String GetType(EbDbType type)
+        {
+            
+            return type.VendorSpecificStringCode(DatabaseVendors.PGSQL);
+            
+        }
+
+        //public string ConvertToDbDate(string datetime_)
+        //{
+        //    return datetime_;
+        //}
+
         public T DoQuery<T>(string query, params DbParameter[] parameters)
         {
             T obj = default(T);
@@ -235,22 +247,22 @@ namespace ExpressBase.Common
             return typeArray;
         }
 
-        private DbType ConvertToDbType(Type _typ)
+        private EbDbType ConvertToDbType(Type _typ)
         {
             if (_typ == typeof(DateTime))
-                return DbType.Date;
+                return EbDbTypes.Date;
             else if (_typ == typeof(string))
-                return DbType.String;
+                return EbDbTypes.String;
             else if (_typ == typeof(bool))
-                return DbType.Boolean;
+                return EbDbTypes.Boolean;
             else if (_typ == typeof(decimal))
-                return DbType.Decimal;
+                return EbDbTypes.Decimal;
             else if (_typ == typeof(int) || _typ == typeof(Int32))
-                return DbType.Int32;
+                return EbDbTypes.Int32;
             else if (_typ == typeof(Int64))
-                return DbType.Int64;
+                return EbDbTypes.Int64;
 
-            return DbType.String;
+            return EbDbTypes.String;
         }
 
         private void PrepareDataTable(NpgsqlDataReader reader, EbDataTable dt, Type[] typeArray)
@@ -622,12 +634,47 @@ namespace ExpressBase.Common
                     FROM 
 	                    eb_objects EO, eb_objects_ver EOV,eb_objects_status EOS,unnest(string_to_array(EO.obj_tags, ',')) Tags
                     WHERE 
-	                    Tags IN(:tag) AND EO.id =EOV.eb_objects_id
+	                    Tags IN(:tags) AND EO.id =EOV.eb_objects_id
                         AND EOS.eb_obj_ver_id = EOV.id AND EOS.status = 3 AND EO.obj_type IN(16 ,17)
     
                 ";
             }
         }
+
+        public string EB_GET_BOT_FORM
+        {
+            get
+            {
+                return @"
+                            SELECT DISTINCT
+		                            EOV.refid, EO.obj_name 
+                            FROM
+		                            eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EOTA
+                            WHERE 
+		                            EO.id = EOV.eb_objects_id  AND
+		                            EO.id = EOTA.obj_id  AND
+		                            EOS.eb_obj_ver_id = EOV.id AND
+		                            EO.id =  ANY('{@Ids}') AND 
+		                            EOS.status = 3 AND
+		                            ( 	
+			                            EO.obj_type = 16 OR
+			                            EO.obj_type = 17
+			                            OR EO.obj_type = 18
+		                            )  AND
+		                            EOTA.app_id = @appid AND
+                                    EOTA.eb_del = 'F'
+                        ";
+            }
+        }
+
+        public string IS_TABLE_EXIST
+        {
+            get
+            {
+                return @"SELECT EXISTS (SELECT 1 FROM   information_schema.tables WHERE  table_schema = 'public' AND table_name = :tbl);";
+            }
+        }
+
 
         //.....OBJECTS FUNCTION CALL......
         public string EB_CREATE_NEW_OBJECT

@@ -105,6 +105,97 @@ namespace ExpressBase.Common.Structures
             return this.IntCode;
         }
 
+        public string VendorSpecificStringCode(DatabaseVendors vendor)
+        {
+            if ((DbType)this.IntCode == DbType.String)
+            {
+                if (vendor == DatabaseVendors.PGSQL)
+                    return (NpgsqlTypes.NpgsqlDbType.Text).ToString();
+                if (vendor == DatabaseVendors.ORACLE)
+                    return (OracleType.Clob).ToString();
+            }
+            else if ((DbType)this.IntCode == DbType.Decimal)
+            {
+                if (vendor == DatabaseVendors.PGSQL)
+                    return (NpgsqlTypes.NpgsqlDbType.Double).ToString();
+                if (vendor == DatabaseVendors.ORACLE)
+                    return (OracleType.Double).ToString();
+            }
+            else if ((DbType)this.IntCode == DbType.Int32)
+            {
+                if (vendor == DatabaseVendors.PGSQL)
+                    return (NpgsqlTypes.NpgsqlDbType.Integer).ToString();
+                if (vendor == DatabaseVendors.ORACLE)
+                    return (OracleType.Number).ToString();
+            }
+            else if ((DbType)this.IntCode == DbType.Object)
+            {
+                if (vendor == DatabaseVendors.PGSQL)
+                    return (NpgsqlTypes.NpgsqlDbType.Json).ToString();
+                if (vendor == DatabaseVendors.ORACLE)
+                    return (OracleType.Clob).ToString();
+            }
+            else if ((DbType)this.IntCode == DbType.Boolean)
+            {
+                if (vendor == DatabaseVendors.PGSQL)
+                    return (NpgsqlTypes.NpgsqlDbType.Boolean).ToString();
+                if (vendor == DatabaseVendors.ORACLE)
+                    return (OracleType.VarChar).ToString();
+            }
+            else if ((DbType)this.IntCode == DbType.DateTime)
+            {
+                if (vendor == DatabaseVendors.PGSQL)
+                    return (NpgsqlTypes.NpgsqlDbType.Date).ToString();
+                if (vendor == DatabaseVendors.ORACLE)
+                    return (OracleType.Timestamp).ToString();
+            }
+            else if ((DbType)this.IntCode == DbType.Date)
+            {
+                if (vendor == DatabaseVendors.PGSQL)
+                    return (NpgsqlTypes.NpgsqlDbType.Timestamp).ToString();
+                if (vendor == DatabaseVendors.ORACLE)
+                    return (OracleType.Timestamp).ToString();
+            }
+            else if ((DbType)this.IntCode == DbType.Time)
+            {
+                if (vendor == DatabaseVendors.PGSQL)
+                    return (NpgsqlTypes.NpgsqlDbType.Time).ToString();
+                if (vendor == DatabaseVendors.ORACLE)
+                    return (OracleType.TimestampLocal).ToString();
+            }
+            else if ((DbType)this.IntCode == DbType.Int64)
+            {
+                if (vendor == DatabaseVendors.PGSQL)
+                    return (NpgsqlTypes.NpgsqlDbType.Bigint).ToString();
+                if (vendor == DatabaseVendors.ORACLE)
+                    return (OracleType.Number).ToString();
+            }
+            else if ((DbType)this.IntCode == DbType.Int16)
+            {
+                if (vendor == DatabaseVendors.PGSQL)
+                    return (NpgsqlTypes.NpgsqlDbType.Smallint).ToString();
+                if (vendor == DatabaseVendors.ORACLE)
+                    return (OracleType.Number).ToString();
+            }
+            else if ((DbType)this.IntCode == DbType.Double)
+            {
+                if (vendor == DatabaseVendors.PGSQL)
+                    return (NpgsqlTypes.NpgsqlDbType.Double).ToString();
+                if (vendor == DatabaseVendors.ORACLE)
+                    return (OracleType.Double).ToString();
+            }
+            else if ((DbType)this.IntCode == DbType.VarNumeric)
+            {
+                if (vendor == DatabaseVendors.PGSQL)
+                    return (NpgsqlTypes.NpgsqlDbType.Numeric).ToString();
+                if (vendor == DatabaseVendors.ORACLE)
+                    return (OracleType.Number).ToString();
+            }
+
+
+            return this.IntCode.ToString();
+        }
+
         public static explicit operator EbDbType(DbType v)
         {
             throw new NotImplementedException();
@@ -118,6 +209,11 @@ namespace ExpressBase.Common.Structures
         public static explicit operator EbDbType(int i)
         {
             return EbDbTypes.Get(i);
+        }
+
+        public static explicit operator EbDbType(Int64 i)
+        {
+            return EbDbTypes.Get(Convert.ToInt32(i));
         }
 
         //int i = (int)o;

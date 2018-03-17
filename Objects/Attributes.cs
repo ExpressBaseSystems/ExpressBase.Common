@@ -29,6 +29,7 @@ namespace ExpressBase.Common.Objects.Attributes
         ScriptEditorCS = 18,
         ScriptEditorJS = 19,
         ScriptEditorSQ = 20,
+        MultiLanguageKeySelector = 21,
     }
 
     public class HideInToolBox : Attribute { }
@@ -123,6 +124,7 @@ namespace ExpressBase.Common.Objects.Attributes
 
         public HelpText(string value) { this.value = value; }
     }
+    public class MetaOnly : Attribute { public MetaOnly() { } }
 
     public class UIproperty : Attribute { public UIproperty() { } }
 

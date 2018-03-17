@@ -40,6 +40,8 @@ namespace ExpressBase.Common.Objects
 
         public bool HideForUser { get; set; }
 
+        public bool MetaOnly { get; set; }
+
         public Meta()
         {
             this.enumoptions = new Dictionary<int, string>();

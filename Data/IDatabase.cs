@@ -22,6 +22,8 @@ namespace ExpressBase.Common
         DbDataReader DoQueriesBasic(string query, params DbParameter[] parameters);
         EbDataSet DoQueries(string query, params DbParameter[] parameters);
         int DoNonQuery(string query, params DbParameter[] parameters);
+        // T GetType<T>(EbDbType type);
+        string GetType(EbDbType type);
         void BeginTransaction();
         void RollbackTransaction();
         void CommitTransaction();
@@ -30,6 +32,7 @@ namespace ExpressBase.Common
         void CreateTable(string query);
         int InsertTable(string query, params DbParameter[] parameters);
 
+        //string ConvertToDbDate(string datetime_);
 
         //---------------------sql query
 
@@ -57,6 +60,10 @@ namespace ExpressBase.Common
         string EB_GET_OBJ_STATUS_HISTORY { get; }
         string EB_LIVE_VERSION_OF_OBJS { get; }
         string EB_GET_ALL_TAGS { get; }
+
+        string EB_GET_BOT_FORM { get; }
+        string IS_TABLE_EXIST { get; }
+        
 
         //....obj function call....
         string EB_CREATE_NEW_OBJECT { get; }
