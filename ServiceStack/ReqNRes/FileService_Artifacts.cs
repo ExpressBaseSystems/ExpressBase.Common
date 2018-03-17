@@ -6,6 +6,52 @@ using System.Runtime.Serialization;
 namespace ExpressBase.Common.EbServiceStack.ReqNRes
 {
     [DataContract]
+    public class DeleteFileRequest : EbServiceStackRequest
+    {
+        [DataMember(Order = 1)]
+        public FileMeta FileDetails { get; set; }
+    }
+
+    [DataContract]
+    public class UploadFileRequest : EbServiceStackRequest
+    {
+        [DataMember(Order = 1)]
+        public FileMeta FileDetails { get; set; }
+
+        [DataMember(Order = 2)]
+        public byte[] FileByte { get; set; }
+
+        [DataMember(Order = 3)]
+        public string BucketName { get; set; }
+
+        [DataMember(Order = 4)]
+        public string BToken { get; set; }
+
+        [DataMember(Order = 5)]
+        public string RToken { get; set; }
+    }
+
+    [DataContract]
+    public class ImageResizeRequest : EbServiceStackRequest
+    {
+        [DataMember(Order = 1)]
+        public FileMeta ImageInfo { get; set; }
+
+        [DataMember(Order = 2)]
+        public byte[] ImageByte { get; set; }
+    }
+
+    [DataContract]
+    public class FileMetaPersistRequest : EbServiceStackRequest
+    {
+        [DataMember(Order = 1)]
+        public FileMeta FileDetails { get; set; }
+
+        [DataMember(Order = 2)]
+        public string BucketName { get; set; }
+    }
+
+    [DataContract]
     public class FileMeta
     {
         [DataMember(Order = 1)]
@@ -28,14 +74,26 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class UploadFileMqRequest : EbServiceStackRequest, IReturn<string>
+    public class UploadFileAsyncRequest : EbServiceStackRequest, IReturn<bool>
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
 
         [DataMember(Order = 2)]
         public byte[] FileByte { get; set; }
+    }
 
+    [DataContract]
+    public class UploadFileMqRequest : EbServiceStackRequest, IReturn<bool>
+    {
+        [DataMember(Order = 1)]
+        public FileMeta FileDetails { get; set; }
+
+        [DataMember(Order = 1)]
+        public byte[] FileByte { get; set; }
+
+        [DataMember(Order = 2)]
+        public string BucketName { get; set; }
     }
 
     [DataContract]
@@ -46,7 +104,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class UploadImageMqRequest : EbServiceStackRequest, IReturn<string>
+    public class UploadImageAsyncRequest : EbServiceStackRequest, IReturn<bool>
     {
         [DataMember(Order = 1)]
         public FileMeta ImageInfo { get; set; }

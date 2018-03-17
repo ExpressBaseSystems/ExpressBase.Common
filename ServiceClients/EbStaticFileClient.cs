@@ -1,5 +1,4 @@
-﻿using ExpressBase.Common.EbServiceStack.ReqNRes;
-using Funq;
+﻿using Funq;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
@@ -7,23 +6,19 @@ using System.Text;
 
 namespace ExpressBase.Common.ServiceClients
 {
-    public interface IEbMqClient : IServiceClient
-    {
+    public interface IEbStaticFileClient : IServiceClient { }
 
-    }
-
-    public class EbMqClient : JsonServiceClient, IEbMqClient
+    public class EbStaticFileClient : JsonServiceClient, IEbStaticFileClient
     {
-        public EbMqClient()
+        public EbStaticFileClient()
         {
-            this.BaseUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_MQ_URL);
+            this.BaseUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_STATICFILESERVER_INT_URL);
             this.RefreshTokenUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_GET_ACCESS_TOKEN_URL);
         }
 
-        public EbMqClient(Container c)
+        public EbStaticFileClient(Container c)
         {
-
-            this.BaseUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_MQ_URL);
+            this.BaseUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_STATICFILESERVER_INT_URL);
             this.RefreshTokenUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_GET_ACCESS_TOKEN_URL);
 
             var req = HostContext.TryGetCurrentRequest();

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace ExpressBase.Common.ServiceStack.Auth0
+namespace ExpressBase.Common.ServiceStack.Auth
 {
     [DataContract]
     public class CustomUserSession : AuthUserSession
