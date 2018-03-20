@@ -18,7 +18,8 @@ create or replace FUNCTION eb_createormodifyuserandroles(
 	in_group_temp VARCHAR2,
     in_statusid NUMBER,
 	in_hide VARCHAR2,
-    in_anonymoususerid NUMBER)
+    in_anonymoususerid NUMBER,
+    in_preference CLOB)
     RETURN NUMBER IS
     PRAGMA AUTONOMOUS_TRANSACTION;
       out_usid NUMBER; 
@@ -30,7 +31,7 @@ BEGIN
    END IF;
 
    IF in_id > 1 THEN
-           UPDATE eb_users SET fullname = in_fullname, nickname = in_nickname, email= in_email, dob= in_dob, sex= in_sex, alternateemail= in_alternateemail, phnoprimary= in_phnoprimary, phnosecondary= in_phnosecondary, landline= in_landline, phextension= in_phextension, fbid= in_fbid, fbname= in_fbname, statusid= in_statusid, hide= in_hide WHERE id = in_id;
+           UPDATE eb_users SET fullname = in_fullname, nickname = in_nickname, email= in_email, dob= in_dob, sex= in_sex, alternateemail= in_alternateemail, phnoprimary= in_phnoprimary, phnosecondary= in_phnosecondary, landline= in_landline, phextension= in_phextension, fbid= in_fbid, fbname= in_fbname, statusid= in_statusid, hide= in_hide, preferencesjson= in_preference WHERE id = in_id;
 
            INSERT INTO eb_role2user(role_id,user_id,createdby,createdat) SELECT roleid, in_id,in_userid,SYSTIMESTAMP FROM 
            (SELECT regexp_substr(in_roles_temp,'[^,]+', 1, level) AS roleid from dual
@@ -52,8 +53,8 @@ BEGIN
                 SELECT regexp_substr(in_group_temp,'[^,]+', 1, level) from dual
              CONNECT BY regexp_substr(in_group_temp, '[^,]+', 1, level) is not null);       
         ELSE        
-           INSERT INTO eb_users (fullname, nickname, email, pwd, dob, sex, alternateemail, phnoprimary, phnosecondary, landline, phextension, fbid, fbname, createdby, createdat, statusid, hide) 
-            VALUES (in_fullname, in_nickname, in_email, in_pwd, in_dob, in_sex, in_alternateemail, in_phnoprimary, in_phnosecondary, in_landline, in_phextension, in_fbid, in_fbname, in_userid, SYSTIMESTAMP, in_statusid, in_hide) RETURNING id INTO out_usid;
+           INSERT INTO eb_users (fullname, nickname, email, pwd, dob, sex, alternateemail, phnoprimary, phnosecondary, landline, phextension, fbid, fbname, createdby, createdat, statusid, hide, preferencesjson) 
+            VALUES (in_fullname, in_nickname, in_email, in_pwd, in_dob, in_sex, in_alternateemail, in_phnoprimary, in_phnosecondary, in_landline, in_phextension, in_fbid, in_fbname, in_userid, SYSTIMESTAMP, in_statusid, in_hide, in_preference) RETURNING id INTO out_usid;
 
            INSERT INTO eb_role2user (role_id,user_id,createdby,createdat) SELECT roleid, out_usid,in_userid,SYSTIMESTAMP 
              FROM (SELECT regexp_substr(in_roles_temp,'[^,]+', 1, level) AS roleid from dual

@@ -1,10 +1,3 @@
-create or replace type tblroleobj as object (
-  rid clob,
-  rname clob
-);
-
-create or replace type rtntblrole as table of tblroleobj;
-
 create or replace FUNCTION eb_getroles(
 	userid number,
     wc1 VARCHAR DEFAULT NULL)
@@ -23,7 +16,7 @@ create or replace FUNCTION eb_getroles(
          l_numbers := apptype(NULL);
     END IF;
     SELECT 
-    	tblroleobj(LISTAGG(qury.role_id,',') within group(order by qury.role_id),LISTAGG(CASE WHEN r.role_name is NULL THEN 'SYS' ELSE r.role_name END,',') within group(order by r.role_name)) BULK COLLECT INTO roles_tbl  FROM 
+    	tblroleobj(LISTAGG(qury.role_id,',') within group(order by qury.role_id),LISTAGG(CASE WHEN r.role_name is NULL THEN 'SYS' ELSE r.role_name END,',') within group(order by qury.role_id)) BULK COLLECT INTO roles_tbl  FROM 
          (SELECT DISTINCT role_id FROM
 				(
                 WITH role2role(role_id) AS 
@@ -40,11 +33,11 @@ create or replace FUNCTION eb_getroles(
 		 		WHERE user_id = userid AND eb_del = 'F') ,eb_roles
 				WHERE (id = role_id 
 					AND	applicationid = ANY(SELECT eb_applications.id FROM eb_applications WHERE application_type=ANY(select * from table(l_numbers))) 
-					AND	eb_del = 'F') OR role_id < 100) qury                    
+					AND	eb_del = 'F') OR role_id < 100 ORDER BY role_id) qury                    
                     LEFT JOIN 
                     (
                         SELECT id,eb_roles.role_name FROM eb_roles 
-                            WHERE eb_del = 'F' 
+                            WHERE eb_del = 'F' ORDER BY id 
                     )  r 
                     ON qury.role_id = r.id;
     RETURN roles_tbl;

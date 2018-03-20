@@ -1,9 +1,3 @@
-create or replace TYPE returnpermission_obj as object (
-  permissioname varchar(30)
-); 
-
-create or replace TYPE returnpermission_tbl as table of returnpermission_obj; 
-
 create or replace FUNCTION eb_permissions(
 	in_roles VARCHAR2)
     RETURN returnpermission_tbl as permissiontbl  returnpermission_tbl;
