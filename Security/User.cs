@@ -233,7 +233,7 @@ namespace ExpressBase.Security
 			if (!string.IsNullOrEmpty(timezone))
             {
                 parameters += "in_timezone => :timezone, ";
-                paramlist.Add(df.GetNewParameter("iplocationjson", EbDbTypes.String, iplocationjson));
+                paramlist.Add(df.GetNewParameter("timezone", EbDbTypes.String, timezone));
 
             }
 			if (!string.IsNullOrEmpty(iplocationjson))

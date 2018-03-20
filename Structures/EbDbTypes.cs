@@ -238,20 +238,59 @@ namespace ExpressBase.Common.Structures
         }
     }
 
-    public struct EbDbTypes
+    public class EbDbTypes
     {
-        public static readonly EbDbType String = new EbDbType((int)DbType.String);
-        public static readonly EbDbType Decimal = new EbDbType((int)DbType.Decimal);
-        public static readonly EbDbType Double = new EbDbType((int)DbType.Double);
-        public static readonly EbDbType Int16 = new EbDbType((int)DbType.Int16);
-        public static readonly EbDbType Int32 = new EbDbType((int)DbType.Int32);
-        public static readonly EbDbType Int64 = new EbDbType((int)DbType.Int64);
-        public static readonly EbDbType Json = new EbDbType((int)DbType.Object);
-        public static readonly EbDbType Boolean = new EbDbType((int)DbType.Boolean);
-        public static readonly EbDbType Date = new EbDbType((int)DbType.Date);
-        public static readonly EbDbType DateTime = new EbDbType((int)DbType.DateTime);
-        public static readonly EbDbType VarNumeric = new EbDbType((int)DbType.VarNumeric);
-        public static readonly EbDbType Time = new EbDbType((int)DbType.Time);
+        public static EbDbType String;
+        public static EbDbType Decimal;
+        public static EbDbType Double;
+        public static EbDbType Int16;
+        public static EbDbType Int32;
+        public static EbDbType Int64;
+        public static EbDbType Json;
+        public static EbDbType Boolean;
+        public static EbDbType Date;
+        public static EbDbType DateTime;
+        public static EbDbType VarNumeric;
+        public static EbDbType Time;
+
+        public EbDbTypes()
+        {
+
+        }
+
+        public EbDbTypes(DatabaseVendors vendor)
+        {
+            if(vendor == DatabaseVendors.PGSQL)
+            {
+                String = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Text);
+                Decimal = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Double);
+                Double = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Double);
+                Int16 = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Integer);
+                Int32 = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Integer);
+                Int64 = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Integer);
+                Json = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Json);
+                Boolean = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Boolean);
+                Date = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Date);
+                DateTime = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Timestamp);
+                VarNumeric = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Numeric);
+                Time = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Time);
+            }
+            if(vendor == DatabaseVendors.ORACLE)
+            {
+                String = new EbDbType((int)OracleType.VarChar);
+                Decimal = new EbDbType((int)OracleType.Double);
+                Double = new EbDbType((int)OracleType.Double);
+                Int16 = new EbDbType((int)OracleType.Int16);
+                Int32 = new EbDbType((int)OracleType.Int32);
+                Int64 = new EbDbType((int)OracleType.Number);
+                Json = new EbDbType((int)OracleType.Clob);
+                Boolean = new EbDbType((int)OracleType.VarChar);
+                Date = new EbDbType((int)OracleType.Timestamp);
+                DateTime = new EbDbType((int)OracleType.DateTime);
+                VarNumeric = new EbDbType((int)OracleType.Number);
+                Time = new EbDbType((int)OracleType.TimestampWithTZ);
+            }
+        }
 
         public static EbDbType Get(int intcode)
         {
