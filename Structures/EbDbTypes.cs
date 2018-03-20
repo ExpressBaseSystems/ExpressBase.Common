@@ -253,10 +253,21 @@ namespace ExpressBase.Common.Structures
         public static EbDbType VarNumeric;
         public static EbDbType Time;
 
-        public EbDbTypes()
+        static EbDbTypes()
         {
-
-        }
+			String = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Text);
+			Decimal = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Double);
+			Double = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Double);
+			Int16 = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Integer);
+			Int32 = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Integer);
+			Int64 = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Integer);
+			Json = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Json);
+			Boolean = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Boolean);
+			Date = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Date);
+			DateTime = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Timestamp);
+			VarNumeric = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Numeric);
+			Time = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Time);
+		}
 
         public EbDbTypes(DatabaseVendors vendor)
         {
