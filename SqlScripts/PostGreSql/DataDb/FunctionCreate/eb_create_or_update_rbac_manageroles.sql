@@ -1,6 +1,6 @@
--- FUNCTION: public.eb_create_or_update_rbac_manageroles(integer, integer, integer, text, text, boolean, text, text, text)
+-- FUNCTION: public.eb_create_or_update_rbac_manageroles(integer, integer, integer, text, text, text, text, text, text)
 
--- DROP FUNCTION public.eb_create_or_update_rbac_manageroles(integer, integer, integer, text, text, boolean, text, text, text);
+-- DROP FUNCTION public.eb_create_or_update_rbac_manageroles(integer, integer, integer, text, text, text, text, text, text);
 
 CREATE OR REPLACE FUNCTION public.eb_create_or_update_rbac_manageroles(
 	roleid integer,
@@ -8,33 +8,39 @@ CREATE OR REPLACE FUNCTION public.eb_create_or_update_rbac_manageroles(
 	userid integer,
 	role_name text,
 	description text,
-	isanonym boolean,
+	isanonym text,
 	users text,
 	dependantroles text,
 	permissions text)
     RETURNS integer
     LANGUAGE 'plpgsql'
 
-    
+    COST 100
+    VOLATILE 
 AS $BODY$
 
 DECLARE rid INTEGER;
 _users INTEGER[];
 _dependantroles INTEGER[];
 _permissions TEXT[];
+_isanonym boolean;
 BEGIN
 rid := roleid;
 _users := string_to_array(users, ',')::integer[];
 _dependantroles := string_to_array(dependantroles, ',')::integer[];
 _permissions := string_to_array(permissions, ',');
+_isanonym := false;
+IF isanonym = 'T' THEN
+	_isanonym :=true;
+END IF;
    IF permissions IS NOT NULL THEN
       IF roleid > 0 THEN 
-      	SELECT * FROM eb_create_or_update_role(applicationid, role_name, description, isanonym, userid, _permissions, roleid) INTO rid;
+      	SELECT * FROM eb_create_or_update_role(applicationid, role_name, description, _isanonym, userid, _permissions, roleid) INTO rid;
       ELSE
-        SELECT * FROM eb_create_or_update_role(applicationid, role_name, description, isanonym, userid, _permissions, 0) INTO rid;
+        SELECT * FROM eb_create_or_update_role(applicationid, role_name, description, _isanonym, userid, _permissions, 0) INTO rid;
       END IF;
     END IF;
-	IF isanonym THEN
+	IF _isanonym THEN
 		_users := '{1}';
 		dependantroles := '{}';
 	END IF;
@@ -50,6 +56,6 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_create_or_update_rbac_manageroles(integer, integer, integer, text, text, boolean, text, text, text)
+ALTER FUNCTION public.eb_create_or_update_rbac_manageroles(integer, integer, integer, text, text, text, text, text, text)
     OWNER TO postgres;
 
