@@ -8,8 +8,8 @@ namespace ExpressBase.Common.Security
     {
         public static string GeneratePassword()
         {
-            string strPwdchar = "abcdefghijklmnopqrstuvwxyz0123456789#+@&$ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            string strPwd = "";
+            string strPwdchar = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            string strPwd = "a";
             Random rnd = new Random();
             for (int i = 0; i <= 7; i++)
             {
