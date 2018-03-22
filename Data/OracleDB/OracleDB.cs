@@ -16,6 +16,14 @@ namespace ExpressBase.Common.Data
 {
     public class OracleDB : IDatabase
     {
+        public DatabaseVendors Vendor
+        {
+            get
+            {
+                return DatabaseVendors.ORACLE;
+            }
+        }
+
         private const string CONNECTION_STRING_BARE = "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= {2};Password={3}";
         private string _cstr;
         private EbBaseDbConnection EbBaseDbConnection { get; set; }

@@ -12,6 +12,8 @@ namespace ExpressBase.Common
 {
     public interface IDatabase
     {
+        DatabaseVendors Vendor { get; }
+
         DbConnection GetNewConnection();
         DbConnection GetNewConnection(string dbName);
         DbCommand GetNewCommand(DbConnection con, string sql);
