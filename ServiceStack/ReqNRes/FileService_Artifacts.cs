@@ -84,26 +84,6 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class UploadFileMqRequest : EbServiceStackRequest, IReturn<bool>
-    {
-        [DataMember(Order = 1)]
-        public FileMeta FileDetails { get; set; }
-
-        [DataMember(Order = 1)]
-        public byte[] FileByte { get; set; }
-
-        [DataMember(Order = 2)]
-        public string BucketName { get; set; }
-    }
-
-    [DataContract]
-    public class DeleteFileMqRequest : EbServiceStackRequest, IReturn<string>
-    {
-        [DataMember(Order = 1)]
-        public FileMeta FileDetails { get; set; }
-    }
-
-    [DataContract]
     public class UploadImageAsyncRequest : EbServiceStackRequest, IReturn<bool>
     {
         [DataMember(Order = 1)]
