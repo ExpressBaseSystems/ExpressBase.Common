@@ -262,4 +262,7 @@
   <data name="eb_userstatus" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\PostGreSql\DataDb\TableCreate\eb_userstatus.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="eb_assignprivileges" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PostGreSql\DataDb\FunctionCreate\eb_assignprivileges.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
 </root>

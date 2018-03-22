@@ -49,6 +49,7 @@
     <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/FunctionCreate/eb_createormodifyusergroup.sql" />
     <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/FunctionCreate/eb_getpermissions.sql" />
     <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/FunctionCreate/eb_getroles.sql" />
+    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/FunctionCreate/eb_assignprivileges.sql" />
 
     <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/TableCreate/eb_applications.sql" />
     <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/TableCreate/eb_bots.sql" />
