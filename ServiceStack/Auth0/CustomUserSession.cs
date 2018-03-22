@@ -25,6 +25,9 @@ namespace ExpressBase.Common.ServiceStack.Auth
         [DataMember(Order = 4)]
         public string WhichConsole { get; set; }
 
+        [DataMember(Order = 5)]
+        public DatabaseVendors DBVendor { get; set; }
+
 
         public override bool IsAuthorized(string provider)
         {
