@@ -14,6 +14,69 @@ using System.Text.RegularExpressions;
 
 namespace ExpressBase.Common.Data
 {
+    public class OracleEbDbTypes : IVendorDbTypes
+    {
+        private Dictionary<EbDbTypes, VendorDbType> InnerDictionary { get; }
+
+        VendorDbType IVendorDbTypes.AnsiString { get { return InnerDictionary[EbDbTypes.AnsiString]; } }
+        VendorDbType IVendorDbTypes.Binary { get { return InnerDictionary[EbDbTypes.Binary]; } }
+        VendorDbType IVendorDbTypes.Byte { get { return InnerDictionary[EbDbTypes.Byte]; } }
+        VendorDbType IVendorDbTypes.Date { get { return InnerDictionary[EbDbTypes.Date]; } }
+        VendorDbType IVendorDbTypes.DateTime { get { return InnerDictionary[EbDbTypes.DateTime]; } }
+        VendorDbType IVendorDbTypes.Decimal { get { return InnerDictionary[EbDbTypes.Decimal]; } }
+        VendorDbType IVendorDbTypes.Double { get { return InnerDictionary[EbDbTypes.Double]; } }
+        VendorDbType IVendorDbTypes.Int16 { get { return InnerDictionary[EbDbTypes.Int16]; } }
+        VendorDbType IVendorDbTypes.Int32 { get { return InnerDictionary[EbDbTypes.Int32]; } }
+        VendorDbType IVendorDbTypes.Int64 { get { return InnerDictionary[EbDbTypes.Int64]; } }
+        VendorDbType IVendorDbTypes.Object { get { return InnerDictionary[EbDbTypes.Object]; } }
+        VendorDbType IVendorDbTypes.String { get { return InnerDictionary[EbDbTypes.String]; } }
+        VendorDbType IVendorDbTypes.Time { get { return InnerDictionary[EbDbTypes.String]; } }
+        VendorDbType IVendorDbTypes.VarNumeric { get { return InnerDictionary[EbDbTypes.VarNumeric]; } }
+        VendorDbType IVendorDbTypes.Json { get { return InnerDictionary[EbDbTypes.Json]; } }
+
+        //VendorDbType IVendorDbTypes.SByte => new VendorDbType(EbDbTypes.SByte, OracleType.in);
+        //VendorDbType IVendorDbTypes.Single => new VendorDbType(EbDbTypes.Single, OracleType.Real);
+        //VendorDbType IVendorDbTypes.Guid => new VendorDbType(EbDbTypes.Double, OracleType.Double);
+        //VendorDbType IVendorDbTypes.Boolean => new VendorDbType(EbDbTypes.Boolean, OracleType.Boolean);
+        //VendorDbType IVendorDbTypes.Currency => new VendorDbType(EbDbTypes.Currency, OracleType.Money);
+        //VendorDbType IVendorDbTypes.AnsiStringFixedLength => new VendorDbType(EbDbTypes.VarNumeric, OracleType.Numeric);
+        //VendorDbType IVendorDbTypes.StringFixedLength => throw new NotImplementedException();
+        //VendorDbType IVendorDbTypes.Xml => new VendorDbType(EbDbTypes.Xml, OracleType.Xml);
+        //VendorDbType IVendorDbTypes.DateTime2 => new VendorDbType(EbDbTypes.DateTime2, OracleType.Timestamp);
+        //VendorDbType IVendorDbTypes.DateTimeOffset => new VendorDbType(EbDbTypes.DateTimeOffset, OracleType.Timestamp);
+        //VendorDbType IVendorDbTypes.UInt16 => throw new NotImplementedException();
+        //VendorDbType IVendorDbTypes.UInt32 => throw new NotImplementedException();
+        //VendorDbType IVendorDbTypes.UInt64 => throw new NotImplementedException();
+
+
+        private OracleEbDbTypes()
+        {
+            this.InnerDictionary = new Dictionary<EbDbTypes, VendorDbType>();
+            this.InnerDictionary.Add(EbDbTypes.AnsiString, new VendorDbType(EbDbTypes.AnsiString, OracleType.Clob));
+            this.InnerDictionary.Add(EbDbTypes.Binary, new VendorDbType(EbDbTypes.Binary, OracleType.Blob));
+            this.InnerDictionary.Add(EbDbTypes.Byte, new VendorDbType(EbDbTypes.Byte, OracleType.Byte));
+            this.InnerDictionary.Add(EbDbTypes.Date, new VendorDbType(EbDbTypes.Date, OracleType.DateTime));
+            this.InnerDictionary.Add(EbDbTypes.DateTime, new VendorDbType(EbDbTypes.DateTime, OracleType.DateTime));
+            this.InnerDictionary.Add(EbDbTypes.Decimal, new VendorDbType(EbDbTypes.Decimal, OracleType.Number));
+            this.InnerDictionary.Add(EbDbTypes.Double, new VendorDbType(EbDbTypes.Double, OracleType.Double));
+            this.InnerDictionary.Add(EbDbTypes.Int16, new VendorDbType(EbDbTypes.Int16, OracleType.Int16));
+            this.InnerDictionary.Add(EbDbTypes.Int32, new VendorDbType(EbDbTypes.Int32, OracleType.Int32));
+            this.InnerDictionary.Add(EbDbTypes.Int64, new VendorDbType(EbDbTypes.Int64, OracleType.Number));
+            this.InnerDictionary.Add(EbDbTypes.Object, new VendorDbType(EbDbTypes.Object, OracleType.Clob));
+            this.InnerDictionary.Add(EbDbTypes.String, new VendorDbType(EbDbTypes.String, OracleType.Clob));
+            this.InnerDictionary.Add(EbDbTypes.Time, new VendorDbType(EbDbTypes.Time, OracleType.Timestamp));
+            this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, OracleType.Number));
+            this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, OracleType.Clob));
+        }
+
+        public static IVendorDbTypes Instance => new OracleEbDbTypes();
+
+        public dynamic Get(EbDbTypes e)
+        {
+            return this.InnerDictionary[e].VDbType;
+        }
+    }
+
     public class OracleDB : IDatabase
     {
         public DatabaseVendors Vendor
@@ -21,6 +84,14 @@ namespace ExpressBase.Common.Data
             get
             {
                 return DatabaseVendors.ORACLE;
+            }
+        }
+
+        public IVendorDbTypes VendorDbTypes
+        {
+            get
+            {
+                return OracleEbDbTypes.Instance;
             }
         }
 
@@ -61,19 +132,9 @@ namespace ExpressBase.Common.Data
             return new OracleCommand(sql, (OracleConnection)con, (OracleTransaction)trans);
         }
 
-        public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbType type, object value)
+        public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type, object value)
         {
-            return new OracleParameter(parametername, (OracleType)type.VendorSpecificIntCode(DatabaseVendors.ORACLE)) { Value = value };
-        }
-
-        /*public OracleType GetType(EbDbType type)
-        {
-            return (OracleType)type.VendorSpecificIntCode(DatabaseVendors.ORACLE);
-        }*/
-
-        public String GetType(EbDbType type)
-        {           
-            return type.VendorSpecificStringCode(DatabaseVendors.ORACLE);
+            return new OracleParameter(parametername, this.VendorDbTypes.Get(type)) { Value = value };
         }
 
         //public string ConvertToDbDate(string datetime_)
@@ -442,7 +503,7 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        private EbDbType ConvertToDbType(Type _typ)
+        private EbDbTypes ConvertToDbType(Type _typ)
         {
             if (_typ == typeof(DateTime))
                 return EbDbTypes.Date;
