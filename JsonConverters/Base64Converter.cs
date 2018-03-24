@@ -26,7 +26,7 @@ namespace ExpressBase.Common.JsonConverters
         {
             string valueAsString = (value != null) ? Convert.ToString(value) : string.Empty;
 
-            if (!string.IsNullOrWhiteSpace(valueAsString))
+           // if (!string.IsNullOrWhiteSpace(valueAsString))
                 writer.WriteValue(valueAsString.ToBase64());
         }
     }
