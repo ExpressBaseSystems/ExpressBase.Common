@@ -137,6 +137,11 @@ namespace ExpressBase.Common.Data
             return new OracleParameter(parametername, this.VendorDbTypes.Get(type)) { Value = value };
         }
 
+        public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type)
+        {
+            return new OracleParameter(parametername, this.VendorDbTypes.Get(type));
+        }
+
         //public string ConvertToDbDate(string datetime_)
         //{
         //    string qry = "select TO_TIMESTAMP(:datetime_, 'YYYY/MM/DD HH24:MI:SS.FF') from dual".Replace(":datetime_", "'"+datetime_+"'");
@@ -806,7 +811,8 @@ namespace ExpressBase.Common.Data
         {
             get
             {
-                return "SELECT eb_objects_create_new_object(:obj_name, :obj_desc, :obj_type, :obj_cur_status, :obj_json, :commit_uid, :src_pid, :cur_pid, :relations, :issave, :tags, :app_id) FROM DUAL";
+                //return "SELECT eb_objects_create_new_object(:obj_name, :obj_desc, :obj_type, :obj_cur_status, :obj_json, :commit_uid, :src_pid, :cur_pid, :relations, :issave, :tags, :app_id) FROM DUAL";
+                return "SELECT eb_objects_create_new_object(:obj_name, :obj_desc, :obj_type, :obj_cur_status, :commit_uid, :src_pid, :cur_pid, :relations, :issave, :tags, :app_id) FROM DUAL";
             }
         }
         public string EB_SAVE_OBJECT

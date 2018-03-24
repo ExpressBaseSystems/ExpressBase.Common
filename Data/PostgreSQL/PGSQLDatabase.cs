@@ -130,6 +130,11 @@ namespace ExpressBase.Common
             return new NpgsqlParameter(parametername, this.VendorDbTypes.Get(type)) { Value = value };
         }
 
+        public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type)
+        {
+            return new NpgsqlParameter(parametername, this.VendorDbTypes.Get(type));
+        }
+
         public T DoQuery<T>(string query, params DbParameter[] parameters)
         {
             T obj = default(T);
