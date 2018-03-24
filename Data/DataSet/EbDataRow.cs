@@ -33,17 +33,17 @@ namespace ExpressBase.Common
                 {
                     if (base[index] == DBNull.Value)
                     {
-                        if ((int)this.Rows.Table.Columns[index].Type == EbDbTypes.String)
+                        if (this.Rows.Table.Columns[index].Type == EbDbTypes.String)
                             return string.Empty;
-                        else if ((int)this.Rows.Table.Columns[index].Type == EbDbTypes.Int32)
+                        else if (this.Rows.Table.Columns[index].Type == EbDbTypes.Int32)
                             return 0;
-                        else if ((int)this.Rows.Table.Columns[index].Type == EbDbTypes.Int64)
+                        else if (this.Rows.Table.Columns[index].Type == EbDbTypes.Int64)
                             return 0;
-                        else if ((int)this.Rows.Table.Columns[index].Type == EbDbTypes.Boolean)
+                        else if (this.Rows.Table.Columns[index].Type == EbDbTypes.Boolean)
                             return false;
-                        else if ((int)this.Rows.Table.Columns[index].Type == EbDbTypes.Decimal)
+                        else if (this.Rows.Table.Columns[index].Type == EbDbTypes.Decimal)
                             return 0;
-                        else if ((int)this.Rows.Table.Columns[index].Type == EbDbTypes.Date)
+                        else if (this.Rows.Table.Columns[index].Type == EbDbTypes.Date)
                             return DateTime.MinValue;
                     }
                     else

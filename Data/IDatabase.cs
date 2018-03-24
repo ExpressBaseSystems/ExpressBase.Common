@@ -14,18 +14,21 @@ namespace ExpressBase.Common
     {
         DatabaseVendors Vendor { get; }
 
+        IVendorDbTypes VendorDbTypes { get; }
+
         DbConnection GetNewConnection();
         DbConnection GetNewConnection(string dbName);
         DbCommand GetNewCommand(DbConnection con, string sql);
         DbCommand GetNewCommand(DbConnection con, string sql, DbTransaction trans);
-        DbParameter GetNewParameter(string parametername, EbDbType type, object value);
+        DbParameter GetNewParameter(string parametername, EbDbTypes type, object value);
+
+        DbParameter GetNewParameter(string parametername, EbDbTypes type);
+
         T DoQuery<T>(string query, params DbParameter[] parameters);
         EbDataTable DoQuery(string query, params DbParameter[] parameters);
         DbDataReader DoQueriesBasic(string query, params DbParameter[] parameters);
         EbDataSet DoQueries(string query, params DbParameter[] parameters);
         int DoNonQuery(string query, params DbParameter[] parameters);
-        // T GetType<T>(EbDbType type);
-        string GetType(EbDbType type);
         void BeginTransaction();
         void RollbackTransaction();
         void CommitTransaction();
