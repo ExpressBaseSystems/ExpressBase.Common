@@ -21,6 +21,9 @@ namespace ExpressBase.Common
         DbCommand GetNewCommand(DbConnection con, string sql);
         DbCommand GetNewCommand(DbConnection con, string sql, DbTransaction trans);
         DbParameter GetNewParameter(string parametername, EbDbTypes type, object value);
+
+        DbParameter GetNewParameter(string parametername, EbDbTypes type);
+
         T DoQuery<T>(string query, params DbParameter[] parameters);
         EbDataTable DoQuery(string query, params DbParameter[] parameters);
         DbDataReader DoQueriesBasic(string query, params DbParameter[] parameters);
