@@ -72,7 +72,7 @@ namespace ExpressBase.Common.Data
         }*/
 
         public String GetType(EbDbType type)
-        {           
+        {
             return type.VendorSpecificStringCode(DatabaseVendors.ORACLE);
         }
 
@@ -194,24 +194,24 @@ namespace ExpressBase.Common.Data
                     con.Open();
                     //for (int i = 0; i < sql_arr.Length - 1; i++)
                     //{
-                        using (OracleCommand cmd = new OracleCommand(query, con))
+                    using (OracleCommand cmd = new OracleCommand(query, con))
+                    {
+                        //if (parameters != null && parameters.Length > 0)
+                        //    cmd.Parameters.AddRange(parameters);
+
+                        if (Regex.IsMatch(query, @"\:+") && parameters != null && parameters.Length > 0)
                         {
-                            //if (parameters != null && parameters.Length > 0)
-                            //    cmd.Parameters.AddRange(parameters);
+                            cmd.Parameters.AddRange(parameters);
+                        }
 
-                            if (Regex.IsMatch(query, @"\:+") && parameters != null && parameters.Length > 0)
-                            {
-                                cmd.Parameters.AddRange(parameters);
-                            }
-
-                            using (var reader = cmd.ExecuteReader())
-                            {
+                        using (var reader = cmd.ExecuteReader())
+                        {
                             DataTable schema = reader.GetSchemaTable();
                             this.AddColumns(dt, schema);
                             PrepareDataTable(reader, dt);
                         }
-                        }
-                   // }
+                    }
+                    // }
                 }
                 catch (OracleException orcl)
                 { }
@@ -253,18 +253,18 @@ namespace ExpressBase.Common.Data
             using (var con = GetNewConnection() as OracleConnection)
             {
                 try
-                {                   
+                {
                     con.Open();
                     for (int i = 0; i < sql_arr.Length - 1; i++)
                     {
                         using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                         {
-                           
-                            if ( Regex.IsMatch(sql_arr[i], @"\:+") && parameters != null && parameters.Length > 0)
+
+                            if (Regex.IsMatch(sql_arr[i], @"\:+") && parameters != null && parameters.Length > 0)
                             {
-                                cmd.Parameters.AddRange(parameters);                                 
+                                cmd.Parameters.AddRange(parameters);
                             }
-                            
+
                             using (var reader = cmd.ExecuteReader())
                             {
                                 EbDataTable dt = new EbDataTable();
@@ -326,7 +326,7 @@ namespace ExpressBase.Common.Data
                             cmd.Parameters.AddRange(parameters);
                         }
 
-                        rslt= Convert.ToBoolean(cmd.ExecuteScalar());
+                        rslt = Convert.ToBoolean(cmd.ExecuteScalar());
                     }
                 }
                 catch (OracleException orcl)
@@ -429,16 +429,16 @@ namespace ExpressBase.Common.Data
         private void AddColumns(EbDataTable dt, DataTable schema)
         {
             int pos = 0;
-             foreach(DataRow dr in schema.Rows)
-             {
-                
+            foreach (DataRow dr in schema.Rows)
+            {
+
                 string columnName = System.Convert.ToString(dr["ColumnName"]);
                 Type type = (Type)(dr["DataType"]);
-                EbDataColumn column = new EbDataColumn(columnName,ConvertToDbType(type));
+                EbDataColumn column = new EbDataColumn(columnName, ConvertToDbType(type));
                 column.ColumnIndex = pos++;
-               
+
                 dt.Columns.Add(column);
-                
+
             }
         }
 
