@@ -33,6 +33,7 @@ namespace ExpressBase.Common.Data
         VendorDbType IVendorDbTypes.Time { get { return InnerDictionary[EbDbTypes.String]; } }
         VendorDbType IVendorDbTypes.VarNumeric { get { return InnerDictionary[EbDbTypes.VarNumeric]; } }
         VendorDbType IVendorDbTypes.Json { get { return InnerDictionary[EbDbTypes.Json]; } }
+        VendorDbType IVendorDbTypes.Boolean { get { return InnerDictionary[EbDbTypes.Boolean]; } }
 
         //VendorDbType IVendorDbTypes.SByte => new VendorDbType(EbDbTypes.SByte, OracleType.in);
         //VendorDbType IVendorDbTypes.Single => new VendorDbType(EbDbTypes.Single, OracleType.Real);
@@ -67,6 +68,7 @@ namespace ExpressBase.Common.Data
             this.InnerDictionary.Add(EbDbTypes.Time, new VendorDbType(EbDbTypes.Time, OracleType.Timestamp));
             this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, OracleType.Number));
             this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, OracleType.Clob));
+            this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, OracleType.Char));
         }
 
         public static IVendorDbTypes Instance => new OracleEbDbTypes();
@@ -452,6 +454,13 @@ namespace ExpressBase.Common.Data
                 }
                 catch (SocketException scket) { }
             }
+
+            return 0;
+        }
+
+        public int UpdateTable(string query, params DbParameter[] parameters)
+        {
+            
 
             return 0;
         }

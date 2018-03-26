@@ -139,7 +139,7 @@
         VendorDbType AnsiString { get; }
         VendorDbType Binary { get; }
         VendorDbType Byte { get; }
-        //VendorDbType Boolean { get; }
+        VendorDbType Boolean { get; }
         //VendorDbType Currency { get; }
         VendorDbType Date { get; }
         VendorDbType DateTime { get; }

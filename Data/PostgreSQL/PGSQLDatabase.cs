@@ -35,7 +35,7 @@ namespace ExpressBase.Common
         VendorDbType IVendorDbTypes.VarNumeric { get { return InnerDictionary[EbDbTypes.VarNumeric]; } }
         VendorDbType IVendorDbTypes.Json { get { return InnerDictionary[EbDbTypes.Json]; } }
 
-        //VendorDbType IVendorDbTypes.Boolean => new VendorDbType(EbDbTypes.Boolean, NpgsqlDbType.Boolean);
+        VendorDbType IVendorDbTypes.Boolean { get { return InnerDictionary[EbDbTypes.Boolean]; } }
         //VendorDbType IVendorDbTypes.Currency => new VendorDbType(EbDbTypes.Currency, NpgsqlDbType.Money);
         //VendorDbType IVendorDbTypes.Guid => new VendorDbType(EbDbTypes.Double, NpgsqlDbType.Double);
         //VendorDbType IVendorDbTypes.SByte => new VendorDbType(EbDbTypes.SByte, NpgsqlDbType.in);
@@ -67,6 +67,7 @@ namespace ExpressBase.Common
             this.InnerDictionary.Add(EbDbTypes.Time, new VendorDbType(EbDbTypes.Time, NpgsqlDbType.Time));
             this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, NpgsqlDbType.Numeric));
             this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, NpgsqlDbType.Json));
+            this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, NpgsqlDbType.Char));
         }
 
         public static IVendorDbTypes Instance => new PGSQLEbDbTypes();
@@ -442,6 +443,31 @@ namespace ExpressBase.Common
         }
 
         public int InsertTable(string query, params DbParameter[] parameters)
+        {
+            using (var con = GetNewConnection() as NpgsqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+
+                        return cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    throw npgse;
+                }
+                catch (SocketException scket) { }
+            }
+
+            return 0;
+        }
+
+        public int UpdateTable(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as NpgsqlConnection)
             {

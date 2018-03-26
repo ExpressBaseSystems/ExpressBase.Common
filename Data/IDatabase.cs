@@ -36,6 +36,7 @@ namespace ExpressBase.Common
         bool IsTableExists(string query, params DbParameter[] parameters);
         void CreateTable(string query);
         int InsertTable(string query, params DbParameter[] parameters);
+        int UpdateTable(string query, params DbParameter[] parameters);
 
         //string ConvertToDbDate(string datetime_);
 
