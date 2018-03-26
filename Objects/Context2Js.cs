@@ -135,10 +135,10 @@ function ProcRecur(src_controls, dest_controls) {
 
                         if (_enableInBuider != null && _enableInBuider.BuilderTypes.Contains(this.BuilderType))
                         {
-                            if (!_typeInfo.IsDefined(typeof(HideInToolBox)))
-                                this.ToolBoxHtml += this.GetToolHtml(tool.Name.Substring(2));
-
                             object toolObj = Activator.CreateInstance(tool);
+                            if ((!_typeInfo.IsDefined(typeof(HideInToolBox))) && toolObj is EbControl)
+                                    ToolBoxHtml += (toolObj as EbControl).GetToolHtml();                                
+                                    //ToolBoxHtml += this.GetToolHtml(tool.Name.Substring(2));
                             this.TypeRegister += string.Format("if (jsonObj['$type'].includes('{0}')) return new EbObjects.{1}(jsonObj.EbSid, jsonObj); ", toolObj.GetType().FullName, toolObj.GetType().Name);
                             this.GetJsObject(toolObj);
                         }

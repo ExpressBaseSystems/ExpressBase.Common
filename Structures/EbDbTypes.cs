@@ -1,327 +1,182 @@
-﻿using ProtoBuf;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.OracleClient;
-using System.Runtime.Serialization;
-using System.Text;
-
-namespace ExpressBase.Common.Structures
+﻿namespace ExpressBase.Common.Structures
 {
-    [ProtoContract]
-    public struct EbDbType
+    public enum EbDbTypes
     {
-        [ProtoMember(1)]
-        public readonly int IntCode;
+        //
+        // Summary:
+        //     A variable-length stream of non-Unicode characters ranging between 1 and 8,000
+        //     characters.
+        AnsiString = 0,
+        //
+        // Summary:
+        //     A variable-length stream of binary data ranging between 1 and 8,000 bytes.
+        Binary = 1,
+        //
+        // Summary:
+        //     An 8-bit unsigned integer ranging in value from 0 to 255.
+        Byte = 2,
+        //
+        // Summary:
+        //     A simple type representing Boolean values of true or false.
+        Boolean = 3,
+        //
+        // Summary:
+        //     A currency value ranging from -2 63 (or -922,337,203,685,477.5808) to 2 63 -1
+        //     (or +922,337,203,685,477.5807) with an accuracy to a ten-thousandth of a currency
+        //     unit.
+        Currency = 4,
+        //
+        // Summary:
+        //     A type representing a date value.
+        Date = 5,
+        //
+        // Summary:
+        //     A type representing a date and time value.
+        DateTime = 6,
+        //
+        // Summary:
+        //     A simple type representing values ranging from 1.0 x 10 -28 to approximately
+        //     7.9 x 10 28 with 28-29 significant digits.
+        Decimal = 7,
+        //
+        // Summary:
+        //     A floating point type representing values ranging from approximately 5.0 x 10
+        //     -324 to 1.7 x 10 308 with a precision of 15-16 digits.
+        Double = 8,
+        //
+        // Summary:
+        //     A globally unique identifier (or GUID).
+        Guid = 9,
+        //
+        // Summary:
+        //     An integral type representing signed 16-bit integers with values between -32768
+        //     and 32767.
+        Int16 = 10,
+        //
+        // Summary:
+        //     An integral type representing signed 32-bit integers with values between -2147483648
+        //     and 2147483647.
+        Int32 = 11,
+        //
+        // Summary:
+        //     An integral type representing signed 64-bit integers with values between -9223372036854775808
+        //     and 9223372036854775807.
+        Int64 = 12,
+        //
+        // Summary:
+        //     A general type representing any reference or value type not explicitly represented
+        //     by another DbType value.
+        Object = 13,
+        //
+        // Summary:
+        //     An integral type representing signed 8-bit integers with values between -128
+        //     and 127.
+        SByte = 14,
+        //
+        // Summary:
+        //     A floating point type representing values ranging from approximately 1.5 x 10
+        //     -45 to 3.4 x 10 38 with a precision of 7 digits.
+        Single = 15,
+        //
+        // Summary:
+        //     A type representing Unicode character strings.
+        String = 16,
+        //
+        // Summary:
+        //     A type representing a SQL Server DateTime value. If you want to use a SQL Server
+        //     time value, use System.Data.SqlDbType.Time.
+        Time = 17,
+        //
+        // Summary:
+        //     An integral type representing unsigned 16-bit integers with values between 0
+        //     and 65535.
+        UInt16 = 18,
+        //
+        // Summary:
+        //     An integral type representing unsigned 32-bit integers with values between 0
+        //     and 4294967295.
+        UInt32 = 19,
+        //
+        // Summary:
+        //     An integral type representing unsigned 64-bit integers with values between 0
+        //     and 18446744073709551615.
+        UInt64 = 20,
+        //
+        // Summary:
+        //     A variable-length numeric value.
+        VarNumeric = 21,
+        //
+        // Summary:
+        //     A fixed-length stream of non-Unicode characters.
+        AnsiStringFixedLength = 22,
+        //
+        // Summary:
+        //     A fixed-length string of Unicode characters.
+        StringFixedLength = 23,
+        //
+        // Summary:
+        //     A parsed representation of an XML document or fragment.
+        Xml = 25,
+        //
+        // Summary:
+        //     Date and time data. Date value range is from January 1,1 AD through December
+        //     31, 9999 AD. Time value range is 00:00:00 through 23:59:59.9999999 with an accuracy
+        //     of 100 nanoseconds.
+        DateTime2 = 26,
+        //
+        // Summary:
+        //     Date and time data with time zone awareness. Date value range is from January
+        //     1,1 AD through December 31, 9999 AD. Time value range is 00:00:00 through 23:59:59.9999999
+        //     with an accuracy of 100 nanoseconds. Time zone value range is -14:00 through
+        //     +14:00.
+        DateTimeOffset = 27,
 
-        public int VendorSpecificIntCode(DatabaseVendors vendor)
-        {
-            if ((DbType)this.IntCode == DbType.String)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (int)NpgsqlTypes.NpgsqlDbType.Text;
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (int)OracleType.VarChar;
-            }
-            else if ((DbType)this.IntCode == DbType.Decimal)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (int)NpgsqlTypes.NpgsqlDbType.Double;
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (int)OracleType.Double;
-            }
-            else if ((DbType)this.IntCode == DbType.Int32)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (int)NpgsqlTypes.NpgsqlDbType.Integer;
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (int)OracleType.Int32;
-            }
-            else if ((DbType)this.IntCode == DbType.Object)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (int)NpgsqlTypes.NpgsqlDbType.Json;
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (int)OracleType.Clob;
-            }
-            else if ((DbType)this.IntCode == DbType.Boolean)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (int)NpgsqlTypes.NpgsqlDbType.Boolean;
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (int)OracleType.VarChar;
-            }
-            else if ((DbType)this.IntCode == DbType.DateTime)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (int)NpgsqlTypes.NpgsqlDbType.Date;
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (int)OracleType.DateTime;
-            }
-            else if ((DbType)this.IntCode == DbType.Date)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (int)NpgsqlTypes.NpgsqlDbType.Timestamp;
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (int)OracleType.Timestamp;
-            }
-            else if ((DbType)this.IntCode == DbType.Time)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (int)NpgsqlTypes.NpgsqlDbType.Time;
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (int)OracleType.TimestampWithTZ;
-            }
-            else if ((DbType)this.IntCode == DbType.Int64)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (int)NpgsqlTypes.NpgsqlDbType.Bigint;
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (int)OracleType.Number;
-            }
-            else if ((DbType)this.IntCode == DbType.Int16)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (int)NpgsqlTypes.NpgsqlDbType.Smallint;
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (int)OracleType.Int16;
-            }
-            else if ((DbType)this.IntCode == DbType.Double)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (int)NpgsqlTypes.NpgsqlDbType.Double;
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (int)OracleType.Double;
-            }
-            else if ((DbType)this.IntCode == DbType.VarNumeric)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (int)NpgsqlTypes.NpgsqlDbType.Numeric;
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (int)OracleType.Number;
-            }
-
-
-            return this.IntCode;
-        }
-
-        public string VendorSpecificStringCode(DatabaseVendors vendor)
-        {
-            if ((DbType)this.IntCode == DbType.String)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (NpgsqlTypes.NpgsqlDbType.Text).ToString();
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (OracleType.Clob).ToString();
-            }
-            else if ((DbType)this.IntCode == DbType.Decimal)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (NpgsqlTypes.NpgsqlDbType.Double).ToString();
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (OracleType.Double).ToString();
-            }
-            else if ((DbType)this.IntCode == DbType.Int32)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (NpgsqlTypes.NpgsqlDbType.Integer).ToString();
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (OracleType.Number).ToString();
-            }
-            else if ((DbType)this.IntCode == DbType.Object)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (NpgsqlTypes.NpgsqlDbType.Json).ToString();
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (OracleType.Clob).ToString();
-            }
-            else if ((DbType)this.IntCode == DbType.Boolean)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (NpgsqlTypes.NpgsqlDbType.Boolean).ToString();
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (OracleType.VarChar).ToString();
-            }
-            else if ((DbType)this.IntCode == DbType.DateTime)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (NpgsqlTypes.NpgsqlDbType.Date).ToString();
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (OracleType.Timestamp).ToString();
-            }
-            else if ((DbType)this.IntCode == DbType.Date)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (NpgsqlTypes.NpgsqlDbType.Timestamp).ToString();
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (OracleType.Timestamp).ToString();
-            }
-            else if ((DbType)this.IntCode == DbType.Time)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (NpgsqlTypes.NpgsqlDbType.Time).ToString();
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (OracleType.TimestampLocal).ToString();
-            }
-            else if ((DbType)this.IntCode == DbType.Int64)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (NpgsqlTypes.NpgsqlDbType.Bigint).ToString();
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (OracleType.Number).ToString();
-            }
-            else if ((DbType)this.IntCode == DbType.Int16)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (NpgsqlTypes.NpgsqlDbType.Smallint).ToString();
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (OracleType.Number).ToString();
-            }
-            else if ((DbType)this.IntCode == DbType.Double)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (NpgsqlTypes.NpgsqlDbType.Double).ToString();
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (OracleType.Double).ToString();
-            }
-            else if ((DbType)this.IntCode == DbType.VarNumeric)
-            {
-                if (vendor == DatabaseVendors.PGSQL)
-                    return (NpgsqlTypes.NpgsqlDbType.Numeric).ToString();
-                if (vendor == DatabaseVendors.ORACLE)
-                    return (OracleType.Number).ToString();
-            }
-
-
-            return this.IntCode.ToString();
-        }
-
-        public static explicit operator EbDbType(DbType v)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal EbDbType(int i)
-        {
-            IntCode = i;    // 38 bytes max
-        }
-
-        public static explicit operator EbDbType(int i)
-        {
-            return EbDbTypes.Get(i);
-        }
-
-        public static explicit operator EbDbType(Int64 i)
-        {
-            return EbDbTypes.Get(Convert.ToInt32(i));
-        }
-
-        //int i = (int)o;
-        public static explicit operator int(EbDbType o)
-        {
-            return o.IntCode;
-        }
-
-        public static bool operator ==(int i, EbDbType b)
-        {
-            return (i == b.IntCode);
-        }
-
-        public static bool operator !=(int i, EbDbType b)
-        {
-            return (i != b.IntCode);
-        }
-
-        public override string ToString()
-        {
-            return ((DbType)this.IntCode).ToString();
-        }
+        Json = 28
     }
 
-    public class EbDbTypes
+    public interface IVendorDbTypes
     {
-        public static EbDbType String;
-        public static EbDbType Decimal;
-        public static EbDbType Double;
-        public static EbDbType Int16;
-        public static EbDbType Int32;
-        public static EbDbType Int64;
-        public static EbDbType Json;
-        public static EbDbType Boolean;
-        public static EbDbType Date;
-        public static EbDbType DateTime;
-        public static EbDbType VarNumeric;
-        public static EbDbType Time;
+        VendorDbType AnsiString { get; }
+        VendorDbType Binary { get; }
+        VendorDbType Byte { get; }
+        //VendorDbType Boolean { get; }
+        //VendorDbType Currency { get; }
+        VendorDbType Date { get; }
+        VendorDbType DateTime { get; }
+        VendorDbType Decimal { get; }
+        VendorDbType Double { get; }
+        //VendorDbType Guid { get; }
+        VendorDbType Int16 { get; }
+        VendorDbType Int32 { get; }
+        VendorDbType Int64 { get; }
+        VendorDbType Object { get; }
+        //VendorDbType SByte { get; }
+        //VendorDbType Single { get; }
+        VendorDbType String { get; }
+        VendorDbType Time { get; }
+        //VendorDbType UInt16 { get; }
+        //VendorDbType UInt32 { get; }
+        //VendorDbType UInt64 { get; }
+        VendorDbType VarNumeric { get; }
+        //VendorDbType AnsiStringFixedLength { get; }
+        //VendorDbType StringFixedLength { get; }
+        //VendorDbType Xml { get; }
+        //VendorDbType DateTime2 { get; }
+        //VendorDbType DateTimeOffset { get; }
+        VendorDbType Json { get; }
 
-        static EbDbTypes()
+        dynamic Get(EbDbTypes e);
+    }
+
+    public struct VendorDbType
+    {
+        public EbDbTypes EbDbType { get; }
+        public dynamic VDbType { get; }
+
+        public VendorDbType(EbDbTypes type, dynamic vDbType)
         {
-			String = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Text);
-			Decimal = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Double);
-			Double = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Double);
-			Int16 = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Integer);
-			Int32 = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Integer);
-			Int64 = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Integer);
-			Json = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Json);
-			Boolean = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Boolean);
-			Date = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Date);
-			DateTime = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Timestamp);
-			VarNumeric = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Numeric);
-			Time = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Time);
-		}
-
-        public EbDbTypes(DatabaseVendors vendor)
-        {
-            if(vendor == DatabaseVendors.PGSQL)
-            {
-                String = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Text);
-                Decimal = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Double);
-                Double = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Double);
-                Int16 = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Integer);
-                Int32 = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Integer);
-                Int64 = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Integer);
-                Json = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Json);
-                Boolean = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Boolean);
-                Date = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Date);
-                DateTime = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Timestamp);
-                VarNumeric = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Numeric);
-                Time = new EbDbType((int)NpgsqlTypes.NpgsqlDbType.Time);
-            }
-            if(vendor == DatabaseVendors.ORACLE)
-            {
-                String = new EbDbType((int)OracleType.VarChar);
-                Decimal = new EbDbType((int)OracleType.Double);
-                Double = new EbDbType((int)OracleType.Double);
-                Int16 = new EbDbType((int)OracleType.Int16);
-                Int32 = new EbDbType((int)OracleType.Int32);
-                Int64 = new EbDbType((int)OracleType.Number);
-                Json = new EbDbType((int)OracleType.Clob);
-                Boolean = new EbDbType((int)OracleType.VarChar);
-                Date = new EbDbType((int)OracleType.Timestamp);
-                DateTime = new EbDbType((int)OracleType.DateTime);
-                VarNumeric = new EbDbType((int)OracleType.Number);
-                Time = new EbDbType((int)OracleType.TimestampWithTZ);
-            }
-        }
-
-        public static EbDbType Get(int intcode)
-        {
-            foreach (EbDbType o in Enumerator)
-            {
-                if (o.IntCode == intcode)
-                    return o;
-            }
-
-            return String;
-        }
-
-        public static IEnumerable<EbDbType> Enumerator
-        {
-            get
-            {
-                return new[] {
-                    String, Decimal, Double, Int32, Int64, Int16, Json, Boolean, Date, DateTime, Time
-                };
-            }
+            this.EbDbType = type;
+            this.VDbType = vDbType;
         }
     }
 }

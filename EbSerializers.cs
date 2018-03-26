@@ -27,7 +27,6 @@ namespace ExpressBase.Common
 
         public static void ProtoBuf_Serialize(Stream stream, object obj)
         {
-            RuntimeTypeModel.Default[typeof(EbDbType)].SetSurrogate(typeof(EbDbTypeSurrogate));
             ProtoBuf.Serializer.Serialize(stream, obj);
         }
 
@@ -46,7 +45,6 @@ namespace ExpressBase.Common
         public static T ProtoBuf_DeSerialize<T>(Stream stream)
         {
             object obj = null;
-            RuntimeTypeModel.Default[typeof(EbDbType)].SetSurrogate(typeof(EbDbTypeSurrogate));
             obj = ProtoBuf.Serializer.Deserialize<T>(stream);
 
             return (T)obj;
@@ -68,23 +66,6 @@ namespace ExpressBase.Common
         }
     }
 
-    [ProtoContract]
-    public class EbDbTypeSurrogate
-    {
-        [ProtoMember(1)]
-        public int IntCode { get; set; }
-
-        public static implicit operator EbDbTypeSurrogate(EbDbType myClass)
-        {
-            return
-                new EbDbTypeSurrogate { IntCode = myClass.IntCode };
-        }
-
-        public static implicit operator EbDbType(EbDbTypeSurrogate myClass)
-        {
-            return (EbDbType)myClass.IntCode;
-        }
-    }
 
     public class DataSetCompressor
     {

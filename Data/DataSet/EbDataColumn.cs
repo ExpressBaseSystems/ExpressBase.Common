@@ -14,13 +14,13 @@ namespace ExpressBase.Common
     {
         public EbDataColumn() { }
 
-        public EbDataColumn(string columnname, EbDbType type)
+        public EbDataColumn(string columnname, EbDbTypes type)
         {
             this.ColumnName = columnname;
             this.Type = type;
         }
       
-        public EbDataColumn(int index, string columnname, EbDbType type)
+        public EbDataColumn(int index, string columnname, EbDbTypes type)
         {
             this.ColumnIndex = index;
             this.ColumnName = columnname;
@@ -33,14 +33,8 @@ namespace ExpressBase.Common
         [ProtoBuf.ProtoMember(2)]
         public string ColumnName { get; set; }
 
-        public EbDbType Type
-        {
-            get { return (EbDbType)this.IntType; }
-            set { this.IntType = (int)value; }
-        }
-
         [ProtoBuf.ProtoMember(3)]
-        public int IntType { get; set; }
+        public EbDbTypes Type { get; set; }
     }
 
     [ProtoBuf.ProtoContract(IgnoreListHandling = true)]

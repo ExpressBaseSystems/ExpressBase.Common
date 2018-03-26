@@ -202,6 +202,7 @@ else
         public virtual void SetData(object value) { }
 
         public virtual object GetData() { return null; }
+        public virtual string GetToolHtml() { return @"<div eb-type='@toolName' class='tool'>@toolName</div>".Replace("@toolName", this.GetType().Name.Substring(2)); }
 
         protected string WrapWithDblQuotes(string input)
         {

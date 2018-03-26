@@ -3,7 +3,10 @@ using ExpressBase.Common.Connections;
 using ExpressBase.Common.Structures;
 using Npgsql;
 using Npgsql.Schema;
+using NpgsqlTypes;
+using ProtoBuf;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
@@ -12,6 +15,68 @@ using System.Net.Sockets;
 
 namespace ExpressBase.Common
 {
+    public class PGSQLEbDbTypes : IVendorDbTypes
+    {
+        private Dictionary<EbDbTypes, VendorDbType> InnerDictionary { get; }
+
+        VendorDbType IVendorDbTypes.AnsiString { get { return InnerDictionary[EbDbTypes.AnsiString]; } }
+        VendorDbType IVendorDbTypes.Binary { get { return InnerDictionary[EbDbTypes.Binary]; } }
+        VendorDbType IVendorDbTypes.Byte { get { return InnerDictionary[EbDbTypes.Byte]; } }
+        VendorDbType IVendorDbTypes.Date { get { return InnerDictionary[EbDbTypes.Date]; } }
+        VendorDbType IVendorDbTypes.DateTime { get { return InnerDictionary[EbDbTypes.DateTime]; } }
+        VendorDbType IVendorDbTypes.Decimal { get { return InnerDictionary[EbDbTypes.Decimal]; } }
+        VendorDbType IVendorDbTypes.Double { get { return InnerDictionary[EbDbTypes.Double]; } }
+        VendorDbType IVendorDbTypes.Int16 { get { return InnerDictionary[EbDbTypes.Int16]; } }
+        VendorDbType IVendorDbTypes.Int32 { get { return InnerDictionary[EbDbTypes.Int32]; } }
+        VendorDbType IVendorDbTypes.Int64 { get { return InnerDictionary[EbDbTypes.Int64]; } }
+        VendorDbType IVendorDbTypes.Object { get { return InnerDictionary[EbDbTypes.Object]; } }
+        VendorDbType IVendorDbTypes.String { get { return InnerDictionary[EbDbTypes.String]; } }
+        VendorDbType IVendorDbTypes.Time { get { return InnerDictionary[EbDbTypes.String]; } }
+        VendorDbType IVendorDbTypes.VarNumeric { get { return InnerDictionary[EbDbTypes.VarNumeric]; } }
+        VendorDbType IVendorDbTypes.Json { get { return InnerDictionary[EbDbTypes.Json]; } }
+
+        //VendorDbType IVendorDbTypes.Boolean => new VendorDbType(EbDbTypes.Boolean, NpgsqlDbType.Boolean);
+        //VendorDbType IVendorDbTypes.Currency => new VendorDbType(EbDbTypes.Currency, NpgsqlDbType.Money);
+        //VendorDbType IVendorDbTypes.Guid => new VendorDbType(EbDbTypes.Double, NpgsqlDbType.Double);
+        //VendorDbType IVendorDbTypes.SByte => new VendorDbType(EbDbTypes.SByte, NpgsqlDbType.in);
+        // VendorDbType IVendorDbTypes.Single => new VendorDbType(EbDbTypes.Single, NpgsqlDbType.Real);
+        //VendorDbType IVendorDbTypes.AnsiStringFixedLength => new VendorDbType(EbDbTypes.VarNumeric, (int)NpgsqlDbType.Numeric, NpgsqlDbType.Numeric.ToString());
+        //VendorDbType IVendorDbTypes.Xml => new VendorDbType(EbDbTypes.Xml, (int)NpgsqlDbType.Xml, NpgsqlDbType.Xml.ToString());
+        //VendorDbType IVendorDbTypes.DateTime2 => new VendorDbType(EbDbTypes.DateTime2, (int)NpgsqlDbType.Timestamp, NpgsqlDbType.Timestamp.ToString());
+        //VendorDbType IVendorDbTypes.DateTimeOffset => new VendorDbType(EbDbTypes.DateTimeOffset, (int)NpgsqlDbType.Timestamp, NpgsqlDbType.Timestamp.ToString());
+        //VendorDbType IVendorDbTypes.StringFixedLength => throw new NotImplementedException();
+        //VendorDbType IVendorDbTypes.UInt16 => throw new NotImplementedException();
+        //VendorDbType IVendorDbTypes.UInt32 => throw new NotImplementedException();
+        //VendorDbType IVendorDbTypes.UInt64 => throw new NotImplementedException();
+
+        private PGSQLEbDbTypes()
+        {
+            this.InnerDictionary = new Dictionary<EbDbTypes, VendorDbType>();
+            this.InnerDictionary.Add(EbDbTypes.AnsiString, new VendorDbType(EbDbTypes.AnsiString, NpgsqlDbType.Text));
+            this.InnerDictionary.Add(EbDbTypes.Binary, new VendorDbType(EbDbTypes.Binary, NpgsqlDbType.Bytea));
+            this.InnerDictionary.Add(EbDbTypes.Byte, new VendorDbType(EbDbTypes.Byte, NpgsqlDbType.Char));
+            this.InnerDictionary.Add(EbDbTypes.Date, new VendorDbType(EbDbTypes.Date, NpgsqlDbType.Date));
+            this.InnerDictionary.Add(EbDbTypes.DateTime, new VendorDbType(EbDbTypes.DateTime, NpgsqlDbType.Timestamp));
+            this.InnerDictionary.Add(EbDbTypes.Decimal, new VendorDbType(EbDbTypes.Decimal, NpgsqlDbType.Numeric));
+            this.InnerDictionary.Add(EbDbTypes.Double, new VendorDbType(EbDbTypes.Double, NpgsqlDbType.Double));
+            this.InnerDictionary.Add(EbDbTypes.Int16, new VendorDbType(EbDbTypes.Int16, NpgsqlDbType.Smallint));
+            this.InnerDictionary.Add(EbDbTypes.Int32, new VendorDbType(EbDbTypes.Int32, NpgsqlDbType.Integer));
+            this.InnerDictionary.Add(EbDbTypes.Int64, new VendorDbType(EbDbTypes.Int64, NpgsqlDbType.Bigint));
+            this.InnerDictionary.Add(EbDbTypes.Object, new VendorDbType(EbDbTypes.Object, NpgsqlDbType.Json));
+            this.InnerDictionary.Add(EbDbTypes.String, new VendorDbType(EbDbTypes.String, NpgsqlDbType.Text));
+            this.InnerDictionary.Add(EbDbTypes.Time, new VendorDbType(EbDbTypes.Time, NpgsqlDbType.Time));
+            this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, NpgsqlDbType.Numeric));
+            this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, NpgsqlDbType.Json));
+        }
+
+        public static IVendorDbTypes Instance => new PGSQLEbDbTypes();
+
+        public dynamic Get(EbDbTypes e)
+        {
+            return this.InnerDictionary[e].VDbType;
+        }
+    }
+
     public class PGSQLDatabase : IDatabase
     {
         public DatabaseVendors Vendor
@@ -19,6 +84,14 @@ namespace ExpressBase.Common
             get
             {
                 return DatabaseVendors.PGSQL;
+            }
+        }
+
+        public IVendorDbTypes VendorDbTypes
+        {
+            get
+            {
+                return PGSQLEbDbTypes.Instance;
             }
         }
 
@@ -52,22 +125,15 @@ namespace ExpressBase.Common
             return new NpgsqlCommand(sql, (NpgsqlConnection)con, (NpgsqlTransaction)trans);
         }
 
-        public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbType type, object value)
+        public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type, object value)
         {
-            return new NpgsqlParameter(parametername, (NpgsqlTypes.NpgsqlDbType)type.VendorSpecificIntCode(DatabaseVendors.PGSQL)) { Value = value };
+            return new NpgsqlParameter(parametername, this.VendorDbTypes.Get(type)) { Value = value };
         }
 
-        public String GetType(EbDbType type)
+        public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type)
         {
-            
-            return type.VendorSpecificStringCode(DatabaseVendors.PGSQL);
-            
+            return new NpgsqlParameter(parametername, this.VendorDbTypes.Get(type));
         }
-
-        //public string ConvertToDbDate(string datetime_)
-        //{
-        //    return datetime_;
-        //}
 
         public T DoQuery<T>(string query, params DbParameter[] parameters)
         {
@@ -255,7 +321,7 @@ namespace ExpressBase.Common
             return typeArray;
         }
 
-        private EbDbType ConvertToDbType(Type _typ)
+        private EbDbTypes ConvertToDbType(Type _typ)
         {
             if (_typ == typeof(DateTime))
                 return EbDbTypes.Date;
@@ -768,7 +834,7 @@ namespace ExpressBase.Common
             }
         }
 
-        
+
     }
 }
 
