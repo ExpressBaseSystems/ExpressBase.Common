@@ -42,6 +42,8 @@ namespace ExpressBase.Common.Objects
 
         public bool MetaOnly { get; set; }
 
+        public int Limit { get; set; }
+
         public Meta()
         {
             this.enumoptions = new Dictionary<int, string>();

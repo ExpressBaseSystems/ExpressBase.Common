@@ -96,12 +96,21 @@ namespace ExpressBase.Common.Objects.Attributes
 
         public string PropertyEditorSource { get; set; }
 
+        public int Limit { get; set; }
+
         public PropertyEditor(PropertyEditorType type) { this.PropertyEditorType = type; }
 
         public PropertyEditor(PropertyEditorType type, string source)
         {
             this.PropertyEditorType = type;
             this.PropertyEditorSource = source;
+        }
+
+        public PropertyEditor(PropertyEditorType type, string source, int limit)
+        {
+            this.PropertyEditorType = type;
+            this.PropertyEditorSource = source;
+            this.Limit = limit;
         }
     }
     public class PropertyGroup : Attribute
