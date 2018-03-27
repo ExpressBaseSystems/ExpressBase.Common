@@ -30,7 +30,7 @@ namespace ExpressBase.Common.Data
         VendorDbType IVendorDbTypes.Int64 { get { return InnerDictionary[EbDbTypes.Int64]; } }
         VendorDbType IVendorDbTypes.Object { get { return InnerDictionary[EbDbTypes.Object]; } }
         VendorDbType IVendorDbTypes.String { get { return InnerDictionary[EbDbTypes.String]; } }
-        VendorDbType IVendorDbTypes.Time { get { return InnerDictionary[EbDbTypes.String]; } }
+        VendorDbType IVendorDbTypes.Time { get { return InnerDictionary[EbDbTypes.Time]; } }
         VendorDbType IVendorDbTypes.VarNumeric { get { return InnerDictionary[EbDbTypes.VarNumeric]; } }
         VendorDbType IVendorDbTypes.Json { get { return InnerDictionary[EbDbTypes.Json]; } }
         VendorDbType IVendorDbTypes.Boolean { get { return InnerDictionary[EbDbTypes.Boolean]; } }
@@ -73,7 +73,7 @@ namespace ExpressBase.Common.Data
 
         public static IVendorDbTypes Instance => new OracleEbDbTypes();
 
-        public dynamic Get(EbDbTypes e)
+        public dynamic GetVendorDbType(EbDbTypes e)
         {
             return this.InnerDictionary[e].VDbType;
         }
@@ -136,12 +136,12 @@ namespace ExpressBase.Common.Data
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type, object value)
         {
-            return new OracleParameter(parametername, this.VendorDbTypes.Get(type)) { Value = value };
+            return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = value };
         }
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type)
         {
-            return new OracleParameter(parametername, this.VendorDbTypes.Get(type));
+            return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type));
         }
 
         //public string ConvertToDbDate(string datetime_)
