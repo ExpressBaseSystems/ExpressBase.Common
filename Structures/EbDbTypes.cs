@@ -165,7 +165,7 @@
         //VendorDbType DateTimeOffset { get; }
         VendorDbType Json { get; }
 
-        dynamic Get(EbDbTypes e);
+        dynamic GetVendorDbType(EbDbTypes e);
     }
 
     public struct VendorDbType

@@ -3,11 +3,11 @@ BEGIN
 
 	EXECUTE IMMEDIATE 'CREATE TABLE eb_roles
 	(
-    		id integer NOT NULL,
+    		id number NOT NULL,
     		role_name varchar(20),
     		eb_del char,
     		applicationname varchar(50),
-    		applicationid integer,
+    		applicationid number,
     		description varchar(200),
     		CONSTRAINT eb_roles_id_pkey PRIMARY KEY (id),
     		CONSTRAINT eb_rolename_unique UNIQUE (role_name)

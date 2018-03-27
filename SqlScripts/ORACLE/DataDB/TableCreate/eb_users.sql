@@ -14,7 +14,7 @@ BEGIN
 	
 	EXECUTE IMMEDIATE 'CREATE TABLE eb_users
 	(
-    		id integer NOT NULL,
+    		id number NOT NULL,
     		email varchar(50),
     		pwd varchar(20),
     		eb_del char DEFAULT '''|| eb_del ||''',
@@ -38,7 +38,7 @@ BEGIN
     		u_token varchar(25),
     		socialid varchar(30),
     		prolink varchar(50),
-    		loginattempts integer DEFAULT 1,
+    		loginattempts number DEFAULT 1,
     		company varchar(50),
     		employees varchar(30),
     		designation varchar(30),

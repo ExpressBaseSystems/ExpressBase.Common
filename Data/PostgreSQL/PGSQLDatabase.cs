@@ -31,7 +31,7 @@ namespace ExpressBase.Common
         VendorDbType IVendorDbTypes.Int64 { get { return InnerDictionary[EbDbTypes.Int64]; } }
         VendorDbType IVendorDbTypes.Object { get { return InnerDictionary[EbDbTypes.Object]; } }
         VendorDbType IVendorDbTypes.String { get { return InnerDictionary[EbDbTypes.String]; } }
-        VendorDbType IVendorDbTypes.Time { get { return InnerDictionary[EbDbTypes.String]; } }
+        VendorDbType IVendorDbTypes.Time { get { return InnerDictionary[EbDbTypes.Time]; } }
         VendorDbType IVendorDbTypes.VarNumeric { get { return InnerDictionary[EbDbTypes.VarNumeric]; } }
         VendorDbType IVendorDbTypes.Json { get { return InnerDictionary[EbDbTypes.Json]; } }
 
@@ -72,7 +72,7 @@ namespace ExpressBase.Common
 
         public static IVendorDbTypes Instance => new PGSQLEbDbTypes();
 
-        public dynamic Get(EbDbTypes e)
+        public dynamic GetVendorDbType(EbDbTypes e)
         {
             return this.InnerDictionary[e].VDbType;
         }
@@ -128,12 +128,12 @@ namespace ExpressBase.Common
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type, object value)
         {
-            return new NpgsqlParameter(parametername, this.VendorDbTypes.Get(type)) { Value = value };
+            return new NpgsqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = value };
         }
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type)
         {
-            return new NpgsqlParameter(parametername, this.VendorDbTypes.Get(type));
+            return new NpgsqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type));
         }
 
         public T DoQuery<T>(string query, params DbParameter[] parameters)
@@ -493,7 +493,7 @@ namespace ExpressBase.Common
         }
 
         //-----------Sql queries
-
+        public string EB_TEST_CREATE_TABLE { get { return "CREATE TABLE eb_testConnection(id integer)"; } }
         public string EB_AUTHETICATE_USER_NORMAL { get { return "SELECT * FROM eb_authenticate_unified(uname => @uname, password => @pass, wc => @wc);"; } }
 
         public string EB_AUTHENTICATEUSER_SOCIAL { get { return "SELECT * FROM eb_authenticate_unified(social => @social, wc => @wc);"; } }
@@ -729,15 +729,7 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"SELECT 
-	                    EO.obj_name, EOV.refid, EOV.version_num, EO.obj_type,EOS.status,EO.obj_tags
-                    FROM 
-	                    eb_objects EO, eb_objects_ver EOV,eb_objects_status EOS,unnest(string_to_array(EO.obj_tags, ',')) Tags
-                    WHERE 
-	                    Tags IN(:tags) AND EO.id =EOV.eb_objects_id
-                        AND EOS.eb_obj_ver_id = EOV.id AND EOS.status = 3 AND EO.obj_type IN(16 ,17)
-    
-                ";
+                return "SELECT * FROM eb_get_tagged_object(:tags);";
             }
         }
 

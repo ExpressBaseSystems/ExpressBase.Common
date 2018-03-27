@@ -8,15 +8,15 @@ BEGIN
 	
 	EXECUTE IMMEDIATE 'CREATE TABLE eb_role2permission
 	(
-    		id integer NOT NULL,
-    		role_id integer,
+    		id number NOT NULL,
+    		role_id number,
     		eb_del char DEFAULT '''|| eb_del ||''',
     		permissionname varchar(20),
-    		createdby integer,
+    		createdby number,
     		createdat timestamp,
-    		obj_id integer,
-    		op_id integer,
-    		revokedby integer,
+    		obj_id number,
+    		op_id number,
+    		revokedby number,
     		revokedat timestamp,
     		CONSTRAINT eb_role2permission_pkey PRIMARY KEY (id)
 	)';

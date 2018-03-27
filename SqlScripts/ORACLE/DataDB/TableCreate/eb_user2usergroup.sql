@@ -4,13 +4,13 @@ BEGIN
 
 	EXECUTE IMMEDIATE 'CREATE TABLE eb_user2usergroup
 	(
-   		id integer NOT NULL,
-    		userid integer,
-    		groupid integer,
+   		id number NOT NULL,
+    		userid number,
+    		groupid number,
     		eb_del char DEFAULT '''|| eb_del ||''',
-    		createdby integer,
+    		createdby number,
     		createdat timestamp,
-    		revokedby integer,
+    		revokedby number,
     		revokedat timestamp,
     		CONSTRAINT eb_user2usergroup_pkey PRIMARY KEY (id)
 	)';

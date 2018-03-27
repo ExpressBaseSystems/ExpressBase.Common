@@ -8,13 +8,13 @@ BEGIN
 	
 	EXECUTE IMMEDIATE 'CREATE TABLE eb_role2user
 	(
-    		id integer NOT NULL,
-   		role_id integer,
-    		user_id integer,
+    		id number NOT NULL,
+   		role_id number,
+    		user_id number,
     		eb_del char DEFAULT '''|| eb_del ||''',
-    		createdby integer,
+    		createdby number,
     		createdat timestamp,
-    		revokedby integer,
+    		revokedby number,
     		revokedat timestamp,
     		CONSTRAINT eb_role2user_id_pkey PRIMARY KEY (id)
 	)';
