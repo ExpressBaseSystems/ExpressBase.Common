@@ -97,7 +97,7 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        private const string CONNECTION_STRING_BARE = "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= {2};Password={3}";
+        private const string CONNECTION_STRING_BARE = "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= {2};Password={3};Min Pool Size=10;Connection Lifetime = 120;";
         private string _cstr;
         private EbBaseDbConnection EbBaseDbConnection { get; set; }
 
@@ -108,7 +108,7 @@ namespace ExpressBase.Common.Data
         }
         public OracleDB()
         {
-            _cstr = "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = 35.200.241.84)(PORT = 1521))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= MASTERTEX;Password=master";
+            _cstr = "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = 35.200.241.84)(PORT = 1521))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= MASTERTEX;Password=master;Connection Timeout=900; pooling='true';Max Pool Size=900";
             //_cstr = "Data Source = RHEL5; User ID = TEST; Password = Passw0rd1 ";
         }
 
@@ -205,8 +205,12 @@ namespace ExpressBase.Common.Data
                         }
                     }
                 }
-                catch (OracleException) { }
-                catch (SocketException) { }
+                catch (OracleException orcl) {
+                    Console.WriteLine(orcl.Message);
+                }
+                catch (SocketException orcl) {
+                    Console.WriteLine(orcl.Message);
+                }
             }
 
             return obj;
@@ -282,7 +286,9 @@ namespace ExpressBase.Common.Data
                    // }
                 }
                 catch (OracleException orcl)
-                { }
+                {
+                    Console.WriteLine(orcl.Message);
+                }
                 catch (SocketException scket) { }
             }
 
@@ -307,7 +313,10 @@ namespace ExpressBase.Common.Data
                     }
                 }
             }
-            catch (OracleException ex) { }
+            catch (OracleException orcl)
+            {
+                Console.WriteLine(orcl.Message);
+            }
 
             return null;
         }
@@ -327,7 +336,6 @@ namespace ExpressBase.Common.Data
                     {
                         using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                         {
-                           
                             if ( Regex.IsMatch(sql_arr[i], @"\:+") && parameters != null && parameters.Length > 0)
                             {
                                 cmd.Parameters.AddRange(parameters);                                 
@@ -347,9 +355,10 @@ namespace ExpressBase.Common.Data
                         }
                     }
                 }
-                catch (OracleException orcl)
+                
+                catch (Exception orcl)
                 {
-
+                    Console.WriteLine(orcl.Message);
                 }
             }
 
@@ -371,7 +380,10 @@ namespace ExpressBase.Common.Data
                         return cmd.ExecuteNonQuery();
                     }
                 }
-                catch (OracleException orcl) { }
+                catch (OracleException orcl)
+                {
+                    Console.WriteLine(orcl.Message);
+                }
 
                 return 0;
             }
@@ -399,6 +411,7 @@ namespace ExpressBase.Common.Data
                 }
                 catch (OracleException orcl)
                 {
+                    Console.WriteLine(orcl.Message);
                     throw orcl;
                 }
                 catch (SocketException scket) { }
@@ -421,6 +434,7 @@ namespace ExpressBase.Common.Data
                 }
                 catch (OracleException orcl)
                 {
+                    Console.WriteLine(orcl.Message);
                     throw orcl;
                 }
                 catch (SocketException scket) { }
@@ -450,6 +464,7 @@ namespace ExpressBase.Common.Data
                 }
                 catch (OracleException orcl)
                 {
+                    Console.WriteLine(orcl.Message);
                     throw orcl;
                 }
                 catch (SocketException scket) { }
@@ -586,6 +601,11 @@ namespace ExpressBase.Common.Data
 
         //-----------Sql queries
 
+        public string EB_TEST_CREATE_TABLE { get { return @"CREATE TABLE eb_test
+	                                                        (
+    		                                                        id integer NOT NULL,
+    		                                                        CONSTRAINT eb_test_id_pkey PRIMARY KEY (id)
+	                                                        ) "; } }
         public string EB_AUTHETICATE_USER_NORMAL { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, passwrd => :pass,wc => :wc))"; } }
         public string EB_AUTHENTICATEUSER_SOCIAL { get { return "SELECT * FROM table(eb_authenticate_unified(social => :social, wc => :wc))"; } }
         public string EB_AUTHENTICATEUSER_SSO { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, wc => :wc))"; } }

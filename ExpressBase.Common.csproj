@@ -5,6 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="SqlScripts\ORACLE\InfraDb\**" />
+    <Compile Remove="SqlScripts\ORACLE\ObjectsDb\Tables\**" />
+    <Compile Remove="SqlScripts\PostGreSql\**" />
+    <EmbeddedResource Remove="SqlScripts\ORACLE\InfraDb\**" />
+    <EmbeddedResource Remove="SqlScripts\ORACLE\ObjectsDb\Tables\**" />
+    <EmbeddedResource Remove="SqlScripts\PostGreSql\**" />
+    <None Remove="SqlScripts\ORACLE\InfraDb\**" />
+    <None Remove="SqlScripts\ORACLE\ObjectsDb\Tables\**" />
+    <None Remove="SqlScripts\PostGreSql\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FOSS.ServiceStack.Core" Version="5.0.2" />
     <PackageReference Include="FOSS.ServiceStack.Redis.Core" Version="5.0.2" />
     <PackageReference Include="dotNetCore.Data.OracleClient" Version="1.0.0" />
@@ -29,66 +41,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/TableCreate/eb_users.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/TableCreate/eb_userstatus.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/TableCreate/eb_usergroup.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/TableCreate/eb_useranonymous.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/TableCreate/eb_user2usergroup.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/TableCreate/eb_roles.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/TableCreate/eb_role2user.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/TableCreate/eb_role2role.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/TableCreate/eb_role2permission.sql" />
-
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/FunctionCreate/eb_authenticate_anonymous.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/FunctionCreate/eb_authenticate_unified.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/FunctionCreate/eb_create_or_update_rbac_manageroles.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/FunctionCreate/eb_create_or_update_role.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/FunctionCreate/eb_create_or_update_role2role.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/FunctionCreate/eb_create_or_update_role2user.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/FunctionCreate/eb_createormodifyuserandroles.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/FunctionCreate/eb_createormodifyusergroup.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/FunctionCreate/eb_getpermissions.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/FunctionCreate/eb_getroles.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/DataDb/FunctionCreate/eb_assignprivileges.sql" />
-
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/TableCreate/eb_applications.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/TableCreate/eb_bots.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/TableCreate/eb_files.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/TableCreate/eb_objects.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/TableCreate/eb_objects_relations.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/TableCreate/eb_objects_status.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/TableCreate/eb_objects_ver.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/TableCreate/eb_objects2application.sql" />
-
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/FunctionCreate/eb_botdetails.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/FunctionCreate/eb_createbot.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/FunctionCreate/eb_objects_change_status.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/FunctionCreate/eb_objects_commit.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/FunctionCreate/eb_objects_create_major_version.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/FunctionCreate/eb_objects_create_minor_version.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/FunctionCreate/eb_objects_create_new_object.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/FunctionCreate/eb_objects_create_patch_version.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/FunctionCreate/eb_objects_exploreobject.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/FunctionCreate/eb_objects_getversiontoopen.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/FunctionCreate/eb_objects_save.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/FunctionCreate/eb_objects_update_dashboard.sql" />
-    <EmbeddedResource Include="SqlScripts/PostGreSql/ObjectsDb/FunctionCreate/eb_update_rel.sql" />
-
-    <EmbeddedResource Include="SqlScripts\Oracle\DataDb\Alter_Eb_User_SequencesOracle.sql" />
-    <EmbeddedResource Include="SqlScripts\Oracle\DataDb\Create_Eb_UserOracle.sql" />
-    <EmbeddedResource Include="SqlScripts\Oracle\DataDb\Create_Eb_user_TriggerOracle.sql" />
-    <EmbeddedResource Include="SqlScripts\Oracle\DataDb\Create_Eb_User_FunctionsOracle.sql" />
-
-    <EmbeddedResource Include="SqlScripts/Oracle/ObjectsDb/Create_Eb_ObjectsOracle.sql" />
-    <EmbeddedResource Include="SqlScripts/Oracle/ObjectsDb/Create_Eb_Object_TriggerOracle.sql" />
-    <EmbeddedResource Include="SqlScripts/Oracle/ObjectsDb/Create_Eb_Object_FunctionsOracle.sql" />
-    <EmbeddedResource Include="SqlScripts/Oracle/ObjectsDb/Alter_Eb_Object_SequencesOracle.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="SqlScripts\Oracle\DataDb\Functions\" />
-    <Folder Include="SqlScripts\Oracle\DataDb\Tables\" />
-    <Folder Include="SqlScripts\Oracle\InfraDb\" />
-    <Folder Include="SqlScripts\Oracle\ObjectsDb\Tables\" />
+    <Folder Include="SqlScripts\ORACLE\DataDb\FunctionCreate\" />
+    <Folder Include="SqlScripts\ORACLE\DataDb\TableCreate\" />
   </ItemGroup>
 </Project>

@@ -118,151 +118,241 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Alter_Eb_Object_SequencesOracle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\Oracle\ObjectsDb\Alter_Eb_Object_SequencesOracle.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="Alter_Eb_User_SequencesOracle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\Oracle\DataDB\Alter_Eb_User_SequencesOracle.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="Create_Eb_ObjectsOracle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\Oracle\ObjectsDb\Create_Eb_ObjectsOracle.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="Create_Eb_Object_FunctionsOracle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\Oracle\ObjectsDb\Create_Eb_Object_FunctionsOracle.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="Create_Eb_User_FunctionsOracle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\Oracle\DataDB\Create_Eb_User_FunctionsOracle.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="Create_Eb_Object_TriggerOracle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\Oracle\ObjectsDb\Create_Eb_Object_TriggerOracle.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="Create_Eb_UserOracle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\Oracle\DataDB\Create_Eb_UserOracle.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="Create_Eb_user_TriggerOracle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\Oracle\DataDB\Create_Eb_user_TriggerOracle.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
   <data name="eb_applications" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\TableCreate\eb_applications.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\ObjectsDb\TableCreate\eb_applications.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_applications1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\ObjectsDb\TableCreate\eb_applications.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_authenticate_anonymous" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\FunctionCreate\eb_authenticate_anonymous.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\DataDB\FunctionCreate\eb_authenticate_anonymous.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_authenticate_anonymous1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\DataDb\FunctionCreate\eb_authenticate_anonymous.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_authenticate_unified" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\FunctionCreate\eb_authenticate_unified.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\DataDB\FunctionCreate\eb_authenticate_unified.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_authenticate_unified1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\DataDb\FunctionCreate\eb_authenticate_unified.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_botdetails" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\FunctionCreate\eb_botdetails.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\PGSQL\ObjectsDb\FunctionCreate\eb_botdetails.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_bots" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\TableCreate\eb_bots.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\ObjectsDb\TableCreate\eb_bots.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="eb_bots1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\ObjectsDb\TableCreate\eb_bots.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_createbot" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\FunctionCreate\eb_createbot.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\PGSQL\ObjectsDb\FunctionCreate\eb_createbot.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_createormodifyuserandroles" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\FunctionCreate\eb_createormodifyuserandroles.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\DataDB\FunctionCreate\eb_createormodifyuserandroles.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_createormodifyuserandroles1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\DataDb\FunctionCreate\eb_createormodifyuserandroles.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_createormodifyusergroup" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\FunctionCreate\eb_createormodifyusergroup.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\DataDB\FunctionCreate\eb_createormodifyusergroup.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_createormodifyusergroup1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\DataDb\FunctionCreate\eb_createormodifyusergroup.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_create_or_update_rbac_manageroles" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\FunctionCreate\eb_create_or_update_rbac_manageroles.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\PGSQL\DataDb\FunctionCreate\eb_create_or_update_rbac_manageroles.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_create_or_update_rbac_roles" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\ORACLE\DataDB\FunctionCreate\eb_create_or_update_rbac_roles.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_create_or_update_role" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\FunctionCreate\eb_create_or_update_role.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\DataDB\FunctionCreate\eb_create_or_update_role.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_create_or_update_role1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\DataDb\FunctionCreate\eb_create_or_update_role.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_create_or_update_role2role" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\FunctionCreate\eb_create_or_update_role2role.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\DataDB\FunctionCreate\eb_create_or_update_role2role.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_create_or_update_role2role1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\DataDb\FunctionCreate\eb_create_or_update_role2role.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_create_or_update_role2user" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\FunctionCreate\eb_create_or_update_role2user.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\DataDB\FunctionCreate\eb_create_or_update_role2user.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_create_or_update_role2user1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\DataDb\FunctionCreate\eb_create_or_update_role2user.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_files" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\TableCreate\eb_files.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\ObjectsDb\TableCreate\eb_files.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="eb_files1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\ObjectsDb\TableCreate\eb_files.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_getpermissions" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\FunctionCreate\eb_getpermissions.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\DataDB\FunctionCreate\eb_getpermissions.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_getpermissions1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\DataDb\FunctionCreate\eb_getpermissions.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_getroles" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\FunctionCreate\eb_getroles.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\DataDB\FunctionCreate\eb_getroles.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_getroles1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\DataDb\FunctionCreate\eb_getroles.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_get_tagged_object" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\ORACLE\ObjectsDb\FunctionCreate\eb_get_tagged_object.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_get_tagged_object1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\ObjectsDb\FunctionCreate\eb_get_tagged_object.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="eb_objects" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\TableCreate\eb_objects.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\ObjectsDb\TableCreate\eb_objects.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_objects1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\ObjectsDb\TableCreate\eb_objects.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_objects2application" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\TableCreate\eb_objects2application.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\ObjectsDb\TableCreate\eb_objects2application.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_objects2application1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\ObjectsDb\TableCreate\eb_objects2application.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_objects_change_status" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\FunctionCreate\eb_objects_change_status.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\ObjectsDb\FunctionCreate\eb_objects_change_status.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_objects_change_status1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\ObjectsDb\FunctionCreate\eb_objects_change_status.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_objects_commit" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\FunctionCreate\eb_objects_commit.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\ObjectsDb\FunctionCreate\eb_objects_commit.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_objects_commit1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\ObjectsDb\FunctionCreate\eb_objects_commit.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_objects_create_major_version" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\FunctionCreate\eb_objects_create_major_version.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\PGSQL\ObjectsDb\FunctionCreate\eb_objects_create_major_version.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_objects_create_minor_version" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\FunctionCreate\eb_objects_create_minor_version.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\PGSQL\ObjectsDb\FunctionCreate\eb_objects_create_minor_version.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_objects_create_new_object" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\FunctionCreate\eb_objects_create_new_object.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\ObjectsDb\FunctionCreate\eb_objects_create_new_object.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_objects_create_new_object1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\ObjectsDb\FunctionCreate\eb_objects_create_new_object.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_objects_create_patch_version" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\FunctionCreate\eb_objects_create_patch_version.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\PGSQL\ObjectsDb\FunctionCreate\eb_objects_create_patch_version.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_objects_exploreobject" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\FunctionCreate\eb_objects_exploreobject.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\ObjectsDb\FunctionCreate\eb_objects_exploreobject.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_objects_exploreobject1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\ObjectsDb\FunctionCreate\eb_objects_exploreobject.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_objects_getversiontoopen" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\FunctionCreate\eb_objects_getversiontoopen.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\ObjectsDb\FunctionCreate\eb_objects_getversiontoopen.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_objects_getversiontoopen1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\ObjectsDb\FunctionCreate\eb_objects_getversiontoopen.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_objects_relations" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\TableCreate\eb_objects_relations.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\ObjectsDb\TableCreate\eb_objects_relations.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_objects_relations1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\ObjectsDb\TableCreate\eb_objects_relations.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_objects_save" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\FunctionCreate\eb_objects_save.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\ObjectsDb\FunctionCreate\eb_objects_save.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_objects_save1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\ObjectsDb\FunctionCreate\eb_objects_save.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_objects_status" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\TableCreate\eb_objects_status.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\ObjectsDb\TableCreate\eb_objects_status.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_objects_status1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\ObjectsDb\TableCreate\eb_objects_status.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_objects_update_dashboard" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\FunctionCreate\eb_objects_update_dashboard.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\ObjectsDb\FunctionCreate\eb_objects_update_dashboard.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_objects_update_dashboard1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\ObjectsDb\FunctionCreate\eb_objects_update_dashboard.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_objects_ver" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\TableCreate\eb_objects_ver.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\ObjectsDb\TableCreate\eb_objects_ver.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_objects_ver1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\ObjectsDb\TableCreate\eb_objects_ver.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_object_create_major_version" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\ORACLE\ObjectsDb\FunctionCreate\eb_object_create_major_version.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_object_create_minor_version" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\ORACLE\ObjectsDb\FunctionCreate\eb_object_create_minor_version.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_object_create_patch_version" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\ORACLE\ObjectsDb\FunctionCreate\eb_object_create_patch_version.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_role2permission" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\TableCreate\eb_role2permission.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\DataDB\TableCreate\eb_role2permission.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_role2permission1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\DataDb\TableCreate\eb_role2permission.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_role2role" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\TableCreate\eb_role2role.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\DataDB\TableCreate\eb_role2role.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_role2role1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\DataDb\TableCreate\eb_role2role.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_role2user" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\TableCreate\eb_role2user.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\DataDB\TableCreate\eb_role2user.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_role2user1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\DataDb\TableCreate\eb_role2user.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_roles" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\TableCreate\eb_roles.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\DataDB\TableCreate\eb_roles.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_roles1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\DataDb\TableCreate\eb_roles.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_update_rel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\ObjectsDb\FunctionCreate\eb_update_rel.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\PGSQL\ObjectsDb\FunctionCreate\eb_update_rel.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_user2usergroup" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\TableCreate\eb_user2usergroup.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\DataDB\TableCreate\eb_user2usergroup.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_user2usergroup1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\DataDb\TableCreate\eb_user2usergroup.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_useranonymous" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\TableCreate\eb_useranonymous.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\PGSQL\DataDb\TableCreate\eb_useranonymous.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_usergroup" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\TableCreate\eb_usergroup.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\DataDB\TableCreate\eb_usergroup.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_usergroup1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\DataDb\TableCreate\eb_usergroup.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_users" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\TableCreate\eb_users.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\DataDB\TableCreate\eb_users.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_users1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\DataDb\TableCreate\eb_users.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_usersanonymous" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\ORACLE\DataDB\TableCreate\eb_usersanonymous.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_userstatus" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\TableCreate\eb_userstatus.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>SqlScripts\ORACLE\DataDB\TableCreate\eb_userstatus.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="eb_assignprivileges" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\PostGreSql\DataDb\FunctionCreate\eb_assignprivileges.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="eb_userstatus1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\DataDb\TableCreate\eb_userstatus.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>
