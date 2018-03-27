@@ -4,7 +4,7 @@ BEGIN
 
 	EXECUTE IMMEDIATE 'CREATE TABLE eb_usergroup
 	(
-    		id integer NOT NULL,
+    		id number NOT NULL,
     		name varchar(30),
     		description varchar(200),
     		eb_del char,

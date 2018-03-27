@@ -1,0 +1,91 @@
+﻿-- Table: public.eb_tables
+
+-- DROP TABLE public.eb_tables;
+
+CREATE TABLE public.eb_tables
+(
+    id integer NOT NULL DEFAULT nextval('eb_tables_id_seq'::regclass),
+    tablename text COLLATE pg_catalog."default",
+    tbldescription text COLLATE pg_catalog."default",
+    eb_del "char" NOT NULL DEFAULT 'F'::"char",
+    eb_void boolean DEFAULT false,
+    eb_locked boolean DEFAULT false,
+    CONSTRAINT eb_tables_pkey PRIMARY KEY (id),
+	CONSTRAINT check_types CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.eb_tables
+    OWNER to postgres;
+
+-- Index: eb_tables_idx
+
+-- DROP INDEX public.eb_tables_idx;
+
+CREATE UNIQUE INDEX eb_tables_idx
+    ON public.eb_tables USING btree
+    (id)
+    TABLESPACE pg_default;
+
+-- Table: public.eb_tablecolumns
+
+-- DROP TABLE public.eb_tablecolumns;
+
+CREATE TABLE public.eb_tablecolumns
+(
+    id integer NOT NULL DEFAULT nextval('eb_tablecolumns_id_seq'::regclass),
+    columnname text COLLATE pg_catalog."default",
+    columntype integer,
+    eb_del "char" NOT NULL DEFAULT 'F'::"char",
+    eb_lock boolean DEFAULT false,
+    tablename text COLLATE pg_catalog."default",
+    columntypename text COLLATE pg_catalog."default",
+    table_id integer NOT NULL,
+    CONSTRAINT eb_columns_pkey PRIMARY KEY (id),
+	CONSTRAINT check_types CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.eb_tablecolumns
+    OWNER to postgres;
+
+-- Index: eb_tablecolumns_idx
+
+-- DROP INDEX public.eb_tablecolumns_idx;
+
+CREATE UNIQUE INDEX eb_tablecolumns_idx
+    ON public.eb_tablecolumns USING btree
+    (id)
+    TABLESPACE pg_default;
+
+
+--insert into EB_TABLES TABLE
+
+INSERT INTO eb_tables(tablename)
+SELECT table_name FROM information_schema.tables WHERE table_type='BASE TABLE' AND table_schema='public';
+
+-- insert into EB_TABLECOLUMNS
+
+INSERT INTO eb_tablecolumns (columnname, tablename, table_id, columntypename, columntype)
+SELECT 
+	column_name, 
+	table_name,
+	(SELECT id FROM eb_tables WHERE tablename=table_name) AS table_id, 
+	data_type, 
+	(CASE data_type
+		WHEN 'text' THEN 16
+		WHEN 'integer' THEN 11
+		WHEN 'date' THEN 6
+		WHEN 'boolean' THEN 3
+		WHEN 'serial' THEN 11
+	END) AS columntype
+FROM 
+	information_schema.columns  
+WHERE 
+	table_schema = 'public' 
