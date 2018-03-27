@@ -465,6 +465,41 @@ namespace ExpressBase.Common.Data
             return 0;
         }
 
+        public ColumnColletion GetColumnSchema(string table)
+        {
+            ColumnColletion cols = new ColumnColletion();
+            var query = "SELECT * FROM @tbl LIMIT 0".Replace("@tbl", table);
+            using (var con = GetNewConnection() as NpgsqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            int pos = 0;
+                            foreach (DataRow dr in reader.GetSchemaTable().Rows)
+                            {
+                                string columnName = System.Convert.ToString(dr["ColumnName"]);
+                                Type type = (Type)(dr["DataType"]);
+                                EbDataColumn column = new EbDataColumn(columnName, ConvertToDbType(type));
+                                column.ColumnIndex = pos++;
+                                cols.Add(column);
+
+                            }
+                        }
+                    }
+                }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    throw npgse;
+                }
+                catch (SocketException scket) { }
+            }
+            return cols;
+        }
+
 
         public void BeginTransaction()
         {
@@ -517,7 +552,7 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        private EbDbTypes ConvertToDbType(Type _typ)
+        public EbDbTypes ConvertToDbType(Type _typ)
         {
             if (_typ == typeof(DateTime))
                 return EbDbTypes.Date;

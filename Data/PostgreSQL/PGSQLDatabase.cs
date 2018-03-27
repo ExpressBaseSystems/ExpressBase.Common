@@ -322,7 +322,7 @@ namespace ExpressBase.Common
             return typeArray;
         }
 
-        private EbDbTypes ConvertToDbType(Type _typ)
+        public EbDbTypes ConvertToDbType(Type _typ)
         {
             if (_typ == typeof(DateTime))
                 return EbDbTypes.Date;
@@ -336,6 +336,8 @@ namespace ExpressBase.Common
                 return EbDbTypes.Int32;
             else if (_typ == typeof(Int64))
                 return EbDbTypes.Int64;
+            else if (_typ == typeof(TimeSpan))
+                return EbDbTypes.Time;
 
             return EbDbTypes.String;
         }
@@ -490,6 +492,40 @@ namespace ExpressBase.Common
             }
 
             return 0;
+        }
+
+        public ColumnColletion GetColumnSchema(string table)
+        {
+            ColumnColletion cols = new ColumnColletion();
+            var query = "SELECT * FROM @tbl LIMIT 0".Replace("@tbl", table);
+            using (var con = GetNewConnection() as NpgsqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
+                    {                       
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            int pos = 0;
+                            foreach (NpgsqlDbColumn drow in reader.GetColumnSchema())
+                            {
+                                string columnName = System.Convert.ToString(drow["ColumnName"]);
+                                var type = (Type)(drow["DataType"]);//for date and timstamp wihout tz return system.Datetime
+                                EbDataColumn column = new EbDataColumn(columnName, ConvertToDbType(type));
+                                column.ColumnIndex = pos++;
+                                cols.Add(column);
+                            }
+                        }
+                    }
+                }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    throw npgse;
+                }
+                catch (SocketException scket) { }
+            }
+            return cols;
         }
 
         //-----------Sql queries

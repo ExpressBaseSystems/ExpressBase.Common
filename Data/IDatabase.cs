@@ -13,7 +13,6 @@ namespace ExpressBase.Common
     public interface IDatabase
     {
         DatabaseVendors Vendor { get; }
-
         IVendorDbTypes VendorDbTypes { get; }
 
         DbConnection GetNewConnection();
@@ -37,6 +36,8 @@ namespace ExpressBase.Common
         void CreateTable(string query);
         int InsertTable(string query, params DbParameter[] parameters);
         int UpdateTable(string query, params DbParameter[] parameters);
+        EbDbTypes ConvertToDbType(Type typ);
+        ColumnColletion GetColumnSchema(string table);
 
         //string ConvertToDbDate(string datetime_);
 
