@@ -128,24 +128,27 @@ function ProcRecur(src_controls, dest_controls) {
             {
                 if (tool.GetTypeInfo().IsSubclassOf(this.TypeOfTopEbObjectParent) || ((this.TypeOfTopEbObjectParent2 != null) ? tool.GetTypeInfo().IsSubclassOf(this.TypeOfTopEbObjectParent2) : false))
                 {
-                    try
+                    if (!tool.IsAbstract)
                     {
-                        TypeInfo _typeInfo = tool.GetTypeInfo();
-                        var _enableInBuider = _typeInfo.GetCustomAttribute<EnableInBuilder>();
-
-                        if (_enableInBuider != null && _enableInBuider.BuilderTypes.Contains(this.BuilderType))
+                        try
                         {
-                            object toolObj = Activator.CreateInstance(tool);
-                            if ((!_typeInfo.IsDefined(typeof(HideInToolBox))) && toolObj is EbControl)
-                                    ToolBoxHtml += (toolObj as EbControl).GetToolHtml();                                
-                                    //ToolBoxHtml += this.GetToolHtml(tool.Name.Substring(2));
-                            this.TypeRegister += string.Format("if (jsonObj['$type'].includes('{0}')) return new EbObjects.{1}(jsonObj.EbSid, jsonObj); ", toolObj.GetType().FullName, toolObj.GetType().Name);
-                            this.GetJsObject(toolObj);
-                        }
-                    }
-                    catch (Exception ee)
-                    {
+                            TypeInfo _typeInfo = tool.GetTypeInfo();
+                            var _enableInBuider = _typeInfo.GetCustomAttribute<EnableInBuilder>();
 
+                            if (_enableInBuider != null && _enableInBuider.BuilderTypes.Contains(this.BuilderType))
+                            {
+                                object toolObj = Activator.CreateInstance(tool);
+                                if ((!_typeInfo.IsDefined(typeof(HideInToolBox))) && toolObj is EbControl)
+                                    ToolBoxHtml += (toolObj as EbControl).GetToolHtml();
+                                //ToolBoxHtml += this.GetToolHtml(tool.Name.Substring(2));
+                                this.TypeRegister += string.Format("if (jsonObj['$type'].includes('{0}')) return new EbObjects.{1}(jsonObj.EbSid, jsonObj); ", toolObj.GetType().FullName, toolObj.GetType().Name);
+                                this.GetJsObject(toolObj);
+                            }
+                        }
+                        catch (Exception ee)
+                        {
+
+                        }
                     }
                 }
             }
