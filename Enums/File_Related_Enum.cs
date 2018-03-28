@@ -21,5 +21,10 @@
         micro = 50,
         mini = 150,
     }
+    public enum FileClass
+    {
+        files = 2,
+        image = 1
+    }
 }
 

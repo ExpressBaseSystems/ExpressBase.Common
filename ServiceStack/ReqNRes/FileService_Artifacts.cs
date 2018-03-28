@@ -123,4 +123,11 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         public bool IsImage { get; set; }
 
     }
+
+    [DataContract]
+    public class InitialFileReq : EbServiceStackRequest, IReturn<List<FileMeta>>
+    {
+        [DataMember(Order = 1)]
+        public FileClass Type { get; set; }
+    }
 }
