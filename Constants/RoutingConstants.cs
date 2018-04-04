@@ -8,6 +8,7 @@ namespace ExpressBase.Common
     {
         public const char DOT = '.';
         public const char BACKSLASH = '/';
+        public const char DASH = '-';
 
         public const string LOCALHOST = "localhost";
         public const string WWWDOT = "www.";
@@ -26,6 +27,18 @@ namespace ExpressBase.Common
 
         public const string BEARER_TOKEN = "bToken";
         public const string REFRESH_TOKEN = "rToken";
+
+        //Console
+        public const string WC = "wc";
+        public const string TC = "tc";
+        public const string UC = "uc";
+        public const string DC = "dc";
+
+        public const string DASHBOT = "-bot";
+        public const string DASHMOB = "-mob";
+        //public const string WEB = "-web";
+        public const string DASHDEV = "-dev";
+
 
         public const int HOSTPARTSLEN_IS_3 = 3;
         public const int HOSTPARTSLEN_IS_2 = 2;

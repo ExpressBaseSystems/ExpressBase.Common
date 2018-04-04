@@ -1,4 +1,5 @@
-﻿using ServiceStack;
+﻿using ExpressBase.Common.Constants;
+using ServiceStack;
 using ServiceStack.Web;
 using System;
 
@@ -47,10 +48,10 @@ namespace ExpressBase.Common.ServiceClients
             {
                 if (req != null)
                 {
-                    this.RefreshToken = (req.Headers["rToken"] != null) ? req.Headers["rToken"] : null;
-                    this.BearerToken = (req.Headers[HttpHeaders.Authorization] != null) ? req.Headers[HttpHeaders.Authorization].Replace("Bearer", string.Empty).Trim() : null;
+                    this.RefreshToken = (req.Headers[CacheConstants.RTOKEN] != null) ? req.Headers[CacheConstants.RTOKEN] : null;
+                    this.BearerToken = (req.Headers[HttpHeaders.Authorization] != null) ? req.Headers[HttpHeaders.Authorization].Replace(CacheConstants.BEARER, string.Empty).Trim() : null;
                     if (!(String.IsNullOrEmpty(this.RefreshToken)))
-                        this.Headers.Add("rToken", this.RefreshToken);
+                        this.Headers.Add(CacheConstants.RTOKEN, this.RefreshToken);
                 }
             }
             catch (Exception e)

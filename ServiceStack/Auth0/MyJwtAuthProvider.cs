@@ -1,4 +1,5 @@
-﻿using ExpressBase.Security;
+﻿using ExpressBase.Common.Constants;
+using ExpressBase.Security;
 using ServiceStack;
 using ServiceStack.Auth;
 using ServiceStack.Configuration;
@@ -67,10 +68,10 @@ namespace ExpressBase.Common.ServiceStack.Auth
             var now = DateTime.UtcNow;
             var jwtPayload = new JsonObject
             {
-                {"iss", issuer},
-                {"sub", session.UserAuthId},
-                {"iat", now.ToUnixTime().ToString()},
-                {"exp", now.Add(expireIn).ToUnixTime().ToString()},
+                {TokenConstants.ISS, issuer},
+                {TokenConstants.SUB, session.UserAuthId},
+                {TokenConstants.IAT, now.ToUnixTime().ToString()},
+                {TokenConstants.EXP, now.Add(expireIn).ToUnixTime().ToString()},
             };
 
             if (audience != null)
@@ -79,10 +80,10 @@ namespace ExpressBase.Common.ServiceStack.Auth
             var csession = session as CustomUserSession;
 
             string[] tempa = session.UserAuthId.Split('-');
-            jwtPayload["email"] = tempa[1];
-            jwtPayload["cid"] = tempa[0];
-            jwtPayload["uid"] = csession.Uid.ToString();
-            jwtPayload["wc"] = csession.WhichConsole;
+            jwtPayload[TokenConstants.EMAIL] = tempa[1];
+            jwtPayload[TokenConstants.CID] = tempa[0];
+            jwtPayload[TokenConstants.UID] = csession.Uid.ToString();
+            jwtPayload[RoutingConstants.WC] = csession.WhichConsole;
 
             return jwtPayload;
         }

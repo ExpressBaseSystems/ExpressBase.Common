@@ -154,7 +154,7 @@ namespace ExpressBase.Security
 
         public static User GetDetailsNormal(IDatabase df, string uname, string pass, string context)
         {
-            var ds = df.DoQuery(df.EB_AUTHETICATE_USER_NORMAL, new DbParameter[] { df.GetNewParameter("uname", EbDbTypes.String, uname), df.GetNewParameter("pass", EbDbTypes.String, pass), df.GetNewParameter("wc", EbDbTypes.String, context) });
+            var ds = df.DoQuery(df.EB_AUTHETICATE_USER_NORMAL, new DbParameter[] { df.GetNewParameter("uname", EbDbTypes.String, uname), df.GetNewParameter("pass", EbDbTypes.String, pass), df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context) });
             return InitUserObject(ds);
         }
 
@@ -242,7 +242,7 @@ namespace ExpressBase.Security
                 paramlist.Add(df.GetNewParameter("iplocationjson", EbDbTypes.String, iplocationjson));
             }
             paramlist.Add(df.GetNewParameter("appid", EbDbTypes.Int32, appid));
-            paramlist.Add(df.GetNewParameter("wc", EbDbTypes.String, context));
+            paramlist.Add(df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context));
                 
 
 			string sql = df.EB_AUTHENTICATE_ANONYMOUS.Replace("@params",parameters);
