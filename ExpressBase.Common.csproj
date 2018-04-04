@@ -15,7 +15,16 @@
     <None Remove="SqlScripts\ORACLE\ObjectsDb\Tables\**" />
     <None Remove="SqlScripts\PostGreSql\**" />
   </ItemGroup>
-
+  <ItemGroup>
+      <EmbeddedResource Include="SqlScripts\ORACLE\DataDb\FunctionCreate\**" />
+      <EmbeddedResource Include="SqlScripts\ORACLE\DataDb\TableCreate\**" />
+      <EmbeddedResource Include="SqlScripts\PGSQL\DataDb\FunctionCreate\**" />
+      <EmbeddedResource Include="SqlScripts\PGSQL\DataDb\TableCreate\**" />
+      <EmbeddedResource Include="SqlScripts\ORACLE\ObjectsDb\FunctionCreate\**" />
+      <EmbeddedResource Include="SqlScripts\ORACLE\ObjectsDb\TableCreate\**" />
+      <EmbeddedResource Include="SqlScripts\PGSQL\ObjectsDb\FunctionCreate\**" />
+      <EmbeddedResource Include="SqlScripts\PGSQL\ObjectsDb\TableCreate\**" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FOSS.ServiceStack.Core" Version="5.0.2" />
     <PackageReference Include="FOSS.ServiceStack.Redis.Core" Version="5.0.2" />
@@ -46,5 +55,7 @@
   <ItemGroup>
     <Folder Include="SqlScripts\ORACLE\DataDb\FunctionCreate\" />
     <Folder Include="SqlScripts\ORACLE\DataDb\TableCreate\" />
+    <Folder Include="SqlScripts\PGSQL\DataDb\FunctionCreate\" />
+    <Folder Include="SqlScripts\PGSQL\DataDb\TableCreate\" />
   </ItemGroup>
 </Project>
