@@ -11,6 +11,7 @@ using ExpressBase.Objects;
 using Newtonsoft.Json;
 using ExpressBase.Common.JsonConverters;
 using ExpressBase.Common.Structures;
+using ExpressBase.Common.Extensions;
 
 namespace ExpressBase.Common.Objects
 {
@@ -37,7 +38,7 @@ namespace ExpressBase.Common.Objects
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
-        public virtual string BareControlHtml { get; set; }        
+        public virtual string BareControlHtml { get; set; }
 
         [System.ComponentModel.Category("Behavior")]
         [Description("Labels")]
@@ -140,7 +141,7 @@ else
         [ProtoBuf.ProtoMember(28)]
         [System.ComponentModel.Category("Accessibility")]
         public virtual int TabIndex { get; set; }
-        
+
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm)]
         [PropertyGroup("Appearance")]
         [PropertyEditor(PropertyEditorType.Color)]
@@ -192,6 +193,46 @@ else
         public virtual string GetHead() { return string.Empty; }
 
         public virtual string GetHtml() { return string.Empty; }
+
+        public virtual string GetWrapedCtrlHtml4bot() { return '"' + "<div>no GetWrapedCtrlHtml4bot() defined</div>" + '"'; }
+
+        public string GetWrapedCtrlHtml4bot(string bareHTML, string type)
+        {
+            type = type.Substring(2, this.GetType().Name.Length - 2);
+            string innerHTML = @" <div class='ctrl-wraper' @style@> @barehtml@ </div>".Replace("@barehtml@", bareHTML);
+            bool t = true;
+            if (!(type == "Cards" || type == "Locations" || type == "InputGeoLocation" || type == "Image"))
+            {
+                innerHTML = (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>");
+                t = false;
+            }
+            else
+                innerHTML = innerHTML.Replace("@style@", "style='width:100%;border:none;'");
+            string res = @"
+<div id='TextBox0' class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='TextBox'>
+   <div class='msg-cont'>
+      <div class='bot-icon'></div>
+      <div class='msg-cont-bot'>
+         <div class='msg-wraper-bot'  @style@>
+            @Label@
+            <div class='msg-time'>3:44pm</div>
+         </div>
+      </div>
+   </div>
+   <div class='msg-cont' for='TextBox1' form='LeaveJS'>
+      <div class='msg-cont-bot'>
+         <div class='msg-wraper-bot' style='border: none; background-color: transparent; width: 99%; padding-right: 3px;'>
+            @innerHTML@
+         </div>
+      </div>
+   </div>
+</div>"
+.Replace("@type@", type)
+.Replace("@innerHTML@", innerHTML)
+.Replace("@style@", (t ? "style='margin-left:12px;'" : string.Empty))
+.RemoveCR().DoubleQuoted();
+            return res;
+        }
 
         public override void Init4Redis(IRedisClient redisclient, IServiceClient serviceclient)
         {
