@@ -40,7 +40,12 @@ namespace ExpressBase.Common.Data
             if (reqParams != null && reqParams.Count > 0)
             {
                 foreach (Param param in reqParams)
-                    yield return factory.ObjectsDB.GetNewParameter(string.Format("@{0}", param.Name), (EbDbTypes)Convert.ToInt32(param.Type), param.Value);
+                {
+                    if(factory.ObjectsDB.Vendor == DatabaseVendors.PGSQL)
+                        yield return factory.ObjectsDB.GetNewParameter(string.Format("@{0}", param.Name), (EbDbTypes)Convert.ToInt32(param.Type), param.Value);
+                    else
+                        yield return factory.ObjectsDB.GetNewParameter(string.Format(":{0}", param.Name), (EbDbTypes)Convert.ToInt32(param.Type), param.Value);
+                }
             }
         }
     }
