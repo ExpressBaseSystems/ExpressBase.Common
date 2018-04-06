@@ -21,6 +21,13 @@
         micro = 50,
         mini = 150,
     }
+
+    public enum LogoSizes
+    {
+        small = 50,
+        big = 150,
+    }
+
     public enum FileClass
     {
         files = 2,

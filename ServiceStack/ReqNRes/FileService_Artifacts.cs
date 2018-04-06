@@ -115,6 +115,13 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
+    public class DownloadFileExtRequest
+    {
+        [DataMember(Order = 1)]
+        public string FileName { get; set; }
+    }
+
+    [DataContract]
     public class FindFilesByTagRequest : EbServiceStackRequest, IReturn<List<FileMeta>>
     {
         [DataMember(Order = 1)]
