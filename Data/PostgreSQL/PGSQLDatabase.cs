@@ -330,7 +330,7 @@ namespace ExpressBase.Common
                 return EbDbTypes.String;
             else if (_typ == typeof(bool))
                 return EbDbTypes.Boolean;
-            else if (_typ == typeof(decimal))
+            else if (_typ == typeof(decimal) || _typ == typeof(Double))
                 return EbDbTypes.Decimal;
             else if (_typ == typeof(int) || _typ == typeof(Int32))
                 return EbDbTypes.Int32;
