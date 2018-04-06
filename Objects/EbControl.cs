@@ -80,6 +80,10 @@ namespace ExpressBase.Common.Objects
         [System.ComponentModel.Category("Behavior")]
         public virtual bool Required { get; set; }
 
+        public virtual string DesignHtml4Bot { get; set; }
+
+        public virtual bool isFullViewContol { get; set; }
+
         protected string RequiredString
         {
             get { return (this.Required ? "$('#{0}').focusout(function() { isRequired(this); }); $('#{0}Lbl').html( $('#{0}Lbl').text() + '<sup style=\"color: red\">*</sup>') ".Replace("{0}", this.Name) : string.Empty); }
@@ -194,7 +198,46 @@ else
 
         public virtual string GetHtml() { return string.Empty; }
 
-        public virtual string GetWrapedCtrlHtml4bot() { return '"' + "<div>no GetWrapedCtrlHtml4bot() defined</div>" + '"'; }
+        public virtual string GetWrapedCtrlHtml4bot()
+        {
+            return '"' + "<div>no GetWrapedCtrlHtml4bot() defined</div>" + '"';
+        }
+
+        public virtual string GetWrapedCtrlHtml4bot(ref EbControl ChildObj)
+        {
+            string bareHTML = ChildObj.DesignHtml4Bot ?? ChildObj.GetBareHtml();
+            string type = ChildObj.GetType().Name.Substring(2, this.GetType().Name.Length - 2);
+
+            string innerHTML = @" <div class='ctrl-wraper' @style@> @barehtml@ </div>".Replace("@barehtml@", bareHTML);
+            if (!ChildObj.isFullViewContol)
+                innerHTML = (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>");
+            else
+                innerHTML = innerHTML.Replace("@style@", "style='width:100%;border:none;'");
+            string res = @"
+<div id='TextBox0' class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='TextBox'>
+   <div class='msg-cont'>
+      <div class='bot-icon'></div>
+      <div class='msg-cont-bot'>
+         <div class='msg-wraper-bot'>
+            @Label@
+            <div class='msg-time'>3:44pm</div>
+         </div>
+      </div>
+   </div>
+   <div class='msg-cont' for='TextBox1' form='LeaveJS'>
+      <div class='msg-cont-bot'>
+         <div class='msg-wraper-bot' style='@style@ border: none; background-color: transparent; width: 99%; padding-right: 3px;'>
+            @innerHTML@
+         </div>
+      </div>
+   </div>
+</div>"
+.Replace("@type@", type)
+.Replace("@innerHTML@", innerHTML)
+.Replace("@style@", (ChildObj.isFullViewContol ? "margin-left:12px;" : string.Empty))
+.RemoveCR();
+            return res;
+        }
 
         public string GetWrapedCtrlHtml4bot(string bareHTML, string type)
         {
@@ -213,7 +256,7 @@ else
    <div class='msg-cont'>
       <div class='bot-icon'></div>
       <div class='msg-cont-bot'>
-         <div class='msg-wraper-bot'  @style@>
+         <div class='msg-wraper-bot'>
             @Label@
             <div class='msg-time'>3:44pm</div>
          </div>
@@ -221,7 +264,7 @@ else
    </div>
    <div class='msg-cont' for='TextBox1' form='LeaveJS'>
       <div class='msg-cont-bot'>
-         <div class='msg-wraper-bot' style='border: none; background-color: transparent; width: 99%; padding-right: 3px;'>
+         <div class='msg-wraper-bot' style='@style@ border: none; background-color: transparent; width: 99%; padding-right: 3px;'>
             @innerHTML@
          </div>
       </div>
@@ -229,7 +272,7 @@ else
 </div>"
 .Replace("@type@", type)
 .Replace("@innerHTML@", innerHTML)
-.Replace("@style@", (t ? "style='margin-left:12px;'" : string.Empty))
+.Replace("@style@", (t ? "margin-left:12px;" : string.Empty))
 .RemoveCR().DoubleQuoted();
             return res;
         }
