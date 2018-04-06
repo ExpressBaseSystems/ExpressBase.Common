@@ -82,6 +82,8 @@ namespace ExpressBase.Common.Objects
 
         public virtual string DesignHtml4Bot { get; set; }
 
+        public virtual bool isFullViewContol { get; set; }
+
         protected string RequiredString
         {
             get { return (this.Required ? "$('#{0}').focusout(function() { isRequired(this); }); $('#{0}Lbl').html( $('#{0}Lbl').text() + '<sup style=\"color: red\">*</sup>') ".Replace("{0}", this.Name) : string.Empty); }
@@ -207,12 +209,8 @@ else
             string type = ChildObj.GetType().Name.Substring(2, this.GetType().Name.Length - 2);
 
             string innerHTML = @" <div class='ctrl-wraper' @style@> @barehtml@ </div>".Replace("@barehtml@", bareHTML);
-            bool t = true;
-            if (!(type == "Cards" || type == "Locations" || type == "InputGeoLocation" || type == "Image"))
-            {
+            if (!ChildObj.isFullViewContol)
                 innerHTML = (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>");
-                t = false;
-            }
             else
                 innerHTML = innerHTML.Replace("@style@", "style='width:100%;border:none;'");
             string res = @"
@@ -236,7 +234,7 @@ else
 </div>"
 .Replace("@type@", type)
 .Replace("@innerHTML@", innerHTML)
-.Replace("@style@", (t ? "margin-left:12px;" : string.Empty))
+.Replace("@style@", (ChildObj.isFullViewContol ? "margin-left:12px;" : string.Empty))
 .RemoveCR();
             return res;
         }
