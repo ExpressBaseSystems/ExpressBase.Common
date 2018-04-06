@@ -16,6 +16,9 @@ namespace ExpressBase.Common.ServiceClients
         {
             this.BaseUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_SERVEREVENTS_INT_URL);
             this.RefreshTokenUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_GET_ACCESS_TOKEN_URL);
+
+            //this.BaseUri = "http://localhost:41900";
+            //this.RefreshTokenUri = "http://localhost:41600";
         }
 
         //public EbServerEventClient(Container c)
