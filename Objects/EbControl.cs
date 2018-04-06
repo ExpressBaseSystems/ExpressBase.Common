@@ -205,15 +205,10 @@ else
 
         public virtual string GetWrapedCtrlHtml4bot(ref EbControl ChildObj)
         {
-            string bareHTML = ChildObj.DesignHtml4Bot ?? ChildObj.GetBareHtml();
-            string type = ChildObj.GetType().Name.Substring(2, this.GetType().Name.Length - 2);
-
-            string innerHTML = @" <div class='ctrl-wraper' @style@> @barehtml@ </div>".Replace("@barehtml@", bareHTML);
-            if (!ChildObj.isFullViewContol)
-                innerHTML = (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>");
-            else
-                innerHTML = innerHTML.Replace("@style@", "style='width:100%;border:none;'");
-            string res = @"
+            string bareHTML = ChildObj.DesignHtml4Bot ?? ChildObj.GetBareHtml(),
+            innerHTML = @" <div class='ctrl-wraper' @style@> @barehtml@ </div>".Replace("@barehtml@", bareHTML);
+            innerHTML = (!ChildObj.isFullViewContol) ? (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>") : innerHTML.Replace("@style@", "style='width:100%;border:none;'");
+            return @"
 <div id='TextBox0' class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='TextBox'>
    <div class='msg-cont'>
       <div class='bot-icon'></div>
@@ -232,11 +227,9 @@ else
       </div>
    </div>
 </div>"
-.Replace("@type@", type)
+.Replace("@type@", ChildObj.GetType().Name.Substring(2, ChildObj.GetType().Name.Length - 2))
 .Replace("@innerHTML@", innerHTML)
-.Replace("@style@", (ChildObj.isFullViewContol ? "margin-left:12px;" : string.Empty))
-.RemoveCR();
-            return res;
+.Replace("@style@", (ChildObj.isFullViewContol ? "margin-left:12px;" : string.Empty)).RemoveCR();
         }
 
         public string GetWrapedCtrlHtml4bot(string bareHTML, string type)
