@@ -230,7 +230,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
 .Replace("@Props", _props)
 .Replace("@InitFunc", (obj as EbObject).GetJsInitFunc())
 .Replace("@html", (obj as EbObject).GetDesignHtml())
-.Replace("@4botHtml", (obj as EbControl).GetWrapedCtrlHtml4bot())
+.Replace("@4botHtml",(obj is EbControl) ?  (obj as EbControl).GetWrapedCtrlHtml4bot() :string.Empty)
 .Replace("@bareHtml", (obj as EbObject).GetBareHtml()); //(obj as EbObject).GetDesignHtml());//
 
         }
