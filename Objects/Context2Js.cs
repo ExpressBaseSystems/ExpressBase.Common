@@ -183,7 +183,7 @@ function ProcRecur(src_controls, dest_controls) {
                     _props += JsVarDecl(prop, obj);
                 }
             }
-
+            var sampOBJ = (obj as EbControl);
             this.AllMetas += @"
 '@Name'  : @MetaCollection,"
 .Replace("@Name", obj.GetType().Name)
@@ -195,6 +195,7 @@ EbObjects.@Name = function @Name(id, jsonObj) {
     this.EbSid = id;
     @Props
     @InitFunc
+    @4botHtml
     this.$Control = $( @html.replace(/@id/g, this.EbSid) );
     this.BareControlHtml = `@bareHtml`.replace(/@id/g, this.EbSid);
     var MyName = this.constructor.name;
@@ -229,6 +230,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
 .Replace("@Props", _props)
 .Replace("@InitFunc", (obj as EbObject).GetJsInitFunc())
 .Replace("@html", (obj as EbObject).GetDesignHtml())
+.Replace("@4botHtml",(obj is EbControl) ? ("this.$WrapedCtrl4Bot = $(`" + (obj as EbControl).GetWrapedCtrlHtml4bot(ref sampOBJ) + "`);") : string.Empty)
 .Replace("@bareHtml", (obj as EbObject).GetBareHtml()); //(obj as EbObject).GetDesignHtml());//
 
         }
