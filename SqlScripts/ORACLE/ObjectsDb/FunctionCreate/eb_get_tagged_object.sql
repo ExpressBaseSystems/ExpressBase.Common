@@ -1,12 +1,3 @@
-CREATE OR REPLACE TYPE TAG_RECORD AS OBJECT(
-    obj_name CLOB,
-    refid CLOB,
-    version_num CLOB,
-    obj_type NUMBER,
-    status NUMBER
-);
-
-CREATE OR REPLACE TYPE TAG_TABLE AS TABLE OF TAG_RECORD;
 
 CREATE OR REPLACE FUNCTION eb_get_tagged_object(
 tag CLOB

@@ -1,3 +1,4 @@
+
 create or replace FUNCTION eb_getroles(
 	userid number,
     wc1 VARCHAR DEFAULT NULL)

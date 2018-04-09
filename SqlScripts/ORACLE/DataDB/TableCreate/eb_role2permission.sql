@@ -20,13 +20,8 @@ BEGIN
     		revokedat timestamp,
     		CONSTRAINT eb_role2permission_pkey PRIMARY KEY (id)
 	)';
-
-	EXECUTE IMMEDIATE 'CREATE OR REPLACE TRIGGER eb_role2permission_trigger
-	BEFORE INSERT ON eb_role2permission
-	FOR EACH ROW
-	BEGIN
-		:NEW.id:=eb_role2permission_id_seq.NEXTVAL;
-	END';
+	
 	EXECUTE IMMEDIATE 'CREATE INDEX eb_role2permission_eb_del_idx ON eb_role2permission (eb_del)';
 	EXECUTE IMMEDIATE 'CREATE INDEX eb_role2permission_role_id_idx ON eb_role2permission (role_id)';
+	EXECUTE IMMEDIATE 'CREATE OR REPLACE TRIGGER eb_role2permission_trigger BEFORE INSERT ON eb_role2permission FOR EACH ROW BEGIN ' || ':' || 'new.id:=eb_role2permission_id_seq.NEXTVAL; END;';
 END;

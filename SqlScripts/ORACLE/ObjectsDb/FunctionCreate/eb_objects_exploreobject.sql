@@ -1,45 +1,4 @@
 
-create or replace type obj_explore_record as object (
-  idval number,
-  nameval CLOB,
-  typeval number, 
-  statusval number, 
-  descriptionval CLOB,
-  changelogval CLOB,
-  commitatval TIMESTAMP,
-  commitbyval CLOB,
-  refidval CLOB,
-  ver_numval CLOB,
-  work_modeval char,
-  workingcopiesval CLOB,
-  json_wcval CLOB,
-  json_lcval CLOB,
-  major_verval number,
-  minor_verval number,
-  patch_verval number,
-  tagsval CLOB, 
-  app_idval CLOB,
-  lastversionrefidval CLOB,
-  lastversionnumberval CLOB,
-  lastversioncommit_tsval TIMESTAMP,
-  lastversion_statusval number,
-  lastversioncommit_byname CLOB,
-  lastversioncommit_byid number,
-  liveversionrefidval CLOB,
-  liveversionnumberval CLOB,
-  liveversioncommit_tsval TIMESTAMP,
-  liveversion_statusval number,
-  liveversioncommit_byname CLOB,
-  liveversioncommit_byid number,
-  owner_uidval number,
-  owner_tsval TIMESTAMP,
-  owner_nameval CLOB 
-);
-/
-
-create or replace type obj_explore_table as table of obj_explore_record;
-/
-
 create or replace FUNCTION eb_objects_exploreobject(
 	id_ NUMBER)
     RETURN obj_explore_table as explore_obj obj_explore_table;

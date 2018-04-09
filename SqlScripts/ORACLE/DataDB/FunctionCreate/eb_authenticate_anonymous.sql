@@ -1,3 +1,4 @@
+
 create or replace FUNCTION eb_authenticate_anonymous(	
 	in_socialid VARCHAR2 DEFAULT NULL,
 	in_fullname VARCHAR2 DEFAULT NULL,
