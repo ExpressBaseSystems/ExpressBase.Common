@@ -13,12 +13,7 @@ BEGIN
 		CONSTRAINT eb_objects_relations_pkey PRIMARY KEY (id)
 	)';
 
-	EXECUTE IMMEDIATE 'CREATE OR REPLACE TRIGGER eb_objects_relations_trigger
-	BEFORE INSERT ON eb_objects_relations
-	FOR EACH ROW
-	BEGIN
-	:NEW.id:=eb_objects_relations_id_seq.NEXTVAL;
-	END';
 
 	EXECUTE IMMEDIATE 'CREATE INDEX eb_object_relation_eb_del_idx ON eb_objects_relations (eb_del)';
+	EXECUTE IMMEDIATE 'CREATE OR REPLACE TRIGGER eb_objects_relations_trigger BEFORE INSERT ON eb_objects_relations FOR EACH ROW BEGIN ' || ':' || 'new.id:=eb_objects_relations_id_seq.NEXTVAL; END;';
 END;

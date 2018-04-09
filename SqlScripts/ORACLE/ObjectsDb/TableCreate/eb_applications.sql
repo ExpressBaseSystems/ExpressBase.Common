@@ -17,12 +17,7 @@ BEGIN
     		CONSTRAINT eb_applications_pkey PRIMARY KEY (id)
 	)';
 
-	EXECUTE IMMEDIATE 'CREATE OR REPLACE TRIGGER eb_applications_trigger
-	BEFORE INSERT ON eb_applications
-	FOR EACH ROW
-	BEGIN
-		:NEW.id:=eb_applications_id_seq.NEXTVAL;
-	END';
 
 	EXECUTE IMMEDIATE 'CREATE INDEX eb_applications_eb_del_idx ON eb_applications (eb_del)';
+	EXECUTE IMMEDIATE 'CREATE OR REPLACE TRIGGER eb_applications_trigger BEFORE INSERT ON eb_applications FOR EACH ROW BEGIN ' || ':' || 'new.id:=eb_applications_id_seq.NEXTVAL; END;';
 END;

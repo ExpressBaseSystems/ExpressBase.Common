@@ -19,14 +19,8 @@ BEGIN
     		CONSTRAINT eb_role2user_id_pkey PRIMARY KEY (id)
 	)';
 
-	EXECUTE IMMEDIATE 'CREATE OR REPLACE TRIGGER eb_role2user_trigger
-	BEFORE INSERT ON eb_role2user
-	FOR EACH ROW
-	BEGIN
-		:NEW.id:=eb_role2user_id_seq.NEXTVAL;
-	END';
-
 	EXECUTE IMMEDIATE 'CREATE INDEX eb_role2user_eb_del_idx ON eb_role2user (eb_del)';
 	EXECUTE IMMEDIATE 'CREATE INDEX eb_role2user_role_id_idx ON eb_role2user (role_id)';
 	EXECUTE IMMEDIATE 'CREATE INDEX eb_role2user_user_id_idx ON eb_role2user (user_id)';
+	EXECUTE IMMEDIATE 'CREATE OR REPLACE TRIGGER eb_role2user_trigger BEFORE INSERT ON eb_role2user FOR EACH ROW BEGIN ' || ':' || 'new.id:=eb_role2user_id_seq.NEXTVAL; END;';
 END;

@@ -17,12 +17,6 @@ BEGIN
 		CONSTRAINT test PRIMARY KEY (id)
 	)';
 
-	EXECUTE IMMEDIATE 'CREATE OR REPLACE TRIGGER eb_objects_trigger
-	BEFORE INSERT ON eb_objects
-	FOR EACH ROW
-	BEGIN
-		:NEW.id:=eb_objects_id_seq.NEXTVAL;
-	END';
-
 	EXECUTE IMMEDIATE 'CREATE INDEX eb_objects_type_idx ON eb_objects (obj_type)';
+	EXECUTE IMMEDIATE 'CREATE OR REPLACE TRIGGER eb_objects_trigger BEFORE INSERT ON eb_objects FOR EACH ROW BEGIN ' || ':' || 'new.id:=eb_objects_id_seq.NEXTVAL;END;';
 END;

@@ -32,6 +32,13 @@ CREATE TABLE public.eb_usersanonymous
     remarks text COLLATE pg_catalog."default",
     ipaddress text COLLATE pg_catalog."default",
     browser text COLLATE pg_catalog."default",
+    city text COLLATE pg_catalog."default",
+    region text COLLATE pg_catalog."default",
+    country text COLLATE pg_catalog."default",
+    latitude text COLLATE pg_catalog."default",
+    longitude text COLLATE pg_catalog."default",
+    timezone text COLLATE pg_catalog."default",
+    iplocationjson text COLLATE pg_catalog."default",
     CONSTRAINT eb_usersprospective_pkey PRIMARY KEY (id)
 )
 WITH (

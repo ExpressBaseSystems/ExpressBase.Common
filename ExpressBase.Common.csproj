@@ -24,6 +24,8 @@
       <EmbeddedResource Include="SqlScripts\ORACLE\ObjectsDb\TableCreate\**" />
       <EmbeddedResource Include="SqlScripts\PGSQL\ObjectsDb\FunctionCreate\**" />
       <EmbeddedResource Include="SqlScripts\PGSQL\ObjectsDb\TableCreate\**" />
+      <EmbeddedResource Include="SqlScripts\PGSQL\eb_extras.sql" />
+      <EmbeddedResource Include="SqlScripts\ORACLE\eb_extras.sql" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FOSS.ServiceStack.Core" Version="5.0.2" />
@@ -53,8 +55,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="SqlScripts\ORACLE\DataDb\FunctionCreate\" />
-    <Folder Include="SqlScripts\ORACLE\DataDb\TableCreate\" />
     <Folder Include="SqlScripts\PGSQL\DataDb\FunctionCreate\" />
     <Folder Include="SqlScripts\PGSQL\DataDb\TableCreate\" />
   </ItemGroup>

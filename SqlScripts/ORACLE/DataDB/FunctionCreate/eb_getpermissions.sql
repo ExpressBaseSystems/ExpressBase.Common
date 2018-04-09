@@ -1,3 +1,4 @@
+
 create or replace FUNCTION eb_permissions(
 	in_roles VARCHAR2)
     RETURN returnpermission_tbl as permissiontbl  returnpermission_tbl;

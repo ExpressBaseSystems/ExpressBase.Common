@@ -2,31 +2,6 @@
 
 -- DROP FUNCTION public.eb_objects_getversiontoopen(integer);
 
-create or replace type GET_VERSION_RECORD as object (
-  idv NUMBER,
-  namev CLOB, 
-  typev NUMBER, 
-  status NUMBER, 
-  description CLOB,
-  changelog CLOB,
-  commitat TIMESTAMP,
-  commitby CLOB,
-  refidv CLOB,
-  ver_num CLOB,
-  work_mode CHAR,
-  workingcopies CLOB, 
-  json_wc CLOB, 
-  json_lc CLOB,
-  major_ver NUMBER,
-  minor_ver NUMBER,
-  patch_ver NUMBER,
-  tags CLOB, 
-  app_id CLOB
-);
-/
-
-create or replace type GET_VERSION_TABLE as table of GET_VERSION_record;
-/
 
 create or replace FUNCTION eb_objects_getversiontoopen(
 	id_ integer)

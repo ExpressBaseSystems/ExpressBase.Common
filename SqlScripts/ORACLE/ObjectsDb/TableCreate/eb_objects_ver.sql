@@ -24,13 +24,8 @@ BEGIN
     		CONSTRAINT eb_objects_ver_pkey PRIMARY KEY (id)
 	)';
 
-	EXECUTE IMMEDIATE 'CREATE OR REPLACE TRIGGER eb_objects_ver_trigger
-	BEFORE INSERT ON eb_objects_ver
-	FOR EACH ROW
-	BEGIN
-		:NEW.id:=eb_objects_ver_id_seq.NEXTVAL;
-	END';
 
 	EXECUTE IMMEDIATE 'CREATE INDEX eb_object_ver_eb_object_id_idx ON eb_objects_ver (eb_objects_id)';
 	EXECUTE IMMEDIATE 'CREATE INDEX eb_objects_ver_status_id_idx ON eb_objects_ver (status_id)';
+	EXECUTE IMMEDIATE 'CREATE OR REPLACE TRIGGER eb_objects_ver_trigger BEFORE INSERT ON eb_objects_ver FOR EACH ROW BEGIN ' || ':' || 'new.id:=eb_objects_ver_id_seq.NEXTVAL; END;';
 END;

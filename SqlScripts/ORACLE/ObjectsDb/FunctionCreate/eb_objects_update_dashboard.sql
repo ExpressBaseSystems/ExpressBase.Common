@@ -1,34 +1,4 @@
-create or replace type obj_dashboard_record as object (
-  namev CLOB,
-  status1 number,
-  ver_num CLOB,
-  work_mode char, 
-  workingcopies clob, 
-  major_ver number,
-  minor_ver number, 
-  patch_ver number, 
-  tags CLOB,
-  app_id CLOB,
-  lastversionrefidval CLOB,
-  lastversionnumberval CLOB,
-  lastversioncommit_tsval TIMESTAMP,
-  lastversion_statusval number,
-  lastversioncommit_byname CLOB, 
-  lastversioncommit_byid number,
-  liveversionrefidval CLOB,
-  liveversionnumberval CLOB,
-  liveversioncommit_tsval TIMESTAMP,
-  liveversion_statusval number,
-  liveversioncommit_byname CLOB,
-  liveversioncommit_byid number,
-  owner_uidval number, 
-  owner_tsval TIMESTAMP,
-  owner_nameval CLOB
-);
-/
 
-create or replace type obj_dashboard_table as table of obj_dashboard_record;
-/
 
 CREATE OR REPLACE FUNCTION eb_objects_update_dashboard(
 	refid_ varchar)
@@ -50,7 +20,7 @@ BEGIN
 
 SELECT eb_objects_id INTO id_ FROM eb_objects_ver WHERE refid = refid_;
 
-select LISTAGG(EA.application_name,',') WITHIN GROUP(ORDER BY EA.application_name) INTO app_id from eb_objects2application E2O ,eb_applications EA where 
+select LISTAGG(EA.applicationname,',') WITHIN GROUP(ORDER BY EA.applicationname) INTO app_id from eb_objects2application E2O ,eb_applications EA where 
  obj_id = id_ and E2O.eb_del = 'F' and EA.id = E2O.app_id ;
 
 SELECT 

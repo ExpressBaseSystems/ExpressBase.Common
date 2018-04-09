@@ -24,12 +24,7 @@ BEGIN
     		CONSTRAINT eb_bots_id_pkey PRIMARY KEY (id)
 	)';
 
-	EXECUTE IMMEDIATE 'CREATE OR REPLACE TRIGGER eb_bots_trigger
-	BEFORE INSERT ON eb_bots
-	FOR EACH ROW
-	BEGIN
-		:NEW.id:=eb_bots_id_seq.NEXTVAL;
-	END';
 	
 	EXECUTE IMMEDIATE 'CREATE INDEX eb_bots_eb_del_idx ON eb_bots (eb_del)';
+	EXECUTE IMMEDIATE 'CREATE OR REPLACE TRIGGER eb_bots_trigger BEFORE INSERT ON eb_bots FOR EACH ROW BEGIN ' || ':' || 'new.id:=eb_bots_id_seq.NEXTVAL; END;';
 END;

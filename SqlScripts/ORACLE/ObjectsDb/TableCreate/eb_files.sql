@@ -19,13 +19,7 @@ BEGIN
     		CONSTRAINT eb_files_id_pkey PRIMARY KEY (id)
 	)';
 
-	EXECUTE IMMEDIATE 'CREATE OR REPLACE TRIGGER eb_files_trigger
-	BEFORE INSERT ON eb_files
-	FOR EACH ROW
-	BEGIN
-		:NEW.id:=eb_files_id_seq.NEXTVAL;
-	END;';
-	
 	EXECUTE IMMEDIATE 'CREATE INDEX eb_files_eb_del_idx ON eb_files (eb_del)';
+	EXECUTE IMMEDIATE 'CREATE OR REPLACE TRIGGER eb_files_trigger BEFORE INSERT ON eb_files FOR EACH ROW BEGIN ' || ':' || 'new.id:=eb_files_id_seq.NEXTVAL; END;';
 END;
     
