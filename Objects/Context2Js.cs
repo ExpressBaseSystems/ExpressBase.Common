@@ -198,6 +198,7 @@ EbObjects.@Name = function @Name(id, jsonObj) {
     @4botHtml
     this.$Control = $( @html.replace(/@id/g, this.EbSid) );
     this.BareControlHtml = `@bareHtml`.replace(/@id/g, this.EbSid);
+	this.DesignHtml = @html;
     var MyName = this.constructor.name;
     this.RenderMe = function () { 
 var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName];
