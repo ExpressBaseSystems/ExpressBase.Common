@@ -84,6 +84,8 @@ namespace ExpressBase.Common.Objects
 
         public virtual bool isFullViewContol { get; set; }
 
+        public virtual bool isSelfCollection { get; set; }
+
         protected string RequiredString
         {
             get { return (this.Required ? "$('#{0}').focusout(function() { isRequired(this); }); $('#{0}Lbl').html( $('#{0}Lbl').text() + '<sup style=\"color: red\">*</sup>') ".Replace("{0}", this.Name) : string.Empty); }
@@ -206,11 +208,11 @@ else
         public virtual string GetWrapedCtrlHtml4bot(ref EbControl ChildObj)
         {
             string bareHTML = ChildObj.DesignHtml4Bot ?? ChildObj.GetBareHtml(),
-            innerHTML = @" <div class='ctrl-wraper' @style@> @barehtml@ </div>".Replace("@barehtml@", bareHTML);
-            innerHTML = (!ChildObj.isFullViewContol) ? (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>") : innerHTML.Replace("@style@", "style='width:100%;border:none;'");
-            return @"
-<div id='TextBox0' class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='TextBox'>
-   <div class='msg-cont'>
+            innerHTML = @" <div class='ctrl-wraper' @style@> @barehtml@ </div>".Replace("@barehtml@", bareHTML),
+            ResHTML = string.Empty,
+            type = ChildObj.GetType().Name.Substring(2, ChildObj.GetType().Name.Length - 2),
+            LabelHTML = @"
+    <div class='msg-cont'>
       <div class='bot-icon'></div>
       <div class='msg-cont-bot'>
          <div class='msg-wraper-bot'>
@@ -218,57 +220,71 @@ else
             <div class='msg-time'>3:44pm</div>
          </div>
       </div>
-   </div>
-   <div class='msg-cont' for='TextBox1' form='LeaveJS'>
+   </div>",
+            ControlHTML = @"
+<div class='msg-cont' for='TextBox1' form='LeaveJS'>
       <div class='msg-cont-bot'>
          <div class='msg-wraper-bot' style='@style@ border: none; background-color: transparent; width: 99%; padding-right: 3px;'>
             @innerHTML@
          </div>
       </div>
-   </div>
-</div>"
-.Replace("@type@", ChildObj.GetType().Name.Substring(2, ChildObj.GetType().Name.Length - 2))
-.Replace("@innerHTML@", innerHTML)
-.Replace("@style@", (ChildObj.isFullViewContol ? "margin-left:12px;" : string.Empty)).RemoveCR();
-        }
-
-        public string GetWrapedCtrlHtml4bot(string bareHTML, string type)
-        {
-            type = type.Substring(2, this.GetType().Name.Length - 2);
-            string innerHTML = @" <div class='ctrl-wraper' @style@> @barehtml@ </div>".Replace("@barehtml@", bareHTML);
-            bool t = true;
-            if (!(type == "Cards" || type == "Locations" || type == "InputGeoLocation" || type == "Image"))
+   </div>";
+            if (type == "Labels")
             {
-                innerHTML = (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>");
-                t = false;
+                ControlHTML = string.Empty;
+                LabelHTML = bareHTML;
             }
-            else
-                innerHTML = innerHTML.Replace("@style@", "style='width:100%;border:none;'");
-            string res = @"
+            innerHTML = (!ChildObj.isFullViewContol) ? (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>") : innerHTML.Replace("@style@", "style='width:100%;border:none;'");
+            ResHTML = @"
 <div id='TextBox0' class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='TextBox'>
-   <div class='msg-cont'>
-      <div class='bot-icon'></div>
-      <div class='msg-cont-bot'>
-         <div class='msg-wraper-bot'>
-            @Label@
-            <div class='msg-time'>3:44pm</div>
-         </div>
-      </div>
-   </div>
-   <div class='msg-cont' for='TextBox1' form='LeaveJS'>
-      <div class='msg-cont-bot'>
-         <div class='msg-wraper-bot' style='@style@ border: none; background-color: transparent; width: 99%; padding-right: 3px;'>
-            @innerHTML@
-         </div>
-      </div>
-   </div>
+   @LabelHTML@
+   @ControlHTML@
 </div>"
 .Replace("@type@", type)
+.Replace("@LabelHTML@", LabelHTML)
+.Replace("@ControlHTML@", ControlHTML)
 .Replace("@innerHTML@", innerHTML)
-.Replace("@style@", (t ? "margin-left:12px;" : string.Empty))
-.RemoveCR().DoubleQuoted();
-            return res;
+.Replace("@style@", (ChildObj.isFullViewContol ? "margin-left:12px;" : string.Empty)).RemoveCR();
+            return ResHTML;
         }
+
+        //        public string GetWrapedCtrlHtml4bot(string bareHTML, string type)
+        //        {
+        //            type = type.Substring(2, this.GetType().Name.Length - 2);
+        //            string innerHTML = @" <div class='ctrl-wraper' @style@> @barehtml@ </div>".Replace("@barehtml@", bareHTML);
+        //            bool t = true;
+        //            if (!(type == "Cards" || type == "Locations" || type == "InputGeoLocation" || type == "Image"))
+        //            {
+        //                innerHTML = (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>");
+        //                t = false;
+        //            }
+        //            else
+        //                innerHTML = innerHTML.Replace("@style@", "style='width:100%;border:none;'");
+        //            string res = @"
+        //<div id='TextBox0' class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='TextBox'>
+        //   <div class='msg-cont'>
+        //      <div class='bot-icon'></div>
+        //      <div class='msg-cont-bot'>
+        //         <div class='msg-wraper-bot'>
+        //            @Label@
+        //            <div class='msg-time'>3:44pm</div>
+        //         </div>
+        //      </div>
+        //   </div>
+        //   <div class='msg-cont' for='TextBox1' form='LeaveJS'>
+        //      <div class='msg-cont-bot'>
+        //         <div class='msg-wraper-bot' style='@style@ border: none; background-color: transparent; width: 99%; padding-right: 3px;'>
+        //            @innerHTML@
+        //         </div>
+        //      </div>
+        //   </div>
+        //</div>"
+        //.Replace("@type@", type)
+        //.Replace("@innerHTML@", innerHTML)
+        //.Replace("@style@", (t ? "margin-left:12px;" : string.Empty))
+        //.RemoveCR().DoubleQuoted();
+        //            return res;
+        //        }
 
         public override void Init4Redis(IRedisClient redisclient, IServiceClient serviceclient)
         {
