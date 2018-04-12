@@ -6,10 +6,6 @@ namespace ExpressBase.Common
 {
     public class RoutingConstants
     {
-        public const char DOT = '.';
-        public const char BACKSLASH = '/';
-        public const char DASH = '-';
-
         public const string LOCALHOST = "localhost";
         public const string WWWDOT = "www.";
         public const string EXPRESSBASEDOTCOM = "expressbase.com";
