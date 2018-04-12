@@ -188,11 +188,13 @@ function ProcRecur(src_controls, dest_controls) {
 '@Name'  : @MetaCollection,"
 .Replace("@Name", obj.GetType().Name)
 .Replace("@MetaCollection", JsonConvert.SerializeObject(this.GetMetaCollection(obj)));
-
-            this.JsObjects += @"
+			try
+			{
+				this.JsObjects += @"
 EbObjects.@Name = function @Name(id, jsonObj) {
     this.$type = '@Type, ExpressBase.Objects';
     this.EbSid = id;
+	this.ObjType = '@ObjType';
     @Props
     @InitFunc
     @4botHtml
@@ -226,14 +228,19 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             this.Init(id);
     }
 };"
-.Replace("@Name", obj.GetType().Name)
-.Replace("@Type", obj.GetType().FullName)
-.Replace("@Props", _props)
-.Replace("@InitFunc", (obj as EbObject).GetJsInitFunc())
-.Replace("@html", (obj as EbObject).GetDesignHtml())
-.Replace("@4botHtml",(obj is EbControl) ? ("this.$WrapedCtrl4Bot = $(`" + (obj as EbControl).GetWrapedCtrlHtml4bot(ref sampOBJ) + "`);") : string.Empty)
-.Replace("@bareHtml", (obj as EbObject).GetBareHtml()); //(obj as EbObject).GetDesignHtml());//
+	.Replace("@Name", obj.GetType().Name)
+	.Replace("@Type", obj.GetType().FullName)
+	.Replace("@Props", _props)
+	.Replace("@InitFunc", (obj as EbObject).GetJsInitFunc())
+	.Replace("@html", (obj as EbObject).GetDesignHtml())
+	.Replace("@ObjType",obj.GetType().Name.Substring(2))
+	.Replace("@4botHtml", (obj is EbControl) ? ("this.$WrapedCtrl4Bot = $(`" + (obj as EbControl).GetWrapedCtrlHtml4bot(ref sampOBJ) + "`);") : string.Empty)
+	.Replace("@bareHtml", (obj as EbObject).GetBareHtml()); //(obj as EbObject).GetDesignHtml());//
+			}
+			catch(Exception e)
+			{
 
+			}
         }
 
         private string Get_EbObjTypesStr()
