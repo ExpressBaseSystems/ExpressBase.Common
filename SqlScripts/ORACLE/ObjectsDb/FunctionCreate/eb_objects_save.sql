@@ -3,7 +3,7 @@ create or replace FUNCTION eb_objects_save(
 	obj_namev CLOB,
 	obj_descv CLOB,
 	obj_typev NUMBER,
-	obj_jsonv CLOB,
+	--obj_jsonv CLOB,
 	commit_uidv NUMBER,
 	src_pid CLOB,
 	cur_pid CLOB,
@@ -20,7 +20,7 @@ BEGIN
 
  	UPDATE eb_objects SET obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv WHERE id = objid RETURNING id INTO inserted_objid;
 
-    UPDATE eb_objects_ver SET obj_json = obj_jsonv WHERE refid=refidv RETURNING id INTO inserted_obj_ver_id;
+    --UPDATE eb_objects_ver SET obj_json = obj_jsonv WHERE refid=refidv RETURNING id INTO inserted_obj_ver_id;
 
     --refidunique := CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(src_pid,'-'),cur_pid),'-'),obj_typev),'-'),inserted_objid),'-'),inserted_obj_ver_id);
 

@@ -3,7 +3,7 @@ create or replace FUNCTION eb_objects_commit(
 	obj_namev CLOB,
 	obj_descv CLOB,
 	obj_typev NUMBER,
-	obj_jsonv CLOB,
+	--obj_jsonv VARCHAR2,
 	obj_changelogv CLOB,
 	commit_uidv NUMBER,
 	src_pid CLOB,
@@ -26,11 +26,17 @@ BEGIN
 	WHERE 
     	id = objid; 
 
-	UPDATE eb_objects_ver
+    UPDATE eb_objects_ver
+	SET
+        obj_changelog = obj_changelogv, commit_uid= commit_uidv, commit_ts = SYSTIMESTAMP 
+	WHERE
+		refid = idv RETURNING id INTO inserted_obj_ver_id;
+
+	/*UPDATE eb_objects_ver
 	SET
     	obj_json = obj_jsonv, obj_changelog = obj_changelogv, commit_uid= commit_uidv, commit_ts = SYSTIMESTAMP 
 	WHERE
-		refid = idv RETURNING id INTO inserted_obj_ver_id;
+		refid = idv RETURNING id INTO inserted_obj_ver_id;*/
 
        --refidunique :=CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(src_pid,'-'),cur_pid),'-'),obj_typev),'-'),objid),'-'),inserted_obj_ver_id);
         --committed_refidunique:=refidunique;

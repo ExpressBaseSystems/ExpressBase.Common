@@ -1,8 +1,8 @@
-
 create or replace FUNCTION eb_objects_exploreobject(
 	id_ NUMBER)
     RETURN obj_explore_table as explore_obj obj_explore_table;
-    
+    --TABLE(idval integer,  text, typeval integer, statusval integer, descriptionval text, changelogval text, commitatval text, commitbyval text, refidval text, ver_numval text, work_modeval boolean, workingcopiesval text[], json_wcval json, json_lcval json, major_verval integer, minor_verval integer, patch_verval integer, tagsval text, app_idval text, lastversionrefidval text, lastversionnumberval text, lastversioncommit_tsval text, lastversion_statusvalv integer, lastversioncommit_byname text, lastversioncommit_byid integer, liveversionrefidval text, liveversionnumberval text, liveversioncommit_tsval text, liveversion_statusval integer, liveversioncommit_byname text, liveversioncommit_byid integer, owner_uidval integer, owner_tsval text, owner_nameval text) 
+
 	workingcopiesval CLOB;
 	json_wcval CLOB; json_lcval CLOB;
 	idval number; nameval CLOB; typeval number; statusval number;
@@ -68,7 +68,8 @@ END IF;
         select obj_explore_record(
         idval, nameval, typeval, statusval, descriptionval, changelogval, commitatval, commitbyval, refidval, 
 	ver_numval, work_modeval, workingcopiesval, json_wcval, json_lcval, major_verval, minor_verval, patch_verval,
-	tagsval, app_idval,lastversionrefidval, lastversionnumberval, lastversioncommit_tsval, lastversion_statusval, lastversioncommit_byname,lastversioncommit_byid,
+	tagsval, app_idval,
+    lastversionrefidval, lastversionnumberval, lastversioncommit_tsval, lastversion_statusval, lastversioncommit_byname,lastversioncommit_byid,
 	liveversionrefidval, liveversionnumberval, liveversioncommit_tsval, liveversion_statusval, liveversioncommit_byname,liveversioncommit_byid,
 	owner_uidVal, owner_tsVal, owner_nameVal)bulk collect into explore_obj from dual;
 
