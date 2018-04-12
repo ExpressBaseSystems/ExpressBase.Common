@@ -29,8 +29,9 @@ namespace ExpressBase.Common.Objects.Attributes
         ScriptEditorCS = 18,
         ScriptEditorJS = 19,
         ScriptEditorSQ = 20,
-        MultiLanguageKeySelector = 21,
-    }
+		MultiLanguageKeySelector = 21,
+		CollectionPropsFrmSrc = 22,
+	}
 
     public class HideInToolBox : Attribute { }
 
