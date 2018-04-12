@@ -13,7 +13,7 @@ BEGIN
     		obj_changelog VARCHAR(300),
     		commit_uid NUMBER,
    		commit_ts TIMESTAMP,
-    		obj_json VARCHAR(900),
+    		obj_json CLOB,
     		refid VARCHAR(200),
     		version_num VARCHAR(15),
     		major_ver_num NUMBER,
