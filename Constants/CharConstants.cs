@@ -7,6 +7,5 @@
         public const char BACKSLASH = '/';
         public const char DASH = '-';
         public const char UNDERSCORE = '_';
-
     }
 }

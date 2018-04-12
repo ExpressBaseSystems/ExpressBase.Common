@@ -34,6 +34,5 @@
 
         //Tags
         public const string TAGS = "Tags";
-
     }
 }
