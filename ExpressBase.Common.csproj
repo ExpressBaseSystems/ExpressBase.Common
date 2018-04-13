@@ -31,7 +31,7 @@
     <PackageReference Include="FOSS.ServiceStack.Core" Version="5.0.2" />
     <PackageReference Include="FOSS.ServiceStack.Redis.Core" Version="5.0.2" />
     <PackageReference Include="dotNetCore.Data.OracleClient" Version="1.0.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.5.0" />
+    <PackageReference Include="MongoDB.Driver.Core" Version="2.5.0" />
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.5.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="Npgsql" Version="3.2.5" />

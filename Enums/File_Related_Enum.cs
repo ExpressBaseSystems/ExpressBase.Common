@@ -6,7 +6,8 @@
         jpeg = 2,
         png = 3,
         svg = 4,
-        gif = 5
+        gif = 5,
+        bmp = 6,
     }
 
     public enum ImageSizes

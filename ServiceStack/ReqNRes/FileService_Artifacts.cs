@@ -108,10 +108,23 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class DownloadFileRequest : EbServiceStackRequest
+    public class DownloadFileRequest : EbServiceStackRequest ,IReturn<DownloadFileResponse>
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
+    }
+
+    [DataContract]
+    public class DownloadFileResponse : IEbSSResponse
+    {
+        [DataMember(Order = 1)]
+        public FileMeta FileDetails { get; set; }
+
+        [DataMember(Order = 2)]
+        public MemorystreamWrapper StreamWrapper { get; set; }
+
+        [DataMember(Order = 3)]
+        public ResponseStatus ResponseStatus { get; set; }
     }
 
     [DataContract]
