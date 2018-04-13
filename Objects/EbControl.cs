@@ -17,18 +17,18 @@ namespace ExpressBase.Common.Objects
 {
     public class EbControl : EbObject
     {
-        [Description("Labels")]
-        [System.ComponentModel.Category("Behavior")]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
-        [UIproperty]
-        [Unique]
-        public virtual string Label { get; set; }
-
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public virtual string EbSid { get; set; }
 
-        [EnableInBuilder(BuilderType.BotForm)]
+		[Description("Labels")]
+		[System.ComponentModel.Category("Behavior")]
+		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+		[UIproperty]
+		[Unique]
+		public virtual string Label { get; set; }
+
+		[EnableInBuilder(BuilderType.BotForm)]
         [PropertyEditor(PropertyEditorType.JS)]
         public string VisibleIf { get; set; }
 
@@ -39,12 +39,6 @@ namespace ExpressBase.Common.Objects
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public virtual string BareControlHtml { get; set; }
-
-        [System.ComponentModel.Category("Behavior")]
-        [Description("Labels")]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
-        [UIproperty]
-        public virtual string HelpText { get; set; }
 
         [ProtoBuf.ProtoMember(12)]
         [System.ComponentModel.Category("Behavior")]
@@ -109,8 +103,7 @@ if( $('#{0}').css('font-size').replace('px','') < 10 )
 else
     $('#{0}AttaLbl').css({'height':   ( $('#{0}').parent().height()) + 'px' }); 
 ";
-
-
+		
         [ProtoBuf.ProtoMember(21)]
         [System.ComponentModel.Category("Behavior")]
         public virtual bool ReadOnly { get; set; }
@@ -147,47 +140,7 @@ else
         [ProtoBuf.ProtoMember(28)]
         [System.ComponentModel.Category("Accessibility")]
         public virtual int TabIndex { get; set; }
-
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm)]
-        [PropertyGroup("Appearance")]
-        [PropertyEditor(PropertyEditorType.Color)]
-        [UIproperty]
-        public virtual string BackColor { get; set; }
-
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm)]
-        [PropertyGroup("Appearance")]
-        [PropertyEditor(PropertyEditorType.Color)]
-        [UIproperty]
-        [System.ComponentModel.Category("Accessibility")]
-        [Attributes.DefaultPropValue("#333333")]
-        public virtual string ForeColor { get; set; }
-
-
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm)]
-        [PropertyGroup("Appearance")]
-        [PropertyEditor(PropertyEditorType.Color)]
-        [UIproperty]
-        public virtual string LabelBackColor { get; set; }
-
-
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm)]
-        [PropertyGroup("Appearance")]
-        [PropertyEditor(PropertyEditorType.Color)]
-        [Attributes.DefaultPropValue("#333333")]
-        [UIproperty]
-        public virtual string LabelForeColor { get; set; }
-
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm)]
-        [PropertyGroup("Appearance")]
-        [UIproperty]
-        [PropertyEditor(PropertyEditorType.Label)]
-        public virtual string FontFamily { get; set; }
-
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm)]
-        [PropertyGroup("Appearance")]
-        [UIproperty]
-        public virtual float FontSize { get; set; }
-
+		        
         [ProtoBuf.ProtoMember(34)]
         public EbValidatorCollection Validators { get; set; }
 
@@ -302,8 +255,7 @@ else
             return "\"" + input + "\"";
         }
     }
-
-
+	
     [ProtoBuf.ProtoContract]
     public class EbValidator
     {
