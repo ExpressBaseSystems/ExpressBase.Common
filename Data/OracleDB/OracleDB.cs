@@ -634,12 +634,13 @@ namespace ExpressBase.Common.Data
                             EO.id = EOV.eb_objects_id 
                         AND 
                             EOS.eb_obj_ver_id = EOV.id 
-                        AND 
-                            EO.id = ANY(:Ids)  
+                        AND EO.id = ANY(:Ids)  
                         AND 
                             EOS.status = 3 
                         AND EO.id = EO2A.obj_id 
                         AND EO2A.eb_del = 'F';"; } }
+
+        public string EB_SIDEBARCHECK { get { return "AND EO.id = ANY(:Ids) "; } }
         public string EB_GETROLESRESPONSE_QUERY
         {
             get
