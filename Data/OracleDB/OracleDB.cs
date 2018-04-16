@@ -634,8 +634,7 @@ namespace ExpressBase.Common.Data
                             EO.id = EOV.eb_objects_id 
                         AND 
                             EOS.eb_obj_ver_id = EOV.id 
-                        AND 
-                            EO.id = ANY(:Ids)  
+                        AND EO.id = ANY(:Ids)  
                         AND 
                             EOS.status = 3 
                         AND EO.id = EO2A.obj_id 
