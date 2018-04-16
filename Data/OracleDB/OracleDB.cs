@@ -639,6 +639,8 @@ namespace ExpressBase.Common.Data
                             EOS.status = 3 
                         AND EO.id = EO2A.obj_id 
                         AND EO2A.eb_del = 'F';"; } }
+
+        public string EB_SIDEBARCHECK { get { return "AND EO.id = ANY(:Ids) "; } }
         public string EB_GETROLESRESPONSE_QUERY
         {
             get
