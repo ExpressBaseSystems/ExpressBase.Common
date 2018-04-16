@@ -18,7 +18,7 @@ namespace ExpressBase.Common.ServiceClients
             this.RefreshTokenUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_GET_ACCESS_TOKEN_URL);
 
             //this.BaseUri = "http://localhost:41700";
-            //this.RefreshTokenUri = "http://localhost:41600";
+            //this.RefreshTokenUri = "http://localhost:41600/access-token";
         }
 
         //public EbMqClient(Container c)

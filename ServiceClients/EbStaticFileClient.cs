@@ -7,7 +7,7 @@ namespace ExpressBase.Common.ServiceClients
 {
     public interface IEbStaticFileClient : IServiceClient { }
 
-    public class EbStaticFileClient : JsonServiceClient, IEbStaticFileClient
+    public class EbStaticFileClient : ProtoBufServiceClient, IEbStaticFileClient
     {
         public EbStaticFileClient()
         {
@@ -15,7 +15,7 @@ namespace ExpressBase.Common.ServiceClients
             this.RefreshTokenUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_GET_ACCESS_TOKEN_URL);
 
             //this.BaseUri = "http://localhost:41800";
-            //this.RefreshTokenUri = "http://localhost:41600";
+            //this.RefreshTokenUri = "http://localhost:41600/access-token";
         }
 
         //public EbStaticFileClient(Container c)
