@@ -529,7 +529,7 @@ namespace ExpressBase.Common
         }
 
         //-----------Sql queries
-        public string EB_TEST_CREATE_TABLE { get { return "CREATE TABLE eb_testConnection(id integer)"; } }
+        public string EB_USER_ROLE_PRIVS { get { return "SELECT DISTINCT privilege_type FROM information_schema.role_table_grants WHERE grantee='@uname';"; } }
         public string EB_AUTHETICATE_USER_NORMAL { get { return "SELECT * FROM eb_authenticate_unified(uname => @uname, password => @pass, wc => @wc);"; } }
 
         public string EB_AUTHENTICATEUSER_SOCIAL { get { return "SELECT * FROM eb_authenticate_unified(social => @social, wc => @wc);"; } }

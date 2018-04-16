@@ -615,11 +615,7 @@ namespace ExpressBase.Common.Data
 
         //-----------Sql queries
 
-        public string EB_TEST_CREATE_TABLE { get { return @"CREATE TABLE eb_test
-	                                                        (
-    		                                                        id integer NOT NULL,
-    		                                                        CONSTRAINT eb_test_id_pkey PRIMARY KEY (id)
-	                                                        ) "; } }
+        public string EB_USER_ROLE_PRIVS { get { return @"SELECT granted_role FROM USER_ROLE_PRIVS WHERE USERNAME='@uname'"; } }
         public string EB_AUTHETICATE_USER_NORMAL { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, passwrd => :pass,wc => :wc))"; } }
         public string EB_AUTHENTICATEUSER_SOCIAL { get { return "SELECT * FROM table(eb_authenticate_unified(social => :social, wc => :wc))"; } }
         public string EB_AUTHENTICATEUSER_SSO { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, wc => :wc))"; } }

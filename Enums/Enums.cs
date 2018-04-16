@@ -86,5 +86,26 @@ namespace ExpressBase.Common
 		Terminate
 	}
 
+    public enum OracleSysRoles
+    {
+        CONNECT,
+        RESOURCE,
+        DBA,
+        EXP_FULL_DATABASE,
+        IMP_FULL_DATABASE,
+        RECOVERY_CATALOG_OWNER
+    }
+
+    public enum PGSQLSysRoles
+    {
+        DELETE,
+        INSERT,
+        REFERENCES,
+        SELECT,
+        TRIGGER,
+        TRUNCATE,
+        UPDATE
+    }
+
 }
 
