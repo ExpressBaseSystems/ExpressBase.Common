@@ -1,13 +1,13 @@
 ﻿using ExpressBase.Common.Connections;
 using ExpressBase.Common.Structures;
 using Npgsql;
+using Oracle.ManagedDataAccess.Client;
 //using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
-using System.Data.OracleClient;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -53,22 +53,22 @@ namespace ExpressBase.Common.Data
         private OracleEbDbTypes()
         {
             this.InnerDictionary = new Dictionary<EbDbTypes, VendorDbType>();
-            this.InnerDictionary.Add(EbDbTypes.AnsiString, new VendorDbType(EbDbTypes.AnsiString, OracleType.Clob));
-            this.InnerDictionary.Add(EbDbTypes.Binary, new VendorDbType(EbDbTypes.Binary, OracleType.Blob));
-            this.InnerDictionary.Add(EbDbTypes.Byte, new VendorDbType(EbDbTypes.Byte, OracleType.Byte));
-            this.InnerDictionary.Add(EbDbTypes.Date, new VendorDbType(EbDbTypes.Date, OracleType.DateTime));
-            this.InnerDictionary.Add(EbDbTypes.DateTime, new VendorDbType(EbDbTypes.DateTime, OracleType.DateTime));
-            this.InnerDictionary.Add(EbDbTypes.Decimal, new VendorDbType(EbDbTypes.Decimal, OracleType.Number));
-            this.InnerDictionary.Add(EbDbTypes.Double, new VendorDbType(EbDbTypes.Double, OracleType.Double));
-            this.InnerDictionary.Add(EbDbTypes.Int16, new VendorDbType(EbDbTypes.Int16, OracleType.Int16));
-            this.InnerDictionary.Add(EbDbTypes.Int32, new VendorDbType(EbDbTypes.Int32, OracleType.Int32));
-            this.InnerDictionary.Add(EbDbTypes.Int64, new VendorDbType(EbDbTypes.Int64, OracleType.Number));
-            this.InnerDictionary.Add(EbDbTypes.Object, new VendorDbType(EbDbTypes.Object, OracleType.Clob));
-            this.InnerDictionary.Add(EbDbTypes.String, new VendorDbType(EbDbTypes.String, OracleType.Clob));
-            this.InnerDictionary.Add(EbDbTypes.Time, new VendorDbType(EbDbTypes.Time, OracleType.Timestamp));
-            this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, OracleType.Number));
-            this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, OracleType.Clob));
-            this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, OracleType.Char));
+            this.InnerDictionary.Add(EbDbTypes.AnsiString, new VendorDbType(EbDbTypes.AnsiString, OracleDbType.Clob));
+            this.InnerDictionary.Add(EbDbTypes.Binary, new VendorDbType(EbDbTypes.Binary, OracleDbType.Blob));
+            this.InnerDictionary.Add(EbDbTypes.Byte, new VendorDbType(EbDbTypes.Byte, OracleDbType.Byte));
+            this.InnerDictionary.Add(EbDbTypes.Date, new VendorDbType(EbDbTypes.Date, OracleDbType.Date));
+            this.InnerDictionary.Add(EbDbTypes.DateTime, new VendorDbType(EbDbTypes.DateTime, OracleDbType.TimeStamp));
+            this.InnerDictionary.Add(EbDbTypes.Decimal, new VendorDbType(EbDbTypes.Decimal, OracleDbType.Decimal));
+            this.InnerDictionary.Add(EbDbTypes.Double, new VendorDbType(EbDbTypes.Double, OracleDbType.Double));
+            this.InnerDictionary.Add(EbDbTypes.Int16, new VendorDbType(EbDbTypes.Int16, OracleDbType.Int16));
+            this.InnerDictionary.Add(EbDbTypes.Int32, new VendorDbType(EbDbTypes.Int32, OracleDbType.Int32));
+            this.InnerDictionary.Add(EbDbTypes.Int64, new VendorDbType(EbDbTypes.Int64, OracleDbType.Int64));
+            this.InnerDictionary.Add(EbDbTypes.Object, new VendorDbType(EbDbTypes.Object, OracleDbType.Clob));
+            this.InnerDictionary.Add(EbDbTypes.String, new VendorDbType(EbDbTypes.String, OracleDbType.Clob));
+            this.InnerDictionary.Add(EbDbTypes.Time, new VendorDbType(EbDbTypes.Time, OracleDbType.TimeStamp));
+            this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, OracleDbType.NVarchar2));
+            this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, OracleDbType.Clob));
+            this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, OracleDbType.Char));
         }
 
         public static IVendorDbTypes Instance => new OracleEbDbTypes();
@@ -131,7 +131,7 @@ namespace ExpressBase.Common.Data
 
         public System.Data.Common.DbCommand GetNewCommand(DbConnection con, string sql, DbTransaction trans)
         {
-            return new OracleCommand(sql, (OracleConnection)con, (OracleTransaction)trans);
+            return new OracleCommand(sql, (OracleConnection)con);
         }
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type, object value)
@@ -354,6 +354,7 @@ namespace ExpressBase.Common.Data
                             {
                                 cmd.Parameters.AddRange(dbParameter.ToArray());
                             }
+
 
                             using (var reader = cmd.ExecuteReader())
                             {

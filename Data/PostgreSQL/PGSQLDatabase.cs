@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
-using System.Data.OracleClient;
 using System.Net.Sockets;
 
 namespace ExpressBase.Common
