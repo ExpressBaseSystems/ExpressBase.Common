@@ -188,9 +188,9 @@ function ProcRecur(src_controls, dest_controls) {
 '@Name'  : @MetaCollection,"
 .Replace("@Name", obj.GetType().Name)
 .Replace("@MetaCollection", JsonConvert.SerializeObject(this.GetMetaCollection(obj)));
-			try
-			{
-				this.JsObjects += @"
+            try
+            {
+                this.JsObjects += @"
 EbObjects.@Name = function @Name(id, jsonObj) {
     this.$type = '@Type, ExpressBase.Objects';
     this.EbSid = id;
@@ -228,19 +228,19 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             this.Init(id);
     }
 };"
-	.Replace("@Name", obj.GetType().Name)
-	.Replace("@Type", obj.GetType().FullName)
-	.Replace("@Props", _props)
-	.Replace("@InitFunc", (obj as EbObject).GetJsInitFunc())
-	.Replace("@html", (obj as EbObject).GetDesignHtml())
-	.Replace("@ObjType",obj.GetType().Name.Substring(2))
-	.Replace("@4botHtml", (obj is EbControl) ? ("this.$WrapedCtrl4Bot = $(`" + (obj as EbControl).GetWrapedCtrlHtml4bot(ref sampOBJ) + "`);") : string.Empty)
-	.Replace("@bareHtml", (obj as EbObject).GetBareHtml()); //(obj as EbObject).GetDesignHtml());//
-			}
-			catch(Exception e)
-			{
+    .Replace("@Name", obj.GetType().Name)
+    .Replace("@Type", obj.GetType().FullName)
+    .Replace("@Props", _props)
+    .Replace("@InitFunc", (obj as EbObject).GetJsInitFunc())
+    .Replace("@html", (obj as EbObject).GetDesignHtml())
+    .Replace("@ObjType", obj.GetType().Name.Substring(2))
+    .Replace("@4botHtml", (obj is EbControl) ? ("this.$WrapedCtrl4Bot = $(`" + (obj as EbControl).GetWrapedCtrlHtml4bot(ref sampOBJ) + "`);") : string.Empty)
+    .Replace("@bareHtml", (obj as EbObject).GetBareHtml()); //(obj as EbObject).GetDesignHtml());//
+            }
+            catch (Exception e)
+            {
 
-			}
+            }
         }
 
         private string Get_EbObjTypesStr()
@@ -410,6 +410,8 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                 return string.Format(s, prop.Name, "false");
             else if (prop.PropertyType.GetTypeInfo().IsEnum)
                 return string.Format(s, prop.Name, "0");
+            else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition().Name == "IDictionary`2")
+                return string.Format(s, prop.Name, "{\"$type\": \"System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib\",\"$values\": {}}");
             else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
             {
                 Type[] args = prop.PropertyType.GetGenericArguments();
