@@ -44,14 +44,7 @@ namespace ExpressBase.Common.Data
                     if(factory.ObjectsDB.Vendor == DatabaseVendors.PGSQL)
                         yield return factory.ObjectsDB.GetNewParameter(string.Format("@{0}", param.Name), (EbDbTypes)Convert.ToInt32(param.Type), param.Value);
                     else
-                    {
-                        if (param.Type == 6.ToString() || param.Type == 5.ToString() || param.Type == 17.ToString() || param.Type == 26.ToString())
-                            yield return factory.ObjectsDB.GetNewParameter(string.Format("{0}", param.Name), (EbDbTypes)Convert.ToInt32(param.Type), Convert.ToDateTime(param.Value));
-                        else
-                            yield return factory.ObjectsDB.GetNewParameter(string.Format("{0}", param.Name), (EbDbTypes)Convert.ToInt32(param.Type), param.Value);
-
-                    }
-                      
+                        yield return factory.ObjectsDB.GetNewParameter(string.Format("{0}", param.Name), (EbDbTypes)Convert.ToInt32(param.Type), param.Value);                      
                 }
             }
         }

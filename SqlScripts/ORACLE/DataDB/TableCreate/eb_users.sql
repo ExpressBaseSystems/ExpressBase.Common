@@ -12,13 +12,13 @@ BEGIN
 
 	
 
-	EXECUTE IMMEDIATE 'CREATE SEQUENCE eb_users_id_seq START WITH 1';
+	EXECUTE IMMEDIATE 'CREATE SEQUENCE eb_users_id_seq START WITH 2';
 	
 	EXECUTE IMMEDIATE 'CREATE TABLE eb_users
 	(
     		id number NOT NULL,
     		email varchar(50),
-    		pwd clob,
+    		pwd varchar2(400),
     		eb_del char DEFAULT '''|| eb_del ||''',
     		firstname varchar(20),
     		lastname varchar(20),

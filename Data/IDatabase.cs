@@ -17,7 +17,7 @@ namespace ExpressBase.Common
         DbConnection GetNewConnection();
         DbConnection GetNewConnection(string dbName);
         DbCommand GetNewCommand(DbConnection con, string sql);
-        DbCommand GetNewCommand(DbConnection con, string sql, DbTransaction trans);
+       // DbCommand GetNewCommand(DbConnection con, string sql, DbTransaction trans);
         DbParameter GetNewParameter(string parametername, EbDbTypes type, object value);
 
         DbParameter GetNewParameter(string parametername, EbDbTypes type);

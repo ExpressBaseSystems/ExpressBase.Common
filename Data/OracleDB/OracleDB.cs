@@ -129,14 +129,17 @@ namespace ExpressBase.Common.Data
             return new OracleCommand(sql, (OracleConnection)con);
         }
 
-        public System.Data.Common.DbCommand GetNewCommand(DbConnection con, string sql, DbTransaction trans)
-        {
-            return new OracleCommand(sql, (OracleConnection)con);
-        }
+        //public System.Data.Common.DbCommand GetNewCommand(DbConnection con, string sql, DbTransaction trans)
+        //{
+        //    return new OracleCommand(sql, (OracleConnection)con);
+        //}
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type, object value)
         {
-            return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = value };
+            if((int)type == 6 || (int)type == 5 || (int)type == 17 || (int)type == 26)
+               return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = Convert.ToDateTime(value) };
+            else 
+                return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = value };
         }
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type)
@@ -674,7 +677,7 @@ namespace ExpressBase.Common.Data
         public string EB_SAVEROLES_QUERY { get { return "SELECT eb_create_or_update_rbac_roles(:role_id, :applicationid, :createdby, :role_name, :description, :is_anonym, :users, :dependants, :permission) FROM dual"; } }
 
 
-        public string EB_SAVEUSER_QUERY { get { return "SELECT eb_createormodifyuserandroles(:userid, :id, :fullname, :nickname, :email, :pwd, :dob, :sex, :alternateemail, :phprimary, :phsecondary, :phlandphone, :extension, :fbid, :fbname, :roles, :groups, :statusid, :hide, :anonymoususerid) FROM dual;"; } }
+        public string EB_SAVEUSER_QUERY { get { return "SELECT eb_createormodifyuserandroles(:userid, :id, :fullname, :nickname, :email, :pwd, :dob, :sex, :alternateemail, :phprimary, :phsecondary, :phlandphone, :extension, :fbid, :fbname, :roles, :groups, :statusid, :hide, :anonymoususerid, :preference) FROM dual;"; } }
 
         public string EB_SAVEUSERGROUP_QUERY { get { return "SELECT eb_createormodifyusergroup(:userid,:id,:name,:description,:users) FROM dual;"; } }
 
@@ -844,7 +847,7 @@ namespace ExpressBase.Common.Data
         {
             get
             {
-                return "SELECT * FROM TABLE(eb_get_tagged_object(:tag))";
+                return "SELECT * FROM TABLE(eb_get_tagged_object(:tags))";
             }
         }
 
