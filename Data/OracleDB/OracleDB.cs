@@ -97,7 +97,7 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        private const string CONNECTION_STRING_BARE = "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= {2};Password={3};Min Pool Size=10;Connection Lifetime = 120;";
+        private const string CONNECTION_STRING_BARE = "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= {2};Password={3};Pooling=true;Min Pool Size=1;Connection Lifetime=180;Max Pool Size=50;Incr Pool Size=5";
         private string _cstr;
         private EbBaseDbConnection EbBaseDbConnection { get; set; }
 
@@ -353,6 +353,7 @@ namespace ExpressBase.Common.Data
                     {
                         using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                         {
+                            cmd.BindByName = true;
                             if (Regex.IsMatch(sql_arr[i], @"\:+") && parameters != null && parameters.Length > 0)
                             {
                                 cmd.Parameters.AddRange(dbParameter.ToArray());
@@ -968,3 +969,5 @@ namespace ExpressBase.Common.Data
         }
     }
 }
+
+// Auto disconnect: https://stackoverflow.com/questions/35352060/odp-net-oracle-manageddataacess-random-ora-12570-errors
