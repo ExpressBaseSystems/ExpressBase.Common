@@ -20,29 +20,21 @@ namespace ExpressBase.Common.JsonConverters
 
         object ReadJsonGeneric<TKey, TValue>(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var tokenType = reader.TokenType;
+			JObject obj = JObject.Load(reader);
 
-            var dict = existingValue as IDictionary<TKey, TValue>;
-            if (dict == null)
-            {
-                var contract = serializer.ContractResolver.ResolveContract(objectType);
-                dict = (IDictionary<TKey, TValue>)contract.DefaultCreator();
-            }
+			var dict = new Dictionary<string, object>();
+			var x = obj.Last.First;
 
-            if (tokenType == JsonToken.StartArray)
-            {
-                var pairs = new JsonSerializer().Deserialize<KeyValuePair<TKey, TValue>[]>(reader);
-                if (pairs == null)
-                    return existingValue;
-                foreach (var pair in pairs)
-                    dict.Add(pair);
-            }
-            else if (tokenType == JsonToken.StartObject)
-            {
-                // Using "Populate()" avoids infinite recursion.
-                // https://github.com/JamesNK/Newtonsoft.Json/blob/ee170dc5510bb3ffd35fc1b0d986f34e33c51ab9/Src/Newtonsoft.Json/Converters/CustomCreationConverter.cs
-                serializer.Populate(reader, dict);
-            }
+			foreach(JToken child in obj.Last.First.Children())
+			{
+				if (child.First.Type == JTokenType.String)
+					dict.Add(child.Path.Remove(0, 8), child.First.Value<string>());
+				else if (child.First.Type == JTokenType.Integer)
+					dict.Add(child.Path.Remove(0, 8), child.First.Value<Int32>());
+				else if (child.First.Type == JTokenType.Float)
+					dict.Add(child.Path.Remove(0, 8), child.First.Value<float>());
+			}
+
             return dict;
         }
 

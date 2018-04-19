@@ -704,7 +704,7 @@ namespace ExpressBase.Common.Data
             get
             {
                 return @"SELECT
-                        obj_json, version_num, status, EO.obj_tags
+                        obj_json, version_num, status, EO.obj_tags, EO.obj_type
                     FROM
                         eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
                     WHERE
