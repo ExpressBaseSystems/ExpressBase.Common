@@ -411,7 +411,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             else if (prop.PropertyType.GetTypeInfo().IsEnum)
                 return string.Format(s, prop.Name, "0");
             else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition().Name == "IDictionary`2")
-                return string.Format(s, prop.Name, "{\"$type\": \"System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib\",\"$values\": {}}");
+                return string.Format(s, prop.Name, "{\"$type\": \"System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib\",\"$values\": {}}");//need to recheck format
             else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
             {
                 Type[] args = prop.PropertyType.GetGenericArguments();
