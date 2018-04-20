@@ -108,8 +108,7 @@ namespace ExpressBase.Common.Data
         }
         public OracleDB()
         {
-            _cstr = "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = 35.200.241.84)(PORT = 1521))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= MASTERTEX;Password=master;Connection Timeout=900; pooling='true';Max Pool Size=900";
-            //_cstr = "Data Source = RHEL5; User ID = TEST; Password = Passw0rd1 ";
+           
         }
 
         public DbConnection GetNewConnection(string dbName)
@@ -386,17 +385,31 @@ namespace ExpressBase.Common.Data
 
         public int DoNonQuery(string query, params DbParameter[] parameters)
         {
+            List<DbParameter> dbParameter = new List<DbParameter>();
+            string[] sql_arr = query.Split(";");
+            foreach (var param in parameters)
+            {
+                if (Regex.IsMatch(query, ":" + param.ParameterName))
+                    dbParameter.Add(param);
+            }
+
             using (var con = GetNewConnection() as OracleConnection)
             {
                 try
                 {
                     con.Open();
-                    using (OracleCommand cmd = new OracleCommand(query, con))
+                    for (int i = 0; i < sql_arr.Length - 1; i++)
                     {
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
+                        using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
+                        {
+                            cmd.BindByName = true;
+                            if (Regex.IsMatch(sql_arr[i], @"\:+") && parameters != null && parameters.Length > 0)
+                            {
+                                cmd.Parameters.AddRange(dbParameter.ToArray());
+                            }
 
-                        return cmd.ExecuteNonQuery();
+                            cmd.ExecuteNonQuery();
+                        }
                     }
                 }
                 catch (OracleException orcl)
@@ -620,6 +633,7 @@ namespace ExpressBase.Common.Data
 
         //-----------Sql queries
 
+        public string EB_INITROLE2USER { get { return "INSERT INTO eb_role2user(role_id, user_id, createdat) VALUES (@role_id, @user_id, SYSDATE);"; } }
         public string EB_USER_ROLE_PRIVS { get { return @"SELECT granted_role FROM USER_ROLE_PRIVS WHERE USERNAME='@uname'"; } }
         public string EB_AUTHETICATE_USER_NORMAL { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, passwrd => :pass,wc => :wc))"; } }
         public string EB_AUTHENTICATEUSER_SOCIAL { get { return "SELECT * FROM table(eb_authenticate_unified(social => :social, wc => :wc))"; } }

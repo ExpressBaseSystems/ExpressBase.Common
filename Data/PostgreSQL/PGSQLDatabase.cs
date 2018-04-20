@@ -528,6 +528,8 @@ namespace ExpressBase.Common
         }
 
         //-----------Sql queries
+
+        public string EB_INITROLE2USER { get { return "INSERT INTO eb_role2user(role_id, user_id, createdat) VALUES (@role_id, @user_id, now());"; } }
         public string EB_USER_ROLE_PRIVS { get { return "SELECT DISTINCT privilege_type FROM information_schema.role_table_grants WHERE grantee='@uname';"; } }
         public string EB_AUTHETICATE_USER_NORMAL { get { return "SELECT * FROM eb_authenticate_unified(uname => @uname, password => @pass, wc => @wc);"; } }
 

@@ -55,6 +55,7 @@ namespace ExpressBase.Common
         string EB_SAVEUSER_QUERY { get; }
         string EB_SAVEUSERGROUP_QUERY { get; }
         string EB_USER_ROLE_PRIVS { get; }
+        string EB_INITROLE2USER { get; }
 
         //........objects db query.....
         string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ { get; }
