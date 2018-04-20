@@ -6,7 +6,9 @@ namespace ExpressBase.Common
 {
     public class EnvironmentConstants
     {
-        public const string EB_INFRASTRUCTURE= "EB_INFRASTRUCTURE";
+        public const string ASPNETCORE_ENVIRONMENT = "ASPNETCORE_ENVIRONMENT";
+
+        public const string EB_INFRASTRUCTURE = "EB_INFRASTRUCTURE";
 
         public const string EB_SERVICESTACK_EXT_URL = "EB_SERVICESTACK_EXT_URL";
         public const string EB_SERVICESTACK_INT_URL = "EB_SERVICESTACK_INT_URL";
