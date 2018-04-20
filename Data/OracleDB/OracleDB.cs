@@ -2,6 +2,7 @@
 using ExpressBase.Common.Structures;
 using Npgsql;
 using Oracle.ManagedDataAccess.Client;
+using Oracle.ManagedDataAccess.Types;
 //using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
@@ -136,7 +137,9 @@ namespace ExpressBase.Common.Data
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type, object value)
         {
-            if((int)type == 6 || (int)type == 5 || (int)type == 17 || (int)type == 26)
+            if((int)type == 6)
+                return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(EbDbTypes.Date)) { Value = new OracleDate(Convert.ToDateTime(value).Date) };
+            if ((int)type == 5 || (int)type == 17 || (int)type == 26)
                return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = Convert.ToDateTime(value) };
             else 
                 return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = value };
