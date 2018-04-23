@@ -16,10 +16,10 @@
     <None Remove="SqlScripts\PostGreSql\**" />
   </ItemGroup>
   <ItemGroup>
-      <EmbeddedResource Include="SqlScripts\ORACLE\DataDb\FunctionCreate\**" />
-      <EmbeddedResource Include="SqlScripts\ORACLE\DataDb\TableCreate\**" />
-      <EmbeddedResource Include="SqlScripts\PGSQL\DataDb\FunctionCreate\**" />
-      <EmbeddedResource Include="SqlScripts\PGSQL\DataDb\TableCreate\**" />
+      <EmbeddedResource Include="SqlScripts\ORACLE\DataDB\FunctionCreate\**" />
+      <EmbeddedResource Include="SqlScripts\ORACLE\DataDB\TableCreate\**" />
+      <EmbeddedResource Include="SqlScripts\PGSQL\DataDB\FunctionCreate\**" />
+      <EmbeddedResource Include="SqlScripts\PGSQL\DataDB\TableCreate\**" />
       <EmbeddedResource Include="SqlScripts\ORACLE\ObjectsDb\FunctionCreate\**" />
       <EmbeddedResource Include="SqlScripts\ORACLE\ObjectsDb\TableCreate\**" />
       <EmbeddedResource Include="SqlScripts\PGSQL\ObjectsDb\FunctionCreate\**" />
