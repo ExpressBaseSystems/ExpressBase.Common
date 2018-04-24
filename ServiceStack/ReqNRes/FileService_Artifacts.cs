@@ -128,7 +128,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class DownloadFileExtRequest
+    public class DownloadFileExtRequest : IReturn<DownloadFileResponse>
     {
         [DataMember(Order = 1)]
         public string FileName { get; set; }

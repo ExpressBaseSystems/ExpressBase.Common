@@ -10,137 +10,155 @@ using System.Threading.Tasks;
 
 namespace ExpressBase.Common.Data.MongoDB
 {
-    public class MongoDBDatabase : INoSQLDatabase
-    {
-        private MongoClient mongoClient;
-        private IMongoDatabase mongoDatabase;
-        private IGridFSBucket Bucket;
-        private string TenantId { get; set; }
-        private BsonDocument Metadata { get; set; }
+	public class MongoDBDatabase : INoSQLDatabase
+	{
+		private MongoClient mongoClient;
+		private IMongoDatabase mongoDatabase;
+		private IGridFSBucket Bucket;
+		private string TenantId { get; set; }
+		private BsonDocument Metadata { get; set; }
 
-        public MongoDBDatabase(EbFilesDbConnection dbconf)
-        {
-            this.TenantId = EnvironmentConstants.EB_INFRASTRUCTURE;
-            mongoClient = new MongoClient(dbconf.FilesDB_url);
-            mongoDatabase = mongoClient.GetDatabase(this.TenantId);
-        }
+		public MongoDBDatabase(EbFilesDbConnection dbconf)
+		{
+			this.TenantId = EnvironmentConstants.EB_INFRASTRUCTURE;
+			mongoClient = new MongoClient(dbconf.FilesDB_url);
+			mongoDatabase = mongoClient.GetDatabase(this.TenantId);
+		}
 
-        public MongoDBDatabase(string tenantId, EbFilesDbConnection dbconf)
-        {
-            this.TenantId = tenantId;
-            mongoClient = new MongoClient(dbconf.FilesDB_url);
-            mongoDatabase = mongoClient.GetDatabase(this.TenantId);
-        }
+		public MongoDBDatabase(string tenantId, EbFilesDbConnection dbconf)
+		{
+			this.TenantId = tenantId;
+			mongoClient = new MongoClient(dbconf.FilesDB_url);
+			mongoDatabase = mongoClient.GetDatabase(this.TenantId);
+		}
 
-        public ObjectId UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, string bucketName)
-        {
-            Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
-            {
-                BucketName = bucketName,
-                ChunkSizeBytes = 1048576, // 1MB
-                WriteConcern = WriteConcern.WMajority,
-                ReadPreference = ReadPreference.Secondary
-            });
+		public ObjectId UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, string bucketName)
+		{
+			Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
+			{
+				BucketName = bucketName,
+				ChunkSizeBytes = 1048576, // 1MB
+				WriteConcern = WriteConcern.WMajority,
+				ReadPreference = ReadPreference.Secondary
+			});
 
-            this.Metadata = new BsonDocument();
+			this.Metadata = new BsonDocument();
 
-            if(MetaDataPair != null)
-                this.Metadata.AddRange(MetaDataPair as IDictionary);
+			if(MetaDataPair != null)
+				this.Metadata.AddRange(MetaDataPair as IDictionary);
 
-            var options = new GridFSUploadOptions
-            {
-                ChunkSizeBytes = 64512, // 63KB
-                Metadata = Metadata
-            };
-            try
-            {
-                return Bucket.UploadFromBytes(filename, bytea, options);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Exception:" + e.ToString());
-                return new ObjectId("Error");
-            }
-        }
+			var options = new GridFSUploadOptions
+			{
+				ChunkSizeBytes = 64512, // 63KB
+				Metadata = Metadata
+			};
+			try
+			{
+				return Bucket.UploadFromBytes(filename, bytea, options);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("Exception:" + e.ToString());
+				return new ObjectId("Error");
+			}
+		}
 
-        public byte[] DownloadFile(ObjectId objectid, string bucketName)
-        {
-            Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
-            {
-                BucketName = bucketName,
-                ChunkSizeBytes = 1048576, // 1MB
-                WriteConcern = WriteConcern.WMajority,
-                ReadPreference = ReadPreference.Secondary
-            });
+		public byte[] DownloadFile(ObjectId objectid, string bucketName)
+		{
+			try
+			{
+				Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
+				{
+					BucketName = bucketName,
+					ChunkSizeBytes = 1048576, // 1MB
+					WriteConcern = WriteConcern.WMajority,
+					ReadPreference = ReadPreference.Secondary
+				});
+				return Bucket.DownloadAsBytes(objectid, new GridFSDownloadOptions() { CheckMD5 = true });
+			}
 
-            return Bucket.DownloadAsBytes(objectid, new GridFSDownloadOptions() { CheckMD5 = true });
-        }
+			catch (GridFSFileNotFoundException e)
+			{
+				Console.WriteLine("MongoDB File Not Found: " + objectid.ToString());
+				return null;
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("Exception:" + e.ToString());
+				return null;
+			}
 
-        public byte[] DownloadFile(string filename, string bucketName)
-        {
-            try
-            {
-                Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
-                {
-                    BucketName = bucketName,
-                    ChunkSizeBytes = 1048576, // 1MB
-                    WriteConcern = WriteConcern.WMajority,
-                    ReadPreference = ReadPreference.Secondary
-                });
+		}
 
-                return Bucket.DownloadAsBytesByName(filename);
+		public byte[] DownloadFile(string filename, string bucketName)
+		{
+			try
+			{
+				Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
+				{
+					BucketName = bucketName,
+					ChunkSizeBytes = 1048576, // 1MB
+					WriteConcern = WriteConcern.WMajority,
+					ReadPreference = ReadPreference.Secondary
+				});
 
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Exception:" + e.ToString());
-                return null;
-            }
-            
-            }
+				return Bucket.DownloadAsBytesByName(filename);
 
-        public async Task<bool> DeleteFileAsync(ObjectId objectid, string bucketName)
-        {
-            try
-            {
-                Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions { BucketName = bucketName });
-                await Bucket.DeleteAsync(objectid);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Exception:" + e.ToString());
-                return false;
-            }
-        }
+			}
+			catch (GridFSFileNotFoundException e)
+			{
+				Console.WriteLine("MongoDB File Not Found: " + filename);
+				return null;
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("Exception:" + e.ToString());
+				return null;
+			}
+		}
 
-        public List<GridFSFileInfo> FindFilesByTags(KeyValuePair<string, List<string>> Filter, string Bucketname)
-        {
-            List<FilterDefinition<GridFSFileInfo>> FilterDef = new List<FilterDefinition<GridFSFileInfo>>();
+		public async Task<bool> DeleteFileAsync(ObjectId objectid, string bucketName)
+		{
+			try
+			{
+				Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions { BucketName = bucketName });
+				await Bucket.DeleteAsync(objectid);
+				return true;
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("Exception:" + e.ToString());
+				return false;
+			}
+		}
 
-            foreach (string tag in Filter.Value)
-            {
-                FilterDef.Add(Builders<GridFSFileInfo>.Filter.AnyEq(Filter.Key, tag));
-            }
+		public List<GridFSFileInfo> FindFilesByTags(KeyValuePair<string, List<string>> Filter, string Bucketname)
+		{
+			List<FilterDefinition<GridFSFileInfo>> FilterDef = new List<FilterDefinition<GridFSFileInfo>>();
 
-            IEnumerable<FilterDefinition<GridFSFileInfo>> FilterFinal = new List<FilterDefinition<GridFSFileInfo>>(FilterDef);
+			foreach (string tag in Filter.Value)
+			{
+				FilterDef.Add(Builders<GridFSFileInfo>.Filter.AnyEq(Filter.Key, tag));
+			}
 
-            var filter = Builders<GridFSFileInfo>.Filter.And(FilterFinal);
-            var sort = Builders<GridFSFileInfo>.Sort.Descending(x => x.UploadDateTime);
-            var options = new GridFSFindOptions
-            {
-                Limit = 20,
-                Sort = sort
-            };
+			IEnumerable<FilterDefinition<GridFSFileInfo>> FilterFinal = new List<FilterDefinition<GridFSFileInfo>>(FilterDef);
 
-            Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions { BucketName = Bucketname });
+			var filter = Builders<GridFSFileInfo>.Filter.And(FilterFinal);
+			var sort = Builders<GridFSFileInfo>.Sort.Descending(x => x.UploadDateTime);
+			var options = new GridFSFindOptions
+			{
+				Limit = 20,
+				Sort = sort
+			};
 
-            using (var cursor = Bucket.Find(filter, options))
-            {
-                var fileInfo = cursor.ToList();
-                return fileInfo;
-            }
-        }
-        
-    }
+			Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions { BucketName = Bucketname });
+
+			using (var cursor = Bucket.Find(filter, options))
+			{
+				var fileInfo = cursor.ToList();
+				return fileInfo;
+			}
+		}
+		
+	}
 }
