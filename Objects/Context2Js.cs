@@ -322,7 +322,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                             IEnumerable<Type> subClasses = itemType.Assembly.GetTypes().Where(type => type.IsSubclassOf(itemType));
                             List<string> _sa = new List<string>();
                             if (!itemType.IsAbstract)
-                                _sa.Add(itemType.Name);
+                                _sa.Add(itemType.Name + "-/-"+ itemType.Name);
                             foreach (Type type in subClasses)
                             {
                                 string _Alias = null;
@@ -331,10 +331,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                                     if (attribute is Alias)
                                         _Alias = (attribute as Alias).Name;
                                 }
-                                if (!_Alias.IsNullOrEmpty())
-                                    _sa.Add(_Alias);
-                                else
-                                    _sa.Add(type.Name);
+                                    _sa.Add(type.Name + "-/-"+ _Alias?? type.Name);
                             }
                             meta.options = _sa.ToArray<string>();
                         }
