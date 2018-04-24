@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Linq;
 
 namespace ExpressBase.Common.Objects
 {
@@ -323,7 +324,18 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                             if (!itemType.IsAbstract)
                                 _sa.Add(itemType.Name);
                             foreach (Type type in subClasses)
-                                _sa.Add(type.Name);
+                            {
+                                string _Alias = null;
+                                foreach (Attribute attribute in type.GetCustomAttributes())
+                                {
+                                    if (attribute is Alias)
+                                        _Alias = (attribute as Alias).Name;
+                                }
+                                if (!_Alias.IsNullOrEmpty())
+                                    _sa.Add(_Alias);
+                                else
+                                    _sa.Add(type.Name);
+                            }
                             meta.options = _sa.ToArray<string>();
                         }
                     }
