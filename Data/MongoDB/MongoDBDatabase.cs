@@ -65,6 +65,8 @@ namespace ExpressBase.Common.Data.MongoDB
 
 		public byte[] DownloadFile(ObjectId objectid, string bucketName)
 		{
+			byte[] res = null;
+
 			try
 			{
 				Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
@@ -74,24 +76,25 @@ namespace ExpressBase.Common.Data.MongoDB
 					WriteConcern = WriteConcern.WMajority,
 					ReadPreference = ReadPreference.Secondary
 				});
-				return Bucket.DownloadAsBytes(objectid, new GridFSDownloadOptions() { CheckMD5 = true });
+				res = Bucket.DownloadAsBytes(objectid, new GridFSDownloadOptions() { CheckMD5 = true });
 			}
 
 			catch (GridFSFileNotFoundException e)
 			{
 				Console.WriteLine("MongoDB File Not Found: " + objectid.ToString());
-				return null;
 			}
+
 			catch (Exception e)
 			{
 				Console.WriteLine("Exception:" + e.ToString());
-				return null;
 			}
-
+			return res;
 		}
 
 		public byte[] DownloadFile(string filename, string bucketName)
 		{
+			byte[] res = null;
+
 			try
 			{
 				Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
@@ -102,19 +105,18 @@ namespace ExpressBase.Common.Data.MongoDB
 					ReadPreference = ReadPreference.Secondary
 				});
 
-				return Bucket.DownloadAsBytesByName(filename);
+				res = Bucket.DownloadAsBytesByName(filename);
 
 			}
 			catch (GridFSFileNotFoundException e)
 			{
 				Console.WriteLine("MongoDB File Not Found: " + filename);
-				return null;
 			}
 			catch (Exception e)
 			{
 				Console.WriteLine("Exception:" + e.ToString());
-				return null;
 			}
+			return res;
 		}
 
 		public async Task<bool> DeleteFileAsync(ObjectId objectid, string bucketName)
