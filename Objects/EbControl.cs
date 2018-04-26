@@ -71,6 +71,7 @@ namespace ExpressBase.Common.Objects
 
         [ProtoBuf.ProtoMember(19)]
         [System.ComponentModel.Category("Behavior")]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public virtual bool Required { get; set; }
 
         public virtual string DesignHtml4Bot { get; set; }
