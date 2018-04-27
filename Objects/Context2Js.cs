@@ -329,9 +329,9 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                                 foreach (Attribute attribute in type.GetCustomAttributes())
                                 {
                                     if (attribute is Alias)
-                                        _Alias = (attribute as Alias).Name;
+                                        _Alias = (attribute as Alias).Name.Trim();
                                 }
-                                    _sa.Add(type.Name + "-/-"+ _Alias?? type.Name);
+                                    _sa.Add(type.Name + "-/-"+ (_Alias?? type.Name));
                             }
                             meta.options = _sa.ToArray<string>();
                         }
