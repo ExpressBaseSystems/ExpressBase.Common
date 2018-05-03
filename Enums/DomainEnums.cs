@@ -7,7 +7,7 @@ namespace ExpressBase.Common.Enums
     public enum SubDomains
     {
         forms,
-        pdfreports,
+        reports,
         bi,
         bots
     }
