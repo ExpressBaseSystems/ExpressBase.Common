@@ -23,8 +23,8 @@ CREATE TABLE public.eb_roles
     applicationname text COLLATE pg_catalog."default",
     applicationid integer,
     description text COLLATE pg_catalog."default",
-    is_anonymous boolean DEFAULT false,
     eb_del "char" NOT NULL DEFAULT 'F'::"char",
+    is_anonymous "char" NOT NULL DEFAULT 'F'::"char",
     CONSTRAINT eb_roles_id_pkey PRIMARY KEY (id),
     CONSTRAINT eb_rolename_unique UNIQUE (role_name),
     CONSTRAINT eb_roles_eb_del_check CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
