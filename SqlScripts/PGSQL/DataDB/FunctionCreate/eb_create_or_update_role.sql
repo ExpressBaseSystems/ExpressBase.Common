@@ -1,19 +1,18 @@
--- FUNCTION: public.eb_create_or_update_role(integer, text, text, boolean, integer, text[], integer)
+-- FUNCTION: public.eb_create_or_update_role(integer, text, text, text, integer, text[], integer)
 
--- DROP FUNCTION public.eb_create_or_update_role(integer, text, text, boolean, integer, text[], integer);
+-- DROP FUNCTION public.eb_create_or_update_role(integer, text, text, text, integer, text[], integer);
 
 CREATE OR REPLACE FUNCTION public.eb_create_or_update_role(
 	application_id integer,
 	role_name text,
 	role_desc text,
-	isanonym boolean,
+	isanonym text,
 	userid integer,
 	permissions text[],
 	roleid integer DEFAULT 0)
     RETURNS integer
     LANGUAGE 'plpgsql'
 
-    
 AS $BODY$
 
    
@@ -57,6 +56,6 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_create_or_update_role(integer, text, text, boolean, integer, text[], integer)
+ALTER FUNCTION public.eb_create_or_update_role(integer, text, text, text, integer, text[], integer)
     OWNER TO postgres;
 
