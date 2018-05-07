@@ -2,7 +2,7 @@
 
 -- DROP FUNCTION public.eb_objects_create_minor_version(text, integer, integer, text, text, text);
 
-CREATE OR REPLACE FUNCTION public.eb_objects_create_minor_version(
+CREATE OR REPLACE FUNCTION public.eb_object_create_minor_version(
 	idv text,
 	obj_typev integer,
 	commit_uidv integer,

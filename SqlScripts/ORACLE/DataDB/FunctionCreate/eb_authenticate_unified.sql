@@ -23,7 +23,7 @@ create or replace FUNCTION eb_authenticate_unified(
     END IF;
     IF uname IS NULL AND passwrd IS NULL AND social IS NOT NULL THEN
         SELECT eb_users.id, eb_users.email, eb_users.fullname, eb_users.preferencesjson INTO userid, email, fullname, preference
-        FROM eb_users WHERE eb_users.socialid = social;
+        FROM eb_users WHERE EB_USERS.FBID = social;
     END IF;
 	IF userid > 0 THEN
         dbms_output.put_line(roles_a);

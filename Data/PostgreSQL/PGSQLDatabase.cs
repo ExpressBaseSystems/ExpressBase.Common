@@ -592,7 +592,7 @@ namespace ExpressBase.Common
         {
             get
             {
-                return "SELECT eb_create_or_update_rbac_manageroles(:role_id, :applicationid, :createdby, :role_name, :description, :is_anonym, :users, :dependants, :permission " +
+                return "SELECT eb_create_or_update_rbac_roles(:role_id, :applicationid, :createdby, :role_name, :description, :is_anonym, :users, :dependants, :permission " +
 ");";
             }
         }
@@ -849,7 +849,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"   
-                    SELECT eb_objects_create_major_version(:id, :obj_type, :commit_uid, :src_pid, :cur_pid, :relations)
+                    SELECT eb_object_create_major_version(:id, :obj_type, :commit_uid, :src_pid, :cur_pid, :relations)
                 ";
             }
         }
@@ -876,7 +876,7 @@ namespace ExpressBase.Common
             get
             {
                 return @" 
-                    SELECT eb_objects_create_patch_version(:id, :obj_type, :commit_uid, :src_pid, :cur_pid, :relations)
+                    SELECT eb_object_create_patch_version(:id, :obj_type, :commit_uid, :src_pid, :cur_pid, :relations)
                 ";
             }
         }

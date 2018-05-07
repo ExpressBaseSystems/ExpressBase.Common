@@ -2,7 +2,7 @@
 
 -- DROP FUNCTION public.eb_objects_create_major_version(text, integer, integer, text, text, text);
 
-CREATE OR REPLACE FUNCTION public.eb_objects_create_major_version(
+CREATE OR REPLACE FUNCTION public.eb_object_create_major_version(
 	idv text,
 	obj_typev integer,
 	commit_uidv integer,
@@ -20,6 +20,7 @@ major integer; version_number text; relationsv text[];
 
 BEGIN
 SELECT string_to_array(relationsstring,',')::text[] into relationsv;
+
 SELECT eb_objects_id into objid FROM eb_objects_ver WHERE refid = idv;
 	SELECT MAX(major_ver_num) into major from eb_objects_ver WHERE eb_objects_id = objid;
 

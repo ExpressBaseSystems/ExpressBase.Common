@@ -2,7 +2,7 @@
 
 -- DROP FUNCTION public.eb_create_or_update_rbac_manageroles(integer, integer, integer, text, text, text, text, text, text);
 
-CREATE OR REPLACE FUNCTION public.eb_create_or_update_rbac_manageroles(
+CREATE OR REPLACE FUNCTION public.eb_create_or_update_rbac_roles(
 	roleid integer,
 	applicationid integer,
 	userid integer,
