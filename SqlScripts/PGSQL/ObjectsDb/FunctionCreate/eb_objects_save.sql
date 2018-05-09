@@ -56,7 +56,8 @@ SELECT eb_objects_id FROM eb_objects_ver into objid WHERE refid=refidv;
         app_id IN(
         SELECT unnest(ARRAY(select app_id from eb_objects2application WHERE obj_id = inserted_objid AND eb_del='F')) 
         EXCEPT 
-        SELECT unnest(ARRAY[COALESCE(apps, ARRAY[0])]));
+        SELECT unnest(ARRAY[COALESCE(apps, ARRAY[0])]))
+		AND obj_id = inserted_objid;
             
         INSERT INTO eb_objects2application (app_id, obj_id) 
         SELECT 

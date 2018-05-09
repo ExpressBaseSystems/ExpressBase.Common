@@ -70,7 +70,8 @@ BEGIN
       WHERE 
         app_id IN(SELECT to_char(app_id) FROM eb_objects2application WHERE obj_id = objid AND eb_del='F' 
                     MINUS 
-                    SELECT regexp_substr(apps,'[^,]+', 1, level) FROM dual CONNECT BY regexp_substr(apps, '[^,]+', 1, level) is not null);
+                    SELECT regexp_substr(apps,'[^,]+', 1, level) FROM dual CONNECT BY regexp_substr(apps, '[^,]+', 1, level) is not null)					
+					AND obj_id = objid;
 
     INSERT INTO eb_objects2application 
         (app_id, obj_id) 

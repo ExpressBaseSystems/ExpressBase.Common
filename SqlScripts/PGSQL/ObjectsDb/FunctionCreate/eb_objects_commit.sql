@@ -78,7 +78,8 @@ UPDATE eb_objects2application
         app_id IN(
         SELECT unnest(ARRAY(select app_id from eb_objects2application WHERE obj_id = objid AND eb_del='F')) 
         EXCEPT 
-        SELECT unnest(ARRAY[COALESCE(apps, ARRAY[0])]));
+        SELECT unnest(ARRAY[COALESCE(apps, ARRAY[0])]))
+		AND obj_id = objid;
             
         INSERT INTO eb_objects2application (app_id, obj_id) 
         SELECT 
