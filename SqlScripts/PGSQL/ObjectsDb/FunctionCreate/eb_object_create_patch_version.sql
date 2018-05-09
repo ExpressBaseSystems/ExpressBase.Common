@@ -69,6 +69,6 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_create_patch_version(text, integer, integer, text, text, text)
+ALTER FUNCTION public.eb_object_create_patch_version(text, integer, integer, text, text, text)
     OWNER TO postgres;
 
