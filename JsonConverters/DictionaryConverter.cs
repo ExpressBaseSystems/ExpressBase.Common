@@ -13,10 +13,10 @@ namespace ExpressBase.Common.JsonConverters
     {
         public override bool CanConvert(Type objectType)
         {
-            return objectType.GetDictionaryKeyValueTypes().Count() == 1;
+			return (typeof(IDictionary<string, object>).IsAssignableFrom(objectType));
         }
 
-        public override bool CanWrite { get { return false; } }
+        public override bool CanWrite { get { return true; } }
 
         object ReadJsonGeneric<TKey, TValue>(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
@@ -49,8 +49,21 @@ namespace ExpressBase.Common.JsonConverters
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
-        }
+			//throw new NotImplementedException();
+			writer.Formatting = Formatting.Indented;
+			writer.WriteStartObject();
+			writer.WritePropertyName("$type");
+			writer.WriteValue(typeof(IDictionary<string, object>).ToString());
+			writer.WritePropertyName("$values");
+			writer.WriteStartObject();
+			foreach (KeyValuePair<string, object> entry in (value as IDictionary<string, object>))
+			{
+				writer.WritePropertyName(entry.Key);
+				writer.WriteValue(entry.Value);
+			}
+			writer.WriteEnd();
+			writer.WriteEndObject();
+		}
     }
 
     public static class TypeExtensions
