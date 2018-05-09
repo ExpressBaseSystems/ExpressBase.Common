@@ -49,8 +49,6 @@ namespace ExpressBase.Common.JsonConverters
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-			//throw new NotImplementedException();
-			writer.Formatting = Formatting.Indented;
 			writer.WriteStartObject();
 			writer.WritePropertyName("$type");
 			writer.WriteValue(typeof(IDictionary<string, object>).ToString());
