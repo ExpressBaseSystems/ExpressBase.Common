@@ -42,7 +42,7 @@ namespace ExpressBase.Common.Data
                 foreach (Param param in reqParams)
                 {
                     if(factory.ObjectsDB.Vendor == DatabaseVendors.PGSQL)
-                        yield return factory.ObjectsDB.GetNewParameter(string.Format("@{0}", param.Name), (EbDbTypes)Convert.ToInt32(param.Type), param.Value);
+                        yield return factory.ObjectsDB.GetNewParameter(string.Format(":{0}", param.Name), (EbDbTypes)Convert.ToInt32(param.Type), param.Value);
                     else
                         yield return factory.ObjectsDB.GetNewParameter(string.Format("{0}", param.Name), (EbDbTypes)Convert.ToInt32(param.Type), param.Value);                      
                 }
