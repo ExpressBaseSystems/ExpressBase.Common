@@ -199,6 +199,7 @@ namespace ExpressBase.Common.Data
                     {
                         using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                         {
+                            cmd.BindByName = true;     //solved - issue in prameter order
                             if (parameters != null && parameters.Length > 0)
                                 cmd.Parameters.AddRange(parameters);
 
@@ -283,7 +284,7 @@ namespace ExpressBase.Common.Data
                     {
                         //if (parameters != null && parameters.Length > 0)
                         //    cmd.Parameters.AddRange(parameters);
-
+                        cmd.BindByName = true;
                         if (Regex.IsMatch(query, @"\:+") && parameters != null && parameters.Length > 0)
                         {
                             cmd.Parameters.AddRange(dbParameter.ToArray());
@@ -319,6 +320,7 @@ namespace ExpressBase.Common.Data
                 {
                     using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                     {
+                        cmd.BindByName = true;
                         if (parameters != null && parameters.Length > 0)
                             cmd.Parameters.AddRange(parameters);
 
@@ -434,8 +436,7 @@ namespace ExpressBase.Common.Data
                     con.Open();
                     using (OracleCommand cmd = new OracleCommand(query, con))
                     {
-                        //if (parameters != null && parameters.Length > 0)
-                        //    cmd.Parameters.AddRange(parameters);
+                        cmd.BindByName = true;
                         if (Regex.IsMatch(query, @"\:+") && parameters != null && parameters.Length > 0)
                         {
                             cmd.Parameters.AddRange(parameters);
@@ -464,6 +465,7 @@ namespace ExpressBase.Common.Data
                     con.Open();
                     using (OracleCommand cmd = new OracleCommand(query, con))
                     {
+                        cmd.BindByName = true;
                         var xx = cmd.ExecuteNonQuery();
                     }
                 }
@@ -486,8 +488,7 @@ namespace ExpressBase.Common.Data
                     con.Open();
                     using (OracleCommand cmd = new OracleCommand(query, con))
                     {
-                        //if (parameters != null && parameters.Length > 0)
-                        //    cmd.Parameters.AddRange(parameters);
+                        cmd.BindByName = true;
 
                         if (Regex.IsMatch(query, @"\:+") && parameters != null && parameters.Length > 0)
                         {
@@ -519,15 +520,16 @@ namespace ExpressBase.Common.Data
         {
             ColumnColletion cols = new ColumnColletion();
             var query = "SELECT * FROM @tbl LIMIT 0".Replace("@tbl", table);
-            using (var con = GetNewConnection() as NpgsqlConnection)
+            using (var con = GetNewConnection() as OracleConnection)
             {
                 try
                 {
                     con.Open();
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
+                    using (OracleCommand cmd = new OracleCommand(query, con))
                     {
                         using (var reader = cmd.ExecuteReader())
                         {
+                            cmd.BindByName = true;
                             int pos = 0;
                             foreach (DataRow dr in reader.GetSchemaTable().Rows)
                             {
@@ -541,9 +543,9 @@ namespace ExpressBase.Common.Data
                         }
                     }
                 }
-                catch (Npgsql.NpgsqlException npgse)
+                catch (OracleException orcl)
                 {
-                    throw npgse;
+                    throw orcl;
                 }
                 catch (SocketException scket) { }
             }

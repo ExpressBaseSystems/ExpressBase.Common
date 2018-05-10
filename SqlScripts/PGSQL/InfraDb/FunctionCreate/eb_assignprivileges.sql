@@ -1,4 +1,4 @@
-﻿-- FUNCTION: public.eb_assignprivileges(text, text, text)
+-- FUNCTION: public.eb_assignprivileges(text, text, text)
 
 -- DROP FUNCTION public.eb_assignprivileges(text, text, text);
 
@@ -9,9 +9,6 @@ CREATE OR REPLACE FUNCTION public.eb_assignprivileges(
     RETURNS TABLE(passadmin text, passro text, passrw text) 
     LANGUAGE 'plpgsql'
 
-    COST 100
-    VOLATILE 
-    ROWS 1000
 AS $BODY$
 
    DECLARE
@@ -37,10 +34,8 @@ BEGIN
    RETURN QUERY SELECT passwordAdmin,passwordRO,passwordRW ;
 END;
 
-
 $BODY$;
 
 ALTER FUNCTION public.eb_assignprivileges(text, text, text)
     OWNER TO postgres;
-
 
