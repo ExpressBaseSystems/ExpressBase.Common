@@ -32,6 +32,7 @@ namespace ExpressBase.Common.Objects.Attributes
 		MultiLanguageKeySelector = 21,
         CollectionPropsFrmSrc = 22,
         DictionaryEditor = 23,
+        CollectionProp = 24,
     }
 
     public class HideInToolBox : Attribute { }
@@ -98,6 +99,8 @@ namespace ExpressBase.Common.Objects.Attributes
 
         public string PropertyEditorSource { get; set; }
 
+        public string DependantProp { get; set; }
+
         public int Limit { get; set; }
 
         public PropertyEditor(PropertyEditorType type) { this.PropertyEditorType = type; }
@@ -113,6 +116,13 @@ namespace ExpressBase.Common.Objects.Attributes
             this.PropertyEditorType = type;
             this.PropertyEditorSource = source;
             this.Limit = limit;
+        }
+
+        public PropertyEditor(PropertyEditorType type, string source, string prop)
+        {
+            this.PropertyEditorType = type;
+            this.PropertyEditorSource = source;
+            this.DependantProp = prop;
         }
     }
     public class PropertyGroup : Attribute

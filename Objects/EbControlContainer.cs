@@ -34,6 +34,10 @@ namespace ExpressBase.Common.Objects
             this.Controls = new List<EbControl>();
         }
 
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+        [Alias("Title")]
+        public override string Label { get; set; }
+
         public override void Init4Redis(IRedisClient redisclient, IServiceClient serviceclient)
         {
             base.Redis = redisclient;
