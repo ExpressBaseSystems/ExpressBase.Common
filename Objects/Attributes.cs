@@ -33,6 +33,7 @@ namespace ExpressBase.Common.Objects.Attributes
         CollectionPropsFrmSrc = 22,
         DictionaryEditor = 23,
         CollectionProp = 24,
+        DDfromDictProp =25,
     }
 
     public class HideInToolBox : Attribute { }

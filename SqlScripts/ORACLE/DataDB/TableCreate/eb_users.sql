@@ -50,7 +50,7 @@ BEGIN
 			fbname varchar(30),
 			preferencesjson clob,
 			createdby varchar(30),
-			createdat varchar(30),
+			createdat date,
 			hide varchar(30),
     		CONSTRAINT eb_users_pkey PRIMARY KEY (id),
     		CONSTRAINT socialid_unique_key UNIQUE (socialid)
