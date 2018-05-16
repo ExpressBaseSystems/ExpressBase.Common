@@ -21,14 +21,16 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public virtual string EbSid { get; set; }
 
-		[Description("Labels")]
-		[System.ComponentModel.Category("Behavior")]
-		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
-		[UIproperty]
-		[Unique]
-		public virtual string Label { get; set; }
+        public virtual EbDbTypes EbDbType { get; set; }
 
-		[EnableInBuilder(BuilderType.BotForm)]
+        [Description("Labels")]
+        [System.ComponentModel.Category("Behavior")]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+        [UIproperty]
+        [Unique]
+        public virtual string Label { get; set; }
+
+        [EnableInBuilder(BuilderType.BotForm)]
         [PropertyEditor(PropertyEditorType.JS)]
         public string VisibleIf { get; set; }
 
@@ -103,7 +105,7 @@ if( $('#{0}').css('font-size').replace('px','') < 10 )
 else
     $('#{0}AttaLbl').css({'height':   ( $('#{0}').parent().height()) + 'px' }); 
 ";
-		
+
         [ProtoBuf.ProtoMember(21)]
         [System.ComponentModel.Category("Behavior")]
         public virtual bool ReadOnly { get; set; }
@@ -140,7 +142,7 @@ else
         [ProtoBuf.ProtoMember(28)]
         [System.ComponentModel.Category("Accessibility")]
         public virtual int TabIndex { get; set; }
-		        
+
         [ProtoBuf.ProtoMember(34)]
         public EbValidatorCollection Validators { get; set; }
 
@@ -255,7 +257,7 @@ else
             return "\"" + input + "\"";
         }
     }
-	
+
     [ProtoBuf.ProtoContract]
     public class EbValidator
     {
