@@ -3,7 +3,7 @@
 -- DROP FUNCTION public.eb_objects_create_minor_version(text, integer, integer, text, text, text);
 create or replace FUNCTION eb_object_create_minor_version(
 	idv VARCHAR,
-	obj_typev CLOB,
+	obj_typev NUMBER,
 	commit_uidv NUMBER,
 	src_pid CLOB,
 	cur_pid CLOB,
