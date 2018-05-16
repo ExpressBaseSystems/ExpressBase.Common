@@ -26,6 +26,8 @@
       <EmbeddedResource Include="SqlScripts\PGSQL\ObjectsDb\TableCreate\**" />
       <EmbeddedResource Include="SqlScripts\PGSQL\eb_extras.sql" />
       <EmbeddedResource Include="SqlScripts\ORACLE\eb_extras.sql" />
+      <EmbeddedResource Include="SqlScripts\PGSQL\eb_compilefunctions.sql" />
+      <EmbeddedResource Include="SqlScripts\ORACLE\eb_compilefunctions.sql" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FOSS.ServiceStack.Core" Version="5.0.2" />

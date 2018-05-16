@@ -167,13 +167,13 @@ namespace ExpressBase.Security
 
         public static User GetDetailsSocial(IDatabase df, string socialId, string context)
         {
-            var ds = df.DoQuery(df.EB_AUTHENTICATEUSER_SOCIAL, new DbParameter[] { df.GetNewParameter("@social", EbDbTypes.String, socialId), df.GetNewParameter("@wc", EbDbTypes.String, context) });
+            var ds = df.DoQuery(df.EB_AUTHENTICATEUSER_SOCIAL, new DbParameter[] { df.GetNewParameter("social", EbDbTypes.String, socialId), df.GetNewParameter("wc", EbDbTypes.String, context) });
             return InitUserObject(ds);
         }
 
         public static User GetDetailsSSO(IDatabase df, string uname, string context)
         {
-            var ds = df.DoQuery(df.EB_AUTHENTICATEUSER_SSO, new DbParameter[] { df.GetNewParameter("@uname", EbDbTypes.String, uname), df.GetNewParameter("@wc", EbDbTypes.String, context) });
+            var ds = df.DoQuery(df.EB_AUTHENTICATEUSER_SSO, new DbParameter[] { df.GetNewParameter("uname", EbDbTypes.String, uname), df.GetNewParameter("wc", EbDbTypes.String, context) });
             return InitUserObject(ds);
         }
 

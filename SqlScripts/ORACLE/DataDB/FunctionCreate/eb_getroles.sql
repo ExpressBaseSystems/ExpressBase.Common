@@ -24,14 +24,14 @@ create or replace FUNCTION eb_getroles(
                  (
 					SELECT 
 						role2_id AS roleid FROM eb_role2role
-					WHERE role1_id = ANY(SELECT role_id FROM eb_role2user WHERE user_id = 2 AND eb_del = 'F')
+					WHERE role1_id = ANY(SELECT role_id FROM eb_role2user WHERE user_id = userid AND eb_del = 'F')
 					UNION ALL
 					SELECT e.role2_id FROM eb_role2role e, role2role r WHERE e.role1_id = r.role_id AND eb_del='F'
 				  ) SELECT * FROM role2role  
                   UNION ALL
                  SELECT 
 					role_id FROM eb_role2user 
-		 		WHERE user_id = 2 AND eb_del = 'F')) qury
+		 		WHERE user_id = userid AND eb_del = 'F')) qury
 		      LEFT JOIN             
                (SELECT * FROM eb_roles WHERE eb_del = 'F' AND applicationid = ANY(SELECT eb_applications.id FROM eb_applications WHERE application_type=ANY(select * from table(l_numbers)))) r
 		ON

@@ -361,4 +361,10 @@
   <data name="eb_object_create_patch_version1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\Oracle\ObjectsDb\FunctionCreate\eb_object_create_patch_version.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="eb_compilefunctions" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\Oracle\eb_compilefunctions.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_compilefunctions1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\PGSQL\eb_compilefunctions.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
 </root>
