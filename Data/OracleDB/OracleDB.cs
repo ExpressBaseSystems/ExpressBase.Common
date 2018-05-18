@@ -647,30 +647,40 @@ namespace ExpressBase.Common.Data
         public string EB_AUTHENTICATE_ANONYMOUS { get { return "SELECT * FROM table(eb_authenticate_anonymous(@params in_appid => :appid ,in_wc => :wc))"; } }
 
         public string EB_SIDEBARUSER_REQUEST { get { return @"
-                        SELECT id, applicationname
-                        FROM eb_applications;
-                        SELECT
-                            EO.id, EO.obj_type, EO.obj_name,
-                            EOV.version_num, EOV.refid, EO2A.app_id,EO.obj_desc
-                        FROM
-                            eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
-                        WHERE
-                            EO.id = EOV.eb_objects_id 
-                        AND 
-                            EOS.eb_obj_ver_id = EOV.id 
-                        AND EO.id = ANY(:Ids)  
-                        AND 
-                            EOS.status = 3 
-                        AND EO.id = EO2A.obj_id 
-                        AND EO2A.eb_del = 'F';"; } }
+                       SELECT id, applicationname
+                FROM eb_applications;
+                SELECT
+                    EO.id, EO.obj_type, EO.obj_name,
+                    EOV.version_num, EOV.refid, EO2A.app_id,EO.obj_desc
+                FROM
+                    eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
+                WHERE
+                EOV.eb_objects_id = EO.id	
+                AND EO.id = ANY(:Ids)                			    
+				AND EOS.eb_obj_ver_id = EOV.id 
+				AND EO2A.obj_id = EO.id
+				AND EO2A.eb_del = 'F'
+                AND EOS.status = 3 
+				AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id And EOS.status = 3);"; } }
 
+        public string EB_SIDEBARDEV_REQUEST { get { return @"
+                            SELECT id, applicationname FROM eb_applications;
+                            SELECT 
+	                            EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, COALESCE(EO2A.app_id, 0)
+                            FROM 
+	                            eb_objects EO
+                            LEFT JOIN
+	                            eb_objects2application EO2A 
+                            ON
+	                            EO.id = EO2A.obj_id 
+                            WHERE
+	                            COALESCE(EO2A.eb_del, 'F') = 'F' 
+                            ORDER BY 
+	                            EO.obj_type;"; }
+        }
         public string EB_SIDEBARCHECK { get { return "AND EO.id = ANY(:Ids) "; } }
-        public string EB_GETROLESRESPONSE_QUERY
-        {
-            get
-            {
-                return
-@"SELECT R.id,R.role_name,R.description,A.applicationname,
+        public string EB_GETROLESRESPONSE_QUERY { get { return @"
+                        SELECT R.id,R.role_name,R.description,A.applicationname,
                         (SELECT COUNT(role1_id) FROM eb_role2role WHERE role1_id=R.id AND eb_del='F') AS subrole_count,
 						(SELECT COUNT(user_id) FROM eb_role2user WHERE role_id=R.id AND eb_del='F') AS user_count,
 						(SELECT COUNT(distinct permissionname) FROM eb_role2permission RP, eb_objects2application OA WHERE role_id = R.id AND app_id=A.id AND RP.obj_id=OA.obj_id AND RP.eb_del = 'F' AND OA.eb_del = 'F') AS permission_count

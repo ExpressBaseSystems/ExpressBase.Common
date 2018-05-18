@@ -544,18 +544,34 @@ namespace ExpressBase.Common
                 FROM eb_applications;
                 SELECT
                     EO.id, EO.obj_type, EO.obj_name,
-                    EOV.version_num, EOV.refid, EO2A.app_id,EO.obj_desc
+                    EOV.version_num, EOV.refid, EO2A.app_id,EO.obj_desc, EOS.status,EOS.id
                 FROM
                     eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
                 WHERE
-                    EO.id = EOV.eb_objects_id 
-                AND 
-                    EOS.eb_obj_ver_id = EOV.id 
-                AND EO.id = ANY('{:Ids}')  
-                AND 
-                    EOS.status = 3 
-                AND EO.id = EO2A.obj_id 
-                AND EO2A.eb_del = 'F';"; } }
+                EOV.eb_objects_id=EO.id	
+                AND EO.id = ANY('{:Ids}')               			    
+				AND EOS.eb_obj_ver_id = EOV.id 
+				AND EO2A.obj_id = EO.id
+				AND EO2A.eb_del = 'F'
+                AND EOS.status = 3 
+				AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id And EOS.status = 3);"; } }
+         
+        public string EB_SIDEBARDEV_REQUEST {
+            get { return @"
+                SELECT id, applicationname FROM eb_applications;
+                            SELECT 
+	                            EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, COALESCE(EO2A.app_id, 0)
+                            FROM 
+	                            eb_objects EO
+                            LEFT JOIN
+	                            eb_objects2application EO2A 
+                            ON
+	                            EO.id = EO2A.obj_id 
+                            WHERE
+	                            COALESCE(EO2A.eb_del, 'F') = 'F' 
+                            ORDER BY 
+	                            EO.obj_type;"; } }
+
         public string EB_SIDEBARCHECK { get { return "AND EO.id = ANY('{:Ids}') "; } }
 
         public string EB_GETROLESRESPONSE_QUERY

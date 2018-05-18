@@ -47,6 +47,7 @@ namespace ExpressBase.Common
         string EB_AUTHENTICATEUSER_SSO { get; }
         string EB_AUTHENTICATE_ANONYMOUS { get; }
         string EB_SIDEBARUSER_REQUEST { get; }
+        string EB_SIDEBARDEV_REQUEST { get; }
         string EB_SIDEBARCHECK { get; }
         string EB_GETROLESRESPONSE_QUERY { get; }
         string EB_GETMANAGEROLESRESPONSE_QUERY { get; }
