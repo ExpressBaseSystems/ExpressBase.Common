@@ -27,17 +27,17 @@ BEGIN
 	-- NORMAL
 	IF uname IS NOT NULL AND password IS NOT NULL AND social IS NULL THEN
         SELECT eb_users.id, eb_users.email, eb_users.fullname, eb_users.preferencesjson
-        FROM eb_users WHERE eb_users.email = uname AND pwd = password INTO userid, email, fullname, preferencesjson;
+        FROM eb_users WHERE eb_users.email = uname AND pwd = password AND statusid = 0 INTO userid, email, fullname, preferencesjson;
     END IF;
     -- SSO
     IF uname IS NOT NULL AND password IS NULL AND social IS NULL THEN
         SELECT eb_users.id, eb_users.email, eb_users.fullname, eb_users.preferencesjson
-        FROM eb_users WHERE eb_users.email = uname INTO userid, email, fullname, preferencesjson;
+        FROM eb_users WHERE eb_users.email = uname AND statusid = 0 INTO userid, email, fullname, preferencesjson;
     END IF;
     -- SOCIAL
     IF uname IS NULL AND password IS NULL AND social IS NOT NULL THEN
         SELECT eb_users.id, eb_users.email, eb_users.fullname, eb_users.preferencesjson
-        FROM eb_users WHERE eb_users.fbid = social INTO userid, email, fullname, preferencesjson;
+        FROM eb_users WHERE eb_users.fbid = social AND statusid = 0 INTO userid, email, fullname, preferencesjson;
     END IF;
 
 	IF userid > 0 THEN

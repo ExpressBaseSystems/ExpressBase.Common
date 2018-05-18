@@ -10,7 +10,7 @@ BEGIN
 	(
     		id number NOT NULL,
     		role_name varchar(20),
-    		eb_del char,
+    		eb_del char DEFAULT '''|| eb_del ||''' ,
     		applicationname varchar(50),
     		applicationid number,
     		description varchar(200),

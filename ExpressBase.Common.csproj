@@ -5,29 +5,29 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="SqlScripts\ORACLE\InfraDb\**" />
-    <Compile Remove="SqlScripts\ORACLE\ObjectsDb\Tables\**" />
-    <Compile Remove="SqlScripts\PostGreSql\**" />
-    <EmbeddedResource Remove="SqlScripts\ORACLE\InfraDb\**" />
-    <EmbeddedResource Remove="SqlScripts\ORACLE\ObjectsDb\Tables\**" />
-    <EmbeddedResource Remove="SqlScripts\PostGreSql\**" />
-    <None Remove="SqlScripts\ORACLE\InfraDb\**" />
-    <None Remove="SqlScripts\ORACLE\ObjectsDb\Tables\**" />
-    <None Remove="SqlScripts\PostGreSql\**" />
+    <Compile Remove="sqlscripts\oracle\InfraDb\**" />
+    <Compile Remove="sqlscripts\oracle\ObjectsDb\Tables\**" />
+    <Compile Remove="sqlscripts\PostGreSql\**" />
+    <EmbeddedResource Remove="sqlscripts\oracle\InfraDb\**" />
+    <EmbeddedResource Remove="sqlscripts\oracle\ObjectsDb\Tables\**" />
+    <EmbeddedResource Remove="sqlscripts\PostGreSql\**" />
+    <None Remove="sqlscripts\oracle\InfraDb\**" />
+    <None Remove="sqlscripts\oracle\ObjectsDb\Tables\**" />
+    <None Remove="sqlscripts\PostGreSql\**" />
   </ItemGroup>
   <ItemGroup>
-      <EmbeddedResource Include="SqlScripts\ORACLE\DataDB\FunctionCreate\**" />
-      <EmbeddedResource Include="SqlScripts\ORACLE\DataDB\TableCreate\**" />
-      <EmbeddedResource Include="SqlScripts\PGSQL\DataDB\FunctionCreate\**" />
-      <EmbeddedResource Include="SqlScripts\PGSQL\DataDB\TableCreate\**" />
-      <EmbeddedResource Include="SqlScripts\ORACLE\ObjectsDb\FunctionCreate\**" />
-      <EmbeddedResource Include="SqlScripts\ORACLE\ObjectsDb\TableCreate\**" />
-      <EmbeddedResource Include="SqlScripts\PGSQL\ObjectsDb\FunctionCreate\**" />
-      <EmbeddedResource Include="SqlScripts\PGSQL\ObjectsDb\TableCreate\**" />
-      <EmbeddedResource Include="SqlScripts\PGSQL\eb_extras.sql" />
-      <EmbeddedResource Include="SqlScripts\ORACLE\eb_extras.sql" />
-      <EmbeddedResource Include="SqlScripts\PGSQL\eb_compilefunctions.sql" />
-      <EmbeddedResource Include="SqlScripts\ORACLE\eb_compilefunctions.sql" />
+      <EmbeddedResource Include="sqlscripts\oracle\datadb\functioncreate\**" />
+      <EmbeddedResource Include="sqlscripts\oracle\datadb\tablecreate\**" />
+      <EmbeddedResource Include="sqlscripts\pgsql\datadb\functioncreate\**" />
+      <EmbeddedResource Include="sqlscripts\pgsql\datadb\tablecreate\**" />
+      <EmbeddedResource Include="sqlscripts\oracle\objectsdb\functioncreate\**" />
+      <EmbeddedResource Include="sqlscripts\oracle\objectsdb\tablecreate\**" />
+      <EmbeddedResource Include="sqlscripts\pgsql\objectsdb\functioncreate\**" />
+      <EmbeddedResource Include="sqlscripts\pgsql\objectsdb\tablecreate\**" />
+      <EmbeddedResource Include="sqlscripts\pgsql\eb_extras.sql" />
+      <EmbeddedResource Include="sqlscripts\oracle\eb_extras.sql" />
+      <EmbeddedResource Include="sqlscripts\pgsql\eb_compilefunctions.sql" />
+      <EmbeddedResource Include="sqlscripts\oracle\eb_compilefunctions.sql" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FOSS.ServiceStack.Core" Version="5.0.2" />
@@ -42,17 +42,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
+    <Compile Update="sqlscripts.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
+      <DependentUpon>sqlscripts.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="sqlscripts.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>sqlscripts.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 </Project>
