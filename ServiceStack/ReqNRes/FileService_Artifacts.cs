@@ -74,7 +74,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class UploadFileAsyncRequest : EbServiceStackRequest, IReturn<bool>
+    public class UploadFileAsyncRequest : EbServiceStackRequest, IReturn<string>
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
@@ -84,7 +84,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class UploadImageAsyncRequest : EbServiceStackRequest, IReturn<bool>
+    public class UploadImageAsyncRequest : EbServiceStackRequest, IReturn<string>
     {
         [DataMember(Order = 1)]
         public FileMeta ImageInfo { get; set; }
