@@ -5,7 +5,10 @@ using System;
 
 namespace ExpressBase.Common.ServiceClients
 {
-    public interface IEbStaticFileClient : IServiceClient { }
+    public interface IEbStaticFileClient : IServiceClient
+    {
+        void AddAuthentication(IRequest req);
+    }
 
     public class EbStaticFileClient : ProtoBufServiceClient, IEbStaticFileClient
     {

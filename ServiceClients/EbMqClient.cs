@@ -7,7 +7,7 @@ namespace ExpressBase.Common.ServiceClients
 {
     public interface IEbMqClient : IServiceClient
     {
-
+        void AddAuthentication(IRequest req);
     }
 
     public class EbMqClient : JsonServiceClient, IEbMqClient
