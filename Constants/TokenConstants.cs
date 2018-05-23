@@ -12,6 +12,7 @@ namespace ExpressBase.Common.Constants
         public const string WC = "wc";
         public const string UC = "uc";
         public const string BC = "bc";
+        public const string TC = "tc";
         public const string DC = "dc";
         public const string EMAIL = "email";
         public const string IAT = "iat";
