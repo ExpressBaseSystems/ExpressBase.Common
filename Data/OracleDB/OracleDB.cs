@@ -403,7 +403,7 @@ namespace ExpressBase.Common.Data
                 try
                 {
                     con.Open();
-                    for (int i = 0; i <= sql_arr.Length - 1; i++)
+                    for (int i = 0; i < sql_arr.Length - 1; i++)
                     {
                         using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                         {

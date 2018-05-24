@@ -8,6 +8,7 @@ namespace ExpressBase.Common.ServiceClients
 
     public interface IEbServerEventClient : IServiceClient
     {
+        void AddAuthentication(IRequest req);
     }
 
     public class EbServerEventClient : JsonServiceClient, IEbServerEventClient
