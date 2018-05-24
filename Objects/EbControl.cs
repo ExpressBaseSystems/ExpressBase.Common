@@ -41,7 +41,10 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public virtual string BareControlHtml { get; set; }
 
-        [ProtoBuf.ProtoMember(12)]
+		[EnableInBuilder(BuilderType.BotForm)]
+		public virtual bool IsReadOnly { get; set; }
+
+		[ProtoBuf.ProtoMember(12)]
         [System.ComponentModel.Category("Behavior")]
         [Description("Labels")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
