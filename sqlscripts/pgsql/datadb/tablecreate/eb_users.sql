@@ -50,7 +50,7 @@ CREATE TABLE public.eb_users
     preferencesjson text COLLATE pg_catalog."default",
     createdby text COLLATE pg_catalog."default",
     createdat text COLLATE pg_catalog."default",
-    statusid integer,
+    statusid integer DEFAULT 0,
     hide text COLLATE pg_catalog."default",
     eb_del "char" NOT NULL DEFAULT 'F'::"char",
     CONSTRAINT eb_users_pkey PRIMARY KEY (id),
