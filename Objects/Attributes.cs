@@ -29,126 +29,136 @@ namespace ExpressBase.Common.Objects.Attributes
         ScriptEditorCS = 18,
         ScriptEditorJS = 19,
         ScriptEditorSQ = 20,
-		MultiLanguageKeySelector = 21,
+        MultiLanguageKeySelector = 21,
         CollectionPropsFrmSrc = 22,
         DictionaryEditor = 23,
         CollectionProp = 24,
-        DDfromDictProp =25,
+        DDfromDictProp = 25,
     }
 
     public class HideInToolBox : Attribute { }
 
     public class HideInPropertyGrid : Attribute { }
 
-    public class regexCheck : Attribute
+    public class InputMask : Attribute
     {
-        string regex { set; get; }
+        public string MaskPattern { get; set; }
 
-        public regexCheck()
+        public InputMask(string pattern)
         {
-            this.regex = "[a-z][a-z0-9]*(_[a-z0-9]+)*";
+            MaskPattern = pattern;
         }
+}
 
-        public regexCheck(string regex)
-        {
-            this.regex = regex;
-        }
-    }
+public class regexCheck : Attribute
+{
+    string regex { set; get; }
 
-
-    public class Unique : Attribute { }
-
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, Inherited = false)]
-    public class EnableInBuilder : Attribute
+    public regexCheck()
     {
-        public BuilderType[] BuilderTypes { get; set; }
-
-        public EnableInBuilder(params BuilderType[] types) { this.BuilderTypes = types; }
+        this.regex = "[a-z][a-z0-9]*(_[a-z0-9]+)*";
     }
 
-    public class Alias : Attribute
+    public regexCheck(string regex)
     {
-        public string Name { get; set; }
-
-        public Alias(string alias) { this.Name = alias; }
+        this.regex = regex;
     }
+}
 
-    [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
-    public class OSE_ObjectTypes : Attribute
+
+public class Unique : Attribute { }
+
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, Inherited = false)]
+public class EnableInBuilder : Attribute
+{
+    public BuilderType[] BuilderTypes { get; set; }
+
+    public EnableInBuilder(params BuilderType[] types) { this.BuilderTypes = types; }
+}
+
+public class Alias : Attribute
+{
+    public string Name { get; set; }
+
+    public Alias(string alias) { this.Name = alias; }
+}
+
+[AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
+public class OSE_ObjectTypes : Attribute
+{
+    public int[] ObjectTypes { get; set; }
+
+    public OSE_ObjectTypes(params int[] objectTypes) { this.ObjectTypes = objectTypes; }
+}
+
+
+public class HideForUser : Attribute
+{
+}
+
+
+public class OnChangeExec : Attribute
+{
+    public string JsCode { get; set; }
+
+    public OnChangeExec(string jsCode) { this.JsCode = jsCode; }
+}
+
+public class PropertyEditor : Attribute
+{
+    public PropertyEditorType PropertyEditorType { get; set; }
+
+    public string PropertyEditorSource { get; set; }
+
+    public string DependantProp { get; set; }
+
+    public int Limit { get; set; }
+
+    public PropertyEditor(PropertyEditorType type) { this.PropertyEditorType = type; }
+
+    public PropertyEditor(PropertyEditorType type, string source)
     {
-        public int[] ObjectTypes { get; set; }
-
-        public OSE_ObjectTypes(params int[] objectTypes) { this.ObjectTypes = objectTypes; }
+        this.PropertyEditorType = type;
+        this.PropertyEditorSource = source;
     }
 
-
-    public class HideForUser : Attribute
+    public PropertyEditor(PropertyEditorType type, string source, int limit)
     {
+        this.PropertyEditorType = type;
+        this.PropertyEditorSource = source;
+        this.Limit = limit;
     }
 
-
-    public class OnChangeExec : Attribute
+    public PropertyEditor(PropertyEditorType type, string source, string prop)
     {
-        public string JsCode { get; set; }
-
-        public OnChangeExec(string jsCode) { this.JsCode = jsCode; }
+        this.PropertyEditorType = type;
+        this.PropertyEditorSource = source;
+        this.DependantProp = prop;
     }
+}
+public class PropertyGroup : Attribute
+{
+    public string Name { get; set; }
 
-    public class PropertyEditor : Attribute
-    {
-        public PropertyEditorType PropertyEditorType { get; set; }
+    public PropertyGroup(string groupName) { this.Name = groupName; }
+}
 
-        public string PropertyEditorSource { get; set; }
+public class DefaultPropValue : Attribute
+{
+    public string Value { get; set; }
 
-        public string DependantProp { get; set; }
+    public DefaultPropValue(string val) { this.Value = val; }
+}
 
-        public int Limit { get; set; }
+public class HelpText : Attribute
+{
+    public string value { get; set; }
 
-        public PropertyEditor(PropertyEditorType type) { this.PropertyEditorType = type; }
+    public HelpText(string value) { this.value = value; }
+}
+public class MetaOnly : Attribute { public MetaOnly() { } }
 
-        public PropertyEditor(PropertyEditorType type, string source)
-        {
-            this.PropertyEditorType = type;
-            this.PropertyEditorSource = source;
-        }
+public class UIproperty : Attribute { public UIproperty() { } }
 
-        public PropertyEditor(PropertyEditorType type, string source, int limit)
-        {
-            this.PropertyEditorType = type;
-            this.PropertyEditorSource = source;
-            this.Limit = limit;
-        }
-
-        public PropertyEditor(PropertyEditorType type, string source, string prop)
-        {
-            this.PropertyEditorType = type;
-            this.PropertyEditorSource = source;
-            this.DependantProp = prop;
-        }
-    }
-    public class PropertyGroup : Attribute
-    {
-        public string Name { get; set; }
-
-        public PropertyGroup(string groupName) { this.Name = groupName; }
-    }
-
-    public class DefaultPropValue : Attribute
-    {
-        public string Value { get; set; }
-
-        public DefaultPropValue(string val) { this.Value = val; }
-    }
-
-    public class HelpText : Attribute
-    {
-        public string value { get; set; }
-
-        public HelpText(string value) { this.value = value; }
-    }
-    public class MetaOnly : Attribute { public MetaOnly() { } }
-
-    public class UIproperty : Attribute { public UIproperty() { } }
-
-    public class EbRequired : Attribute { public EbRequired() { } }
+public class EbRequired : Attribute { public EbRequired() { } }
 }
