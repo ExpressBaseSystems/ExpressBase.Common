@@ -169,6 +169,8 @@ namespace ExpressBase.Common
 
         public EbDataTable DoQuery(string query, params DbParameter[] parameters)
         {
+            Console.WriteLine("n\n\n\n\n\nInside Do Query");
+            
             EbDataTable dt = new EbDataTable();
 
             using (var con = GetNewConnection() as NpgsqlConnection)
@@ -191,7 +193,7 @@ namespace ExpressBase.Common
                 }
                 catch (Npgsql.NpgsqlException npgse)
                 {
-                    Console.WriteLine(npgse.ToString());
+                    Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\nException: " + npgse.ToString());
                     throw npgse;
                 }
                 catch (SocketException scket)
