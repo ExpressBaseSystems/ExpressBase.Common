@@ -158,6 +158,7 @@ namespace ExpressBase.Common
                 }
                 catch (Npgsql.NpgsqlException npgse)
                 {
+                    Console.WriteLine(npgse.ToString());
                     throw npgse;
                 }
                 catch (SocketException scket) { }
