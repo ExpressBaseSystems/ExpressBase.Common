@@ -1,4 +1,5 @@
 ﻿//using MimeKit;
+using ExpressBase.Common.Constants;
 using ProtoBuf;
 using ServiceStack;
 using ServiceStack.Web;
@@ -22,6 +23,15 @@ namespace ExpressBase.Common.ServiceClients
         public ProtoBufServiceClient(string baseUri)
         {
             SetBaseUri(baseUri);
+        }
+
+        public ProtoBufServiceClient(JsonServiceClient client)
+        {
+            SetBaseUri(client.BaseUri);
+            BearerToken = client.BearerToken;
+            RefreshToken = client.RefreshToken;
+            RefreshTokenUri = client.RefreshTokenUri;
+            Headers.Add(CacheConstants.RTOKEN, client.RefreshToken);
         }
 
         public ProtoBufServiceClient(string syncReplyBaseUri, string asyncOneWayBaseUri)
