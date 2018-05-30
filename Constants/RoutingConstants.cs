@@ -8,8 +8,7 @@ namespace ExpressBase.Common
     {
         public const string LOCALHOST = "localhost";
         public const string WWWDOT = "www.";
-        public const string EXPRESSBASEDOTCOM = "expressbase.com";
-        public const string EBTESTINFO = "eb-test.info";
+
 
         //Controllers
         public const string CONTROLLER = "controller";

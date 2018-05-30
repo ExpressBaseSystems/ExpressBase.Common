@@ -25,6 +25,7 @@ namespace ExpressBase.Objects
         [EbRequired]
         [Unique]
         [regexCheck]
+        [InputMask("")]
         public virtual string Name { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataSource, BuilderType.Report)]

@@ -158,6 +158,7 @@ namespace ExpressBase.Common
                 }
                 catch (Npgsql.NpgsqlException npgse)
                 {
+                    
                     throw npgse;
                 }
                 catch (SocketException scket) { }
@@ -192,7 +193,9 @@ namespace ExpressBase.Common
                 {
                     throw npgse;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket)
+                {
+                }
             }
 
             return dt;

@@ -64,7 +64,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         public IDictionary<string, List<string>> MetaDataDictionary { get; set; }
 
         [DataMember(Order = 4)]
-        public DateTime UploadDateTime{ get; set; }
+        public DateTime UploadDateTime { get; set; }
 
         [DataMember(Order = 5)]
         public Int64 Length { get; set; }
@@ -74,7 +74,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class UploadFileAsyncRequest : EbServiceStackRequest, IReturn<string>
+    public class UploadFileAsyncRequest : EbServiceStackRequest, IReturn<UploadAsyncResponse>
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
@@ -84,7 +84,14 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class UploadImageAsyncRequest : EbServiceStackRequest, IReturn<string>
+    public class UploadAsyncResponse : IEbSSResponse
+    {
+        [DataMember(Order = 1)]
+        public ResponseStatus ResponseStatus { get; set; }
+    }
+
+    [DataContract]
+    public class UploadImageAsyncRequest : EbServiceStackRequest, IReturn<UploadAsyncResponse>
     {
         [DataMember(Order = 1)]
         public FileMeta ImageInfo { get; set; }
@@ -108,7 +115,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class DownloadFileRequest : EbServiceStackRequest ,IReturn<DownloadFileResponse>
+    public class DownloadFileRequest : EbServiceStackRequest, IReturn<DownloadFileResponse>
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
