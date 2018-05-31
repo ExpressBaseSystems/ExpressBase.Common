@@ -34,10 +34,10 @@ BEGIN
 		in_users := '1';
 		in_dependantroles := NULL;
 	END IF;
-    IF in_users IS NOT NULL OR roleid > 0 THEN
+    IF in_users IS NOT NULL OR in_users !=''  OR roleid > 0 THEN
     	reslt :=  eb_create_or_update_role2user(rid, userid, in_users);
     END IF;
-    IF in_dependantroles IS NOT NULL OR roleid > 0 THEN
+    IF in_dependantroles IS NOT NULL OR in_dependantroles !='' OR roleid > 0 THEN
        reslt :=  eb_create_or_update_role2role(rid, userid, in_dependantroles);
     END IF;    
     COMMIT;

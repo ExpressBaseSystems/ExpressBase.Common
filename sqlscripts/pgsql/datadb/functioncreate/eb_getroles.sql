@@ -45,7 +45,7 @@ BEGIN
 					WITH RECURSIVE role2role AS
 					(
 						SELECT role2_id AS role_id FROM eb_role2role
-							WHERE role1_id = ANY(SELECT role_id FROM eb_role2user WHERE user_id = userid AND eb_del = 'F')
+							WHERE role1_id = ANY(SELECT role_id FROM eb_role2user WHERE user_id = userid AND eb_del = 'F')AND eb_del = 'F'
 						UNION ALL
 						SELECT e.role2_id FROM eb_role2role e, role2role r WHERE e.role1_id = r.role_id AND eb_del='F'
 					) SELECT * FROM role2role
