@@ -390,6 +390,7 @@ namespace ExpressBase.Common.Data
 
         public int DoNonQuery(string query, params DbParameter[] parameters)
         {
+            var x = 0;
             List<DbParameter> dbParameter = new List<DbParameter>();
             string[] sql_arr = query.Split(";");
             foreach (var param in parameters)
@@ -403,7 +404,8 @@ namespace ExpressBase.Common.Data
                 try
                 {
                     con.Open();
-                    for (int i = 0; i < sql_arr.Length - 1; i++)
+                    //for (int i = 0; i < sql_arr.Length - 1; i++)
+                    for(int i = 0; i < sql_arr.Length && sql_arr[i]!=""; i++)
                     {
                         using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                         {
@@ -413,7 +415,7 @@ namespace ExpressBase.Common.Data
                                 cmd.Parameters.AddRange(dbParameter.ToArray());
                             }
 
-                            cmd.ExecuteNonQuery();
+                            x=cmd.ExecuteNonQuery();
                         }
                     }
                 }
@@ -422,7 +424,7 @@ namespace ExpressBase.Common.Data
                     Console.WriteLine(orcl.Message);
                 }
 
-                return 0;
+                return x;
             }
         }
 
@@ -511,8 +513,54 @@ namespace ExpressBase.Common.Data
 
         public int UpdateTable(string query, params DbParameter[] parameters)
         {
+            int rslt = 0;
+            //EbDataSet ds = new EbDataSet();
+            //List<DbParameter> dbParameter = new List<DbParameter>();
+            //string[] sql_arr = query.Split(";");
+            //foreach (var param in parameters)
+            //{
+            //    if (Regex.IsMatch(query, ":" + param.ParameterName))
+            //        dbParameter.Add(param);
+            //}
 
+            using (var con = GetNewConnection() as OracleConnection)
+            {
+                try
+                {
+                    con.Open();
+                    //for (int i = 0; i < sql_arr.Length - 1; i++)
+                    //{
+                        using (OracleCommand cmd = new OracleCommand(query, con))
+                        {
+                            cmd.BindByName = true;
+                            if (Regex.IsMatch(query, @"\:+") && parameters != null && parameters.Length > 0)
+                            {
+                                cmd.Parameters.AddRange(parameters);
+                            }
 
+                        rslt= cmd.ExecuteNonQuery();
+                        //using (var reader = cmd.ExecuteReader())
+                        //    {
+                        //        EbDataTable dt = new EbDataTable();
+                        //        DataTable schema = reader.GetSchemaTable();
+
+                        //        this.AddColumns(dt, schema);
+                        //        PrepareDataTable(reader, dt);
+                        //        ds.Tables.Add(dt);
+
+                        //    }
+                        //    cmd.Parameters.Clear();
+                        //}
+                    }
+                }
+
+                catch (Exception orcl)
+                {
+                    Console.WriteLine(orcl.Message);
+                }
+            }
+
+            return rslt;
             return 0;
         }
 
