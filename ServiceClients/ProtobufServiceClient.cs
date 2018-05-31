@@ -27,7 +27,7 @@ namespace ExpressBase.Common.ServiceClients
 
         public ProtoBufServiceClient(JsonServiceClient client)
         {
-            SetBaseUri(client.BaseUri);
+            BaseUri = client.BaseUri;
             BearerToken = client.BearerToken;
             RefreshToken = client.RefreshToken;
             RefreshTokenUri = client.RefreshTokenUri;
