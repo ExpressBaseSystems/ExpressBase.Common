@@ -446,7 +446,7 @@ namespace ExpressBase.Common.Data
         public ColumnColletion GetColumnSchema(string table)
         {
             ColumnColletion cols = new ColumnColletion();
-            var query = "SELECT * FROM @tbl LIMIT 0".Replace("@tbl", table);
+            var query = "SELECT * FROM @tbl WHERE ROWNUM < 1".Replace("@tbl", table);
             using (var con = GetNewConnection() as OracleConnection)
             {
                 try
