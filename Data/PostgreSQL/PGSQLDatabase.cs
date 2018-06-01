@@ -35,19 +35,7 @@ namespace ExpressBase.Common
         VendorDbType IVendorDbTypes.Json { get { return InnerDictionary[EbDbTypes.Json]; } }
 
         VendorDbType IVendorDbTypes.Boolean { get { return InnerDictionary[EbDbTypes.Boolean]; } }
-        //VendorDbType IVendorDbTypes.Currency => new VendorDbType(EbDbTypes.Currency, NpgsqlDbType.Money);
-        //VendorDbType IVendorDbTypes.Guid => new VendorDbType(EbDbTypes.Double, NpgsqlDbType.Double);
-        //VendorDbType IVendorDbTypes.SByte => new VendorDbType(EbDbTypes.SByte, NpgsqlDbType.in);
-        // VendorDbType IVendorDbTypes.Single => new VendorDbType(EbDbTypes.Single, NpgsqlDbType.Real);
-        //VendorDbType IVendorDbTypes.AnsiStringFixedLength => new VendorDbType(EbDbTypes.VarNumeric, (int)NpgsqlDbType.Numeric, NpgsqlDbType.Numeric.ToString());
-        //VendorDbType IVendorDbTypes.Xml => new VendorDbType(EbDbTypes.Xml, (int)NpgsqlDbType.Xml, NpgsqlDbType.Xml.ToString());
-        //VendorDbType IVendorDbTypes.DateTime2 => new VendorDbType(EbDbTypes.DateTime2, (int)NpgsqlDbType.Timestamp, NpgsqlDbType.Timestamp.ToString());
-        //VendorDbType IVendorDbTypes.DateTimeOffset => new VendorDbType(EbDbTypes.DateTimeOffset, (int)NpgsqlDbType.Timestamp, NpgsqlDbType.Timestamp.ToString());
-        //VendorDbType IVendorDbTypes.StringFixedLength => throw new NotImplementedException();
-        //VendorDbType IVendorDbTypes.UInt16 => throw new NotImplementedException();
-        //VendorDbType IVendorDbTypes.UInt32 => throw new NotImplementedException();
-        //VendorDbType IVendorDbTypes.UInt64 => throw new NotImplementedException();
-
+       
         private PGSQLEbDbTypes()
         {
             this.InnerDictionary = new Dictionary<EbDbTypes, VendorDbType>();
@@ -119,11 +107,6 @@ namespace ExpressBase.Common
         {
             return new NpgsqlCommand(sql, (NpgsqlConnection)con);
         }
-
-        //public System.Data.Common.DbCommand GetNewCommand(DbConnection con, string sql, DbTransaction trans)
-        //{
-        //    return new NpgsqlCommand(sql, (NpgsqlConnection)con, (NpgsqlTransaction)trans);
-        //}
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type, object value)
         {
@@ -354,47 +337,6 @@ namespace ExpressBase.Common
                 object[] oArray = new object[_fieldCount];
                 reader.GetValues(oArray);
                 dr.AddRange(oArray);
-                //for (int i = 0; i < _fieldCount; i++)
-                //{
-                //    //var _typ = reader.GetFieldType(i);
-
-                //    if (typeArray[i] == typeof(DateTime))
-                //    {
-                //        dr[i] = reader.IsDBNull(i) ? DateTime.Now: reader.GetDateTime(i);
-                //        continue;
-                //    }
-                //    else if (typeArray[i] == typeof(string))
-                //    {
-                //        dr[i] = reader.IsDBNull(i) ? string.Empty : reader.GetString(i);
-                //        continue;
-                //    }
-                //    else if (typeArray[i] == typeof(bool))
-                //    {
-                //        dr[i] = reader.IsDBNull(i) ? false : reader.GetBoolean(i);
-                //        continue;
-                //    }
-                //    else if (typeArray[i] == typeof(decimal))
-                //    {
-                //        dr[i] = reader.IsDBNull(i) ? 0 : reader.GetDecimal(i);
-                //        continue;
-                //    }
-                //    else if (typeArray[i] == typeof(int) || typeArray[i] == typeof(Int32))
-                //    {
-                //        dr[i] = reader.IsDBNull(i) ? 0 : reader.GetInt32(i);
-                //        continue;
-                //    }
-                //    else if (typeArray[i] == typeof(Int64))
-                //    {
-                //        dr[i] = reader.IsDBNull(i) ? 0 : reader.GetInt64(i);
-                //        continue;
-                //    }
-                //    else
-                //    {
-                //        dr[i] = reader.GetValue(i);
-                //        continue;
-                //    }
-                //}
-
                 dt.Rows.Add(dr);
             }
 

@@ -3,7 +3,6 @@ using ExpressBase.Common.Structures;
 using Npgsql;
 using Oracle.ManagedDataAccess.Client;
 using Oracle.ManagedDataAccess.Types;
-//using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -35,20 +34,6 @@ namespace ExpressBase.Common.Data
         VendorDbType IVendorDbTypes.VarNumeric { get { return InnerDictionary[EbDbTypes.VarNumeric]; } }
         VendorDbType IVendorDbTypes.Json { get { return InnerDictionary[EbDbTypes.Json]; } }
         VendorDbType IVendorDbTypes.Boolean { get { return InnerDictionary[EbDbTypes.Boolean]; } }
-
-        //VendorDbType IVendorDbTypes.SByte => new VendorDbType(EbDbTypes.SByte, OracleType.in);
-        //VendorDbType IVendorDbTypes.Single => new VendorDbType(EbDbTypes.Single, OracleType.Real);
-        //VendorDbType IVendorDbTypes.Guid => new VendorDbType(EbDbTypes.Double, OracleType.Double);
-        //VendorDbType IVendorDbTypes.Boolean => new VendorDbType(EbDbTypes.Boolean, OracleType.Boolean);
-        //VendorDbType IVendorDbTypes.Currency => new VendorDbType(EbDbTypes.Currency, OracleType.Money);
-        //VendorDbType IVendorDbTypes.AnsiStringFixedLength => new VendorDbType(EbDbTypes.VarNumeric, OracleType.Numeric);
-        //VendorDbType IVendorDbTypes.StringFixedLength => throw new NotImplementedException();
-        //VendorDbType IVendorDbTypes.Xml => new VendorDbType(EbDbTypes.Xml, OracleType.Xml);
-        //VendorDbType IVendorDbTypes.DateTime2 => new VendorDbType(EbDbTypes.DateTime2, OracleType.Timestamp);
-        //VendorDbType IVendorDbTypes.DateTimeOffset => new VendorDbType(EbDbTypes.DateTimeOffset, OracleType.Timestamp);
-        //VendorDbType IVendorDbTypes.UInt16 => throw new NotImplementedException();
-        //VendorDbType IVendorDbTypes.UInt32 => throw new NotImplementedException();
-        //VendorDbType IVendorDbTypes.UInt64 => throw new NotImplementedException();
 
 
         private OracleEbDbTypes()
@@ -109,7 +94,7 @@ namespace ExpressBase.Common.Data
         }
         public OracleDB()
         {
-           
+
         }
 
         public DbConnection GetNewConnection(string dbName)
@@ -129,18 +114,13 @@ namespace ExpressBase.Common.Data
             return new OracleCommand(sql, (OracleConnection)con);
         }
 
-        //public System.Data.Common.DbCommand GetNewCommand(DbConnection con, string sql, DbTransaction trans)
-        //{
-        //    return new OracleCommand(sql, (OracleConnection)con);
-        //}
-
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type, object value)
         {
-            if((int)type == 6)
+            if ((int)type == 6)
                 return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(EbDbTypes.Date)) { Value = new OracleDate(Convert.ToDateTime(value).Date) };
             if ((int)type == 5 || (int)type == 17 || (int)type == 26)
-               return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = Convert.ToDateTime(value) };
-            else 
+                return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = Convert.ToDateTime(value) };
+            else
                 return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = value };
         }
 
@@ -148,42 +128,6 @@ namespace ExpressBase.Common.Data
         {
             return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type));
         }
-
-        //public string ConvertToDbDate(string datetime_)
-        //{
-        //    string qry = "select TO_TIMESTAMP(:datetime_, 'YYYY/MM/DD HH24:MI:SS.FF') from dual".Replace(":datetime_", "'"+datetime_+"'");
-        //    //DbParameter[] parameters = { GetNewParameter("datetime_", EbDbTypes.DateTime, datetime_) };
-        //    //var dt = DoQuery(qry, parameters);
-
-        //    //var date_= DateTime.MinValue; 
-        //    var date_ = "";
-        //    var con = GetNewConnection() as OracleConnection;
-        //    try
-        //    {
-        //        con.Open();
-        //        OracleCommand cmd = new OracleCommand(qry, con);
-        //        date_ = (cmd.ExecuteScalar()).ToString();
-        //    }
-        //    //using (var con = GetNewConnection() as OracleConnection)
-        //    //{
-        //    //    try
-        //    //    {
-        //    //        con.Open();
-        //    //        //using (OracleCommand cmd = new OracleCommand(qry, con))
-        //    //        //{
-        //    //        //    if (Regex.IsMatch(qry, @"\:+") && parameters != null && parameters.Length > 0)
-        //    //        //    {
-        //    //        //        cmd.Parameters.AddRange(parameters);
-        //    //        //    }
-        //    //        //    date_ =(cmd.ExecuteScalar()).ToString();
-        //    //        //}
-        //    //    }
-        //        catch (OracleException orcl)
-        //        { }
-        //        catch (SocketException scket)
-        //        { }
-        //    return date_;
-        //}
 
         public T DoQuery<T>(string query, params DbParameter[] parameters)
         {
@@ -224,44 +168,6 @@ namespace ExpressBase.Common.Data
             return obj;
         }
 
-        //public EbDataTable DoQuery(string query, params DbParameter[] parameters)
-        //{
-        //    EbDataTable dt = new EbDataTable();
-        //    string[] sql_arr = query.Split(";");
-
-        //    using (var con = GetNewConnection() as OracleConnection)
-        //    {
-        //        try
-        //        {
-        //            con.Open();
-        //            for (int i = 0; i < sql_arr.Length - 1; i++)
-        //            {
-        //                using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
-        //                {
-        //                    //if (parameters != null && parameters.Length > 0)
-        //                    //    cmd.Parameters.AddRange(parameters);
-
-        //                    if (Regex.IsMatch(sql_arr[i], @"\:+") && parameters != null && parameters.Length > 0)
-        //                    {
-        //                        cmd.Parameters.AddRange(parameters);
-        //                    }
-
-        //                    using (var reader = cmd.ExecuteReader())
-        //                    {
-        //                        DataTable schema = reader.GetSchemaTable();
-        //                        this.AddColumns(dt, schema);
-        //                        PrepareDataTable(reader, dt);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        catch (OracleException orcl) { }
-        //        catch (SocketException scket) { }
-        //    }
-
-        //    return dt;
-        //}
-
         public EbDataTable DoQuery(string query, params DbParameter[] parameters)
         {
             EbDataTable dt = new EbDataTable();
@@ -278,12 +184,8 @@ namespace ExpressBase.Common.Data
                 try
                 {
                     con.Open();
-                    //for (int i = 0; i < sql_arr.Length - 1; i++)
-                    //{
                     using (OracleCommand cmd = new OracleCommand(query, con))
                     {
-                        //if (parameters != null && parameters.Length > 0)
-                        //    cmd.Parameters.AddRange(parameters);
                         cmd.BindByName = true;
                         if (Regex.IsMatch(query, @"\:+") && parameters != null && parameters.Length > 0)
                         {
@@ -297,7 +199,7 @@ namespace ExpressBase.Common.Data
                             PrepareDataTable(reader, dt);
                         }
                     }
-                    // }
+
                 }
                 catch (OracleException orcl)
                 {
@@ -353,7 +255,8 @@ namespace ExpressBase.Common.Data
                 try
                 {
                     con.Open();
-                    for (int i = 0; i < sql_arr.Length - 1; i++)
+                    //for (int i = 0; i < sql_arr.Length - 1; i++)
+                    for (int i = 0; i < sql_arr.Length && sql_arr[i] != ""; i++)
                     {
                         using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                         {
@@ -405,7 +308,7 @@ namespace ExpressBase.Common.Data
                 {
                     con.Open();
                     //for (int i = 0; i < sql_arr.Length - 1; i++)
-                    for(int i = 0; i < sql_arr.Length && sql_arr[i]!=""; i++)
+                    for (int i = 0; i < sql_arr.Length && sql_arr[i] != ""; i++)
                     {
                         using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                         {
@@ -415,7 +318,7 @@ namespace ExpressBase.Common.Data
                                 cmd.Parameters.AddRange(dbParameter.ToArray());
                             }
 
-                            x=cmd.ExecuteNonQuery();
+                            x = cmd.ExecuteNonQuery();
                         }
                     }
                 }
@@ -514,43 +417,20 @@ namespace ExpressBase.Common.Data
         public int UpdateTable(string query, params DbParameter[] parameters)
         {
             int rslt = 0;
-            //EbDataSet ds = new EbDataSet();
-            //List<DbParameter> dbParameter = new List<DbParameter>();
-            //string[] sql_arr = query.Split(";");
-            //foreach (var param in parameters)
-            //{
-            //    if (Regex.IsMatch(query, ":" + param.ParameterName))
-            //        dbParameter.Add(param);
-            //}
-
             using (var con = GetNewConnection() as OracleConnection)
             {
                 try
                 {
                     con.Open();
-                    //for (int i = 0; i < sql_arr.Length - 1; i++)
-                    //{
-                        using (OracleCommand cmd = new OracleCommand(query, con))
+                    using (OracleCommand cmd = new OracleCommand(query, con))
+                    {
+                        cmd.BindByName = true;
+                        if (Regex.IsMatch(query, @"\:+") && parameters != null && parameters.Length > 0)
                         {
-                            cmd.BindByName = true;
-                            if (Regex.IsMatch(query, @"\:+") && parameters != null && parameters.Length > 0)
-                            {
-                                cmd.Parameters.AddRange(parameters);
-                            }
+                            cmd.Parameters.AddRange(parameters);
+                        }
 
-                        rslt= cmd.ExecuteNonQuery();
-                        //using (var reader = cmd.ExecuteReader())
-                        //    {
-                        //        EbDataTable dt = new EbDataTable();
-                        //        DataTable schema = reader.GetSchemaTable();
-
-                        //        this.AddColumns(dt, schema);
-                        //        PrepareDataTable(reader, dt);
-                        //        ds.Tables.Add(dt);
-
-                        //    }
-                        //    cmd.Parameters.Clear();
-                        //}
+                        rslt = cmd.ExecuteNonQuery();
                     }
                 }
 
@@ -561,7 +441,6 @@ namespace ExpressBase.Common.Data
             }
 
             return rslt;
-            return 0;
         }
 
         public ColumnColletion GetColumnSchema(string table)
@@ -621,21 +500,7 @@ namespace ExpressBase.Common.Data
             // This is a place where you will use _mySQLDriver to check, whether you are in a transaction
             return false;
         }
-        //private Type[] AddColumns(EbDataTable dt, ReadOnlyCollection<DbColumn> schema)
-        //{
-        //    int pos = 0;
-        //    Type[] typeArray = new Type[schema.Count];
-        //    foreach (DbColumn drow in schema)
-        //    {
-        //        string columnName = System.Convert.ToString(drow["ColumnName"]);
-        //        typeArray[pos] = (Type)(drow["DataType"]);
-        //        EbDataColumn column = new EbDataColumn(columnName, ConvertToDbType(typeArray[pos]));
-        //        column.ColumnIndex = pos++;
-        //        dt.Columns.Add(column);
-        //    }
 
-        //    return typeArray;
-        //}
         private void AddColumns(EbDataTable dt, DataTable schema)
         {
             int pos = 0;
@@ -711,7 +576,9 @@ namespace ExpressBase.Common.Data
                 AND EOS.status = 3 
 				AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id And EOS.status = 3);"; } }
 
-        public string EB_SIDEBARDEV_REQUEST { get { return @"
+        public string EB_SIDEBARDEV_REQUEST
+        {
+            get { return @"
                             SELECT id, applicationname FROM eb_applications;
                             SELECT 
 	                            EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, COALESCE(EO2A.app_id, 0)
@@ -727,7 +594,11 @@ namespace ExpressBase.Common.Data
 	                            EO.obj_type;"; }
         }
         public string EB_SIDEBARCHECK { get { return "AND EO.id = ANY(:Ids) "; } }
-        public string EB_GETROLESRESPONSE_QUERY { get { return @"
+        public string EB_GETROLESRESPONSE_QUERY
+        {
+            get
+            {
+                return @"
                         SELECT R.id,R.role_name,R.description,A.applicationname,
                         (SELECT COUNT(role1_id) FROM eb_role2role WHERE role1_id=R.id AND eb_del='F') AS subrole_count,
 						(SELECT COUNT(user_id) FROM eb_role2user WHERE role_id=R.id AND eb_del='F') AS user_count,
@@ -968,11 +839,10 @@ namespace ExpressBase.Common.Data
         {
             get
             {
-                //return "SELECT eb_objects_create_new_object(:obj_name, :obj_desc, :obj_type, :obj_cur_status, :obj_json, :commit_uid, :src_pid, :cur_pid, :relations, :issave, :tags, :app_id) FROM DUAL";
                 return "SELECT eb_objects_create_new_object(:obj_name, :obj_desc, :obj_type, :obj_cur_status, :commit_uid, :src_pid, :cur_pid, :relations, :issave, :tags, :app_id) FROM DUAL";
             }
         }
-        public string EB_SAVE_OBJECT  //SELECT eb_objects_save(:id, :obj_name, :obj_desc, :obj_type, :obj_json, :commit_uid, :src_pid, :cur_pid, :relations, :tags, :app_id) FROM DUAL
+        public string EB_SAVE_OBJECT
         {
             get
             {
@@ -981,7 +851,7 @@ namespace ExpressBase.Common.Data
                 ";
             }
         }
-        public string EB_COMMIT_OBJECT  //SELECT eb_objects_commit(:id, :obj_name, :obj_desc, :obj_type, :obj_json, :obj_changelog,  :commit_uid, :src_pid, :cur_pid, :relations, :tags, :app_id) FROM DUAL
+        public string EB_COMMIT_OBJECT
         {
             get
             {
