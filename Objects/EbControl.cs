@@ -34,7 +34,11 @@ namespace ExpressBase.Common.Objects
         [PropertyEditor(PropertyEditorType.JS)]
         public string VisibleIf { get; set; }
 
-        [HideInPropertyGrid]
+		[EnableInBuilder(BuilderType.BotForm)]
+		[PropertyEditor(PropertyEditorType.JS)]
+		public string ValueExpression { get; set; }
+
+		[HideInPropertyGrid]
         public virtual string ObjType { get { return this.GetType().Name.Substring(2, this.GetType().Name.Length - 2); } set { } }
 
         [HideInPropertyGrid]
@@ -117,9 +121,9 @@ else
         {
             get { return (this.ReadOnly ? "background-color: #f0f0f0; border: solid 1px #bbb;' readonly" : "'"); }
         }
-
-        [ProtoBuf.ProtoMember(22)]
-        [System.ComponentModel.Category("Behavior")]
+		
+		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+		[PropertyGroup("Behavior")]
         public virtual bool Hidden { get; set; }
 
         protected string HiddenString
