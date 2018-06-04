@@ -148,7 +148,7 @@ function ProcRecur(src_controls, dest_controls) {
                         }
                         catch (Exception ee)
                         {
-
+                            Console.WriteLine("Exception: " + ee.ToString());
                         }
                     }
                 }
@@ -240,7 +240,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             }
             catch (Exception e)
             {
-
+                Console.WriteLine("Exception: " + e.ToString());
             }
         }
 
