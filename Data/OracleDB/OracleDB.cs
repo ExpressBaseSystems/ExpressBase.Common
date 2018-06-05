@@ -243,6 +243,8 @@ namespace ExpressBase.Common.Data
         {
             EbDataSet ds = new EbDataSet();
             List<DbParameter> dbParameter = new List<DbParameter>();
+            //query = Regex.Replace(query, @"\n|\r|\s+", " ");
+            query = query.Trim();
             string[] sql_arr = query.Split(";");
             foreach (var param in parameters)
             {
@@ -256,7 +258,9 @@ namespace ExpressBase.Common.Data
                 {
                     con.Open();
                     //for (int i = 0; i < sql_arr.Length - 1; i++)
-                    for (int i = 0; i < sql_arr.Length && sql_arr[i] != ""; i++)
+                    //for (int i = 0; i < sql_arr.Length && sql_arr[i] != ""; i++)
+                    //for (int i = 0; i < sql_arr.Length && sql_arr[i] !=string.Empty && !(Regex.IsMatch(sql_arr[i],@"\t|\n|\r")); i++)
+                    for (int i = 0; i < sql_arr.Length && sql_arr[i] != string.Empty && sql_arr[i] != " "; i++)
                     {
                         using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                         {
