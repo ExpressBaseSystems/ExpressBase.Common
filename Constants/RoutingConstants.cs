@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ExpressBase.Common
 {
-    public class RoutingConstants
+    public static class RoutingConstants
     {
         public const string LOCALHOST = "localhost";
         public const string WWWDOT = "www.";

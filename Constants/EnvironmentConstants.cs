@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ExpressBase.Common
 {
-    public class EnvironmentConstants
+    public static class EnvironmentConstants
     {
         public const string ASPNETCORE_ENVIRONMENT = "ASPNETCORE_ENVIRONMENT";
 
