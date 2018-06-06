@@ -34,7 +34,7 @@ namespace ExpressBase.Common
         public const string UC = "uc";
         public const string DC = "dc";
 
-        public const string TENANT = "tenant";
+        public const string MYACCOUNT = "myaccount";
         public const string DASHBOT = "-bot";
         public const string DASHMOB = "-mob";
         //public const string WEB = "-web";
