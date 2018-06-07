@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ExpressBase.Common.Constants
 {
-    public class CacheConstants
+    public static class CacheConstants
     {
         public const string X_SS_PID = "X-ss-pid";
         public const string RTOKEN = "rToken";

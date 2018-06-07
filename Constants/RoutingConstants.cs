@@ -4,10 +4,15 @@ using System.Text;
 
 namespace ExpressBase.Common
 {
-    public class RoutingConstants
+    public static class RoutingConstants
     {
         public const string LOCALHOST = "localhost";
         public const string WWWDOT = "www.";
+
+        //DashBoard Routes
+        public const string MYSOLUTIONS = "/MySolutions";
+        public const string SOLUTIONSETTINGS = "/SolutionSettings";
+        public const string MYAPPLICATIONS = "/MyApplications";
 
 
         //Controllers
@@ -29,6 +34,7 @@ namespace ExpressBase.Common
         public const string UC = "uc";
         public const string DC = "dc";
 
+        public const string MYACCOUNT = "myaccount";
         public const string DASHBOT = "-bot";
         public const string DASHMOB = "-mob";
         //public const string WEB = "-web";
@@ -38,5 +44,7 @@ namespace ExpressBase.Common
         public const int HOSTPARTSLEN_IS_3 = 3;
         public const int HOSTPARTSLEN_IS_2 = 2;
 
+        //error url
+        public const string EXTERROR = "/Ext/Error";
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ExpressBase.Common.Constants
 {
-    public class CharConstants
+    public static class CharConstants
     {
         public const char DOT = '.';
         public const char COMMA = ',';

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ExpressBase.Common.Constants
 {
-    public class CoreConstants
+    public static class CoreConstants
     {
         public const string SOLUTION_ID = "TenantAccountId";
         public const string EXPRESSBASE = "expressbase";

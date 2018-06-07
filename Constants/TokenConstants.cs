@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ExpressBase.Common.Constants
 {
-    public class TokenConstants
+    public static class TokenConstants
     {
         public const string SUB = "sub";
         public const string CID = "cid";
