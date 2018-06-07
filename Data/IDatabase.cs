@@ -85,6 +85,7 @@ namespace ExpressBase.Common
         string EB_CHANGE_STATUS_OBJECT { get; }
         string EB_PATCH_VERSION_OF_OBJECT { get; }
         string EB_UPDATE_DASHBOARD { get; }
+        string EB_LOCATION_CONFIGURATION { get;}
     }
 }
 

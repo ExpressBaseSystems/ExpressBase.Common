@@ -918,6 +918,13 @@ namespace ExpressBase.Common.Data
                 ";
             }
         }
+        public string EB_LOCATION_CONFIGURATION
+        {
+            get
+            {
+                return @"";
+            }
+        }
     }
 }
 

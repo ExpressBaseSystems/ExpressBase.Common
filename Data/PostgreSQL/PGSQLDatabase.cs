@@ -850,7 +850,13 @@ namespace ExpressBase.Common
                 ";
             }
         }
-
+        public string EB_LOCATION_CONFIGURATION
+        {
+            get
+            {
+                return @"";
+            }
+        }
 
     }
 }
