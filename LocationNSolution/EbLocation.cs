@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ExpressBase.Common.LocationNSolution
 {
-    public class Eb_Location
+    public class EbLocation
     {
         public int LocId { get; set; }
 
@@ -12,7 +12,7 @@ namespace ExpressBase.Common.LocationNSolution
 
         public string ShortName { get; set; }
 
-        public string Meta { get; set; }
+        public Dictionary<string, string> Meta { get; set; }
 
         public string Img { get; set; }
     }
@@ -27,10 +27,14 @@ namespace ExpressBase.Common.LocationNSolution
 
         public int NumberOfUsers { get; set; }
 
-        public List<Eb_Location> LocationCollection { get; set; }
+        public string Description { get; set; }
+
+        public string DateCreated { get; set; }
+
+        public Dictionary<string, EbLocation> LocationCollection { get; set; }
     }
 
-    public class Eb_LocationConfig
+    public class EbLocationConfig
     {
         public string KeyId { get; set; }
 
