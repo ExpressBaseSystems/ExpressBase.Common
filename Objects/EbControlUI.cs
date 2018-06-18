@@ -42,7 +42,7 @@ namespace ExpressBase.Common.Objects
 		[PropertyGroup("Appearance")]
 		[UIproperty]
 		[PropertyEditor(PropertyEditorType.Label)]
-		public virtual string FontFamily { get; set; }
+		public virtual string FontFamily { get { return "Label"; } set { } }
 
 		[EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm)]
 		[PropertyGroup("Appearance")]
