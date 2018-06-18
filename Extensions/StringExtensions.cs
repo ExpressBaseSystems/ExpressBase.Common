@@ -24,7 +24,7 @@ namespace ExpressBase.Common.Extensions
 
         public static string RemoveCR(this string str)
         {
-            return str.Replace("\r\n", string.Empty);
+            return str.Replace("\r\n", string.Empty).Replace("\n", string.Empty);
         }
 
         public static string ToMD5Hash(this string str)
