@@ -18,7 +18,7 @@ CREATE TABLE public.eb_locations
     shortname text COLLATE pg_catalog."default",
     longname text COLLATE pg_catalog."default",
     image text COLLATE pg_catalog."default",
-    meta_json text COLLATE pg_catalog."default"
+    meta_json text COLLATE pg_catalog."default",
     CONSTRAINT eb_locations_pkey PRIMARY KEY (id)
 )
 WITH (

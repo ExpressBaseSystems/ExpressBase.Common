@@ -999,6 +999,57 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DECLARE
+        ///	isrequired varchar(10);  
+        ///BEGIN
+        ///
+        ///	isrequired := &apos;F&apos;; 
+        ///
+        ///	EXECUTE IMMEDIATE &apos;CREATE SEQUENCE eb_location_config_id_seq START WITH 1&apos;;
+        ///	EXECUTE IMMEDIATE &apos;CREATE TABLE eb_location_config
+        ///	(
+        ///            		id NUMBER,
+        ///            		keys CLOB,
+        ///    		isrequired char DEFAULT &apos;&apos;&apos;|| isrequired ||&apos;&apos;&apos;,
+        ///    		CONSTRAINT eb_locationsconfig_pkey PRIMARY KEY (id)
+        ///	)&apos;;
+        ///	
+        ///	EXECUTE IMMEDIATE &apos;CREATE OR REPLACE TRIGGER eb_location_config_trigger BEFORE INSERT ON eb_location_config FOR EACH ROW BEGIN &apos; || [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_location_config {
+            get {
+                return ResourceManager.GetString("eb_location_config", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE SEQUENCE public.eb_location_config_id_seq
+        ///    INCREMENT 1
+        ///    START 1
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_location_config_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_location_config
+        ///
+        ///-- DROP TABLE public.eb_location_config;
+        ///
+        ///CREATE TABLE public.eb_location_config
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_location_config_id_seq&apos;::regclass),
+        ///    keys text COLLATE pg_catalog.&quot;default&quot;,
+        ///    isrequired &quot;char&quot; NOT NULL DEFAULT  [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_location_config1 {
+            get {
+                return ResourceManager.GetString("eb_location_config1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BEGIN
         ///
         ///	EXECUTE IMMEDIATE &apos;CREATE SEQUENCE eb_locations_id_seq START WITH 1&apos;;
