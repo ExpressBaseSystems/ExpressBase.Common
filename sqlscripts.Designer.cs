@@ -832,7 +832,7 @@ namespace ExpressBase.Common {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///create or replace FUNCTION eb_permissions(
+        ///create or replace FUNCTION eb_getpermissions(
         ///	in_roles VARCHAR2)
         ///    RETURN returnpermission_tbl as permissiontbl  returnpermission_tbl;
         ///
@@ -840,9 +840,8 @@ namespace ExpressBase.Common {
         ///    SELECT   
         ///    	returnpermission_obj(LISTAGG(permissionname,&apos;,&apos;) within group(order by permissionname)) BULK COLLECT INTO permissiontbl  FROM 
         ///        eb_role2permission 
-        ///    WHERE role_id = ANY(  SELECT regexp_substr(in_roles,&apos;[^,]+&apos;, 1, level) from dual
-        ///             CONNECT BY regexp_substr(in_roles, &apos;[^,]+&apos;, 1, level) is not null);	
-        ///    RETURN p [rest of string was truncated]&quot;;.
+        ///    WHERE eb_del = &apos;F&apos; AND role_id = ANY(  SELECT regexp_substr(in_roles,&apos;[^,]+&apos;, 1, level) from dual
+        ///             CONNECT BY regexp_substr(in_roles, &apos;[^,]+&apos;, 1, level) is not n [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_getpermissions {
             get {
@@ -940,6 +939,115 @@ namespace ExpressBase.Common {
         public static string eb_getroles1 {
             get {
                 return ResourceManager.GetString("eb_getroles1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///BEGIN
+        ///
+        ///	EXECUTE IMMEDIATE &apos;CREATE SEQUENCE eb_google_map_seq START WITH 1&apos;;
+        ///	
+        ///	EXECUTE IMMEDIATE &apos;CREATE TABLE eb_google_map
+        ///	(
+        ///    		id NUMBER NOT NULL,
+        ///    		lattitude CLOB,
+        ///    		longitude CLOB,
+        ///    		name CLOB,
+        ///    		CONSTRAINT eb_google_map_pkey PRIMARY KEY (id)
+        ///	)&apos;;
+        ///
+        ///	EXECUTE IMMEDIATE &apos;CREATE OR REPLACE TRIGGER eb_google_map_trigger BEFORE INSERT ON eb_google_map FOR EACH ROW BEGIN &apos; || &apos;:&apos; || &apos;new.id:=eb_google_map_seq.NEXTVAL; END;&apos;;
+        ///END;.
+        /// </summary>
+        public static string eb_google_map {
+            get {
+                return ResourceManager.GetString("eb_google_map", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE SEQUENCE public.eb_google_map_seq
+        ///    INCREMENT 1
+        ///    START 1
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_google_map_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_google_map
+        ///
+        ///-- DROP TABLE public.eb_google_map;
+        ///
+        ///CREATE TABLE public.eb_google_map
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_google_map_seq&apos;::regclass),
+        ///    lattitude text ,
+        ///    longitude text,
+        ///    name text,
+        ///    CONSTRAINT eb_google_map_pkey PRIMARY KEY (id)
+        ///)
+        ///WITH (
+        ///  [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_google_map1 {
+            get {
+                return ResourceManager.GetString("eb_google_map1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BEGIN
+        ///
+        ///	EXECUTE IMMEDIATE &apos;CREATE SEQUENCE eb_locations_id_seq START WITH 1&apos;;
+        ///
+        ///
+        ///	EXECUTE IMMEDIATE &apos;CREATE TABLE eb_locations
+        ///	(
+        ///		id NUMBER NOT NULL,
+        ///		shortname CLOB,
+        ///		longname CLOB,
+        ///		image CLOB,
+        ///		meta_json CLOB,
+        ///		CONSTRAINT eb_locations_pkey PRIMARY KEY (id)
+        ///	)&apos;;
+        ///
+        ///	EXECUTE IMMEDIATE &apos;CREATE OR REPLACE TRIGGER eb_locations_trigger BEFORE INSERT ON eb_locations FOR EACH ROW BEGIN &apos; || &apos;:&apos; || &apos;new.id:=eb_locations_id_seq.NEXTVAL;END;&apos;;
+        ///END;.
+        /// </summary>
+        public static string eb_locations {
+            get {
+                return ResourceManager.GetString("eb_locations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE SEQUENCE public.eb_locations_id_seq
+        ///    INCREMENT 1
+        ///    START 1
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_locations_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_locations
+        ///
+        ///-- DROP TABLE public.eb_locations;
+        ///
+        ///CREATE TABLE public.eb_locations
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_locations_id_seq&apos;::regclass),
+        ///    shortname text COLLATE pg_catalog.&quot;default&quot;,
+        ///    longname text COLLATE pg_catalog.&quot;default&quot;,
+        ///    image text COLLAT [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_locations1 {
+            get {
+                return ResourceManager.GetString("eb_locations1", resourceCulture);
             }
         }
         
@@ -1880,13 +1988,13 @@ namespace ExpressBase.Common {
         ///	(
         ///    		id number NOT NULL,
         ///    		role_name varchar(20),
-        ///    		eb_del char,
+        ///    		eb_del char DEFAULT &apos;&apos;&apos;|| eb_del ||&apos;&apos;&apos; ,
         ///    		applicationname varchar(50),
         ///    		applicationid number,
         ///    		description varchar(200),
         ///			is_anonymous char DEFAULT &apos;&apos;&apos;|| eb_del ||&apos;&apos;&apos;,
         ///    		CONSTRAINT eb_roles_id_pkey PRIMARY KEY (id),
-        ///    		CONSTRAINT eb_rolename_unique UNIQUE (role_name [rest of string was truncated]&quot;;.
+        ///    		CONSTRAINT eb_rolen [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_roles {
             get {

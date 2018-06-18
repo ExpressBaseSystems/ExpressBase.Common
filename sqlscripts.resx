@@ -367,4 +367,16 @@
   <data name="eb_userstatus1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\pgsql\datadb\tablecreate\eb_userstatus.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="eb_google_map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\objectsdb\tablecreate\eb_google_map.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_google_map1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\objectsdb\tablecreate\eb_google_map.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_locations" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\objectsdb\tablecreate\eb_locations.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_locations1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\objectsdb\tablecreate\eb_locations.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
 </root>
