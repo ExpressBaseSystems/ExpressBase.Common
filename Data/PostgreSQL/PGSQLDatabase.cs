@@ -319,8 +319,12 @@ namespace ExpressBase.Common
                 return EbDbTypes.Decimal;
             else if (_typ == typeof(int) || _typ == typeof(Int32) || _typ == typeof(Int16) || _typ == typeof(Single))
                 return EbDbTypes.Int32;
+            else if (_typ == typeof(Int16))
+                return EbDbTypes.Int16;
             else if (_typ == typeof(Int64))
                 return EbDbTypes.Int64;
+            else if (_typ == typeof(Single))
+                return EbDbTypes.Int32;
             else if (_typ == typeof(TimeSpan))
                 return EbDbTypes.Time;
 
