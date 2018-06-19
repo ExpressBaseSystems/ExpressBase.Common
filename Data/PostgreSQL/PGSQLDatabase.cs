@@ -503,7 +503,7 @@ namespace ExpressBase.Common
 				AND EO2A.obj_id = EO.id
 				AND EO2A.eb_del = 'F'
                 AND EOS.status = 3 
-				AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id And EOS.status = 3);"; } }
+				AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );"; } }
          
         public string EB_SIDEBARDEV_REQUEST {
             get { return @"
