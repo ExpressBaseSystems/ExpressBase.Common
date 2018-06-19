@@ -1,4 +1,8 @@
+DECLARE
+	eb_del varchar(10);  
 BEGIN
+
+	eb_del := 'F';
 	EXECUTE IMMEDIATE 'CREATE SEQUENCE eb_usergroup_id_seq START WITH 1';
 
 	EXECUTE IMMEDIATE 'CREATE TABLE eb_usergroup
@@ -6,7 +10,7 @@ BEGIN
     		id number NOT NULL,
     		name varchar(30),
     		description varchar(200),
-    		eb_del char,
+			eb_del char DEFAULT '''|| eb_del ||''' ,
     		CONSTRAINT eb_usergroup_pkey PRIMARY KEY (id)
 	)';
 

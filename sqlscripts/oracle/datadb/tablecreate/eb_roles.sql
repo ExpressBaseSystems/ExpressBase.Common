@@ -9,7 +9,7 @@ BEGIN
 	EXECUTE IMMEDIATE 'CREATE TABLE eb_roles
 	(
     		id number NOT NULL,
-    		role_name varchar(20),
+    		role_name CLOB,
     		eb_del char DEFAULT '''|| eb_del ||''' ,
     		applicationname varchar(50),
     		applicationid number,
