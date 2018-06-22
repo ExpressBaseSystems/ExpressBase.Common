@@ -1,4 +1,5 @@
-﻿using ExpressBase.Common.Structures;
+﻿using ExpressBase.Common.Data;
+using ExpressBase.Common.Structures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,6 +65,16 @@ namespace ExpressBase.Common
         {
             get { return this[this.Rows.Table.Columns[columnname].ColumnIndex]; }
             set { this[this.Rows.Table.Columns[columnname].ColumnIndex] = value; }
+        }
+
+        public Param GetCellParam(string columnname)
+        {
+            return new Param
+            {
+                Name = columnname,
+                Type = ((int)this.Rows.Table.Columns[columnname].Type).ToString(),
+                Value = this[columnname].ToString()
+            };
         }
     }
 
