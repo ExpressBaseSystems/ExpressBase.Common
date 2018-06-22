@@ -618,7 +618,7 @@ namespace ExpressBase.Common.Data
 									WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3 
 									AND EO.id = EO2A.obj_id AND EO2A.eb_del = 'F';
 
-									SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> :id ORDER BY role_name;
+									SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> :id ORDER BY to_char(role_name);
 									SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';"; } }
         public string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get { return @"
                                                         SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = :id;
@@ -634,9 +634,18 @@ namespace ExpressBase.Common.Data
 
         public string EB_SAVEUSERGROUP_QUERY { get { return "SELECT eb_createormodifyusergroup(:userid,:id,:name,:description,:users) FROM dual;"; } }
 
+		public string EB_MANAGEUSER_FIRST_QUERY
+		{
+			get
+			{
+				return @"SELECT id, role_name, description FROM eb_roles ORDER BY to_char(role_name);
+                        SELECT id, name,description FROM eb_usergroup ORDER BY name;
+						SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';";
+			}
+		}
 
-        //.......OBJECTS QUERIES.....
-        public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
+		//.......OBJECTS QUERIES.....
+		public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
         {
             get
             {
