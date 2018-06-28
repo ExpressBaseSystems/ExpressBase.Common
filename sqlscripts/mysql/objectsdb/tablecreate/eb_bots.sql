@@ -22,14 +22,14 @@ CREATE TABLE eb_bots
 
 -- Index: eb_bots_app_id_idx
 
--- DROP INDEX eb_bots_app_id_idx;
+-- ALTER TABLE eb_bots DROP INDEX eb_bots_app_id_idx;
 
 CREATE INDEX eb_bots_app_id_idx
     ON eb_bots(app_id);
 
 -- Index: eb_bots_id_idx
 
--- DROP INDEX eb_bots_id_idx;
+-- ALTER TABLE eb_bots DROP INDEX eb_bots_id_idx;
 
 CREATE INDEX eb_bots_id_idx
     ON eb_bots(id);
