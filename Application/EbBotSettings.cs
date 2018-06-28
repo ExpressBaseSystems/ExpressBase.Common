@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace ExpressBase.Objects.ObjectContainers
+namespace ExpressBase.Common.Application
 {
 	[DataContract]
 	public class EbBotSettings
@@ -15,6 +15,9 @@ namespace ExpressBase.Objects.ObjectContainers
 		public string ThemeColor { get; set; }
 
 		[DataMember(Order = 3)]
+		public string TitleColor { get; set; }
+
+		[DataMember(Order = 4)]
 		public string DpUrl { get; set; }
 
 		public EbBotSettings(){}
