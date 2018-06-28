@@ -24,6 +24,7 @@ namespace ExpressBase.Common
         public const string ACTION = "action";
         public const string INDEX = "Index";
         public const string USERSIGNIN2UC = "UsrSignIn";
+        public const string TENANTSIGNIN = "TenantSignIn";
 
         public const string BEARER_TOKEN = "bToken";
         public const string REFRESH_TOKEN = "rToken";
