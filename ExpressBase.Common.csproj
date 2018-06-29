@@ -24,8 +24,8 @@
       <EmbeddedResource Include="sqlscripts\oracle\objectsdb\tablecreate\**" />
       <EmbeddedResource Include="sqlscripts\pgsql\objectsdb\functioncreate\**" />
       <EmbeddedResource Include="sqlscripts\pgsql\objectsdb\tablecreate\**" />
-      <None Remove="sqlscripts\oracle\objectsdb\functioncreate\string_to_table_utilityFn.sql" />
-      <None Remove="sqlscripts\pgsql\objectsdb\functioncreate\string_to_table_utilityFn.sql" />
+      <None Remove="sqlscripts\oracle\objectsdb\functioncreate\string_to_table_util_fn.sql" />
+      <None Remove="sqlscripts\pgsql\objectsdb\functioncreate\string_to_table_util_fn.sql" />
       <EmbeddedResource Include="sqlscripts\pgsql\eb_extras.sql" />
       <EmbeddedResource Include="sqlscripts\oracle\eb_extras.sql" />
       <EmbeddedResource Include="sqlscripts\pgsql\eb_compilefunctions.sql" />
