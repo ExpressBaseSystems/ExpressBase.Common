@@ -24,6 +24,7 @@ CREATE PROCEDURE STR_TO_TBL(fullstr TEXT)
    BEGIN
       DECLARE a INT Default 0 ;
       DECLARE str VARCHAR(255);
+	  TRUNCATE TABLE temp_array_table;
       
       simple_loop: LOOP
          SET a=a+1;
@@ -35,4 +36,4 @@ CREATE PROCEDURE STR_TO_TBL(fullstr TEXT)
          INSERT INTO temp_array_table values ((SELECT split_str(fullstr,',',a)));
    END LOOP simple_loop;
    -- SELECT value FROM temp_array_table;
-END $$  
+END $$
