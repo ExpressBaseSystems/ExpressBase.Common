@@ -59,13 +59,15 @@ BEGIN
     
     INSERT INTO eb_objects_status(eb_obj_ver_id, status, uid, ts) VALUES(inserted_obj_ver_id, 0, commit_uidv, NOW());
     
+    CREATE TEMPORARY TABLE IF NOT EXISTS TMPTBL
+		SELECT dominant from eb_objects_relations WHERE dependant = refidunique 
+		AND dominant NOT IN (SELECT  * FROM relationsv);
+    
 	UPDATE eb_objects_relations 
       SET 
         eb_del = 'T', removed_by = commit_uidv , removed_at = NOW()
       WHERE 
-        dominant IN(
-            SELECT dominant from eb_objects_relations WHERE dependant = refidunique 
-			AND dominant NOT IN (SELECT  * FROM relationsv));
+        dominant IN( SELECT dominant FROM TMPTBL); 
             
 	INSERT INTO eb_objects_relations (dominant, dependant)
 	SELECT `value`, refidunique
@@ -74,4 +76,3 @@ BEGIN
     RETURN committed_refidunique; 	
 
 END$$
-

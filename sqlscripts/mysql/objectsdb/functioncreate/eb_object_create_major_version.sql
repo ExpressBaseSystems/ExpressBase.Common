@@ -1,6 +1,6 @@
 ﻿-- FUNCTION: public.eb_objects_create_major_version(text, integer, integer, text, text, text)
 
-DROP FUNCTION IF EXISTS eb_object_create_major_version;
+-- DROP FUNCTION IF EXISTS eb_object_create_major_version;
 
 DELIMITER $$
 
@@ -24,8 +24,6 @@ BEGIN
 	CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value TEXT);
     CALL STR_TO_TBL(relationsstring);  -- fill to temp_array_table
 	CREATE TEMPORARY TABLE IF NOT EXISTS relationsv SELECT `value` FROM temp_array_table;
-    
-    -- CREATE TEMPORARY TABLE IF NOT EXISTS relationsv SELECT string_to_array(relationsstring,',');
     
 	SELECT eb_objects_id into objid FROM eb_objects_ver WHERE refid = idv;
 	SELECT MAX(major_ver_num) into major from eb_objects_ver WHERE eb_objects_id = objid;
