@@ -13,12 +13,12 @@ namespace ExpressBase.Common.Application
 
 		[DataMember(Order = 2)]
 		public string ThemeColor { get; set; }
-
+		
 		[DataMember(Order = 3)]
-		public string TitleColor { get; set; }
+		public string DpUrl { get; set; }
 
 		[DataMember(Order = 4)]
-		public string DpUrl { get; set; }
+		public string Name { get; set; }
 
 		public EbBotSettings(){}
     }
