@@ -32,8 +32,8 @@ CREATE PROCEDURE STR_TO_TBL(fullstr TEXT)
          IF str='' THEN
             LEAVE simple_loop;
          END IF;
-         #Do Inserts into temp table here with str going into the row
-         INSERT INTO temp_array_table values ((SELECT split_str(fullstr,',',a)));
+         -- Do Inserts into temp table here with str going into the row
+         INSERT INTO temp_array_table values (TRIM((SELECT split_str(fullstr,',',a))));
    END LOOP simple_loop;
    -- SELECT value FROM temp_array_table;
 END $$

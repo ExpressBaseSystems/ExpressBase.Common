@@ -32,10 +32,13 @@ BEGIN
 	DECLARE  version_number text;
     
 	CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value TEXT);
-    CALL STR_TO_TBL(relationsstring);  -- fill to temp_array_table
+        
+	CALL STR_TO_TBL(relationsstring);  -- fill to temp_array_table
 	CREATE TEMPORARY TABLE IF NOT EXISTS relationsv SELECT `value` FROM temp_array_table;
+	
+	CALL STR_TO_TBL(appsstring);  -- fill to temp_array_table
+	CREATE TEMPORARY TABLE IF NOT EXISTS apps SELECT `value` FROM temp_array_table;
 
- select string_to_array(appsstring,',')::int[] into apps;
 	SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, major, minor, patch FROM eb_objects_ver WHERE refid=idv;
 
   	UPDATE eb_objects 
@@ -48,55 +51,52 @@ BEGIN
 	SET
     	obj_json = obj_jsonv, obj_changelog = obj_changelogv, commit_uid= commit_uidv, commit_ts = NOW()
 	WHERE
-    	--eb_objects_id= objid AND major_ver_num=major AND working_mode='T' 
-		refid = idv RETURNING id INTO inserted_obj_ver_id;
+    	-- eb_objects_id= objid AND major_ver_num=major AND working_mode='T' 
+		refid = idv;
+	SELECT last_insert_id() INTO inserted_obj_ver_id;
     
-    --refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, objid, inserted_obj_ver_id);  
-     committed_refidunique:=idv;
-	--UPDATE eb_objects_ver SET refid = refidunique WHERE id = inserted_obj_ver_id;  
+    -- refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, objid, inserted_obj_ver_id);  
+	SET committed_refidunique:=idv;
+	-- UPDATE eb_objects_ver SET refid = refidunique WHERE id = inserted_obj_ver_id;  
 	
-	--majorversion.minorversion.patchversion
-	version_number := CONCAT_WS('.', major, minor, patch);
-   UPDATE eb_objects_ver SET version_num = version_number, working_mode = 'F' WHERE refid = idv;
+	-- majorversion.minorversion.patchversion
+	SET version_number := CONCAT_WS('.', major, minor, patch);
+    UPDATE eb_objects_ver SET version_num = version_number, working_mode = 'F' WHERE refid = idv;
 
-   --relations table
+    -- relations table
 	UPDATE eb_objects_relations 
       SET 
         eb_del = 'T', removed_by = commit_uidv , removed_at = NOW()
       WHERE 
         dominant IN(
-            SELECT unnest(ARRAY(select dominant from eb_objects_relations WHERE dependant = idv)) 
-        EXCEPT 
-            SELECT unnest(ARRAY[relationsv]));
+            SELECT dominant from eb_objects_relations WHERE dependant = idv 
+			AND  dominant NOT IN (SELECT * FROM relationsv));
             
-            INSERT INTO eb_objects_relations 
+	 INSERT INTO eb_objects_relations 
         (dominant, dependant) 
-    SELECT 
-      dominantvals, idv 
-      FROM UNNEST(array(SELECT unnest(ARRAY[relationsv])
-        EXCEPT 
-      SELECT unnest(array(select dominant from eb_objects_relations 
-                            WHERE dependant = idv )))) as dominantvals;  
+     SELECT  
+		`value`, idv 
+		FROM (SELECT `value` FROM relationsv WHERE `value`
+			NOT IN (SELECT dominant from eb_objects_relations WHERE dependant = idv )) AS a;  
 
---application table
-UPDATE eb_objects2application 
-    SET 
-        eb_del = 'T', removed_by = commit_uidv , removed_at = NOW()
-    WHERE 
-        app_id IN(
-        SELECT unnest(ARRAY(select app_id from eb_objects2application WHERE obj_id = objid AND eb_del='F')) 
-        EXCEPT 
-        SELECT unnest(ARRAY[COALESCE(apps, ARRAY[0])]))
-		AND obj_id = objid;
-            
-        INSERT INTO eb_objects2application (app_id, obj_id) 
-        SELECT 
-     		appvals, objid
-      	FROM UNNEST(array(SELECT unnest(ARRAY[COALESCE(apps, ARRAY[0])])
-        EXCEPT 
-      	SELECT unnest(array(select app_id from eb_objects2application WHERE obj_id = objid AND eb_del='F')))) as appvals;
-									
-    RETURN committed_refidunique; 	
-
+	-- application table
+	UPDATE eb_objects2application 
+		SET 
+			eb_del = 'T', removed_by = commit_uidv , removed_at = NOW()
+		WHERE 
+			app_id IN(	SELECT app_id from eb_objects2application WHERE obj_id = objid AND eb_del='F'
+						AND  app_id NOT IN(SELECT COALESCE(apps,'')))
+					AND obj_id = objid;
+				
+			INSERT INTO eb_objects2application 
+				(app_id, obj_id) 
+			SELECT 
+				`value`, 'objid'
+			FROM (SELECT `value` FROM apps WHERE  `value`
+					NOT IN ( SELECT app_id FROM eb_objects2application WHERE obj_id = objid AND eb_del='F')) AS b;
+								
+	DROP TEMPORARY TABLE IF EXISTS relationsv;
+	DROP TEMPORARY TABLE IF EXISTS apps;
+    RETURN committed_refidunique;
 END;
 
