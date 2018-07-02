@@ -72,7 +72,8 @@ BEGIN
 	INSERT INTO eb_objects_relations (dominant, dependant)
 	SELECT `value`, refidunique
 			FROM (SELECT `value` FROM relationsv WHERE `value` 
-					NOT IN (SELECT  dominant FROM eb_objects_relations WHERE dependant = refidunique )) AS a;                           
+					NOT IN (SELECT  dominant FROM eb_objects_relations WHERE dependant = refidunique )) AS a;
+	DROP TEMPORARY TABLE IF EXISTS relationsv;                      
     RETURN committed_refidunique; 	
 
 END$$

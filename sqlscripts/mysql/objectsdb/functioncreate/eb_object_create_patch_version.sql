@@ -66,7 +66,8 @@ BEGIN
 			SELECT 
 			  `value`, refidunique 
 			FROM (SELECT `value` FROM relationsv WHERE `value`
-				NOT IN (SELECT dominant from eb_objects_relations WHERE dependant = refidunique))as a;                            
+				NOT IN (SELECT dominant from eb_objects_relations WHERE dependant = refidunique))as a;  
+	DROP TEMPORARY TABLE IF EXISTS relationsv;                                                
 	RETURN committed_refidunique; 	
 
 END$$
