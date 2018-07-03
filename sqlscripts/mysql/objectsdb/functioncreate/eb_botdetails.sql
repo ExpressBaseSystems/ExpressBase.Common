@@ -1,6 +1,6 @@
 ﻿-- FUNCTION AS PROCEDURE: eb_botdetails(integer)
 
--- DROP PROCEDURE IF EXISTS TESTPRO;
+-- DROP PROCEDURE IF EXISTS eb_botdetails;
 
 DELIMITER $$       
 CREATE PROCEDURE eb_botdetails(IN solutionid integer)  
