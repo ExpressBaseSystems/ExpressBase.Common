@@ -43,7 +43,7 @@ BEGIN
 			WHERE  obj_id = _id and E2O.eb_del = 'F' and EA.id = E2O.app_id ;
 	 
 	SELECT 
-		GROUP_CONCAT((json_build_object( version_num, refid)::text)) INTO workingcopies
+		GROUP_CONCAT((SELECT json_object( version_num, refid))) INTO workingcopies
 	FROM 
 		eb_objects_ver 
 	WHERE 
