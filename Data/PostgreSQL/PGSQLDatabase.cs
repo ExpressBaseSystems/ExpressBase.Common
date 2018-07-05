@@ -83,7 +83,8 @@ namespace ExpressBase.Common
             }
         }
 
-        private const string CONNECTION_STRING_BARE = "Host={0}; Port={1}; Database={2}; Username={3}; Password={4}; SSL Mode=Require; Use SSL Stream=true; Trust Server Certificate=true; Pooling=true; CommandTimeout={5};";
+        private const string CONNECTION_STRING_BARE = "Host={0}; Port={1}; Database={2}; Username={3}; Password={4};  Trust Server Certificate=true; Pooling=true; CommandTimeout={5};";
+        //SSL Mode=Require; Use SSL Stream=true;
         private string _cstr;
         private EbBaseDbConnection EbBaseDbConnection { get; set; }
 
