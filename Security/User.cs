@@ -250,9 +250,9 @@ namespace ExpressBase.Security
             }
             paramlist.Add(df.GetNewParameter("appid", EbDbTypes.Int32, appid));
             paramlist.Add(df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context));
-                
 
-			string sql = df.EB_AUTHENTICATE_ANONYMOUS.Replace("@params",parameters);
+
+			string sql = df.EB_AUTHENTICATE_ANONYMOUS.Replace("@params", (df.Vendor == DatabaseVendors.PGSQL) ? parameters.Replace("=>", ":=") : parameters);
 
             var ds = df.DoQuery(sql, paramlist.ToArray());
             return InitUserObject(ds);
