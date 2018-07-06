@@ -175,6 +175,7 @@ namespace ExpressBase.Common
                 }
                 catch (Npgsql.NpgsqlException npgse)
                 {
+                    Console.WriteLine("Postgres Exception: "+ npgse.Message);
                     throw npgse;
                 }
                 catch (SocketException scket)
