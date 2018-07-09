@@ -51,8 +51,8 @@ create or replace FUNCTION eb_authenticate_anonymous(
                      out_fullname := NULL;
                     END;
                         IF out_userid IS NULL THEN
-                            INSERT INTO eb_usersanonymous (socialid, fullname, firstvisit, lastvisit, appid, ipaddress, browser, city, region, country, latitude, longitude, timezone, iplocationjson) 
-                            VALUES (in_socialid, in_fullname, SYSTIMESTAMP, SYSTIMESTAMP, in_appid, in_user_ip, in_user_browser, in_city, in_region, in_country, in_latitude, in_longitude, in_timezone, in_iplocationjson);    
+                            INSERT INTO eb_usersanonymous (socialid, fullname, email, firstvisit, lastvisit, appid, ipaddress, browser, city, region, country, latitude, longitude, timezone, iplocationjson) 
+                            VALUES (in_socialid, in_fullname, in_emailid, SYSTIMESTAMP, SYSTIMESTAMP, in_appid, in_user_ip, in_user_browser, in_city, in_region, in_country, in_latitude, in_longitude, in_timezone, in_iplocationjson);    
                         ELSE
                             --UPDATE eb_usersanonymous SET lastvisit = SYSTIMESTAMP, totalvisits = totalvisits + 1 WHERE id = out_userid; 
                             UPDATE eb_usersanonymous SET lastvisit = SYSTIMESTAMP, totalvisits = totalvisits + 1, ipaddress = in_user_ip, browser = in_user_browser, city = in_city, region = in_region, country = in_country, latitude = in_latitude, longitude = in_longitude, timezone = in_timezone, iplocationjson = in_iplocationjson WHERE id = out_userid;        
