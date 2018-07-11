@@ -120,7 +120,7 @@ namespace ExpressBase.Common.Data
             if ((int)type == 6)
                 return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(EbDbTypes.Date)) { Value = new OracleDate(Convert.ToDateTime(value).Date) };
             if ((int)type == 5 || (int)type == 17 || (int)type == 26)
-                return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = Convert.ToDateTime(DateTime.ParseExact(value.ToString(), "dd-MM-yyyy", CultureInfo.InvariantCulture)) };
+                return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = ((value is DateTime)? value: Convert.ToDateTime(DateTime.ParseExact(value.ToString(), "dd-MM-yyyy", CultureInfo.InvariantCulture))) };
             else
                 return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = value };
         }
