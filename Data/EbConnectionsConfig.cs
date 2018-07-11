@@ -16,6 +16,14 @@ namespace ExpressBase.Common.Data
 
         public EbDataDbConnection DataDbConnection { get; set; }
 
+        public EbObjectsDbConnection ObjectsDbRWConnection { get; set; }
+
+        public EbDataDbConnection DataDbRWConnection { get; set; }
+
+        public EbObjectsDbConnection ObjectsDbROConnection { get; set; }
+
+        public EbDataDbConnection DataDbROConnection { get; set; }
+
         public EbFilesDbConnection FilesDbConnection { get; set; }
 
         public EbLogsDbConnection LogsDbConnection { get; set; }
