@@ -34,6 +34,7 @@ namespace ExpressBase.Common.Objects.Attributes
         DictionaryEditor = 23,
         CollectionProp = 24,
         DDfromDictProp = 25,
+        CollectionABCpropToggle = 26,
     }
 
     public class HideInToolBox : Attribute { }
