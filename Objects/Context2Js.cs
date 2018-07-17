@@ -315,27 +315,16 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     }
                     else if (meta.editor == PropertyEditorType.Expandable && prop.PropertyType.GetTypeInfo().IsClass)
                         meta.submeta = this.GetMetaCollection(Activator.CreateInstance(prop.PropertyType)).ToList<Meta>();
+                    else if (meta.editor == PropertyEditorType.CollectionABCpropToggle && prop.PropertyType.GetTypeInfo().BaseType.IsGenericType &&
+                                prop.PropertyType.GetTypeInfo().BaseType.GetGenericTypeDefinition() == typeof(List<>))
+                    {
+                        Type itemType = prop.PropertyType.GetTypeInfo().BaseType.GetGenericArguments()[0];
+                        meta.options = getOptions(itemType);
+                    }
                     else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
                     {
                         Type itemType = prop.PropertyType.GetGenericArguments()[0];
-                        if (itemType.Name != typeof(EbControl).Name)
-                        {
-                            IEnumerable<Type> subClasses = itemType.Assembly.GetTypes().Where(type => type.IsSubclassOf(itemType));
-                            List<string> _sa = new List<string>();
-                            if (!itemType.IsAbstract)
-                                _sa.Add(itemType.Name + "-/-"+ itemType.Name);
-                            foreach (Type type in subClasses)
-                            {
-                                string _Alias = null;
-                                foreach (Attribute attribute in type.GetCustomAttributes())
-                                {
-                                    if (attribute is Alias)
-                                        _Alias = (attribute as Alias).Name.Trim();
-                                }
-                                    _sa.Add(type.Name + "-/-"+ (_Alias?? type.Name));
-                            }
-                            meta.options = _sa.ToArray<string>();
-                        }
+                        meta.options = getOptions(itemType);
                     }
                 }
             }
@@ -362,6 +351,29 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             if (!prop.IsDefined(typeof(HelpText)))
                 meta.helpText = string.Empty;
             return meta;
+        }
+
+        private string[] getOptions(Type itemType)
+        {
+            if (itemType.Name != typeof(EbControl).Name)
+            {
+                IEnumerable<Type> subClasses = itemType.Assembly.GetTypes().Where(type => type.IsSubclassOf(itemType));
+                List<string> _sa = new List<string>();
+                if (!itemType.IsAbstract && !itemType.IsDefined(typeof(HideInPropertyGrid)))
+                    _sa.Add(itemType.Name + "-/-" + itemType.Name);
+                foreach (Type type in subClasses)
+                {
+                    string _Alias = null;
+                    foreach (Attribute attribute in type.GetCustomAttributes())
+                    {
+                        if (attribute is Alias)
+                            _Alias = (attribute as Alias).Name.Trim();
+                    }
+                    _sa.Add(type.Name + "-/-" + (_Alias ?? type.Name));
+                }
+                return _sa.ToArray<string>();
+            }
+            return (new string[] { });
         }
 
         private PropertyEditorType GetTypeOf(PropertyInfo prop)
