@@ -297,6 +297,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     meta.source = (attr as PropertyEditor).PropertyEditorSource;
                     meta.Limit = (attr as PropertyEditor).Limit; ;
                     meta.Dprop = (attr as PropertyEditor).DependantProp;
+                    meta.Dprop2 = (attr as PropertyEditor).DependantProp2;
 
                     if (prop.PropertyType.GetTypeInfo().IsEnum)
                     {
