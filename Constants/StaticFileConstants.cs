@@ -7,6 +7,7 @@ namespace ExpressBase.Common.Constants
         // File Name Parts
         public const string LOGO = "logo";
         public const string DP = "dp";
+        public const string LOCATION_DP = "location_dp";
         public const string SMALL = "small";
         public const string MEDIUM = "medium";
         public const string LARGE = "large";
@@ -15,6 +16,7 @@ namespace ExpressBase.Common.Constants
         public const string EXTERNAL = "external";
         public const string SOL_LOGOS = "sol_logos";
         public const string DP_IMAGES = "dp_images";
+        public const string LOCATION_IMAGES = "location_images";
         public const string IMAGES_ORIGINAL = "images_original";
         public const string FILES = "files";
         public const string IMAGES = "images";
