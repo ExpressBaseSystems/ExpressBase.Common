@@ -38,6 +38,8 @@ namespace ExpressBase.Common.Objects
 
         public string Dprop { get; set; }
 
+        public string Dprop2 { get; set; }
+
         public string regexCheck { get; set; }
 
         public bool HideForUser { get; set; }
