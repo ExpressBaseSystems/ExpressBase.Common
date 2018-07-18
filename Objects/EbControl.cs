@@ -263,6 +263,14 @@ else
         {
             return "\"" + input + "\"";
         }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+        [PropertyGroup("Events")]
+        [PropertyEditor(PropertyEditorType.JS)]
+        public string OnChange { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+        public string DefaultValue { get; set; }
     }
 
     [ProtoBuf.ProtoContract]
