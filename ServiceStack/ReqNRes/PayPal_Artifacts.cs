@@ -280,6 +280,32 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
         }
     }
 
+    public class EbBillingPlan
+    {
+        public EbBillingPlan()
+        {
+        }
+
+        public EbBillingPlan(int numUsers, float amountperUser)
+        {
+            NumUsers = numUsers;
+            AmountperUser = amountperUser;
+        }
+
+        public EbBillingPlan(int numUsers, float amountperUser, BillingPlanResponse planResponse)
+        {
+            NumUsers = numUsers;
+            AmountperUser = amountperUser;
+            PlanResponse = planResponse;
+        }
+
+        public int NumUsers { get; set; }
+        public float AmountperUser { get; set; }
+        public BillingPlanResponse PlanResponse { get; set; }
+
+
+    }
+
     [DataContract(Name = "payment_plan_response")]
     public class BillingPlanResponse
     {
