@@ -4,18 +4,6 @@ using System.Text;
 
 namespace ExpressBase.Common.Enums
 {
-    public enum HttpMethods
-    {
-        GET,
-        POST,
-        PUT,
-        DELETE,
-        HEAD,
-        CONNECT,
-        OPTIONS,
-        PATCH
-    };
-
     public enum PlanType
     {
         FIXED,
