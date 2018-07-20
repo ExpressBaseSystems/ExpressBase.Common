@@ -407,7 +407,7 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
     {
         private string _href;
         private string _rel;
-        private HttpMethods _method;
+        private string _method;
 
         [DataMember(Name = "href")]
         public string Href
@@ -424,7 +424,7 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
         }
 
         [DataMember(Name = "method")]
-        public HttpMethods RequestMethod
+        public string RequestMethod
         {
             get { return _method; }
             set { _method = value; }
