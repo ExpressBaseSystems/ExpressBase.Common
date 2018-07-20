@@ -14,7 +14,27 @@ namespace ExpressBase.Common.LocationNSolution
 
         public Dictionary<string, string> Meta { get; set; }
 
-        public string Img { get; set; }
+        public string Logo { get; set; }
+
+        public string this[string title]
+        {
+            get
+            {
+                if (title == "LongName")
+                    return LongName;
+                else if (title == "ShortName")
+                    return ShortName;
+                else if (title == "Logo")
+                    return Logo;
+                else
+                {
+                    if (Meta.ContainsKey(title))
+                        return Meta[title];
+                    else
+                        return string.Empty;
+                }
+            }
+        }
     }
 
     public class Eb_Solution
