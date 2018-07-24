@@ -35,4 +35,13 @@ namespace ExpressBase.Common.Enums
         expired,
         ok
     };
+
+    public enum AgreementState
+    {
+        Pending,
+        Active,
+        Suspended,
+        Cancelled,
+        Expired
+    };
 }

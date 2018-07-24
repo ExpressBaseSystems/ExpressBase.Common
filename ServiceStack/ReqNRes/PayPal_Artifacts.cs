@@ -21,6 +21,43 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
         public string Test { get; set; }
     }
 
+    [DataContract(Name ="billing_agreement_response")]
+    public class BillingAgreementResponse
+    {
+        [DataMember(Name ="id")]
+        public string Id { get; set; }
+
+        [DataMember(Name ="state")]
+        public string AgreementState { get; set; }
+
+        [DataMember(Name ="name")]
+        public string Name { get; set; }
+
+        [DataMember(Name ="description")]
+        public string Description { get; set; }
+
+        [DataMember(Name ="start_date")]
+        public string StartDate { get; set; }
+
+        [DataMember(Name ="agreement_details")]
+        public AgreementDetails Details { get; set; }
+
+        [DataMember(Name ="payer")]
+        public PayerDetails Payer { get; set; }
+
+        [DataMember(Name ="overrride_merchant_preferences")]
+        public MerchantPreferences OverrideMerchantPreferences { get; set; }
+
+        [DataMember(Name ="override_charge_models")]
+        public List<ChargeModel> OverrideChargeModels { get; set; }
+
+        [DataMember(Name ="plan")]
+        public BillingPlanResponse AgreementPlan { get; set; }
+
+        [DataMember(Name ="links")]
+        public List<LinkDescription> Links { get; set; }
+    }
+
     [DataContract(Name = "billing_agreement")]
     public class BillingAgreementRequest
     {
