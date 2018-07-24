@@ -45,7 +45,7 @@ BEGIN
     END IF;
 	
 	--source_pid-current_pid-object_type-objectid-object_ver_id 
-    refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, inserted_objid, inserted_obj_ver_id); 
+    refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, inserted_objid, inserted_obj_ver_id, inserted_objid, inserted_obj_ver_id); 
 	
     refid_of_commit_version:=refidunique;                       
 	UPDATE eb_objects_ver SET refid = refidunique, version_num = version_number WHERE id = inserted_obj_ver_id;

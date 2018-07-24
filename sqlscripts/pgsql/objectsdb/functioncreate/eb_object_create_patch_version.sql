@@ -40,7 +40,7 @@ UPDATE eb_objects_ver
 WHERE
 		id = inserted_obj_ver_id ;
 
-	refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, objid, inserted_obj_ver_id);  
+	refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, objid, inserted_obj_ver_id,objid, inserted_obj_ver_id);  
 	committed_refidunique:=refidunique;
 
 UPDATE eb_objects_ver SET refid = refidunique WHERE id = inserted_obj_ver_id;
