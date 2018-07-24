@@ -1,6 +1,6 @@
--- FUNCTION: public.eb_objects_create_major_version(text, integer, integer, text, text, text[])
+-- FUNCTION: public.eb_object_create_major_version(text, integer, integer, text, text, text[])
 
--- DROP FUNCTION public.eb_objects_create_major_version(text, integer, integer, text, text, text[]);
+-- DROP FUNCTION public.eb_object_create_major_version(text, integer, integer, text, text, text[]);
 
 create or replace FUNCTION eb_object_create_major_version(
 	idv varchar2,
@@ -25,7 +25,7 @@ BEGIN
 		eb_objects_ver (eb_objects_id, obj_json,commit_ts,commit_uid,version_num,working_mode,major_ver_num,minor_ver_num,patch_ver_num) values (objid,objjson,SYSTIMESTAMP,commit_uidv,version_number,'T',major+1,0,0) 
         RETURNING id INTO inserted_obj_ver_id;
 
-    refidunique :=CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(src_pid,'-'),cur_pid),'-'),obj_typev),'-'),objid),'-'),inserted_obj_ver_id);
+    refidunique :=CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(src_pid,'-'),cur_pid),'-'),obj_typev),'-'),objid),'-'),inserted_obj_ver_id),'-'),objid),'-'),inserted_obj_ver_id);
      committed_refidunique:=refidunique;
 
 	UPDATE eb_objects_ver SET refid = refidunique WHERE id = inserted_obj_ver_id;    
