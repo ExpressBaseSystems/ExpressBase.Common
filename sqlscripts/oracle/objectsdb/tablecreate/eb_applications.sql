@@ -14,6 +14,7 @@ BEGIN
     		description VARCHAR(200),
     		eb_del char DEFAULT '''|| eb_del ||''',
     		app_icon VARCHAR(20),
+			app_settings CLOB,
     		CONSTRAINT eb_applications_pkey PRIMARY KEY (id)
 	)';
 

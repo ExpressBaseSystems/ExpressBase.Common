@@ -18,7 +18,8 @@ CREATE OR REPLACE FUNCTION public.eb_objects_create_new_object(
     RETURNS text
     LANGUAGE 'plpgsql'
 
-   
+    COST 100
+    VOLATILE 
 AS $BODY$
 
 DECLARE refidunique text; inserted_objid integer; inserted_obj_ver_id integer; refid_of_commit_version text;
@@ -45,7 +46,7 @@ BEGIN
     END IF;
 	
 	--source_pid-current_pid-object_type-objectid-object_ver_id 
-    refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, inserted_objid, inserted_obj_ver_id); 
+    refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, inserted_objid, inserted_obj_ver_id, inserted_objid, inserted_obj_ver_id); 
 	
     refid_of_commit_version:=refidunique;                       
 	UPDATE eb_objects_ver SET refid = refidunique, version_num = version_number WHERE id = inserted_obj_ver_id;

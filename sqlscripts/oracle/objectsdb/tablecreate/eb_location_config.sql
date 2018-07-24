@@ -7,9 +7,11 @@ BEGIN
 	EXECUTE IMMEDIATE 'CREATE SEQUENCE eb_location_config_id_seq START WITH 1';
 	EXECUTE IMMEDIATE 'CREATE TABLE eb_location_config
 	(
-            		id NUMBER,
-            		keys CLOB,
+            id NUMBER,
+            keys CLOB,
     		isrequired char DEFAULT '''|| isrequired ||''',
+			keytype VARCHAR2(20),
+			eb_del CHAR,
     		CONSTRAINT eb_locationsconfig_pkey PRIMARY KEY (id)
 	)';
 	

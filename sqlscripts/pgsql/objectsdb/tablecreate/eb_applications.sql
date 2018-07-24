@@ -22,6 +22,7 @@ CREATE TABLE public.eb_applications
     app_icon text COLLATE pg_catalog."default",
     application_type integer,
     eb_del "char" NOT NULL DEFAULT 'F'::"char",
+	app_settings text COLLATE pg_catalog."default",
     CONSTRAINT eb_applications_pkey PRIMARY KEY (id),
     CONSTRAINT eb_applications_eb_del_check CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
 )

@@ -17,6 +17,8 @@ CREATE TABLE public.eb_location_config
     id integer NOT NULL DEFAULT nextval('eb_location_config_id_seq'::regclass),
     keys text COLLATE pg_catalog."default",
     isrequired "char" NOT NULL DEFAULT 'F'::"char",
+	keytype text COLLATE pg_catalog."default",
+    eb_del "char",
     CONSTRAINT eb_locationsconfig_pkey PRIMARY KEY (id)
 )
 WITH (
