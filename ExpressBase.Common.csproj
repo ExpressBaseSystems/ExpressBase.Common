@@ -24,6 +24,8 @@
       <EmbeddedResource Include="sqlscripts\oracle\objectsdb\tablecreate\**" />
       <EmbeddedResource Include="sqlscripts\pgsql\objectsdb\functioncreate\**" />
       <EmbeddedResource Include="sqlscripts\pgsql\objectsdb\tablecreate\**" />
+      <None Remove="sqlscripts\oracle\objectsdb\functioncreate\string_to_table_util_fn.sql" />
+      <None Remove="sqlscripts\pgsql\objectsdb\functioncreate\string_to_table_util_fn.sql" />
       <EmbeddedResource Include="sqlscripts\pgsql\eb_extras.sql" />
       <EmbeddedResource Include="sqlscripts\oracle\eb_extras.sql" />
       <EmbeddedResource Include="sqlscripts\pgsql\eb_compilefunctions.sql" />
@@ -34,6 +36,7 @@
     <PackageReference Include="FOSS.ServiceStack.Redis.Core" Version="5.0.2" />
     <PackageReference Include="MongoDB.Driver.Core" Version="2.5.0" />
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.5.0" />
+    <PackageReference Include="MySql.Data" Version="8.0.11" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="Npgsql" Version="3.2.5" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.12.0-beta2" />

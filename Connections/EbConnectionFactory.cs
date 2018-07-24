@@ -125,9 +125,9 @@ namespace ExpressBase.Common.Data
                     DataDB = new OracleDB(Connections.DataDbConnection);
 
                 // DATA DB RO
-                if (Connections.DataDbConnection != null && Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.PGSQL)
+                if (Connections.DataDbROConnection != null && Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.PGSQL)
                     DataDBRO = new PGSQLDatabase(Connections.DataDbConnection);
-                else if (Connections.DataDbConnection != null && Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.ORACLE)
+                else if (Connections.DataDbROConnection != null && Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.ORACLE)
                     DataDBRO = new OracleDB(Connections.DataDbConnection);
 
                 // LOGS DB

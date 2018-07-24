@@ -8,5 +8,6 @@
         public const char DASH = '-';
         public const char UNDERSCORE = '_';
         public const char COLON = ':';
+		public const char SPACE = ' ';
     }
 }

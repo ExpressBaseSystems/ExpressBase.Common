@@ -34,6 +34,7 @@ namespace ExpressBase.Common.Objects.Attributes
         DictionaryEditor = 23,
         CollectionProp = 24,
         DDfromDictProp = 25,
+        CollectionABCpropToggle = 26,
     }
 
     public class HideInToolBox : Attribute { }
@@ -110,9 +111,11 @@ public class PropertyEditor : Attribute
 
     public string PropertyEditorSource { get; set; }
 
-    public string DependantProp { get; set; }
+        public string DependantProp { get; set; }
 
-    public int Limit { get; set; }
+        public string DependantProp2 { get; set; }
+
+        public int Limit { get; set; }
 
     public PropertyEditor(PropertyEditorType type) { this.PropertyEditorType = type; }
 
@@ -127,15 +130,23 @@ public class PropertyEditor : Attribute
         this.PropertyEditorType = type;
         this.PropertyEditorSource = source;
         this.Limit = limit;
-    }
+        }
 
-    public PropertyEditor(PropertyEditorType type, string source, string prop)
-    {
-        this.PropertyEditorType = type;
-        this.PropertyEditorSource = source;
-        this.DependantProp = prop;
+        public PropertyEditor(PropertyEditorType type, string source, string prop)
+        {
+            this.PropertyEditorType = type;
+            this.PropertyEditorSource = source;
+            this.DependantProp = prop;
+        }
+
+        public PropertyEditor(PropertyEditorType type, string source, string prop, string prop2)
+        {
+            this.PropertyEditorType = type;
+            this.PropertyEditorSource = source;
+            this.DependantProp = prop;
+            this.DependantProp2 = prop2;
+        }
     }
-}
 public class PropertyGroup : Attribute
 {
     public string Name { get; set; }

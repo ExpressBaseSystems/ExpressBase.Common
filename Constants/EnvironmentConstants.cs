@@ -55,5 +55,8 @@ namespace ExpressBase.Common
         public const string EB_RABBIT_USER = "EB_RABBIT_USER";
         public const string EB_RABBIT_PASSWORD = "EB_RABBIT_PASSWORD";
         public const string EB_RABBIT_VHOST = "EB_RABBIT_VHOST";
+
+        public const string EB_PAYPAL_USERID = "EB_PAYPAL_USERID";
+        public const string EB_PAYPAL_USERSECRET = "EB_PAYPAL_USERSECRET";
     }
 }

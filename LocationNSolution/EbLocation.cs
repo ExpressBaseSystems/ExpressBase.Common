@@ -14,14 +14,32 @@ namespace ExpressBase.Common.LocationNSolution
 
         public Dictionary<string, string> Meta { get; set; }
 
-        public string Img { get; set; }
+        public string Logo { get; set; }
+
+        public string this[string title]
+        {
+            get
+            {
+                if (title == "LongName")
+                    return LongName;
+                else if (title == "ShortName")
+                    return ShortName;
+                else if (title == "Logo")
+                    return Logo;
+                else
+                {
+                    if (Meta.ContainsKey(title))
+                        return Meta[title];
+                    else
+                        return string.Empty;
+                }
+            }
+        }
     }
 
     public class Eb_Solution
     {
-        public string InternalSolutionID { get; set; }
-
-        public string ExternalSolutionID { get; set; }
+        public string SolutionID { get; set; }
 
         public string SolutionName { get; set; }
 
@@ -31,15 +49,19 @@ namespace ExpressBase.Common.LocationNSolution
 
         public string DateCreated { get; set; }
 
-        public Dictionary<string, EbLocation> LocationCollection { get; set; }
+        public Dictionary<int, EbLocation> Locations { get; set; }
+
+        public List<EbLocationCustomField> LocationConfig { get; set; }
     }
 
-    public class EbLocationConfig
+    public class EbLocationCustomField
     {
-        public string KeyId { get; set; }
+        public string Id { get; set; }
 
         public string Name { get; set; }
 
-        public string Isrequired { get; set; }
+        public bool IsRequired { get; set; }
+
+        public string Type { get; set; }
     }
 }
