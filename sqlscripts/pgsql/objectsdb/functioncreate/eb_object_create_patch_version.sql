@@ -1,6 +1,6 @@
--- FUNCTION: public.eb_objects_create_patch_version(text, integer, integer, text, text, text)
+-- FUNCTION: public.eb_object_create_patch_version(text, integer, integer, text, text, text)
 
--- DROP FUNCTION public.eb_objects_create_patch_version(text, integer, integer, text, text, text);
+-- DROP FUNCTION public.eb_object_create_patch_version(text, integer, integer, text, text, text);
 
 CREATE OR REPLACE FUNCTION public.eb_object_create_patch_version(
 	idv text,
@@ -12,7 +12,8 @@ CREATE OR REPLACE FUNCTION public.eb_object_create_patch_version(
     RETURNS text
     LANGUAGE 'plpgsql'
 
-    
+    COST 100
+    VOLATILE 
 AS $BODY$
 
 DECLARE refidunique text; inserted_obj_ver_id integer; objid integer; committed_refidunique text; major integer;
@@ -40,7 +41,7 @@ UPDATE eb_objects_ver
 WHERE
 		id = inserted_obj_ver_id ;
 
-	refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, objid, inserted_obj_ver_id);  
+	refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, objid, inserted_obj_ver_id, objid, inserted_obj_ver_id);  
 	committed_refidunique:=refidunique;
 
 UPDATE eb_objects_ver SET refid = refidunique WHERE id = inserted_obj_ver_id;
