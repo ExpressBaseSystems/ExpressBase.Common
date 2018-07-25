@@ -17,8 +17,8 @@
 	EXECUTE IMMEDIATE 'CREATE OR REPLACE TYPE returnpermission_tbl as table of returnpermission_obj'; 
 
 	EXECUTE IMMEDIATE 'create or replace type tblroleobj as object (
-	  rid varchar(30),
-	  rname varchar2(30)
+	  rid CLOB,
+	  rname CLOB
 	)';
 	EXECUTE IMMEDIATE 'create or replace type rtntblrole as table of tblroleobj';
 
