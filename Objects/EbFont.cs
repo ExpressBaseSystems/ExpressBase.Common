@@ -8,7 +8,7 @@ namespace ExpressBase.Common
     {
         public EbFont() { }
 
-        public string Font { get; set; }
+        public string FontName { get; set; }
         public int Size { get; set; }
         public FontStyle Style { get; set; }
         public string color { get; set; }
