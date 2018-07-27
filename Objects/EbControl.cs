@@ -74,9 +74,9 @@ namespace ExpressBase.Common.Objects
         [System.ComponentModel.Category("Layout")]
         public virtual int Height { get; set; }
 
-        [ProtoBuf.ProtoMember(18)]
-        [System.ComponentModel.Category("Layout")]
-        public virtual int Width { get; set; }
+        //[ProtoBuf.ProtoMember(18)]
+        //[System.ComponentModel.Category("Layout")]
+        //public virtual int Width { get; set; }
 
         [ProtoBuf.ProtoMember(19)]
         [System.ComponentModel.Category("Behavior")]
