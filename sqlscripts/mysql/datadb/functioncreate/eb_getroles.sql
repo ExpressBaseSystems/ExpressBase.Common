@@ -19,7 +19,8 @@ BEGIN
 		SET app_type:='3';
 	END IF;
     
-    SELECT 	
+    
+		CREATE TEMPORARY TABLE IF NOT EXISTS eb_roles_tmp SELECT 	-- STORE TO A TEMP TABLE
 		GROUP_CONCAT(role_id) AS roles,
 		GROUP_CONCAT(CASE WHEN UROLES.role_name is NULL THEN 'SYS' ELSE UROLES.role_name END) AS role_name
 	FROM 
