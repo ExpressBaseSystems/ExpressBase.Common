@@ -7,11 +7,33 @@ using System.Text;
 
 namespace ExpressBase.Common.ServiceStack.ReqNRes
 {
+
     [DataContract]
     public class PayPalPaymentRequest : EbServiceStackRequest
     {
         [DataMember(Order = 1)]
-        public string Test { get; set; }
+        public string HolderName { get; set; }
+
+        [DataMember(Order = 2)]
+        public string CardNumber { get; set; }
+
+        [DataMember(Order = 3)]
+        public int ExpYear { get; set; }
+
+        [DataMember(Order = 4)]
+        public int ExpMonth { get; set; }
+
+        [DataMember(Order = 5)]
+        public int Cvv { get; set; }
+
+        [DataMember(Order = 6)]
+        public string ApprovalUrl { get; set; }
+
+        [DataMember(Order = 7)]
+        public string ExecuteUrl { get; set; }
+
+        [DataMember(Order = 8)]
+        public PaymentMethod BillingMethod { get; set; }
     }
 
     [DataContract]
