@@ -43,9 +43,6 @@ namespace ExpressBase.Security
         [DataMember(Order = 9)]
         public override string FullName { get; set; }
 		
-		[DataMember(Order = 10)]
-		public int AnonId { get; set; }
-
 		private List<string> _ebObjectIds = null;
         public List<string> EbObjectIds
         {
@@ -267,13 +264,6 @@ namespace ExpressBase.Security
             if (ds.Rows.Count > 0)
             {
 				int userid = Convert.ToInt32(ds.Rows[0][0]);
-				int anonid = 0;
-				string email = ds.Rows[0][1].ToString();
-				if (email.Equals("anonymous@anonym.com"))
-				{
-					anonid = userid;
-					userid = 1;
-				}
                 if (userid > 0)
                 {
                     string[] Sids = ds.Rows[0][3].ToString().Split(',');
@@ -296,8 +286,7 @@ namespace ExpressBase.Security
                     _user = new User
                     {
                         UserId = userid,
-						AnonId = anonid,
-                        Email = email,
+                        Email = ds.Rows[0][1].ToString(),
                         FullName = ds.Rows[0][2].ToString(),
                         Roles = rolesname,
                         Permissions = ds.Rows[0][5].ToString().Split(',').ToList(),

@@ -28,9 +28,11 @@ namespace ExpressBase.Common.ServiceStack.Auth
 
         [DataMember(Order = 5)]
         public DatabaseVendors DBVendor { get; set; }
+		
+		[DataMember(Order = 6)]
+		public int Aid { get; set; }
 
-
-        public override bool IsAuthorized(string provider)
+		public override bool IsAuthorized(string provider)
         {
             return true;
         }
