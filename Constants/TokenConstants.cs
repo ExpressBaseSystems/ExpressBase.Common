@@ -25,5 +25,6 @@ namespace ExpressBase.Common.Constants
         public const string SOCIALID = "socialId";
         public const string USERAUTHID = "UserAuthId";
         public const string SUB_FORMAT = "{0}:{1}:{2}";
+		public const string ANONYM_EMAIL = "anonymous@anonym.com";
     }
 }

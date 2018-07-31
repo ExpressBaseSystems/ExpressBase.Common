@@ -544,6 +544,7 @@ namespace ExpressBase.Common
 									SELECT DISTINCT EO.id, EO.obj_name, EO.obj_type, EO2A.app_id
 									FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
 									WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3 
+									AND EOS.id = ANY(SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id)
 									AND EO.id = EO2A.obj_id AND EO2A.eb_del = 'F';
 
 									SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> :id ORDER BY role_name;

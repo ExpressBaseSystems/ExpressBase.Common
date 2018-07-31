@@ -52,7 +52,8 @@ IF in_socialid IS NOT NULL THEN
             
 		IF out_userid IS NULL THEN
         	INSERT INTO eb_usersanonymous (socialid, fullname, email, firstvisit, lastvisit, appid, ipaddress, browser, city, region, country, latitude, longitude, timezone, iplocationjson) 
-			VALUES (in_socialid, in_fullname, in_emailid, NOW(), NOW(), in_appid, in_user_ip, in_user_browser, in_city, in_region, in_country, in_latitude, in_longitude, in_timezone, in_iplocationjson);
+			VALUES (in_socialid, in_fullname, in_emailid, NOW(), NOW(), in_appid, in_user_ip, in_user_browser, in_city, in_region, in_country, in_latitude, in_longitude, in_timezone, in_iplocationjson)
+			RETURNING id INTO out_userid;
 		ELSE
 			UPDATE eb_usersanonymous SET lastvisit = NOW(), totalvisits = totalvisits + 1, ipaddress = in_user_ip, browser = in_user_browser, city = in_city, region = in_region, country = in_country, latitude = in_latitude, longitude = in_longitude, timezone = in_timezone, iplocationjson = in_iplocationjson WHERE id = out_userid;
 		END IF;
@@ -70,7 +71,8 @@ ELSE
         
         IF out_userid IS NULL THEN
         	INSERT INTO eb_usersanonymous (email, phoneno, fullname, firstvisit, lastvisit, appid, ipaddress, browser, city, region, country, latitude, longitude, timezone, iplocationjson) 
-			VALUES (in_emailid, in_phone, in_fullname, NOW(), NOW(), in_appid, in_user_ip, in_user_browser, in_city, in_region, in_country, in_latitude, in_longitude, in_timezone, in_iplocationjson);
+			VALUES (in_emailid, in_phone, in_fullname, NOW(), NOW(), in_appid, in_user_ip, in_user_browser, in_city, in_region, in_country, in_latitude, in_longitude, in_timezone, in_iplocationjson)
+			RETURNING id INTO out_userid;
         ELSE
         	IF out_email IS NULL THEN
             	UPDATE eb_usersanonymous SET email = in_emailid, lastvisit = NOW(), totalvisits = totalvisits + 1, ipaddress = in_user_ip, browser = in_user_browser, city = in_city, region = in_region, country = in_country, latitude = in_latitude, longitude = in_longitude, timezone = in_timezone, iplocationjson = in_iplocationjson WHERE phoneno = in_phone;
@@ -86,9 +88,9 @@ ELSE
 END IF;
 
 IF is_anon_auth_req THEN
-	SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson
+	SELECT email, fullname, roles_a, rolename_a, permissions, preferencesjson
     FROM eb_authenticate_unified(uname => 'anonymous@anonym.com', password => '294de3557d9d00b3d2d8a1e6aab028cf', wc => in_wc) 
-    INTO out_userid, out_email, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson;
+    INTO out_email, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson;
 END IF;
 
 RETURN QUERY

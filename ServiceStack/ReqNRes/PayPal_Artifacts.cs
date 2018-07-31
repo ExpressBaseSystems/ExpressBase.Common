@@ -7,7 +7,6 @@ using System.Text;
 
 namespace ExpressBase.Common.ServiceStack.ReqNRes
 {
-
     [DataContract]
     public class PayPalPaymentRequest : EbServiceStackRequest
     {
@@ -786,6 +785,12 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
         private string _tokenType;
         private string _appId;
         private int _expiresIn;
+        private DateTime ExpireTime;
+
+        public PayPalOauthObject()
+        {
+            AccessToken = string.Empty;
+        }
 
         [DataMember(Name = "nonce")]
         public string Nonce
@@ -821,5 +826,23 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
             get { return _expiresIn; }
             set { _expiresIn = value; }
         }
+
+        public void SetExpireTime()
+        {
+            try
+            {
+                ExpireTime = DateTime.Now.AddSeconds(ExpiresIn);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception thrown: " + ex);
+            }
+        }
+
+        public DateTime GetExpireTime()
+        {
+            return ExpireTime;
+        }
     }
+
 }
