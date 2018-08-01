@@ -56,8 +56,6 @@ namespace ExpressBase.Objects
         public virtual string GetDesignHtml() { return "<div class='btn btn-default'> GetDesignHtml() not implemented </div>".RemoveCR().DoubleQuoted(); }
 
         public virtual string GetBareHtml() { return "<div class='btn btn-default'> GetBareHtml() not implemented </div>".RemoveCR(); }
-
-        public virtual 
-
+       
     }
 }
