@@ -279,6 +279,10 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     meta.group = (attr as PropertyGroup).Name;
                 else if (attr is HelpText)
                     meta.helpText = (attr as HelpText).value;
+                else if (attr is CEOnSelectFn)
+                    meta.CEOnSelectFn = "function(){" + (attr as CEOnSelectFn).JsCode + "}";
+                else if (attr is CEOnDeselectFn)
+                    meta.CEOnDeselectFn = "function(){" + (attr as CEOnDeselectFn).JsCode + "}";
                 else if (attr is OnChangeExec)
                     meta.OnChangeExec = "function(pg){" + (attr as OnChangeExec).JsCode + "}";
                 else if (attr is Attributes.EbRequired)
@@ -297,7 +301,6 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     meta.source = (attr as PropertyEditor).PropertyEditorSource;
                     meta.Limit = (attr as PropertyEditor).Limit; ;
                     meta.Dprop = (attr as PropertyEditor).DependantProp;
-                    meta.Dprop2 = (attr as PropertyEditor).DependantProp2;
 
                     if (prop.PropertyType.GetTypeInfo().IsEnum)
                     {
