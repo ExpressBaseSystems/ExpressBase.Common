@@ -58,6 +58,9 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
 
         [DataMember(Order = 8)]
         public PaymentMethod BillingMethod { get; set; }
+
+        [DataMember(Order = 9)]
+        public string Environment { get; set; }
     }
 
     [DataContract]
