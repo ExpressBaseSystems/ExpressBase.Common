@@ -32,6 +32,12 @@ namespace ExpressBase.Common.Objects
         [JsonConverter(typeof(FunctionSerializer))]
         public string OnChangeExec { get; set; }
 
+        [JsonConverter(typeof(FunctionSerializer))]
+        public string CEOnSelectFn { get; set; }
+
+        [JsonConverter(typeof(FunctionSerializer))]
+        public string CEOnDeselectFn { get; set; }
+
         public bool IsRequired { get; set; }
 
         public string source { get; set; }

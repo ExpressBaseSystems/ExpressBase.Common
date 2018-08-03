@@ -13,6 +13,7 @@ namespace ExpressBase.Common
         public const string MYSOLUTIONS = "/MySolutions";
         public const string SOLUTIONSETTINGS = "/SolutionSettings";
         public const string MYAPPLICATIONS = "/MyApplications";
+        public const string USERDASHBOARD = "/UserDashboard";
 
 
         //Controllers

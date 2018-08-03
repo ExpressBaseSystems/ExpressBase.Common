@@ -8,6 +8,31 @@ using System.Text;
 namespace ExpressBase.Common.ServiceStack.ReqNRes
 {
     [DataContract]
+    public class PayPalFailureReturnRequest : EbServiceStackRequest
+    {
+
+    }
+
+    [DataContract]
+    public class PayPalFailureResponse : EbServiceStackRequest
+    {
+
+    }
+
+    [DataContract]
+    public class PayPalSuccessReturnRequest : EbServiceStackRequest
+    {
+        [DataMember(Order = 1)]
+        public string PaymentId;
+    }
+
+    [DataContract]
+    public class PayPalSuccessResponse : EbServiceStackRequest
+    {
+
+    }
+
+    [DataContract]
     public class PayPalPaymentRequest : EbServiceStackRequest
     {
         [DataMember(Order = 1)]
@@ -33,13 +58,31 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
 
         [DataMember(Order = 8)]
         public PaymentMethod BillingMethod { get; set; }
+
+        [DataMember(Order = 9)]
+        public string Environment { get; set; }
+
+        [DataMember(Order = 10)]
+        public string SolutionId { get; set; }
     }
 
     [DataContract]
     public class PayPalPaymentResponse : EbServiceStackRequest
     {
-        [DataMember(Order = 1)]
-        public string Test { get; set; }
+        [DataMember(Order =1)]
+        public string ReturnUrl { get; set; }
+
+        [DataMember(Order =2)]
+        public string CancelUrl { get; set; }
+
+        [DataMember(Order =3)]
+        public string ExecuteUrl { get; set; }
+
+        [DataMember(Order =4)]
+        public string ApprovalUrl { get; set; }
+
+        [DataMember(Order =5)]
+        public string AccessToken { get; set; }
     }
 
     [DataContract(Name ="billing_agreement_response")]
@@ -780,69 +823,33 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
     [DataContract(Name = "oauthobject")]
     public class PayPalOauthObject
     {
-        private string _nonce;
-        private string _accessToken;
-        private string _tokenType;
-        private string _appId;
-        private int _expiresIn;
-        private DateTime ExpireTime;
-
         public PayPalOauthObject()
         {
-            AccessToken = string.Empty;
+            Token = string.Empty;
         }
 
         [DataMember(Name = "nonce")]
-        public string Nonce
-        {
-            get { return _nonce; }
-            set { _nonce = value; }
-        }
+        public string Nonce { get; set; }
 
         [DataMember(Name = "access_token")]
-        public string AccessToken
-        {
-            get { return _accessToken; }
-            set { _accessToken = value; }
-        }
+        public string Token { get; set; }
 
         [DataMember(Name = "token_type")]
-        public string TokenType
-        {
-            get { return _tokenType; }
-            set { _tokenType = value; }
-        }
+        public string TokenType { get; set; }
 
         [DataMember(Name = "app_id")]
-        public string AppId
-        {
-            get { return _appId; }
-            set { _appId = value; }
-        }
+        public string AppId { get; set; }
 
         [DataMember(Name = "expires_in")]
-        public int ExpiresIn
-        {
-            get { return _expiresIn; }
-            set { _expiresIn = value; }
-        }
+        public int ExpiresIn { get; set; }
 
-        public void SetExpireTime()
-        {
-            try
-            {
-                ExpireTime = DateTime.Now.AddSeconds(ExpiresIn);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Exception thrown: " + ex);
-            }
-        }
+        [DataMember(Name = "expire_time")]
+        public DateTime ExpireTime { get; set; }
 
-        public DateTime GetExpireTime()
+        [OnDeserialized()]
+        internal void DeserializedEventHandler(StreamingContext context)
         {
-            return ExpireTime;
+            ExpireTime = DateTime.Now.AddSeconds(ExpiresIn);
         }
     }
-
 }
