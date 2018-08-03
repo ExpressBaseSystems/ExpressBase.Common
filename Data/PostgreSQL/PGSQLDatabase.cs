@@ -799,7 +799,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"
-                    SELECT eb_objects_save(:id, :obj_name, :obj_desc, :obj_type, :obj_json, :commit_uid, :src_pid, :cur_pid, :relations, :tags, :app_id)
+                    SELECT eb_objects_save(:id, :obj_name, :obj_desc, :obj_type, :obj_json, :commit_uid, :relations, :tags, :app_id)
                 ";
             }
         }
@@ -808,7 +808,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"
-                    SELECT eb_objects_commit(:id, :obj_name, :obj_desc, :obj_type, :obj_json, :obj_changelog,  :commit_uid, :src_pid, :cur_pid, :relations, :tags, :app_id)
+                    SELECT eb_objects_commit(:id, :obj_name, :obj_desc, :obj_type, :obj_json, :obj_changelog,  :commit_uid, :relations, :tags, :app_id)
                 ";
             }
         }
