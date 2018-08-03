@@ -5,8 +5,6 @@ create or replace FUNCTION eb_objects_save(
 	obj_typev NUMBER,
 	--obj_jsonv CLOB,
 	commit_uidv NUMBER,
-	src_pid CLOB,
-	cur_pid CLOB,
 	relationsv VARCHAR,
 	tagsv CLOB,
 	apps VARCHAR)
