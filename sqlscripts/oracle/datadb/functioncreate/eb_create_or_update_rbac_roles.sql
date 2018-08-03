@@ -16,30 +16,20 @@ create or replace FUNCTION eb_create_or_update_rbac_roles(
       in_dependantroles CLOB;
       in_permissions CLOB;
 
-
 BEGIN  
   rid := roleid;
   in_users := users;
   in_dependantroles := dependantroles;
   in_permissions := permissions;
 
-  IF permissions IS NOT NULL THEN
-      IF roleid > 0 THEN 
-      	rid := eb_create_or_update_role(applicationid, role_name, description, isanonym, userid, in_permissions, roleid);
-      ELSE
-        rid := eb_create_or_update_role(applicationid, role_name, description, isanonym, userid, in_permissions, 0);
-      END IF;
-    END IF;
+    rid := eb_create_or_update_role(applicationid, role_name, description, isanonym, userid, in_permissions, roleid);
+
 	IF isanonym = 'T' THEN
 		in_users := '1';
 		in_dependantroles := NULL;
 	END IF;
-    IF in_users IS NOT NULL OR in_users !=''  OR roleid > 0 THEN
-    	reslt :=  eb_create_or_update_role2user(rid, userid, in_users);
-    END IF;
-    IF in_dependantroles IS NOT NULL OR in_dependantroles !='' OR roleid > 0 THEN
-       reslt :=  eb_create_or_update_role2role(rid, userid, in_dependantroles);
-    END IF;    
+    reslt :=  eb_create_or_update_role2user(rid, userid, in_users);
+    reslt :=  eb_create_or_update_role2role(rid, userid, in_dependantroles);
     COMMIT;
 RETURN 0;
-END eb_create_or_update_rbac_roles;
+END ;
