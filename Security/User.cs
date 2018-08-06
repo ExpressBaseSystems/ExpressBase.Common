@@ -71,7 +71,27 @@ namespace ExpressBase.Security
             }
         }
 
-        public User() { }
+		private List<int> _locationIds = null;
+		public List<int> LocationIds
+		{
+			get
+			{
+				if (_locationIds == null)
+				{
+					_locationIds = new List<int>();
+					foreach (string p in this.Permissions)
+						if (p.Contains(":"))
+						{
+							int lid = Convert.ToInt32(p.Split(":")[1].Trim());
+							if (!this._locationIds.Contains(lid))
+								this._locationIds.Add(lid);
+						}
+				}
+				return _locationIds;
+			}
+		}
+
+		public User() { }
 
         /// <summary>
         /// 
