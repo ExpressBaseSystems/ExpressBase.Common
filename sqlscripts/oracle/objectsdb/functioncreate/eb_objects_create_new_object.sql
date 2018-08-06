@@ -10,7 +10,10 @@ create or replace FUNCTION eb_objects_create_new_object(
 	relationsv VARCHAR,
 	issave char,
 	tagsv CLOB,
-	apps VARCHAR)
+	apps VARCHAR,
+    s_obj_id CLOB,
+    s_ver_id CLOB
+    )
     RETURN CLOB is 
     PRAGMA AUTONOMOUS_TRANSACTION;
      refidunique CLOB; inserted_objid number; inserted_obj_ver_id number; refid_of_commit_version CLOB; version_number CLOB;rel CLOB;app number;
@@ -28,9 +31,19 @@ BEGIN
 
     --majorversion.minorversion.patchversion
     IF issave = 'T' THEN        version_number := CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(1,'.'),0),'.'),0),'.'),'w') ;    ELSE
-    	version_number :=CONCAT(CONCAT(CONCAT(CONCAT(1,'.'),0),'.'),0);    END IF;
+    	version_number :=CONCAT(CONCAT(CONCAT(CONCAT(1,'.'),0),'.'),0);    
+    END IF;
 
-	 refidunique := CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(src_pid,'-'),cur_pid),'-'),obj_typev),'-'),inserted_objid),'-'),inserted_obj_ver_id),inserted_objid),'-'),inserted_obj_ver_id);
+	 --refidunique := CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(src_pid,'-'),cur_pid),'-'),obj_typev),'-'),inserted_objid),'-'),inserted_obj_ver_id);
+     
+     IF s_obj_id = '0' AND s_ver_id='0' THEN    
+        refidunique := src_pid||'-'||cur_pid||'-'||obj_typev||'-'||inserted_objid||'-'||inserted_obj_ver_id||'-'||inserted_objid||'-'||inserted_obj_ver_id; 
+    ELSE
+        refidunique := src_pid||'-'||cur_pid||'-'||obj_typev||'-'||inserted_objid||'-'||inserted_obj_ver_id||'-'||s_obj_id||'-'||s_ver_id;
+    END IF;
+     
+     
+     
     refid_of_commit_version:=refidunique;                       
 	UPDATE eb_objects_ver SET refid = refidunique, version_num = version_number WHERE id = inserted_obj_ver_id;
 
