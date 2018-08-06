@@ -6,8 +6,6 @@ create or replace FUNCTION eb_objects_commit(
 	--obj_jsonv VARCHAR2,
 	obj_changelogv CLOB,
 	commit_uidv NUMBER,
-	src_pid CLOB,
-	cur_pid CLOB,
 	relationsv VARCHAR,
 	tagsv CLOB,
 	apps VARCHAR)
