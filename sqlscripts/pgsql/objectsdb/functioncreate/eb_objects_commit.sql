@@ -1,7 +1,7 @@
 
--- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text, text, text)
+-- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer,  text, text, text)
 
--- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text, text, text);
+-- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text);
 
 CREATE OR REPLACE FUNCTION public.eb_objects_commit(
 	idv text,
@@ -11,8 +11,6 @@ CREATE OR REPLACE FUNCTION public.eb_objects_commit(
 	obj_jsonv json,
 	obj_changelogv text,
 	commit_uidv integer,
-	src_pid text,
-	cur_pid text,
 	relationsstring text,
 	tagsv text,
 	appsstring text)
@@ -94,6 +92,7 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text, text, text)
+ALTER FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text)
     OWNER TO postgres;
+
 

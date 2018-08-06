@@ -1,7 +1,7 @@
--- FUNCTION: public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text)
+-- FUNCTION: public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text, text, text)
 
--- DROP FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text);
-
+-- DROP FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text, text, text);
+ 
 CREATE OR REPLACE FUNCTION public.eb_objects_create_new_object(
 	obj_namev text,
 	obj_descv text,
@@ -14,7 +14,10 @@ CREATE OR REPLACE FUNCTION public.eb_objects_create_new_object(
 	relationsstring text,
 	issave text,
 	tagsv text,
-	appsstring text)
+	appsstring text,
+	s_obj_id text,
+	s_ver_id text
+	)
     RETURNS text
     LANGUAGE 'plpgsql'
 
@@ -46,8 +49,13 @@ BEGIN
     END IF;
 	
 	--source_pid-current_pid-object_type-objectid-object_ver_id 
-    refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, inserted_objid, inserted_obj_ver_id, inserted_objid, inserted_obj_ver_id); 
 	
+	IF s_obj_id = '0' AND s_ver_id='0' THEN
+		 refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, inserted_objid, inserted_obj_ver_id, inserted_objid, inserted_obj_ver_id); 
+	ELSE
+		refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, inserted_objid, inserted_obj_ver_id, s_obj_id, s_ver_id); 
+	 END IF;
+
     refid_of_commit_version:=refidunique;                       
 	UPDATE eb_objects_ver SET refid = refidunique, version_num = version_number WHERE id = inserted_obj_ver_id;
     
@@ -64,6 +72,6 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text)
+ALTER FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text, text, text)
     OWNER TO postgres;
 

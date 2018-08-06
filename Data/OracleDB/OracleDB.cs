@@ -613,23 +613,24 @@ namespace ExpressBase.Common.Data
             }
         }
         public string EB_GETMANAGEROLESRESPONSE_QUERY { get { return @"
-                                                           SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY applicationname;
+                                    SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY applicationname;
 									SELECT DISTINCT EO.id, EO.obj_name, EO.obj_type, EO2A.app_id
-									FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
-									WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3 
-									AND EOS.id = ANY(SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id)
-									AND EO.id = EO2A.obj_id AND EO2A.eb_del = 'F';
-
+										FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
+										WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3 
+										AND EOS.id = ANY(SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id)
+										AND EO.id = EO2A.obj_id AND EO2A.eb_del = 'F';
 									SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> :id ORDER BY to_char(role_name);
-									SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';"; } }
+									SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';
+									SELECT id, longname, shortname FROM eb_locations;"; } }
         public string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get { return @"
-                                                        SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = :id;
-										                SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = :id AND eb_del = 'F';
-                										SELECT A.applicationname, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = :id AND A.eb_del = 'F';
-										                SELECT A.id, A.firstname, A.email, B.id FROM eb_users A, eb_role2user B
-											                WHERE A.id = B.user_id AND A.eb_del = 'F' AND B.eb_del = 'F' AND B.role_id = :id;"; } }
+                                    SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = :id;
+									SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = :id AND eb_del = 'F';
+                					SELECT A.applicationname, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = :id AND A.eb_del = 'F';
+									SELECT A.id, A.firstname, A.email, B.id FROM eb_users A, eb_role2user B
+										WHERE A.id = B.user_id AND A.eb_del = 'F' AND B.eb_del = 'F' AND B.role_id = :id;
+									SELECT locationid FROM eb_role2location WHERE roleid = :id AND eb_del='F';"; } }
 
-        public string EB_SAVEROLES_QUERY { get { return "SELECT eb_create_or_update_rbac_roles(:role_id, :applicationid, :createdby, :role_name, :description, :is_anonym, :users, :dependants, :permission) FROM dual"; } }
+        public string EB_SAVEROLES_QUERY { get { return "SELECT eb_create_or_update_rbac_roles(:role_id, :applicationid, :createdby, :role_name, :description, :is_anonym, :users, :dependants, :permission, :locations) FROM dual"; } }
 
 
         public string EB_SAVEUSER_QUERY { get { return "SELECT eb_createormodifyuserandroles(:userid, :id, :fullname, :nickname, :email, :pwd, :dob, :sex, :alternateemail, :phprimary, :phsecondary, :phlandphone, :extension, :fbid, :fbname, :roles, :groups, :statusid, :hide, :anonymoususerid, :preference) FROM dual;"; } }
@@ -854,7 +855,7 @@ namespace ExpressBase.Common.Data
         {
             get
             {
-                return "SELECT eb_objects_create_new_object(:obj_name, :obj_desc, :obj_type, :obj_cur_status, :commit_uid, :src_pid, :cur_pid, :relations, :issave, :tags, :app_id) FROM DUAL";
+                return "SELECT eb_objects_create_new_object(:obj_name, :obj_desc, :obj_type, :obj_cur_status, :commit_uid, :src_pid, :cur_pid, :relations, :issave, :tags, :app_id,:s_obj_id, :s_ver_id) FROM DUAL";
             }
         }
         public string EB_SAVE_OBJECT
@@ -862,7 +863,7 @@ namespace ExpressBase.Common.Data
             get
             {
                 return @"
-                    SELECT eb_objects_save(:id, :obj_name, :obj_desc, :obj_type, :commit_uid, :src_pid, :cur_pid, :relations, :tags, :app_id) FROM DUAL
+                    SELECT eb_objects_save(:id, :obj_name, :obj_desc, :obj_type, :commit_uid,  :relations, :tags, :app_id) FROM DUAL
                 ";
             }
         }
@@ -871,7 +872,7 @@ namespace ExpressBase.Common.Data
             get
             {
                 return @"
-                    SELECT eb_objects_commit(:id, :obj_name, :obj_desc, :obj_type, :obj_changelog,  :commit_uid, :src_pid, :cur_pid, :relations, :tags, :app_id) FROM DUAL
+                    SELECT eb_objects_commit(:id, :obj_name, :obj_desc, :obj_type, :obj_changelog,  :commit_uid,  :relations, :tags, :app_id) FROM DUAL
                 ";
             }
         }

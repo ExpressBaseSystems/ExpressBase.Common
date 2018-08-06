@@ -1,6 +1,6 @@
--- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text, text)
+-- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text)
 
--- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text, text);
+-- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text);
 
 CREATE OR REPLACE FUNCTION public.eb_objects_save(
 	refidv text,
@@ -9,8 +9,6 @@ CREATE OR REPLACE FUNCTION public.eb_objects_save(
 	obj_typev integer,
 	obj_jsonv json,
 	commit_uidv integer,
-	src_pid text,
-	cur_pid text,
 	relationsstring text,
 	tagsv text,
 	appsstring text)
@@ -71,6 +69,6 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text, text)
+ALTER FUNCTION public.eb_objects_save(text, text, text, integer, json, integer,text, text, text)
     OWNER TO postgres;
 

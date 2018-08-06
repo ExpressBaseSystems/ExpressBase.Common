@@ -6,11 +6,11 @@ create or replace FUNCTION eb_create_or_update_role(
 	userid NUMBER,
 	permissions VARCHAR2,
 	roleid NUMBER DEFAULT 0)
-    RETURN NUMBER AS    
+    RETURN NUMBER AS   
+    PRAGMA AUTONOMOUS_TRANSACTION;
       rid NUMBER; 
 
-
-    BEGIN  
+BEGIN  
     IF roleid = 0 THEN   
         INSERT INTO eb_roles (role_name,applicationid,description,is_anonymous) VALUES (rolename,application_id,roledesc,isanonym) RETURNING ID INTO rid;
         DBMS_OUTPUT.PUT_LINE(rid);
@@ -19,26 +19,15 @@ create or replace FUNCTION eb_create_or_update_role(
         rid := roleid;
     END IF;
 
-    UPDATE eb_role2permission 
-    SET 
-        eb_del = 'T',revokedat = SYSTIMESTAMP,revokedby = userid 
-    WHERE 
-        permissionname IN(
-            select permissionname from eb_role2permission WHERE role_id = roleid AND eb_del = 'F' 
-        MINUS 
-            SELECT regexp_substr(permissions,'[^,]+', 1, level) from dual
-             CONNECT BY regexp_substr(permissions, '[^,]+', 1, level) is not null);
-
-    INSERT INTO eb_role2permission 
-        (permissionname, role_id, createdby, createdat, op_id, obj_id) 
-    SELECT 
-        permission, rid, userid, SYSTIMESTAMP, 
-        regexp_substr(permission, '[^-]+', 1, 3),
-        regexp_substr(permission, '[^-]+', 1, 4) 
-        FROM (SELECT regexp_substr(permissions,'[^,]+', 1, level) as permission from dual
-             CONNECT BY regexp_substr(permissions, '[^,]+', 1, level) is not null
-        MINUS 
-        SELECT permissionname from eb_role2permission WHERE role_id = roleid AND eb_del = 'F');
-RETURN rid;
-    END;
-
+    UPDATE eb_role2permission SET eb_del = 'T',revokedat = SYSTIMESTAMP,revokedby = userid
+        WHERE permissionname IN (select permissionname from eb_role2permission WHERE role_id = roleid AND eb_del = 'F' MINUS 
+            SELECT regexp_substr(permissions,'[^,]+', 1, level) from dual CONNECT BY regexp_substr(permissions, '[^,]+', 1, level) is not null);
+    IF permissions IS NOT NULL THEN
+        INSERT INTO eb_role2permission (permissionname, role_id, createdby, createdat, op_id, obj_id) 
+            SELECT permission, rid, userid, SYSTIMESTAMP, regexp_substr(permission, '[^-]+', 1, 3),regexp_substr(permission, '[^-]+', 1, 4) 
+                FROM (SELECT regexp_substr(permissions,'[^,]+', 1, level) as permission from dual CONNECT BY regexp_substr(permissions, '[^,]+', 1, level) is not null MINUS 
+                    SELECT permissionname from eb_role2permission WHERE role_id = roleid AND eb_del = 'F');
+    END IF;
+    COMMIT;
+    RETURN rid;
+END;

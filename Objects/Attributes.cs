@@ -127,6 +127,8 @@ namespace ExpressBase.Common.Objects.Attributes
 
         public string DependantProp { get; set; }
 
+        public string DependantProp2 { get; set; }
+
         public int Limit { get; set; }
 
         public PropertyEditor(PropertyEditorType type) { this.PropertyEditorType = type; }
@@ -149,6 +151,14 @@ namespace ExpressBase.Common.Objects.Attributes
             this.PropertyEditorType = type;
             this.PropertyEditorSource = source;
             this.DependantProp = Dprop;
+        }
+
+        public PropertyEditor(PropertyEditorType type, string source, string Dprop, string Dprop2)
+        {
+            this.PropertyEditorType = type;
+            this.PropertyEditorSource = source;
+            this.DependantProp = Dprop;
+            this.DependantProp2 = Dprop2;
         }
     }
     public class PropertyGroup : Attribute
