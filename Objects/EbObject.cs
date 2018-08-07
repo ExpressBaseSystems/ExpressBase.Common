@@ -60,7 +60,7 @@ namespace ExpressBase.Objects
 
         public virtual OrderedDictionary DiscoverRelatedObjects(IServiceClient ServiceClient, OrderedDictionary obj_dict) { return new OrderedDictionary(); }
 
-        public virtual void ReplaceRefid() { }
+        public virtual void ReplaceRefid(Dictionary<string, string> RefidMap) { }
 
     }
 }
