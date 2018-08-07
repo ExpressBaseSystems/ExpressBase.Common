@@ -39,6 +39,16 @@ namespace ExpressBase.Common.Objects.Attributes
 
     public class HideInToolBox : Attribute { }
 
+    public class UsedWithTopObjectParent : Attribute {
+
+        public Type TopObjectParentType { get; set; }
+
+        public UsedWithTopObjectParent( Type _TopObjectParentType)
+        {
+            TopObjectParentType = _TopObjectParentType;
+        }
+    }
+
     public class HideInPropertyGrid : Attribute { }
 
     public class InputMask : Attribute
