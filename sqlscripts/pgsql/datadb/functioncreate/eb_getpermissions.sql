@@ -1,4 +1,3 @@
-
 -- FUNCTION: public.eb_getpermissions(integer[])
 
 -- DROP FUNCTION public.eb_getpermissions(integer[]);
@@ -13,15 +12,15 @@ AS $BODY$
 
 BEGIN
 	RETURN QUERY 
-SELECT 
-   array_to_string(array_agg(_per.permissionname), ',') 
-FROM 
-	eb_role2permission _per
-WHERE role_id = ANY(roles) AND eb_del='F';
+	
+	SELECT array_to_string(array_agg(_per.permissionname || ':' || _loc.locationid), ',') FROM eb_role2permission _per, eb_role2location _loc
+		WHERE _per.role_id = _loc.roleid AND _per.role_id = ANY(roles) AND _per.eb_del='F' AND _loc.eb_del='F';
+		
 END;
 
 $BODY$;
 
 ALTER FUNCTION public.eb_getpermissions(integer[])
     OWNER TO postgres;
+
 

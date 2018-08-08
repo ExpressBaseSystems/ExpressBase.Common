@@ -7,7 +7,8 @@ create or replace FUNCTION eb_create_or_update_rbac_roles(
 	isanonym CHAR,
 	users CLOB,
 	dependantroles CLOB,
-	permissions CLOB)
+	permissions CLOB,
+	locations VARCHAR2)
     RETURN NUMBER IS
     PRAGMA AUTONOMOUS_TRANSACTION;
       rid NUMBER; 
@@ -30,6 +31,7 @@ BEGIN
 	END IF;
     reslt :=  eb_create_or_update_role2user(rid, userid, in_users);
     reslt :=  eb_create_or_update_role2role(rid, userid, in_dependantroles);
+	reslt :=  eb_create_or_update_role2loc(rid, userid, locations);
     COMMIT;
 RETURN 0;
 END ;
