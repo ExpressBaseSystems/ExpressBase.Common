@@ -127,7 +127,9 @@ function ProcRecur(src_controls, dest_controls) {
 
             foreach (Type tool in this.TypeArray)
             {
-                if (tool.GetTypeInfo().IsSubclassOf(this.TypeOfTopEbObjectParent) || ((this.TypeOfTopEbObjectParent2 != null) ? tool.GetTypeInfo().IsSubclassOf(this.TypeOfTopEbObjectParent2) : false))
+                if (tool.GetTypeInfo().IsSubclassOf(this.TypeOfTopEbObjectParent) ||
+                    (tool.GetTypeInfo().IsDefined(typeof(UsedWithTopObjectParent)) && tool.GetCustomAttribute<UsedWithTopObjectParent>().TopObjectParentType == this.TypeOfTopEbObjectParent) ||
+                    ((this.TypeOfTopEbObjectParent2 != null) ? tool.GetTypeInfo().IsSubclassOf(this.TypeOfTopEbObjectParent2) : false))
                 {
                     if (!tool.IsAbstract)
                     {
@@ -232,11 +234,11 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
     .Replace("@Name", obj.GetType().Name)
     .Replace("@Type", obj.GetType().FullName)
     .Replace("@Props", _props)
-    .Replace("@InitFunc", (obj as EbObject).GetJsInitFunc())
-    .Replace("@html", (obj as EbObject).GetDesignHtml())
+    .Replace("@InitFunc", (obj is EbObject) ? (obj as EbObject).GetJsInitFunc() : string.Empty)
+    .Replace("@html", (obj is EbObject) ? (obj as EbObject).GetDesignHtml() : "``")
     .Replace("@ObjType", obj.GetType().Name.Substring(2))
     .Replace("@4botHtml", (obj is EbControl) ? ("this.$WrapedCtrl4Bot = $(`" + (obj as EbControl).GetWrapedCtrlHtml4bot(ref sampOBJ) + "`);") : string.Empty)
-    .Replace("@bareHtml", (obj as EbObject).GetBareHtml()); //(obj as EbObject).GetDesignHtml());//
+    .Replace("@bareHtml", (obj is EbObject) ? (obj as EbObject).GetBareHtml() : string.Empty); //(obj as EbObject).GetDesignHtml());//
             }
             catch (Exception e)
             {
@@ -280,9 +282,9 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                 else if (attr is HelpText)
                     meta.helpText = (attr as HelpText).value;
                 else if (attr is CEOnSelectFn)
-                    meta.CEOnSelectFn = "function(){" + (attr as CEOnSelectFn).JsCode + "}";
+                    meta.CEOnSelectFn = "function(Parent){" + (attr as CEOnSelectFn).JsCode + "}";
                 else if (attr is CEOnDeselectFn)
-                    meta.CEOnDeselectFn = "function(){" + (attr as CEOnDeselectFn).JsCode + "}";
+                    meta.CEOnDeselectFn = "function(Parent){" + (attr as CEOnDeselectFn).JsCode + "}";
                 else if (attr is OnChangeExec)
                     meta.OnChangeExec = "function(pg){" + (attr as OnChangeExec).JsCode + "}";
                 else if (attr is Attributes.EbRequired)

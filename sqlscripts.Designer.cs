@@ -77,11 +77,12 @@ namespace ExpressBase.Common {
         ///    		description VARCHAR(200),
         ///    		eb_del char DEFAULT &apos;&apos;&apos;|| eb_del ||&apos;&apos;&apos;,
         ///    		app_icon VARCHAR(20),
+        ///			app_settings CLOB,
         ///    		CONSTRAINT eb_applications_pkey PRIMARY KEY (id)
         ///	)&apos;;
         ///
         ///
-        ///	EXECUTE IMMEDIATE &apos;CREATE INDEX eb_applications_e [rest of string was truncated]&quot;;.
+        ///	EXECUTE IMMEDIATE &apos;CREATE  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_applications {
             get {
@@ -119,9 +120,8 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///create or replace FUNCTION eb_authenticate_anonymous(	
-        ///	in_socialid VARCHAR2 DEFAULT NULL,
+        ///   Looks up a localized string similar to create or replace FUNCTION eb_authenticate_anonymous(	
+        ///    in_socialid VARCHAR2 DEFAULT NULL,
         ///	in_fullname VARCHAR2 DEFAULT NULL,
         ///	in_emailid VARCHAR2 DEFAULT NULL,
         ///	in_phone VARCHAR2 DEFAULT NULL,
@@ -133,7 +133,7 @@ namespace ExpressBase.Common {
         ///	in_latitude VARCHAR2 DEFAULT NULL,
         ///	in_longitude VARCHAR2 DEFAULT NULL,
         ///	in_timezone VARCHAR2 DEFAULT NULL,
-        ///	in_iplocation [rest of string was truncated]&quot;;.
+        ///	in_iplocatio [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_authenticate_anonymous {
             get {
@@ -340,12 +340,11 @@ namespace ExpressBase.Common {
         ///      in_dependantroles CLOB;
         ///      in_permissions CLOB;
         ///
-        ///
         ///BEGIN  
         ///  rid := roleid;
         ///  in_users := users;
         ///  in_dependantroles := dependantroles;
-        ///  in_ [rest of string was truncated]&quot;;.
+        ///  in_pe [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_rbac_roles {
             get {
@@ -386,16 +385,14 @@ namespace ExpressBase.Common {
         ///	userid NUMBER,
         ///	permissions VARCHAR2,
         ///	roleid NUMBER DEFAULT 0)
-        ///    RETURN NUMBER AS    
+        ///    RETURN NUMBER AS   
+        ///    PRAGMA AUTONOMOUS_TRANSACTION;
         ///      rid NUMBER; 
         ///
-        ///
-        ///    BEGIN  
+        ///BEGIN  
         ///    IF roleid = 0 THEN   
         ///        INSERT INTO eb_roles (role_name,applicationid,description,is_anonymous) VALUES (rolename,application_id,roledesc,isanonym) RETURNING ID INTO rid;
-        ///        DBMS_OUTPUT.PUT_LINE(rid);
-        ///    ELSE
-        ///        UPDATE  [rest of string was truncated]&quot;;.
+        ///        DBMS_OUTPUT.PUT_LINE(rid [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_role {
             get {
@@ -432,23 +429,65 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_create_or_update_role2loc(integer, integer, integer[])
+        ///
+        ///-- DROP FUNCTION public.eb_create_or_update_role2loc(integer, integer, integer[]);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_create_or_update_role2loc(
+        ///	_roleid integer,
+        ///	_userid integer,
+        ///	_locations integer[])
+        ///    RETURNS integer
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///AS $BODY$
+        ///
+        ///BEGIN
+        ///
+        ///UPDATE eb_role2location SET eb_del = &apos;T&apos;, eb_revokedat = NOW(), eb_revokedby = _userid 
+        ///	WHERE locationid IN(SELECT UNNEST(ARRAY(SELECT locationid F [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_create_or_update_role2loc {
+            get {
+                return ResourceManager.GetString("eb_create_or_update_role2loc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to create or replace FUNCTION eb_create_or_update_role2loc(
+        ///	role_id NUMBER,
+        ///	userid NUMBER,
+        ///	locations VARCHAR2) 
+        ///    RETURN NUMBER AS   
+        ///    PRAGMA AUTONOMOUS_TRANSACTION; 
+        ///      u_id NUMBER; 
+        ///
+        ///BEGIN  
+        ///    UPDATE eb_role2location 
+        ///        SET eb_del = &apos;T&apos;,eb_revokedat = SYSTIMESTAMP,eb_revokedby = userid     
+        ///        WHERE locationid IN(SELECT TO_CHAR(locationid) from eb_role2location WHERE roleid = role_id AND eb_del = &apos;F&apos; MINUS 
+        ///            SELECT regexp_substr(locations,&apos;[^,]+&apos;, 1, level) from [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_create_or_update_role2loc1 {
+            get {
+                return ResourceManager.GetString("eb_create_or_update_role2loc1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to create or replace FUNCTION eb_create_or_update_role2role(
         ///	roleid NUMBER,
         ///	userid NUMBER,
         ///	dependantroles VARCHAR2)
         ///    RETURN NUMBER AS    
+        ///    PRAGMA AUTONOMOUS_TRANSACTION;
         ///      rids NUMBER; 
         ///
         ///BEGIN  
-        ///  UPDATE eb_role2role 
-        ///    SET 
-        ///        eb_del = &apos;T&apos;,revokedat = SYSTIMESTAMP,revokedby = userid 
-        ///    WHERE 
-        ///        role2_id IN(
-        ///           SELECT TO_CHAR(role2_id) FROM eb_role2role WHERE role1_id = roleid and eb_del = &apos;F&apos;
-        ///        MINUS 
-        ///            SELECT regexp_substr(dependantroles,&apos;[^,]+&apos;, 1, level) from dual
-        ///          [rest of string was truncated]&quot;;.
+        ///    UPDATE eb_role2role 
+        ///        SET eb_del = &apos;T&apos;,revokedat = SYSTIMESTAMP,revokedby = userid WHERE 
+        ///        role2_id IN (SELECT TO_CHAR(role2_id) FROM eb_role2role WHERE role1_id = roleid and eb_del = &apos;F&apos; MINUS 
+        ///            SELECT regexp_substr(dependantroles,&apos;[^,]+&apos;, 1, level) from dual CONNE [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_role2role {
             get {
@@ -491,19 +530,15 @@ namespace ExpressBase.Common {
         ///	roleid NUMBER,
         ///	userid NUMBER,
         ///	usersid VARCHAR2)
-        ///    RETURN NUMBER AS    
+        ///    RETURN NUMBER AS   
+        ///    PRAGMA AUTONOMOUS_TRANSACTION;
         ///      u_id NUMBER; 
         ///
         ///BEGIN  
-        ///   UPDATE eb_role2user 
-        ///    SET 
-        ///        eb_del = &apos;T&apos;,revokedat = SYSTIMESTAMP,revokedby = userid 
-        ///    WHERE 
-        ///        user_id IN(
-        ///           SELECT TO_CHAR(user_id) from eb_role2user WHERE role_id = roleid AND eb_del = &apos;F&apos;
-        ///        MINUS 
-        ///            SELECT regexp_substr(usersid,&apos;[^,]+&apos;, 1, level) from dual
-        ///             CONNECT BY r [rest of string was truncated]&quot;;.
+        ///    UPDATE eb_role2user 
+        ///        SET eb_del = &apos;T&apos;,revokedat = SYSTIMESTAMP,revokedby = userid     
+        ///        WHERE user_id IN(SELECT TO_CHAR(user_id) from eb_role2user WHERE role_id = roleid AND eb_del = &apos;F&apos; MINUS 
+        ///            SELECT regexp_substr(usersid,&apos;[^,]+&apos;, 1, level) from dual CONNECT BY regexp_su [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_role2user {
             get {
@@ -1008,13 +1043,15 @@ namespace ExpressBase.Common {
         ///	EXECUTE IMMEDIATE &apos;CREATE SEQUENCE eb_location_config_id_seq START WITH 1&apos;;
         ///	EXECUTE IMMEDIATE &apos;CREATE TABLE eb_location_config
         ///	(
-        ///            		id NUMBER,
-        ///            		keys CLOB,
+        ///            id NUMBER,
+        ///            keys CLOB,
         ///    		isrequired char DEFAULT &apos;&apos;&apos;|| isrequired ||&apos;&apos;&apos;,
+        ///			keytype VARCHAR2(20),
+        ///			eb_del CHAR,
         ///    		CONSTRAINT eb_locationsconfig_pkey PRIMARY KEY (id)
         ///	)&apos;;
         ///	
-        ///	EXECUTE IMMEDIATE &apos;CREATE OR REPLACE TRIGGER eb_location_config_trigger BEFORE INSERT ON eb_location_config FOR EACH ROW BEGIN &apos; || [rest of string was truncated]&quot;;.
+        ///	EXECUTE IMMEDIATE &apos;CREATE OR REPLACE TRIGGER eb_location_config_trigger BEFORE INSERT ON eb_ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_location_config {
             get {
@@ -1103,9 +1140,9 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_create_major_version(text, integer, integer, text, text, text[])
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_object_create_major_version(text, integer, integer, text, text, text[])
         ///
-        ///-- DROP FUNCTION public.eb_objects_create_major_version(text, integer, integer, text, text, text[]);
+        ///-- DROP FUNCTION public.eb_object_create_major_version(text, integer, integer, text, text, text[]);
         ///
         ///create or replace FUNCTION eb_object_create_major_version(
         ///	idv varchar2,
@@ -1117,7 +1154,7 @@ namespace ExpressBase.Common {
         ///    RETURN CLOB 
         ///    IS
         ///    PRAGMA AUTONOMOUS_TRANSACTION;
-        ///	refidunique VARCHAR(100); inserted_obj_ver_id NUMBER; objid NUMBER; commit [rest of string was truncated]&quot;;.
+        ///	refidunique VARCHAR(100); inserted_obj_ver_id NUMBER; objid NUMBER; committe [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_object_create_major_version {
             get {
@@ -1126,9 +1163,9 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_create_major_version(text, integer, integer, text, text, text)
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_object_create_major_version(text, integer, integer, text, text, text)
         ///
-        ///-- DROP FUNCTION public.eb_objects_create_major_version(text, integer, integer, text, text, text);
+        ///-- DROP FUNCTION public.eb_object_create_major_version(text, integer, integer, text, text, text);
         ///
         ///CREATE OR REPLACE FUNCTION public.eb_object_create_major_version(
         ///	idv text,
@@ -1140,10 +1177,11 @@ namespace ExpressBase.Common {
         ///    RETURNS text
         ///    LANGUAGE &apos;plpgsql&apos;
         ///
-        ///   
+        ///    COST 100
+        ///    VOLATILE 
         ///AS $BODY$
         ///
-        ///DECLARE refidunique text; inserted_obj_ver_id integer; objid integer; co [rest of string was truncated]&quot;;.
+        ///DECLARE refidunique text; inserted_obj_ver_id inte [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_object_create_major_version1 {
             get {
@@ -1152,9 +1190,9 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_create_minor_version(text, integer, integer, text, text, text)
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_object_create_minor_version(text, integer, integer, text, text, text)
         ///
-        ///-- DROP FUNCTION public.eb_objects_create_minor_version(text, integer, integer, text, text, text);
+        ///-- DROP FUNCTION public.eb_object_create_minor_version(text, integer, integer, text, text, text);
         ///create or replace FUNCTION eb_object_create_minor_version(
         ///	idv VARCHAR,
         ///	obj_typev NUMBER,
@@ -1165,7 +1203,7 @@ namespace ExpressBase.Common {
         ///    RETURN CLOB
         ///    IS
         ///    PRAGMA AUTONOMOUS_TRANSACTION;
-        ///    refidunique VARCHAR(500); inserted_objid CLOB; inserted_obj_ver_id NUMBER; obji [rest of string was truncated]&quot;;.
+        ///    refidunique VARCHAR(500); inserted_objid CLOB; inserted_obj_ver_id NUMBER; objid  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_object_create_minor_version {
             get {
@@ -1174,9 +1212,9 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_create_minor_version(text, integer, integer, text, text, text)
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_object_create_minor_version(text, integer, integer, text, text, text)
         ///
-        ///-- DROP FUNCTION public.eb_objects_create_minor_version(text, integer, integer, text, text, text);
+        ///-- DROP FUNCTION public.eb_object_create_minor_version(text, integer, integer, text, text, text);
         ///
         ///CREATE OR REPLACE FUNCTION public.eb_object_create_minor_version(
         ///	idv text,
@@ -1188,10 +1226,11 @@ namespace ExpressBase.Common {
         ///    RETURNS text
         ///    LANGUAGE &apos;plpgsql&apos;
         ///
-        ///    
+        ///    COST 100
+        ///    VOLATILE 
         ///AS $BODY$
         ///
-        ///DECLARE refidunique text; inserted_objid integer; inserted_obj_ver_id i [rest of string was truncated]&quot;;.
+        ///DECLARE refidunique text; inserted_objid integer;  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_object_create_minor_version1 {
             get {
@@ -1223,9 +1262,9 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_create_patch_version(text, integer, integer, text, text, text)
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_object_create_patch_version(text, integer, integer, text, text, text)
         ///
-        ///-- DROP FUNCTION public.eb_objects_create_patch_version(text, integer, integer, text, text, text);
+        ///-- DROP FUNCTION public.eb_object_create_patch_version(text, integer, integer, text, text, text);
         ///
         ///CREATE OR REPLACE FUNCTION public.eb_object_create_patch_version(
         ///	idv text,
@@ -1237,10 +1276,11 @@ namespace ExpressBase.Common {
         ///    RETURNS text
         ///    LANGUAGE &apos;plpgsql&apos;
         ///
-        ///    
+        ///    COST 100
+        ///    VOLATILE 
         ///AS $BODY$
         ///
-        ///DECLARE refidunique text; inserted_obj_ver_id integer; objid integer; c [rest of string was truncated]&quot;;.
+        ///DECLARE refidunique text; inserted_obj_ver_id inte [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_object_create_patch_version1 {
             get {
@@ -1347,8 +1387,6 @@ namespace ExpressBase.Common {
         ///	--obj_jsonv VARCHAR2,
         ///	obj_changelogv CLOB,
         ///	commit_uidv NUMBER,
-        ///	src_pid CLOB,
-        ///	cur_pid CLOB,
         ///	relationsv VARCHAR,
         ///	tagsv CLOB,
         ///	apps VARCHAR)
@@ -1359,7 +1397,7 @@ namespace ExpressBase.Common {
         ///
         ///BEGIN
         ///
-        ///    S [rest of string was truncated]&quot;;.
+        ///    SELECT eb_objects_id, major_ver_n [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_commit {
             get {
@@ -1369,9 +1407,9 @@ namespace ExpressBase.Common {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///-- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text, text, text)
+        ///-- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer,  text, text, text)
         ///
-        ///-- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text, text, text);
+        ///-- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text);
         ///
         ///CREATE OR REPLACE FUNCTION public.eb_objects_commit(
         ///	idv text,
@@ -1381,11 +1419,13 @@ namespace ExpressBase.Common {
         ///	obj_jsonv json,
         ///	obj_changelogv text,
         ///	commit_uidv integer,
-        ///	src_pid text,
-        ///	cur_pid text,
         ///	relationsstring text,
         ///	tagsv text,
-        ///	appsstrin [rest of string was truncated]&quot;;.
+        ///	appsstring text)
+        ///    RETURNS text
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///   [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_commit1 {
             get {
@@ -1406,13 +1446,13 @@ namespace ExpressBase.Common {
         ///	relationsv VARCHAR,
         ///	issave char,
         ///	tagsv CLOB,
-        ///	apps VARCHAR)
+        ///	apps VARCHAR,
+        ///    s_obj_id CLOB,
+        ///    s_ver_id CLOB
+        ///    )
         ///    RETURN CLOB is 
         ///    PRAGMA AUTONOMOUS_TRANSACTION;
-        ///     refidunique CLOB; inserted_objid number; inserted_obj_ver_id number; refid_of_commit_version CLOB; version_number CLOB;rel CLOB;app number;
-        ///BEGIN   
-        ///
-        ///    INSERT INTO  [rest of string was truncated]&quot;;.
+        ///     refidunique CLOB; inserted_objid number; inserted_obj_ver_id number; refid_of_commit_version CLOB; version_number CLOB;rel  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_create_new_object {
             get {
@@ -1421,10 +1461,10 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text)
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text, text, text)
         ///
-        ///-- DROP FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text);
-        ///
+        ///-- DROP FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text, text, text);
+        /// 
         ///CREATE OR REPLACE FUNCTION public.eb_objects_create_new_object(
         ///	obj_namev text,
         ///	obj_descv text,
@@ -1433,8 +1473,7 @@ namespace ExpressBase.Common {
         ///	obj_jsonv json,
         ///	commit_uidv integer,
         ///	src_pid text,
-        ///	cur_pid text,
-        ///	relationsstring te [rest of string was truncated]&quot;;.
+        ///	cur_pid t [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_create_new_object1 {
             get {
@@ -1569,8 +1608,6 @@ namespace ExpressBase.Common {
         ///	obj_typev NUMBER,
         ///	--obj_jsonv CLOB,
         ///	commit_uidv NUMBER,
-        ///	src_pid CLOB,
-        ///	cur_pid CLOB,
         ///	relationsv VARCHAR,
         ///	tagsv CLOB,
         ///	apps VARCHAR)
@@ -1582,7 +1619,7 @@ namespace ExpressBase.Common {
         ///
         ///    SELECT eb_objects_id into objid FROM eb_objects_ver  WHERE refid=refidv;
         ///
-        /// 	UPDATE e [rest of string was truncated]&quot;;.
+        /// 	UPDATE eb_objects SET obj_name = obj_nam [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_save {
             get {
@@ -1591,9 +1628,9 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text, text)
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text)
         ///
-        ///-- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text, text);
+        ///-- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text);
         ///
         ///CREATE OR REPLACE FUNCTION public.eb_objects_save(
         ///	refidv text,
@@ -1602,13 +1639,16 @@ namespace ExpressBase.Common {
         ///	obj_typev integer,
         ///	obj_jsonv json,
         ///	commit_uidv integer,
-        ///	src_pid text,
-        ///	cur_pid text,
         ///	relationsstring text,
         ///	tagsv text,
         ///	appsstring text)
         ///    RETURNS text
-        ///    LANGUAGE  [rest of string was truncated]&quot;;.
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///   
+        ///AS $BODY$
+        ///
+        ///DECLARE refidunique text; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_save1 {
             get {
@@ -1851,6 +1891,65 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to --SEQUENCE public.eb_role2location_id_seq
+        ///
+        ///CREATE SEQUENCE public.eb_role2location_id_seq
+        ///    INCREMENT 1
+        ///    START 1
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_role2location_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///
+        ///-- Table: public.eb_role2location
+        ///
+        ///-- DROP TABLE public.eb_role2location;
+        ///
+        ///CREATE TABLE public.eb_role2location
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_role2location_id_seq&apos;::regclass),
+        ///    roleid integer,
+        ///    locationid integer,
+        ///    [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_role2location {
+            get {
+                return ResourceManager.GetString("eb_role2location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DECLARE
+        ///	eb_del varchar(10);  
+        ///BEGIN
+        ///
+        ///	eb_del := &apos;F&apos;; 
+        ///
+        ///	EXECUTE IMMEDIATE &apos;CREATE SEQUENCE eb_role2location_id_seq START WITH 1&apos;;
+        ///	EXECUTE IMMEDIATE &apos;CREATE TABLE eb_role2location
+        ///	(
+        ///   	 	id number,
+        ///    	roleid number,
+        ///    	locationid number,
+        ///    	eb_del char DEFAULT &apos;&apos;&apos;|| eb_del ||&apos;&apos;&apos;,
+        ///    	eb_createdby number,
+        ///    	eb_createdat timestamp,
+        ///    	eb_revokedby number,
+        ///    	eb_revokedat timestamp,
+        ///    	CONSTRAINT eb_role2location_pkey PRIMARY KEY (id)
+        ///	)&apos;;
+        ///	EXECUTE IMMEDIATE &apos;CREATE INDEX  [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_role2location1 {
+            get {
+                return ResourceManager.GetString("eb_role2location1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DECLARE
         ///	eb_del varchar(10); 
         ///BEGIN
@@ -2038,14 +2137,14 @@ namespace ExpressBase.Common {
         ///	EXECUTE IMMEDIATE &apos;CREATE TABLE eb_roles
         ///	(
         ///    		id number NOT NULL,
-        ///    		role_name varchar(20),
+        ///    		role_name CLOB,
         ///    		eb_del char DEFAULT &apos;&apos;&apos;|| eb_del ||&apos;&apos;&apos; ,
         ///    		applicationname varchar(50),
         ///    		applicationid number,
         ///    		description varchar(200),
         ///			is_anonymous char DEFAULT &apos;&apos;&apos;|| eb_del ||&apos;&apos;&apos;,
         ///    		CONSTRAINT eb_roles_id_pkey PRIMARY KEY (id),
-        ///    		CONSTRAINT eb_rolen [rest of string was truncated]&quot;;.
+        ///    		CONSTRAINT eb_rolename_uni [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_roles {
             get {
@@ -2230,7 +2329,11 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BEGIN
+        ///   Looks up a localized string similar to DECLARE
+        ///	eb_del varchar(10);  
+        ///BEGIN
+        ///
+        ///	eb_del := &apos;F&apos;;
         ///	EXECUTE IMMEDIATE &apos;CREATE SEQUENCE eb_usergroup_id_seq START WITH 1&apos;;
         ///
         ///	EXECUTE IMMEDIATE &apos;CREATE TABLE eb_usergroup
@@ -2238,13 +2341,13 @@ namespace ExpressBase.Common {
         ///    		id number NOT NULL,
         ///    		name varchar(30),
         ///    		description varchar(200),
-        ///    		eb_del char,
+        ///			eb_del char DEFAULT &apos;&apos;&apos;|| eb_del ||&apos;&apos;&apos; ,
         ///    		CONSTRAINT eb_usergroup_pkey PRIMARY KEY (id)
         ///	)&apos;;
         ///
         ///
         ///	EXECUTE IMMEDIATE &apos;CREATE INDEX eb_usergroup_eb_del_idx ON eb_usergroup (eb_del)&apos;;
-        ///	EXECUTE IMMEDIATE &apos;CREATE OR REPLACE TRIGGER eb_usergroup_trigger BEFORE INSERT ON eb_usergroup FOR EACH ROW BEGIN &apos; || &apos;:&apos; || [rest of string was truncated]&quot;;.
+        ///	EXECUTE IMMEDIATE &apos;CREATE OR REPLACE TRIGGER eb_u [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_usergroup {
             get {
