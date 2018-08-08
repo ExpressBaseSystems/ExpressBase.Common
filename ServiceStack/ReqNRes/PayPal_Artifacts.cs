@@ -24,6 +24,9 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
     {
         [DataMember(Order = 1)]
         public string PaymentId;
+
+        [DataMember(Order = 2)]
+        public string SolutionId;
     }
 
     [DataContract]
@@ -387,13 +390,13 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
         {
         }
 
-        public EbBillingPlan(int numUsers, float amountperUser)
+        public EbBillingPlan(int numUsers, double amountperUser)
         {
             NumUsers = numUsers;
             AmountperUser = amountperUser;
         }
 
-        public EbBillingPlan(int numUsers, float amountperUser, BillingPlanResponse planResponse)
+        public EbBillingPlan(int numUsers, double amountperUser, BillingPlanResponse planResponse)
         {
             NumUsers = numUsers;
             AmountperUser = amountperUser;
@@ -401,7 +404,7 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
         }
 
         public int NumUsers { get; set; }
-        public float AmountperUser { get; set; }
+        public double AmountperUser { get; set; }
         public BillingPlanResponse PlanResponse { get; set; }
 
 
@@ -420,7 +423,6 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
         private List<PaymentDefinition> _paymentDefinitions = new List<PaymentDefinition>();
         private List<Terms> _paymentTerms = new List<Terms>();
         private MerchantPreferences _merchantPref = new MerchantPreferences();
-        private Currency _currencyCode;
         private List<LinkDescription> _links;
 
         public BillingPlanResponse()
@@ -436,8 +438,7 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
             UpdateTime = null;
             PaymentDefinitions = null;
             PaymentTerms = null;
-            MerchPreference = null;
-            CurrencyCode = null;
+            MerchPreference = null;            
             Links = null;
         }
 
@@ -512,13 +513,6 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
         {
             get { return _merchantPref; }
             set { _merchantPref = value; }
-        }
-
-        [DataMember(Name = "currency_code")]
-        public Currency CurrencyCode
-        {
-            get { return _currencyCode; }
-            set { _currencyCode = value; }
         }
 
         [DataMember(Name = "links")]
