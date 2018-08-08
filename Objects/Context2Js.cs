@@ -32,6 +32,7 @@ namespace ExpressBase.Common.Objects
         public string TypeRegister { get; private set; }
         public string JsonToJsObjectFuncs { get; private set; }
         public string EbObjectTypes { get; private set; }
+        public string EbOnChangeUIfns { get; private set; }
         private DateTime Start { get; set; }
         private DateTime End { get; set; }
 
@@ -49,6 +50,7 @@ namespace ExpressBase.Common.Objects
             this.TypeRegister = string.Empty;
             this.JsonToJsObjectFuncs = string.Empty;
             this.EbObjectTypes = string.Empty;
+            this.EbOnChangeUIfns = "const EbOnChangeUIfns ={}; ";
 
             this.Start = DateTime.Now;
         }
@@ -59,6 +61,7 @@ namespace ExpressBase.Common.Objects
             this.TypeOfTopEbObjectParent = topObjectParentType;
             this.GenerateJs();
             this.End = DateTime.Now;
+            this.EbOnChangeUIfns += OnChangeUIfns.getFunctions();
 
             this.MilliSeconds = (this.End - this.Start).Milliseconds;
         }
@@ -92,6 +95,7 @@ namespace ExpressBase.Common.Objects
             this.TypeRegister = null;
             this.JsonToJsObjectFuncs = null;
             this.EbObjectTypes = null;
+            this.EbOnChangeUIfns = null;
         }
 
         private void GenerateJs()
@@ -146,6 +150,7 @@ function ProcRecur(src_controls, dest_controls) {
                                 //ToolBoxHtml += this.GetToolHtml(tool.Name.Substring(2));
                                 this.TypeRegister += string.Format("if (jsonObj['$type'].includes('{0}')) return new EbObjects.{1}(jsonObj.EbSid, jsonObj); ", toolObj.GetType().FullName, toolObj.GetType().Name);
                                 this.GetJsObject(toolObj);
+                                this.EbOnChangeUIfns += String.IsNullOrEmpty((toolObj as EbObject).UIchangeFns) ? string.Empty : ("EbOnChangeUIfns." + (toolObj as EbObject).UIchangeFns + ";");
                             }
                         }
                         catch (Exception ee)
@@ -287,6 +292,8 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     meta.CEOnDeselectFn = "function(Parent){" + (attr as CEOnDeselectFn).JsCode + "}";
                 else if (attr is OnChangeExec)
                     meta.OnChangeExec = "function(pg){" + (attr as OnChangeExec).JsCode + "}";
+                else if (attr is OnChangeUIFunction)
+                    meta.UIChangefn = (attr as OnChangeUIFunction).FunctionName;
                 else if (attr is Attributes.EbRequired)
                     meta.IsRequired = true;
                 else if (attr is UIproperty)

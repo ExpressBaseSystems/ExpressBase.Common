@@ -1,8 +1,6 @@
 ﻿using ExpressBase.Common.Structures;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace ExpressBase.Common.Objects.Attributes
 {
@@ -39,11 +37,12 @@ namespace ExpressBase.Common.Objects.Attributes
 
     public class HideInToolBox : Attribute { }
 
-    public class UsedWithTopObjectParent : Attribute {
+    public class UsedWithTopObjectParent : Attribute
+    {
 
         public Type TopObjectParentType { get; set; }
 
-        public UsedWithTopObjectParent( Type _TopObjectParentType)
+        public UsedWithTopObjectParent(Type _TopObjectParentType)
         {
             TopObjectParentType = _TopObjectParentType;
         }
@@ -196,4 +195,48 @@ namespace ExpressBase.Common.Objects.Attributes
     public class UIproperty : Attribute { public UIproperty() { } }
 
     public class EbRequired : Attribute { public EbRequired() { } }
+
+    public class OnChangeUIFunction : Attribute
+    {
+        public string FunctionName { get; set; }
+
+        public OnChangeUIFunction(string funName)
+        {
+            FunctionName = funName;
+        }
+    }
+
+    public static class OnChangeUIfns
+    {
+        public const string BACKCOLOR = @"
+                $('#' + elementId + ' [ui-inp]').css('background-color',props.BackColor);
+        ";
+
+        public const string FORECOLOR = "";
+
+        public const string LABEL= "";
+
+        public const string LABEL_COLOR = "";
+
+        public const string LABEL_BACKCOLOR = "";
+
+        public static  string getFunctions()
+        {
+            string jsonStr = "EbOnChangeUIfns.Common = {";
+            Type type = typeof(OnChangeUIfns);
+            FieldInfo[] props = type.GetFields();
+            foreach (var prop in props)
+            {
+                var fun = prop.GetValue(null);
+                fun = @"function(elementId, props){
+                        console.log(elementId);
+                        console.log(props);
+                        @functionStr
+                    }".Replace("@functionStr", fun.ToString());
+
+                jsonStr += "'" + prop.Name + "':" +  fun + ", ";
+            }
+            return jsonStr + "}";
+        }
+    }
 }
