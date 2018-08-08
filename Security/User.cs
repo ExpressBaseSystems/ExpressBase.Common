@@ -171,7 +171,52 @@ namespace ExpressBase.Security
             return _user;
         }
 
-        public static User GetDetailsNormal(IDatabase df, string uname, string pass, string context)
+		public static User GetDetailsTenant(IDatabase df, string uname, string pass)
+		{
+			try
+			{
+				string Qry = "SELECT * FROM eb_authenticate_tenants(in_uname := @uname, in_pwd := @pass);";
+				var ds = df.DoQuery(Qry, new DbParameter[] { df.GetNewParameter("uname", EbDbTypes.String, uname), df.GetNewParameter("pass", EbDbTypes.String, pass) });
+
+				User _user = null;
+				if (ds.Rows.Count > 0)
+				{
+					int userid = Convert.ToInt32(ds.Rows[0][0]);
+					if (userid > 0)
+					{
+						//roles
+						string[] role_ids = ds.Rows[0][3].ToString().Split(',');
+						List<string> permissions = new List<string>();
+						if (!ds.Rows[0][4].ToString().IsNullOrEmpty())
+							permissions = ds.Rows[0][4].ToString().Split(',').ToList<string>();
+						List<string> rolesname = new List<string>();
+						var sysroles = Enum.GetValues(typeof(SystemRoles));
+						foreach (string roleid in role_ids)
+						{
+							if(!roleid.IsNullOrEmpty())
+								rolesname.Add(sysroles.GetValue(Convert.ToInt32(roleid)).ToString());
+						}
+
+						_user = new User
+						{
+							UserId = userid,
+							Email = ds.Rows[0][1].ToString(),
+							FullName = ds.Rows[0][2].ToString(),
+							Roles = rolesname,
+							Permissions = permissions,
+							Preference = JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][5].ToString())
+						};
+					}
+				}
+				return _user;
+			}
+			catch (Exception e)
+			{
+				return new User();
+			}
+		}
+
+		public static User GetDetailsNormal(IDatabase df, string uname, string pass, string context)
         {
 
             try {
