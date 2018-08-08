@@ -385,4 +385,16 @@
   <data name="eb_location_config1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\pgsql\objectsdb\tablecreate\eb_location_config.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="eb_create_or_update_role2loc" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\functioncreate\eb_create_or_update_role2loc.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_create_or_update_role2loc1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\datadb\functioncreate\eb_create_or_update_role2loc.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_role2location" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_role2location.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_role2location1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\datadb\tablecreate\eb_role2location.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
 </root>
