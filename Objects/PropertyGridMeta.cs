@@ -53,6 +53,8 @@ namespace ExpressBase.Common.Objects
         public bool MetaOnly { get; set; }
 
         public int Limit { get; set; }
+        
+        public string UIChangefn { get; set; }
 
         public Meta()
         {

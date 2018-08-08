@@ -29,6 +29,10 @@ namespace ExpressBase.Objects
         [InputMask("")]
         public virtual string Name { get; set; }
 
+        [HideInPropertyGrid]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+        public virtual string UIchangeFns { get; set; }  
+
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataSource, BuilderType.Report)]
         public string Description { get; set; }
 

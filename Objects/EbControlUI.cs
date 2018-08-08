@@ -15,6 +15,7 @@ namespace ExpressBase.Common.Objects
 		[PropertyGroup("Appearance")]
 		[PropertyEditor(PropertyEditorType.Color)]
 		[UIproperty]
+        [OnChangeUIFunction("Common.BACKCOLOR")]
 		public virtual string BackColor { get; set; }
 
 		[EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm)]
