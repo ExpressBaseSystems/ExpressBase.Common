@@ -8,6 +8,16 @@ using System.Text;
 namespace ExpressBase.Common.ServiceStack.ReqNRes
 {
     [DataContract]
+    public class PayPalWebHookHandler : EbServiceStackRequest
+    {
+        [DataMember(Order =1)]
+        public string JsonBody;
+
+        [DataMember(Order = 2)]
+        public string Action;
+    }
+
+    [DataContract]
     public class PayPalFailureReturnRequest : EbServiceStackRequest
     {
 
