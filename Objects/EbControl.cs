@@ -32,6 +32,7 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         [UIproperty]
         [Unique]
+        [OnChangeUIFunction("Common.LABEL")]
         public virtual string Label { get; set; }
 
         [EnableInBuilder(BuilderType.BotForm)]
@@ -181,14 +182,14 @@ else
     <div class='msg-cont'>
       <div class='bot-icon'></div>
       <div class='msg-cont-bot'>
-         <div class='msg-wraper-bot'>
+         <div ui-label class='msg-wraper-bot'>
             @Label@
             <div class='msg-time'>3:44pm</div>
          </div>
       </div>
    </div>",
             ControlHTML = @"
-<div class='msg-cont' for='TextBox1' form='LeaveJS'>
+<div class='msg-cont'>
       <div class='msg-cont-bot'>
          <div class='msg-wraper-bot' style='@style@ border: none; background-color: transparent; width: 99%; padding-right: 3px;'>
             @innerHTML@
@@ -202,7 +203,7 @@ else
             }
             innerHTML = (!ChildObj.isFullViewContol) ? (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>") : innerHTML.Replace("@style@", "style='width:100%;border:none;'");
             ResHTML = @"
-<div id='TextBox0' class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='TextBox'>
+<div class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='TextBox'>
    @LabelHTML@
    @ControlHTML@
 </div>"
