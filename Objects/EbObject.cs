@@ -62,9 +62,11 @@ namespace ExpressBase.Objects
 
         public virtual string GetBareHtml() { return "<div class='btn btn-default'> GetBareHtml() not implemented </div>".RemoveCR(); }
 
-        public virtual OrderedDictionary DiscoverRelatedObjects(IServiceClient ServiceClient, OrderedDictionary obj_dict) { return new OrderedDictionary(); }
+        //public virtual OrderedDictionary DiscoverRelatedObjects(IServiceClient ServiceClient, OrderedDictionary obj_dict) { return new OrderedDictionary(); }
 
         public virtual void ReplaceRefid(Dictionary<string, string> RefidMap) { }
+
+        public virtual string DiscoverRelatedRefids() { return ""; }
 
     }
 }

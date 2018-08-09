@@ -141,35 +141,61 @@ namespace ExpressBase.Common.Structures
 				yield return Export;
 			}
 		}
-	}
+    }
 
-	public class BFOperations : EbOperations
-	{
-		public readonly EbOperation Access;
+    public class BFOperations : EbOperations
+    {
+        public readonly EbOperation Access;
 
-		private BFOperations()
-		{
-			Access = new EbOperation(OperationConstants.ACCESS, 0, OperationConstants.BXX);
-		}
+        private BFOperations()
+        {
+            Access = new EbOperation(OperationConstants.ACCESS, 0, OperationConstants.BXX);
+        }
 
-		public static EbOperations Instance
-		{
-			get
-			{
-				return new BFOperations();
-			}
-		}
+        public static EbOperations Instance
+        {
+            get
+            {
+                return new BFOperations();
+            }
+        }
 
-		public override IEnumerable<EbOperation> Enumerator
-		{
-			get
-			{
-				yield return Access;
-			}
-		}
-	}
+        public override IEnumerable<EbOperation> Enumerator
+        {
+            get
+            {
+                yield return Access;
+            }
+        }
+    }
 
-	public class ReportOperations : EbOperations
+    public class WFOperations : EbOperations
+    {
+        public readonly EbOperation Access;
+
+        private WFOperations()
+        {
+            Access = new EbOperation(OperationConstants.ACCESS, 0, OperationConstants.XXW);
+        }
+
+        public static EbOperations Instance
+        {
+            get
+            {
+                return new WFOperations();
+            }
+        }
+
+        public override IEnumerable<EbOperation> Enumerator
+        {
+            get
+            {
+                yield return Access;
+            }
+        }
+    }
+
+    public class ReportOperations : EbOperations
 	{
 		public readonly EbOperation Print;
 
