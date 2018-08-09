@@ -81,6 +81,9 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
 
         [DataMember(Order = 10)]
         public string SolutionId { get; set; }
+
+        [DataMember(Order =11)]
+        public int UserCount { set; get; }
     }
 
     [DataContract]
