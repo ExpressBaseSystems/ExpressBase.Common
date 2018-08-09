@@ -209,16 +209,22 @@ namespace ExpressBase.Common.Objects.Attributes
     public static class OnChangeUIfns
     {
         public const string BACKCOLOR = @"
-                $('#' + elementId + ' [ui-inp]').css('background-color',props.BackColor);
-        ";
+                $('#' + elementId + ' [ui-inp]').css('background-color',props.BackColor);";
 
-        public const string FORECOLOR = "";
+        public const string FORECOLOR = @"
+                $('#' + elementId + ' [ui-inp]').css('background-color',props.ForeColor);";
 
-        public const string LABEL= "";
+        public const string LABEL= @"
+                $('#' + elementId + ' [ui-label]').text(props.Label);";
 
-        public const string LABEL_COLOR = "";
+        public const string LABEL_COLOR = @"
+                $('#' + elementId + ' [ui-label]').css('color',props.LabelForeColor);";
 
-        public const string LABEL_BACKCOLOR = "";
+        public const string LABEL_BACKCOLOR = @"
+                $('#' + elementId + ' [ui-label]').css('background-color',props.LabelBackColor);";
+
+        public const string HELP_TEXT= @"
+                $('#' + elementId + ' [ui-helptxt]').text(props.HelpText);";
 
         public static  string getFunctions()
         {
