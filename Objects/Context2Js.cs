@@ -120,7 +120,7 @@ function ProcRecur(src_controls, dest_controls) {
         if (i ===0)
             dest_controls.$values=[];
         var newObj = ObjectFactory(control);
-        dest_controls.Append  (newObj);
+        dest_controls.$values.push(newObj);
         if (control.IsContainer){
             newObj.Controls.$values=[];
             ProcRecur(control.Controls, newObj.Controls);
@@ -148,7 +148,9 @@ function ProcRecur(src_controls, dest_controls) {
                                 if ((!_typeInfo.IsDefined(typeof(HideInToolBox))) && toolObj is EbControl)
                                     ToolBoxHtml += (toolObj as EbControl).GetToolHtml();
                                 //ToolBoxHtml += this.GetToolHtml(tool.Name.Substring(2));
-                                this.TypeRegister += string.Format("if (jsonObj['$type'].includes('{0}')) return new EbObjects.{1}(jsonObj.EbSid, jsonObj); ", toolObj.GetType().FullName, toolObj.GetType().Name);
+                                this.TypeRegister += string.Format(@"
+                                    if (jsonObj['$type'].includes('{0}')) 
+                                        return new EbObjects.{1}(jsonObj.EbSid, jsonObj); ", toolObj.GetType().FullName, toolObj.GetType().Name);
                                 this.GetJsObject(toolObj);
                                 this.EbOnChangeUIfns += String.IsNullOrEmpty((toolObj as EbObject).UIchangeFns) ? string.Empty : ("EbOnChangeUIfns." + (toolObj as EbObject).UIchangeFns + ";");
                             }
@@ -178,8 +180,8 @@ function ProcRecur(src_controls, dest_controls) {
 
             PropertyInfo[] props = obj.GetType().GetAllProperties();
 
-            if (obj is EbControlContainer)
-                _props += @"this.IsContainer = true;";
+            //if (obj is EbControlContainer)
+            //    _props += @"this.IsContainer = true;";
 
             foreach (PropertyInfo prop in props)
             {
@@ -222,12 +224,12 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
         $('#' + id).html($(NewHtml).html());
 };
     if (jsonObj){
-        if(jsonObj.IsContainer)
-            jsonObj.Controls  = new EbControlCollection( {} );
         jsonObj.RenderMe  = this.RenderMe;
         jsonObj.Html  = this.Html;
         jsonObj.Init   = this.Init;
         $.extend(this, jsonObj);
+        if(jsonObj.IsContainer)
+            this.Controls  = new EbControlCollection( {} );
         //if(this.Init)
         //    jsonObj.Init(id);
     }
@@ -240,7 +242,8 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
     .Replace("@Type", obj.GetType().FullName)
     .Replace("@Props", _props)
     .Replace("@InitFunc", (obj is EbObject) ? (obj as EbObject).GetJsInitFunc() : string.Empty)
-    .Replace("@html", (obj is EbObject) ? (obj as EbObject).GetDesignHtml() : "``")
+      .Replace("@html", (obj is EbObject) ? (obj as EbObject).GetDesignHtml() : "``")
+    //.Replace("@html", (obj is EbControl) ? (obj as EbControl).GetWrapedCtrlHtml4Web(ref sampOBJ) : "``")
     .Replace("@ObjType", obj.GetType().Name.Substring(2))
     .Replace("@4botHtml", (obj is EbControl) ? ("this.$WrapedCtrl4Bot = $(`" + (obj as EbControl).GetWrapedCtrlHtml4bot(ref sampOBJ) + "`);") : string.Empty)
     .Replace("@bareHtml", (obj is EbObject) ? (obj as EbObject).GetBareHtml() : string.Empty); //(obj as EbObject).GetDesignHtml());//
@@ -443,7 +446,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             else if (prop.PropertyType == (typeof(int)) || prop.PropertyType == (typeof(float)))
                 return string.Format(s, prop.Name, ((prop.Name == "Id") ? "id" : "0"));
             else if (prop.PropertyType == typeof(bool))
-                return string.Format(s, prop.Name, "false");
+                return string.Format(s, prop.Name, prop.GetValue(obj).ToString().ToLower());
             else if (prop.PropertyType.GetTypeInfo().IsEnum)
                 return string.Format(s, prop.Name, "0");
             else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition().Name == "IDictionary`2")
