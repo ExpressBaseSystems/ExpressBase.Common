@@ -22,6 +22,8 @@ namespace ExpressBase.Common
 
         DbParameter GetNewParameter(string parametername, EbDbTypes type);
 
+        DbParameter GetNewOutParameter(string parametername, EbDbTypes type);
+
         T DoQuery<T>(string query, params DbParameter[] parameters);
         EbDataTable DoQuery(string query, params DbParameter[] parameters);
         DbDataReader DoQueriesBasic(string query, params DbParameter[] parameters);

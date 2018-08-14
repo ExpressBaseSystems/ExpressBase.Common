@@ -26,6 +26,7 @@ CREATE TABLE public.eb_files
     uploaddatetime timestamp without time zone,
     eb_del1 boolean NOT NULL DEFAULT false,
     eb_del "char" NOT NULL DEFAULT 'F'::"char",
+    fileclass integer,
     CONSTRAINT eb_files_pkey PRIMARY KEY (id),
     CONSTRAINT eb_files_eb_del_check CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
 )
@@ -36,7 +37,6 @@ TABLESPACE pg_default;
 
 ALTER TABLE public.eb_files
     OWNER to postgres;
-
 -- Index: eb_files_eb_del_idx
 
 -- DROP INDEX public.eb_files_eb_del_idx;

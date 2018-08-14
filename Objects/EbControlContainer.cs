@@ -34,6 +34,21 @@ namespace ExpressBase.Common.Objects
             this.Controls = new List<EbControl>();
         }
 
+        public override string LabelForeColor { get; set; }
+
+        public override string LabelBackColor { get; set; }
+
+        public override string HelpText { get; set; }
+
+        public override string ForeColor { get; set; }
+
+        public override string FontFamily { get; set; }
+
+        public override float FontSize { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+        public bool IsContainer { get { return true; } private set { } }
+
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         [Alias("Title")]
         public override string Label { get; set; }

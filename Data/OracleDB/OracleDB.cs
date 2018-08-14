@@ -130,6 +130,11 @@ namespace ExpressBase.Common.Data
             return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type));
         }
 
+        public System.Data.Common.DbParameter GetNewOutParameter(string parametername, EbDbTypes type)
+        {
+            return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Direction = ParameterDirection.Output };
+        }
+
         public T DoQuery<T>(string query, params DbParameter[] parameters)
         {
             T obj = default(T);
@@ -298,7 +303,7 @@ namespace ExpressBase.Common.Data
 
         public int DoNonQuery(string query, params DbParameter[] parameters)
         {
-            var x = 0;
+            var return_val = 0;
             List<DbParameter> dbParameter = new List<DbParameter>();
             string[] sql_arr = query.Split(";");
             foreach (var param in parameters)
@@ -313,7 +318,7 @@ namespace ExpressBase.Common.Data
                 {
                     con.Open();
                     //for (int i = 0; i < sql_arr.Length - 1; i++)
-                    for (int i = 0; i < sql_arr.Length && sql_arr[i] != ""; i++)
+                    for (int i = 0; i < sql_arr.Length && sql_arr[i].Trim() != ""; i++)
                     {
                         using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                         {
@@ -323,7 +328,14 @@ namespace ExpressBase.Common.Data
                                 cmd.Parameters.AddRange(dbParameter.ToArray());
                             }
 
-                            x = cmd.ExecuteNonQuery();
+                            return_val = cmd.ExecuteNonQuery();
+                        }
+                    }
+                    foreach (var param in parameters)
+                    {
+                        if (ParameterDirection.Output == param.Direction)    //for return id
+                        {
+                            return_val = Convert.ToInt32(param.Value.ToString());
                         }
                     }
                 }
@@ -332,7 +344,7 @@ namespace ExpressBase.Common.Data
                     Console.WriteLine(orcl.Message);
                 }
 
-                return x;
+                return return_val;
             }
         }
 
