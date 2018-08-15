@@ -47,7 +47,9 @@ namespace ExpressBase.Common.Objects
         public override float FontSize { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
-        public bool IsContainer { get { return true; } private set { } }
+        public virtual bool IsContainer { get {
+                return true; }
+            private set { } }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         [Alias("Title")]
