@@ -352,7 +352,7 @@ namespace ExpressBase.Security
                         FullName = ds.Rows[0][2].ToString(),
                         Roles = rolesname,
                         Permissions = ds.Rows[0][5].ToString().IsNullOrEmpty()? new List<string>(): ds.Rows[0][5].ToString().Split(',').ToList(),
-						Preference = JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][6].ToString())
+						Preference = !string.IsNullOrEmpty((string)ds.Rows[0][6])? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][6].ToString()): new Preferences { Locale= "en-US", TimeZone = ""}
 					};
                 }
             }
