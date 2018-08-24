@@ -141,7 +141,6 @@ function ProcRecur(src_controls, dest_controls) {
                         {
                             TypeInfo _typeInfo = tool.GetTypeInfo();
                             var _enableInBuider = _typeInfo.GetCustomAttribute<EnableInBuilder>();
-
                             if (_enableInBuider != null && _enableInBuider.BuilderTypes.Contains(this.BuilderType))
                             {
                                 object toolObj = Activator.CreateInstance(tool);
