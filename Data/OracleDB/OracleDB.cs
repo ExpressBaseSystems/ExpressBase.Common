@@ -463,7 +463,8 @@ namespace ExpressBase.Common.Data
         public ColumnColletion GetColumnSchema(string table)
         {
             ColumnColletion cols = new ColumnColletion();
-            var query = "SELECT * FROM @tbl WHERE ROWNUM < 1".Replace("@tbl", table);
+
+            var query = "SELECT * FROM USER_TAB_COLS WHERE LOWER(TABLE_NAME)=LOWER('@tbl')".Replace("@tbl", table);
             using (var con = GetNewConnection() as OracleConnection)
             {
                 try
@@ -475,15 +476,15 @@ namespace ExpressBase.Common.Data
                         {
                             cmd.BindByName = true;
                             int pos = 0;
-                            foreach (DataRow dr in reader.GetSchemaTable().Rows)
-                            {
-                                string columnName = System.Convert.ToString(dr["ColumnName"]);
-                                Type type = (Type)(dr["DataType"]);
-                                EbDataColumn column = new EbDataColumn(columnName, ConvertToDbType(type));
-                                column.ColumnIndex = pos++;
-                                cols.Add(column);
-
-                            }
+							int _fieldCount = reader.FieldCount;
+							while (reader.Read())
+							{
+								object[] oArray = new object[_fieldCount];
+								reader.GetValues(oArray);
+								EbDataColumn column = new EbDataColumn(oArray[1].ToString(), ConvertToDbType(oArray[2].ToString()));
+								column.ColumnIndex = pos++;
+								cols.Add(column);
+							}
                         }
                     }
                 }
@@ -552,7 +553,22 @@ namespace ExpressBase.Common.Data
             return EbDbTypes.String;
         }
 
-        private void PrepareDataTable(OracleDataReader reader, EbDataTable dt)
+		public EbDbTypes ConvertToDbType(string _typ)
+		{
+			if (_typ == "DATE")
+				return EbDbTypes.Date;
+			else if (_typ == "CHAR")
+				return EbDbTypes.Boolean;
+			else if (_typ == "NUMBER")
+				return EbDbTypes.Decimal;
+			else if (_typ == "TIMESTAMP(6)")
+				return EbDbTypes.DateTime;
+
+			return EbDbTypes.String;
+		}
+		
+
+		private void PrepareDataTable(OracleDataReader reader, EbDataTable dt)
         {
             int _fieldCount = reader.FieldCount;
             while (reader.Read())
