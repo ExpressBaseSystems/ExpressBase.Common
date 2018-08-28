@@ -331,7 +331,8 @@ namespace ExpressBase.Common {
         ///	isanonym CHAR,
         ///	users CLOB,
         ///	dependantroles CLOB,
-        ///	permissions CLOB)
+        ///	permissions CLOB,
+        ///	locations VARCHAR2)
         ///    RETURN NUMBER IS
         ///    PRAGMA AUTONOMOUS_TRANSACTION;
         ///      rid NUMBER; 
@@ -343,8 +344,7 @@ namespace ExpressBase.Common {
         ///BEGIN  
         ///  rid := roleid;
         ///  in_users := users;
-        ///  in_dependantroles := dependantroles;
-        ///  in_pe [rest of string was truncated]&quot;;.
+        ///  in_dependantroles := de [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_rbac_roles {
             get {
@@ -353,9 +353,9 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_create_or_update_rbac_roles(integer, integer, integer, text, text, text, text, text, text)
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_create_or_update_rbac_roles(integer, integer, integer, text, text, text, text, text, text, text)
         ///
-        ///-- DROP FUNCTION public.eb_create_or_update_rbac_roles(integer, integer, integer, text, text, text, text, text, text);
+        ///-- DROP FUNCTION public.eb_create_or_update_rbac_roles(integer, integer, integer, text, text, text, text, text, text, text);
         ///
         ///CREATE OR REPLACE FUNCTION public.eb_create_or_update_rbac_roles(
         ///	roleid integer,
@@ -366,9 +366,9 @@ namespace ExpressBase.Common {
         ///	isanonym text,
         ///	users text,
         ///	dependantroles text,
-        ///	permissions text)
-        ///    RETURNS integer
-        ///    LANGUAGE [rest of string was truncated]&quot;;.
+        ///	permissions text,
+        ///	locations text)
+        ///    [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_rbac_roles1 {
             get {
@@ -715,6 +715,57 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE OR REPLACE FUNCTION public.eb_currval(seq text)
+        ///RETURNS integer
+        ///LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///AS $BODY$
+        ///
+        ///DECLARE curval integer; 
+        ///
+        ///BEGIN
+        ///SELECT currval(seq) into curval;
+        ///RETURN curval;
+        ///EXCEPTION WHEN OTHERS THEN
+        ///RETURN 0;
+        ///END;
+        ///
+        ///$BODY$;.
+        /// </summary>
+        public static string eb_currval {
+            get {
+                return ResourceManager.GetString("eb_currval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE OR REPLACE FUNCTION eb_currval(seq CLOB)
+        ///    RETURN NUMBER 
+        ///        IS
+        ///    PRAGMA AUTONOMOUS_TRANSACTION;
+        ///    curval NUMBER; 
+        ///BEGIN
+        ///    
+        ///     execute immediate &apos;
+        ///       select &apos; || dbms_assert.sql_object_name(seq) || &apos;.CURRVAL
+        ///         from dual&apos;
+        ///         into curval;    
+        ///    COMMIT; 
+        ///      RETURN curval;
+        ///    EXCEPTION 
+        ///        WHEN OTHERS THEN
+        ///            RETURN 0;
+        ///END;
+        ///
+        ///.
+        /// </summary>
+        public static string eb_currval1 {
+            get {
+                return ResourceManager.GetString("eb_currval1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BEGIN
         ///	EXECUTE IMMEDIATE &apos;create or replace type authenticate_res_obj as object (
         ///			userid integer, 
@@ -749,36 +800,6 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DECLARE
-        ///	eb_del varchar(10); 
-        ///BEGIN
-        ///	eb_del := &apos;F&apos;;
-        ///	EXECUTE IMMEDIATE &apos;CREATE SEQUENCE eb_files_id_seq START WITH 1&apos;;
-        ///
-        ///	
-        ///	EXECUTE IMMEDIATE &apos;CREATE TABLE eb_files
-        ///	(
-        ///    		id number NOT NULL,
-        ///    		userid number ,
-        ///    		objid varchar2(100),
-        ///    		length number,
-        ///    		tags varchar2(100),
-        ///			bucketname varchar2(30),
-        ///			filetype varchar2(30),
-        ///			uploaddatetime timestamp,
-        ///			eb_del char DEFAULT &apos;&apos;&apos;|| eb_del ||&apos;&apos;&apos;,  		
-        ///    		CONSTRAINT eb_files_id_pkey PRIMARY KEY (id)
-        ///	)&apos;;
-        ///
-        ///	EXECUTE IMMEDI [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_files {
-            get {
-                return ResourceManager.GetString("eb_files", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to --SEQUENCE public.eb_files_id_seq
         ///
         ///CREATE SEQUENCE public.eb_files_id_seq
@@ -802,6 +823,92 @@ namespace ExpressBase.Common {
         ///    objid text COLLATE pg_catalog.&quot;default&quot; NOT NULL,
         ///    length bigint,
         ///   [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_files {
+            get {
+                return ResourceManager.GetString("eb_files", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --SEQUENCE public.eb_files_bytea_id_seq
+        ///
+        ///CREATE SEQUENCE public.eb_files_bytea_id_seq
+        ///    INCREMENT 1
+        ///    START 1
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///
+        ///ALTER SEQUENCE public.eb_files_bytea_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_files_bytea
+        ///
+        ///-- DROP TABLE public.eb_files_bytea;
+        ///
+        ///CREATE TABLE public.eb_files_bytea
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_files_bytea_id_seq&apos;::regclass),
+        ///	filename text COLLATE pg_catalog.&quot;default&quot;,
+        ///	bytea bytea,
+        ///   [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_files_bytea {
+            get {
+                return ResourceManager.GetString("eb_files_bytea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DECLARE
+        ///	eb_del varchar(10); 
+        ///BEGIN
+        ///	eb_del := &apos;F&apos;;
+        ///	EXECUTE IMMEDIATE &apos;CREATE SEQUENCE eb_files_bytea_id_seq START WITH 1&apos;;
+        ///
+        ///	
+        ///	EXECUTE IMMEDIATE &apos;CREATE TABLE eb_files_bytea
+        ///	(
+        ///    		id number NOT NULL,
+        ///    		filename varchar2(30),
+        ///            		bytea blob,
+        ///    		tags varchar2(100),
+        ///			filetype varchar2(30),
+        ///    		CONSTRAINT eb_files_bytea_pkey PRIMARY KEY (id)
+        ///	)&apos;;
+        ///
+        ///	EXECUTE IMMEDIATE &apos;CREATE OR REPLACE TRIGGER eb_files_bytea_trigger BEFORE INSERT ON eb_files_bytea FOR EACH ROW BEGIN &apos; | [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_files_bytea1 {
+            get {
+                return ResourceManager.GetString("eb_files_bytea1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DECLARE
+        ///	eb_del varchar(10); 
+        ///BEGIN
+        ///	eb_del := &apos;F&apos;;
+        ///	EXECUTE IMMEDIATE &apos;CREATE SEQUENCE eb_files_id_seq START WITH 1&apos;;
+        ///
+        ///	
+        ///	EXECUTE IMMEDIATE &apos;CREATE TABLE eb_files
+        ///	(
+        ///    		id number NOT NULL,
+        ///    		userid number ,
+        ///    		objid varchar2(100),
+        ///    		length number,
+        ///    		tags varchar2(100),
+        ///			bucketname varchar2(30),
+        ///			filetype varchar2(30),
+        ///			uploaddatetime timestamp,
+        ///			eb_del char DEFAULT &apos;&apos;&apos;|| eb_del ||&apos;&apos;&apos;,  
+        ///			fileclass number,
+        ///    		CONSTRAINT eb_files_id_pkey PRIMARY KEY (id)
+        ///	)&apos; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files1 {
             get {
@@ -866,17 +973,17 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///create or replace FUNCTION eb_getpermissions(
+        ///   Looks up a localized string similar to create or replace FUNCTION eb_getpermissions(
         ///	in_roles VARCHAR2)
         ///    RETURN returnpermission_tbl as permissiontbl  returnpermission_tbl;
         ///
         ///BEGIN     
         ///    SELECT   
-        ///    	returnpermission_obj(LISTAGG(permissionname,&apos;,&apos;) within group(order by permissionname)) BULK COLLECT INTO permissiontbl  FROM 
-        ///        eb_role2permission 
-        ///    WHERE eb_del = &apos;F&apos; AND role_id = ANY(  SELECT regexp_substr(in_roles,&apos;[^,]+&apos;, 1, level) from dual
-        ///             CONNECT BY regexp_substr(in_roles, &apos;[^,]+&apos;, 1, level) is not n [rest of string was truncated]&quot;;.
+        ///    	returnpermission_obj(LISTAGG(per.permissionname || &apos;:&apos; || loc.locationid,&apos;,&apos;) within group(order by permissionname)) BULK COLLECT INTO permissiontbl  
+        ///	FROM         
+        ///		eb_role2permission per,eb_role2location loc
+        ///    WHERE 
+        ///		per.eb_del = &apos;F&apos; AND per.role_id = ANY(  SELECT regexp_substr(in_roles,&apos;[^,]+&apos;, 1, level) from dual CONNECT  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_getpermissions {
             get {
@@ -885,8 +992,7 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///-- FUNCTION: public.eb_getpermissions(integer[])
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_getpermissions(integer[])
         ///
         ///-- DROP FUNCTION public.eb_getpermissions(integer[]);
         ///
@@ -900,17 +1006,9 @@ namespace ExpressBase.Common {
         ///
         ///BEGIN
         ///	RETURN QUERY 
-        ///SELECT 
-        ///   array_to_string(array_agg(_per.permissionname), &apos;,&apos;) 
-        ///FROM 
-        ///	eb_role2permission _per
-        ///WHERE role_id = ANY(roles) AND eb_del=&apos;F&apos;;
-        ///END;
-        ///
-        ///$BODY$;
-        ///
-        ///ALTER FUNCTION public.eb_getpermissions(integer[])
-        ///    OWN [rest of string was truncated]&quot;;.
+        ///	
+        ///	SELECT array_to_string(array_agg(_per.permissionname || &apos;:&apos; || _loc.locationid), &apos;,&apos;) FROM eb_role2permission _per, eb_role2location _loc
+        ///		WHERE _per.role_id = _loc.roleid AND _per.role_id = ANY(roles) AND _per.eb_del= [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_getpermissions1 {
             get {

@@ -9,6 +9,7 @@ namespace ExpressBase.Common.Constants
         public const string DP = "dp";
         public const string LOC = "loc";
         public const string LOCATION_DP = "location_dp";
+        public const string ORG = "org";
         public const string SMALL = "small";
         public const string MEDIUM = "medium";
         public const string LARGE = "large";
@@ -27,6 +28,9 @@ namespace ExpressBase.Common.Constants
 
         //Notification Message Constants
         public const string UPLOADSUCCESS = "cmd.onUploadSuccess";
+
+        //Controller Types Url catg strings
+
 
         //FileTypes
         public const string JPG = "jpg";

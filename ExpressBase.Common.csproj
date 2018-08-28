@@ -30,6 +30,11 @@
       <EmbeddedResource Include="sqlscripts\oracle\eb_extras.sql" />
       <EmbeddedResource Include="sqlscripts\pgsql\eb_compilefunctions.sql" />
       <EmbeddedResource Include="sqlscripts\oracle\eb_compilefunctions.sql" />
+      
+      <EmbeddedResource Include="sqlscripts\oracle\filesdb\functioncreate\**" />
+      <EmbeddedResource Include="sqlscripts\oracle\filesdb\tablecreate\**" />
+      <EmbeddedResource Include="sqlscripts\pgsql\filesdb\functioncreate\**" />
+      <EmbeddedResource Include="sqlscripts\pgsql\filesdb\tablecreate\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FOSS.ServiceStack.Core" Version="5.0.2" />
@@ -61,5 +66,10 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+    <Folder Include="sqlscripts\mysql\filesdb\" />
+    <Folder Include="sqlscripts\oracle\filesdb\functioncreate\" />
+    <Folder Include="sqlscripts\oracle\filesdb\tablecreate\" />
+    <Folder Include="sqlscripts\pgsql\filesdb\functioncreate\" />
+    <Folder Include="sqlscripts\pgsql\filesdb\tablecreate\" />
   </ItemGroup>
 </Project>

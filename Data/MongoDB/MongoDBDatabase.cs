@@ -1,4 +1,6 @@
 ﻿using ExpressBase.Common.Connections;
+using ExpressBase.Common.EbServiceStack.ReqNRes;
+using ExpressBase.Common.Enums;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
@@ -32,11 +34,11 @@ namespace ExpressBase.Common.Data.MongoDB
 			mongoDatabase = mongoClient.GetDatabase(this.TenantId);
 		}
 
-		public ObjectId UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, string bucketName)
+		public EbFileId UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, EbFileCategory cat)
 		{
 			Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
 			{
-				BucketName = bucketName,
+				BucketName = cat.ToString(),
 				ChunkSizeBytes = 1048576, // 1MB
 				WriteConcern = WriteConcern.WMajority,
 				ReadPreference = ReadPreference.Secondary
@@ -54,16 +56,16 @@ namespace ExpressBase.Common.Data.MongoDB
 			};
 			try
 			{
-				return Bucket.UploadFromBytes(filename, bytea, options);
+                return new EbFileId(Bucket.UploadFromBytes(filename, bytea, options).ToString());
 			}
 			catch (Exception e)
 			{
 				Console.WriteLine("Exception:" + e.ToString());
-				return new ObjectId("Error");
+				return new EbFileId("Error");
 			}
 		}
 
-		public byte[] DownloadFile(ObjectId objectid, string bucketName)
+		public byte[] DownloadFileById(EbFileId objectid, EbFileCategory cat)
 		{
 			byte[] res = null;
 
@@ -71,12 +73,13 @@ namespace ExpressBase.Common.Data.MongoDB
 			{
 				Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
 				{
-					BucketName = bucketName,
+					BucketName = cat.ToString(),
 					ChunkSizeBytes = 1048576, // 1MB
 					WriteConcern = WriteConcern.WMajority,
 					ReadPreference = ReadPreference.Secondary
 				});
-				res = Bucket.DownloadAsBytes(objectid, new GridFSDownloadOptions() { CheckMD5 = true });
+                ObjectId objId = new ObjectId(objectid.ObjectId);
+				res = Bucket.DownloadAsBytes(objId, new GridFSDownloadOptions() { CheckMD5 = true });
 			}
 
 			catch (GridFSFileNotFoundException e)
@@ -91,7 +94,7 @@ namespace ExpressBase.Common.Data.MongoDB
 			return res;
 		}
 
-		public byte[] DownloadFile(string filename, string bucketName)
+		public byte[] DownloadFileByName(string filename, EbFileCategory cat)
 		{
 			byte[] res = null;
 
@@ -99,7 +102,7 @@ namespace ExpressBase.Common.Data.MongoDB
 			{
 				Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
 				{
-					BucketName = bucketName,
+					BucketName = cat.ToString(),
 					ChunkSizeBytes = 1048576, // 1MB
 					WriteConcern = WriteConcern.WMajority,
 					ReadPreference = ReadPreference.Secondary

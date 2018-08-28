@@ -83,7 +83,7 @@ namespace ExpressBase.Common.Connections
     }
 
     // For Infra Files, Tenant Files
-    public class EbFilesDbConnection : IEbConnection
+    public class EbFilesDbConnection : EbBaseDbConnection
     {
         public FilesDbVendors FilesDbVendor { set; get; }
 

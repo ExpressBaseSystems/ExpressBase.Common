@@ -28,6 +28,7 @@ namespace ExpressBase.Common
 
     public enum FilesDbVendors
     {
+        SQLDB,
         MongoDB,
         Cloudinary,
         Cloudfront,
@@ -105,6 +106,14 @@ namespace ExpressBase.Common
         TRIGGER,
         TRUNCATE,
         UPDATE
+    }
+
+    public enum SurveyQTypes
+    {
+        SingleSelect = 1,
+        MultiSelect = 2,
+        Rating = 3,
+        UserInput = 4
     }
 
 }

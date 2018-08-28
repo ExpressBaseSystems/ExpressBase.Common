@@ -1,6 +1,11 @@
 ﻿using ExpressBase.Common;
 using ExpressBase.Common.Connections;
+using ExpressBase.Common.Data;
+using ExpressBase.Common.EbServiceStack.ReqNRes;
+using ExpressBase.Common.Enums;
 using ExpressBase.Common.Structures;
+using MongoDB.Bson;
+using MongoDB.Driver.GridFS;
 using Npgsql;
 using Npgsql.Schema;
 using NpgsqlTypes;
@@ -35,7 +40,7 @@ namespace ExpressBase.Common
         VendorDbType IVendorDbTypes.Json { get { return InnerDictionary[EbDbTypes.Json]; } }
 
         VendorDbType IVendorDbTypes.Boolean { get { return InnerDictionary[EbDbTypes.Boolean]; } }
-       
+
         private PGSQLEbDbTypes()
         {
             this.InnerDictionary = new Dictionary<EbDbTypes, VendorDbType>();
@@ -119,6 +124,11 @@ namespace ExpressBase.Common
             return new NpgsqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type));
         }
 
+        public System.Data.Common.DbParameter GetNewOutParameter(string parametername, EbDbTypes type)
+        {
+            return new NpgsqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Direction = ParameterDirection.Output };
+        }
+
         public T DoQuery<T>(string query, params DbParameter[] parameters)
         {
             T obj = default(T);
@@ -142,7 +152,7 @@ namespace ExpressBase.Common
                 }
                 catch (Npgsql.NpgsqlException npgse)
                 {
-                    
+
                     throw npgse;
                 }
                 catch (SocketException scket) { }
@@ -175,7 +185,7 @@ namespace ExpressBase.Common
                 }
                 catch (Npgsql.NpgsqlException npgse)
                 {
-                    Console.WriteLine("Postgres Exception: "+ npgse.Message);
+                    Console.WriteLine("Postgres Exception: " + npgse.Message);
                     throw npgse;
                 }
                 catch (SocketException scket)
@@ -454,7 +464,7 @@ namespace ExpressBase.Common
                 {
                     con.Open();
                     using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
-                    {                       
+                    {
                         using (var reader = cmd.ExecuteReader())
                         {
                             int pos = 0;
@@ -506,8 +516,9 @@ namespace ExpressBase.Common
 				AND EO2A.eb_del = 'F'
                 AND EOS.status = 3 
 				AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );"; } }
-         
-        public string EB_SIDEBARDEV_REQUEST {
+
+        public string EB_SIDEBARDEV_REQUEST
+        {
             get { return @"
                 SELECT id, applicationname FROM eb_applications;
                             SELECT 
@@ -521,7 +532,8 @@ namespace ExpressBase.Common
                             WHERE
 	                            COALESCE(EO2A.eb_del, 'F') = 'F' 
                             ORDER BY 
-	                            EO.obj_type;"; } }
+	                            EO.obj_type;"; }
+        }
 
         public string EB_SIDEBARCHECK { get { return "AND EO.id = ANY('{:Ids}') "; } }
 
@@ -567,18 +579,18 @@ namespace ExpressBase.Common
         public string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_createormodifyuserandroles(:userid,:id,:fullname,:nickname,:email,:pwd,:dob,:sex,:alternateemail,:phprimary,:phsecondary,:phlandphone,:extension,:fbid,:fbname,:roles,:groups,:statusid,:hide,:anonymoususerid,:preference);"; } }
         public string EB_SAVEUSERGROUP_QUERY { get { return "SELECT * FROM eb_createormodifyusergroup(:userid,:id,:name,:description,:users);"; } }
 
-		public string EB_MANAGEUSER_FIRST_QUERY
-		{
-			get
-			{
-				return @"SELECT id, role_name, description FROM eb_roles ORDER BY role_name;
+        public string EB_MANAGEUSER_FIRST_QUERY
+        {
+            get
+            {
+                return @"SELECT id, role_name, description FROM eb_roles ORDER BY role_name;
                         SELECT id, name,description FROM eb_usergroup ORDER BY name;
 						SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';";
-			}
-		}
+            }
+        }
 
-		//.......OBJECTS QUERIES.....
-		public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
+        //.......OBJECTS QUERIES.....
+        public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
         {
             get
             {
@@ -873,5 +885,24 @@ namespace ExpressBase.Common
         }
 
     }
-}
 
+    public class PGSQLFileDatabase : PGSQLDatabase, INoSQLDatabase
+    {
+        public PGSQLFileDatabase(EbBaseDbConnection dbconf) : base(dbconf) { }
+
+        public byte[] DownloadFileById(EbFileId objectid, EbFileCategory cat)
+        {
+            throw new NotImplementedException();
+        }
+
+        public byte[] DownloadFileByName(string filename, EbFileCategory cat)
+        {
+            throw new NotImplementedException();
+        }
+
+        public EbFileId UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, EbFileCategory cat)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
