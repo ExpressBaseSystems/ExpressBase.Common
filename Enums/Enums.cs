@@ -108,5 +108,13 @@ namespace ExpressBase.Common
         UPDATE
     }
 
+    public enum SurveyQTypes
+    {
+        SingleSelect = 1,
+        MultiSelect = 2,
+        Rating = 3,
+        UserInput = 4
+    }
+
 }
 

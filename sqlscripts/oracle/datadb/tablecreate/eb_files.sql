@@ -15,7 +15,8 @@ BEGIN
 			bucketname varchar2(30),
 			filetype varchar2(30),
 			uploaddatetime timestamp,
-			eb_del char DEFAULT '''|| eb_del ||''',  		
+			eb_del char DEFAULT '''|| eb_del ||''',  
+			fileclass number,
     		CONSTRAINT eb_files_id_pkey PRIMARY KEY (id)
 	)';
 

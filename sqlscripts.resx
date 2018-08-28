@@ -196,12 +196,6 @@
   <data name="eb_extras1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\pgsql\eb_extras.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="eb_files" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sqlscripts\oracle\objectsdb\tablecreate\eb_files.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="eb_files1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sqlscripts\pgsql\objectsdb\tablecreate\eb_files.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
   <data name="eb_getpermissions" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\oracle\datadb\functioncreate\eb_getpermissions.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
@@ -396,5 +390,23 @@
   </data>
   <data name="eb_role2location1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\oracle\datadb\tablecreate\eb_role2location.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_files" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_files.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_files1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\datadb\tablecreate\eb_files.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="eb_files_bytea" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\filesdb\tablecreate\eb_files_bytea.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_files_bytea1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\filesdb\tablecreate\eb_files_bytea.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_currval" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\objectsdb\functioncreate\eb_currval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_currval1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\objectsdb\functioncreate\eb_currval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>

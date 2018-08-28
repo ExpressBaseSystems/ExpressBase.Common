@@ -90,7 +90,7 @@ namespace ExpressBase.Common.Structures
         public const int iBotForm = 18;
 
         public static readonly EbObjectType Null = new EbObjectType("Null", iNull, ObjectConstants.XXX, false);
-        public static readonly EbObjectType WebForm = new EbObjectType(ObjectConstants.WEB_FORM, iWebForm, ObjectConstants.XXW, false);//true
+        public static readonly EbObjectType WebForm = new EbObjectType(ObjectConstants.WEB_FORM, iWebForm, ObjectConstants.XXW, true);//true
         //public static readonly EbObjectType DisplayBlock = new EbObjectType(ObjectConstants.DISPLAY_BLOCK, iDisplayBlock, ObjectConstants.XXX, false);
         public static readonly EbObjectType DataSource = new EbObjectType(ObjectConstants.DATA_SOURCE, iDataSource, ObjectConstants.BMW, false);
         public static readonly EbObjectType Report = new EbObjectType(ObjectConstants.REPORT, iReport, ObjectConstants.XMW, true);

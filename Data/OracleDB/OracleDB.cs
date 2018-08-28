@@ -133,6 +133,11 @@ namespace ExpressBase.Common.Data
             return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type));
         }
 
+        public System.Data.Common.DbParameter GetNewOutParameter(string parametername, EbDbTypes type)
+        {
+            return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Direction = ParameterDirection.Output };
+        }
+
         public T DoQuery<T>(string query, params DbParameter[] parameters)
         {
             T obj = default(T);
@@ -301,7 +306,7 @@ namespace ExpressBase.Common.Data
 
         public int DoNonQuery(string query, params DbParameter[] parameters)
         {
-            var x = 0;
+            var return_val = 0;
             List<DbParameter> dbParameter = new List<DbParameter>();
             string[] sql_arr = query.Split(";");
             foreach (var param in parameters)
@@ -316,7 +321,7 @@ namespace ExpressBase.Common.Data
                 {
                     con.Open();
                     //for (int i = 0; i < sql_arr.Length - 1; i++)
-                    for (int i = 0; i < sql_arr.Length && sql_arr[i] != ""; i++)
+                    for (int i = 0; i < sql_arr.Length && sql_arr[i].Trim() != ""; i++)
                     {
                         using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
                         {
@@ -326,7 +331,14 @@ namespace ExpressBase.Common.Data
                                 cmd.Parameters.AddRange(dbParameter.ToArray());
                             }
 
-                            x = cmd.ExecuteNonQuery();
+                            return_val = cmd.ExecuteNonQuery();
+                        }
+                    }
+                    foreach (var param in parameters)
+                    {
+                        if (ParameterDirection.Output == param.Direction)    //for return id
+                        {
+                            return_val = Convert.ToInt32(param.Value.ToString());
                         }
                     }
                 }
@@ -335,7 +347,7 @@ namespace ExpressBase.Common.Data
                     Console.WriteLine(orcl.Message);
                 }
 
-                return x;
+                return return_val;
             }
         }
 
@@ -454,7 +466,8 @@ namespace ExpressBase.Common.Data
         public ColumnColletion GetColumnSchema(string table)
         {
             ColumnColletion cols = new ColumnColletion();
-            var query = "SELECT * FROM @tbl WHERE ROWNUM < 1".Replace("@tbl", table);
+
+            var query = "SELECT * FROM USER_TAB_COLS WHERE LOWER(TABLE_NAME)=LOWER('@tbl')".Replace("@tbl", table);
             using (var con = GetNewConnection() as OracleConnection)
             {
                 try
@@ -466,15 +479,15 @@ namespace ExpressBase.Common.Data
                         {
                             cmd.BindByName = true;
                             int pos = 0;
-                            foreach (DataRow dr in reader.GetSchemaTable().Rows)
-                            {
-                                string columnName = System.Convert.ToString(dr["ColumnName"]);
-                                Type type = (Type)(dr["DataType"]);
-                                EbDataColumn column = new EbDataColumn(columnName, ConvertToDbType(type));
-                                column.ColumnIndex = pos++;
-                                cols.Add(column);
-
-                            }
+							int _fieldCount = reader.FieldCount;
+							while (reader.Read())
+							{
+								object[] oArray = new object[_fieldCount];
+								reader.GetValues(oArray);
+								EbDataColumn column = new EbDataColumn(oArray[1].ToString(), ConvertToDbType(oArray[2].ToString()));
+								column.ColumnIndex = pos++;
+								cols.Add(column);
+							}
                         }
                     }
                 }
@@ -543,7 +556,22 @@ namespace ExpressBase.Common.Data
             return EbDbTypes.String;
         }
 
-        private void PrepareDataTable(OracleDataReader reader, EbDataTable dt)
+		public EbDbTypes ConvertToDbType(string _typ)
+		{
+			if (_typ == "DATE")
+				return EbDbTypes.Date;
+			else if (_typ == "CHAR")
+				return EbDbTypes.Boolean;
+			else if (_typ == "NUMBER")
+				return EbDbTypes.Decimal;
+			else if (_typ == "TIMESTAMP(6)")
+				return EbDbTypes.DateTime;
+
+			return EbDbTypes.String;
+		}
+		
+
+		private void PrepareDataTable(OracleDataReader reader, EbDataTable dt)
         {
             int _fieldCount = reader.FieldCount;
             while (reader.Read())

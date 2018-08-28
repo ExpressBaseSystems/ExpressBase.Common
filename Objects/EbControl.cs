@@ -172,6 +172,21 @@ else
             return '"' + "<div>no GetWrapedCtrlHtml4bot() defined</div>" + '"';
         }
 
+//        public virtual string GetWrapedCtrlHtml4Web(string barehtml)
+//        {
+//            string ResHTML = string.Empty;
+
+//            ResHTML = @"
+//<div id='cont_@name@' class='Eb-ctrlContainer' Ctype='@type@' style='@hiddenString'>
+//    <span class='eb-ctrl-label' ui-label id='@nameLbl'>@label@</span>
+//       @barehtml@
+//    <span class='helpText'> @helpText </span>
+//</div>"
+//.Replace("@barehtml@", barehtml).RemoveCR().GraveAccentQuoted();
+
+//            return ResHTML;
+//        }
+
         public virtual string GetWrapedCtrlHtml4bot(ref EbControl ChildObj)
         {
             string bareHTML = ChildObj.DesignHtml4Bot ?? ChildObj.GetBareHtml(),
@@ -214,44 +229,6 @@ else
 .Replace("@style@", (ChildObj.isFullViewContol ? "margin-left:12px;" : string.Empty)).RemoveCR();
             return ResHTML;
         }
-
-        //        public string GetWrapedCtrlHtml4bot(string bareHTML, string type)
-        //        {
-        //            type = type.Substring(2, this.GetType().Name.Length - 2);
-        //            string innerHTML = @" <div class='ctrl-wraper' @style@> @barehtml@ </div>".Replace("@barehtml@", bareHTML);
-        //            bool t = true;
-        //            if (!(type == "Cards" || type == "Locations" || type == "InputGeoLocation" || type == "Image"))
-        //            {
-        //                innerHTML = (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>");
-        //                t = false;
-        //            }
-        //            else
-        //                innerHTML = innerHTML.Replace("@style@", "style='width:100%;border:none;'");
-        //            string res = @"
-        //<div id='TextBox0' class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='TextBox'>
-        //   <div class='msg-cont'>
-        //      <div class='bot-icon'></div>
-        //      <div class='msg-cont-bot'>
-        //         <div class='msg-wraper-bot'>
-        //            @Label@
-        //            <div class='msg-time'>3:44pm</div>
-        //         </div>
-        //      </div>
-        //   </div>
-        //   <div class='msg-cont' for='TextBox1' form='LeaveJS'>
-        //      <div class='msg-cont-bot'>
-        //         <div class='msg-wraper-bot' style='@style@ border: none; background-color: transparent; width: 99%; padding-right: 3px;'>
-        //            @innerHTML@
-        //         </div>
-        //      </div>
-        //   </div>
-        //</div>"
-        //.Replace("@type@", type)
-        //.Replace("@innerHTML@", innerHTML)
-        //.Replace("@style@", (t ? "margin-left:12px;" : string.Empty))
-        //.RemoveCR().DoubleQuoted();
-        //            return res;
-        //        }
 
         public override void Init4Redis(IRedisClient redisclient, IServiceClient serviceclient)
         {

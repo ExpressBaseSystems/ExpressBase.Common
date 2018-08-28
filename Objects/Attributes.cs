@@ -209,24 +209,24 @@ namespace ExpressBase.Common.Objects.Attributes
     public static class OnChangeUIfns
     {
         public const string BACKCOLOR = @"
-                $('#' + elementId + ' [ui-inp]').css('background-color',props.BackColor);";
+                $(`#${ elementId}.Eb-ctrlContainer`).closestInner('[ui-inp]').css('background-color',props.BackColor);";
 
         public const string FORECOLOR = @"
-                $('#' + elementId + ' [ui-inp]').css('background-color',props.ForeColor);";
+                $(`#${ elementId}.Eb-ctrlContainer`).closestInner('[ui-inp]').css('color',props.ForeColor);";
 
-        public const string LABEL= @"
-                $('#' + elementId + ' [ui-label]').text(props.Label);";
+        public const string LABEL = @"
+                $(`#${ elementId}.Eb-ctrlContainer`).closestInner('[ui-label]').text(props.Label);";
 
         public const string LABEL_COLOR = @"
-                $('#' + elementId + ' [ui-label]').css('color',props.LabelForeColor);";
+                $(`#${ elementId}.Eb-ctrlContainer`).closestInner('[ui-label]').css('color',props.LabelForeColor);";
 
         public const string LABEL_BACKCOLOR = @"
-                $('#' + elementId + ' [ui-label]').css('background-color',props.LabelBackColor);";
+                $(`#${ elementId}.Eb-ctrlContainer`).closestInner('[ui-label]').css('background-color',props.LabelBackColor);";
 
-        public const string HELP_TEXT= @"
-                $('#' + elementId + ' [ui-helptxt]').text(props.HelpText);";
+        public const string HELP_TEXT = @"
+                $(`#${ elementId}.Eb-ctrlContainer`).closestInner('[ui-helptxt]').text(props.HelpText);";
 
-        public static  string getFunctions()
+        public static string getFunctions()
         {
             string jsonStr = "EbOnChangeUIfns.Common = {";
             Type type = typeof(OnChangeUIfns);
@@ -240,7 +240,7 @@ namespace ExpressBase.Common.Objects.Attributes
                         @functionStr
                     }".Replace("@functionStr", fun.ToString());
 
-                jsonStr += "'" + prop.Name + "':" +  fun + ", ";
+                jsonStr += "'" + prop.Name + "':" + fun + ", ";
             }
             return jsonStr + "}";
         }

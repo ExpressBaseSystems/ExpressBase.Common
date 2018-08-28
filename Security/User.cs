@@ -186,9 +186,6 @@ namespace ExpressBase.Security
 					{
 						//roles
 						string[] role_ids = ds.Rows[0][3].ToString().Split(',');
-						List<string> permissions = new List<string>();
-						if (!ds.Rows[0][4].ToString().IsNullOrEmpty())
-							permissions = ds.Rows[0][4].ToString().Split(',').ToList<string>();
 						List<string> rolesname = new List<string>();
 						var sysroles = Enum.GetValues(typeof(SystemRoles));
 						foreach (string roleid in role_ids)
@@ -203,7 +200,7 @@ namespace ExpressBase.Security
 							Email = ds.Rows[0][1].ToString(),
 							FullName = ds.Rows[0][2].ToString(),
 							Roles = rolesname,
-							Permissions = permissions,
+							Permissions = ds.Rows[0][4].ToString().IsNullOrEmpty()? new List<string>(): ds.Rows[0][4].ToString().Split(',').ToList(),
 							Preference = JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][5].ToString())
 						};
 					}
@@ -354,8 +351,8 @@ namespace ExpressBase.Security
                         Email = ds.Rows[0][1].ToString(),
                         FullName = ds.Rows[0][2].ToString(),
                         Roles = rolesname,
-                        Permissions = ds.Rows[0][5].ToString().Split(',').ToList(),
-						Preference = JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][6].ToString())
+                        Permissions = ds.Rows[0][5].ToString().IsNullOrEmpty()? new List<string>(): ds.Rows[0][5].ToString().Split(',').ToList(),
+						Preference = !string.IsNullOrEmpty((string)ds.Rows[0][6])? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][6].ToString()): new Preferences { Locale= "en-US", TimeZone = ""}
 					};
                 }
             }
@@ -370,6 +367,9 @@ namespace ExpressBase.Security
 
 		[DataMember(Order = 2)]
 		public string TimeZone { get; set; }
+
+		[DataMember(Order = 3)]
+		public int DefaultLocation { get; set; }
 	}
 }
 
