@@ -1,3 +1,4 @@
+using ExpressBase.Common.Enums;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
@@ -13,49 +14,61 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class UploadFileRequest : EbServiceStackRequest
+    public class UploadMqRequest : EbServiceStackRequest
     {
         [DataMember(Order = 1)]
-        public FileMeta FileDetails { get; set; }
+        public byte[] Byte { get; set; }
 
         [DataMember(Order = 2)]
-        public byte[] FileByte { get; set; }
-
-        [DataMember(Order = 3)]
-        public string BucketName { get; set; }
-
-        [DataMember(Order = 4)]
         public string BToken { get; set; }
 
-        [DataMember(Order = 5)]
+        [DataMember(Order = 3)]
         public string RToken { get; set; }
+
+        public void AddAuth(string btoken, string rtoken)
+        {
+            BToken = btoken;
+            RToken = rtoken;
+        }
     }
 
     [DataContract]
-    public class ImageResizeRequest : EbServiceStackRequest
+    public class UploadFileRequest : UploadMqRequest
+    {
+
+        [DataMember(Order = 1)]
+        public FileMeta FileDetails { get; set; }
+    }
+
+    [DataContract]
+    public class UploadImageRequest : UploadMqRequest
     {
         [DataMember(Order = 1)]
-        public FileMeta ImageInfo { get; set; }
+        public ImageMeta ImageInfo { get; set; }
+    }
+
+    [DataContract]
+    public class ImageResizeRequest : UploadMqRequest
+    {
+        [DataMember(Order = 1)]
+        public ImageMeta ImageInfo { get; set; }
 
         [DataMember(Order = 2)]
         public byte[] ImageByte { get; set; }
     }
 
     [DataContract]
-    public class FileMetaPersistRequest : EbServiceStackRequest
+    public class FileMetaPersistRequest : UploadMqRequest
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
-
-        [DataMember(Order = 2)]
-        public string BucketName { get; set; }
     }
 
     [DataContract]
     public class FileMeta
     {
         [DataMember(Order = 1)]
-        public string ObjectId { get; set; }
+        public EbFileId ObjectId { get; set; }
 
         [DataMember(Order = 2)]
         public string FileName { get; set; }
@@ -71,7 +84,39 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 6)]
         public string FileType { get; set; }
+
+        [DataMember(Order = 7)]
+        public EbFileCategory FileCategory { get; set; }
     }
+
+    [DataContract]
+    public class ImageMeta
+    {
+        [DataMember(Order = 1)]
+        public EbFileId ObjectId { get; set; }
+
+        [DataMember(Order = 2)]
+        public string FileName { get; set; }
+
+        [DataMember(Order = 3)]
+        public IDictionary<string, List<string>> MetaDataDictionary { get; set; }
+
+        [DataMember(Order = 4)]
+        public DateTime UploadDateTime { get; set; }
+
+        [DataMember(Order = 5)]
+        public Int64 Length { get; set; }
+
+        [DataMember(Order = 6)]
+        public string FileType { get; set; }
+
+        [DataMember(Order = 7)]
+        public EbFileCategory FileCategory { get; set; }
+
+        [DataMember(Order = 8)]
+        public ImageQuality ImageQuality { get; set; }
+    }
+
 
     [DataContract]
     public class UploadFileAsyncRequest : EbServiceStackRequest, IReturn<UploadAsyncResponse>
@@ -94,7 +139,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     public class UploadImageAsyncRequest : EbServiceStackRequest, IReturn<UploadAsyncResponse>
     {
         [DataMember(Order = 1)]
-        public FileMeta ImageInfo { get; set; }
+        public ImageMeta ImageInfo { get; set; }
 
         [DataMember(Order = 2)]
         public byte[] ImageByte { get; set; }
@@ -119,6 +164,51 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
+
+        public DownloadFileRequest()
+        {
+            FileDetails = new FileMeta();
+        }
+    }
+
+    [DataContract]
+    public class DownloadFileByIdRequest : EbServiceStackRequest, IReturn<DownloadFileResponse>
+    {
+        [DataMember(Order = 1)]
+        public FileMeta FileDetails { get; set; }
+
+        public DownloadFileByIdRequest()
+        {
+            FileDetails = new FileMeta();
+        }
+    }
+
+    [DataContract]
+    public class EbFileId
+    {
+        [DataMember(Order = 1)]
+        public string ObjectId { get; set; }
+
+        public EbFileId() { }
+
+        public EbFileId(string objectId)
+        {
+            ObjectId = objectId;
+        }
+    }
+
+    [DataContract]
+    public class DownloadImageByIdRequest : EbServiceStackRequest, IReturn<DownloadFileResponse>
+    {
+        [DataMember(Order = 1)]
+        public ImageMeta ImageInfo { get; set; }
+    }
+
+    [DataContract]
+    public class DownloadImageByNameRequest : EbServiceStackRequest, IReturn<DownloadFileResponse>
+    {
+        [DataMember(Order = 1)]
+        public ImageMeta ImageInfo { get; set; }
     }
 
     [DataContract]
@@ -139,6 +229,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     {
         [DataMember(Order = 1)]
         public string FileName { get; set; }
+
+        [DataMember(Order = 2)]
+        public const EbFileCategory FileCategory = EbFileCategory.External;
     }
 
     [DataContract]

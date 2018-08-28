@@ -10,8 +10,10 @@
         bmp = 6,
     }
 
-    public enum ImageSizes
+    public enum ImageQuality
     {
+        original = 0,
+        other = 1,
         small = 50,
         medium = 150,
         large = 600
