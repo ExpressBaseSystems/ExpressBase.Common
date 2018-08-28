@@ -715,6 +715,57 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE OR REPLACE FUNCTION public.eb_currval(seq text)
+        ///RETURNS integer
+        ///LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///AS $BODY$
+        ///
+        ///DECLARE curval integer; 
+        ///
+        ///BEGIN
+        ///SELECT currval(seq) into curval;
+        ///RETURN curval;
+        ///EXCEPTION WHEN OTHERS THEN
+        ///RETURN 0;
+        ///END;
+        ///
+        ///$BODY$;.
+        /// </summary>
+        public static string eb_currval {
+            get {
+                return ResourceManager.GetString("eb_currval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE OR REPLACE FUNCTION eb_currval(seq CLOB)
+        ///    RETURN NUMBER 
+        ///        IS
+        ///    PRAGMA AUTONOMOUS_TRANSACTION;
+        ///    curval NUMBER; 
+        ///BEGIN
+        ///    
+        ///     execute immediate &apos;
+        ///       select &apos; || dbms_assert.sql_object_name(seq) || &apos;.CURRVAL
+        ///         from dual&apos;
+        ///         into curval;    
+        ///    COMMIT; 
+        ///      RETURN curval;
+        ///    EXCEPTION 
+        ///        WHEN OTHERS THEN
+        ///            RETURN 0;
+        ///END;
+        ///
+        ///.
+        /// </summary>
+        public static string eb_currval1 {
+            get {
+                return ResourceManager.GetString("eb_currval1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BEGIN
         ///	EXECUTE IMMEDIATE &apos;create or replace type authenticate_res_obj as object (
         ///			userid integer, 
@@ -749,7 +800,7 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SEQUENCE public.eb_files_id_seq
+        ///   Looks up a localized string similar to --SEQUENCE public.eb_files_id_seq
         ///
         ///CREATE SEQUENCE public.eb_files_id_seq
         ///    INCREMENT 1
@@ -771,7 +822,7 @@ namespace ExpressBase.Common {
         ///    userid integer NOT NULL,
         ///    objid text COLLATE pg_catalog.&quot;default&quot; NOT NULL,
         ///    length bigint,
-        ///     [rest of string was truncated]&quot;;.
+        ///   [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files {
             get {
