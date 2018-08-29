@@ -38,7 +38,7 @@ namespace ExpressBase.Common
         VendorDbType IVendorDbTypes.Time { get { return InnerDictionary[EbDbTypes.Time]; } }
         VendorDbType IVendorDbTypes.VarNumeric { get { return InnerDictionary[EbDbTypes.VarNumeric]; } }
         VendorDbType IVendorDbTypes.Json { get { return InnerDictionary[EbDbTypes.Json]; } }
-
+        VendorDbType IVendorDbTypes.Bytea { get { return InnerDictionary[EbDbTypes.Bytea]; } }
         VendorDbType IVendorDbTypes.Boolean { get { return InnerDictionary[EbDbTypes.Boolean]; } }
 
         private PGSQLEbDbTypes()
@@ -59,6 +59,7 @@ namespace ExpressBase.Common
             this.InnerDictionary.Add(EbDbTypes.Time, new VendorDbType(EbDbTypes.Time, NpgsqlDbType.Time));
             this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, NpgsqlDbType.Numeric));
             this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, NpgsqlDbType.Json));
+            this.InnerDictionary.Add(EbDbTypes.Bytea, new VendorDbType(EbDbTypes.Bytea, NpgsqlDbType.Bytea));
             this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, NpgsqlDbType.Char));
         }
 
@@ -892,17 +893,76 @@ namespace ExpressBase.Common
 
         public byte[] DownloadFileById(EbFileId objectid, EbFileCategory cat)
         {
-            throw new NotImplementedException();
+            NpgsqlDataReader reader = null;
+            try
+            {
+                using (NpgsqlConnection con = GetNewConnection() as NpgsqlConnection)
+                {
+                    con.Open();
+                    string sql = "SELECT bytea FROM eb_files_bytea WHERE filestore_id = :objectid AND filecategory = :cat;";
+                    NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
+                    cmd.Parameters.Add(GetNewParameter(":objid", EbDbTypes.String, objectid.ObjectId));
+                    cmd.Parameters.Add(GetNewParameter(":cat", EbDbTypes.Int32, cat));
+                    reader = cmd.ExecuteReader();
+                }
+            }
+            catch (NpgsqlException npg)
+            {
+
+            }
+            return (byte[])reader[0];
+            //throw new NotImplementedException();
         }
 
         public byte[] DownloadFileByName(string filename, EbFileCategory cat)
         {
-            throw new NotImplementedException();
+            NpgsqlDataReader reader = null;
+            try
+            {
+                using (NpgsqlConnection con = GetNewConnection() as NpgsqlConnection)
+                {
+                    con.Open();
+                    string sql = "SELECT bytea FROM eb_files_bytea WHERE filename = :filename AND filecategory = :cat;";
+                    NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
+                    cmd.Parameters.Add(GetNewParameter(":filename", EbDbTypes.String, filename));
+                    cmd.Parameters.Add(GetNewParameter(":cat", EbDbTypes.Int32, cat));
+                    reader = cmd.ExecuteReader();
+                }
+            }
+            catch(NpgsqlException npg)
+            {
+
+            }
+            return (byte[])reader[0];
+            
         }
 
         public EbFileId UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, EbFileCategory cat)
         {
-            throw new NotImplementedException();
+            string _metaDataPair = EbSerializers.Json_Serialize(MetaDataPair);
+            int rtn=0;
+            try
+            {
+                using (NpgsqlConnection con = GetNewConnection() as NpgsqlConnection)
+                {
+                    con.Open();
+                    string sql = "INSERT INTO eb_files_bytea(filename,meta,bytea,filecategory) VALUES (:filename,:MetaDataPair,bytea,:cat) returning id;";
+                    NpgsqlCommand cmd = new NpgsqlCommand(sql,con);
+                    cmd.Parameters.Add(GetNewParameter(":filename", EbDbTypes.String, filename));
+                    cmd.Parameters.Add(GetNewParameter(":MetaDataPair", EbDbTypes.String, _metaDataPair));
+                    cmd.Parameters.Add(GetNewParameter(":bytea", EbDbTypes.Bytea, bytea));
+                    cmd.Parameters.Add(GetNewParameter(":cat", EbDbTypes.Int32, cat));
+                    rtn = cmd.ExecuteNonQuery();
+                }
+            }
+            catch(NpgsqlException npg)
+            {
+
+            }
+
+            return new EbFileId(rtn.ToString());        
+            
+            //throw new NotImplementedException();
         }
     }
 }

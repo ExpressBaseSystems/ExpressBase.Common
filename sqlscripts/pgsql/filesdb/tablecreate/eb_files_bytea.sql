@@ -18,10 +18,10 @@ ALTER SEQUENCE public.eb_files_bytea_id_seq
 CREATE TABLE public.eb_files_bytea
 (
     id integer NOT NULL DEFAULT nextval('eb_files_bytea_id_seq'::regclass),
-	filename text COLLATE pg_catalog."default",
-	bytea bytea,
-    tags text COLLATE pg_catalog."default",
-    filetype text COLLATE pg_catalog."default",
+    filename text COLLATE pg_catalog."default",
+    bytea bytea,
+    meta json,
+    filecategory integer,
     CONSTRAINT eb_files_bytea_pkey PRIMARY KEY (id)
 )
 WITH (

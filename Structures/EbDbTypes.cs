@@ -131,7 +131,9 @@
         //     +14:00.
         DateTimeOffset = 27,
 
-        Json = 28
+        Json = 28,
+
+        Bytea =29
     }
 
     public interface IVendorDbTypes
@@ -164,6 +166,7 @@
         //VendorDbType DateTime2 { get; }
         //VendorDbType DateTimeOffset { get; }
         VendorDbType Json { get; }
+        VendorDbType Bytea { get; }
 
         dynamic GetVendorDbType(EbDbTypes e);
     }
