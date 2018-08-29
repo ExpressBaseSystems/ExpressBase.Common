@@ -28,6 +28,7 @@ namespace ExpressBase.Common
 
     public enum FilesDbVendors
     {
+        SQLDB,
         MongoDB,
         Cloudinary,
         Cloudfront,

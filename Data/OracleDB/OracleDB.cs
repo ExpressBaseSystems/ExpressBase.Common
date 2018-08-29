@@ -1,5 +1,8 @@
 ﻿using ExpressBase.Common.Connections;
+using ExpressBase.Common.EbServiceStack.ReqNRes;
+using ExpressBase.Common.Enums;
 using ExpressBase.Common.Structures;
+using MongoDB.Bson;
 using Npgsql;
 using Oracle.ManagedDataAccess.Client;
 using Oracle.ManagedDataAccess.Types;
@@ -120,7 +123,7 @@ namespace ExpressBase.Common.Data
             if (type == EbDbTypes.DateTime)
                 return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(EbDbTypes.DateTime)) { Value = new OracleDate(Convert.ToDateTime(value)) };
             if (type == EbDbTypes.Date || type == EbDbTypes.Time || type == EbDbTypes.DateTime2)
-                return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = Convert.ToDateTime(value).Date};
+                return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = ((value is DateTime) ? Convert.ToDateTime(value).Date : Convert.ToDateTime(DateTime.ParseExact(value.ToString(), "dd-MM-yyyy", CultureInfo.InvariantCulture))) };
             else
                 return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = value };
         }
@@ -665,18 +668,18 @@ namespace ExpressBase.Common.Data
 
         public string EB_SAVEUSERGROUP_QUERY { get { return "SELECT eb_createormodifyusergroup(:userid,:id,:name,:description,:users) FROM dual;"; } }
 
-		public string EB_MANAGEUSER_FIRST_QUERY
-		{
-			get
-			{
-				return @"SELECT id, role_name, description FROM eb_roles ORDER BY to_char(role_name);
+        public string EB_MANAGEUSER_FIRST_QUERY
+        {
+            get
+            {
+                return @"SELECT id, role_name, description FROM eb_roles ORDER BY to_char(role_name);
                         SELECT id, name,description FROM eb_usergroup ORDER BY name;
 						SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';";
-			}
-		}
+            }
+        }
 
-		//.......OBJECTS QUERIES.....
-		public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
+        //.......OBJECTS QUERIES.....
+        public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
         {
             get
             {
@@ -964,6 +967,26 @@ namespace ExpressBase.Common.Data
             {
                 return @"";
             }
+        }
+    }
+
+    public class OracleFilesDB : OracleDB, INoSQLDatabase
+    {
+        public OracleFilesDB(EbBaseDbConnection dbconf) : base(dbconf) { }
+
+        public byte[] DownloadFileById(EbFileId objectid, EbFileCategory cat)
+        {
+            throw new NotImplementedException();
+        }
+
+        public byte[] DownloadFileByName(string filename, EbFileCategory cat)
+        {
+            throw new NotImplementedException();
+        }
+
+        public EbFileId UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, EbFileCategory cat)
+        {
+            throw new NotImplementedException();
         }
     }
 }
