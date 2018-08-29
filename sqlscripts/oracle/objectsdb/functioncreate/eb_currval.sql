@@ -11,8 +11,11 @@ BEGIN
          into curval;    
     COMMIT; 
       RETURN curval;
-    EXCEPTION 
+     EXCEPTION 
         WHEN OTHERS THEN
-            RETURN 0;
+            IF SQLCODE = -8002 THEN
+                RETURN 0;
+            ELSE
+              raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
+            END IF;
 END;
-
