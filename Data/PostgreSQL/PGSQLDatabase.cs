@@ -891,18 +891,20 @@ namespace ExpressBase.Common
     {
         public PGSQLFileDatabase(EbBaseDbConnection dbconf) : base(dbconf) { }
 
-        public byte[] DownloadFileById(EbFileId objectid, EbFileCategory cat)
+        public byte[] DownloadFileById(string filestoreid, EbFileCategory cat)
         {
             NpgsqlDataReader reader = null;
+            int ifileid;
+            Int32.TryParse(filestoreid, out ifileid);
             try
             {
                 using (NpgsqlConnection con = GetNewConnection() as NpgsqlConnection)
                 {
                     con.Open();
-                    string sql = "SELECT bytea FROM eb_files_bytea WHERE filestore_id = :objectid AND filecategory = :cat;";
+                    string sql = "SELECT bytea FROM eb_files_bytea WHERE id = :filestore_id AND filecategory = :cat;";
                     NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
-                    cmd.Parameters.Add(GetNewParameter(":objid", EbDbTypes.String, objectid.ObjectId));
-                    cmd.Parameters.Add(GetNewParameter(":cat", EbDbTypes.Int32, cat));
+                    cmd.Parameters.Add(GetNewParameter(":filestore_id", EbDbTypes.Int32, ifileid));
+                    cmd.Parameters.Add(GetNewParameter(":cat", EbDbTypes.Int32, (int)cat));
                     reader = cmd.ExecuteReader();
                 }
             }
@@ -937,22 +939,23 @@ namespace ExpressBase.Common
             
         }
 
-        public EbFileId UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, EbFileCategory cat)
+        public string UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, EbFileCategory cat)
         {
             string _metaDataPair = EbSerializers.Json_Serialize(MetaDataPair);
-            int rtn=0;
+            int rtn = 0;
             try
             {
+
                 using (NpgsqlConnection con = GetNewConnection() as NpgsqlConnection)
                 {
                     con.Open();
-                    string sql = "INSERT INTO eb_files_bytea(filename,meta,bytea,filecategory) VALUES (:filename,:MetaDataPair,bytea,:cat) returning id;";
+                    string sql = "INSERT INTO eb_files_bytea (filename, meta, bytea, filecategory) VALUES (:filename, :MetaDataPair, :bytea, :cat) returning id;";
                     NpgsqlCommand cmd = new NpgsqlCommand(sql,con);
                     cmd.Parameters.Add(GetNewParameter(":filename", EbDbTypes.String, filename));
-                    cmd.Parameters.Add(GetNewParameter(":MetaDataPair", EbDbTypes.String, _metaDataPair));
+                    cmd.Parameters.Add(GetNewParameter(":MetaDataPair", EbDbTypes.Json, _metaDataPair));
                     cmd.Parameters.Add(GetNewParameter(":bytea", EbDbTypes.Bytea, bytea));
-                    cmd.Parameters.Add(GetNewParameter(":cat", EbDbTypes.Int32, cat));
-                    rtn = cmd.ExecuteNonQuery();
+                    cmd.Parameters.Add(GetNewParameter(":cat", EbDbTypes.Int32, (int)cat));
+                    Int32.TryParse(cmd.ExecuteScalar().ToString(), out rtn);
                 }
             }
             catch(NpgsqlException npg)
@@ -960,7 +963,7 @@ namespace ExpressBase.Common
 
             }
 
-            return new EbFileId(rtn.ToString());        
+            return rtn.ToString();        
             
             //throw new NotImplementedException();
         }
