@@ -125,7 +125,7 @@ namespace ExpressBase.Common.Data
             if (type == EbDbTypes.DateTime)
                 return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(EbDbTypes.DateTime)) { Value = new OracleDate(Convert.ToDateTime(value)) };
             if (type == EbDbTypes.Date || type == EbDbTypes.Time || type == EbDbTypes.DateTime2)
-                return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = ((value is DateTime) ? Convert.ToDateTime(value).Date : Convert.ToDateTime(DateTime.ParseExact(value.ToString(), "dd-MM-yyyy", CultureInfo.InvariantCulture))) };
+                return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = Convert.ToDateTime(value).Date };
             else
                 return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = value };
         }
