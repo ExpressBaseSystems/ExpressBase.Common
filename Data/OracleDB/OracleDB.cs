@@ -39,9 +39,9 @@ namespace ExpressBase.Common.Data
         VendorDbType IVendorDbTypes.Json { get { return InnerDictionary[EbDbTypes.Json]; } }
         VendorDbType IVendorDbTypes.Bytea { get { return InnerDictionary[EbDbTypes.Bytea]; } }
         VendorDbType IVendorDbTypes.Boolean { get { return InnerDictionary[EbDbTypes.Boolean]; } }
+		VendorDbType IVendorDbTypes.BooleanOriginal { get { return InnerDictionary[EbDbTypes.BooleanOriginal]; } }
 
-
-        private OracleEbDbTypes()
+		private OracleEbDbTypes()
         {
             this.InnerDictionary = new Dictionary<EbDbTypes, VendorDbType>();
             this.InnerDictionary.Add(EbDbTypes.AnsiString, new VendorDbType(EbDbTypes.AnsiString, OracleDbType.Clob));
@@ -61,7 +61,8 @@ namespace ExpressBase.Common.Data
             this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, OracleDbType.Clob));
             this.InnerDictionary.Add(EbDbTypes.Bytea, new VendorDbType(EbDbTypes.Bytea, OracleDbType.Blob));
             this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, OracleDbType.Char));
-        }
+			this.InnerDictionary.Add(EbDbTypes.BooleanOriginal, new VendorDbType(EbDbTypes.BooleanOriginal, OracleDbType.Char));
+		}
 
         public static IVendorDbTypes Instance => new OracleEbDbTypes();
 

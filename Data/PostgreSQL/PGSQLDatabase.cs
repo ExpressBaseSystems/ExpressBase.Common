@@ -40,8 +40,9 @@ namespace ExpressBase.Common
         VendorDbType IVendorDbTypes.Json { get { return InnerDictionary[EbDbTypes.Json]; } }
         VendorDbType IVendorDbTypes.Bytea { get { return InnerDictionary[EbDbTypes.Bytea]; } }
         VendorDbType IVendorDbTypes.Boolean { get { return InnerDictionary[EbDbTypes.Boolean]; } }
+		VendorDbType IVendorDbTypes.BooleanOriginal { get { return InnerDictionary[EbDbTypes.BooleanOriginal]; } }
 
-        private PGSQLEbDbTypes()
+		private PGSQLEbDbTypes()
         {
             this.InnerDictionary = new Dictionary<EbDbTypes, VendorDbType>();
             this.InnerDictionary.Add(EbDbTypes.AnsiString, new VendorDbType(EbDbTypes.AnsiString, NpgsqlDbType.Text));
@@ -61,7 +62,8 @@ namespace ExpressBase.Common
             this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, NpgsqlDbType.Json));
             this.InnerDictionary.Add(EbDbTypes.Bytea, new VendorDbType(EbDbTypes.Bytea, NpgsqlDbType.Bytea));
             this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, NpgsqlDbType.Char));
-        }
+			this.InnerDictionary.Add(EbDbTypes.BooleanOriginal, new VendorDbType(EbDbTypes.BooleanOriginal, NpgsqlDbType.Boolean));
+		}
 
         public static IVendorDbTypes Instance => new PGSQLEbDbTypes();
 
