@@ -15,8 +15,8 @@ ALTER SEQUENCE public.eb_locations_id_seq
 CREATE TABLE public.eb_locations
 (
     id integer NOT NULL DEFAULT nextval('eb_locations_id_seq'::regclass),
-    shortname text COLLATE pg_catalog."default",
-    longname text COLLATE pg_catalog."default",
+    shortname text COLLATE pg_catalog."default" DEFAULT 'default'::text,
+    longname text COLLATE pg_catalog."default" DEFAULT 'default'::text,
     image text COLLATE pg_catalog."default",
     meta_json text COLLATE pg_catalog."default",
     CONSTRAINT eb_locations_pkey PRIMARY KEY (id)
