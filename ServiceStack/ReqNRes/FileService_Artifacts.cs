@@ -180,6 +180,13 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         public FileMeta FileDetails { get; set; }
     }
 
+    [DataContract]
+    public class DownloadFileByRefIdRequest : EbServiceStackRequest, IReturn<DownloadFileResponse>
+    {
+        [DataMember(Order = 1)]
+        public FileMeta FileDetails { get; set; }
+    }
+
     //[DataContract]
     //public class EbFileId
     //{
