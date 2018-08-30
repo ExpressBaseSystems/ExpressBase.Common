@@ -35,7 +35,7 @@ namespace ExpressBase.Common.Objects
         [OnChangeUIFunction("Common.LABEL")]
         public virtual string Label { get; set; }
 
-        [EnableInBuilder(BuilderType.BotForm)]
+        [EnableInBuilder(BuilderType.BotForm, BuilderType.FilterDialog)]
         [PropertyEditor(PropertyEditorType.JS)]
         public string VisibleIf { get; set; }
 
