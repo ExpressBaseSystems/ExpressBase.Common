@@ -133,7 +133,9 @@
 
         Json = 28,
 
-        Bytea =29
+        Bytea =29,
+
+		BooleanOriginal = 30
     }
 
     public interface IVendorDbTypes
@@ -167,8 +169,8 @@
         //VendorDbType DateTimeOffset { get; }
         VendorDbType Json { get; }
         VendorDbType Bytea { get; }
-
-        dynamic GetVendorDbType(EbDbTypes e);
+		VendorDbType BooleanOriginal { get; }
+		dynamic GetVendorDbType(EbDbTypes e);
     }
 
     public struct VendorDbType

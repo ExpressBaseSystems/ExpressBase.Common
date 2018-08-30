@@ -47,7 +47,6 @@ namespace ExpressBase.Common.Connections
 
     public abstract class EbBaseDbConnection : IEbConnection
     {
-        public DatabaseVendors DatabaseVendor { get; set; }
 
         public string DatabaseName { get; set; }
 
@@ -73,12 +72,16 @@ namespace ExpressBase.Common.Connections
 
     public class EbObjectsDbConnection : EbBaseDbConnection
     {
+        public DatabaseVendors DatabaseVendor { get; set; }
+
         public override EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.EbOBJECTS; } }
     }
 
     // For Infra T-Data, Tenant T-Data
     public class EbDataDbConnection : EbBaseDbConnection
     {
+        public DatabaseVendors DatabaseVendor { get; set; }
+
         public override EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.EbDATA; } }
     }
 
@@ -96,6 +99,7 @@ namespace ExpressBase.Common.Connections
 
     public class EbLogsDbConnection : EbBaseDbConnection
     {
+        public DatabaseVendors DatabaseVendor { get; set; }
     }
 
     internal class CustomBase64Converter : JsonConverter

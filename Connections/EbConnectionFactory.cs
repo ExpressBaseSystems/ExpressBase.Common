@@ -91,7 +91,7 @@ namespace ExpressBase.Common.Data
         {
             this.SolutionId = solutionId;
             this.Connections = config;
-            
+
             InitDatabases();
         }
 
@@ -133,15 +133,24 @@ namespace ExpressBase.Common.Data
                 // LOGS DB
                 LogsDB = new PGSQLDatabase(EbConnectionsConfigProvider.InfraConnections.LogsDbConnection);
 
-                if (Connections.FilesDbConnection != null && Connections.FilesDbConnection.FilesDbVendor == FilesDbVendors.MongoDB)
-                    FilesDB = new MongoDBDatabase(this.SolutionId, Connections.FilesDbConnection);
-                else if (Connections.DataDbROConnection != null && Connections.FilesDbConnection.FilesDbVendor == FilesDbVendors.SQLDB && Connections.FilesDbConnection.DatabaseVendor == DatabaseVendors.PGSQL)
-                    FilesDB = new PGSQLFileDatabase(Connections.FilesDbConnection);
-                else if (Connections.DataDbROConnection != null && Connections.FilesDbConnection.FilesDbVendor == FilesDbVendors.SQLDB && Connections.FilesDbConnection.DatabaseVendor == DatabaseVendors.ORACLE)
-                    FilesDB = new OracleFilesDB(Connections.FilesDbConnection);
-                else
-                    FilesDB = new MongoDBDatabase(this.SolutionId, EbConnectionsConfigProvider.InfraConnections.FilesDbConnection);
 
+                //Files DB
+                if (Connections.FilesDbConnection != null)
+                {
+                    if (Connections.FilesDbConnection.FilesDbVendor == FilesDbVendors.MongoDB)
+                        FilesDB = new MongoDBDatabase(this.SolutionId, Connections.FilesDbConnection);
+                    else if (Connections.FilesDbConnection.FilesDbVendor == FilesDbVendors.PGSQL)
+                        FilesDB = new PGSQLFileDatabase(Connections.FilesDbConnection);
+                    else if (Connections.FilesDbConnection.FilesDbVendor == FilesDbVendors.ORACLE)
+                        FilesDB = new OracleFilesDB(Connections.FilesDbConnection);
+                }
+                else
+                {
+                    if (Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.PGSQL)
+                        FilesDB = new PGSQLFileDatabase(Connections.DataDbConnection);
+                    else if (Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.ORACLE)
+                        FilesDB = new OracleFilesDB(Connections.DataDbConnection);
+                }
                 //if (Connections.SMTPConnection != null)
                 //    SMTPConnection = new EmailService(Connections.SMTPConnection);
 
