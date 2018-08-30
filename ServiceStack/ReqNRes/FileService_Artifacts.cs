@@ -45,7 +45,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     public class GetImageFtpRequest : UploadMqRequest
     {
         [DataMember(Order = 1)]
-        public List<KeyValuePair<int, string>> FileUrls { get; set; }
+        public KeyValuePair<int, string> FileUrl { get; set; }
     }
 
     [DataContract]
