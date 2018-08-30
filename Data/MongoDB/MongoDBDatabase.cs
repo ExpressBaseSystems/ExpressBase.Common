@@ -34,7 +34,7 @@ namespace ExpressBase.Common.Data.MongoDB
 			mongoDatabase = mongoClient.GetDatabase(this.TenantId);
 		}
 
-		public EbFileId UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, EbFileCategory cat)
+		public string UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, EbFileCategory cat)
 		{
 			Bucket = new GridFSBucket(mongoDatabase, new GridFSBucketOptions
 			{
@@ -56,16 +56,16 @@ namespace ExpressBase.Common.Data.MongoDB
 			};
 			try
 			{
-                return new EbFileId(Bucket.UploadFromBytes(filename, bytea, options).ToString());
+                return Bucket.UploadFromBytes(filename, bytea, options).ToString();
 			}
 			catch (Exception e)
 			{
 				Console.WriteLine("Exception:" + e.ToString());
-				return new EbFileId("Error");
+				return "Error";
 			}
 		}
 
-		public byte[] DownloadFileById(EbFileId objectid, EbFileCategory cat)
+		public byte[] DownloadFileById(string filestoreid, EbFileCategory cat)
 		{
 			byte[] res = null;
 
@@ -78,13 +78,13 @@ namespace ExpressBase.Common.Data.MongoDB
 					WriteConcern = WriteConcern.WMajority,
 					ReadPreference = ReadPreference.Secondary
 				});
-                ObjectId objId = new ObjectId(objectid.ObjectId);
+                ObjectId objId = new ObjectId(filestoreid);
 				res = Bucket.DownloadAsBytes(objId, new GridFSDownloadOptions() { CheckMD5 = true });
 			}
 
 			catch (GridFSFileNotFoundException e)
 			{
-				Console.WriteLine("MongoDB File Not Found: " + objectid.ToString());
+				Console.WriteLine("MongoDB File Not Found: " + filestoreid.ToString());
 			}
 
 			catch (Exception e)

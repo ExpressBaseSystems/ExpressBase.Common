@@ -68,24 +68,27 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     public class FileMeta
     {
         [DataMember(Order = 1)]
-        public EbFileId ObjectId { get; set; }
+        public string FileStoreId { get; set; }
 
         [DataMember(Order = 2)]
-        public string FileName { get; set; }
+        public Int32 FileRefId { get; set; }
 
         [DataMember(Order = 3)]
-        public IDictionary<string, List<string>> MetaDataDictionary { get; set; }
+        public string FileName { get; set; }
 
         [DataMember(Order = 4)]
-        public DateTime UploadDateTime { get; set; }
+        public IDictionary<string, List<string>> MetaDataDictionary { get; set; }
 
         [DataMember(Order = 5)]
-        public Int64 Length { get; set; }
+        public DateTime UploadDateTime { get; set; }
 
         [DataMember(Order = 6)]
-        public string FileType { get; set; }
+        public Int64 Length { get; set; }
 
         [DataMember(Order = 7)]
+        public string FileType { get; set; }
+
+        [DataMember(Order = 8)]
         public EbFileCategory FileCategory { get; set; }
     }
 
@@ -93,30 +96,33 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     public class ImageMeta
     {
         [DataMember(Order = 1)]
-        public EbFileId ObjectId { get; set; }
+        public string FileStoreId { get; set; }
 
         [DataMember(Order = 2)]
-        public string FileName { get; set; }
+        public Int32 FileRefId { get; set; }
+
 
         [DataMember(Order = 3)]
-        public IDictionary<string, List<string>> MetaDataDictionary { get; set; }
+        public string FileName { get; set; }
 
         [DataMember(Order = 4)]
-        public DateTime UploadDateTime { get; set; }
+        public IDictionary<string, List<string>> MetaDataDictionary { get; set; }
 
         [DataMember(Order = 5)]
-        public Int64 Length { get; set; }
+        public DateTime UploadDateTime { get; set; }
 
         [DataMember(Order = 6)]
-        public string FileType { get; set; }
+        public Int64 Length { get; set; }
 
         [DataMember(Order = 7)]
-        public EbFileCategory FileCategory { get; set; }
+        public string FileType { get; set; }
 
         [DataMember(Order = 8)]
+        public EbFileCategory FileCategory { get; set; }
+
+        [DataMember(Order = 9)]
         public ImageQuality ImageQuality { get; set; }
     }
-
 
     [DataContract]
     public class UploadFileAsyncRequest : EbServiceStackRequest, IReturn<UploadAsyncResponse>
@@ -165,10 +171,6 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
 
-        public DownloadFileRequest()
-        {
-            FileDetails = new FileMeta();
-        }
     }
 
     [DataContract]
@@ -176,26 +178,28 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
-
-        public DownloadFileByIdRequest()
-        {
-            FileDetails = new FileMeta();
-        }
     }
 
     [DataContract]
-    public class EbFileId
+    public class DownloadFileByRefIdRequest : EbServiceStackRequest, IReturn<DownloadFileResponse>
     {
         [DataMember(Order = 1)]
-        public string ObjectId { get; set; }
-
-        public EbFileId() { }
-
-        public EbFileId(string objectId)
-        {
-            ObjectId = objectId;
-        }
+        public FileMeta FileDetails { get; set; }
     }
+
+    //[DataContract]
+    //public class EbFileId
+    //{
+    //    [DataMember(Order = 1)]
+    //    public string ObjectId { get; set; }
+
+    //    public EbFileId() { }
+
+    //    public EbFileId(string objectId)
+    //    {
+    //        ObjectId = objectId;
+    //    }
+    //}
 
     [DataContract]
     public class DownloadImageByIdRequest : EbServiceStackRequest, IReturn<DownloadFileResponse>
