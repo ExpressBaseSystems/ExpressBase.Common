@@ -14,9 +14,9 @@
     {
         original = 0,
         other = 1,
-        small = 50,
-        medium = 150,
-        //large = 600
+        small = 100,
+        medium = 300,
+        large = 600
     }
 
     public enum DPSizes

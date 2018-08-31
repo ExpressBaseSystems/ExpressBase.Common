@@ -16,16 +16,29 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     [DataContract]
     public class UploadMqRequest : EbServiceStackRequest
     {
-
-
-        [DataMember(Order = 2)]
+        [DataMember(Order = 1)]
         public string BToken { get; set; }
 
-        [DataMember(Order = 3)]
+        [DataMember(Order = 2)]
         public string RToken { get; set; }
 
         public void AddAuth(string btoken, string rtoken)
         {
+            BToken = btoken;
+            RToken = rtoken;
+        }
+
+        public void AddAuth(string solnId, string btoken, string rtoken)
+        {
+            base.TenantAccountId = solnId;
+            BToken = btoken;
+            RToken = rtoken;
+        }
+
+        public void AddAuth(int userId, string solnId, string btoken, string rtoken)
+        {
+            base.UserId = userId;
+            base.TenantAccountId = solnId;
             BToken = btoken;
             RToken = rtoken;
         }
