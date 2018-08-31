@@ -34,7 +34,7 @@ namespace ExpressBase.Common.Constants
 
         //FileTypes
         public const string JPG = "jpg";
-        public const string JPEG = "jepg";
+        public const string JPEG = "jpeg";
         public const string PNG = "png";
         public const string BMP = "bmp";
 

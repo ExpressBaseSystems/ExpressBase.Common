@@ -928,7 +928,7 @@ namespace ExpressBase.Common
                     string sql = "SELECT bytea FROM eb_files_bytea WHERE filename = :filename AND filecategory = :cat;";
                     NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
                     cmd.Parameters.Add(GetNewParameter(":filename", EbDbTypes.String, filename));
-                    cmd.Parameters.Add(GetNewParameter(":cat", EbDbTypes.Int32, cat));
+                    cmd.Parameters.Add(GetNewParameter(":cat", EbDbTypes.Int32, (int)cat));
                     filebyte = (byte[])cmd.ExecuteScalar();
                 }
             }
