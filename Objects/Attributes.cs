@@ -48,6 +48,7 @@ namespace ExpressBase.Common.Objects.Attributes
         }
     }
 
+    [AttributeUsage(AttributeTargets.All, Inherited = false)]
     public class HideInPropertyGrid : Attribute { }
 
     public class InputMask : Attribute
