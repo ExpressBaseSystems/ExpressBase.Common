@@ -170,11 +170,19 @@ namespace ExpressBase.Common.Objects.Attributes
             this.DependantProp2 = Dprop2;
         }
     }
+
     public class PropertyGroup : Attribute
     {
         public string Name { get; set; }
 
         public PropertyGroup(string groupName) { this.Name = groupName; }
+    }
+
+    public class ListType : Attribute
+    {
+        public Type TypeOfList { get; set; }
+
+        public ListType(Type typeName) { this.TypeOfList = typeName; }
     }
 
     public class DefaultPropValue : Attribute

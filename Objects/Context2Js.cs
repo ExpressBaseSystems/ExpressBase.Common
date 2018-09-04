@@ -278,7 +278,6 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
         private Meta GetMeta(object obj, PropertyInfo prop)
         {
             Meta meta = new Meta { name = prop.Name };
-
             IEnumerable<Attribute> propattrs = prop.GetCustomAttributes();
             foreach (Attribute attr in propattrs)
             {
@@ -340,6 +339,14 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
                     {
                         Type itemType = prop.PropertyType.GetGenericArguments()[0];
+                        meta.options = getOptions(itemType);
+                    }
+                }
+                if (attr is ListType) {
+                    if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
+                    {
+                        Type itemType = null;
+                            itemType = (attr as ListType).TypeOfList;
                         meta.options = getOptions(itemType);
                     }
                 }
