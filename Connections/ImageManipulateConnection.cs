@@ -1,6 +1,4 @@
-﻿using ExpressBase.Common.Connections;
-
-namespace ExpressBase.Common.Data
+﻿namespace ExpressBase.Common.Connections
 {
     public class ImageManipulateConnection : IEbConnection
     {
@@ -10,7 +8,7 @@ namespace ExpressBase.Common.Data
 
         public string ApiSecret { get; set; }
 
-        public Integrations Integrations { get; set; }
+        public ThirdPartyIntegrations Integrations { get; set; }
 
         public override EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.EbImageManipulation; } }
     }

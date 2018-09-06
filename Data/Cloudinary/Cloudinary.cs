@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using CloudinaryDotNet;
+﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using ExpressBase.Common.Connections;
+using ExpressBase.Common.Data;
 using ExpressBase.Common.EbServiceStack.ReqNRes;
+using System.IO;
 
-namespace ExpressBase.Common.Data
+namespace ExpressBase.Common.Integrations
 {
     public class EbCloudinary : IImageManipulate
     {

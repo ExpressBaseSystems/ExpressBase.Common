@@ -1,6 +1,7 @@
 ﻿using ExpressBase.Common.Connections;
 using ExpressBase.Common.Constants;
 using ExpressBase.Common.Data.MongoDB;
+using ExpressBase.Common.Integrations;
 using ExpressBase.Common.Messaging;
 using ExpressBase.Common.Messaging.Twilio;
 using Funq;
@@ -161,7 +162,7 @@ namespace ExpressBase.Common.Data
                     SMSConnection = new TwilioService(Connections.SMSConnection);
 
                 if (Connections.ImageManipulateConnection != null)
-                    if (Connections.ImageManipulateConnection.Integrations == Integrations.Cloudinary)
+                    if (Connections.ImageManipulateConnection.Integrations == ThirdPartyIntegrations.Cloudinary)
                         ImageManipulate = new EbCloudinary(Connections.ImageManipulateConnection);
 
             }

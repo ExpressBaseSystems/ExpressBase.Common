@@ -120,7 +120,7 @@ namespace ExpressBase.Common
         UserInput = 4
     }
 
-    public enum Integrations
+    public enum ThirdPartyIntegrations
     {
         Cloudinary = 1
     }

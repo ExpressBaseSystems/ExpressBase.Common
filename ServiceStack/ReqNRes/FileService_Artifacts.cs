@@ -8,42 +8,13 @@ using System.Runtime.Serialization;
 namespace ExpressBase.Common.EbServiceStack.ReqNRes
 {
     [DataContract]
-    public class DeleteFileRequest : EbServiceStackRequest
+    public class DeleteFileRequest : EbServiceStackAuthRequest
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
     }
 
-    [DataContract]
-    public class EbMqRequest : EbServiceStackRequest
-    {
-        [DataMember(Order = 1)]
-        public string BToken { get; set; }
-
-        [DataMember(Order = 2)]
-        public string RToken { get; set; }
-
-        public void AddAuth(string btoken, string rtoken)
-        {
-            BToken = btoken;
-            RToken = rtoken;
-        }
-
-        public void AddAuth(string solnId, string btoken, string rtoken)
-        {
-            base.TenantAccountId = solnId;
-            BToken = btoken;
-            RToken = rtoken;
-        }
-
-        public void AddAuth(int userId, string solnId, string btoken, string rtoken)
-        {
-            base.UserId = userId;
-            base.TenantAccountId = solnId;
-            BToken = btoken;
-            RToken = rtoken;
-        }
-    }
+    
 
     [DataContract]
     public class UploadFileRequest : EbMqRequest
@@ -181,7 +152,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class UploadFileAsyncRequest : EbServiceStackRequest, IReturn<UploadAsyncResponse>
+    public class UploadFileAsyncRequest : EbServiceStackAuthRequest, IReturn<UploadAsyncResponse>
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
@@ -198,7 +169,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class UploadImageAsyncRequest : EbServiceStackRequest, IReturn<UploadAsyncResponse>
+    public class UploadImageAsyncRequest : EbServiceStackAuthRequest, IReturn<UploadAsyncResponse>
     {
         [DataMember(Order = 1)]
         public ImageMeta ImageInfo { get; set; }
@@ -222,7 +193,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class DownloadFileRequest : EbServiceStackRequest, IReturn<DownloadFileResponse>
+    public class DownloadFileRequest : EbServiceStackAuthRequest, IReturn<DownloadFileResponse>
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
@@ -230,14 +201,14 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class DownloadFileByIdRequest : EbServiceStackRequest, IReturn<DownloadFileResponse>
+    public class DownloadFileByIdRequest : EbServiceStackAuthRequest, IReturn<DownloadFileResponse>
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
     }
 
     [DataContract]
-    public class DownloadFileByRefIdRequest : EbServiceStackRequest, IReturn<DownloadFileResponse>
+    public class DownloadFileByRefIdRequest : EbServiceStackAuthRequest, IReturn<DownloadFileResponse>
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
@@ -258,14 +229,14 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     //}
 
     [DataContract]
-    public class DownloadImageByIdRequest : EbServiceStackRequest, IReturn<DownloadFileResponse>
+    public class DownloadImageByIdRequest : EbServiceStackAuthRequest, IReturn<DownloadFileResponse>
     {
         [DataMember(Order = 1)]
         public ImageMeta ImageInfo { get; set; }
     }
 
     [DataContract]
-    public class DownloadImageByNameRequest : EbServiceStackRequest, IReturn<DownloadFileResponse>
+    public class DownloadImageByNameRequest : EbServiceStackAuthRequest, IReturn<DownloadFileResponse>
     {
         [DataMember(Order = 1)]
         public ImageMeta ImageInfo { get; set; }
@@ -295,7 +266,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class FindFilesByTagRequest : EbServiceStackRequest, IReturn<List<FileMeta>>
+    public class FindFilesByTagRequest : EbServiceStackAuthRequest, IReturn<List<FileMeta>>
     {
         [DataMember(Order = 1)]
         public List<string> Tags { get; set; }
@@ -305,7 +276,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class InitialFileReq : EbServiceStackRequest, IReturn<List<FileMeta>>
+    public class InitialFileReq : EbServiceStackAuthRequest, IReturn<List<FileMeta>>
     {
         [DataMember(Order = 1)]
         public FileClass Type { get; set; }
