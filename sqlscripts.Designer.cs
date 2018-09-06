@@ -718,19 +718,27 @@ namespace ExpressBase.Common {
         ///   Looks up a localized string similar to CREATE OR REPLACE FUNCTION public.eb_currval(seq text)
         ///RETURNS integer
         ///LANGUAGE &apos;plpgsql&apos;
-        ///
         ///AS $BODY$
-        ///
-        ///DECLARE curval integer; 
-        ///
+        ///DECLARE curval integer; exce text;
         ///BEGIN
         ///SELECT currval(seq) into curval;
         ///RETURN curval;
         ///EXCEPTION WHEN OTHERS THEN
-        ///RETURN 0;
+        ///	IF SQLSTATE = &apos;55000&apos; THEN
+        ///    	RETURN 0;      
+        ///    ELSE
+        ///    	RAISE EXCEPTION &apos;%&apos;, SQLERRM;
+        ///    END IF;
         ///END;
         ///
-        ///$BODY$;.
+        ///$BODY$;
+        ///
+        ///
+        ///
+        ///
+        ///
+        ///
+        ///.
         /// </summary>
         public static string eb_currval {
             get {
@@ -752,12 +760,12 @@ namespace ExpressBase.Common {
         ///         into curval;    
         ///    COMMIT; 
         ///      RETURN curval;
-        ///    EXCEPTION 
+        ///     EXCEPTION 
         ///        WHEN OTHERS THEN
-        ///            RETURN 0;
-        ///END;
-        ///
-        ///.
+        ///            IF SQLCODE = -8002 THEN
+        ///                RETURN 0;
+        ///            ELSE
+        ///              raise_application_error(-20001,&apos;An error was e [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_currval1 {
             get {
@@ -802,27 +810,25 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to --SEQUENCE public.eb_files_id_seq
         ///
-        ///CREATE SEQUENCE public.eb_files_id_seq
+        ///CREATE SEQUENCE public.eb_files_ref_id_seq
         ///    INCREMENT 1
         ///    START 1
         ///    MINVALUE 1
         ///    MAXVALUE 9223372036854775807
         ///    CACHE 1;
         ///
-        ///ALTER SEQUENCE public.eb_files_id_seq
+        ///ALTER SEQUENCE public.eb_files_ref_id_seq
         ///    OWNER TO postgres;
         ///
-        ///-- Table: public.eb_files
+        ///-- Table: public.eb_files_ref
         ///
-        ///-- DROP TABLE public.eb_files;
+        ///-- DROP TABLE public.eb_files_ref;
         ///
-        ///CREATE TABLE public.eb_files
+        ///CREATE TABLE public.eb_files_ref
         ///(
-        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_files_id_seq&apos;::regclass),
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_files_ref_id_seq&apos;::regclass),
         ///    userid integer NOT NULL,
-        ///    objid text COLLATE pg_catalog.&quot;default&quot; NOT NULL,
-        ///    length bigint,
-        ///   [rest of string was truncated]&quot;;.
+        ///    filestore_id text COLLATE pg_catalog.&quot;default&quot; NO [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files {
             get {
@@ -851,9 +857,8 @@ namespace ExpressBase.Common {
         ///CREATE TABLE public.eb_files_bytea
         ///(
         ///    id integer NOT NULL DEFAULT nextval(&apos;eb_files_bytea_id_seq&apos;::regclass),
-        ///	filename text COLLATE pg_catalog.&quot;default&quot;,
-        ///	bytea bytea,
-        ///   [rest of string was truncated]&quot;;.
+        ///    filename text COLLATE pg_catalog.&quot;default&quot;,
+        ///    bytea byte [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files_bytea {
             get {
@@ -1227,9 +1232,8 @@ namespace ExpressBase.Common {
         ///CREATE TABLE public.eb_locations
         ///(
         ///    id integer NOT NULL DEFAULT nextval(&apos;eb_locations_id_seq&apos;::regclass),
-        ///    shortname text COLLATE pg_catalog.&quot;default&quot;,
-        ///    longname text COLLATE pg_catalog.&quot;default&quot;,
-        ///    image text COLLAT [rest of string was truncated]&quot;;.
+        ///    shortname text COLLATE pg_catalog.&quot;default&quot; DEFAULT &apos;default&apos;::text,
+        ///    longname text COLLATE pg_catalog.&quot;default&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_locations1 {
             get {
@@ -1989,6 +1993,34 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE SEQUENCE public.eb_query_choices_id_seq
+        ///    INCREMENT 1
+        ///    START 42
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_query_choices_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_query_choices
+        ///
+        ///-- DROP TABLE public.eb_query_choices;
+        ///
+        ///CREATE TABLE public.eb_query_choices
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_query_choices_id_seq&apos;::regclass),
+        ///    q_id integer,
+        ///    choice text COLLATE pg_catalog.&quot;default&quot;,
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos; [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_query_choices {
+            get {
+                return ResourceManager.GetString("eb_query_choices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to --SEQUENCE public.eb_role2location_id_seq
         ///
         ///CREATE SEQUENCE public.eb_role2location_id_seq
@@ -2278,6 +2310,124 @@ namespace ExpressBase.Common {
         public static string eb_roles1 {
             get {
                 return ResourceManager.GetString("eb_roles1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE SEQUENCE public.eb_survey_lines_id_seq
+        ///    INCREMENT 1
+        ///    START 46
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_survey_lines_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_survey_lines
+        ///
+        ///-- DROP TABLE public.eb_survey_lines;
+        ///
+        ///CREATE TABLE public.eb_survey_lines
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_survey_lines_id_seq&apos;::regclass),
+        ///    masterid integer,
+        ///    questionid integer,
+        ///    eb_createdate timestamp without time zone,
+        ///    c [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_survey_lines {
+            get {
+                return ResourceManager.GetString("eb_survey_lines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE SEQUENCE public.eb_survey_master_id_seq
+        ///    INCREMENT 1
+        ///    START 6
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_survey_master_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///-- Table: public.eb_survey_master
+        ///
+        ///-- DROP TABLE public.eb_survey_master;
+        ///
+        ///CREATE TABLE public.eb_survey_master
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_survey_master_id_seq&apos;::regclass),
+        ///    surveyid integer,
+        ///    userid integer,
+        ///    anonid integer,
+        ///    eb_createdate timestamp wit [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_survey_master {
+            get {
+                return ResourceManager.GetString("eb_survey_master", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE SEQUENCE public.eb_survey_queries_id_seq
+        ///    INCREMENT 1
+        ///    START 10
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_survey_queries_id_seq
+        ///    OWNER TO postgres;
+        ///	
+        ///
+        ///-- Table: public.eb_survey_queries
+        ///
+        ///-- DROP TABLE public.eb_survey_queries;
+        ///
+        ///CREATE TABLE public.eb_survey_queries
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_survey_queries_id_seq&apos;::regclass),
+        ///    query text COLLATE pg_catalog.&quot;default&quot;,
+        ///    q_type integer
+        ///)
+        ///WITH (
+        ///    OIDS  [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_survey_queries {
+            get {
+                return ResourceManager.GetString("eb_survey_queries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE SEQUENCE public.eb_surveys_id_seq
+        ///    INCREMENT 1
+        ///    START 2
+        ///    MINVALUE 1
+        ///    MAXVALUE 9223372036854775807
+        ///    CACHE 1;
+        ///
+        ///ALTER SEQUENCE public.eb_surveys_id_seq
+        ///    OWNER TO postgres;
+        ///
+        ///
+        ///-- Table: public.eb_surveys
+        ///
+        ///-- DROP TABLE public.eb_surveys;
+        ///
+        ///CREATE TABLE public.eb_surveys
+        ///(
+        ///    id integer NOT NULL DEFAULT nextval(&apos;eb_surveys_id_seq&apos;::regclass),
+        ///    name text COLLATE pg_catalog.&quot;default&quot;,
+        ///    startdate timestamp without time zone,
+        ///    enddate timestamp without time zone,        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_surveys {
+            get {
+                return ResourceManager.GetString("eb_surveys", resourceCulture);
             }
         }
         
