@@ -69,6 +69,17 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
+    public class CloudinaryUploadReq : EbMqRequest
+    {
+        [DataMember]
+        public int ImageKey;
+
+        [DataMember]
+        public byte[] ImageBytes;
+    }
+
+
+    [DataContract]
     public class UploadImageRequest : EbMqRequest
     {
         [DataMember(Order = 1)]
