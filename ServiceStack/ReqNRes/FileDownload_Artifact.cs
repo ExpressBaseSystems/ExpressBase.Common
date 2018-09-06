@@ -1,8 +1,6 @@
-﻿using ExpressBase.Common.EbServiceStack.ReqNRes;
-using System;
-using System.Collections.Generic;
+﻿using CloudinaryDotNet;
+using ExpressBase.Common.EbServiceStack.ReqNRes;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace ExpressBase.Common.ServiceStack.ReqNRes
 {
@@ -10,7 +8,7 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
     public class FileDownloadRequestObject : EbServiceStackRequest
     {
         [DataMember(Order = 1)]
-        string test = string.Empty;
+        public Account Account { get; set; }
     }
 
     [DataContract]

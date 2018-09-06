@@ -1,3 +1,4 @@
+using CloudinaryDotNet;
 using ExpressBase.Common.Enums;
 using ServiceStack;
 using System;
@@ -59,23 +60,33 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     {
         [DataMember(Order = 1)]
         public KeyValuePair<int, string> FileUrl { get; set; }
+
+        [DataMember(Order = 2)]
+        public Account CloudinaryAccount { get; set; }
     }
 
     [DataContract]
     public class CloudinaryResponseUrl : EbMqRequest
     {
-        [DataMember]
+        [DataMember(Order = 1)]
         public string ImageUrl { get; set; }
+
+        [DataMember(Order = 2)]
+        public int ImageKey { get; set; }
     }
 
     [DataContract]
     public class CloudinaryUploadReq : EbMqRequest
     {
-        [DataMember]
-        public int ImageKey;
+        [DataMember(Order =1)]
+        public int ImageKey { get; set; }
 
-        [DataMember]
-        public byte[] ImageBytes;
+        [DataMember(Order = 2)]
+        public byte[] ImageBytes { get; set; }
+
+        [DataMember(Order = 3)]
+        public Account Account { get; set; }
+
     }
 
 

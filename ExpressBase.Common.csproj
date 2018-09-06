@@ -37,6 +37,7 @@
       <EmbeddedResource Include="sqlscripts\pgsql\filesdb\tablecreate\**" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet" Version="1.2.0" />
     <PackageReference Include="FOSS.ServiceStack.Core" Version="5.0.2" />
     <PackageReference Include="FOSS.ServiceStack.Redis.Core" Version="5.0.2" />
     <PackageReference Include="MongoDB.Driver.Core" Version="2.5.0" />
