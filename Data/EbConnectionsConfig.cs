@@ -1,8 +1,4 @@
 ﻿using ExpressBase.Common.Connections;
-using ExpressBase.Common.Messaging;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ExpressBase.Common.Data
 {
@@ -31,5 +27,7 @@ namespace ExpressBase.Common.Data
         public SMTPConnection SMTPConnection { get; set; }
 
         public SMSConnection SMSConnection { get; set; }
+
+        public ImageManipulateConnection ImageManipulateConnection { get; set; }
     }
 }

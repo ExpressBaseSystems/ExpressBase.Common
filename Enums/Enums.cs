@@ -3,14 +3,14 @@
 namespace ExpressBase.Common
 {
 
-	public enum EbApplicationTypes
-	{
-		Bot = 3,
-		Mobile = 2,
-		Web = 1
-	}
+    public enum EbApplicationTypes
+    {
+        Bot = 3,
+        Mobile = 2,
+        Web = 1
+    }
 
-	public enum EbTiers
+    public enum EbTiers
     {
         Free,
         Professional,
@@ -47,8 +47,9 @@ namespace ExpressBase.Common
         SMTP = 6,
         SMS = 7,
         Slack = 8,
+        EbImageManipulation = 9
     }
-    
+
 
     public enum StudioFormTypes
     {
@@ -69,12 +70,12 @@ namespace ExpressBase.Common
     public enum SystemRoles
     {
         SolutionOwner,
-		SolutionAdmin,
-		SolutionDeveloper,
-		SolutionTester,
-		SolutionPM,
+        SolutionAdmin,
+        SolutionDeveloper,
+        SolutionTester,
+        SolutionPM,
         SolutionUser
-	}
+    }
 
     public enum EbSystemRoles
     {
@@ -83,12 +84,12 @@ namespace ExpressBase.Common
         EbUser
     }
 
-	public enum EbUserStatus
-	{
-		Active,
-		Suspend,
-		Terminate
-	}
+    public enum EbUserStatus
+    {
+        Active,
+        Suspend,
+        Terminate
+    }
 
     public enum OracleSysRoles
     {
@@ -119,5 +120,9 @@ namespace ExpressBase.Common
         UserInput = 4
     }
 
+    public enum Integrations
+    {
+        Cloudinary = 1
+    }
 }
 

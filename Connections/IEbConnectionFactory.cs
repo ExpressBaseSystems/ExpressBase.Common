@@ -18,5 +18,7 @@ namespace ExpressBase.Common.Data
         IDatabase LogsDB { get; }
 
         ISMSConnection SMSConnection { get; }
+
+        IImageManipulate ImageManipulate { get; }
     }
 }

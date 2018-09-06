@@ -27,6 +27,8 @@ namespace ExpressBase.Common.Data
 
         public SMTPConnection SMTPConnection { get; private set; }
 
+        public IImageManipulate ImageManipulate { get; private set; }
+
         private RedisClient Redis { get; set; }
 
         private string SolutionId { get; set; }
@@ -105,6 +107,7 @@ namespace ExpressBase.Common.Data
             this.SMSConnection = null;
             this.SMTPConnection = null;
             this.SolutionId = null;
+            this.ImageManipulate = null; 
             this._connections = null;
         }
 
@@ -156,6 +159,11 @@ namespace ExpressBase.Common.Data
 
                 if (Connections.SMSConnection != null)
                     SMSConnection = new TwilioService(Connections.SMSConnection);
+
+                if (Connections.ImageManipulateConnection != null)
+                    if (Connections.ImageManipulateConnection.Integrations == Integrations.Cloudinary)
+                        ImageManipulate = new EbCloudinary(Connections.ImageManipulateConnection);
+
             }
             else
                 throw new Exception("Fatal Error :: Solution Id is null or Empty!");

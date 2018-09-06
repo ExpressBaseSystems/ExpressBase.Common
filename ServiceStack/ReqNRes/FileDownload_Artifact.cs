@@ -8,7 +8,7 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
     public class FileDownloadRequestObject : EbServiceStackRequest
     {
         [DataMember(Order = 1)]
-        public Account Account { get; set; }
+        string test = string.Empty;
     }
 
     [DataContract]

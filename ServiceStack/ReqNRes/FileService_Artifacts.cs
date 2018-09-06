@@ -61,31 +61,26 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 1)]
         public KeyValuePair<int, string> FileUrl { get; set; }
 
-        [DataMember(Order = 2)]
-        public Account CloudinaryAccount { get; set; }
     }
 
     [DataContract]
-    public class CloudinaryResponseUrl : EbMqRequest
+    public class CloudinaryUploadResponse : EbMqRequest
     {
         [DataMember(Order = 1)]
-        public string ImageUrl { get; set; }
+        public string Url { get; set; }
 
         [DataMember(Order = 2)]
-        public int ImageKey { get; set; }
+        public ImageMeta ImageInfo { get; set; }
     }
 
     [DataContract]
-    public class CloudinaryUploadReq : EbMqRequest
+    public class CloudinaryUploadRequest : EbMqRequest
     {
-        [DataMember(Order =1)]
-        public int ImageKey { get; set; }
+        [DataMember(Order = 1)]
+        public ImageMeta ImageInfo { get; set; }
 
         [DataMember(Order = 2)]
         public byte[] ImageBytes { get; set; }
-
-        [DataMember(Order = 3)]
-        public Account Account { get; set; }
 
     }
 
@@ -98,6 +93,14 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 2)]
         public byte[] Byte { get; set; }
+
+        private static string IdFetchQuery = @"INSERT into eb_files_ref(userid, filename) VALUES (1, 'test') RETURNING id";
+
+        public static int GetFileRefId(IDatabase db)
+        {
+            var table = db.DoQuery(IdFetchQuery);
+            return (int)table.Rows[0][0];
+        }
     }
 
     [DataContract]
