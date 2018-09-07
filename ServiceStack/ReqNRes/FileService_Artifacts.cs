@@ -35,7 +35,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class CloudinaryUploadResponse : EbMqRequest
+    public class CloudinaryUploadResponseTest2 : EbMqRequest
     {
         [DataMember(Order = 1)]
         public string Url { get; set; }
@@ -45,8 +45,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class CloudinaryUploadRequest : EbMqRequest
+    public class CloudinaryUploadRequestTest2 : EbMqRequest
     {
+
         [DataMember(Order = 1)]
         public ImageMeta ImageInfo { get; set; }
 
