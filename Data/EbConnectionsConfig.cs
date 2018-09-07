@@ -28,6 +28,8 @@ namespace ExpressBase.Common.Data
 
         public SMSConnection SMSConnection { get; set; }
 
-        public ImageManipulateConnection ImageManipulateConnection { get; set; }
+        public EbCloudinaryConnection CloudinaryConnection { get; set; }
+
+        public EbFTPConnection FTPConnection { get; set; }
     }
 }

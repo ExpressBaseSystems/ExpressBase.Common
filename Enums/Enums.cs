@@ -47,7 +47,8 @@ namespace ExpressBase.Common
         SMTP = 6,
         SMS = 7,
         Slack = 8,
-        EbImageManipulation = 9
+        Cloudinary = 9,
+        FTP = 10
     }
 
 

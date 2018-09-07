@@ -14,9 +14,9 @@ namespace ExpressBase.Common.Integrations
             _account = account;
         }
 
-        public EbCloudinary(ImageManipulateConnection con)
+        public EbCloudinary(EbCloudinaryConnection con)
         {
-            _account = new Account(con.Cloud, con.ApiKey, con.ApiSecret);
+            _account = con.Account;
         }
 
         private Account _account { get;  set; }
