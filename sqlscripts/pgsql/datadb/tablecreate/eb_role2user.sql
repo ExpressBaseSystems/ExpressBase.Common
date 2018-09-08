@@ -1,22 +1,10 @@
---SEQUENCE public.eb_role2user_id_seq
-
-CREATE SEQUENCE public.eb_role2user_id_seq
-    INCREMENT 1
-    START 1
-    MINVALUE 1
-    MAXVALUE 9223372036854775807
-    CACHE 1;
-
-ALTER SEQUENCE public.eb_role2user_id_seq
-    OWNER TO postgres;
-
 -- Table: public.eb_role2user
 
 -- DROP TABLE public.eb_role2user;
 
 CREATE TABLE public.eb_role2user
 (
-    id integer NOT NULL DEFAULT nextval('eb_role2user_id_seq'::regclass),
+    id serial,
     role_id integer,
     user_id integer,
     eb_del1 boolean DEFAULT false,

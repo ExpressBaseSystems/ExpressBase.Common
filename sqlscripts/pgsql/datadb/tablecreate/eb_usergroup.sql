@@ -1,22 +1,10 @@
--- SEQUENCE public.eb_usergroup_id_seq
-
-CREATE SEQUENCE public.eb_usergroup_id_seq
-    INCREMENT 1
-    START 1
-    MINVALUE 1
-    MAXVALUE 9223372036854775807
-    CACHE 1;
-
-ALTER SEQUENCE public.eb_usergroup_id_seq
-    OWNER TO postgres;
-
 -- Table: public.eb_usergroup
 
 -- DROP TABLE public.eb_usergroup;
 
 CREATE TABLE public.eb_usergroup
 (
-    id integer NOT NULL DEFAULT nextval('eb_usergroup_id_seq'::regclass),
+    id serial,
     name text COLLATE pg_catalog."default",
     description text COLLATE pg_catalog."default",
     eb_del1 boolean,

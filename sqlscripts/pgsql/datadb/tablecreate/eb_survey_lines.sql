@@ -1,20 +1,10 @@
-CREATE SEQUENCE public.eb_survey_lines_id_seq
-    INCREMENT 1
-    START 46
-    MINVALUE 1
-    MAXVALUE 9223372036854775807
-    CACHE 1;
-
-ALTER SEQUENCE public.eb_survey_lines_id_seq
-    OWNER TO postgres;
-
 -- Table: public.eb_survey_lines
 
 -- DROP TABLE public.eb_survey_lines;
 
 CREATE TABLE public.eb_survey_lines
 (
-    id integer NOT NULL DEFAULT nextval('eb_survey_lines_id_seq'::regclass),
+    id serial,
     masterid integer,
     questionid integer,
     eb_createdate timestamp without time zone,
