@@ -85,4 +85,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
             RToken = rtoken;
         }
     }
+    [DataContract]
+    public class EbMqResponse
+    {
+        public bool Result { get; set; }
+    }
 }
