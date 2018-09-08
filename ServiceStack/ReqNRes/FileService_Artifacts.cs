@@ -35,16 +35,6 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class CloudinaryUploadResponse : EbMqRequest
-    {
-        [DataMember(Order = 1)]
-        public string Url { get; set; }
-
-        [DataMember(Order = 2)]
-        public ImageMeta ImageInfo { get; set; }
-    }
-
-    [DataContract]
     public class CloudinaryUploadRequest : EbMqRequest
     {
 
