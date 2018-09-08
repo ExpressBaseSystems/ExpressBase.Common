@@ -13,6 +13,8 @@ namespace ExpressBase.Common.Connections
     {
         public virtual EbConnectionTypes EbConnectionType { get; }
 
+        public int Id { get; set; }
+
         public bool IsDefault { get; set; }
 
         public string NickName { get; set; }

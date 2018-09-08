@@ -17,9 +17,12 @@ namespace ExpressBase.Common.Integrations
         public EbCloudinary(EbCloudinaryConnection con)
         {
             _account = con.Account;
+            InfraConId = con.Id;
         }
 
         private Account _account { get;  set; }
+
+        public int InfraConId { get ; set ; }
 
         Cloudinary GetNewConnection()
         {
