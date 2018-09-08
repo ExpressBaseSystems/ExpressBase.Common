@@ -12,9 +12,9 @@ namespace ExpressBase.Common.Data.FTP
 
         public EbFTP(EbFTPConnection con)
         {
-            _host = con.Host;
-            _userName = con.Username;
-            _password = con.Password;
+            _host = con.Host.Normalize();
+            _userName = con.Username.Normalize();
+            _password = con.Password.Normalize();
         }
 
         public byte[] Download(string Url)
