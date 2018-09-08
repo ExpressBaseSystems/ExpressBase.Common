@@ -17,7 +17,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     
 
     [DataContract]
-    public class UploadFileRequest : EbMqRequest
+    public class UploadFileRequest : EbMqRequest, IReturn<EbMqResponse>
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
@@ -27,7 +27,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class GetImageFtpRequest : EbMqRequest
+    public class GetImageFtpRequest : EbMqRequest, IReturn<EbMqResponse>
     {
         [DataMember(Order = 1)]
         public KeyValuePair<int, string> FileUrl { get; set; }
@@ -35,7 +35,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class CloudinaryUploadRequest : EbMqRequest
+    public class CloudinaryUploadRequest : EbMqRequest, IReturn<EbMqResponse>
     {
 
         [DataMember(Order = 1)]
@@ -48,7 +48,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
 
     [DataContract]
-    public class UploadImageRequest : EbMqRequest
+    public class UploadImageRequest : EbMqRequest, IReturn<EbMqResponse>
     {
         [DataMember(Order = 1)]
         public ImageMeta ImageInfo { get; set; }
