@@ -16,7 +16,7 @@ ALTER SEQUENCE public.eb_role2permission_id_seq
 
 CREATE TABLE public.eb_role2permission
 (
-    id integer NOT NULL DEFAULT nextval('eb_role2permission_id_seq'::regclass),
+    id serial,
     role_id integer,
     eb_del1 boolean DEFAULT false,
     permissionname text COLLATE pg_catalog."default",

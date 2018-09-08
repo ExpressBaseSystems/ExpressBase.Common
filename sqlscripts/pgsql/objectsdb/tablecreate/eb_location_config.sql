@@ -1,20 +1,10 @@
-CREATE SEQUENCE public.eb_location_config_id_seq
-    INCREMENT 1
-    START 1
-    MINVALUE 1
-    MAXVALUE 9223372036854775807
-    CACHE 1;
-
-ALTER SEQUENCE public.eb_location_config_id_seq
-    OWNER TO postgres;
-
 -- Table: public.eb_location_config
 
 -- DROP TABLE public.eb_location_config;
 
 CREATE TABLE public.eb_location_config
 (
-    id integer NOT NULL DEFAULT nextval('eb_location_config_id_seq'::regclass),
+    id serial,
     keys text COLLATE pg_catalog."default",
     isrequired "char" NOT NULL DEFAULT 'F'::"char",
 	keytype text COLLATE pg_catalog."default",
