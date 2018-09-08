@@ -47,6 +47,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     [DataContract]
     public class CloudinaryUploadRequest : EbMqRequest
     {
+
         [DataMember(Order = 1)]
         public ImageMeta ImageInfo { get; set; }
 
@@ -117,6 +118,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 8)]
         public EbFileCategory FileCategory { get; set; }
+
+        [DataMember(Order = 9)]
+        public int ImgManipulationServiceId { get; set; }
     }
 
     [DataContract]
@@ -149,6 +153,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 9)]
         public ImageQuality ImageQuality { get; set; }
+
+        [DataMember(Order = 10)]
+        public int ImgManipulationServiceId { get; set; }
     }
 
     [DataContract]

@@ -44,12 +44,24 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         public ResponseStatus ResponseStatus { get; set; } //Exception gets serialized here
     }
     [DataContract]
-    public class EbMqRequest : EbServiceStackAuthRequest
+    public class EbMqRequest
     {
         [DataMember(Order = 1)]
-        public string BToken { get; set; }
+        public string SolnId { get; set; }
 
         [DataMember(Order = 2)]
+        public int UserId { get; set; }
+
+        [DataMember(Order = 3)]
+        public string UserAuthId { get; set; }
+
+        [DataMember(Order = 4)]
+        public string WhichConsole { get; set; }
+
+        [DataMember(Order = 5)]
+        public string BToken { get; set; }
+
+        [DataMember(Order = 6)]
         public string RToken { get; set; }
 
         public void AddAuth(string btoken, string rtoken)
@@ -60,15 +72,15 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         public void AddAuth(string solnId, string btoken, string rtoken)
         {
-            base.SolnId = solnId;
+            SolnId = solnId;
             BToken = btoken;
             RToken = rtoken;
         }
 
         public void AddAuth(int userId, string solnId, string btoken, string rtoken)
         {
-            base.UserId = userId;
-            base.SolnId = solnId;
+            UserId = userId;
+            SolnId = solnId;
             BToken = btoken;
             RToken = rtoken;
         }
