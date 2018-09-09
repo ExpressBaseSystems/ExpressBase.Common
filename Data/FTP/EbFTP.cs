@@ -34,7 +34,6 @@ namespace ExpressBase.Common.Data.FTP
                 ftpRequest.UsePassive = true;
                 ftpRequest.ConnectionGroupName = "EXPRESSbase Platform Connections";
                 ftpRequest.Method = WebRequestMethods.Ftp.DownloadFile;
-                ftpRequest.Timeout = -1;
                 ftpRequest.Credentials = new NetworkCredential(_userName.Normalize(), _password.Normalize());
                 Response = (FtpWebResponse)ftpRequest.GetResponse();
 
@@ -55,7 +54,6 @@ namespace ExpressBase.Common.Data.FTP
                     }
                 }
                 while (ReadCount > 0);
-
                 responseStream.Close();
                 Response.Close();
             }
