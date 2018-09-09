@@ -22,16 +22,18 @@ namespace ExpressBase.Common.Data.FTP
         public byte[] Download(string url)
         {
             byte[] _byte;
-            FtpWebRequest Request;
+            FtpWebRequest ftpRequest;
             FtpWebResponse Response;
             Stream responseStream;
 
             try
             {
-                Request = (FtpWebRequest)WebRequest.Create(String.Format(@"ftp://{0}/{1}", _host, url));
-                Request.Method = WebRequestMethods.Ftp.DownloadFile;
-                Request.Credentials = new NetworkCredential(_userName.Normalize(), _password.Normalize());
-                Response = (FtpWebResponse)Request.GetResponse();
+                ftpRequest = (FtpWebRequest)WebRequest.Create(String.Format(@"ftp://{0}/{1}", _host, url));
+                ftpRequest.KeepAlive = true;
+                ftpRequest.ConnectionGroupName = "EXPRESSbase Platform Connections";
+                ftpRequest.Method = WebRequestMethods.Ftp.DownloadFile;
+                ftpRequest.Credentials = new NetworkCredential(_userName.Normalize(), _password.Normalize());
+                Response = (FtpWebResponse)ftpRequest.GetResponse();
 
                 responseStream = Response.GetResponseStream();
                 _byte = new byte[Response.ContentLength];
