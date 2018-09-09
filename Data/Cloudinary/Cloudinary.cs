@@ -3,6 +3,7 @@ using CloudinaryDotNet.Actions;
 using ExpressBase.Common.Connections;
 using ExpressBase.Common.Data;
 using ExpressBase.Common.EbServiceStack.ReqNRes;
+using System;
 using System.IO;
 
 namespace ExpressBase.Common.Integrations
@@ -32,14 +33,24 @@ namespace ExpressBase.Common.Integrations
 
         public string Resize(byte[] iByte, ImageMeta meta, int imageQuality)
         {
-            MemoryStream ImageStream = new MemoryStream(iByte);
-            var uploadParams = new ImageUploadParams()
+            string _url;
+            try
             {
-                File = new FileDescription(meta.FileRefId.ToString(), ImageStream),
-                Transformation = new Transformation().Quality(imageQuality),
-                PublicId = meta.FileRefId.ToString().ToString(),
-            };
-            return GetNewConnection().Upload(uploadParams).SecureUri.AbsoluteUri;
+                MemoryStream ImageStream = new MemoryStream(iByte);
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(meta.FileRefId.ToString(), ImageStream),
+                    Transformation = new Transformation().Quality(imageQuality),
+                    PublicId = meta.FileRefId.ToString().ToString(),
+                };
+                _url = GetNewConnection().Upload(uploadParams).SecureUri.AbsoluteUri;
+            }
+            catch(Exception e)
+            {
+                _url = String.Empty;
+                Console.WriteLine("Exception :"+ e.Message);
+            }
+            return _url;
         }
     }
 }
