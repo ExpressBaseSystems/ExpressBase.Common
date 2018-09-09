@@ -40,7 +40,7 @@ namespace ExpressBase.Common.Data.FTP
                 responseStream = Response.GetResponseStream();
                 _byte = new byte[Response.ContentLength];
 
-                byte[] buffer = new byte[2048];
+                byte[] buffer = new byte[10*1024];
                 int ReadCount = 0, FileOffset = 0;
 
                 do
