@@ -1,6 +1,8 @@
 ﻿using ExpressBase.Common.Connections;
+using System;
 using System.IO;
 using System.Net;
+using System.Web;
 
 namespace ExpressBase.Common.Data.FTP
 {
@@ -17,31 +19,43 @@ namespace ExpressBase.Common.Data.FTP
             _password = con.Password.Normalize();
         }
 
-        public byte[] Download(string Url)
+        public byte[] Download(string url)
         {
-            FtpWebRequest Request = (FtpWebRequest)WebRequest.Create(Url);
-            Request.Method = WebRequestMethods.Ftp.DownloadFile;
-            Request.Credentials = new NetworkCredential(_userName, _password);
-            FtpWebResponse Response = (FtpWebResponse)Request.GetResponse();
+            byte[] _byte;
+            FtpWebRequest Request;
+            FtpWebResponse Response;
+            Stream responseStream;
 
-            Stream responseStream = Response.GetResponseStream();
-            byte[] _byte = new byte[Response.ContentLength];
-
-            byte[] buffer = new byte[2048];
-            int ReadCount = 0, FileOffset = 0;
-
-            do
+            try
             {
-                ReadCount = responseStream.Read(buffer, 0, buffer.Length);
+                Request = (FtpWebRequest)WebRequest.Create(String.Format(@"ftp://{0}/{1}", _host, url));
+                Request.Method = WebRequestMethods.Ftp.DownloadFile;
+                Request.Credentials = new NetworkCredential(_userName.Normalize(), _password.Normalize());
+                Response = (FtpWebResponse)Request.GetResponse();
 
-                for (int i = 0; i < ReadCount; i++)
+                responseStream = Response.GetResponseStream();
+                _byte = new byte[Response.ContentLength];
+
+                byte[] buffer = new byte[2048];
+                int ReadCount = 0, FileOffset = 0;
+
+                do
                 {
-                    _byte.SetValue(buffer[i], FileOffset);
-                    FileOffset++;
-                }
-            }
-            while (ReadCount > 0);
+                    ReadCount = responseStream.Read(buffer, 0, buffer.Length);
 
+                    for (int i = 0; i < ReadCount; i++)
+                    {
+                        _byte.SetValue(buffer[i], FileOffset);
+                        FileOffset++;
+                    }
+                }
+                while (ReadCount > 0);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.Message);
+                _byte = new byte[0];
+            }
             return _byte;
         }
     }
