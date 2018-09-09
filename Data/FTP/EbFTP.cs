@@ -57,14 +57,9 @@ namespace ExpressBase.Common.Data.FTP
                 responseStream.Close();
                 Response.Close();
             }
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine("Exception: " + e.Message + "\nFileName: "+ url);
-            //    _byte = new byte[0];
-            //}
-            catch(WebException ex)
+            catch(Exception ex)
             {
-                Console.WriteLine("Exception: " + ex.Message + "\nFileName: " + url);
+                Console.WriteLine("ERROR:  FTP: " + ex.Message);
                 _byte = new byte[0];
             }
             return _byte;

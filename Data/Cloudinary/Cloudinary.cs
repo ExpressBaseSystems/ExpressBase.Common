@@ -48,7 +48,7 @@ namespace ExpressBase.Common.Integrations
             catch(Exception e)
             {
                 _url = String.Empty;
-                Console.WriteLine("Exception :"+ e.Message);
+                Console.WriteLine("ERROR: Cloudinary: "+ e.Message);
             }
             return _url;
         }
