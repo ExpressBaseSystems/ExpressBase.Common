@@ -29,7 +29,9 @@ namespace ExpressBase.Common.Data.FTP
             try
             {
                 ftpRequest = (FtpWebRequest)WebRequest.Create(String.Format(@"ftp://{0}/{1}", _host, url));
-                ftpRequest.KeepAlive = true;
+                ftpRequest.UseBinary = true;
+                ftpRequest.KeepAlive = false;
+                ftpRequest.UsePassive = true;
                 ftpRequest.ConnectionGroupName = "EXPRESSbase Platform Connections";
                 ftpRequest.Method = WebRequestMethods.Ftp.DownloadFile;
                 ftpRequest.Timeout = -1;
@@ -53,6 +55,9 @@ namespace ExpressBase.Common.Data.FTP
                     }
                 }
                 while (ReadCount > 0);
+
+                responseStream.Close();
+                Response.Close();
             }
             catch (Exception e)
             {
