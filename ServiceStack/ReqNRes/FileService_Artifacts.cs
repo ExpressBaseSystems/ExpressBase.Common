@@ -37,7 +37,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class CloudinaryUploadRequest1 : EbMqRequest, IReturn<EbMqResponse>
+    public class CloudinaryUploadRequest : EbMqRequest, IReturn<EbMqResponse>
     {
 
         [DataMember(Order = 1)]
