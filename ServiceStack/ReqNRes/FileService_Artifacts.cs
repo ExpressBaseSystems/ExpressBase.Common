@@ -1,8 +1,10 @@
 using CloudinaryDotNet;
 using ExpressBase.Common.Enums;
+using ExpressBase.Common.Structures;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Runtime.Serialization;
 
 namespace ExpressBase.Common.EbServiceStack.ReqNRes
@@ -14,7 +16,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         public FileMeta FileDetails { get; set; }
     }
 
-    
+
 
     [DataContract]
     public class UploadFileRequest : EbMqRequest, IReturn<EbMqResponse>
@@ -35,7 +37,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class CloudinaryUploadRequest : EbMqRequest, IReturn<EbMqResponse>
+    public class CloudinaryUploadRequest1 : EbMqRequest, IReturn<EbMqResponse>
     {
 
         [DataMember(Order = 1)]
@@ -56,12 +58,34 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 2)]
         public byte[] Byte { get; set; }
 
-        private static string IdFetchQuery = @"INSERT into eb_files_ref(userid, filename) VALUES (1, 'test') RETURNING id";
+        private static readonly string IdFetchQuery =
+@"INSERT INTO
+    eb_files_ref (userid, filename, filetype, tags, filecategory) 
+VALUES 
+    (@userid, @filename, @filetype, @tags, @filecategory) 
+RETURNING id";
 
-        public static int GetFileRefId(IDatabase db)
+        public static int GetFileRefId(IDatabase dataDb, int userId, string filename, string filetype, string tags, EbFileCategory ebFileCategory)
         {
-            var table = db.DoQuery(IdFetchQuery);
-            return (int)table.Rows[0][0];
+            int refId = 0;
+            try
+            {
+                DbParameter[] parameters =
+                {
+                        dataDb.GetNewParameter("userid", EbDbTypes.Int32, userId),
+                        dataDb.GetNewParameter("filename", EbDbTypes.String, filename),
+                        dataDb.GetNewParameter("filetype", EbDbTypes.String, filetype),
+                        dataDb.GetNewParameter("tags", EbDbTypes.String, tags),
+                        dataDb.GetNewParameter("filecategory", EbDbTypes.Int16, ebFileCategory)
+            };
+                var table = dataDb.DoQuery(IdFetchQuery, parameters);
+                refId = (int)table.Rows[0][0];
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("ERROR: POSGRE: " + e.Message);
+            }
+            return refId;
         }
     }
 
