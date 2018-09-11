@@ -30,13 +30,8 @@ namespace ExpressBase.Common.Integrations
             return new Cloudinary(_account);
         }
 
-        public string GetThumbnailImage(string _originalImageUrl)
-        {
-            Cloudinary ThumbnailFetcher = new Cloudinary();
-            return ThumbnailFetcher.Api.UrlImgFetch.Transform(new Transformation().Height(150).Crop("fit").AspectRatio(1.0)).BuildImageTag(_originalImageUrl);
-        }
 
-        public string Resize(byte[] iByte, ImageMeta meta, int imageQuality)
+        public string Resize(byte[] iByte, string filename, int imageQuality)
         {
             string _url;
             try
@@ -44,9 +39,9 @@ namespace ExpressBase.Common.Integrations
                 MemoryStream ImageStream = new MemoryStream(iByte);
                 var uploadParams = new ImageUploadParams()
                 {
-                    File = new FileDescription(meta.FileRefId.ToString(), ImageStream),
+                    File = new FileDescription(filename, ImageStream),
                     Transformation = new Transformation().Quality(imageQuality),
-                    PublicId = meta.FileRefId.ToString().ToString(),
+                    PublicId = filename,
                 };
                 _url = GetNewConnection().Upload(uploadParams).SecureUri.AbsoluteUri;
             }

@@ -180,7 +180,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         public ResponseStatus ResponseStatus { get; set; }
 
         [DataMember(Order = 2)]
-        public int ImgRefId { get; set; }
+        public int FileRefId { get; set; }
     }
 
     [DataContract]

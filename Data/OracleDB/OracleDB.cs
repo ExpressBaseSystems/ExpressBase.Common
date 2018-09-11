@@ -977,17 +977,12 @@ namespace ExpressBase.Common.Data
     {
         public OracleFilesDB(EbBaseDbConnection dbconf) : base(dbconf) { }
 
-        public byte[] DownloadFileById(string filestoreid, EbFileCategory cat)
+        public byte[] DownloadFileById(string filestoreid, EbFileCategory category)
         {
             throw new NotImplementedException();
         }
 
-        public byte[] DownloadFileByName(string filename, EbFileCategory cat)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, EbFileCategory cat)
+        public string UploadFile(string filename, byte[] bytea, EbFileCategory category)
         {
             throw new NotImplementedException();
         }

@@ -939,19 +939,17 @@ namespace ExpressBase.Common
             return filebyte;
         }
 
-        public string UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, EbFileCategory cat)
+        public string UploadFile(string filename, byte[] bytea, EbFileCategory cat)
         {
-            string _metaDataPair = EbSerializers.Json_Serialize(MetaDataPair);
             int rtn = 0;
             try
             {
                 using (NpgsqlConnection con = GetNewConnection() as NpgsqlConnection)
                 {
                     con.Open();
-                    string sql = "INSERT INTO eb_files_bytea (filename, meta, bytea, filecategory) VALUES (:filename, :MetaDataPair, :bytea, :cat) returning id;";
+                    string sql = "INSERT INTO eb_files_bytea (filename, bytea, filecategory) VALUES (:filename, :bytea, :cat) returning id;";
                     NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
-                    cmd.Parameters.Add(GetNewParameter(":filename", EbDbTypes.String, ((filename != null) ? filename : String.Empty)));
-                    cmd.Parameters.Add(GetNewParameter(":MetaDataPair", EbDbTypes.Json, _metaDataPair));
+                    cmd.Parameters.Add(GetNewParameter(":filename", EbDbTypes.String, filename));
                     cmd.Parameters.Add(GetNewParameter(":bytea", EbDbTypes.Bytea, bytea));
                     cmd.Parameters.Add(GetNewParameter(":cat", EbDbTypes.Int32, (int)cat));
                     Int32.TryParse(cmd.ExecuteScalar().ToString(), out rtn);

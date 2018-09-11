@@ -14,7 +14,7 @@
     {
         original = 0,
         other = 1,
-        small = 100,
+        small = 150,
         medium = 300,
         large = 600
     }
