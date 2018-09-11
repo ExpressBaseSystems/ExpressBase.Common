@@ -187,6 +187,9 @@ RETURNING id";
     {
         [DataMember(Order = 1)]
         public ResponseStatus ResponseStatus { get; set; }
+
+        [DataMember(Order = 2)]
+        public int ImgRefId { get; set; }
     }
 
     [DataContract]
@@ -201,11 +204,11 @@ RETURNING id";
 
     public class UploadFileMqResponse
     {
-        public string Uploaded { get; set; }
+        public bool IsUploaded { get; set; }
 
         public string initialPreview { get; set; }
 
-        public string objId { get; set; }
+        public int ImgRefId { get; set; }
     }
 
     public class UploadFileMqError
