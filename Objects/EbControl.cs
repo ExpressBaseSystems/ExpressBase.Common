@@ -15,100 +15,105 @@ using ExpressBase.Common.Extensions;
 
 namespace ExpressBase.Common.Objects
 {
-    public class EbControl : EbObject
-    {
-        [HideInPropertyGrid]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
-        public virtual string EbSid { get; set; }
+	public class EbControl : EbObject
+	{
+		[HideInPropertyGrid]
+		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+		public virtual string EbSid { get; set; }
 
-        [HideInPropertyGrid]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
-        public override string UIchangeFns { get; set; }
+		[HideInPropertyGrid]
+		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+		public override string UIchangeFns { get; set; }
 
-        public virtual EbDbTypes EbDbType { get; set; }
+		public virtual EbDbTypes EbDbType { get; set; }
 
-        [Description("Labels")]
-        [System.ComponentModel.Category("Behavior")]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
-        [UIproperty]
-        [Unique]
-        [OnChangeUIFunction("Common.LABEL")]
-        public virtual string Label { get; set; }
+		[Description("Labels")]
+		[System.ComponentModel.Category("Behavior")]
+		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+		[UIproperty]
+		[Unique]
+		[OnChangeUIFunction("Common.LABEL")]
+		public virtual string Label { get; set; }
 
-        [EnableInBuilder(BuilderType.BotForm, BuilderType.FilterDialog)]
-        [PropertyEditor(PropertyEditorType.JS)]
-        public string VisibleIf { get; set; }
+		[EnableInBuilder(BuilderType.BotForm, BuilderType.FilterDialog)]
+		[PropertyEditor(PropertyEditorType.JS)]
+		public string VisibleIf { get; set; }
 
-        [EnableInBuilder(BuilderType.BotForm)]
-        [PropertyEditor(PropertyEditorType.JS)]
-        public string ValueExpression { get; set; }
+		[EnableInBuilder(BuilderType.BotForm)]
+		[PropertyEditor(PropertyEditorType.Collection)]
+		[Alias("Validators")]
+		public List<EbValidator> Validators { get; set; }
 
-        [HideInPropertyGrid]
-        public virtual string ObjType { get { return this.GetType().Name.Substring(2, this.GetType().Name.Length - 2); } set { } }
+		[EnableInBuilder(BuilderType.BotForm)]
+		[PropertyEditor(PropertyEditorType.JS)]
+		public string ValueExpression { get; set; }
 
-        [HideInPropertyGrid]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
-        public virtual string BareControlHtml { get; set; }
+		[HideInPropertyGrid]
+		public virtual string ObjType { get { return this.GetType().Name.Substring(2, this.GetType().Name.Length - 2); } set { } }
 
-        [EnableInBuilder(BuilderType.BotForm)]
-        public virtual bool IsReadOnly { get; set; }
+		[HideInPropertyGrid]
+		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+		public virtual string BareControlHtml { get; set; }
 
-        [ProtoBuf.ProtoMember(12)]
-        [System.ComponentModel.Category("Behavior")]
-        [Description("Labels")]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
-        public virtual string ToolTipText { get; set; }
+		[EnableInBuilder(BuilderType.BotForm)]
+		public virtual bool IsReadOnly { get; set; }
 
-        [ProtoBuf.ProtoMember(13)]
-        [Browsable(false)]
-        public virtual int CellPositionRow { get; set; }
+		[ProtoBuf.ProtoMember(12)]
+		[System.ComponentModel.Category("Behavior")]
+		[Description("Labels")]
+		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+		public virtual string ToolTipText { get; set; }
 
-        [ProtoBuf.ProtoMember(14)]
-        [Browsable(false)]
-        public virtual int CellPositionColumn { get; set; }
+		[ProtoBuf.ProtoMember(13)]
+		[Browsable(false)]
+		public virtual int CellPositionRow { get; set; }
 
-        [ProtoBuf.ProtoMember(15)]
-        [Browsable(false)]
-        public virtual int Left { get; set; }
+		[ProtoBuf.ProtoMember(14)]
+		[Browsable(false)]
+		public virtual int CellPositionColumn { get; set; }
 
-        [ProtoBuf.ProtoMember(16)]
-        [Browsable(false)]
-        public virtual int Top { get; set; }
+		[ProtoBuf.ProtoMember(15)]
+		[Browsable(false)]
+		public virtual int Left { get; set; }
 
-        [ProtoBuf.ProtoMember(17)]
-        [System.ComponentModel.Category("Layout")]
-        public virtual int Height { get; set; }
+		[ProtoBuf.ProtoMember(16)]
+		[Browsable(false)]
+		public virtual int Top { get; set; }
 
-        //[ProtoBuf.ProtoMember(18)]
-        //[System.ComponentModel.Category("Layout")]
-        //public virtual int Width { get; set; }
+		[ProtoBuf.ProtoMember(17)]
+		[System.ComponentModel.Category("Layout")]
+		public virtual int Height { get; set; }
 
-        [ProtoBuf.ProtoMember(19)]
-        [System.ComponentModel.Category("Behavior")]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
-        public virtual bool Required { get; set; }
+		//[ProtoBuf.ProtoMember(18)]
+		//[System.ComponentModel.Category("Layout")]
+		//public virtual int Width { get; set; }
 
-        public virtual string DesignHtml4Bot { get; set; }
+		[ProtoBuf.ProtoMember(19)]
+		[System.ComponentModel.Category("Behavior")]
+		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+		public virtual bool Required { get; set; }
 
-        public virtual bool isFullViewContol { get; set; }
+		public virtual string DesignHtml4Bot { get; set; }
 
-        public virtual bool isSelfCollection { get; set; }
+		public virtual bool isFullViewContol { get; set; }
 
-        protected string RequiredString
-        {
-            get { return (this.Required ? "$('#{0}').focusout(function() { isRequired(this); }); $('#{0}Lbl').html( $('#{0}Lbl').text() + '<sup style=\"color: red\">*</sup>') ".Replace("{0}", this.Name) : string.Empty); }
-        }
+		public virtual bool isSelfCollection { get; set; }
 
-        [ProtoBuf.ProtoMember(20)]
-        [System.ComponentModel.Category("Behavior")]
-        public virtual bool Unique { get; set; }
+		protected string RequiredString
+		{
+			get { return (this.Required ? "$('#{0}').focusout(function() { isRequired(this); }); $('#{0}Lbl').html( $('#{0}Lbl').text() + '<sup style=\"color: red\">*</sup>') ".Replace("{0}", this.Name) : string.Empty); }
+		}
 
-        protected string UniqueString
-        {
-            get { return (this.Unique ? "$('#{0}').focusout(function() { isUnique(this); });".Replace("{0}", this.Name) : string.Empty); }
-        }
+		[ProtoBuf.ProtoMember(20)]
+		[System.ComponentModel.Category("Behavior")]
+		public virtual bool Unique { get; set; }
 
-        public static string AttachedLblAddingJS = @"
+		protected string UniqueString
+		{
+			get { return (this.Unique ? "$('#{0}').focusout(function() { isUnique(this); });".Replace("{0}", this.Name) : string.Empty); }
+		}
+
+		public static string AttachedLblAddingJS = @"
 $('<div id=\'{0}AttaLbl\' class=\'attachedlabel atchdLblL\'>$</div>').insertBefore($('#{0}').parent()); $('#{0}').addClass('numinputL')
 $('#{0}AttaLbl').css({'padding':   ( $('#{0}').parent().height()/5 + 1) + 'px' });
 $('#{0}AttaLbl').css({'font-size': ($('#{0}').css('font-size')) });
@@ -118,82 +123,82 @@ else
     $('#{0}AttaLbl').css({'height':   ( $('#{0}').parent().height()) + 'px' }); 
 ";
 
-        [ProtoBuf.ProtoMember(21)]
-        [System.ComponentModel.Category("Behavior")]
-        public virtual bool ReadOnly { get; set; }
+		[ProtoBuf.ProtoMember(21)]
+		[System.ComponentModel.Category("Behavior")]
+		public virtual bool ReadOnly { get; set; }
 
-        protected string ReadOnlyString
-        {
-            get { return (this.ReadOnly ? "background-color: #f0f0f0; border: solid 1px #bbb;' readonly" : "'"); }
-        }
+		protected string ReadOnlyString
+		{
+			get { return (this.ReadOnly ? "background-color: #f0f0f0; border: solid 1px #bbb;' readonly" : "'"); }
+		}
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
-        [PropertyGroup("Behavior")]
-        public virtual bool Hidden { get; set; }
+		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+		[PropertyGroup("Behavior")]
+		public virtual bool Hidden { get; set; }
 
-        protected string HiddenString
-        {
-            get { return (this.Hidden ? "visibility: hidden;" : string.Empty); }
-        }
+		protected string HiddenString
+		{
+			get { return (this.Hidden ? "visibility: hidden;" : string.Empty); }
+		}
 
-        [ProtoBuf.ProtoMember(23)]
-        public virtual bool SkipPersist { get; set; }
+		[ProtoBuf.ProtoMember(23)]
+		public virtual bool SkipPersist { get; set; }
 
-        [ProtoBuf.ProtoMember(24)]
-        public virtual string RequiredExpression { get; set; }
+		[ProtoBuf.ProtoMember(24)]
+		public virtual string RequiredExpression { get; set; }
 
-        [ProtoBuf.ProtoMember(25)]
-        public virtual string UniqueExpression { get; set; }
+		[ProtoBuf.ProtoMember(25)]
+		public virtual string UniqueExpression { get; set; }
 
-        [ProtoBuf.ProtoMember(26)]
-        public virtual string ReadOnlyExpression { get; set; }
+		[ProtoBuf.ProtoMember(26)]
+		public virtual string ReadOnlyExpression { get; set; }
 
-        [ProtoBuf.ProtoMember(27)]
-        public virtual string VisibleExpression { get; set; }
+		[ProtoBuf.ProtoMember(27)]
+		public virtual string VisibleExpression { get; set; }
 
-        [ProtoBuf.ProtoMember(28)]
-        [System.ComponentModel.Category("Accessibility")]
-        public virtual int TabIndex { get; set; }
+		[ProtoBuf.ProtoMember(28)]
+		[System.ComponentModel.Category("Accessibility")]
+		public virtual int TabIndex { get; set; }
 
-        [ProtoBuf.ProtoMember(34)]
-        public EbValidatorCollection Validators { get; set; }
+		//[ProtoBuf.ProtoMember(34)]
+		//public EbValidatorCollection Validators { get; set; }
 
-        public EbControl()
-        {
-            this.Validators = new EbValidatorCollection();
-        }
+		public EbControl()
+		{
+			this.Validators = new List<EbValidator>();
+		}
 
-        public virtual string GetHead() { return string.Empty; }
+		public virtual string GetHead() { return string.Empty; }
 
-        public virtual string GetHtml() { return string.Empty; }
+		public virtual string GetHtml() { return string.Empty; }
 
-        public virtual string GetWrapedCtrlHtml4bot()
-        {
-            return '"' + "<div>no GetWrapedCtrlHtml4bot() defined</div>" + '"';
-        }
+		public virtual string GetWrapedCtrlHtml4bot()
+		{
+			return '"' + "<div>no GetWrapedCtrlHtml4bot() defined</div>" + '"';
+		}
 
-//        public virtual string GetWrapedCtrlHtml4Web(string barehtml)
-//        {
-//            string ResHTML = string.Empty;
+		//        public virtual string GetWrapedCtrlHtml4Web(string barehtml)
+		//        {
+		//            string ResHTML = string.Empty;
 
-//            ResHTML = @"
-//<div id='cont_@name@' class='Eb-ctrlContainer' Ctype='@type@' style='@hiddenString'>
-//    <span class='eb-ctrl-label' ui-label id='@nameLbl'>@label@</span>
-//       @barehtml@
-//    <span class='helpText'> @helpText </span>
-//</div>"
-//.Replace("@barehtml@", barehtml).RemoveCR().GraveAccentQuoted();
+		//            ResHTML = @"
+		//<div id='cont_@name@' class='Eb-ctrlContainer' Ctype='@type@' style='@hiddenString'>
+		//    <span class='eb-ctrl-label' ui-label id='@nameLbl'>@label@</span>
+		//       @barehtml@
+		//    <span class='helpText'> @helpText </span>
+		//</div>"
+		//.Replace("@barehtml@", barehtml).RemoveCR().GraveAccentQuoted();
 
-//            return ResHTML;
-//        }
+		//            return ResHTML;
+		//        }
 
-        public virtual string GetWrapedCtrlHtml4bot(ref EbControl ChildObj)
-        {
-            string bareHTML = ChildObj.DesignHtml4Bot ?? ChildObj.GetBareHtml(),
-            innerHTML = @" <div class='ctrl-wraper' @style@> @barehtml@ </div>".Replace("@barehtml@", bareHTML),
-            ResHTML = string.Empty,
-            type = ChildObj.GetType().Name.Substring(2, ChildObj.GetType().Name.Length - 2),
-            LabelHTML = @"
+		public virtual string GetWrapedCtrlHtml4bot(ref EbControl ChildObj)
+		{
+			string bareHTML = ChildObj.DesignHtml4Bot ?? ChildObj.GetBareHtml(),
+			innerHTML = @" <div class='ctrl-wraper' @style@> @barehtml@ </div>".Replace("@barehtml@", bareHTML),
+			ResHTML = string.Empty,
+			type = ChildObj.GetType().Name.Substring(2, ChildObj.GetType().Name.Length - 2),
+			LabelHTML = @"
     <div class='msg-cont'>
       <div class='bot-icon'></div>
       <div class='msg-cont-bot'>
@@ -203,7 +208,7 @@ else
          </div>
       </div>
    </div>",
-            ControlHTML = @"
+			ControlHTML = @"
 <div class='msg-cont'>
       <div class='msg-cont-bot'>
          <div class='msg-wraper-bot' style='@style@ border: none; background-color: transparent; width: 99%; padding-right: 3px;'>
@@ -211,13 +216,13 @@ else
          </div>
       </div>
    </div>";
-            if (type == "Labels")
-            {
-                ControlHTML = string.Empty;
-                LabelHTML = bareHTML;
-            }
-            innerHTML = (!ChildObj.isFullViewContol) ? (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>") : innerHTML.Replace("@style@", "style='width:100%;border:none;'");
-            ResHTML = @"
+			if (type == "Labels")
+			{
+				ControlHTML = string.Empty;
+				LabelHTML = bareHTML;
+			}
+			innerHTML = (!ChildObj.isFullViewContol) ? (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>") : innerHTML.Replace("@style@", "style='width:100%;border:none;'");
+			ResHTML = @"
 <div class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='TextBox'>
    @LabelHTML@
    @ControlHTML@
@@ -227,60 +232,65 @@ else
 .Replace("@ControlHTML@", ControlHTML)
 .Replace("@innerHTML@", innerHTML)
 .Replace("@style@", (ChildObj.isFullViewContol ? "margin-left:12px;" : string.Empty)).RemoveCR();
-            return ResHTML;
-        }
+			return ResHTML;
+		}
 
-        public override void Init4Redis(IRedisClient redisclient, IServiceClient serviceclient)
-        {
-            base.Redis = redisclient;
-            base.ServiceStackClient = serviceclient;
-        }
+		public override void Init4Redis(IRedisClient redisclient, IServiceClient serviceclient)
+		{
+			base.Redis = redisclient;
+			base.ServiceStackClient = serviceclient;
+		}
 
-        public virtual void SetData(object value) { }
+		public virtual void SetData(object value) { }
 
-        public virtual object GetData() { return null; }
-        public virtual string GetToolHtml() { return @"<div eb-type='@toolName' class='tool'>@toolName</div>".Replace("@toolName", this.GetType().Name.Substring(2)); }
+		public virtual object GetData() { return null; }
+		public virtual string GetToolHtml() { return @"<div eb-type='@toolName' class='tool'>@toolName</div>".Replace("@toolName", this.GetType().Name.Substring(2)); }
 
-        protected string WrapWithDblQuotes(string input)
-        {
-            return "\"" + input + "\"";
-        }
+		protected string WrapWithDblQuotes(string input)
+		{
+			return "\"" + input + "\"";
+		}
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
-        [PropertyGroup("Events")]
-        [PropertyEditor(PropertyEditorType.JS)]
-        public string OnChange { get; set; }
+		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+		[PropertyGroup("Events")]
+		[PropertyEditor(PropertyEditorType.JS)]
+		public string OnChange { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
-        public string DefaultValue { get; set; }
-    }
+		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+		public string DefaultValue { get; set; }
+	}
 
-    [ProtoBuf.ProtoContract]
-    public class EbValidator
-    {
-        [Description("WebForm")]
-        public string Name { get; set; }
+	//[ProtoBuf.ProtoContract]
+	//public class EbValidatorCollection : List<EbValidator>
+	//{
 
-        [ProtoBuf.ProtoMember(2)]
-        public bool IsDisabled { get; set; }
+	//}
 
-        [ProtoBuf.ProtoMember(3)]
-        public string JScode { get; set; }
+	public enum SubType
+	{
+		WithDecimalPlaces,
+		WithTextTransform,
+		WithEbDateType
+	}
 
-        [ProtoBuf.ProtoMember(4)]
-        public string FailureMSG { get; set; }
-    }
+	[EnableInBuilder(BuilderType.BotForm)]
+	[HideInToolBox]
+	[UsedWithTopObjectParent(typeof(EbObject))]
+	public class EbValidator
+	{
+		[EnableInBuilder(BuilderType.BotForm)]
+		public bool IsDisabled { get; set; }
 
-    [ProtoBuf.ProtoContract]
-    public class EbValidatorCollection : List<EbValidator>
-    {
+		[EnableInBuilder(BuilderType.BotForm)]
+		public bool IsWarningOnly { get; set; }
 
-    }
+		[EnableInBuilder(BuilderType.BotForm)]
+		[PropertyEditor(PropertyEditorType.String)]
+		public string JScode { get; set; }
 
-    public enum SubType
-    {
-        WithDecimalPlaces,
-        WithTextTransform,
-        WithEbDateType
-    }
+		[EnableInBuilder(BuilderType.BotForm)]
+		public string FailureMSG { get; set; }
+
+		public EbValidator() { }
+	}
 }
