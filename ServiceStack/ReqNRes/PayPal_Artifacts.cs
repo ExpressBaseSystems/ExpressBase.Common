@@ -8,7 +8,7 @@ using System.Text;
 namespace ExpressBase.Common.ServiceStack.ReqNRes
 {
     [DataContract]
-    public class PayPalWebHookHandler : EbServiceStackRequest
+    public class PayPalWebHookHandler : EbServiceStackAuthRequest
     {
         [DataMember(Order =1)]
         public string JsonBody;
@@ -18,7 +18,7 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class PayPalFailureReturnRequest : EbServiceStackRequest
+    public class PayPalFailureReturnRequest : EbServiceStackAuthRequest
     {
         [DataMember(Order = 1)]
         public string PaymentId;
@@ -28,13 +28,13 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class PayPalFailureResponse : EbServiceStackRequest
+    public class PayPalFailureResponse : EbServiceStackAuthRequest
     {
 
     }
 
     [DataContract]
-    public class PayPalSuccessReturnRequest : EbServiceStackRequest
+    public class PayPalSuccessReturnRequest : EbServiceStackAuthRequest
     {
         [DataMember(Order = 1)]
         public string PaymentId;
@@ -44,13 +44,13 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class PayPalSuccessResponse : EbServiceStackRequest
+    public class PayPalSuccessResponse : EbServiceStackAuthRequest
     {
 
     }
 
     [DataContract]
-    public class PayPalPaymentRequest : EbServiceStackRequest
+    public class PayPalPaymentRequest : EbServiceStackAuthRequest
     {
         [DataMember(Order = 1)]
         public string HolderName { get; set; }
@@ -87,7 +87,7 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class PayPalPaymentResponse : EbServiceStackRequest
+    public class PayPalPaymentResponse : EbServiceStackAuthRequest
     {
         [DataMember(Order =1)]
         public string ReturnUrl { get; set; }

@@ -1,20 +1,10 @@
-CREATE SEQUENCE public.eb_objects_id_seq
-    INCREMENT 1
-    START 1
-    MINVALUE 1
-    MAXVALUE 9223372036854775807
-    CACHE 1;
-
-ALTER SEQUENCE public.eb_objects_id_seq
-    OWNER TO postgres;
-
 -- Table: public.eb_objects
 
 -- DROP TABLE public.eb_objects;
 
 CREATE TABLE public.eb_objects
 (
-    id integer NOT NULL DEFAULT nextval('eb_objects_id_seq'::regclass),
+    id serial,
     obj_name text COLLATE pg_catalog."default",
     obj_type integer,
     obj_cur_status integer,

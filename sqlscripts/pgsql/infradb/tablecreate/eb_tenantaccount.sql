@@ -1,21 +1,10 @@
-CREATE SEQUENCE public.eb_tenantaccount_id_seq
-    INCREMENT 1
-    START 83
-    MINVALUE 1
-    MAXVALUE 9223372036854775807
-    CACHE 1;
-
-ALTER SEQUENCE public.eb_tenantaccount_id_seq
-    OWNER TO postgres;
-
-
 -- Table: public.eb_tenantaccount
 
 -- DROP TABLE public.eb_tenantaccount;
 
 CREATE TABLE public.eb_tenantaccount
 (
-    id integer NOT NULL DEFAULT nextval('eb_tenantaccount_id_seq'::regclass),
+    id SERIAL,
     accountname text COLLATE pg_catalog."default",
     solution_id text COLLATE pg_catalog."default",
     address text COLLATE pg_catalog."default",

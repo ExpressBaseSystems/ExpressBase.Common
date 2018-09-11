@@ -13,33 +13,35 @@ namespace ExpressBase.Common.Connections
     {
         public virtual EbConnectionTypes EbConnectionType { get; }
 
+        public int Id { get; set; }
+
         public bool IsDefault { get; set; }
 
         public string NickName { get; set; }
 
-        public virtual void Persist(string TenantAccountId, IEbConnectionFactory dbconf, bool IsNew, int UserId)
+        public virtual void Persist(string TenantAccountId, EbConnectionFactory infra, bool IsNew, int UserId)
         {
             if (IsNew)
             {
                 string sql = "INSERT INTO eb_connections (con_type, solution_id, nick_name, con_obj,date_created,eb_user_id) VALUES (@con_type, @solution_id, @nick_name, @con_obj , NOW() , @eb_user_id) RETURNING id";
-                DbParameter[] parameters = { dbconf.DataDB.GetNewParameter("con_type", EbDbTypes.String, EbConnectionType),
-                                    dbconf.DataDB.GetNewParameter("solution_id", EbDbTypes.String, TenantAccountId),
-                                    dbconf.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(NickName))?NickName:string.Empty),
-                                    dbconf.DataDB.GetNewParameter("con_obj", EbDbTypes.Json,EbSerializers.Json_Serialize(this) ),
-                                    dbconf.DataDB.GetNewParameter("eb_user_id", EbDbTypes.Int32, UserId ) };
-                var iCount = dbconf.DataDB.DoQuery(sql, parameters);
+                DbParameter[] parameters = { infra.DataDB.GetNewParameter("con_type", EbDbTypes.String, EbConnectionType),
+                                    infra.DataDB.GetNewParameter("solution_id", EbDbTypes.String, TenantAccountId),
+                                    infra.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(NickName))?NickName:string.Empty),
+                                    infra.DataDB.GetNewParameter("con_obj", EbDbTypes.Json,EbSerializers.Json_Serialize(this) ),
+                                    infra.DataDB.GetNewParameter("eb_user_id", EbDbTypes.Int32, UserId ) };
+                var iCount = infra.DataDB.DoQuery(sql, parameters);
             }
 
             else if (!IsNew)
             {
                 string sql = @"UPDATE eb_connections SET eb_del = 'T' WHERE con_type = @con_type AND solution_id = @solution_id; 
                                       INSERT INTO eb_connections (con_type, solution_id, nick_name, con_obj, date_created, eb_user_id) VALUES (@con_type, @solution_id, @nick_name, @con_obj, NOW() , @eb_user_id)";
-                DbParameter[] parameters = { dbconf.DataDB.GetNewParameter("con_type", EbDbTypes.String, EbConnectionType),
-                                    dbconf.DataDB.GetNewParameter("solution_id", EbDbTypes.String, TenantAccountId),
-                                    dbconf.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(NickName))?NickName:string.Empty),
-                                    dbconf.DataDB.GetNewParameter("con_obj", EbDbTypes.Json,EbSerializers.Json_Serialize(this)),
-                                      dbconf.DataDB.GetNewParameter("eb_user_id", EbDbTypes.Int32, UserId )};
-                var iCount = dbconf.DataDB.DoNonQuery(sql, parameters);
+                DbParameter[] parameters = { infra.DataDB.GetNewParameter("con_type", EbDbTypes.String, EbConnectionType),
+                                    infra.DataDB.GetNewParameter("solution_id", EbDbTypes.String, TenantAccountId),
+                                    infra.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(NickName))?NickName:string.Empty),
+                                    infra.DataDB.GetNewParameter("con_obj", EbDbTypes.Json,EbSerializers.Json_Serialize(this)),
+                                      infra.DataDB.GetNewParameter("eb_user_id", EbDbTypes.Int32, UserId )};
+                var iCount = infra.DataDB.DoNonQuery(sql, parameters);
             }
         }
 

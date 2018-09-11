@@ -1,23 +1,11 @@
---SEQUENCE public.eb_objects2application_id_seq
-
-CREATE SEQUENCE public.eb_objects2application_id_seq
-    INCREMENT 1
-    START 1
-    MINVALUE 1
-    MAXVALUE 9223372036854775807
-    CACHE 1;
-
-ALTER SEQUENCE public.eb_objects2application_id_seq
-    OWNER TO postgres;
-
 -- Table: public.eb_objects2application
 
 -- DROP TABLE public.eb_objects2application;
 
 CREATE TABLE public.eb_objects2application
 (
+	id serial,
     app_id integer,
-    id integer NOT NULL DEFAULT nextval('eb_objects2application_id_seq'::regclass),
     obj_id integer,
     eb_del1 boolean DEFAULT false,
     removed_by integer,

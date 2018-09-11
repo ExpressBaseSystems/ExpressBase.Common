@@ -1,22 +1,10 @@
---SEQUENCE public.eb_usersprospective_id_seq
-
-CREATE SEQUENCE public.eb_usersprospective_id_seq
-    INCREMENT 1
-    START 1
-    MINVALUE 1
-    MAXVALUE 9223372036854775807
-    CACHE 1;
-
-ALTER SEQUENCE public.eb_usersprospective_id_seq
-    OWNER TO postgres;
-
 -- Table: public.eb_usersanonymous
 
 -- DROP TABLE public.eb_usersanonymous;
 
 CREATE TABLE public.eb_usersanonymous
 (
-    id integer NOT NULL DEFAULT nextval('eb_usersprospective_id_seq'::regclass),
+    id serial,
     fullname text COLLATE pg_catalog."default",
     socialid text COLLATE pg_catalog."default",
     email text COLLATE pg_catalog."default",

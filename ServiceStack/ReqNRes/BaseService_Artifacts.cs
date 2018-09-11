@@ -5,16 +5,16 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 {
     public interface IEbSSRequest
     {
-        string TenantAccountId { get; set; }
+        string SolnId { get; set; }
 
         int UserId { get; set; }
     }
 
     [DataContract]
-    public abstract class EbServiceStackRequest
+    public abstract class EbServiceStackAuthRequest
     {
         [DataMember(Order = 1)]
-        public string TenantAccountId { get; set; }
+        public string SolnId { get; set; }
 
         [DataMember(Order = 2)]
         public int UserId { get; set; }
@@ -25,6 +25,10 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 4)]
         public string WhichConsole { get; set; }
     }
+
+    [DataContract]
+    public abstract class EbServiceStackNoAuthRequest
+    { }
 
     [ProtoBuf.ProtoContract]
     //[ProtoBuf.ProtoInclude(1, typeof(DataSourceColumnsResponse))]
@@ -38,5 +42,52 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     {
         [DataMember(Order = 2)]
         public ResponseStatus ResponseStatus { get; set; } //Exception gets serialized here
+    }
+    [DataContract]
+    public class EbMqRequest
+    {
+        [DataMember(Order = 1)]
+        public string SolnId { get; set; }
+
+        [DataMember(Order = 2)]
+        public int UserId { get; set; }
+
+        [DataMember(Order = 3)]
+        public string UserAuthId { get; set; }
+
+        [DataMember(Order = 4)]
+        public string WhichConsole { get; set; }
+
+        [DataMember(Order = 5)]
+        public string BToken { get; set; }
+
+        [DataMember(Order = 6)]
+        public string RToken { get; set; }
+
+        public void AddAuth(string btoken, string rtoken)
+        {
+            BToken = btoken;
+            RToken = rtoken;
+        }
+
+        public void AddAuth(string solnId, string btoken, string rtoken)
+        {
+            SolnId = solnId;
+            BToken = btoken;
+            RToken = rtoken;
+        }
+
+        public void AddAuth(int userId, string solnId, string btoken, string rtoken)
+        {
+            UserId = userId;
+            SolnId = solnId;
+            BToken = btoken;
+            RToken = rtoken;
+        }
+    }
+    [DataContract]
+    public class EbMqResponse
+    {
+        public bool Result { get; set; }
     }
 }

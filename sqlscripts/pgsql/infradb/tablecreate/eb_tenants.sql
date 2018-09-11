@@ -1,22 +1,11 @@
-CREATE SEQUENCE public.eb_connections_id_seq
-    INCREMENT 1
-    START 1282
-    MINVALUE 1
-    MAXVALUE 9223372036854775807
-    CACHE 1;
-
-ALTER SEQUENCE public.eb_connections_id_seq
-    OWNER TO postgres;
-
-
 -- Table: public.eb_tenants
 
 -- DROP TABLE public.eb_tenants;
 
 CREATE TABLE public.eb_tenants
 (
+	id bigserial,
     cname text COLLATE pg_catalog."default",
-    id bigint NOT NULL DEFAULT nextval('eb_clients_id_seq'::regclass),
     firstname text COLLATE pg_catalog."default",
     designation text COLLATE pg_catalog."default",
     company text COLLATE pg_catalog."default",

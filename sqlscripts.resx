@@ -409,4 +409,19 @@
   <data name="eb_currval1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\oracle\objectsdb\functioncreate\eb_currval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="eb_query_choices" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_query_choices.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_surveys" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_surveys.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_survey_lines" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_survey_lines.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_survey_master" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_survey_master.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_survey_queries" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_survey_queries.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
 </root>

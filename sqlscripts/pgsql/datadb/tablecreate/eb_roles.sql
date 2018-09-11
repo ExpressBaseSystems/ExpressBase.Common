@@ -1,23 +1,10 @@
---SEQUENCE public.eb_roles_id_seq
-
-
-CREATE SEQUENCE public.eb_roles_id_seq
-    INCREMENT 1
-    START 101
-    MINVALUE 1
-    MAXVALUE 9223372036854775807
-    CACHE 1;
-
-ALTER SEQUENCE public.eb_roles_id_seq
-    OWNER TO postgres;
-
 -- Table: public.eb_roles
 
 -- DROP TABLE public.eb_roles;
 
 CREATE TABLE public.eb_roles
 (
-    id integer NOT NULL DEFAULT (nextval('eb_roles_id_seq'::regclass) + 100),
+    id serial,
     role_name text COLLATE pg_catalog."default" NOT NULL,
     eb_del1 boolean,
     applicationname text COLLATE pg_catalog."default",
@@ -36,6 +23,10 @@ TABLESPACE pg_default;
 
 ALTER TABLE public.eb_roles
     OWNER to postgres;
+	
+ALTER SEQUENCE 	eb_roles_id_seq INCREMENT 1 START 101 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1;
+
+	
 
 -- Index: eb_roles_eb_del_idx
 

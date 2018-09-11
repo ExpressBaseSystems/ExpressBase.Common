@@ -1,22 +1,10 @@
---SEQUENCE public.eb_bots_id_seq
-
-CREATE SEQUENCE public.eb_bots_id_seq
-    INCREMENT 1
-    START 1
-    MINVALUE 1
-    MAXVALUE 9223372036854775807
-    CACHE 1;
-
-ALTER SEQUENCE public.eb_bots_id_seq
-    OWNER TO postgres;
-
 -- Table: public.eb_bots
 
 -- DROP TABLE public.eb_bots;
 
 CREATE TABLE public.eb_bots
 (
-    id integer NOT NULL DEFAULT nextval('eb_bots_id_seq'::regclass),
+    id serial,
     name text COLLATE pg_catalog."default",
     url text COLLATE pg_catalog."default",
     welcome_msg text COLLATE pg_catalog."default",

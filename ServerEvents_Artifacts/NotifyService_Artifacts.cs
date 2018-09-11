@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace ExpressBase.Common.ServerEvents_Artifacts
 {
     [DataContract]
-    public class NotifyUserIdRequest : EbServiceStackRequest, IReturn<NotifyResponse>
+    public class NotifyUserIdRequest : EbServiceStackAuthRequest, IReturn<NotifyResponse>
     {
         [DataMember(Order = 0)]
         public string[] ToChannel { get; set; }
@@ -27,7 +27,7 @@ namespace ExpressBase.Common.ServerEvents_Artifacts
     }
 
     [DataContract]
-    public class NotifyChannelRequest : EbServiceStackRequest, IReturn<NotifyResponse>
+    public class NotifyChannelRequest : EbServiceStackAuthRequest, IReturn<NotifyResponse>
     {
         [DataMember(Order = 0)]
         public string[] ToChannel { get; set; }
@@ -40,7 +40,7 @@ namespace ExpressBase.Common.ServerEvents_Artifacts
     }
 
     [DataContract]
-    public class NotifySubsribtionRequest : EbServiceStackRequest, IReturn<NotifyResponse>
+    public class NotifySubsribtionRequest : EbServiceStackAuthRequest, IReturn<NotifyResponse>
     {
         [DataMember(Order = 0)]
         public string[] ToChannel { get; set; }
@@ -56,7 +56,7 @@ namespace ExpressBase.Common.ServerEvents_Artifacts
     }
 
     [DataContract]
-    public class NotifyAllRequest : EbServiceStackRequest, IReturn<NotifyResponse>
+    public class NotifyAllRequest : EbServiceStackAuthRequest, IReturn<NotifyResponse>
     {
         [DataMember(Order = 0)]
         public string Selector { get; set; }
