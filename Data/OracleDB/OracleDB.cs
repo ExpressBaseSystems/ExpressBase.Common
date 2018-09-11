@@ -977,6 +977,8 @@ namespace ExpressBase.Common.Data
     {
         public OracleFilesDB(EbBaseDbConnection dbconf) : base(dbconf) { }
 
+        public int InfraConId { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public byte[] DownloadFileById(string filestoreid, EbFileCategory category)
         {
             throw new NotImplementedException();

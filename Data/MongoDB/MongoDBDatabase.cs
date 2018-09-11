@@ -20,8 +20,11 @@ namespace ExpressBase.Common.Data.MongoDB
         private string TenantId { get; set; }
         private BsonDocument Metadata { get; set; }
 
+        public int InfraConId { get; set; }
+
         public MongoDBDatabase(EbFilesDbConnection dbconf)
         {
+            InfraConId = dbconf.Id;
             this.TenantId = EnvironmentConstants.EB_INFRASTRUCTURE;
             mongoClient = new MongoClient(dbconf.FilesDB_url);
             mongoDatabase = mongoClient.GetDatabase(this.TenantId);
