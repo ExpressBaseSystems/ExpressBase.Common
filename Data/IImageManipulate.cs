@@ -8,5 +8,6 @@ namespace ExpressBase.Common.Data
         int InfraConId { get; set; }
 
         string Resize(byte[] iByte, string filename, int imageQuality);
+        string GetThumbnailImage(string OriginalImageUrl);
     }
 }
