@@ -8,10 +8,10 @@ namespace ExpressBase.Common.Data
 {
     public interface INoSQLDatabase
     {
-        string UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, EbFileCategory category);
+        string UploadFile(string filename, byte[] bytea, EbFileCategory category);
 
         byte[] DownloadFileById(string filestoreid, EbFileCategory category);
 
-        byte[] DownloadFileByName(string filename, EbFileCategory category);
+        //byte[] DownloadFileByName(string filename, EbFileCategory category);
     }
 }
