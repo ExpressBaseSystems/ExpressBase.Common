@@ -30,6 +30,11 @@ namespace ExpressBase.Common.Integrations
             return new Cloudinary(_account);
         }
 
+        public string GetThumbnailImage(string _originalImageUrl)
+        {
+            Cloudinary ThumbnailFetcher = new Cloudinary();
+            return ThumbnailFetcher.Api.UrlImgFetch.Transform(new Transformation().Height(150).Crop("fit").AspectRatio(1.0)).BuildImageTag(_originalImageUrl);
+        }
 
         public string Resize(byte[] iByte, ImageMeta meta, int imageQuality)
         {
