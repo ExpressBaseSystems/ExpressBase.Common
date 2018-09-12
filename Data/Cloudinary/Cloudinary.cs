@@ -73,5 +73,27 @@ namespace ExpressBase.Common.Integrations
             }
             return _url;
         }
+
+        public string GetImgSize(byte[] iByte, string filename, ImageQuality size)
+        {
+            string _url;
+            try
+            {
+                MemoryStream ImageStream = new MemoryStream(iByte);
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(filename, ImageStream),
+                    Transformation = new Transformation().Height((int)size).Crop("fit").AspectRatio(1.0),
+                    PublicId = filename,
+                };
+                _url = GetNewConnection().Upload(uploadParams).SecureUri.AbsoluteUri;
+            }
+            catch (Exception e)
+            {
+                _url = String.Empty;
+                Console.WriteLine("ERROR: Cloudinary: " + e.Message);
+            }
+            return _url;
+        }
     }
 }

@@ -40,6 +40,17 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
+    public class CloudinaryResizeReq : EbMqRequest, IReturn<EbMqResponse>
+    {
+        [DataMember(Order = 1)]
+        public int RefId { get; set; }
+
+        [DataMember(Order = 2)]
+        public byte[] Byte { get; set; }
+
+    }
+
+    [DataContract]
     public class UploadImageRequest : EbMqRequest, IReturn<EbMqResponse>
     {
         [DataMember(Order = 1)]
