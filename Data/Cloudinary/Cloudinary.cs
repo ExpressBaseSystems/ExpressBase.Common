@@ -52,5 +52,26 @@ namespace ExpressBase.Common.Integrations
             }
             return _url;
         }
+
+        public string Resize(string url, string filename, int imgQuality)
+        {
+            string _url;
+            try
+            {
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(filePath: url),
+                    Transformation = new Transformation().Quality(imgQuality),
+                    PublicId = filename,
+                };
+                _url = GetNewConnection().Upload(uploadParams).SecureUri.AbsoluteUri;
+            }
+            catch (Exception e)
+            {
+                _url = String.Empty;
+                Console.WriteLine("ERROR: Cloudinary: " + e.Message);
+            }
+            return _url;
+        }
     }
 }
