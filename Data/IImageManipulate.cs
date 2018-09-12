@@ -7,6 +7,6 @@ namespace ExpressBase.Common.Data
     {
         int InfraConId { get; set; }
 
-        string Resize(byte[] iByte, ImageMeta meta, int imageQuality);
+        string Resize(byte[] iByte, string filename, int imageQuality);
     }
 }

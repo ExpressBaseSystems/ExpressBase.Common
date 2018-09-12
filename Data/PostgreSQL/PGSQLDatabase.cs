@@ -40,9 +40,9 @@ namespace ExpressBase.Common
         VendorDbType IVendorDbTypes.Json { get { return InnerDictionary[EbDbTypes.Json]; } }
         VendorDbType IVendorDbTypes.Bytea { get { return InnerDictionary[EbDbTypes.Bytea]; } }
         VendorDbType IVendorDbTypes.Boolean { get { return InnerDictionary[EbDbTypes.Boolean]; } }
-		VendorDbType IVendorDbTypes.BooleanOriginal { get { return InnerDictionary[EbDbTypes.BooleanOriginal]; } }
+        VendorDbType IVendorDbTypes.BooleanOriginal { get { return InnerDictionary[EbDbTypes.BooleanOriginal]; } }
 
-		private PGSQLEbDbTypes()
+        private PGSQLEbDbTypes()
         {
             this.InnerDictionary = new Dictionary<EbDbTypes, VendorDbType>();
             this.InnerDictionary.Add(EbDbTypes.AnsiString, new VendorDbType(EbDbTypes.AnsiString, NpgsqlDbType.Text));
@@ -62,8 +62,8 @@ namespace ExpressBase.Common
             this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, NpgsqlDbType.Json));
             this.InnerDictionary.Add(EbDbTypes.Bytea, new VendorDbType(EbDbTypes.Bytea, NpgsqlDbType.Bytea));
             this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, NpgsqlDbType.Char));
-			this.InnerDictionary.Add(EbDbTypes.BooleanOriginal, new VendorDbType(EbDbTypes.BooleanOriginal, NpgsqlDbType.Boolean));
-		}
+            this.InnerDictionary.Add(EbDbTypes.BooleanOriginal, new VendorDbType(EbDbTypes.BooleanOriginal, NpgsqlDbType.Boolean));
+        }
 
         public static IVendorDbTypes Instance => new PGSQLEbDbTypes();
 
@@ -891,7 +891,12 @@ namespace ExpressBase.Common
 
     public class PGSQLFileDatabase : PGSQLDatabase, INoSQLDatabase
     {
-        public PGSQLFileDatabase(EbBaseDbConnection dbconf) : base(dbconf) { }
+        public PGSQLFileDatabase(EbBaseDbConnection dbconf) : base(dbconf)
+        {
+            InfraConId = dbconf.Id;
+        }
+
+        public int InfraConId { get; set; }
 
         public byte[] DownloadFileById(string filestoreid, EbFileCategory cat)
         {
@@ -939,19 +944,17 @@ namespace ExpressBase.Common
             return filebyte;
         }
 
-        public string UploadFile(string filename, IDictionary<string, List<string>> MetaDataPair, byte[] bytea, EbFileCategory cat)
+        public string UploadFile(string filename, byte[] bytea, EbFileCategory cat)
         {
-            string _metaDataPair = EbSerializers.Json_Serialize(MetaDataPair);
             int rtn = 0;
             try
             {
                 using (NpgsqlConnection con = GetNewConnection() as NpgsqlConnection)
                 {
                     con.Open();
-                    string sql = "INSERT INTO eb_files_bytea (filename, meta, bytea, filecategory) VALUES (:filename, :MetaDataPair, :bytea, :cat) returning id;";
+                    string sql = "INSERT INTO eb_files_bytea (filename, bytea, filecategory) VALUES (:filename, :bytea, :cat) returning id;";
                     NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
-                    cmd.Parameters.Add(GetNewParameter(":filename", EbDbTypes.String, ((filename != null) ? filename : String.Empty)));
-                    cmd.Parameters.Add(GetNewParameter(":MetaDataPair", EbDbTypes.Json, _metaDataPair));
+                    cmd.Parameters.Add(GetNewParameter(":filename", EbDbTypes.String, filename));
                     cmd.Parameters.Add(GetNewParameter(":bytea", EbDbTypes.Bytea, bytea));
                     cmd.Parameters.Add(GetNewParameter(":cat", EbDbTypes.Int32, (int)cat));
                     Int32.TryParse(cmd.ExecuteScalar().ToString(), out rtn);

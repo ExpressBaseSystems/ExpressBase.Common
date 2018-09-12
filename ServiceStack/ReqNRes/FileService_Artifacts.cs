@@ -22,9 +22,12 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     public class UploadFileRequest : EbMqRequest, IReturn<EbMqResponse>
     {
         [DataMember(Order = 1)]
-        public FileMeta FileDetails { get; set; }
+        public int FileRefId { get; set; }
 
         [DataMember(Order = 2)]
+        public EbFileCategory FileCategory { get; set; }
+
+        [DataMember(Order = 3)]
         public byte[] Byte { get; set; }
     }
 
@@ -41,7 +44,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     {
 
         [DataMember(Order = 1)]
-        public ImageMeta ImageInfo { get; set; }
+        public string ImageRefId { get; set; }
 
         [DataMember(Order = 2)]
         public byte[] ImageBytes { get; set; }
@@ -53,40 +56,21 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     public class UploadImageRequest : EbMqRequest, IReturn<EbMqResponse>
     {
         [DataMember(Order = 1)]
-        public ImageMeta ImageInfo { get; set; }
+        public int ImageRefId { get; set; }
 
         [DataMember(Order = 2)]
+        public EbFileCategory FileCategory { get; set; }
+
+        [DataMember(Order = 3)]
         public byte[] Byte { get; set; }
 
-        private static readonly string IdFetchQuery =
-@"INSERT INTO
-    eb_files_ref (userid, filename, filetype, tags, filecategory) 
-VALUES 
-    (@userid, @filename, @filetype, @tags, @filecategory) 
-RETURNING id";
+        [DataMember(Order = 4)]
+        public int ImgManpSerConId { get; set; }
 
-        public static int GetFileRefId(IDatabase dataDb, int userId, string filename, string filetype, string tags, EbFileCategory ebFileCategory)
-        {
-            int refId = 0;
-            try
-            {
-                DbParameter[] parameters =
-                {
-                        dataDb.GetNewParameter("userid", EbDbTypes.Int32, userId),
-                        dataDb.GetNewParameter("filename", EbDbTypes.String, filename),
-                        dataDb.GetNewParameter("filetype", EbDbTypes.String, filetype),
-                        dataDb.GetNewParameter("tags", EbDbTypes.String, tags),
-                        dataDb.GetNewParameter("filecategory", EbDbTypes.Int16, ebFileCategory)
-            };
-                var table = dataDb.DoQuery(IdFetchQuery, parameters);
-                refId = (int)table.Rows[0][0];
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("ERROR: POSGRE: " + e.Message);
-            }
-            return refId;
-        }
+        [DataMember(Order = 5)]
+        public ImageQuality ImgQuality { get; set; }
+
+
     }
 
     [DataContract]
@@ -104,6 +88,13 @@ RETURNING id";
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
+    }
+
+    [DataContract]
+    public class ImageMetaPersistRequest : EbMqRequest
+    {
+        [DataMember(Order = 1)]
+        public ImageMeta ImageInfo { get; set; }
     }
 
     [DataContract]
@@ -189,7 +180,7 @@ RETURNING id";
         public ResponseStatus ResponseStatus { get; set; }
 
         [DataMember(Order = 2)]
-        public int ImgRefId { get; set; }
+        public int FileRefId { get; set; }
     }
 
     [DataContract]

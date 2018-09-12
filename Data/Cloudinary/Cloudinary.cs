@@ -31,7 +31,7 @@ namespace ExpressBase.Common.Integrations
         }
 
 
-        public string Resize(byte[] iByte, ImageMeta meta, int imageQuality)
+        public string Resize(byte[] iByte, string filename, int imageQuality)
         {
             string _url;
             try
@@ -39,9 +39,9 @@ namespace ExpressBase.Common.Integrations
                 MemoryStream ImageStream = new MemoryStream(iByte);
                 var uploadParams = new ImageUploadParams()
                 {
-                    File = new FileDescription(meta.FileRefId.ToString(), ImageStream),
+                    File = new FileDescription(filename, ImageStream),
                     Transformation = new Transformation().Quality(imageQuality),
-                    PublicId = meta.FileRefId.ToString().ToString(),
+                    PublicId = filename,
                 };
                 _url = GetNewConnection().Upload(uploadParams).SecureUri.AbsoluteUri;
             }
