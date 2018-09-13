@@ -44,10 +44,6 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     {
         [DataMember(Order = 1)]
         public int RefId { get; set; }
-
-        [DataMember(Order = 2)]
-        public byte[] Byte { get; set; }
-
     }
 
     [DataContract]
