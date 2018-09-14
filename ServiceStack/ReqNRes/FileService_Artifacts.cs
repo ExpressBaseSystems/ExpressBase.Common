@@ -181,6 +181,11 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         public int FileRefId { get; set; }
     }
 
+    public class FileRefIdsWraper
+    {
+        public List<int> RefIds;
+    }
+
     [DataContract]
     public class UploadImageAsyncRequest : EbServiceStackAuthRequest, IReturn<UploadAsyncResponse>
     {
