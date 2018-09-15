@@ -1,4 +1,4 @@
-v-- Table: public.eb_files_ref
+-- Table: public.eb_files_ref
 
 -- DROP TABLE public.eb_files_ref;
 
