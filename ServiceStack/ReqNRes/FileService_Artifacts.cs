@@ -179,7 +179,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
     public class FileRefIdsWraper
     {
-        public List<int> RefIds;
+        public List<int> RefIds { get; set; }
     }
 
     [DataContract]
