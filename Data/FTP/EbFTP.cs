@@ -14,9 +14,9 @@ namespace ExpressBase.Common.Data.FTP
         private string _userName { get; set; }
         private string _password { get; set; }
 
-        FtpWebRequest _ftpRequest;
-        FtpWebResponse _response;
-        Stream _responseStream;
+        private FtpWebRequest _ftpRequest;
+        private FtpWebResponse _response;
+        private Stream _responseStream;
 
         public EbFTP(EbFTPConnection con)
         {
@@ -30,19 +30,30 @@ namespace ExpressBase.Common.Data.FTP
             return String.Format(@"ftp://{0}", HttpUtility.UrlPathEncode(String.Format("{0}:{1}@{2}/{3}", _userName, _password, _host, path)));
         }
 
+        private string GetRequestString(string path)
+        {
+            return (String.Format(@"ftp://{0}", HttpUtility.UrlPathEncode(String.Format("{0}/{1}", _host, path))));
+        }
+
+        private void SetFTPRequest(string path)
+        {
+            _ftpRequest = (FtpWebRequest)WebRequest.Create(GetRequestString(path));
+            _ftpRequest.UseBinary = true;
+            _ftpRequest.KeepAlive = false;
+            _ftpRequest.UsePassive = true;
+            _ftpRequest.ConnectionGroupName = "EXPRESSbase Platform Connections";
+            _ftpRequest.Credentials = new NetworkCredential(_userName, _password);
+        }
+
         public byte[] Download(string path)
         {
             byte[] _byte;
 
             try
             {
-                _ftpRequest = (FtpWebRequest)WebRequest.Create(String.Format(@"ftp://{0}/{1}", _host, path));
-                _ftpRequest.UseBinary = true;
-                _ftpRequest.KeepAlive = false;
-                _ftpRequest.UsePassive = true;
-                _ftpRequest.ConnectionGroupName = "EXPRESSbase Platform Connections";
+                SetFTPRequest(path);
+
                 _ftpRequest.Method = WebRequestMethods.Ftp.DownloadFile;
-                _ftpRequest.Credentials = new NetworkCredential(_userName.Normalize(), _password.Normalize());
                 _response = (FtpWebResponse)_ftpRequest.GetResponse();
 
                 _responseStream = _response.GetResponseStream();
@@ -62,6 +73,7 @@ namespace ExpressBase.Common.Data.FTP
                     }
                 }
                 while (ReadCount > 0);
+
                 _responseStream.Close();
                 _response.Close();
             }
@@ -79,14 +91,11 @@ namespace ExpressBase.Common.Data.FTP
 
             try
             {
-                _ftpRequest = (FtpWebRequest)WebRequest.Create(String.Format(@"ftp://{0}/{1}", _host, path));
-                _ftpRequest.UseBinary = true;
-                _ftpRequest.KeepAlive = false;
-                _ftpRequest.UsePassive = true;
-                _ftpRequest.ConnectionGroupName = "EXPRESSbase Platform Connections";
+                SetFTPRequest(path);
+
                 _ftpRequest.Method = WebRequestMethods.Ftp.GetFileSize;
-                _ftpRequest.Credentials = new NetworkCredential(_userName.Normalize(), _password.Normalize());
                 _response = (FtpWebResponse)_ftpRequest.GetResponse();
+
                 size = _response.ContentLength;
             }
             catch (Exception e)
