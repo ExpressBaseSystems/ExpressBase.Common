@@ -40,17 +40,11 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class CloudinaryUploadRequest : EbMqRequest, IReturn<EbMqResponse>
+    public class CloudinaryResizeReq : EbMqRequest, IReturn<EbMqResponse>
     {
-
         [DataMember(Order = 1)]
-        public string ImageRefId { get; set; }
-
-        [DataMember(Order = 2)]
-        public byte[] ImageBytes { get; set; }
-
+        public int RefId { get; set; }
     }
-
 
     [DataContract]
     public class UploadImageRequest : EbMqRequest, IReturn<EbMqResponse>
@@ -181,6 +175,11 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 2)]
         public int FileRefId { get; set; }
+    }
+
+    public class FileRefIdsWraper
+    {
+        public List<int> RefIds;
     }
 
     [DataContract]

@@ -39,10 +39,10 @@ namespace ExpressBase.Common.Objects
 		[PropertyEditor(PropertyEditorType.JS)]
 		public string VisibleIf { get; set; }
 
-		[EnableInBuilder(BuilderType.BotForm)]
-		[PropertyEditor(PropertyEditorType.Collection)]
-		[Alias("Validators")]
-		public List<EbValidator> Validators { get; set; }
+		//[EnableInBuilder(BuilderType.BotForm)]
+		//[PropertyEditor(PropertyEditorType.Collection)]
+		//[Alias("Validators")]
+		//public List<EbValidator> Validators { get; set; }
 
 		[EnableInBuilder(BuilderType.BotForm)]
 		[PropertyEditor(PropertyEditorType.JS)]
@@ -165,7 +165,7 @@ else
 
 		public EbControl()
 		{
-			this.Validators = new List<EbValidator>();
+			//this.Validators = new List<EbValidator>();
 		}
 
 		public virtual string GetHead() { return string.Empty; }
