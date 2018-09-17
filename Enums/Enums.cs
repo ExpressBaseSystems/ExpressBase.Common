@@ -70,12 +70,12 @@ namespace ExpressBase.Common
 
     public enum SystemRoles
     {
-        SolutionOwner,
-        SolutionAdmin,
-        SolutionDeveloper,
-        SolutionTester,
-        SolutionPM,
-        SolutionUser
+        SolutionOwner = 1,
+        SolutionAdmin = 2,
+        SolutionDeveloper = 3,
+        SolutionTester = 4,
+        SolutionPM = 5,
+        SolutionUser = 6
     }
 
     public enum EbSystemRoles
