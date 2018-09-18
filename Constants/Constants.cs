@@ -78,8 +78,5 @@ namespace ExpressBase.Data
         public const string CONF_TOUT_DATA_RO = "tout_dataro";
         public const string CONF_TOUT_LOGS_RO = "tout_logro";
         public const string CONF_TOUT_FILES_RO = "tout_filero";
-
-        public const string HTTPS = "https://";
-        public const string HTTP = "http://";
     }
 }
