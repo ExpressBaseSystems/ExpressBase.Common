@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_files_ref
 (
-    id integer NOT NULL DEFAULT nextval('eb_files_ref_id_seq'::regclass),
+    id serial,
     userid integer NOT NULL,
     --filestore_id text COLLATE pg_catalog."default",
     --length bigint,
@@ -35,7 +35,7 @@ ALTER TABLE public.eb_files_ref
 
 CREATE TABLE public.eb_files_ref_variations
 (
-    id integer NOT NULL DEFAULT nextval('eb_files_ref_variations_id_seq'::regclass),
+    id serial,
     eb_files_ref_id integer NOT NULL,
     filestore_sid text COLLATE pg_catalog."default",
     length bigint,
@@ -52,3 +52,4 @@ TABLESPACE pg_default;
 
 ALTER TABLE public.eb_files_ref_variations
     OWNER to postgres;
+

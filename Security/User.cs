@@ -83,6 +83,12 @@ namespace ExpressBase.Security
 						if (p.Contains(":"))
 						{
 							int lid = Convert.ToInt32(p.Split(":")[1].Trim());
+							if(lid == -1)
+							{
+								this._locationIds.Clear();
+								this._locationIds.Add(lid);
+								return _locationIds;
+							}
 							if (!this._locationIds.Contains(lid))
 								this._locationIds.Add(lid);
 						}
@@ -187,11 +193,10 @@ namespace ExpressBase.Security
 						//roles
 						string[] role_ids = ds.Rows[0][3].ToString().Split(',');
 						List<string> rolesname = new List<string>();
-						var sysroles = Enum.GetValues(typeof(SystemRoles));
 						foreach (string roleid in role_ids)
 						{
 							if(!roleid.IsNullOrEmpty())
-								rolesname.Add(sysroles.GetValue(Convert.ToInt32(roleid)).ToString());
+								rolesname.Add(Enum.GetName(typeof(SystemRoles), Convert.ToInt32(roleid)) ?? "NULL");
 						}
 
 						_user = new User
@@ -328,20 +333,16 @@ namespace ExpressBase.Security
 				int userid = Convert.ToInt32(ds.Rows[0][0]);
                 if (userid > 0)
                 {
-                    string[] Sids = ds.Rows[0][3].ToString().Split(',');
+                    string[] rids = ds.Rows[0][3].ToString().Split(',');//role id array
                     List<string> rolesname = ds.Rows[0][4].ToString().Split(',').ToList();
-                    if (!Sids[0].IsNullOrEmpty())
+                    if (!rids[0].IsNullOrEmpty())
                     {
-                        List<int> rolesid = Array.ConvertAll(Sids, int.Parse).ToList();
-                        var sysroles = Enum.GetValues(typeof(SystemRoles));
+                        List<int> rolesid = Array.ConvertAll(rids, int.Parse).ToList();
                         for (var i = 0; i < rolesid.Count; i++)
                         {
-                            int sid = rolesid[i];
-                            if (sid < 100)
-                            {
-                                if (sid < sysroles.Length) // this stmt will be removed after db ok (eb_roles)
-                                    rolesname[i] = sysroles.GetValue(sid).ToString();
-                            }
+                            int id = rolesid[i];
+                            if (id < 100)
+								rolesname[i] = Enum.GetName(typeof(SystemRoles), id) ?? "NULL";
                         }
                     }
 
