@@ -43,6 +43,8 @@ namespace ExpressBase.Common
     {
         internal EbDataSet DataSet { get; set; }
 
+        public TableColletion() { }
+
         public TableColletion(EbDataSet dataset)
         {
             this.DataSet = dataset;

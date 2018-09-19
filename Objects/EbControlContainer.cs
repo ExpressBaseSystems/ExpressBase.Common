@@ -5,6 +5,7 @@ using System.Reflection;
 using ServiceStack.Redis;
 using ExpressBase.Common.Objects.Attributes;
 using ServiceStack;
+using ExpressBase.Common.Extensions;
 
 namespace ExpressBase.Common.Objects
 {
@@ -34,13 +35,47 @@ namespace ExpressBase.Common.Objects
             this.Controls = new List<EbControl>();
         }
 
-        public virtual string GetQuery() {
-            return string.Empty;
+        [EnableInBuilder(BuilderType.WebForm)]
+        [PropertyGroup("Data")]
+        [HelpText("Name Of database-table Which you want to store Data collected using this Form")]
+        public virtual string TableName { get; set; }
+
+        public virtual string GetQuery()
+        {
+            string ColoumsStr = Get1stLvlColNames();
+            string qry = string.Empty;
+            if (ColoumsStr.Length > 0)
+            {
+                qry = string.Format("SELECT {0} FROM {1} WHERE id={2};", ColoumsStr, TableName, TableRowId);
+            }
+
+            foreach (EbControl control in Controls)
+            {
+                if (control is EbControlContainer)
+                {
+                    EbControlContainer _control = (control as EbControlContainer);
+                    _control.TableName = _control.TableName.IsNullOrEmpty() ? TableName: _control.TableName;
+                    _control.TableRowId= (_control.TableRowId == 0 ) ? TableRowId: _control.TableRowId;
+                    qry += _control.GetQuery();
+                }
+            }
+            return qry;
+        }
+
+        public virtual string Get1stLvlColNames()
+        {
+            string ColoumsStr = String.Empty;
+            IEnumerable<EbControl> controls = Controls.Get1stLvlControls();
+            foreach (var control in controls)
+            {
+                ColoumsStr += control.Name + ", ";
+            }
+            return (ColoumsStr.Length > 0) ? ColoumsStr.Substring(0, ColoumsStr.Length - 2) : string.Empty;
         }
 
         public override string LabelForeColor { get; set; }
 
-        public virtual int TableRowId{ get; set; }
+        public virtual int TableRowId { get; set; }
 
         public override string LabelBackColor { get; set; }
 
@@ -53,9 +88,14 @@ namespace ExpressBase.Common.Objects
         public override float FontSize { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
-        public virtual bool IsContainer { get {
-                return true; }
-            private set { } }
+        public virtual bool IsContainer
+        {
+            get
+            {
+                return true;
+            }
+            private set { }
+        }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         [Alias("Title")]
