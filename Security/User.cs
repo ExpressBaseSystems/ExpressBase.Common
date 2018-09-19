@@ -223,7 +223,7 @@ namespace ExpressBase.Security
 
             try {
                 var ds = df.DoQuery(df.EB_AUTHETICATE_USER_NORMAL, new DbParameter[] { df.GetNewParameter("uname", EbDbTypes.String, uname), df.GetNewParameter("pass", EbDbTypes.String, pass), df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context) });
-                return InitUserObject(ds);
+                return InitUserObject(ds, context);
             }
             catch(Exception e)
             {
@@ -235,13 +235,13 @@ namespace ExpressBase.Security
         public static User GetDetailsSocial(IDatabase df, string socialId, string context)
         {
             var ds = df.DoQuery(df.EB_AUTHENTICATEUSER_SOCIAL, new DbParameter[] { df.GetNewParameter("social", EbDbTypes.String, socialId), df.GetNewParameter("wc", EbDbTypes.String, context) });
-            return InitUserObject(ds);
+            return InitUserObject(ds, context);
         }
 
         public static User GetDetailsSSO(IDatabase df, string uname, string context)
         {
             var ds = df.DoQuery(df.EB_AUTHENTICATEUSER_SSO, new DbParameter[] { df.GetNewParameter("uname", EbDbTypes.String, uname), df.GetNewParameter("wc", EbDbTypes.String, context) });
-            return InitUserObject(ds);
+            return InitUserObject(ds, context);
         }
 
         public static User GetDetailsAnonymous(IDatabase df, string socialId, string emailId, string phone, int appid, string context, string user_ip, string user_name, string user_browser, string city, string region, string country, string latitude, string longitude, string timezone, string iplocationjson)
@@ -322,10 +322,10 @@ namespace ExpressBase.Security
 			string sql = df.EB_AUTHENTICATE_ANONYMOUS.Replace("@params", (df.Vendor == DatabaseVendors.PGSQL) ? parameters.Replace("=>", ":=") : parameters);
 
             var ds = df.DoQuery(sql, paramlist.ToArray());
-            return InitUserObject(ds);
+            return InitUserObject(ds, context);
         }
 
-        private static User InitUserObject(EbDataTable ds)
+        private static User InitUserObject(EbDataTable ds, string context)
         {
             User _user = null;
             if (ds.Rows.Count > 0)
@@ -333,18 +333,24 @@ namespace ExpressBase.Security
 				int userid = Convert.ToInt32(ds.Rows[0][0]);
                 if (userid > 0)
                 {
+					bool sysRoleExists = false;
                     string[] rids = ds.Rows[0][3].ToString().Split(',');//role id array
                     List<string> rolesname = ds.Rows[0][4].ToString().Split(',').ToList();
-                    if (!rids[0].IsNullOrEmpty())
-                    {
-                        List<int> rolesid = Array.ConvertAll(rids, int.Parse).ToList();
-                        for (var i = 0; i < rolesid.Count; i++)
-                        {
-                            int id = rolesid[i];
-                            if (id < 100)
+					if (!rids[0].IsNullOrEmpty())
+					{
+						List<int> rolesid = Array.ConvertAll(rids, int.Parse).ToList();
+						for (var i = 0; i < rolesid.Count; i++)
+						{
+							int id = rolesid[i];
+							if (id < 100)
+							{
 								rolesname[i] = Enum.GetName(typeof(SystemRoles), id) ?? "NULL";
-                        }
-                    }
+								sysRoleExists = true;
+							}								
+						}
+					}
+					if (context.Equals(RoutingConstants.DC) && !sysRoleExists)
+						return null;
 
                     _user = new User
                     {
