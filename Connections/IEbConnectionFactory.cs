@@ -20,5 +20,7 @@ namespace ExpressBase.Common.Data
         ISMSConnection SMSConnection { get; }
 
         IImageManipulate ImageManipulate { get; }
+
+        EbSmtp Smtp { get; }
     }
 }

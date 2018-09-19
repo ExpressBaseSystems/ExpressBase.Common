@@ -10,19 +10,19 @@ namespace ExpressBase.Common.Messaging.Twilio
 {
     public class TwilioService : ISMSConnection
     {
-        private string accountSid { get; set; }
-        private string authToken { get; set; }
-        private PhoneNumber from { get; set; }
+        private string _accountSid { get; set; }
+        private string _authToken { get; set; }
+        private PhoneNumber _from { get; set; }
 
-        private List<Uri> mediaUrl;
+        private List<Uri> _mediaUrl;
 
-        private MessageResource messageResource { get; set; }
+        private MessageResource _messageResource { get; set; }
 
         public TwilioService(SMSConnection SMSConnection)
         {
-            accountSid = SMSConnection.UserName;
-            authToken = SMSConnection.Password;
-            from = new PhoneNumber(SMSConnection.From);
+            _accountSid = SMSConnection.UserName;
+            _authToken = SMSConnection.Password;
+            _from = new PhoneNumber(SMSConnection.From);
         }
 
         public Dictionary<string, string> SendSMS(string sTo, string sFrom, string body)
@@ -30,10 +30,10 @@ namespace ExpressBase.Common.Messaging.Twilio
             Dictionary<string, string> msgStatus = new Dictionary<string, string>();
             try
             {
-                TwilioClient.Init(accountSid, authToken);
+                TwilioClient.Init(_accountSid, _authToken);
                 PhoneNumber to = new PhoneNumber(sTo);
                 MessageResource msg = MessageResource.Create(to,
-                                             from: from,
+                                             from: _from,
                                              body: body,
                                              statusCallback: new Uri("http://eb_roby_dev.expressbase.azurewebsites.net/smscallback?apikey=GATblcTqWNFI9ljZRWX-aUtidVYjJwoj")
                                              );

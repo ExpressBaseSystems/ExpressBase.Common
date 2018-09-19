@@ -25,9 +25,9 @@ namespace ExpressBase.Common.Data
 
         public IDatabase LogsDB { get; private set; }
 
-        public ISMSConnection SMSConnection { get; private set; }
+        public EbSmtp Smtp { get; private set; }
 
-        public SMTPConnection SMTPConnection { get; private set; }
+        public ISMSConnection SMSConnection { get; private set; }
 
         public IImageManipulate ImageManipulate { get; private set; }
 
@@ -109,7 +109,6 @@ namespace ExpressBase.Common.Data
             this.FilesDB = null;
             this.LogsDB = null;
             this.SMSConnection = null;
-            this.SMTPConnection = null;
             this.SolutionId = null;
             this.ImageManipulate = null;
             this._connections = null;
@@ -158,8 +157,10 @@ namespace ExpressBase.Common.Data
                     else if (Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.ORACLE)
                         FilesDB = new OracleFilesDB(Connections.DataDbConnection);
                 }
-                //if (Connections.SMTPConnection != null)
-                //    SMTPConnection = new EmailService(Connections.SMTPConnection);
+                if (Connections.SMTPConnection != null)
+                    Smtp = new EbSmtp(Connections.SMTPConnection);
+
+
 
                 if (Connections.SMSConnection != null)
                     SMSConnection = new TwilioService(Connections.SMSConnection);

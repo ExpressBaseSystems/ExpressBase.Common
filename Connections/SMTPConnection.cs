@@ -7,13 +7,15 @@ namespace ExpressBase.Common.Connections
     {
         public string ProviderName { get; set; }
 
-        public string Smtp { get; set; }
+        public string Host { get; set; }
 
         public int Port { get; set; }
 
         public string EmailAddress { get; set; }
 
         public string Password { get; set; }
+
+        public bool EnableSsl { get; set; }
 
         public override EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.SMTP; } }
     }
