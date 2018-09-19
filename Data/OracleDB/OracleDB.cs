@@ -569,8 +569,9 @@ namespace ExpressBase.Common.Data
 				return EbDbTypes.Decimal;
 			else if (_typ == "TIMESTAMP(6)")
 				return EbDbTypes.DateTime;
-
-			return EbDbTypes.String;
+            else if (_typ == "Byte[]")
+                return EbDbTypes.Bytea;
+            return EbDbTypes.String;
 		}
 		
 
