@@ -23,6 +23,15 @@ namespace ExpressBase.Common.Extensions
             }
         }
 
+        public static IEnumerable<EbControl> Get1stLvlControls(this List<EbControl> enumerable)
+        {
+            foreach (EbControl element in enumerable)
+            {
+                if (!(element is EbControlContainer))
+                    yield return element;
+            }
+        }
+
         public static IEnumerable<EbControl> FlattenEbControls(this List<EbControl> enumerable)
         {
             foreach (EbControl element in enumerable)

@@ -13,7 +13,8 @@ namespace ExpressBase.Common
 
         public EbDataSet()
         {
-            this.Tables = new TableColletion(this);
+            //if (this.Tables == null) //Hack for deserialization issue Tables nullified by constructor call.. Need neater fix.
+                this.Tables = new TableColletion(this);
         }
     }
 }
