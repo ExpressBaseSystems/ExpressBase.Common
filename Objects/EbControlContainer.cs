@@ -34,7 +34,13 @@ namespace ExpressBase.Common.Objects
             this.Controls = new List<EbControl>();
         }
 
+        public virtual string GetQuery() {
+            return string.Empty;
+        }
+
         public override string LabelForeColor { get; set; }
+
+        public virtual int TableRowId{ get; set; }
 
         public override string LabelBackColor { get; set; }
 
