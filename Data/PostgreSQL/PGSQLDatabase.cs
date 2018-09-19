@@ -342,7 +342,8 @@ namespace ExpressBase.Common
                 return EbDbTypes.Int32;
             else if (_typ == typeof(TimeSpan))
                 return EbDbTypes.Time;
-
+            else if (_typ == typeof(Byte[]))
+                return EbDbTypes.Bytea;
             return EbDbTypes.String;
         }
 
