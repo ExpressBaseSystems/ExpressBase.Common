@@ -177,22 +177,26 @@ else
 			return '"' + "<div>no GetWrapedCtrlHtml4bot() defined</div>" + '"';
 		}
 
-		//        public virtual string GetWrapedCtrlHtml4Web(string barehtml)
-		//        {
-		//            string ResHTML = string.Empty;
+        //        public virtual string GetWrapedCtrlHtml4Web(string barehtml)
+        //        {
+        //            string ResHTML = string.Empty;
 
-		//            ResHTML = @"
-		//<div id='cont_@name@' class='Eb-ctrlContainer' Ctype='@type@' style='@hiddenString'>
-		//    <span class='eb-ctrl-label' ui-label id='@nameLbl'>@label@</span>
-		//       @barehtml@
-		//    <span class='helpText'> @helpText </span>
-		//</div>"
-		//.Replace("@barehtml@", barehtml).RemoveCR().GraveAccentQuoted();
+        //            ResHTML = @"
+        //<div id='cont_@name@' class='Eb-ctrlContainer' Ctype='@type@' style='@hiddenString'>
+        //    <span class='eb-ctrl-label' ui-label id='@nameLbl'>@label@</span>
+        //       @barehtml@
+        //    <span class='helpText'> @helpText </span>
+        //</div>"
+        //.Replace("@barehtml@", barehtml).RemoveCR().GraveAccentQuoted();
 
-		//            return ResHTML;
-		//        }
+        //            return ResHTML;
+        //        }
 
-		public virtual string GetWrapedCtrlHtml4bot(ref EbControl ChildObj)
+        public virtual VendorDbType GetvDbType(IVendorDbTypes vDbTypes) {
+            return vDbTypes.String;
+        }
+
+        public virtual string GetWrapedCtrlHtml4bot(ref EbControl ChildObj)
 		{
 			string bareHTML = ChildObj.DesignHtml4Bot ?? ChildObj.GetBareHtml(),
 			innerHTML = @" <div class='ctrl-wraper' @style@> @barehtml@ </div>".Replace("@barehtml@", bareHTML),
