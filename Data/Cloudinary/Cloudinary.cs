@@ -38,10 +38,12 @@ namespace ExpressBase.Common.Integrations
             {
                 MemoryStream ImageStream = new MemoryStream(iByte);
 
-                Transformation tr = new Transformation().Quality(imageQuality);
+                Transformation tr = new Transformation();
 
                 if (iByte.Length > 1048576)
-                    tr.Height(2000).Crop("limit");
+                    tr.Quality(imageQuality).Height(2000).Crop("limit");
+                else
+                    tr.Quality(imageQuality);
 
                 var uploadParams = new ImageUploadParams()
                 {
@@ -54,7 +56,7 @@ namespace ExpressBase.Common.Integrations
             catch(Exception e)
             {
                 _url = String.Empty;
-                Console.WriteLine("ERROR: Cloudinary: "+ e.Message);
+                Console.WriteLine("ERROR: Cloudinary: "+ e.ToString());
             }
             return _url;
         }
@@ -75,7 +77,7 @@ namespace ExpressBase.Common.Integrations
             catch (Exception e)
             {
                 _url = String.Empty;
-                Console.WriteLine("ERROR: Cloudinary: " + e.Message);
+                Console.WriteLine("ERROR: Cloudinary: " + e.ToString());
             }
             return _url;
         }
@@ -97,7 +99,7 @@ namespace ExpressBase.Common.Integrations
             catch (Exception e)
             {
                 _url = String.Empty;
-                Console.WriteLine("ERROR: Cloudinary: " + e.Message);
+                Console.WriteLine("ERROR: Cloudinary: " + e.ToString());
             }
             return _url;
         }
