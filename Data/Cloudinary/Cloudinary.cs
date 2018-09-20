@@ -37,10 +37,16 @@ namespace ExpressBase.Common.Integrations
             try
             {
                 MemoryStream ImageStream = new MemoryStream(iByte);
+
+                Transformation tr = new Transformation().Quality(imageQuality);
+
+                if (iByte.Length > 1048576)
+                    tr.Height(2000).Crop("limit");
+
                 var uploadParams = new ImageUploadParams()
                 {
                     File = new FileDescription(filename, ImageStream),
-                    Transformation = new Transformation().Quality(imageQuality),
+                    Transformation = tr,
                     PublicId = filename,
                 };
                 _url = GetNewConnection().Upload(uploadParams).SecureUri.AbsoluteUri;
