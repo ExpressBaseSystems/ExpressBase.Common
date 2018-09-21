@@ -56,8 +56,25 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 5)]
         public ImageQuality ImgQuality { get; set; }
+    }
 
+    [DataContract]
+    public class UploadDpRequest : EbMqRequest, IReturn<EbMqResponse>
+    {
+        [DataMember(Order = 1)]
+        public int ImageRefId { get; set; }
 
+        [DataMember(Order = 2)]
+        public EbFileCategory FileCategory { get; set; }
+
+        [DataMember(Order = 3)]
+        public byte[] Byte { get; set; }
+
+        [DataMember(Order = 4)]
+        public int ImgManpSerConId { get; set; }
+
+        [DataMember(Order = 5)]
+        public ImageQuality ImgQuality { get; set; }
     }
 
     [DataContract]
