@@ -28,6 +28,7 @@ namespace ExpressBase.Common.Constants
 
         //Notification Message Constants
         public const string UPLOADSUCCESS = "cmd.onUploadSuccess";
+        public const string UPLOADFAILURE = "cmd.onUploadFailure";
 
         //Controller Types Url catg strings
 
