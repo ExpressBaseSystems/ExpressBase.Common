@@ -48,7 +48,7 @@ namespace ExpressBase.Common.Integrations
                 if (resp.SecureUri != null)
                     _url = resp.SecureUri.AbsoluteUri;
                 else
-                    Console.WriteLine("INFO: Cloudinary: Response :"+ resp);
+                    Console.WriteLine("INFO: Cloudinary: Response :"+ resp.Error);
             }
             catch (Exception e)
             {
@@ -72,7 +72,7 @@ namespace ExpressBase.Common.Integrations
                 if (resp.SecureUri != null)
                     _url = resp.SecureUri.AbsoluteUri;
                 else
-                    Console.WriteLine("INFO: Cloudinary: Response :" + resp);
+                    Console.WriteLine("INFO: Cloudinary: Response :" + resp.Error);
             }
             catch (Exception e)
             {
@@ -97,7 +97,7 @@ namespace ExpressBase.Common.Integrations
                 if (resp.SecureUri != null)
                     _url = resp.SecureUri.AbsoluteUri;
                 else
-                    Console.WriteLine("INFO: Cloudinary: Response :" + resp);
+                    Console.WriteLine("INFO: Cloudinary: Response :" + resp.Error);
             }
             catch (Exception e)
             {
