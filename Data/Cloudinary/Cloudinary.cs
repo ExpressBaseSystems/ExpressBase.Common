@@ -21,9 +21,9 @@ namespace ExpressBase.Common.Integrations
             InfraConId = con.Id;
         }
 
-        private Account _account { get;  set; }
+        private Account _account { get; set; }
 
-        public int InfraConId { get ; set ; }
+        public int InfraConId { get; set; }
 
         Cloudinary GetNewConnection()
         {
@@ -33,7 +33,7 @@ namespace ExpressBase.Common.Integrations
 
         public string Resize(byte[] iByte, string filename, int imageQuality)
         {
-            string _url;
+            string _url = string.Empty;
             try
             {
                 MemoryStream ImageStream = new MemoryStream(iByte);
@@ -44,19 +44,22 @@ namespace ExpressBase.Common.Integrations
                     Transformation = new Transformation().Quality(imageQuality),
                     PublicId = filename,
                 };
-                _url = GetNewConnection().Upload(uploadParams).SecureUri.AbsoluteUri;
+                var resp = GetNewConnection().Upload(uploadParams);
+                if (resp.SecureUri != null)
+                    _url = resp.SecureUri.AbsoluteUri;
+                else
+                    Console.WriteLine("INFO: Cloudinary: Response :"+ resp);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                _url = String.Empty;
-                Console.WriteLine("ERROR: Cloudinary: "+ e.ToString());
+                Console.WriteLine("ERROR: Cloudinary: " + e.ToString());
             }
             return _url;
         }
 
         public string Resize(string url, string filename, int imgQuality)
         {
-            string _url;
+            string _url = string.Empty;
             try
             {
                 var uploadParams = new ImageUploadParams()
@@ -65,11 +68,14 @@ namespace ExpressBase.Common.Integrations
                     Transformation = new Transformation().Quality(imgQuality),
                     PublicId = filename,
                 };
-                _url = GetNewConnection().Upload(uploadParams).SecureUri.AbsoluteUri;
+                var resp = GetNewConnection().Upload(uploadParams);
+                if (resp.SecureUri != null)
+                    _url = resp.SecureUri.AbsoluteUri;
+                else
+                    Console.WriteLine("INFO: Cloudinary: Response :" + resp);
             }
             catch (Exception e)
             {
-                _url = String.Empty;
                 Console.WriteLine("ERROR: Cloudinary: " + e.ToString());
             }
             return _url;
@@ -77,7 +83,7 @@ namespace ExpressBase.Common.Integrations
 
         public string GetImgSize(byte[] iByte, string filename, ImageQuality size)
         {
-            string _url;
+            string _url = string.Empty;
             try
             {
                 MemoryStream ImageStream = new MemoryStream(iByte);
@@ -87,11 +93,14 @@ namespace ExpressBase.Common.Integrations
                     Transformation = new Transformation().Height((int)size).Crop("fit").AspectRatio(1.0),
                     PublicId = filename,
                 };
-                _url = GetNewConnection().Upload(uploadParams).SecureUri.AbsoluteUri;
+                var resp = GetNewConnection().Upload(uploadParams);
+                if (resp.SecureUri != null)
+                    _url = resp.SecureUri.AbsoluteUri;
+                else
+                    Console.WriteLine("INFO: Cloudinary: Response :" + resp);
             }
             catch (Exception e)
             {
-                _url = String.Empty;
                 Console.WriteLine("ERROR: Cloudinary: " + e.ToString());
             }
             return _url;
