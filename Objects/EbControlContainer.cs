@@ -6,6 +6,7 @@ using ServiceStack.Redis;
 using ExpressBase.Common.Objects.Attributes;
 using ServiceStack;
 using ExpressBase.Common.Extensions;
+using System.Linq;
 
 namespace ExpressBase.Common.Objects
 {
@@ -54,12 +55,69 @@ namespace ExpressBase.Common.Objects
                 if (control is EbControlContainer)
                 {
                     EbControlContainer _control = (control as EbControlContainer);
-                    _control.TableName = _control.TableName.IsNullOrEmpty() ? TableName: _control.TableName;
-                    _control.TableRowId= (_control.TableRowId == 0 ) ? TableRowId: _control.TableRowId;
+                    _control.TableName = _control.TableName.IsNullOrEmpty() ? TableName : _control.TableName;
+                    _control.TableRowId = (_control.TableRowId == 0) ? TableRowId : _control.TableRowId;
                     qry += _control.GetQuery();
                 }
             }
             return qry;
+        }
+
+        public static string GetControlOpsJS(EbControlContainer ebControlContainer, BuilderType FormTypeEnum)
+        {
+            string JSCode = "var ControlOps = {}";
+            string fn = string.Empty;
+            string GetValueJSfn = string.Empty;
+            Type[] _typeArray = (ebControlContainer.GetType().GetTypeInfo().Assembly.GetTypes());
+            Dictionary<string, string> DictControlOps = new Dictionary<string, string>();
+
+            foreach (Type ctrlType in _typeArray)
+            {
+                try
+                {
+                    TypeInfo _typeInfo = ctrlType.GetTypeInfo();
+                    var _enableInBuider = _typeInfo.GetCustomAttribute<EnableInBuilder>();
+                    string TypeName = ctrlType.Name.Substring(2, ctrlType.Name.Length - 2);
+
+                    if (_enableInBuider != null && _enableInBuider.BuilderTypes.Contains(FormTypeEnum))
+                    {
+                        object ctrlObj = Activator.CreateInstance(ctrlType);
+                        if ((!_typeInfo.IsDefined(typeof(HideInToolBox))) && ctrlObj is EbControl)
+                            if (!DictControlOps.ContainsKey(TypeName))
+                            {
+                                GetValueJSfn = string.Concat("this.getValue = function() { ", (ctrlObj as EbControl).GetValueJSfn, "};").RemoveCR();
+                                fn = string.Concat("function ", TypeName, "(jsonObj){ $.extend(this, jsonObj);", GetValueJSfn, "}").RemoveCR();
+                                JSCode += string.Concat(@"
+                                                        ControlOps.", TypeName, " = ", fn);
+
+                                DictControlOps.Add(TypeName, fn);
+                            }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+            return JSCode;
+        }
+
+        public static void SetContextId(EbControlContainer FormObj, string contextId)
+        {
+            FormObj.ContextId = contextId;
+
+
+            foreach (EbControl control in FormObj.Controls)
+            {
+                if (control is EbControlContainer)
+                {
+                    EbControlContainer.SetContextId(control as EbControlContainer, contextId);
+                }
+                else
+                {
+                    control.ContextId = contextId;
+                }
+            }
         }
 
         public virtual string Get1stLvlColNames()
