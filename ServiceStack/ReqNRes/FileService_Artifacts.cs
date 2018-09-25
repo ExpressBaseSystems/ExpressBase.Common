@@ -42,7 +42,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     public interface IUploadImageRequest
     {
         string SolnId { get; set; }
-       
+
         int UserId { get; set; }
 
         string UserAuthId { get; set; }
@@ -103,6 +103,43 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
     [DataContract]
     public class UploadDpRequest : IReturn<EbMqResponse>, IUploadImageRequest
+    {
+        [DataMember(Order = 1)]
+        public int ImageRefId { get; set; }
+
+        [DataMember(Order = 2)]
+        public EbFileCategory FileCategory { get; set; }
+
+        [DataMember(Order = 3)]
+        public byte[] Byte { get; set; }
+
+        [DataMember(Order = 4)]
+        public int ImgManpSerConId { get; set; }
+
+        [DataMember(Order = 5)]
+        public ImageQuality ImgQuality { get; set; }
+
+        [DataMember(Order = 6)]
+        public string RToken { get; set; }
+
+        [DataMember(Order = 7)]
+        public string BToken { get; set; }
+
+        [DataMember(Order = 8)]
+        public string SolnId { get; set; }
+
+        [DataMember(Order = 9)]
+        public int UserId { get; set; }
+
+        [DataMember(Order = 10)]
+        public string UserAuthId { get; set; }
+
+        [DataMember(Order = 11)]
+        public string WhichConsole { get; set; }
+    }
+
+    [DataContract]
+    public class UploadLogoRequest : IReturn<EbMqResponse>, IUploadImageRequest
     {
         [DataMember(Order = 1)]
         public int ImageRefId { get; set; }
@@ -356,6 +393,16 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 2)]
         public const EbFileCategory FileCategory = EbFileCategory.External;
+    }
+
+    [DataContract]
+    public class DownloadLogoExtRequest : EbServiceStackNoAuthRequest,IReturn<DownloadFileResponse>
+    {
+        [DataMember(Order = 2)]
+        public string SolnId { get; set; }
+
+        [DataMember(Order = 2)]
+        public ImageMeta ImageInfo { get; set; }
     }
 
     [DataContract]
