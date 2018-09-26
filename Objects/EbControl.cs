@@ -40,7 +40,8 @@ namespace ExpressBase.Common.Objects
             return Html
 .Replace("@barehtml@", this.GetBareHtml())
 .Replace("@name@", this.Name)
-.Replace("@ebsid@", EbSid_CtxId)
+.Replace("@ebsid@", this.EbSid_CtxId)
+.Replace("@hiddenString@", this.HiddenString)
 .Replace("@type@", this.ObjType);
         }
 
@@ -52,7 +53,7 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public override string UIchangeFns { get; set; }
 
-        public virtual EbDbTypes EbDbType { get; set; }
+        public virtual EbDbTypes EbDbType { get { return EbDbTypes.Decimal; } }
 
         [Description("Labels")]
         [System.ComponentModel.Category("Behavior")]
@@ -291,12 +292,103 @@ else
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public string DefaultValue { get; set; }
 
+        [JsonIgnore]
         public virtual string GetValueJSfn
         {
             get
             {
                 return @"
-                    return $('#' + this.ebSid_CtxId).val();
+                    return $('#' + this.EbSid_CtxId).val();
+                ";
+            } set { }
+        }
+
+        [JsonIgnore]
+        public virtual string SetValueJSfn
+        {
+            get
+            {
+                return @"
+                    $('#' + this.EbSid_CtxId).val(p1);
+                ";
+            } set { }
+        }
+
+        [JsonIgnore]
+        public virtual string HideJSfn
+        {
+            get
+            {
+                return @"
+                    $('#cont_' + this.EbSid_CtxId).hide(300);
+                ";
+            } set { }
+        }
+
+        [JsonIgnore]
+        public virtual string ShowJSfn
+        {
+            get
+            {
+                return @"
+                    $('#cont_' + this.EbSid_CtxId).show(300);
+                ";
+            } set { }
+        }
+
+        [JsonIgnore]
+        public virtual string EnableJSfn
+        {
+            get
+            {
+                return @"
+                    $('#cont_' + this.EbSid_CtxId + ' *').prop('disabled',false).css('pointer-events', 'inherit');
+                ";
+            } set { }
+        }
+
+        [JsonIgnore]
+        public virtual string DisableJSfn
+        {
+            get
+            {
+                return @"
+                    $('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none');
+                ";
+            } set { }
+        }
+
+        [JsonIgnore]
+        public virtual string ResetJSfn
+        {
+            get
+            {
+                return @"
+                    $('#' + this.EbSid_CtxId).val('');
+                ";
+            }
+            set { }
+        }
+
+        [JsonIgnore]
+        public virtual string RefreshJSfn
+        {
+            get
+            {
+                return @"
+                    $('#' + this.EbSid_CtxId).val('');
+                ";
+            }
+            set { }
+        }
+
+        [JsonIgnore]
+        public virtual string ClearJSfn
+        {
+            get
+            {
+                return @"
+                    $('#' + this.EbSid_CtxId).val('');
                 ";
             }
             set { }

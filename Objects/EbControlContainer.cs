@@ -66,8 +66,6 @@ namespace ExpressBase.Common.Objects
         public static string GetControlOpsJS(EbControlContainer ebControlContainer, BuilderType FormTypeEnum)
         {
             string JSCode = "var ControlOps = {}";
-            string fn = string.Empty;
-            string GetValueJSfn = string.Empty;
             Type[] _typeArray = (ebControlContainer.GetType().GetTypeInfo().Assembly.GetTypes());
             Dictionary<string, string> DictControlOps = new Dictionary<string, string>();
 
@@ -85,12 +83,25 @@ namespace ExpressBase.Common.Objects
                         if ((!_typeInfo.IsDefined(typeof(HideInToolBox))) && ctrlObj is EbControl)
                             if (!DictControlOps.ContainsKey(TypeName))
                             {
-                                GetValueJSfn = string.Concat("this.getValue = function() { ", (ctrlObj as EbControl).GetValueJSfn, "};").RemoveCR();
-                                fn = string.Concat("function ", TypeName, "(jsonObj){ $.extend(this, jsonObj);", GetValueJSfn, "}").RemoveCR();
-                                JSCode += string.Concat(@"
-                                                        ControlOps.", TypeName, " = ", fn);
+                                EbControl _ctrlObj = (ctrlObj as EbControl);
+                                string opFnsJs = string.Empty;
+                                opFnsJs += GetOpFnJs("getValue", _ctrlObj.GetValueJSfn, TypeName);
+                                opFnsJs += GetOpFnJs("setValue", _ctrlObj.SetValueJSfn, TypeName);
+                                opFnsJs += GetOpFnJs("hide", _ctrlObj.HideJSfn, TypeName);
+                                opFnsJs += GetOpFnJs("show", _ctrlObj.ShowJSfn, TypeName);
+                                opFnsJs += GetOpFnJs("enable", _ctrlObj.EnableJSfn, TypeName);
+                                opFnsJs += GetOpFnJs("disable", _ctrlObj.DisableJSfn, TypeName);
+                                opFnsJs += GetOpFnJs("reset", _ctrlObj.ResetJSfn, TypeName);
+                                opFnsJs += GetOpFnJs("refresh", _ctrlObj.RefreshJSfn, TypeName);
+                                opFnsJs += GetOpFnJs("clear", _ctrlObj.ClearJSfn, TypeName);
 
-                                DictControlOps.Add(TypeName, fn);
+
+                                string fn = string.Concat("function ", TypeName, "(jsonObj){ $.extend(this, jsonObj);", opFnsJs, "}").RemoveCR();
+                                
+                                JSCode += string.Concat(@"
+                                                        ControlOps.", TypeName, " = ", fn); ;
+
+                                DictControlOps.Add(TypeName, "fn placeholder");
                             }
                     }
                 }
@@ -102,21 +113,34 @@ namespace ExpressBase.Common.Objects
             return JSCode;
         }
 
+        private static string GetOpFnJs(string opFnName, string JSfn, string TypeName)
+        {
+            return string.Concat(@"
+                                    this.", opFnName, " = function(p1) { ", JSfn, "};").RemoveCR();
+        }
+
         public static void SetContextId(EbControlContainer FormObj, string contextId)
         {
-            FormObj.ContextId = contextId;
 
-
-            foreach (EbControl control in FormObj.Controls)
+            try
             {
-                if (control is EbControlContainer)
+                FormObj.ContextId = contextId;
+                foreach (EbControl control in FormObj.Controls)
                 {
-                    EbControlContainer.SetContextId(control as EbControlContainer, contextId);
+                    if (control is EbControlContainer)
+                    {
+                        EbControlContainer.SetContextId(control as EbControlContainer, contextId);
+                    }
+                    else
+                    {
+                        control.ContextId = contextId;
+                    }
                 }
-                else
-                {
-                    control.ContextId = contextId;
-                }
+            }
+            catch(Exception e)
+            {
+                if (FormObj == null)
+                    throw new NullReferenceException();
             }
         }
 
