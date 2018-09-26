@@ -1,6 +1,7 @@
 ﻿using ExpressBase.Common.Connections;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -20,7 +21,7 @@ namespace ExpressBase.Common.Data
             _from = con.EmailAddress;
         }
 
-        public bool Send(string to, string subject, string message)
+        public bool Send(string to, string subject, string message, string[] cc, string[] bcc, byte[] attachment, string attachmentname)
         {
             bool sentStatus;
             try
@@ -32,11 +33,14 @@ namespace ExpressBase.Common.Data
                     Body = message
 
                 };
-                //mm.Attachments.Add(new Attachment(new MemoryStream(request.AttachmentReport)/*Memorystream*/, request.AttachmentName + ".pdf"));
-                //if (!request.Cc.IsEmpty())
-                //    mm.CC.Add(request.Cc);
-                //if (!request.Bcc.IsEmpty())
-                //    mm.Bcc.Add(request.Bcc);
+                if (attachment != null)
+                    mm.Attachments.Add(new Attachment(new MemoryStream(attachment), attachmentname + ".pdf"));
+                if (cc.Length>0)
+                    foreach (string item in cc)
+                       if (item!="") mm.CC.Add(item);
+                if (bcc.Length>0)
+                    foreach (string item in bcc)
+                        if (item != "") mm.Bcc.Add(item);
                 _client.Send(mm);
                 sentStatus = true;
             }
