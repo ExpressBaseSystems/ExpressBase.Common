@@ -55,12 +55,12 @@ namespace ExpressBase.Common.Connections
                             Timeout = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_TIMEOUT)),
                             IsDefault = true
                         },
-                        FilesDbConnection = new Connections.EbFilesDbConnection
-                        {
-                            FilesDbVendor = FilesDbVendors.MongoDB,
-                            FilesDB_url = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_FILES_DB_URL),
-                            IsDefault = true
-                        }
+                        //FilesDbConnection = new Connections.EbFilesDbConnection
+                        //{
+                        //    FilesDbVendor = FilesDbVendors.MongoDB,
+                        //    FilesDB_url = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_FILES_DB_URL),
+                        //    IsDefault = true
+                        //}
                         //ADD EMAIL & SMS etc
                     };
                 }

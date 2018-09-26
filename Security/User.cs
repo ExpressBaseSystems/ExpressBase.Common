@@ -342,9 +342,9 @@ namespace ExpressBase.Security
 						for (var i = 0; i < rolesid.Count; i++)
 						{
 							int id = rolesid[i];
-							if (id < 100)
+							if (id < 100 && Enum.GetName(typeof(SystemRoles), id) != null)
 							{
-								rolesname[i] = Enum.GetName(typeof(SystemRoles), id) ?? "NULL";
+								rolesname[i] = Enum.GetName(typeof(SystemRoles), id);
 								sysRoleExists = true;
 							}								
 						}
