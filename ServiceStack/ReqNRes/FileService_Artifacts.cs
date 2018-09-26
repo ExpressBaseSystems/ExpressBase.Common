@@ -62,6 +62,8 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         ImageQuality ImgQuality { get; set; }
 
         int ImageRefId { get; set; }
+
+        string SolutionId { get; set; }
     }
 
     [DataContract]
@@ -99,6 +101,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 11)]
         public string WhichConsole { get; set; }
+
+        [DataMember(Order = 12)]
+        public string SolutionId { get; set; }
     }
 
     [DataContract]
@@ -136,6 +141,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 11)]
         public string WhichConsole { get; set; }
+
+        [DataMember(Order = 12)]
+        public string SolutionId { get; set; }
     }
 
     [DataContract]
@@ -173,6 +181,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 11)]
         public string WhichConsole { get; set; }
+
+        [DataMember(Order = 12)]
+        public string SolutionId { get; set; }
     }
 
     [DataContract]
@@ -298,6 +309,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 2)]
         public byte[] ImageByte { get; set; }
+
+        [DataMember(Order = 3)]
+        public string SolutionId { get; set; }
     }
 
     public class UploadFileMqResponse
