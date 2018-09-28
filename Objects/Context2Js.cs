@@ -110,9 +110,6 @@ function Proc(jsonObj, rootContainerObj) {
     $.extend(rootContainerObj, jsonObj);
     rootContainerObj.Controls = new EbControlCollection(jsonObj.Controls);
     ProcRecur(jsonObj.Controls, rootContainerObj.Controls);
-    setTimeout(function () {
-        console.log(' attached rootContainerObj.Controls :' + JSON.stringify(rootContainerObj.Controls));
-    }, 500);
 };
 
 function ProcRecur(src_controls, dest_controls) {

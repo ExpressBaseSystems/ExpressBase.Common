@@ -244,8 +244,6 @@ namespace ExpressBase.Common.Objects.Attributes
             {
                 var fun = prop.GetValue(null);
                 fun = @"function(elementId, props){
-                        console.log(elementId);
-                        console.log(props);
                         @functionStr
                     }".Replace("@functionStr", fun.ToString());
 
