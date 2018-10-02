@@ -40,14 +40,29 @@ namespace ExpressBase.Common.Objects
         [PropertyGroup("Data")]
         [HelpText("Name Of database-table Which you want to store Data collected using this Form")]
         public virtual string TableName { get; set; }
+        //foreach (EbControl control in Controls)
+        //{
+        //    if (control is EbControlContainer)
+        //    {
+        //        EbControlContainer Cont = control as EbControlContainer;
+        //        if (Cont.TableName.IsNullOrEmpty()|| Cont.TableName.Trim() == string.Empty)
+        //        {
+        //            Cont.TableName = TableName;
+        //        }
+        //    }
+        //}
 
-        public virtual string GetQuery()
+        public virtual string GetSelectQuery(string _masterTblName)
         {
             string ColoumsStr = Get1stLvlColNames();
             string qry = string.Empty;
             if (ColoumsStr.Length > 0)
             {
-                qry = string.Format("SELECT {0} FROM {1} WHERE id={2};", ColoumsStr, TableName, TableRowId);
+                if (TableName == _masterTblName)
+                    qry = string.Format("SELECT {0} FROM {1} WHERE {3} = {2};", ColoumsStr, TableName, TableRowId, "id");
+                else
+                    qry = string.Format("SELECT {0} FROM {1} WHERE {3}={2};", ColoumsStr, TableName, TableRowId, _masterTblName + "_id");
+
             }
 
             foreach (EbControl control in Controls)
@@ -57,7 +72,7 @@ namespace ExpressBase.Common.Objects
                     EbControlContainer _control = (control as EbControlContainer);
                     _control.TableName = _control.TableName.IsNullOrEmpty() ? TableName : _control.TableName;
                     _control.TableRowId = (_control.TableRowId == 0) ? TableRowId : _control.TableRowId;
-                    qry += _control.GetQuery();
+                    qry += _control.GetSelectQuery(_masterTblName);
                 }
             }
             return qry;
@@ -97,7 +112,7 @@ namespace ExpressBase.Common.Objects
 
 
                                 string fn = string.Concat("function ", TypeName, "(jsonObj){ $.extend(this, jsonObj);", opFnsJs, "}").RemoveCR();
-                                
+
                                 JSCode += string.Concat(@"
                                                         ControlOps.", TypeName, " = ", fn); ;
 
@@ -137,7 +152,7 @@ namespace ExpressBase.Common.Objects
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 if (FormObj == null)
                     throw new NullReferenceException();
@@ -190,5 +205,40 @@ namespace ExpressBase.Common.Objects
         }
 
         public override string GetHtml() { return string.Empty; }
+
+        public string GetInsertQry()
+        {
+            string qry = string.Empty;
+
+            return qry;
+        }
+
+        public string GetCtrlNamesOfTable(string tableName)
+        {
+            string cols = string.Empty;
+            if (TableName == tableName)
+            {
+                cols += string.Concat(Get1stLvlColNames(), ", ");
+            }
+            GetCtrlNamesOfTableRec(tableName, ref cols);
+            return cols;
+        }
+
+        private void GetCtrlNamesOfTableRec(string tableName, ref string cols)
+        {
+            foreach (EbControl control in Controls)
+            {
+                if (control is EbControlContainer)
+                {
+                    EbControlContainer Cont = control as EbControlContainer;
+                    Cont.TableName = Cont.TableName.IsNullOrEmpty() ? TableName : Cont.TableName;
+                    if (Cont.TableName == tableName)
+                    {
+                        cols += Cont.Get1stLvlColNames();
+                    }
+                    Cont.GetCtrlNamesOfTableRec(tableName, ref cols);
+                }
+            }
+        }
     }
 }
