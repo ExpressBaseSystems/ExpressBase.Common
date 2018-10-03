@@ -224,7 +224,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
         jsonObj.Html  = this.Html;
         jsonObj.Init   = this.Init;
         //$.extend(this, jsonObj);
-        this = _.mergeWith(
+        _.mergeWith(
 	        {}, this, jsonObj,
           (a, b) => b === null ? a : undefined
         )
