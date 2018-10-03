@@ -117,7 +117,7 @@ namespace ExpressBase.Common.Data
         private void InitDatabases()
         {
             if (this.Connections != null)
-            {
+            {               
                 //OBJECTS DB
                 if (Connections.ObjectsDbConnection != null && Connections.ObjectsDbConnection.DatabaseVendor == DatabaseVendors.PGSQL)
                     ObjectsDB = new PGSQLDatabase(Connections.ObjectsDbConnection);
@@ -160,10 +160,8 @@ namespace ExpressBase.Common.Data
                 if (Connections.SMTPConnection != null)
                     Smtp = new EbSmtp(Connections.SMTPConnection);
 
-
-
                 if (Connections.SMSConnection != null)
-                    SMSConnection = new TwilioService(Connections.SMSConnection);
+                    SMSConnection = new TwilioSms(Connections.SMSConnection);
 
                 if (Connections.CloudinaryConnection != null)
                     ImageManipulate = new EbCloudinary(Connections.CloudinaryConnection);

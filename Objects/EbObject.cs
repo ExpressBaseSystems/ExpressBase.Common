@@ -22,7 +22,7 @@ namespace ExpressBase.Objects
         //public EbObjectType EbObjectType { get; set; }
 
         [Description("Identity")]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataSource, BuilderType.Report, BuilderType.BotForm)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataSource, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder)]
         [EbRequired]
         [Unique]
         [regexCheck]
@@ -33,7 +33,7 @@ namespace ExpressBase.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public virtual string UIchangeFns { get; set; }  
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataSource, BuilderType.Report)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataSource, BuilderType.Report, BuilderType.SmsBuilder)]
         public string Description { get; set; }
 
         //public string ChangeLog { get; set; }
