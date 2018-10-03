@@ -223,7 +223,11 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
         jsonObj.RenderMe  = this.RenderMe;
         jsonObj.Html  = this.Html;
         jsonObj.Init   = this.Init;
-        $.extend(this, jsonObj);
+        //$.extend(this, jsonObj);
+        this = _.mergeWith(
+	        {}, this, jsonObj,
+          (a, b) => b === null ? a : undefined
+        )
         if(jsonObj.IsContainer)
             this.Controls  = new EbControlCollection( {} );
         //if(this.Init)
