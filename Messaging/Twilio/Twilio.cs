@@ -8,17 +8,18 @@ using Twilio.Types;
 
 namespace ExpressBase.Common.Messaging.Twilio
 {
-    public class TwilioService : ISMSConnection
+    public class TwilioSms : ISMSConnection
     {
         private string _accountSid { get; set; }
         private string _authToken { get; set; }
         private PhoneNumber _from { get; set; }
 
+
         private List<Uri> _mediaUrl;
 
         private MessageResource _messageResource { get; set; }
 
-        public TwilioService(SMSConnection SMSConnection)
+        public TwilioSms(SMSConnection SMSConnection)
         {
             _accountSid = SMSConnection.UserName;
             _authToken = SMSConnection.Password;
@@ -35,7 +36,7 @@ namespace ExpressBase.Common.Messaging.Twilio
                 MessageResource msg = MessageResource.Create(to,
                                              from: _from,
                                              body: body,
-                                             statusCallback: new Uri("http://eb_roby_dev.expressbase.azurewebsites.net/smscallback?apikey=GATblcTqWNFI9ljZRWX-aUtidVYjJwoj")
+                                             statusCallback: new Uri("https://eb-test.info")
                                              );
                 msgStatus.Add("To", msg.To.ToString());
                 msgStatus.Add("From", msg.From.ToString());
@@ -50,7 +51,7 @@ namespace ExpressBase.Common.Messaging.Twilio
                 Console.WriteLine("Exception:" + e.ToString());
                 msgStatus.Add("ErrorMessage", e.ToString());
             }
-            
+            Console.WriteLine(" --- SMS msg" +msgStatus.ToString());
             return msgStatus;
         }
     }

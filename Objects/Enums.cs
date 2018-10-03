@@ -50,7 +50,8 @@ namespace ExpressBase.Common.Objects
         Report = 3,
         DVBuilder = 11,
         EmailBuilder = 15,
-        BotForm = 18
+        BotForm = 18,
+        SmsBuilder =19
     }
 
     [ProtoBuf.ProtoContract]

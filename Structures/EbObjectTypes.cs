@@ -88,6 +88,7 @@ namespace ExpressBase.Common.Structures
         public const int iTableVisualization = 16;
         public const int iChartVisualization = 17;
         public const int iBotForm = 18;
+        public const int iSmsBuilder = 19;
 
         public static readonly EbObjectType Null = new EbObjectType("Null", iNull, ObjectConstants.XXX, false);
         public static readonly EbObjectType WebForm = new EbObjectType(ObjectConstants.WEB_FORM, iWebForm, ObjectConstants.XXW, true);//true
@@ -107,7 +108,7 @@ namespace ExpressBase.Common.Structures
         public static readonly EbObjectType TableVisualization = new EbObjectType(ObjectConstants.TABLE_VISUALIZATION, iTableVisualization, ObjectConstants.BMW, true);
         public static readonly EbObjectType ChartVisualization = new EbObjectType(ObjectConstants.CHART_VISUALIZATION, iChartVisualization, ObjectConstants.BMW, true);
         public static readonly EbObjectType BotForm = new EbObjectType(ObjectConstants.BOT_FORM, iBotForm, ObjectConstants.BXX, true);
-
+        public static readonly EbObjectType SmsBuilder = new EbObjectType(ObjectConstants.SMS_BUILDER, iSmsBuilder, ObjectConstants.XMW, false);
         public static EbObjectType Get(int intcode)
         {
             foreach (EbObjectType o in Enumerator)
@@ -140,7 +141,8 @@ namespace ExpressBase.Common.Structures
                     EmailBuilder,
                     TableVisualization,
                     ChartVisualization,
-                    BotForm
+                    BotForm,
+                    SmsBuilder
                 };
             }
         }
