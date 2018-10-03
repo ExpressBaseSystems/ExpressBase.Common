@@ -7,14 +7,9 @@ namespace ExpressBase.Common
     public class TableColumnMeta
     {
         public string Name { get; set; }
-        public VendorDbType Type
-        {
-            get { return Type; }
-            set
-            {
-                Type = Type;
-            }
-        }
+
+        public VendorDbType Type { get; set; }
+
         public string Default { get; set; }
     }
 
@@ -29,10 +24,5 @@ namespace ExpressBase.Common
         public int Type { get; set; }
 
         public bool AutoIncrement { get; set; }
-    }
-
-    public class TableColumnMetaSColl : List<TableColumnMetaS>
-    {
-        public TableColumnMetaSColl() { }
     }
 }
