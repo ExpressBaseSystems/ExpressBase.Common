@@ -26,32 +26,32 @@ namespace ExpressBase.Common.Messaging.Twilio
             _from = new PhoneNumber(SMSConnection.From);
         }
 
-        public Dictionary<string, string> SendSMS(string sTo, string sFrom, string body)
+        public Dictionary<string, string> SendSMS(string sTo, string body)
         {
-            Dictionary<string, string> msgStatus = new Dictionary<string, string>();
+            Dictionary<string, string> msgStatus = null;
             try
             {
                 TwilioClient.Init(_accountSid, _authToken);
                 PhoneNumber to = new PhoneNumber(sTo);
-                MessageResource msg = MessageResource.Create(to,
-                                             from: _from,
-                                             body: body,
-                                             statusCallback: new Uri("https://eb-test.info")
+                MessageResource msg = MessageResource.Create(to, from: _from, body: body, statusCallback: new Uri("https://eb-test.info")
                                              );
-                msgStatus.Add("To", msg.To.ToString());
-                msgStatus.Add("From", msg.From.ToString());
-                msgStatus.Add("Uri", msg.Uri);
-                msgStatus.Add("Body", msg.Body);
-                msgStatus.Add("Status", msg.Status.ToString());
-                msgStatus.Add("SentTime", msg.DateSent.ToString());
-                msgStatus.Add("ErrorMessage", msg.ErrorMessage);
+                msgStatus = new Dictionary<string, string>
+                {
+                    { "To", msg.To.ToString() },
+                    { "From", msg.From.ToString() },
+                    { "Uri", msg.Uri },
+                    { "Body", msg.Body },
+                    { "Status", msg.Status.ToString() },
+                    { "SentTime", msg.DateSent.ToString() },
+                    { "ErrorMessage", msg.ErrorMessage }
+                };
             }
             catch (Exception e)
             {
                 Console.WriteLine("Exception:" + e.ToString());
                 msgStatus.Add("ErrorMessage", e.ToString());
             }
-            Console.WriteLine(" --- SMS msg" +msgStatus.ToString());
+            Console.WriteLine(" --- SMS msg" + EbSerializers.Json_Serialize(msgStatus));
             return msgStatus;
         }
     }

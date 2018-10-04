@@ -6,6 +6,6 @@ namespace ExpressBase.Common.Messaging
 {
     public interface ISMSConnection
     {
-        Dictionary<string, string> SendSMS(string to, string from, string body);
+        Dictionary<string, string> SendSMS(string to, string body);
     }
 }
