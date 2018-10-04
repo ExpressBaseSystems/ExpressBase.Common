@@ -600,7 +600,7 @@ namespace ExpressBase.Common.Data
         public string EB_AUTHENTICATE_ANONYMOUS { get { return "SELECT * FROM table(eb_authenticate_anonymous(@params in_appid => :appid ,in_wc => :wc))"; } }
 
         public string EB_SIDEBARUSER_REQUEST { get { return @"
-                       SELECT id, applicationname
+                       SELECT id, applicationname,app_icon
                 FROM eb_applications;
                 SELECT
                     EO.id, EO.obj_type, EO.obj_name,
@@ -619,7 +619,7 @@ namespace ExpressBase.Common.Data
         public string EB_SIDEBARDEV_REQUEST
         {
             get { return @"
-                            SELECT id, applicationname FROM eb_applications;
+                            SELECT id, applicationname,app_icon FROM eb_applications;
                             SELECT 
 	                            EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, COALESCE(EO2A.app_id, 0)
                             FROM 
