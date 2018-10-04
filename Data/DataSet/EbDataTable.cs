@@ -87,5 +87,19 @@ namespace ExpressBase.Common
         {
             base.Remove(dt);
         }
+
+		public EbDataTable this[string tablename]
+		{
+			get
+			{
+				foreach (EbDataTable table in this)
+				{
+					if (table.TableName == tablename)
+						return table;
+				}
+
+				return null;
+			}
+		}
     }
 }
