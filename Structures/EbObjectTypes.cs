@@ -90,6 +90,7 @@ namespace ExpressBase.Common.Structures
         public const int iTableVisualization = 16;
         public const int iChartVisualization = 17;
         public const int iBotForm = 18;
+        public const int iSmsBuilder = 19;
 
         public static readonly EbObjectType Null = new EbObjectType("Null", iNull, ObjectConstants.XXX, false, "fa-exclamation-triangle");
         public static readonly EbObjectType WebForm = new EbObjectType(ObjectConstants.WEB_FORM, iWebForm, ObjectConstants.XXW, true, "fa-wpforms");//true
@@ -105,10 +106,10 @@ namespace ExpressBase.Common.Structures
         public static readonly EbObjectType FilterDialog = new EbObjectType(ObjectConstants.FILTER_DIALOG, iFilterDialog, ObjectConstants.BMW, false, "fa-filter");
         //public static readonly EbObjectType MobileForm = new EbObjectType(ObjectConstants.MOBILE_FORM, iMobileForm, ObjectConstants.BMW, false);
         //public static readonly EbObjectType UserControl = new EbObjectType(ObjectConstants.USER_CONTROL, iUserControl, ObjectConstants.BMW, false);
-        public static readonly EbObjectType EmailBuilder = new EbObjectType(ObjectConstants.EMAIL_BUILDER, iEmailBuilder, ObjectConstants.XMW, false, "fa-envelope-o");
-        public static readonly EbObjectType TableVisualization = new EbObjectType(ObjectConstants.TABLE_VISUALIZATION, iTableVisualization, ObjectConstants.BMW, true, "fa-table");
-        public static readonly EbObjectType ChartVisualization = new EbObjectType(ObjectConstants.CHART_VISUALIZATION, iChartVisualization, ObjectConstants.BMW, true, "fa-bar-chart");
-        public static readonly EbObjectType BotForm = new EbObjectType(ObjectConstants.BOT_FORM, iBotForm, ObjectConstants.BXX, true, "fa-wpforms");
+        public static readonly EbObjectType EmailBuilder = new EbObjectType(ObjectConstants.EMAIL_BUILDER, iEmailBuilder, ObjectConstants.XMW, false);
+        public static readonly EbObjectType TableVisualization = new EbObjectType(ObjectConstants.TABLE_VISUALIZATION, iTableVisualization, ObjectConstants.BMW, true);
+        public static readonly EbObjectType ChartVisualization = new EbObjectType(ObjectConstants.CHART_VISUALIZATION, iChartVisualization, ObjectConstants.BMW, true);
+        public static readonly EbObjectType BotForm = new EbObjectType(ObjectConstants.BOT_FORM, iBotForm, ObjectConstants.BXX, true);
 
         public static EbObjectType Get(int intcode)
         {
@@ -142,7 +143,8 @@ namespace ExpressBase.Common.Structures
                     EmailBuilder,
                     TableVisualization,
                     ChartVisualization,
-                    BotForm
+                    BotForm,
+                    SmsBuilder
                 };
             }
         }

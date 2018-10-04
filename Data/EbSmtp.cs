@@ -43,6 +43,7 @@ namespace ExpressBase.Common.Data
                         if (item != "") mm.Bcc.Add(item);
                 _client.Send(mm);
                 sentStatus = true;
+                Console.WriteLine("Smtp Send success" + to);
             }
             catch (Exception e)
             {

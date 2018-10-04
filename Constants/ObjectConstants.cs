@@ -36,5 +36,6 @@ namespace ExpressBase.Common.Constants
 		public const string TABLE_VISUALIZATION			= "TableVisualization";
 		public const string CHART_VISUALIZATION			= "ChartVisualization";
 		public const string BOT_FORM					= "BotForm";
+        public const string SMS_BUILDER                 = "SmsBuilder";
 	}
 }
