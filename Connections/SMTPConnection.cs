@@ -5,6 +5,12 @@ namespace ExpressBase.Common.Connections
 {
     public class SMTPConnection : IEbConnection
     {
+        public int Id { get; set; }
+
+        public bool IsDefault { get; set; }
+
+        public string NickName { get; set; }
+
         public string ProviderName { get; set; }
 
         public string Host { get; set; }
@@ -17,6 +23,6 @@ namespace ExpressBase.Common.Connections
 
         public bool EnableSsl { get; set; }
 
-        public override EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.SMTP; } }
+        public EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.SMTP; } }
     }
 }

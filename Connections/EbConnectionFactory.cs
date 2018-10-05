@@ -4,6 +4,7 @@ using ExpressBase.Common.Data.FTP;
 using ExpressBase.Common.Data.MongoDB;
 using ExpressBase.Common.Integrations;
 using ExpressBase.Common.Messaging;
+using ExpressBase.Common.Messaging.ExpertTexting;
 using ExpressBase.Common.Messaging.Twilio;
 using Funq;
 using ServiceStack;
@@ -27,7 +28,7 @@ namespace ExpressBase.Common.Data
 
         public EbSmtp Smtp { get; private set; }
 
-        public ISMSConnection SMSConnection { get; private set; }
+        public EbSmsConCollection SMSConnection { get; private set; }
 
         public IImageManipulate ImageManipulate { get; private set; }
 
@@ -117,7 +118,7 @@ namespace ExpressBase.Common.Data
         private void InitDatabases()
         {
             if (this.Connections != null)
-            {               
+            {
                 //OBJECTS DB
                 if (Connections.ObjectsDbConnection != null && Connections.ObjectsDbConnection.DatabaseVendor == DatabaseVendors.PGSQL)
                     ObjectsDB = new PGSQLDatabase(Connections.ObjectsDbConnection);
@@ -160,8 +161,11 @@ namespace ExpressBase.Common.Data
                 if (Connections.SMTPConnection != null)
                     Smtp = new EbSmtp(Connections.SMTPConnection);
 
-                if (Connections.SMSConnection != null)
-                    SMSConnection = new TwilioSms(Connections.SMSConnection);
+                if (Connections.SMSConnections != null)
+                {
+                    SMSConnection = Connections.SMSConnections;
+                }
+
 
                 if (Connections.CloudinaryConnection != null)
                     ImageManipulate = new EbCloudinary(Connections.CloudinaryConnection);

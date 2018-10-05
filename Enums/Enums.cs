@@ -37,6 +37,18 @@ namespace ExpressBase.Common
         Cloudfront,
     }
 
+    public enum SmsVendors
+    {
+        TWILIO = 1,
+        EXPERTTEXTING = 2
+    }
+
+    public enum ConPreferences
+    {
+        PRIMARY = 1,
+        FALLBACK = 2
+    }
+
     public enum EbConnectionTypes
     {
         EbOBJECTS = 1,

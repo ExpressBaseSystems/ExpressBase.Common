@@ -12,6 +12,11 @@ namespace ExpressBase.Common.Connections
 
         public string Password { get; set; }
 
-        public override EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.FTP; } } 
+        public EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.FTP; } }
+
+        public int Id { get; set; }
+        public bool IsDefault { get; set; }
+        public string NickName { get; set; }
+
     }
 }

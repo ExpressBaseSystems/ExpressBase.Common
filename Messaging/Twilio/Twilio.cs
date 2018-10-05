@@ -8,50 +8,66 @@ using Twilio.Types;
 
 namespace ExpressBase.Common.Messaging.Twilio
 {
-    public class TwilioSms : ISMSConnection
+    public class TwilioConnection :  ISMSConnection
     {
+        public string UserName { get; set; }
+
+        public string Password { get; set; }
+
+        public string From { get; set; }
+
         private string _accountSid { get; set; }
         private string _authToken { get; set; }
         private PhoneNumber _from { get; set; }
 
-
-        private List<Uri> _mediaUrl;
-
         private MessageResource _messageResource { get; set; }
+        public SmsVendors ProviderName { get; set; }
+        public ConPreferences Preference { get; set; }
 
-        public TwilioSms(SMSConnection SMSConnection)
+        public EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.SMS; } }
+
+        public int Id { get ; set; }
+        public bool IsDefault { get ; set ; }
+        public string NickName { get ; set; }
+
+        public TwilioConnection(ISMSConnection SMSConnection)
         {
             _accountSid = SMSConnection.UserName;
             _authToken = SMSConnection.Password;
             _from = new PhoneNumber(SMSConnection.From);
+            ProviderName = SmsVendors.TWILIO;
         }
 
-        public Dictionary<string, string> SendSMS(string sTo, string sFrom, string body)
+        public TwilioConnection()
         {
-            Dictionary<string, string> msgStatus = new Dictionary<string, string>();
+            ProviderName = SmsVendors.TWILIO;
+        }
+        public Dictionary<string, string> SendSMS(string sTo, string body)
+        {
+            Dictionary<string, string> msgStatus = null;
             try
             {
                 TwilioClient.Init(_accountSid, _authToken);
                 PhoneNumber to = new PhoneNumber(sTo);
-                MessageResource msg = MessageResource.Create(to,
-                                             from: _from,
-                                             body: body,
-                                             statusCallback: new Uri("https://eb-test.info")
+                MessageResource msg = MessageResource.Create(to, from: _from, body: body, statusCallback: new Uri("https://eb-test.info")
                                              );
-                msgStatus.Add("To", msg.To.ToString());
-                msgStatus.Add("From", msg.From.ToString());
-                msgStatus.Add("Uri", msg.Uri);
-                msgStatus.Add("Body", msg.Body);
-                msgStatus.Add("Status", msg.Status.ToString());
-                msgStatus.Add("SentTime", msg.DateSent.ToString());
-                msgStatus.Add("ErrorMessage", msg.ErrorMessage);
+                msgStatus = new Dictionary<string, string>
+                {
+                    { "To", msg.To.ToString() },
+                    { "From", msg.From.ToString() },
+                    { "Uri", msg.Uri },
+                    { "Body", msg.Body },
+                    { "Status", msg.Status.ToString() },
+                    { "SentTime", msg.DateSent.ToString() },
+                    { "ErrorMessage", msg.ErrorMessage }
+                };
             }
             catch (Exception e)
             {
                 Console.WriteLine("Exception:" + e.ToString());
                 msgStatus.Add("ErrorMessage", e.ToString());
             }
-            Console.WriteLine(" --- SMS msg" +msgStatus.ToString());
+            Console.WriteLine(" --- SMS msg" + EbSerializers.Json_Serialize(msgStatus));
             return msgStatus;
         }
     }

@@ -1,4 +1,5 @@
-﻿using ExpressBase.Common.Messaging;
+﻿using ExpressBase.Common.Connections;
+using ExpressBase.Common.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,7 +18,7 @@ namespace ExpressBase.Common.Data
 
         IDatabase LogsDB { get; }
 
-        ISMSConnection SMSConnection { get; }
+        EbSmsConCollection SMSConnection { get; }
 
         IImageManipulate ImageManipulate { get; }
 
