@@ -13,9 +13,9 @@ namespace ExpressBase.Common
         public string Default { get; set; }
     }
 
-    public class TableColumnMetaS
+    public class SingleRecordField
     {
-        public TableColumnMetaS() { }
+        public SingleRecordField() { }
 
         public string Name { get; set; }
 
