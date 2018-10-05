@@ -49,6 +49,10 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public virtual string ContextId { get; set; }
 
+        [PropertyGroup("Behavior")]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+        public virtual bool Unique { get; set; }
+
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public override string UIchangeFns { get; set; }
@@ -115,9 +119,7 @@ namespace ExpressBase.Common.Objects
         //[ProtoBuf.ProtoMember(18)]
         //[System.ComponentModel.Category("Layout")]
         //public virtual int Width { get; set; }
-
-        [ProtoBuf.ProtoMember(19)]
-        [System.ComponentModel.Category("Behavior")]
+        [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public virtual bool Required { get; set; }
 
@@ -131,10 +133,6 @@ namespace ExpressBase.Common.Objects
         {
             get { return (this.Required ? "$('#{0}').focusout(function() { isRequired(this); }); $('#{0}Lbl').html( $('#{0}Lbl').text() + '<sup style=\"color: red\">*</sup>') ".Replace("{0}", this.Name) : string.Empty); }
         }
-
-        [ProtoBuf.ProtoMember(20)]
-        [System.ComponentModel.Category("Behavior")]
-        public virtual bool Unique { get; set; }
 
         protected string UniqueString
         {
