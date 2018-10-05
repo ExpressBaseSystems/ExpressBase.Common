@@ -6,6 +6,11 @@ namespace ExpressBase.Common.Connections
     {
         public Account Account { get; set; }
 
-        public override EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.Cloudinary; } }
+        public EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.Cloudinary; } }
+
+        public int Id { get; set; }
+        public bool IsDefault { get; set; }
+        public string NickName { get; set; }
+
     }
 }

@@ -9,41 +9,44 @@ using System.Text;
 
 namespace ExpressBase.Common.Connections
 {
-    public abstract class IEbConnection
+
+    public static class EbConnectionExtens
     {
-        public virtual EbConnectionTypes EbConnectionType { get; }
-
-        public int Id { get; set; }
-
-        public bool IsDefault { get; set; }
-
-        public string NickName { get; set; }
-
-        public virtual void Persist(string TenantAccountId, EbConnectionFactory infra, bool IsNew, int UserId)
+        public static void Persist(this IEbConnection con, string TenantAccountId, EbConnectionFactory infra, bool IsNew, int UserId)
         {
             if (IsNew)
             {
                 string sql = "INSERT INTO eb_connections (con_type, solution_id, nick_name, con_obj,date_created,eb_user_id) VALUES (@con_type, @solution_id, @nick_name, @con_obj , NOW() , @eb_user_id) RETURNING id";
-                DbParameter[] parameters = { infra.DataDB.GetNewParameter("con_type", EbDbTypes.String, EbConnectionType),
+                DbParameter[] parameters = { infra.DataDB.GetNewParameter("con_type", EbDbTypes.String, con.EbConnectionType),
                                     infra.DataDB.GetNewParameter("solution_id", EbDbTypes.String, TenantAccountId),
-                                    infra.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(NickName))?NickName:string.Empty),
-                                    infra.DataDB.GetNewParameter("con_obj", EbDbTypes.Json,EbSerializers.Json_Serialize(this) ),
+                                    infra.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(con.NickName))?con.NickName:string.Empty),
+                                    infra.DataDB.GetNewParameter("con_obj", EbDbTypes.Json,EbSerializers.Json_Serialize(con) ),
                                     infra.DataDB.GetNewParameter("eb_user_id", EbDbTypes.Int32, UserId ) };
                 var iCount = infra.DataDB.DoQuery(sql, parameters);
             }
-
             else if (!IsNew)
             {
                 string sql = @"UPDATE eb_connections SET eb_del = 'T' WHERE con_type = @con_type AND solution_id = @solution_id; 
                                       INSERT INTO eb_connections (con_type, solution_id, nick_name, con_obj, date_created, eb_user_id) VALUES (@con_type, @solution_id, @nick_name, @con_obj, NOW() , @eb_user_id)";
-                DbParameter[] parameters = { infra.DataDB.GetNewParameter("con_type", EbDbTypes.String, EbConnectionType),
+                DbParameter[] parameters = { infra.DataDB.GetNewParameter("con_type", EbDbTypes.String, con.EbConnectionType),
                                     infra.DataDB.GetNewParameter("solution_id", EbDbTypes.String, TenantAccountId),
-                                    infra.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(NickName))?NickName:string.Empty),
-                                    infra.DataDB.GetNewParameter("con_obj", EbDbTypes.Json,EbSerializers.Json_Serialize(this)),
+                                    infra.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(con.NickName))?con.NickName:string.Empty),
+                                    infra.DataDB.GetNewParameter("con_obj", EbDbTypes.Json,EbSerializers.Json_Serialize(con)),
                                       infra.DataDB.GetNewParameter("eb_user_id", EbDbTypes.Int32, UserId )};
                 var iCount = infra.DataDB.DoNonQuery(sql, parameters);
             }
         }
+    }
+
+    public interface IEbConnection
+    {
+        EbConnectionTypes EbConnectionType { get; }
+
+        int Id { get; set; }
+
+        bool IsDefault { get; set; }
+
+        string NickName { get; set; }
 
     }
 
@@ -70,6 +73,14 @@ namespace ExpressBase.Common.Connections
 
         public int Timeout { get; set; }
 
+        public abstract EbConnectionTypes EbConnectionType { get; }
+
+        public int Id { get; set; }
+
+        public bool IsDefault { get; set; }
+
+        public string NickName { get; set; }
+
     }
 
     public class EbObjectsDbConnection : EbBaseDbConnection
@@ -85,6 +96,7 @@ namespace ExpressBase.Common.Connections
         public DatabaseVendors DatabaseVendor { get; set; }
 
         public override EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.EbDATA; } }
+
     }
 
     // For Infra Files, Tenant Files
@@ -96,12 +108,13 @@ namespace ExpressBase.Common.Connections
         public string FilesDB_url { get; set; }
 
         public override EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.EbFILES; } }
-
     }
 
     public class EbLogsDbConnection : EbBaseDbConnection
     {
         public DatabaseVendors DatabaseVendor { get; set; }
+
+        public override EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.EbLOGS; }}
     }
 
     internal class CustomBase64Converter : JsonConverter

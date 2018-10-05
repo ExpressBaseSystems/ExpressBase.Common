@@ -8,24 +8,40 @@ using Twilio.Types;
 
 namespace ExpressBase.Common.Messaging.Twilio
 {
-    public class TwilioSms : ISMSConnection
+    public class TwilioConnection :  ISMSConnection
     {
+        public string UserName { get; set; }
+
+        public string Password { get; set; }
+
+        public string From { get; set; }
+
         private string _accountSid { get; set; }
         private string _authToken { get; set; }
         private PhoneNumber _from { get; set; }
 
-
-        private List<Uri> _mediaUrl;
-
         private MessageResource _messageResource { get; set; }
+        public SmsVendors ProviderName { get; set; }
+        public ConPreferences Preference { get; set; }
 
-        public TwilioSms(SMSConnection SMSConnection)
+        public EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.SMS; } }
+
+        public int Id { get ; set; }
+        public bool IsDefault { get ; set ; }
+        public string NickName { get ; set; }
+
+        public TwilioConnection(ISMSConnection SMSConnection)
         {
             _accountSid = SMSConnection.UserName;
             _authToken = SMSConnection.Password;
             _from = new PhoneNumber(SMSConnection.From);
+            ProviderName = SmsVendors.TWILIO;
         }
 
+        public TwilioConnection()
+        {
+            ProviderName = SmsVendors.TWILIO;
+        }
         public Dictionary<string, string> SendSMS(string sTo, string body)
         {
             Dictionary<string, string> msgStatus = null;

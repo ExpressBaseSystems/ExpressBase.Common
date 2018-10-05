@@ -1,4 +1,6 @@
 ﻿using ExpressBase.Common.Connections;
+using ExpressBase.Common.Messaging;
+using System.Collections.Generic;
 
 namespace ExpressBase.Common.Data
 {
@@ -26,7 +28,7 @@ namespace ExpressBase.Common.Data
 
         public SMTPConnection SMTPConnection { get; set; }
 
-        public SMSConnection SMSConnection { get; set; }
+        public EbSmsConCollection SMSConnections { get; set; }
 
         public EbCloudinaryConnection CloudinaryConnection { get; set; }
 
