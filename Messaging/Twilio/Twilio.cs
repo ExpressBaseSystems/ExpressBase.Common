@@ -34,7 +34,7 @@ namespace ExpressBase.Common.Messaging.Twilio
         {
             _accountSid = SMSConnection.UserName;
             _authToken = SMSConnection.Password;
-            _from = new PhoneNumber(SMSConnection.From);
+            
             ProviderName = SmsVendors.TWILIO;
         }
 
@@ -47,8 +47,9 @@ namespace ExpressBase.Common.Messaging.Twilio
             Dictionary<string, string> msgStatus = null;
             try
             {
-                TwilioClient.Init(_accountSid, _authToken);
+                TwilioClient.Init(UserName, Password);
                 PhoneNumber to = new PhoneNumber(sTo);
+                PhoneNumber _from = new PhoneNumber(From);
                 MessageResource msg = MessageResource.Create(to, from: _from, body: body, statusCallback: new Uri("https://eb-test.info")
                                              );
                 msgStatus = new Dictionary<string, string>
