@@ -49,7 +49,7 @@ namespace ExpressBase.Common.Messaging.ExpertTexting
                     { "From", From },
                     { "Uri", url },
                     { "Body", body },
-                    { "Status", resp.ToString() },
+                    { "Status", resp.ToString() }
                    // { "SentTime", msg.DateSent.ToString() },
                    // { "ErrorMessage", msg.ErrorMessage }
                 };

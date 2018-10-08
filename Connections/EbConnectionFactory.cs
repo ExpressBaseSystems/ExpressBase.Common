@@ -163,6 +163,7 @@ namespace ExpressBase.Common.Data
 
                 if (Connections.SMSConnections != null)
                 {
+                    Connections.SMSConnections.Process();
                     SMSConnection = Connections.SMSConnections;
                 }
 
