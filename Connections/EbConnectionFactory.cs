@@ -142,22 +142,23 @@ namespace ExpressBase.Common.Data
 
 
                 //Files DB
-                //if (Connections.FilesDbConnection != null)
-                //{
-                //    if (Connections.FilesDbConnection.FilesDbVendor == FilesDbVendors.MongoDB)
-                //        FilesDB = new MongoDBDatabase(this.SolutionId, Connections.FilesDbConnection);
-                //    else if (Connections.FilesDbConnection.FilesDbVendor == FilesDbVendors.PGSQL)
-                //        FilesDB = new PGSQLFileDatabase(Connections.FilesDbConnection);
-                //    else if (Connections.FilesDbConnection.FilesDbVendor == FilesDbVendors.ORACLE)
-                //        FilesDB = new OracleFilesDB(Connections.FilesDbConnection);
-                //}
-                //else
-                //{
-                if (Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.PGSQL)
-                    FilesDB = new PGSQLFileDatabase(Connections.DataDbConnection);
-                else if (Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.ORACLE)
-                    FilesDB = new OracleFilesDB(Connections.DataDbConnection);
-                //}
+                if (Connections.FilesDbConnection != null)
+                {
+                    if (Connections.FilesDbConnection.FilesDbVendor == FilesDbVendors.MongoDB)
+                        FilesDB = new MongoDBDatabase(this.SolutionId, Connections.FilesDbConnection);
+                    else if (Connections.FilesDbConnection.FilesDbVendor == FilesDbVendors.PGSQL)
+                        FilesDB = new PGSQLFileDatabase(Connections.FilesDbConnection);
+                    else if (Connections.FilesDbConnection.FilesDbVendor == FilesDbVendors.ORACLE)
+                        FilesDB = new OracleFilesDB(Connections.FilesDbConnection);
+                }
+                else
+                {
+                    if (Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.PGSQL)
+                        FilesDB = new PGSQLFileDatabase(Connections.DataDbConnection);
+                    else if (Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.ORACLE)
+                        FilesDB = new OracleFilesDB(Connections.DataDbConnection);
+                }
+
                 if (Connections.SMTPConnection != null)
                     Smtp = new EbSmtp(Connections.SMTPConnection);
 
