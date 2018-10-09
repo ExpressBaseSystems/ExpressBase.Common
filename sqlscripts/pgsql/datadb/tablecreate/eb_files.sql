@@ -9,7 +9,7 @@ CREATE TABLE public.eb_files_ref
     --filestore_id text COLLATE pg_catalog."default",
     --length bigint,
     tags text COLLATE pg_catalog."default",
-    --filetype text COLLATE pg_catalog."default",
+    filetype text COLLATE pg_catalog."default",
     uploadts timestamp without time zone,
     eb_del "char" NOT NULL DEFAULT 'F'::"char",
     filecategory integer,
