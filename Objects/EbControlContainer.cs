@@ -218,10 +218,12 @@ namespace ExpressBase.Common.Objects
             string cols = string.Empty;
             if (TableName == tableName)
             {
-                cols += string.Concat(Get1stLvlColNames(), ", ");
+                string _1stLvlColNames = Get1stLvlColNames();
+                if (!_1stLvlColNames.IsNullOrEmpty())
+                    cols += string.Concat(_1stLvlColNames, ", ");
             }
             GetCtrlNamesOfTableRec(tableName, ref cols);
-            return cols;
+            return cols.Substring(0, cols.Length-2);
         }
 
         private void GetCtrlNamesOfTableRec(string tableName, ref string cols)
@@ -234,7 +236,9 @@ namespace ExpressBase.Common.Objects
                     Cont.TableName = Cont.TableName.IsNullOrEmpty() ? TableName : Cont.TableName;
                     if (Cont.TableName == tableName)
                     {
-                        cols += Cont.Get1stLvlColNames();
+                        string _1stLvlColNames = Cont.Get1stLvlColNames();
+                        if (!_1stLvlColNames.IsNullOrEmpty())
+                            cols += string.Concat(_1stLvlColNames, ", ");
                     }
                     Cont.GetCtrlNamesOfTableRec(tableName, ref cols);
                 }

@@ -54,7 +54,7 @@ namespace ExpressBase.Common.Connections
                             Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_PASSWORD),
                             Timeout = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_TIMEOUT)),
                             IsDefault = true
-                        },
+                        }
                         //FilesDbConnection = new Connections.EbFilesDbConnection
                         //{
                         //    FilesDbVendor = FilesDbVendors.MongoDB,
@@ -111,13 +111,13 @@ namespace ExpressBase.Common.Connections
                             Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_PASSWORD),
                             Timeout = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_TIMEOUT)),
                             IsDefault = true
-                        },
-                        FilesDbConnection = new Connections.EbFilesDbConnection //ALWAYS AS IN INFRA
-                        {
-                            FilesDbVendor = FilesDbVendors.MongoDB,
-                            FilesDB_url = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_FILES_DB_URL),
-                            IsDefault = true
                         }
+                        //FilesDbConnection = new Connections.EbFilesDbConnection //ALWAYS AS IN INFRA
+                        //{
+                        //    FilesDbVendor = FilesDbVendors.MongoDB,
+                        //    FilesDB_url = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_FILES_DB_URL),
+                        //    IsDefault = true
+                        //}
                     };
                 }
 
