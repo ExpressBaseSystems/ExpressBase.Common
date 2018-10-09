@@ -57,7 +57,7 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public override string UIchangeFns { get; set; }
 
-        public virtual EbDbTypes EbDbType { get { return EbDbTypes.Decimal; } }
+        public virtual EbDbTypes EbDbType { get { return EbDbTypes.Decimal; }  set { } }
 
         [Description("Labels")]
         [System.ComponentModel.Category("Behavior")]
