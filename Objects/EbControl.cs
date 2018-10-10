@@ -27,7 +27,7 @@ namespace ExpressBase.Common.Objects
         {
             get
             {
-                if (ContextId != null)
+                if (!ContextId.IsNullOrEmpty())
                     return string.Concat(ContextId, "_", EbSid);
                 else
                     return EbSid;
