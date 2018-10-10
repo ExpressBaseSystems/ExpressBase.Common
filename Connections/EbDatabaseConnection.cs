@@ -81,6 +81,8 @@ namespace ExpressBase.Common.Connections
 
         public string NickName { get; set; }
 
+        public bool IsSSL { get; set; }
+
     }
 
     public class EbObjectsDbConnection : EbBaseDbConnection
