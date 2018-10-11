@@ -75,8 +75,9 @@ namespace ExpressBase.Common.Structures
         public const int iNull = -1;
         public const int iWebForm = 0;
         //public const int iDisplayBlock = 1;
-        public const int iDataSource = 2;
+        public const int iDataReader = 2;
         public const int iReport = 3;
+        public const int iDataWriter = 4;
         //public const int iTable = 4;
         //public const int iSqlFunction = 5;
         //public const int iSqlValidator = 6;
@@ -95,7 +96,8 @@ namespace ExpressBase.Common.Structures
         public static readonly EbObjectType Null = new EbObjectType("Null", iNull, ObjectConstants.XXX, false, "fa-exclamation-triangle");
         public static readonly EbObjectType WebForm = new EbObjectType(ObjectConstants.WEB_FORM, iWebForm, ObjectConstants.XXW, true, "fa-wpforms");//true
         //public static readonly EbObjectType DisplayBlock = new EbObjectType(ObjectConstants.DISPLAY_BLOCK, iDisplayBlock, ObjectConstants.XXX, false);
-        public static readonly EbObjectType DataSource = new EbObjectType(ObjectConstants.DATA_SOURCE, iDataSource, ObjectConstants.BMW, false, "fa-database");
+        public static readonly EbObjectType DataReader = new EbObjectType(ObjectConstants.DATA_READER, iDataReader, ObjectConstants.BMW, false, "fa-database");
+        public static readonly EbObjectType DataWriter = new EbObjectType(ObjectConstants.DATA_WRITER, iDataWriter, ObjectConstants.BMW, false, "fa-database");
         public static readonly EbObjectType Report = new EbObjectType(ObjectConstants.REPORT, iReport, ObjectConstants.XMW, true, "fa-file-pdf-o");
         //public static readonly EbObjectType Table = new EbObjectType(ObjectConstants.TABLE, iTable, ObjectConstants.BMW, false);
         //public static readonly EbObjectType SqlFunction = new EbObjectType(ObjectConstants.SQL_FUNCTION, iSqlFunction, ObjectConstants.BMW, false);
@@ -130,8 +132,9 @@ namespace ExpressBase.Common.Structures
                 return new[] {
                     WebForm,
                     //DisplayBlock,
-                    DataSource,
+                    DataReader,
                     Report,
+                    DataWriter,
                     //Table,
                     //SqlFunction,
                     //SqlValidator,
