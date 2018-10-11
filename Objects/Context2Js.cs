@@ -306,6 +306,8 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     meta.HideForUser = true;
                 else if (attr is MetaOnly)
                     meta.MetaOnly = true;
+                else if (attr is InputMask)
+                    meta.MaskPattern = (attr as InputMask).MaskPattern;
                 else if (attr is PropertyEditor)
                 {
                     meta.editor = (attr as PropertyEditor).PropertyEditorType;
@@ -343,11 +345,12 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                         meta.options = getOptions(itemType);
                     }
                 }
-                if (attr is ListType) {
+                if (attr is ListType)
+                {
                     if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
                     {
                         Type itemType = null;
-                            itemType = (attr as ListType).TypeOfList;
+                        itemType = (attr as ListType).TypeOfList;
                         meta.options = getOptions(itemType);
                     }
                 }
