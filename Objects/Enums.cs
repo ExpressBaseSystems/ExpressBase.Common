@@ -42,7 +42,9 @@ namespace ExpressBase.Common.Objects
     public enum BuilderType
     {
         DisplayBlock = 1,
-        DataSource = 2,
+        DataReader = 2,
+        DataWriter = 4,
+        //SqlFunctions = 5,
         FilterDialog = 12,
         WebForm = 0,
         MobileForm = 13,
