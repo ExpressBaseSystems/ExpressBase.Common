@@ -218,22 +218,22 @@ namespace ExpressBase.Common.Objects.Attributes
     public static class OnChangeUIfns
     {
         public const string BACKCOLOR = @"
-                $(`#${ elementId}.Eb-ctrlContainer`).closestInner('[ui-inp]').css('background-color',props.BackColor);";
+                $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-inp]').css('background-color',props.BackColor);";
 
         public const string FORECOLOR = @"
-                $(`#${ elementId}.Eb-ctrlContainer`).closestInner('[ui-inp]').css('color',props.ForeColor);";
+                $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-inp]').css('color',props.ForeColor);";
 
         public const string LABEL = @"
-                $(`#${ elementId}.Eb-ctrlContainer`).closestInner('[ui-label]').text(props.Label);";
+                $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-label]').text(props.Label);";
 
         public const string LABEL_COLOR = @"
-                $(`#${ elementId}.Eb-ctrlContainer`).closestInner('[ui-label]').css('color',props.LabelForeColor);";
+                $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-label]').css('color',props.LabelForeColor);";
 
         public const string LABEL_BACKCOLOR = @"
-                $(`#${ elementId}.Eb-ctrlContainer`).closestInner('[ui-label]').css('background-color',props.LabelBackColor);";
+                $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-label]').css('background-color',props.LabelBackColor);";
 
         public const string HELP_TEXT = @"
-                $(`#${ elementId}.Eb-ctrlContainer`).closestInner('[ui-helptxt]').text(props.HelpText);";
+                $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-helptxt]').text(props.HelpText);";
 
         public static string getFunctions()
         {
