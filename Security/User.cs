@@ -79,19 +79,22 @@ namespace ExpressBase.Security
 				if (_locationIds == null)
 				{
 					_locationIds = new List<int>();
-					foreach (string p in this.Permissions)
-						if (p.Contains(":"))
-						{
-							int lid = Convert.ToInt32(p.Split(":")[1].Trim());
-							if(lid == -1)
+					if (this.Roles.Contains(SystemRoles.SolutionOwner.ToString()))
+						this._locationIds.Add(-1);
+					else
+						foreach (string p in this.Permissions)
+							if (p.Contains(":"))
 							{
-								this._locationIds.Clear();
-								this._locationIds.Add(lid);
-								return _locationIds;
+								int lid = Convert.ToInt32(p.Split(":")[1].Trim());
+								if(lid == -1)
+								{
+									this._locationIds.Clear();
+									this._locationIds.Add(lid);
+									return _locationIds;
+								}
+								if (!this._locationIds.Contains(lid))
+									this._locationIds.Add(lid);
 							}
-							if (!this._locationIds.Contains(lid))
-								this._locationIds.Add(lid);
-						}
 				}
 				return _locationIds;
 			}

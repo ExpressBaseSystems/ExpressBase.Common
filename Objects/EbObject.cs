@@ -22,18 +22,18 @@ namespace ExpressBase.Objects
         //public EbObjectType EbObjectType { get; set; }
 
         [Description("Identity")]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataSource, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader,BuilderType.DataWriter, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder)]
         [EbRequired]
         [Unique]
         [regexCheck]
-        [InputMask("")]
+        [InputMask("[a-z][a-z0-9]*(_[a-z0-9]+)*")]
         public virtual string Name { get; set; }
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public virtual string UIchangeFns { get; set; }  
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataSource, BuilderType.Report, BuilderType.SmsBuilder)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.Report, BuilderType.SmsBuilder)]
         public string Description { get; set; }
 
         //public string ChangeLog { get; set; }

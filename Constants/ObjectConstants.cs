@@ -21,7 +21,8 @@ namespace ExpressBase.Common.Constants
 
 		public const string WEB_FORM					= "WebForm";
 		public const string DISPLAY_BLOCK				= "DisplayBlock";
-		public const string DATA_SOURCE					= "DataSource";
+		public const string DATA_READER					= "DataReader";
+		public const string DATA_WRITER					= "DataWriter";
 		public const string REPORT						= "Report";
 		public const string TABLE						= "Table";
 		public const string SQL_FUNCTION				= "SqlFunction";
