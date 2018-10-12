@@ -744,8 +744,8 @@ namespace ExpressBase.Common
                         FROM
                             eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
                         WHERE
-                            EO.id = :id AND EOV.eb_objects_id = :id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id
-                ";
+                            EO.id = :id AND EOV.eb_objects_id = EO.id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id
+                        ORDER BY EOV.eb_objects_id	LIMIT 1;";
             }
         }
         public string EB_GET_ALL_TAGS

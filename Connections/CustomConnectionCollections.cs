@@ -17,6 +17,7 @@ namespace ExpressBase.Common.Connections
             Dictionary<string, string> resp = null;
             try
             {
+                //  resp = this[2].SendSMS(To, Body);
                 resp = Primary.SendSMS(To, Body);
                 Console.WriteLine("SMS Send With Primary");
             }
