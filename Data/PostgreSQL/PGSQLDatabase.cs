@@ -213,7 +213,7 @@ namespace ExpressBase.Common
                 {
                     if (parameters != null && parameters.Length > 0)
                         cmd.Parameters.AddRange(parameters);
-
+                    cmd.Prepare();
                     return cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 }
             }
@@ -221,7 +221,8 @@ namespace ExpressBase.Common
             {
                 throw npgse;
             }
-            catch (SocketException scket) { }
+            catch (SocketException scket) {
+            }
 
             return null;
         }
@@ -229,12 +230,15 @@ namespace ExpressBase.Common
         public EbDataSet DoQueries(string query, params DbParameter[] parameters)
         {
             var dtStart = DateTime.Now;
+            Console.WriteLine(string.Format("DoQueries Start Time : {0}", dtStart));
             EbDataSet ds = new EbDataSet();
 
             try
             {
                 using (var reader = this.DoQueriesBasic(query, parameters))
                 {
+                    var dtExeTime = DateTime.Now;
+                    Console.WriteLine(string.Format("DoQueries Execution Time : {0}", dtExeTime));
                     do
                     {
                         try
@@ -259,8 +263,10 @@ namespace ExpressBase.Common
             catch (SocketException scket) { }
 
             var dtEnd = DateTime.Now;
+            Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
+
             var ts = (dtEnd - dtStart).TotalMilliseconds;
-            Console.WriteLine(string.Format("-------------------------------------> {0}", ts));
+            Console.WriteLine(string.Format("DoQueries Execution Time : {0}", ts));
             return ds;
         }
 
