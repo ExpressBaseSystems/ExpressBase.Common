@@ -26,7 +26,7 @@ namespace ExpressBase.Objects
         [EbRequired]
         [Unique]
         [regexCheck]
-        [InputMask("[a-z][a-z0-9]*(_[a-z0-9]+)*")]
+        //[InputMask("[a-z][a-z0-9]*(_[a-z0-9]+)*")]
         public virtual string Name { get; set; }
 
         [HideInPropertyGrid]
