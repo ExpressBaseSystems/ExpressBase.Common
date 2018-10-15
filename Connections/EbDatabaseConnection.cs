@@ -17,7 +17,7 @@ namespace ExpressBase.Common.Connections
             if (IsNew)
             {
                 string sql = "INSERT INTO eb_connections (con_type, solution_id, nick_name, con_obj,date_created,eb_user_id) VALUES (@con_type, @solution_id, @nick_name, @con_obj , NOW() , @eb_user_id) RETURNING id";
-                DbParameter[] parameters = { infra.DataDB.GetNewParameter("con_type", EbDbTypes.String, con.EbConnectionType),
+                DbParameter[] parameters = { infra.DataDB.GetNewParameter("con_type", EbDbTypes.String, con.EbConnectionType.ToString()),
                                     infra.DataDB.GetNewParameter("solution_id", EbDbTypes.String, TenantAccountId),
                                     infra.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(con.NickName))?con.NickName:string.Empty),
                                     infra.DataDB.GetNewParameter("con_obj", EbDbTypes.Json,EbSerializers.Json_Serialize(con) ),
@@ -28,7 +28,7 @@ namespace ExpressBase.Common.Connections
             {
                 string sql = @"UPDATE eb_connections SET eb_del = 'T' WHERE con_type = @con_type AND solution_id = @solution_id; 
                                       INSERT INTO eb_connections (con_type, solution_id, nick_name, con_obj, date_created, eb_user_id) VALUES (@con_type, @solution_id, @nick_name, @con_obj, NOW() , @eb_user_id)";
-                DbParameter[] parameters = { infra.DataDB.GetNewParameter("con_type", EbDbTypes.String, con.EbConnectionType),
+                DbParameter[] parameters = { infra.DataDB.GetNewParameter("con_type", EbDbTypes.String, con.EbConnectionType.ToString()),
                                     infra.DataDB.GetNewParameter("solution_id", EbDbTypes.String, TenantAccountId),
                                     infra.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(con.NickName))?con.NickName:string.Empty),
                                     infra.DataDB.GetNewParameter("con_obj", EbDbTypes.Json,EbSerializers.Json_Serialize(con)),
@@ -40,14 +40,13 @@ namespace ExpressBase.Common.Connections
 
     public interface IEbConnection
     {
-        EbConnectionTypes EbConnectionType { get; }
-
         int Id { get; set; }
 
         bool IsDefault { get; set; }
 
         string NickName { get; set; }
 
+        EbConnectionTypes EbConnectionType { get; }
     }
 
     public abstract class EbBaseDbConnection : IEbConnection
@@ -116,7 +115,7 @@ namespace ExpressBase.Common.Connections
     {
         public DatabaseVendors DatabaseVendor { get; set; }
 
-        public override EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.EbLOGS; }}
+        public override EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.EbLOGS; } }
     }
 
     internal class CustomBase64Converter : JsonConverter

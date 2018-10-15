@@ -22,6 +22,6 @@ namespace ExpressBase.Common.Data
 
         IImageManipulate ImageManipulate { get; }
 
-        EbSmtp Smtp { get; }
+        EbMailConCollection EmailConnection { get; }
     }
 }
