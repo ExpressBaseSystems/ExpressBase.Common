@@ -159,10 +159,10 @@ namespace ExpressBase.Common.Data
                         FilesDB = new OracleFilesDB(Connections.DataDbConnection);
                 }
 
-                if (Connections.EmailConnection != null)
+                if (Connections.EmailConnections != null)
                 {
-                    Connections.EmailConnection.Process();
-                    EmailConnection = Connections.EmailConnection;
+                    Connections.EmailConnections.Process();
+                    EmailConnection = Connections.EmailConnections;
                 }
                 if (Connections.SMSConnections != null)
                 {
