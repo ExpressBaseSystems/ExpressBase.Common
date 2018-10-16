@@ -48,7 +48,7 @@ namespace ExpressBase.Common.Integrations
                 if (resp.SecureUri != null)
                     _url = resp.SecureUri.AbsoluteUri;
                 else
-                    Console.WriteLine(String.Format("INFO: Cloudinary: Response[{0}] : {1}", filename, resp.ToString()));
+                    Console.WriteLine(String.Format("INFO: Cloudinary: Response[{0}] : {1}", filename, resp.JsonObj.ToString()));
             }
             catch (Exception e)
             {
@@ -72,7 +72,7 @@ namespace ExpressBase.Common.Integrations
                 if (resp.SecureUri != null)
                     _url = resp.SecureUri.AbsoluteUri;
                 else
-                    Console.WriteLine(String.Format("INFO: Cloudinary: Response[{0}] : {1}", filename, resp.ToString()));
+                    Console.WriteLine(String.Format("INFO: Cloudinary: Response[{0}] : {1}", filename, resp.JsonObj.ToString()));
             }
             catch (Exception e)
             {
@@ -97,7 +97,7 @@ namespace ExpressBase.Common.Integrations
                 if (resp.SecureUri != null)
                     _url = resp.SecureUri.AbsoluteUri;
                 else
-                    Console.WriteLine(String.Format("INFO: Cloudinary: Response[{0}] : {1}", filename, resp.ToString()));
+                    Console.WriteLine(String.Format("INFO: Cloudinary: Response[{0}] : {1}", filename, resp.JsonObj.ToString()));
             }
             catch (Exception e)
             {
