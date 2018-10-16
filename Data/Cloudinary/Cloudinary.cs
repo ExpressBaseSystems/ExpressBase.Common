@@ -48,11 +48,11 @@ namespace ExpressBase.Common.Integrations
                 if (resp.SecureUri != null)
                     _url = resp.SecureUri.AbsoluteUri;
                 else
-                    Console.WriteLine("INFO: Cloudinary: Response :"+ resp.StatusCode.ToString());
+                    Console.WriteLine(String.Format("INFO: Cloudinary: Response[{0}] : {1}", filename, resp.ToString()));
             }
             catch (Exception e)
             {
-                Console.WriteLine("ERROR: Cloudinary: " + e.ToString());
+                Console.WriteLine(String.Format("ERROR: Cloudinary[{0}]: {1}", filename, e.ToString()));
             }
             return _url;
         }
@@ -72,11 +72,11 @@ namespace ExpressBase.Common.Integrations
                 if (resp.SecureUri != null)
                     _url = resp.SecureUri.AbsoluteUri;
                 else
-                    Console.WriteLine("INFO: Cloudinary: Response :" + resp.StatusCode.ToString());
+                    Console.WriteLine(String.Format("INFO: Cloudinary: Response[{0}] : {1}", filename, resp.ToString()));
             }
             catch (Exception e)
             {
-                Console.WriteLine("ERROR: Cloudinary: " + e.ToString());
+                Console.WriteLine(String.Format("ERROR: Cloudinary[{0}]: {1}", filename, e.ToString()));
             }
             return _url;
         }
@@ -97,11 +97,11 @@ namespace ExpressBase.Common.Integrations
                 if (resp.SecureUri != null)
                     _url = resp.SecureUri.AbsoluteUri;
                 else
-                    Console.WriteLine("INFO: Cloudinary: Response :" + resp.StatusCode.ToString());
+                    Console.WriteLine(String.Format("INFO: Cloudinary: Response[{0}] : {1}", filename, resp.ToString()));
             }
             catch (Exception e)
             {
-                Console.WriteLine("ERROR: Cloudinary: " + e.ToString());
+                Console.WriteLine(String.Format("ERROR: Cloudinary[{0}]: {1}", filename, e.ToString()));
             }
             return _url;
         }
