@@ -31,6 +31,7 @@ namespace ExpressBase.Common.Connections
                             UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_USER),
                             Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_PASSWORD),
                             Timeout = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_TIMEOUT)),
+                            IsSSL=true,
                             IsDefault = true
                         },
                         DataDbConnection = new Connections.EbDataDbConnection
@@ -42,6 +43,7 @@ namespace ExpressBase.Common.Connections
                             UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_USER),
                             Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_PASSWORD),
                             Timeout = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_TIMEOUT)),
+                            IsSSL = true,
                             IsDefault = true
                         },
                         LogsDbConnection = new Connections.EbLogsDbConnection
@@ -53,6 +55,7 @@ namespace ExpressBase.Common.Connections
                             UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_USER),
                             Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_PASSWORD),
                             Timeout = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_TIMEOUT)),
+                            IsSSL = true,
                             IsDefault = true
                         }
                         //FilesDbConnection = new Connections.EbFilesDbConnection
@@ -88,6 +91,7 @@ namespace ExpressBase.Common.Connections
                             UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_DATACENTRE_ADMIN_USER),
                             Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_DATACENTRE_ADMIN_PASSWORD),
                             Timeout = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_DATACENTRE_TIMEOUT)),
+                            IsSSL = true,
                             IsDefault = true
                         },
                         DataDbConnection = new Connections.EbDataDbConnection
@@ -99,6 +103,7 @@ namespace ExpressBase.Common.Connections
                             UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_DATACENTRE_ADMIN_USER),
                             Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_DATACENTRE_ADMIN_PASSWORD),
                             Timeout = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_DATACENTRE_TIMEOUT)),
+                            IsSSL = true,
                             IsDefault = true
                         },
                         LogsDbConnection = new Connections.EbLogsDbConnection //ALWAYS IN INFRA
@@ -110,6 +115,7 @@ namespace ExpressBase.Common.Connections
                             UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_USER),
                             Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_PASSWORD),
                             Timeout = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_TIMEOUT)),
+                            IsSSL = true,
                             IsDefault = true
                         }
                         //FilesDbConnection = new Connections.EbFilesDbConnection //ALWAYS AS IN INFRA

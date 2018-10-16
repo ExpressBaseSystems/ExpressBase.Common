@@ -26,7 +26,7 @@ namespace ExpressBase.Common.Data
 
         public IDatabase LogsDB { get; private set; }
 
-        public EbSmtp Smtp { get; private set; }
+        public EbMailConCollection EmailConnection { get; private set; }
 
         public EbSmsConCollection SMSConnection { get; private set; }
 
@@ -159,9 +159,11 @@ namespace ExpressBase.Common.Data
                         FilesDB = new OracleFilesDB(Connections.DataDbConnection);
                 }
 
-                if (Connections.SMTPConnection != null)
-                    Smtp = new EbSmtp(Connections.SMTPConnection);
-
+                if (Connections.EmailConnections != null)
+                {
+                    Connections.EmailConnections.Process();
+                    EmailConnection = Connections.EmailConnections;
+                }
                 if (Connections.SMSConnections != null)
                 {
                     Connections.SMSConnections.Process();

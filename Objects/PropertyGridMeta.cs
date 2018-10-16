@@ -46,6 +46,8 @@ namespace ExpressBase.Common.Objects
 
         public string Dprop2 { get; set; }
 
+        public string MaskPattern { get; set; }
+
         public string regexCheck { get; set; }
 
         public bool HideForUser { get; set; }

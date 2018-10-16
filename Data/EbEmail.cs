@@ -8,25 +8,44 @@ using System.Text;
 
 namespace ExpressBase.Common.Data
 {
-    public class EbSmtp
+    public class EbEmail : IEbConnection
     {
-        private SmtpClient _client = new SmtpClient();
-        private string _from;
-        public EbSmtp(SMTPConnection con)
-        {
-            _client.Host = con.Host;
-            _client.Port = con.Port;
-            _client.Credentials = new NetworkCredential { UserName = con.EmailAddress, Password = con.Password };
-            _client.EnableSsl = con.EnableSsl;
-            _from = con.EmailAddress;
-        }
+        public int Id { get; set; }
+
+        public bool IsDefault { get; set; }
+
+        public string NickName { get; set; }
+
+        public string ProviderName { get; set; }
+
+        public string Host { get; set; }
+
+        public int Port { get; set; }
+
+        public string EmailAddress { get; set; }
+
+        public string Password { get; set; }
+
+        public bool EnableSsl { get; set; }
+
+        public ConPreferences Preference { get; set; }
+
+        public EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.SMTP; } }
+
+        private SmtpClient _client { get; set; }
 
         public bool Send(string to, string subject, string message, string[] cc, string[] bcc, byte[] attachment, string attachmentname)
         {
+            _client = new SmtpClient();
+            _client.Host = Host;
+            _client.Port = Port;
+            _client.Credentials = new NetworkCredential { UserName = EmailAddress, Password = Password };
+            _client.EnableSsl = EnableSsl;
+
             bool sentStatus;
             try
             {
-                MailMessage mm = new MailMessage(_from, to)
+                MailMessage mm = new MailMessage(EmailAddress, to)
                 {
                     Subject = subject,
                     IsBodyHtml = true,
@@ -35,10 +54,10 @@ namespace ExpressBase.Common.Data
                 };
                 if (attachment != null)
                     mm.Attachments.Add(new Attachment(new MemoryStream(attachment), attachmentname + ".pdf"));
-                if (cc.Length>0)
+                if (cc.Length > 0)
                     foreach (string item in cc)
-                       if (item!="") mm.CC.Add(item);
-                if (bcc.Length>0)
+                        if (item != "") mm.CC.Add(item);
+                if (bcc.Length > 0)
                     foreach (string item in bcc)
                         if (item != "") mm.Bcc.Add(item);
                 _client.Send(mm);

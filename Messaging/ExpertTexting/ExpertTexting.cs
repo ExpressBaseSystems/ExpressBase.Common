@@ -28,24 +28,24 @@ namespace ExpressBase.Common.Messaging.ExpertTexting
 
         public EbConnectionTypes EbConnectionType { get { return EbConnectionTypes.SMS; } }
 
-        private const string URL_TEXT = "https://www.experttexting.com/exptapi/exptsms.asmx/SendSMS?Userid={0}&pwd={1}&APIKEY={2}&FROM=DEFAULT&To={3}&MSG={4}";
+        private const string SMS_URL = "https://www.experttexting.com/exptapi/exptsms.asmx/SendSMS?Userid={0}&pwd={1}&APIKEY={2}&FROM=DEFAULT&To={3}&MSG={4}";
 
         public ExpertTextingConnection()
         {
             ProviderName = SmsVendors.EXPERTTEXTING;
         }
 
-        public Dictionary<string, string> SendSMS(string sTo, string body)
+        public Dictionary<string, string> SendSMS(string To, string body)
         {
             Dictionary<string, string> msgStatus = null;
             try
             {
-                string url = string.Format(URL_TEXT, UserName, Password, ApiKey, sTo, body);
+                string url = string.Format(SMS_URL, UserName, Password, ApiKey, To, body);
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 var resp = request.GetResponse();
                 msgStatus = new Dictionary<string, string>
                 {
-                    { "To", sTo},
+                    { "To", To},
                     { "From", From },
                     { "Uri", url },
                     { "Body", body },

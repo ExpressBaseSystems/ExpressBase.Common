@@ -79,19 +79,22 @@ namespace ExpressBase.Security
 				if (_locationIds == null)
 				{
 					_locationIds = new List<int>();
-					foreach (string p in this.Permissions)
-						if (p.Contains(":"))
-						{
-							int lid = Convert.ToInt32(p.Split(":")[1].Trim());
-							if(lid == -1)
+					if (this.Roles.Contains(SystemRoles.SolutionOwner.ToString()))
+						this._locationIds.Add(-1);
+					else
+						foreach (string p in this.Permissions)
+							if (p.Contains(":"))
 							{
-								this._locationIds.Clear();
-								this._locationIds.Add(lid);
-								return _locationIds;
+								int lid = Convert.ToInt32(p.Split(":")[1].Trim());
+								if(lid == -1)
+								{
+									this._locationIds.Clear();
+									this._locationIds.Add(lid);
+									return _locationIds;
+								}
+								if (!this._locationIds.Contains(lid))
+									this._locationIds.Add(lid);
 							}
-							if (!this._locationIds.Contains(lid))
-								this._locationIds.Add(lid);
-						}
 				}
 				return _locationIds;
 			}
@@ -206,7 +209,7 @@ namespace ExpressBase.Security
 							FullName = ds.Rows[0][2].ToString(),
 							Roles = rolesname,
 							Permissions = ds.Rows[0][4].ToString().IsNullOrEmpty()? new List<string>(): ds.Rows[0][4].ToString().Split(',').ToList(),
-							Preference = JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][5].ToString())
+							Preference = !string.IsNullOrEmpty(ds.Rows[0][5].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][5].ToString()): new Preferences { Locale = "en-US", TimeZone = "(UTC) Coordinated Universal Time" }
 						};
 					}
 				}
@@ -359,7 +362,7 @@ namespace ExpressBase.Security
                         FullName = ds.Rows[0][2].ToString(),
                         Roles = rolesname,
                         Permissions = ds.Rows[0][5].ToString().IsNullOrEmpty()? new List<string>(): ds.Rows[0][5].ToString().Split(',').ToList(),
-						Preference = !string.IsNullOrEmpty((string)ds.Rows[0][6])? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][6].ToString()): new Preferences { Locale= "en-US", TimeZone = ""}
+						Preference = !string.IsNullOrEmpty((string)ds.Rows[0][6])? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][6].ToString()): new Preferences { Locale= "en-US", TimeZone = "(UTC) Coordinated Universal Time" }
 					};
                 }
             }

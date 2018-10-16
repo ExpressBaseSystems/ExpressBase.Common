@@ -9,5 +9,6 @@
         public const char UNDERSCORE = '_';
         public const char COLON = ':';
 		public const char SPACE = ' ';
+        public const char SEMI_COLON = ';';
     }
 }

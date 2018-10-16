@@ -31,7 +31,7 @@ namespace ExpressBase.Common.Data
                 if (reqParams == null)
                     reqParams = new List<Param>();
 
-                var _dicLimit = new Param { Name = "limit" , Type = ((int)EbDbTypes.Int32).ToString(), Value = ((iLimit != -1) ? iLimit : 0).ToString()};
+                var _dicLimit = new Param { Name = "limit" , Type = ((int)EbDbTypes.Int32).ToString(), Value = ((iLimit != -1) ? iLimit.ToString() : 0.ToString()) };
                 var _dicOffset = new Param { Name = "offset", Type = ((int)EbDbTypes.Int32).ToString(), Value = iOffset.ToString() };
 
                 reqParams.AddRange(new Param[] { _dicLimit, _dicOffset });
@@ -41,12 +41,12 @@ namespace ExpressBase.Common.Data
             {
                 foreach (Param param in reqParams)
                 {
-                    if (param.Value != null)
+                    if (param.ValueTo != null)
                     {
                         if (factory.ObjectsDB.Vendor == DatabaseVendors.PGSQL)
-                            yield return factory.ObjectsDB.GetNewParameter(string.Format(":{0}", param.Name), (EbDbTypes)Convert.ToInt32(param.Type), param.Value);
+                            yield return factory.ObjectsDB.GetNewParameter(string.Format(":{0}", param.Name), (EbDbTypes)Convert.ToInt32(param.Type), param.ValueTo);
                         else
-                            yield return factory.ObjectsDB.GetNewParameter(string.Format("{0}", param.Name), (EbDbTypes)Convert.ToInt32(param.Type), param.Value);
+                            yield return factory.ObjectsDB.GetNewParameter(string.Format("{0}", param.Name), (EbDbTypes)Convert.ToInt32(param.Type), param.ValueTo);
                     }
                 }
             }
@@ -66,5 +66,26 @@ namespace ExpressBase.Common.Data
 
         [DataMember(Order = 3)]
         public string Value { get; set; }
+
+        [DataMember(Order = 4)]
+        public dynamic ValueTo {
+            get
+            {
+                if (Type == ((int)EbDbTypes.Decimal).ToString())
+                    return Convert.ToDecimal(Value);
+                else if (Type == ((int)EbDbTypes.Int16).ToString())
+                    return Convert.ToInt16(Value);
+                else if (Type == ((int)EbDbTypes.Int32).ToString())
+                    return Convert.ToInt32(Value);
+                else if(Type == ((int)EbDbTypes.Int64).ToString())
+                    return Convert.ToInt64(Value);
+                else if(Type == ((int)EbDbTypes.Date).ToString())
+                    return Convert.ToDateTime(Value);
+                else if(Type == ((int)EbDbTypes.DateTime).ToString())
+                    return Convert.ToDateTime(Value);
+                else
+                    return Value;
+            }
+        }
     }
 }

@@ -91,7 +91,8 @@ namespace ExpressBase.Common
             }
         }
 
-        private const string CONNECTION_STRING_BARE = "Host={0}; Port={1}; Database={2}; Username={3}; Password={4};  Trust Server Certificate=true; Pooling=true; CommandTimeout={5};";
+        private const string CONNECTION_STRING_BARE_WITHOUT_SSL = "Host={0}; Port={1}; Database={2}; Username={3}; Password={4};  Trust Server Certificate=true; Pooling=true; CommandTimeout={5};";
+        private const string CONNECTION_STRING_BARE = "Host={0}; Port={1}; Database={2}; Username={3}; Password={4};  Trust Server Certificate=true; Pooling=true; CommandTimeout={5};SSL Mode=Require; Use SSL Stream=true; ";
         //SSL Mode=Require; Use SSL Stream=true;
         private string _cstr;
         private EbBaseDbConnection EbBaseDbConnection { get; set; }
@@ -99,7 +100,10 @@ namespace ExpressBase.Common
         public PGSQLDatabase(EbBaseDbConnection dbconf)
         {
             this.EbBaseDbConnection = dbconf;
-            _cstr = string.Format(CONNECTION_STRING_BARE, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port, this.EbBaseDbConnection.DatabaseName, this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password, this.EbBaseDbConnection.Timeout);
+            if (dbconf.IsSSL)
+                _cstr = string.Format(CONNECTION_STRING_BARE, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port, this.EbBaseDbConnection.DatabaseName, this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password, this.EbBaseDbConnection.Timeout);
+            else
+                _cstr = string.Format(CONNECTION_STRING_BARE_WITHOUT_SSL, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port, this.EbBaseDbConnection.DatabaseName, this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password, this.EbBaseDbConnection.Timeout);
         }
 
         public DbConnection GetNewConnection(string dbName)
@@ -209,7 +213,7 @@ namespace ExpressBase.Common
                 {
                     if (parameters != null && parameters.Length > 0)
                         cmd.Parameters.AddRange(parameters);
-
+                    cmd.Prepare();
                     return cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 }
             }
@@ -217,7 +221,8 @@ namespace ExpressBase.Common
             {
                 throw npgse;
             }
-            catch (SocketException scket) { }
+            catch (SocketException scket) {
+            }
 
             return null;
         }
@@ -225,12 +230,15 @@ namespace ExpressBase.Common
         public EbDataSet DoQueries(string query, params DbParameter[] parameters)
         {
             var dtStart = DateTime.Now;
+            Console.WriteLine(string.Format("DoQueries Start Time : {0}", dtStart));
             EbDataSet ds = new EbDataSet();
 
             try
             {
                 using (var reader = this.DoQueriesBasic(query, parameters))
                 {
+                    var dtExeTime = DateTime.Now;
+                    Console.WriteLine(string.Format("DoQueries Execution Time : {0}", dtExeTime));
                     do
                     {
                         try
@@ -255,8 +263,10 @@ namespace ExpressBase.Common
             catch (SocketException scket) { }
 
             var dtEnd = DateTime.Now;
+            Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
+
             var ts = (dtEnd - dtStart).TotalMilliseconds;
-            Console.WriteLine(string.Format("-------------------------------------> {0}", ts));
+            Console.WriteLine(string.Format("DoQueries Execution Time : {0}", ts));
             return ds;
         }
 
@@ -740,8 +750,8 @@ namespace ExpressBase.Common
                         FROM
                             eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
                         WHERE
-                            EO.id = :id AND EOV.eb_objects_id = :id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id
-                ";
+                            EO.id = :id AND EOV.eb_objects_id = EO.id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id
+                        ORDER BY EOV.eb_objects_id	LIMIT 1;";
             }
         }
         public string EB_GET_ALL_TAGS
