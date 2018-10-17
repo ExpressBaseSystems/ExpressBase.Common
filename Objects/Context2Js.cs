@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace ExpressBase.Common.Objects
 {
@@ -278,7 +279,12 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
 
         private Meta GetMeta(object obj, PropertyInfo prop)
         {
-            Meta meta = new Meta { name = prop.Name };
+            string _name = prop.Name;
+            if (prop.IsDefined(typeof(JsonPropertyAttribute)))
+            {
+                    _name = prop.GetCustomAttribute<JsonPropertyAttribute>().PropertyName;
+            }
+            Meta meta = new Meta { name = _name };
             IEnumerable<Attribute> propattrs = prop.GetCustomAttributes();
             foreach (Attribute attr in propattrs)
             {
