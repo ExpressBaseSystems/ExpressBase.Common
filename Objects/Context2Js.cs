@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace ExpressBase.Common.Objects
 {
@@ -278,7 +279,12 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
 
         private Meta GetMeta(object obj, PropertyInfo prop)
         {
-            Meta meta = new Meta { name = prop.Name };
+            string _name = prop.Name;
+            if (prop.IsDefined(typeof(JsonPropertyAttribute)))
+            {
+                    _name = prop.GetCustomAttribute<JsonPropertyAttribute>().PropertyName;
+            }
+            Meta meta = new Meta { name = _name };
             IEnumerable<Attribute> propattrs = prop.GetCustomAttributes();
             foreach (Attribute attr in propattrs)
             {
@@ -423,7 +429,12 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
         {
             string s = @"this.{0} = {1};";
             string _c = @"this.Controls = new EbControlCollection(JSON.parse('{0}'));";
+            string _name = prop.Name;
 
+            if (prop.IsDefined(typeof(JsonPropertyAttribute)))
+            {
+                _name = prop.GetCustomAttribute<JsonPropertyAttribute>().PropertyName;
+            }
             if (prop.IsDefined(typeof(DefaultPropValue)))
             {
 
@@ -441,53 +452,53 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                 else if (prop.PropertyType == typeof(string) || prop.PropertyType == typeof(DateTime))
                     DefaultVal = DefaultVal.SingleQuoted();
 
-                return string.Format(s, prop.Name, DefaultVal);
+                return string.Format(s, _name, DefaultVal);
             }
 
             if (prop.PropertyType == typeof(string))
             {
                 if (prop.Name.EndsWith("Color"))
-                    return string.Format(s, prop.Name, "'#FFFFFF'");
+                    return string.Format(s, _name, "'#FFFFFF'");
                 else
-                    return string.Format(s, prop.Name, (prop.Name == "Name" || prop.Name == "EbSid") ? "id" : "''");
+                    return string.Format(s, _name, (prop.Name == "Name" || prop.Name == "EbSid") ? "id" : "''");
             }
             else if (prop.Name == "Controls")
                 return string.Format(_c, JsonConvert.SerializeObject((obj as EbControlContainer).Controls, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All }));
             else if (prop.PropertyType == (typeof(int)) || prop.PropertyType == (typeof(float)))
-                return string.Format(s, prop.Name, ((prop.Name == "Id") ? "id" : "0"));
+                return string.Format(s, _name, ((prop.Name == "Id") ? "id" : "0"));
             else if (prop.PropertyType == typeof(bool))
-                return string.Format(s, prop.Name, prop.GetValue(obj).ToString().ToLower());
+                return string.Format(s, _name, prop.GetValue(obj).ToString().ToLower());
             else if (prop.PropertyType.GetTypeInfo().IsEnum)
-                return string.Format(s, prop.Name, "0");
+                return string.Format(s, _name, "0");
             else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition().Name == "IDictionary`2")
-                return string.Format(s, prop.Name, "{\"$type\": \"System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib\",\"$values\": {}}");//need to recheck format
+                return string.Format(s, _name, "{\"$type\": \"System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib\",\"$values\": {}}");//need to recheck format
             else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
             {
                 Type[] args = prop.PropertyType.GetGenericArguments();
                 if (args.Length > 0)
                 {
                     Type itemType = args[0];
-                    return string.Format(s, prop.Name, "{\"$type\":\"System.Collections.Generic.List`1[[@typeName, ExpressBase.Objects]], System.Private.CoreLib\",\"$values\":[]}".Replace("@typeName", itemType.FullName));
+                    return string.Format(s, _name, "{\"$type\":\"System.Collections.Generic.List`1[[@typeName, ExpressBase.Objects]], System.Private.CoreLib\",\"$values\":[]}".Replace("@typeName", itemType.FullName));
                 }
                 else
                 {
-                    return string.Format(s, prop.Name, "[]");
+                    return string.Format(s, _name, "[]");
                 }
             }
             else if (prop.PropertyType.IsClass)
             {
                 if (prop.PropertyType == typeof(EbFont))
                 {
-                    return string.Format(s, prop.Name, "null");
+                    return string.Format(s, _name, "null");
                 }
                 else
                 {
                     object Obj = Activator.CreateInstance(prop.PropertyType);
-                    return string.Format(s, prop.Name, EbSerializers.Json_Serialize(Obj));
+                    return string.Format(s, _name, EbSerializers.Json_Serialize(Obj));
                 }
             }
             else
-                return string.Format(s, prop.Name, "null");
+                return string.Format(s, _name, "null");
         }
     }
 }
