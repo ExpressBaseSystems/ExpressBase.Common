@@ -27,7 +27,9 @@ CREATE OR REPLACE FUNCTION public.eb_createormodifyuserandroles(
     RETURNS TABLE(uid integer) 
     LANGUAGE 'plpgsql'
 
-   
+    COST 100
+    VOLATILE 
+    ROWS 1000
 AS $BODY$
 
 DECLARE uid integer; _roles integer[]; _group integer[];
@@ -47,14 +49,14 @@ IF _id > 1 THEN
    INSERT INTO eb_role2user(role_id,user_id,createdby,createdat) SELECT roleid,_id,_userid,NOW() FROM 
    UNNEST(array(SELECT unnest(_roles) except 
 		SELECT UNNEST(array(SELECT role_id from eb_role2user WHERE user_id = _id AND eb_del = 'F')))) AS roleid;
-   UPDATE eb_role2user SET eb_del = 'T',revokedby = _userid,revokedat =NOW() WHERE role_id IN(
+   UPDATE eb_role2user SET eb_del = 'T',revokedby = _userid,revokedat =NOW() WHERE user_id = _id AND eb_del = 'F' AND role_id IN(
 		SELECT UNNEST(array(SELECT role_id from eb_role2user WHERE user_id = _id AND eb_del = 'F')) except 
 		SELECT UNNEST(_roles));
 
    INSERT INTO eb_user2usergroup(userid,groupid,createdby,createdat) SELECT _id,groupid,_userid,NOW() FROM 
    UNNEST(array(SELECT unnest(_group) except 
 		SELECT UNNEST(array(SELECT groupid from eb_user2usergroup WHERE userid = _id AND eb_del = 'F')))) AS groupid;
-   UPDATE eb_user2usergroup SET eb_del = 'T',revokedby = _userid,revokedat =NOW() WHERE groupid IN(
+   UPDATE eb_user2usergroup SET eb_del = 'T',revokedby = _userid,revokedat =NOW() WHERE userid = _id AND eb_del = 'F' AND groupid IN(
 		SELECT UNNEST(array(SELECT groupid from eb_user2usergroup WHERE userid = _id AND eb_del = 'F')) except 
 		SELECT UNNEST(_group));
 

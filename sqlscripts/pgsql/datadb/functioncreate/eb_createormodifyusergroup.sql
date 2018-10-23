@@ -27,7 +27,7 @@ UPDATE eb_usergroup SET name=_name, description=_description WHERE id=_id;
 INSERT INTO eb_user2usergroup(userid,groupid,createdby,createdat) SELECT userid,_id,_userid,NOW() FROM 
    UNNEST(array(SELECT unnest(users) except 
 		SELECT UNNEST(array(SELECT userid from eb_user2usergroup WHERE groupid = _id AND eb_del = 'F')))) AS userid;
-UPDATE eb_user2usergroup SET eb_del = 'T',revokedby = _userid,revokedat =NOW() WHERE userid IN(
+UPDATE eb_user2usergroup SET eb_del = 'T',revokedby = _userid,revokedat =NOW() WHERE groupid = _id AND eb_del = 'F' AND userid IN(
 	SELECT UNNEST(array(SELECT userid from eb_user2usergroup WHERE groupid = _id AND eb_del = 'F')) except 
 	SELECT UNNEST(users));
 
@@ -47,6 +47,4 @@ $BODY$;
 
 ALTER FUNCTION public.eb_createormodifyusergroup(integer, integer, text, text, text)
     OWNER TO postgres;
-
-
 

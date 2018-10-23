@@ -13,6 +13,8 @@ CREATE OR REPLACE FUNCTION public.eb_create_or_update_role(
     RETURNS integer
     LANGUAGE 'plpgsql'
 
+    COST 100
+    VOLATILE 
 AS $BODY$
 
    
@@ -33,7 +35,7 @@ errornum := 0;
     SET 
         eb_del = 'T',revokedat = NOW(),revokedby = $5 
     WHERE 
-        permissionname IN(
+        role_id = $7 AND eb_del = 'F' AND permissionname IN(
             SELECT unnest(ARRAY(select permissionname from eb_role2permission WHERE role_id = $7 AND eb_del = 'F')) 
         except 
             SELECT unnest(ARRAY[$6]));

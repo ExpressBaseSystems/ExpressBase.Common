@@ -9,12 +9,14 @@ CREATE OR REPLACE FUNCTION public.eb_create_or_update_role2loc(
     RETURNS integer
     LANGUAGE 'plpgsql'
 
+    COST 100
+    VOLATILE 
 AS $BODY$
 
 BEGIN
 
 UPDATE eb_role2location SET eb_del = 'T', eb_revokedat = NOW(), eb_revokedby = _userid 
-	WHERE locationid IN(SELECT UNNEST(ARRAY(SELECT locationid FROM eb_role2location WHERE roleid = _roleid AND eb_del = 'F')) 
+	WHERE roleid = _roleid AND eb_del = 'F' AND locationid IN(SELECT UNNEST(ARRAY(SELECT locationid FROM eb_role2location WHERE roleid = _roleid AND eb_del = 'F')) 
         EXCEPT SELECT UNNEST(ARRAY[_locations]));
 
 INSERT INTO eb_role2location(locationid, roleid, eb_createdby, eb_createdat) 
@@ -28,5 +30,4 @@ $BODY$;
 
 ALTER FUNCTION public.eb_create_or_update_role2loc(integer, integer, integer[])
     OWNER TO postgres;
-
 
