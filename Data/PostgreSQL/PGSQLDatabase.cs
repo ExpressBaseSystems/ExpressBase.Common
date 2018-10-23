@@ -123,7 +123,19 @@ namespace ExpressBase.Common
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type, object value)
         {
-            return new NpgsqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = value };
+            object val = value;// default string
+            if (type == EbDbTypes.Date || type == EbDbTypes.DateTime|| type == EbDbTypes.DateTime2)
+                val =Convert.ToDateTime(value);
+            else if (type == EbDbTypes.Decimal || type == EbDbTypes.Double)
+                val = Convert.ToDecimal(value);
+            else if (type == EbDbTypes.Int32)
+                val = Convert.ToInt32(value);
+            else if (type == EbDbTypes.Int64)
+                val = Convert.ToInt64(value);
+            else if (type == EbDbTypes.Boolean)
+                val = Convert.ToBoolean(value);
+
+            return new NpgsqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = val };
         }
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type)
