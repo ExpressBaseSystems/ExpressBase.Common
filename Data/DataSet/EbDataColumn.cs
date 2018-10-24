@@ -62,5 +62,13 @@ namespace ExpressBase.Common
                 return null;
             }
         }
+
+        new public void Add(EbDataColumn column)
+        {
+            base.Add(column);
+
+            foreach (EbDataRow row in this.Table.Rows)
+                row.Add(null);
+        }
     }
 }

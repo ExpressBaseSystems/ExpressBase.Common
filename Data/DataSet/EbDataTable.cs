@@ -37,6 +37,23 @@ namespace ExpressBase.Common
             //EbDataRow dr = new EbDataRow(this.Columns.Count);
             return new EbDataRow();
         }
+
+        public EbDataRow NewDataRow2()
+        {
+            return new EbDataRow(this.Columns.Count);
+        }
+
+        public EbDataTable GetEmptyTable()
+        {
+            EbDataTable __newTable = new EbDataTable();
+            EbDataColumn[] dataColumns = new EbDataColumn[this.Columns.Count];
+            this.Columns.CopyTo(dataColumns);
+
+            foreach(EbDataColumn col in dataColumns)
+                __newTable.Columns.Add(col);
+
+            return __newTable;
+        }
     }
 
     public class TableColletion : List<EbDataTable>
