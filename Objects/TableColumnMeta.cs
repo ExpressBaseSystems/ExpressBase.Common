@@ -21,6 +21,8 @@ namespace ExpressBase.Common
 
         public dynamic Value { get; set; }
 
+		public dynamic OldValue { get; set; }
+
         public int Type { get; set; }
 
         public bool AutoIncrement { get; set; }
