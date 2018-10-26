@@ -57,7 +57,7 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public override string UIchangeFns { get; set; }
 
-        public virtual EbDbTypes EbDbType { get { return EbDbTypes.Decimal; }  set { } }
+        public virtual EbDbTypes EbDbType { get { return EbDbTypes.Decimal; } set { } }
 
         [Description("Labels")]
         [System.ComponentModel.Category("Behavior")]
@@ -72,10 +72,10 @@ namespace ExpressBase.Common.Objects
         [PropertyEditor(PropertyEditorType.JS)]
         public string VisibleIf { get; set; }
 
-        //[EnableInBuilder(BuilderType.BotForm)]
-        //[PropertyEditor(PropertyEditorType.Collection)]
-        //[Alias("Validators")]
-        //public List<EbValidator> Validators { get; set; }
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+        [PropertyEditor(PropertyEditorType.Collection)]
+        [Alias("Validators")]
+        public List<EbValidator> Validators { get; set; }
 
         [EnableInBuilder(BuilderType.BotForm)]
         [PropertyEditor(PropertyEditorType.JS)]
@@ -123,7 +123,7 @@ namespace ExpressBase.Common.Objects
         [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public virtual bool Required { get; set; }
-
+        
         public virtual string DesignHtml4Bot { get; set; }
 
         public virtual bool isFullViewContol { get; set; }
@@ -187,12 +187,9 @@ else
         [System.ComponentModel.Category("Accessibility")]
         public virtual int TabIndex { get; set; }
 
-        //[ProtoBuf.ProtoMember(34)]
-        //public EbValidatorCollection Validators { get; set; }
-
         public EbControl()
         {
-            //this.Validators = new List<EbValidator>();
+            this.Validators = new List<EbValidator>();
         }
 
         public virtual string GetHead() { return string.Empty; }
@@ -299,7 +296,8 @@ else
                 return @"
                     return $('#' + this.EbSid_CtxId).val();
                 ";
-            } set { }
+            }
+            set { }
         }
 
         [JsonIgnore]
@@ -310,7 +308,8 @@ else
                 return @"
                     $('#' + this.EbSid_CtxId).val(p1);
                 ";
-            } set { }
+            }
+            set { }
         }
 
         [JsonIgnore]
@@ -321,7 +320,8 @@ else
                 return @"
                     $('#cont_' + this.EbSid_CtxId).hide(300);
                 ";
-            } set { }
+            }
+            set { }
         }
 
         [JsonIgnore]
@@ -332,7 +332,8 @@ else
                 return @"
                     $('#cont_' + this.EbSid_CtxId).show(300);
                 ";
-            } set { }
+            }
+            set { }
         }
 
         [JsonIgnore]
@@ -343,7 +344,8 @@ else
                 return @"
                     $('#cont_' + this.EbSid_CtxId + ' *').prop('disabled',false).css('pointer-events', 'inherit');
                 ";
-            } set { }
+            }
+            set { }
         }
 
         [JsonIgnore]
@@ -354,7 +356,8 @@ else
                 return @"
                     $('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none');
                 ";
-            } set { }
+            }
+            set { }
         }
 
         [JsonIgnore]
@@ -407,22 +410,22 @@ else
         WithEbDateType
     }
 
-    [EnableInBuilder(BuilderType.BotForm)]
+    [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
     [HideInToolBox]
     [UsedWithTopObjectParent(typeof(EbObject))]
     public class EbValidator
     {
-        [EnableInBuilder(BuilderType.BotForm)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public bool IsDisabled { get; set; }
 
-        [EnableInBuilder(BuilderType.BotForm)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public bool IsWarningOnly { get; set; }
 
-        [EnableInBuilder(BuilderType.BotForm)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         [PropertyEditor(PropertyEditorType.String)]
         public string JScode { get; set; }
 
-        [EnableInBuilder(BuilderType.BotForm)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public string FailureMSG { get; set; }
 
         public EbValidator() { }

@@ -40,6 +40,52 @@ namespace ExpressBase.Common.Objects
         [PropertyGroup("Data")]
         [HelpText("Name Of database-table Which you want to store Data collected using this Form")]
         public virtual string TableName { get; set; }
+
+        public static T Localize<T>(T formObj, JsonServiceClient serviceClient)
+        {
+            EbControlContainer _formObj = formObj as EbControlContainer;// need to change
+
+            List<KeyValuePair<EbControl, string>> MLKeys = new List<KeyValuePair<EbControl, string>>();
+            //{
+            //    { _formObj.Controls[0], "Label" }
+            //}; // hard coding
+            System.Collections.IEnumerable controls = _formObj.Controls.Flatten();
+
+            foreach (EbControl control in controls)
+            {
+                PropertyInfo[] props = control.GetType().GetProperties();
+
+                foreach (PropertyInfo prop in props)
+                {
+                    if (prop.IsDefined(typeof(PropertyEditor))
+                        && prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == PropertyEditorType.MultiLanguageKeySelector)
+                    {
+                        MLKeys.Insert(0, new KeyValuePair<EbControl, string>(control, prop.Name));
+                    }
+                }
+            }
+
+            Dictionary<string, string> Keys = new Dictionary<string, string>
+                                                    {
+                                                        { "Name", "#$%^" }
+                                                    }; // hard coding
+
+            foreach (KeyValuePair<EbControl, string> MLKey in MLKeys)
+            {
+                EbControl Obj = MLKey.Key;
+                string prop = MLKey.Value;
+                string newVal = string.Empty;
+                PropertyInfo propertyInfo = Obj.GetType().GetProperty(prop);
+                string oldVal = propertyInfo.GetValue(Obj, null) as String;
+                if (Keys.ContainsKey(oldVal))
+                    newVal = Keys[oldVal];
+                else
+                    newVal = oldVal;
+                propertyInfo.SetValue(Obj, newVal, null);
+            }
+            return formObj;
+        }
+
         //foreach (EbControl control in Controls)
         //{
         //    if (control is EbControlContainer)
@@ -223,7 +269,7 @@ namespace ExpressBase.Common.Objects
                     cols += string.Concat(_1stLvlColNames, ", ");
             }
             GetCtrlNamesOfTableRec(tableName, ref cols);
-            return cols.Substring(0, cols.Length-2);
+            return cols.Substring(0, cols.Length - 2);
         }
 
         private void GetCtrlNamesOfTableRec(string tableName, ref string cols)
