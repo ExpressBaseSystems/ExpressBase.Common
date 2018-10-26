@@ -29,6 +29,7 @@ namespace ExpressBase.Common
 
         public const string BEARER_TOKEN = "bToken";
         public const string REFRESH_TOKEN = "rToken";
+        public const string PAYNOW = "/PayNow";
 
         //Console
         public const string WC = "wc";
