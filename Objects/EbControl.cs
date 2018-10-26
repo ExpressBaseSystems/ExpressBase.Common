@@ -65,6 +65,7 @@ namespace ExpressBase.Common.Objects
         [UIproperty]
         [Unique]
         [OnChangeUIFunction("Common.LABEL")]
+        [PropertyEditor(PropertyEditorType.MultiLanguageKeySelector)]
         public virtual string Label { get; set; }
 
         [EnableInBuilder(BuilderType.BotForm, BuilderType.FilterDialog)]
