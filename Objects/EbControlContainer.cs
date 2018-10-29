@@ -41,8 +41,8 @@ namespace ExpressBase.Common.Objects
         [HelpText("Name Of database-table Which you want to store Data collected using this Form")]
         public virtual string TableName { get; set; }
 
-        public static T Localize<T>(T formObj, JsonServiceClient serviceClient)
-        {
+        public static T Localize<T>(T formObj, Dictionary<string, string> Keys)
+		{
             EbControlContainer _formObj = formObj as EbControlContainer;// need to change
 
             List<KeyValuePair<EbControl, string>> MLKeys = new List<KeyValuePair<EbControl, string>>();
@@ -65,12 +65,21 @@ namespace ExpressBase.Common.Objects
                 }
             }
 
-            Dictionary<string, string> Keys = new Dictionary<string, string>
-                                                    {
-                                                        { "Name", "اسم" }
-                                                    }; // hard coding
+            //Dictionary<string, string> Keys = new Dictionary<string, string>
+            //                                        {
+            //                                            { "Name", "اسم" }
+            //                                        }; // hard coding
 
-            foreach (KeyValuePair<EbControl, string> MLKey in MLKeys)
+			//List<string> templist = new List<string>();
+			//foreach (KeyValuePair<EbControl, string> MLKey in MLKeys)
+			//{
+			//	PropertyInfo propertyInfo = MLKey.Key.GetType().GetProperty(MLKey.Value);
+			//	string oldVal = propertyInfo.GetValue(MLKey.Key, null) as String;
+			//	templist.Add(oldVal);
+			//}
+
+			
+			foreach (KeyValuePair<EbControl, string> MLKey in MLKeys)
             {
                 EbControl Obj = MLKey.Key;
                 string prop = MLKey.Value;
@@ -85,6 +94,26 @@ namespace ExpressBase.Common.Objects
             }
             return formObj;
         }
+
+		public static List<string> GetKeyValueDict(object formObj)
+		{
+			EbControlContainer _formObj = formObj as EbControlContainer;// need to change
+			List<string> templist = new List<string>();
+
+			System.Collections.IEnumerable controls = _formObj.Controls.FlattenAllEbControls();
+			foreach (EbControl control in controls)
+			{
+				PropertyInfo[] props = control.GetType().GetProperties();
+				foreach (PropertyInfo prop in props)
+				{
+					if (prop.IsDefined(typeof(PropertyEditor))&& prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == PropertyEditorType.MultiLanguageKeySelector)
+					{
+						templist.Add(control.GetType().GetProperty(prop.Name).GetValue(control, null) as String);;
+					}
+				}
+			}
+			return templist;
+		}
 
         //foreach (EbControl control in Controls)
         //{
