@@ -49,7 +49,7 @@ namespace ExpressBase.Common.Objects
             //{
             //    { _formObj.Controls[0], "Label" }
             //}; // hard coding
-            System.Collections.IEnumerable controls = _formObj.Controls.Flatten();
+            System.Collections.IEnumerable controls = _formObj.Controls.FlattenAllEbControls();
 
             foreach (EbControl control in controls)
             {
@@ -67,7 +67,7 @@ namespace ExpressBase.Common.Objects
 
             Dictionary<string, string> Keys = new Dictionary<string, string>
                                                     {
-                                                        { "Name", "#$%^" }
+                                                        { "Name", "اسم" }
                                                     }; // hard coding
 
             foreach (KeyValuePair<EbControl, string> MLKey in MLKeys)
