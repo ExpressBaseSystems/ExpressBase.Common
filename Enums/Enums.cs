@@ -137,5 +137,12 @@ namespace ExpressBase.Common
     {
         Cloudinary = 1
     }
+
+    public enum JobTypes
+    {
+        EmailTask = 1,
+        SmsTask = 2,
+        MyJob = 3
+    }
 }
 
