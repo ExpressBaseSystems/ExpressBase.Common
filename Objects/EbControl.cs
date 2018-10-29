@@ -123,7 +123,7 @@ namespace ExpressBase.Common.Objects
         [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public virtual bool Required { get; set; }
-        
+
         public virtual string DesignHtml4Bot { get; set; }
 
         public virtual bool isFullViewContol { get; set; }
@@ -397,12 +397,6 @@ else
         }
     }
 
-    //[ProtoBuf.ProtoContract]
-    //public class EbValidatorCollection : List<EbValidator>
-    //{
-
-    //}
-
     public enum SubType
     {
         WithDecimalPlaces,
@@ -412,7 +406,7 @@ else
 
     [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
     [HideInToolBox]
-    [UsedWithTopObjectParent(typeof(EbObject))]
+    //[UsedWithTopObjectParent(typeof(EbObject))]
     public class EbValidator
     {
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
