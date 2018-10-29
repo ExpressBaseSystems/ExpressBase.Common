@@ -32,7 +32,7 @@ namespace ExpressBase.Common.Extensions
             }
         }
 
-        public static IEnumerable<EbControl> FlattenEbControls(this List<EbControl> enumerable)
+        public static IEnumerable<EbControl> FlattenEbControls(this List<EbControl> enumerable)// get all controls except EbControlContainers
         {
             foreach (EbControl element in enumerable)
             {
@@ -46,6 +46,19 @@ namespace ExpressBase.Common.Extensions
                 {
                     yield return element;
                 }
+            }
+        }
+
+        public static IEnumerable<EbControl> FlattenAllEbControls(this List<EbControl> enumerable)// get all controls including EbControlContainers
+        {
+            foreach (EbControl element in enumerable)
+            {
+                EbControlContainer candidate = element as EbControlContainer;
+                if (candidate != null)
+                {
+                    candidate.Controls.FlattenAllEbControls();
+                }
+                yield return element;
             }
         }
     }
