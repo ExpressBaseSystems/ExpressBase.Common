@@ -95,7 +95,7 @@ namespace ExpressBase.Common.Objects
             return formObj;
         }
 
-		public static List<string> GetKeyValueDict(object formObj)
+		public static List<string> GetKeysList(object formObj)
 		{
 			EbControlContainer _formObj = formObj as EbControlContainer;// need to change
 			List<string> templist = new List<string>();
