@@ -191,6 +191,7 @@ function ProcRecur(src_controls, dest_controls) {
                 }
             }
             var sampOBJ = (obj as EbControl);
+            string AssemblyQname = obj.GetType().AssemblyQualifiedName;
             this.AllMetas += @"
 '@Name'  : @MetaCollection,"
 .Replace("@Name", obj.GetType().Name)
@@ -199,7 +200,7 @@ function ProcRecur(src_controls, dest_controls) {
             {
                 this.JsObjects += @"
 EbObjects.@Name = function @Name(id, jsonObj) {
-    this.$type = '@Type, ExpressBase.Objects';
+    this.$type = '@Type';
     this.EbSid = id;
 	this.ObjType = '@ObjType';
     @Props
@@ -240,7 +241,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
     }
 };"
     .Replace("@Name", obj.GetType().Name)
-    .Replace("@Type", obj.GetType().FullName)
+    .Replace("@Type", AssemblyQname.Split(",")[0] + "," + AssemblyQname.Split(",")[1])
     .Replace("@Props", _props)
     .Replace("@InitFunc", (obj is EbObject) ? (obj as EbObject).GetJsInitFunc() : string.Empty)
       .Replace("@html", (obj is EbObject) ? (obj as EbObject).GetDesignHtml() : "``")
@@ -282,7 +283,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             string _name = prop.Name;
             if (prop.IsDefined(typeof(JsonPropertyAttribute)))
             {
-                    _name = prop.GetCustomAttribute<JsonPropertyAttribute>().PropertyName;
+                _name = prop.GetCustomAttribute<JsonPropertyAttribute>().PropertyName;
             }
             Meta meta = new Meta { name = _name };
             IEnumerable<Attribute> propattrs = prop.GetCustomAttributes();
@@ -478,7 +479,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                 if (args.Length > 0)
                 {
                     Type itemType = args[0];
-                    return string.Format(s, _name, "{\"$type\":\"System.Collections.Generic.List`1[[@typeName, ExpressBase.Objects]], System.Private.CoreLib\",\"$values\":[]}".Replace("@typeName", itemType.FullName));
+                    return string.Format(s, _name, "{\"$type\":\"System.Collections.Generic.List`1[[@typeName, @nameSpace]], System.Private.CoreLib\",\"$values\":[]}".Replace("@typeName", itemType.FullName).Replace("@nameSpace", itemType.AssemblyQualifiedName.Split(",")[1]));
                 }
                 else
                 {
