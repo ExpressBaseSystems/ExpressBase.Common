@@ -406,7 +406,7 @@ else
 
     [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
     [HideInToolBox]
-    //[UsedWithTopObjectParent(typeof(EbObject))]
+    [UsedWithTopObjectParent(typeof(EbObject))]
     public class EbValidator
     {
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
