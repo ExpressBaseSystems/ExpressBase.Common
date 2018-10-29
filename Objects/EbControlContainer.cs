@@ -49,7 +49,7 @@ namespace ExpressBase.Common.Objects
             //{
             //    { _formObj.Controls[0], "Label" }
             //}; // hard coding
-            System.Collections.IEnumerable controls = _formObj.Controls.FlattenAllEbControls();
+            EbControl[] controls = _formObj.Controls.FlattenAllEbControls();
 
             foreach (EbControl control in controls)
             {

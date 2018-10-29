@@ -49,16 +49,23 @@ namespace ExpressBase.Common.Extensions
             }
         }
 
-        public static IEnumerable<EbControl> FlattenAllEbControls(this List<EbControl> enumerable)// get all controls including EbControlContainers
+        public static EbControl[] FlattenAllEbControls(this List<EbControl> controls)
         {
-            foreach (EbControl element in enumerable)
+            List<EbControl> list = new List<EbControl>();
+            FlattenAllEbControlsRec(controls, ref list);
+            return list.ToArray();
+        }
+
+        private static void FlattenAllEbControlsRec(List<EbControl> controls, ref List<EbControl> list)// get all controls including EbControlContainers
+        {
+            foreach (EbControl control in controls)
             {
-                EbControlContainer candidate = element as EbControlContainer;
+                EbControlContainer candidate = control as EbControlContainer;
                 if (candidate != null)
                 {
-                    candidate.Controls.FlattenAllEbControls();
+                    FlattenAllEbControlsRec(candidate.Controls, ref list);
                 }
-                yield return element;
+                list.Add(control);
             }
         }
     }
