@@ -88,6 +88,10 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     [DataContract]
     public class EbMqResponse
     {
-        public bool Result { get; set; }
+        public string ReqType { get; set; }
+
+        public bool IsError { get; set; }
+
+        public string ErrorString { get; set; }
     }
 }
