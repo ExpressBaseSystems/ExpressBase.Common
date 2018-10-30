@@ -95,12 +95,12 @@ namespace ExpressBase.Common.Objects
             return formObj;
         }
 
-		public static List<string> GetKeysList(object formObj)
+		public static string[] GetKeysList(object formObj)
 		{
 			EbControlContainer _formObj = formObj as EbControlContainer;// need to change
 			List<string> templist = new List<string>();
 
-			System.Collections.IEnumerable controls = _formObj.Controls.FlattenAllEbControls();
+            EbControl[] controls = _formObj.Controls.FlattenAllEbControls();
 			foreach (EbControl control in controls)
 			{
 				PropertyInfo[] props = control.GetType().GetProperties();
@@ -112,7 +112,7 @@ namespace ExpressBase.Common.Objects
 					}
 				}
 			}
-			return templist;
+			return templist.ToArray();
 		}
 
         //foreach (EbControl control in Controls)
