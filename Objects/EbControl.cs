@@ -85,6 +85,7 @@ namespace ExpressBase.Common.Objects
         public virtual string ObjType { get { return this.GetType().Name.Substring(2, this.GetType().Name.Length - 2); } set { } }
 
         [HideInPropertyGrid]
+        [JsonIgnore]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public virtual string BareControlHtml { get; set; }
 
@@ -124,6 +125,7 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public virtual bool Required { get; set; }
 
+        [JsonIgnore]
         public virtual string DesignHtml4Bot { get; set; }
 
         public virtual bool isFullViewContol { get; set; }
