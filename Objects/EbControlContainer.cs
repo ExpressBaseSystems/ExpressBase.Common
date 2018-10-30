@@ -95,12 +95,13 @@ namespace ExpressBase.Common.Objects
             return formObj;
         }
 
-		public static string[] GetKeysList(object formObj)
+        //Get all proprty value which 
+		public static string[] GetKeys(object formObj)
 		{
-			EbControlContainer _formObj = formObj as EbControlContainer;// need to change
+			EbControlContainer _formObj = formObj as EbControlContainer;
 			List<string> templist = new List<string>();
+            EbControl[] controls = _formObj.Controls.FlattenAllEbControls();// get all objects in the form
 
-            EbControl[] controls = _formObj.Controls.FlattenAllEbControls();
 			foreach (EbControl control in controls)
 			{
 				PropertyInfo[] props = control.GetType().GetProperties();
