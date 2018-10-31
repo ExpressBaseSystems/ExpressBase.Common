@@ -228,7 +228,7 @@ namespace ExpressBase.Common
                     if (parameters != null && parameters.Length > 0)
                         cmd.Parameters.AddRange(parameters);
                     cmd.Prepare();
-                    return cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                    return cmd.ExecuteReader(CommandBehavior.KeyInfo | CommandBehavior.CloseConnection);
                 }
             }
             catch (Npgsql.NpgsqlException npgse)
@@ -342,7 +342,8 @@ namespace ExpressBase.Common
                 column.ColumnIndex = pos++;
                 dt.Columns.Add(column);
             }
-
+			if(schema.Count > 0)
+				dt.TableName = schema[0].BaseTableName;
             return typeArray;
         }
 
@@ -502,7 +503,7 @@ namespace ExpressBase.Common
                                 var type = (Type)(drow["DataType"]);//for date and timstamp wihout tz return system.Datetime
                                 EbDataColumn column = new EbDataColumn(columnName, ConvertToDbType(type));
                                 column.ColumnIndex = pos++;
-                                cols.Add(column);
+                                cols.BaseAdd(column);
                             }
                         }
                     }
