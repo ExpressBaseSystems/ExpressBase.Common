@@ -411,6 +411,18 @@ else
     [UsedWithTopObjectParent(typeof(EbObject))]
     public class EbValidator
     {
+        [HideInPropertyGrid]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+        public string EbSid { get; set; }
+
+        [Description("Identity")]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+        [EbRequired]
+        [Unique]
+        [regexCheck]
+        [InputMask("[a-z][a-z0-9]*(_[a-z0-9]+)*")]
+        public string Name { get; set; }
+
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public bool IsDisabled { get; set; }
 
@@ -418,7 +430,7 @@ else
         public bool IsWarningOnly { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
-        [PropertyEditor(PropertyEditorType.String)]
+        [PropertyEditor(PropertyEditorType.JS)]
         public string JScode { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
