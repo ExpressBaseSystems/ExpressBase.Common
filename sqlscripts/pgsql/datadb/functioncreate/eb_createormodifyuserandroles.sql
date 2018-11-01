@@ -44,7 +44,7 @@ IF _id > 1 THEN
 		INSERT INTO eb_userstatus(userid, statusid, createdby, createdat) VALUES (_id, _statusid, _userid, NOW());
 	END IF;
 
-   UPDATE eb_users SET fullname= _fullname, nickname=_nickname, email=_email, dob=_dob, sex=_sex, alternateemail=_alternateemail, phnoprimary=_phnoprimary, phnosecondary=_phnosecondary, landline=_landline, phextension=_phextension, fbid=_fbid, fbname=_fbname, statusid=_statusid, hide=_hide, preferencesjson=_preferences WHERE id = _id;
+   UPDATE eb_users SET fullname= _fullname, nickname=_nickname, dob=_dob, sex=_sex, alternateemail=_alternateemail, phnoprimary=_phnoprimary, phnosecondary=_phnosecondary, landline=_landline, phextension=_phextension, fbid=_fbid, fbname=_fbname, statusid=_statusid, hide=_hide, preferencesjson=_preferences WHERE id = _id;
 			
    INSERT INTO eb_role2user(role_id,user_id,createdby,createdat) SELECT roleid,_id,_userid,NOW() FROM 
    UNNEST(array(SELECT unnest(_roles) except 
