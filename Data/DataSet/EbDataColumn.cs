@@ -63,12 +63,17 @@ namespace ExpressBase.Common
             }
         }
 
-        new public void Add(EbDataColumn column)
-        {
-            base.Add(column);
+		new public void Add(EbDataColumn column)
+		{
+			base.Add(column);
 
-            foreach (EbDataRow row in this.Table.Rows)
-                row.Add(null);
-        }
-    }
+			foreach (EbDataRow row in this.Table.Rows)
+				row.Add(null);
+		}
+
+		public void BaseAdd(EbDataColumn column)
+		{
+			base.Add(column);
+		}
+	}
 }
