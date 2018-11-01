@@ -7,7 +7,8 @@ CREATE TABLE public.eb_audit_master
     id serial,
     formid text COLLATE pg_catalog."default",
     eb_createdby integer,
-    eb_createdat timestamp without time zone
+    eb_createdat timestamp without time zone,
+	dataid integer
 )
 WITH (
     OIDS = FALSE
