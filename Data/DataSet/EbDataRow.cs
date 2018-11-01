@@ -13,6 +13,14 @@ namespace ExpressBase.Common
     {
         internal RowColletion Rows { get; set; }
 
+        public EbDataTable Table
+        {
+            get
+            {
+                return this.Rows.Table;
+            }
+        }
+
         public EbDataRow() { }
 
         internal EbDataRow(int size) : base(size)
