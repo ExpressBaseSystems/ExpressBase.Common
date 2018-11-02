@@ -5,12 +5,6 @@ namespace ExpressBase.Common.Objects
 {
     public class EbControlUI: EbControl
 	{
-		[System.ComponentModel.Category("Behavior")]
-		[Description("Labels")]
-		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
-		[UIproperty]
-        [OnChangeUIFunction("Common.HELP_TEXT")]
-        public virtual string HelpText { get; set; }
 
 		[EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm)]
 		[PropertyGroup("Appearance")]

@@ -42,7 +42,9 @@ namespace ExpressBase.Common.Objects
 .Replace("@name@", this.Name)
 .Replace("@ebsid@", this.EbSid_CtxId)
 .Replace("@hiddenString@", this.HiddenString)
-.Replace("@type@", this.ObjType);
+.Replace("@helpText@", this.HelpText)
+.Replace("@type@", this.ObjType)
+.Replace("@Label@ ", (Label ?? ""));
         }
 
         [HideInPropertyGrid]
@@ -52,6 +54,13 @@ namespace ExpressBase.Common.Objects
         [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public virtual bool Unique { get; set; }
+
+        [System.ComponentModel.Category("Behavior")]
+        [Description("Labels")]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+        [UIproperty]
+        [OnChangeUIFunction("Common.HELP_TEXT")]
+        public virtual string HelpText { get; set; }
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
