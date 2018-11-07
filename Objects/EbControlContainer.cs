@@ -177,7 +177,9 @@ namespace ExpressBase.Common.Objects
 					if (_enableInBuider != null && _enableInBuider.BuilderTypes.Contains(FormTypeEnum))
 					{
 						object ctrlObj = Activator.CreateInstance(ctrlType);
-						if ((!_typeInfo.IsDefined(typeof(HideInToolBox))) && ctrlObj is EbControl)
+						if (
+                            //(!_typeInfo.IsDefined(typeof(HideInToolBox))) && // temp 
+                            ctrlObj is EbControl)
 							if (!DictControlOps.ContainsKey(TypeName))
 							{
 								EbControl _ctrlObj = (ctrlObj as EbControl);
