@@ -534,7 +534,7 @@ namespace ExpressBase.Common
                 FROM eb_applications;
                 SELECT
                     EO.id, EO.obj_type, EO.obj_name,
-                    EOV.version_num, EOV.refid, EO2A.app_id,EO.obj_desc, EOS.status,EOS.id
+                    EOV.version_num, EOV.refid, EO2A.app_id, EO.obj_desc, EOS.status, EOS.id, display_name
                 FROM
                     eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
                 WHERE
@@ -551,7 +551,7 @@ namespace ExpressBase.Common
             get { return @"
                 SELECT id, applicationname,app_icon FROM eb_applications;
                             SELECT 
-	                            EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, COALESCE(EO2A.app_id, 0)
+	                            EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, COALESCE(EO2A.app_id, 0),display_name
                             FROM 
 	                            eb_objects EO
                             LEFT JOIN
@@ -674,7 +674,7 @@ namespace ExpressBase.Common
                 return @"SELECT 
                             EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
                             EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog,EOV.commit_ts, EOV.commit_uid, EOV.refid,
-                            EU.fullname
+                            EU.fullname, EO.display_name
                         FROM 
                             eb_objects EO, eb_objects_ver EOV
                         LEFT JOIN
@@ -711,7 +711,7 @@ namespace ExpressBase.Common
                 return @"SELECT 
                             EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
                             EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.refid,
-                            EU.fullname
+                            EU.fullname, EO.display_name
                         FROM 
                             eb_objects EO, eb_objects_ver EOV
                         LEFT JOIN
