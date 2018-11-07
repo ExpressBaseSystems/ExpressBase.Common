@@ -130,16 +130,16 @@ namespace ExpressBase.Common.Objects
 		//    }
 		//}
 
-		public virtual string GetSelectQuery(string _masterTblName)
+		public virtual string GetSelectQuery(string _parentTblName)
 		{
 			string ColoumsStr = Get1stLvlColNames();
 			string qry = string.Empty;
 			if (ColoumsStr.Length > 0)
 			{
-				if (TableName == _masterTblName)
+				if (TableName == _parentTblName)
 					qry = string.Format("SELECT {0} FROM {1} WHERE {3} = {2};", ColoumsStr, TableName, TableRowId, "id");
 				else
-					qry = string.Format("SELECT {0} FROM {1} WHERE {3}={2};", ColoumsStr, TableName, TableRowId, _masterTblName + "_id");
+					qry = string.Format("SELECT {0} FROM {1} WHERE {3}={2};", ColoumsStr, TableName, TableRowId, _parentTblName + "_id");
 
 			}
 
@@ -148,9 +148,13 @@ namespace ExpressBase.Common.Objects
 				if (control is EbControlContainer)
 				{
 					EbControlContainer _control = (control as EbControlContainer);
-					_control.TableName = _control.TableName.IsNullOrEmpty() ? TableName : _control.TableName;
+					if (_control.TableName.IsNullOrEmpty())
+					{
+						_control.TableName = TableName;
+					}
+					//_control.TableName = _control.TableName.IsNullOrEmpty() ? TableName : _control.TableName;
 					_control.TableRowId = (_control.TableRowId == 0) ? TableRowId : _control.TableRowId;
-					qry += _control.GetSelectQuery(_masterTblName);
+					qry += _control.GetSelectQuery(_control.TableName);
 				}
 			}
 			return qry;
