@@ -4,10 +4,14 @@
 
 CREATE OR REPLACE FUNCTION public.eb_objects_exploreobject(
 	_id integer)
-    RETURNS TABLE(idval integer, nameval text, typeval integer, statusval integer, descriptionval text, changelogval text, commitatval text, commitbyval text, refidval text, ver_numval text, work_modeval character, workingcopiesval text, json_wcval json, json_lcval json, major_verval integer, minor_verval integer, patch_verval integer, tagsval text, app_idval text, lastversionrefidval text, lastversionnumberval text, lastversioncommit_tsval text, lastversion_statusvalv integer, lastversioncommit_byname text, lastversioncommit_byid integer, liveversionrefidval text, liveversionnumberval text, liveversioncommit_tsval text, liveversion_statusval integer, liveversioncommit_byname text, liveversioncommit_byid integer, owner_uidval integer, owner_tsval text, owner_nameval text) 
+    RETURNS TABLE(idval integer, nameval text, typeval integer, statusval integer, descriptionval text, changelogval text, commitatval text,
+	commitbyval text, refidval text, ver_numval text, work_modeval character, workingcopiesval text, json_wcval json, json_lcval json,
+	major_verval integer, minor_verval integer, patch_verval integer, tagsval text, app_idval text, lastversionrefidval text,
+	lastversionnumberval text, lastversioncommit_tsval text, lastversion_statusvalv integer, lastversioncommit_byname text,
+	lastversioncommit_byid integer, liveversionrefidval text, liveversionnumberval text, liveversioncommit_tsval text, 
+	liveversion_statusval integer, liveversioncommit_byname text, liveversioncommit_byid integer, owner_uidval integer, owner_tsval text,
+	owner_nameval text, dispnameval text) 
     LANGUAGE 'plpgsql'
-
-    
 AS $BODY$
 
 DECLARE
@@ -18,7 +22,7 @@ DECLARE
 	major_verval integer; minor_verval integer; patch_verval integer; tagsval text; app_idval text;
 	lastversionrefidval text; lastversionnumberval text; lastversioncommit_tsval text; lastversion_statusval integer; lastversioncommit_byname text;lastversioncommit_byid integer;
 	liveversionrefidval text; liveversionnumberval text; liveversioncommit_tsval text; liveversion_statusval integer; liveversioncommit_byname text;liveversioncommit_byid integer;
-	owner_uidVal integer; owner_tsVal text; owner_nameVal text;
+	owner_uidVal integer; owner_tsVal text; owner_nameVal text; dispnameval text;
  
 BEGIN
 
@@ -52,13 +56,13 @@ WHERE
 	EO.id = _id AND EU.id = EO.owner_uid;
 	
 SELECT idv, namev, typev, status, description, changelog, commitat, commitby, refidv, ver_num, COALESCE(work_mode,'F'), workingcopies,
-		json_wc, json_lc, major_ver, minor_ver, patch_ver, tags, app_id
+		json_wc, json_lc, major_ver, minor_ver, patch_ver, tags, app_id, dispnamev
     FROM 
 		eb_objects_getversiontoopen(_id) 
 	INTO
 		idval, nameval, typeval, statusval, descriptionval, changelogval, commitatval, commitbyval, refidval,
 		ver_numval, work_modeval, workingcopiesval,
-		json_wcval, json_lcval, major_verval, minor_verval, patch_verval, tagsval, app_idval;
+		json_wcval, json_lcval, major_verval, minor_verval, patch_verval, tagsval, app_idval, dispnameval;
 	
 RETURN QUERY
 	SELECT idval, nameval, typeval, statusval, descriptionval, changelogval, commitatval, commitbyval, refidval, 
@@ -66,11 +70,10 @@ RETURN QUERY
 	tagsval, app_idval,
     lastversionrefidval, lastversionnumberval, lastversioncommit_tsval, lastversion_statusval, lastversioncommit_byname,lastversioncommit_byid,
 	liveversionrefidval, liveversionnumberval, liveversioncommit_tsval, liveversion_statusval, liveversioncommit_byname,liveversioncommit_byid,
-	owner_uidVal, owner_tsVal, owner_nameVal;
+	owner_uidVal, owner_tsVal, owner_nameVal, dispnameval;
 END
 
 $BODY$;
 
 ALTER FUNCTION public.eb_objects_exploreobject(integer)
     OWNER TO postgres;
-
