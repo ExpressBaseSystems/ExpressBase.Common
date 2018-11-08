@@ -13,6 +13,7 @@ CREATE TABLE public.eb_objects
     obj_tags text COLLATE pg_catalog."default",
     owner_uid integer,
     owner_ts timestamp without time zone,
+	display_name text COLLATE pg_catalog."default",
     CONSTRAINT eb_objects_pkey PRIMARY KEY (id)
 )
 WITH (

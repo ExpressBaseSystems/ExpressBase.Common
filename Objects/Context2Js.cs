@@ -204,6 +204,7 @@ EbObjects.@Name = function @Name(id, jsonObj) {
     this.EbSid = id;
 	this.ObjType = '@ObjType';
     @Props
+    this.EbSid_CtxId = id;
     @InitFunc
     @4botHtml
     this.$Control = $( @html.replace(/@id/g, this.EbSid) );
