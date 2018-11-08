@@ -20,13 +20,15 @@ dtemp INTEGER;
 ttemp INTEGER;
 BEGIN
 	--IP CONSTRAINT
-	SELECT ARRAY(SELECT ip FROM eb_constraints_ip 
-	WHERE usergroup_id IN(SELECT groupid FROM eb_user2usergroup 
-		WHERE userid = in_userid AND eb_del = 'F') AND eb_del = 'F')INTO arrip;
-	IF ARRAY_LENGTH(arrip, 1) <> 0 THEN 
-    	SELECT in_ip = ANY (arrip) INTO ipfound;
-		IF NOT ipfound THEN
-			RETURN 201;
+	IF in_ip IS NOT NULL THEN
+		SELECT ARRAY(SELECT ip FROM eb_constraints_ip 
+		WHERE usergroup_id IN(SELECT groupid FROM eb_user2usergroup 
+			WHERE userid = in_userid AND eb_del = 'F') AND eb_del = 'F')INTO arrip;
+		IF ARRAY_LENGTH(arrip, 1) <> 0 THEN 
+    		SELECT in_ip = ANY (arrip) INTO ipfound;
+			IF NOT ipfound THEN
+				RETURN 201; 
+			END IF;
 		END IF;
 	END IF;
 	
@@ -61,4 +63,3 @@ $BODY$;
 
 ALTER FUNCTION public.eb_getconstraintstatus(integer, text)
     OWNER TO postgres;
-
