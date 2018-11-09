@@ -29,6 +29,12 @@ namespace ExpressBase.Objects
         [InputMask("[a-z][a-z0-9]*(_[a-z0-9]+)*")]
         public virtual string Name { get; set; }
 
+        [Description("Identity")]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder,BuilderType.DVBuilder)]
+        [EbRequired]
+        [Unique]
+        public string DisplayName { get; set; }
+
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
         public virtual string UIchangeFns { get; set; }  

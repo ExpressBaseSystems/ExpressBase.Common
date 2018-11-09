@@ -1,13 +1,14 @@
--- FUNCTION: public.eb_authenticate_unified(text, text, text, text)
+-- FUNCTION: public.eb_authenticate_unified(text, text, text, text, text)
 
--- DROP FUNCTION public.eb_authenticate_unified(text, text, text, text);
+-- DROP FUNCTION public.eb_authenticate_unified(text, text, text, text, text);
 
 CREATE OR REPLACE FUNCTION public.eb_authenticate_unified(
 	uname text DEFAULT NULL::text,
 	password text DEFAULT NULL::text,
 	social text DEFAULT NULL::text,
-	wc text DEFAULT NULL::text)
-    RETURNS TABLE(userid integer, email text, fullname text, roles_a text, rolename_a text, permissions text, preferencesjson text) 
+	wc text DEFAULT NULL::text,
+	ipaddress text DEFAULT NULL::text)
+    RETURNS TABLE(userid integer, email text, fullname text, roles_a text, rolename_a text, permissions text, preferencesjson text, constraintstatus text) 
     LANGUAGE 'plpgsql'
 
     COST 100
@@ -22,6 +23,7 @@ DECLARE roles_a TEXT;
 DECLARE rolename_a TEXT;
 DECLARE permissions TEXT;
 DECLARE preferencesjson TEXT;
+DECLARE constraintstatus TEXT;
 
 BEGIN
 	-- NORMAL
@@ -44,13 +46,14 @@ BEGIN
         SELECT roles, role_name FROM eb_getroles(userid, wc) INTO roles_a, rolename_a;
 
         SELECT eb_getpermissions(string_to_array(roles_a, ',')::int[]) INTO permissions;
+		
+		SELECT eb_getconstraintstatus(userid, ipaddress)  INTO constraintstatus;
 
-        RETURN QUERY SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson;
+        RETURN QUERY SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson, constraintstatus;
    	END IF;
 END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_authenticate_unified(text, text, text, text)
+ALTER FUNCTION public.eb_authenticate_unified(text, text, text, text, text)
     OWNER TO postgres;
-
