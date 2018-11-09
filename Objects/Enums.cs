@@ -44,7 +44,7 @@ namespace ExpressBase.Common.Objects
         DisplayBlock = 1,
         DataReader = 2,
         DataWriter = 4,
-        //SqlFunctions = 5,
+        SqlFunctions = 5,
         FilterDialog = 12,
         WebForm = 0,
         MobileForm = 13,
