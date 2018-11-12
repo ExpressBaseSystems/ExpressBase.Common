@@ -11,7 +11,8 @@ CREATE OR REPLACE FUNCTION public.eb_objects_save(
 	commit_uidv integer,
 	relationsstring text,
 	tagsv text,
-	appsstring text)
+	appsstring text,
+	disp_name text)
     RETURNS text
     LANGUAGE 'plpgsql'
 
@@ -23,7 +24,7 @@ BEGIN
  SELECT string_to_array(relationsstring,',')::text[] into relationsv;
  SELECT string_to_array(appsstring,',')::int[] into apps;
 SELECT eb_objects_id FROM eb_objects_ver into objid WHERE refid=refidv;
- 	UPDATE eb_objects SET obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv WHERE id = objid RETURNING id INTO inserted_objid;
+ 	UPDATE eb_objects SET obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv , display_name = disp_name WHERE id = objid RETURNING id INTO inserted_objid;
     UPDATE eb_objects_ver SET obj_json = obj_jsonv WHERE refid=refidv RETURNING id INTO inserted_obj_ver_id;
     
  --   refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, inserted_objid, inserted_obj_ver_id);                                 
@@ -71,4 +72,5 @@ $BODY$;
 
 ALTER FUNCTION public.eb_objects_save(text, text, text, integer, json, integer,text, text, text)
     OWNER TO postgres;
+
 

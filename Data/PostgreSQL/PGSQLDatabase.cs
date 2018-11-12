@@ -829,7 +829,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"
-                    SELECT eb_objects_create_new_object(:obj_name, :obj_desc, :obj_type, :obj_cur_status, :obj_json::json, :commit_uid, :src_pid, :cur_pid, :relations, :issave, :tags, :app_id, :s_obj_id, :s_ver_id)
+                    SELECT eb_objects_create_new_object(:obj_name, :obj_desc, :obj_type, :obj_cur_status, :obj_json::json, :commit_uid, :src_pid, :cur_pid, :relations, :issave, :tags, :app_id, :s_obj_id, :s_ver_id, :disp_name)
                 ";
             }
         }
@@ -838,7 +838,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"
-                    SELECT eb_objects_save(:id, :obj_name, :obj_desc, :obj_type, :obj_json, :commit_uid, :relations, :tags, :app_id)
+                    SELECT eb_objects_save(:id, :obj_name, :obj_desc, :obj_type, :obj_json, :commit_uid, :relations, :tags, :app_id, :disp_name)
                 ";
             }
         }
@@ -847,7 +847,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"
-                    SELECT eb_objects_commit(:id, :obj_name, :obj_desc, :obj_type, :obj_json, :obj_changelog,  :commit_uid, :relations, :tags, :app_id)
+                    SELECT eb_objects_commit(:id, :obj_name, :obj_desc, :obj_type, :obj_json, :obj_changelog,  :commit_uid, :relations, :tags, :app_id, :disp_name)
                 ";
             }
         }

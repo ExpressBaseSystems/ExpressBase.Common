@@ -13,7 +13,8 @@ CREATE OR REPLACE FUNCTION public.eb_objects_commit(
 	commit_uidv integer,
 	relationsstring text,
 	tagsv text,
-	appsstring text)
+	appsstring text,
+	disp_name text)
     RETURNS text
     LANGUAGE 'plpgsql'
 
@@ -30,7 +31,7 @@ SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, ma
 
   	UPDATE eb_objects 
 	SET 
-    	obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv
+    	obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv, display_name = disp_name
 	WHERE 
     	id = objid; 
 		
@@ -94,5 +95,6 @@ $BODY$;
 
 ALTER FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text)
     OWNER TO postgres;
+
 
 

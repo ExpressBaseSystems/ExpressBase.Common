@@ -16,7 +16,8 @@ CREATE OR REPLACE FUNCTION public.eb_objects_create_new_object(
 	tagsv text,
 	appsstring text,
 	s_obj_id text,
-	s_ver_id text
+	s_ver_id text,
+	disp_name text
 	)
     RETURNS text
     LANGUAGE 'plpgsql'
@@ -32,9 +33,9 @@ BEGIN
   select string_to_array(relationsstring,',')::text[] into relationsv;
   select string_to_array(appsstring,',')::int[] into apps;
     INSERT INTO eb_objects  
-        (obj_name, obj_desc, obj_type, obj_cur_status, obj_tags, owner_uid, owner_ts)
+        (obj_name, obj_desc, obj_type, obj_cur_status, obj_tags, owner_uid, owner_ts, display_name)
     VALUES
-        (obj_namev, obj_descv, obj_typev, obj_cur_statusv, tagsv, commit_uidv, NOW()) RETURNING id INTO inserted_objid;
+        (obj_namev, obj_descv, obj_typev, obj_cur_statusv, tagsv, commit_uidv, NOW(), disp_name) RETURNING id INTO inserted_objid;
 
     INSERT INTO eb_objects_ver
         (eb_objects_id, obj_json, commit_uid, commit_ts, major_ver_num, minor_ver_num, patch_ver_num, working_mode) 
@@ -74,4 +75,5 @@ $BODY$;
 
 ALTER FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text, text, text)
     OWNER TO postgres;
+
 
