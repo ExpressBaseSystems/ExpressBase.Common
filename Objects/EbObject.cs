@@ -22,7 +22,7 @@ namespace ExpressBase.Objects
         //public EbObjectType EbObjectType { get; set; }
 
         [Description("Identity")]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader,BuilderType.DataWriter, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader,BuilderType.DataWriter, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder,BuilderType.SqlFunctions)]
         [EbRequired]
         [Unique]
         [regexCheck]

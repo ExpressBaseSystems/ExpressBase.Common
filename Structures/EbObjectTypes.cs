@@ -79,7 +79,7 @@ namespace ExpressBase.Common.Structures
         public const int iReport = 3;
         public const int iDataWriter = 4;
         //public const int iTable = 4;
-        //public const int iSqlFunction = 5;
+        public const int iSqlFunction = 5;
         //public const int iSqlValidator = 6;
         //public const int iJavascriptFunction = 7;
         //public const int iJavascriptValidator = 8;
@@ -100,7 +100,7 @@ namespace ExpressBase.Common.Structures
         public static readonly EbObjectType DataWriter = new EbObjectType(ObjectConstants.DATA_WRITER, iDataWriter, ObjectConstants.BMW, false, "fa-database");
         public static readonly EbObjectType Report = new EbObjectType(ObjectConstants.REPORT, iReport, ObjectConstants.XMW, true, "fa-file-pdf-o");
         //public static readonly EbObjectType Table = new EbObjectType(ObjectConstants.TABLE, iTable, ObjectConstants.BMW, false);
-        //public static readonly EbObjectType SqlFunction = new EbObjectType(ObjectConstants.SQL_FUNCTION, iSqlFunction, ObjectConstants.BMW, false);
+        public static readonly EbObjectType SqlFunction = new EbObjectType(ObjectConstants.SQL_FUNCTION, iSqlFunction, ObjectConstants.BMW, false, "fa-code");
         //public static readonly EbObjectType SqlValidator = new EbObjectType(ObjectConstants.SQL_VALIDATOR, iSqlValidator, ObjectConstants.BMW, false);
         //public static readonly EbObjectType JavascriptFunction = new EbObjectType(ObjectConstants.JAVASCRIPT_FUNCTION, iJavascriptFunction, ObjectConstants.BMW, false);
         //public static readonly EbObjectType JavascriptValidator = new EbObjectType(ObjectConstants.JAVASCRIPT_VALIDATOR, iJavascriptValidator, ObjectConstants.BMW, false);
@@ -136,7 +136,7 @@ namespace ExpressBase.Common.Structures
                     Report,
                     DataWriter,
                     //Table,
-                    //SqlFunction,
+                    SqlFunction,
                     //SqlValidator,
                     //JavascriptFunction,
                     //JavascriptValidator,
