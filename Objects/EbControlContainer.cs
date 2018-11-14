@@ -154,7 +154,7 @@ namespace ExpressBase.Common.Objects
 					}
 					//_control.TableName = _control.TableName.IsNullOrEmpty() ? TableName : _control.TableName;
 					_control.TableRowId = (_control.TableRowId == 0) ? TableRowId : _control.TableRowId;
-					qry += _control.GetSelectQuery(_control.TableName);
+					qry += _control.GetSelectQuery(_parentTblName);
 				}
 			}
 			return qry;
