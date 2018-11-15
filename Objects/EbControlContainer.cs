@@ -137,9 +137,9 @@ namespace ExpressBase.Common.Objects
 			if (ColoumsStr.Length > 0)
 			{
 				if (TableName == _parentTblName)
-					qry = string.Format("SELECT {0} FROM {1} WHERE {3} = {2};", ColoumsStr, TableName, TableRowId, "id");
+					qry = string.Format("SELECT id, {0} FROM {1} WHERE {3} = {2};", ColoumsStr, TableName, TableRowId, "id");
 				else
-					qry = string.Format("SELECT {0} FROM {1} WHERE {3}={2};", ColoumsStr, TableName, TableRowId, _parentTblName + "_id");
+					qry = string.Format("SELECT id, {0} FROM {1} WHERE {3}={2};", ColoumsStr, TableName, TableRowId, _parentTblName + "_id");
 
 			}
 

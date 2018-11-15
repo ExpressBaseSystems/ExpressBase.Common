@@ -42,25 +42,19 @@ namespace ExpressBase.Common
         }
     }
 
-    public class MultipleRows 
+    public class SingleTable : List<SingleRow>
     {
-        public List<SingleRow> Rows { get; set; }
-
-        public MultipleRows()
-        {
-            Rows = new List<SingleRow>();
-        }
     }
 
     public class WebformData 
     {
-        public Dictionary<string, MultipleRows> Tables { get; set; }
+        public Dictionary<string, SingleTable> MultipleTables { get; set; }
 
         public string MasterTable { get; set; }
 
         public WebformData()
         {
-            Tables = new Dictionary<string, MultipleRows>();
+            MultipleTables = new Dictionary<string, SingleTable>();
         }
     }
 }
