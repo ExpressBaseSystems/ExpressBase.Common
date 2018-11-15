@@ -22,8 +22,6 @@ CREATE OR REPLACE FUNCTION public.eb_objects_create_new_object(
     RETURNS text
     LANGUAGE 'plpgsql'
 
-    COST 100
-    VOLATILE 
 AS $BODY$
 
 DECLARE refidunique text; inserted_objid integer; inserted_obj_ver_id integer; refid_of_commit_version text;
@@ -73,7 +71,8 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text, text, text)
+ALTER FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text, text, text,text)
     OWNER TO postgres;
+
 
 
