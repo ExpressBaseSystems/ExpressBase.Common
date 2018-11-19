@@ -13,7 +13,7 @@ namespace ExpressBase.Common
         public string Default { get; set; }
     }
 
-    public class SinglColumn
+    public class SingleColumn
     {
         public string Name { get; set; }
 
@@ -25,7 +25,7 @@ namespace ExpressBase.Common
 
         public bool AutoIncrement { get; set; }
 
-        public SinglColumn() { }
+        public SingleColumn() { }
     }
 
     public class SingleRow
@@ -34,11 +34,11 @@ namespace ExpressBase.Common
 
         public bool IsUpdate { get; set; }
 
-        public List<SinglColumn> Columns { get; set; }
+        public List<SingleColumn> Columns { get; set; }
 
         public SingleRow()
         {
-            Columns = new List<SinglColumn>();
+            Columns = new List<SingleColumn>();
         }
     }
 

@@ -37,6 +37,9 @@ namespace ExpressBase.Common.Objects
 		}
 
 		[EnableInBuilder(BuilderType.WebForm)]
+		public virtual bool IsSpecialContainer { get; set; }
+
+		[EnableInBuilder(BuilderType.WebForm)]
 		[PropertyGroup("Data")]
 		[HelpText("Name Of database-table Which you want to store Data collected using this Form")]
 		public virtual string TableName { get; set; }

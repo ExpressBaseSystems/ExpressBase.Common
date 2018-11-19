@@ -158,7 +158,8 @@ namespace ExpressBase.Common {
         ///    id serial,
         ///    formid text COLLATE pg_catalog.&quot;default&quot;,
         ///    eb_createdby integer,
-        ///    eb_createdat timestamp without time zone
+        ///    eb_createdat timestamp without time zone,
+        ///	dataid integer
         ///)
         ///WITH (
         ///    OIDS = FALSE
@@ -173,8 +174,7 @@ namespace ExpressBase.Common {
         ///
         ///-- DROP INDEX public.eb_audit_master_id_idx;
         ///
-        ///CREATE INDEX eb_audit_master_id_idx
-        ///    ON public.e [rest of string was truncated]&quot;;.
+        ///CREATE INDEX eb_audit_master_id_id [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_audit_master {
             get {
@@ -247,19 +247,17 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_authenticate_unified(text, text, text, text)
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_authenticate_unified(text, text, text, text, text)
         ///
-        ///-- DROP FUNCTION public.eb_authenticate_unified(text, text, text, text);
+        ///-- DROP FUNCTION public.eb_authenticate_unified(text, text, text, text, text);
         ///
         ///CREATE OR REPLACE FUNCTION public.eb_authenticate_unified(
         ///	uname text DEFAULT NULL::text,
         ///	password text DEFAULT NULL::text,
         ///	social text DEFAULT NULL::text,
-        ///	wc text DEFAULT NULL::text)
-        ///    RETURNS TABLE(userid integer, email text, fullname text, roles_a text, rolename_a text, permissions text, preferencesjson text) 
-        ///    LANGUAGE &apos;plpgsql&apos;
-        ///
-        ///    COST 100 [rest of string was truncated]&quot;;.
+        ///	wc text DEFAULT NULL::text,
+        ///	ipaddress text DEFAULT NULL::text)
+        ///    RETURNS TABLE(userid integer, email text, fullname text, roles_a text, rolename_a text, permissions text, preferencesjs [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_authenticate_unified1 {
             get {
@@ -377,6 +375,55 @@ namespace ExpressBase.Common {
         public static string eb_compilefunctions1 {
             get {
                 return ResourceManager.GetString("eb_compilefunctions1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_constraints_datetime
+        ///
+        ///-- DROP TABLE public.eb_constraints_datetime;
+        ///
+        ///CREATE TABLE public.eb_constraints_datetime
+        ///(
+        ///    id serial,
+        ///    usergroup_id integer,
+        ///    type integer,
+        ///    start_datetime timestamp without time zone,
+        ///    end_datetime timestamp without time zone,
+        ///    days_coded integer,
+        ///    eb_del character(1) COLLATE pg_catalog.&quot;default&quot; DEFAULT &apos;F&apos;::bpchar,
+        ///    eb_created_by integer,
+        ///    eb_created_at timestamp without time zone,
+        ///    eb_revoked_by integer,
+        ///    eb_re [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_constraints_datetime {
+            get {
+                return ResourceManager.GetString("eb_constraints_datetime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_constraints_ip
+        ///
+        ///-- DROP TABLE public.eb_constraints_ip;
+        ///
+        ///CREATE TABLE public.eb_constraints_ip
+        ///(
+        ///    id serial,
+        ///    usergroup_id integer,
+        ///    ip text COLLATE pg_catalog.&quot;default&quot;,
+        ///    description text COLLATE pg_catalog.&quot;default&quot;,
+        ///    eb_del character(1) COLLATE pg_catalog.&quot;default&quot; DEFAULT &apos;F&apos;::bpchar,
+        ///    eb_created_by integer,
+        ///    eb_created_at timestamp without time zone,
+        ///    eb_revoked_by integer,
+        ///    eb_revoked_at timestamp without time zone,
+        ///    CONSTRAINT eb_constr [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_constraints_ip {
+            get {
+                return ResourceManager.GetString("eb_constraints_ip", resourceCulture);
             }
         }
         
@@ -1056,8 +1103,9 @@ namespace ExpressBase.Common {
         ///ttemp INTEGER;
         ///BEGIN
         ///	--IP CONSTRAINT
-        ///	SELECT ARRAY(SELECT ip FROM eb_constraints_ip 
-        ///	WHERE usergroup_id IN(SELECT groupid [rest of string was truncated]&quot;;.
+        ///	IF in_ip IS NOT NULL THEN
+        ///		SELECT ARRAY(SELECT ip FROM eb_constraints_ip 
+        ///		WHERE  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_getconstraintstatus {
             get {
@@ -1706,9 +1754,9 @@ namespace ExpressBase.Common {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///-- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer,  text, text, text)
+        ///-- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer,  text, text, text,text)
         ///
-        ///-- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text);
+        ///-- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text,text);
         ///
         ///CREATE OR REPLACE FUNCTION public.eb_objects_commit(
         ///	idv text,
@@ -1720,11 +1768,10 @@ namespace ExpressBase.Common {
         ///	commit_uidv integer,
         ///	relationsstring text,
         ///	tagsv text,
-        ///	appsstring text)
+        ///	appsstring text,
+        ///	disp_name text)
         ///    RETURNS text
-        ///    LANGUAGE &apos;plpgsql&apos;
-        ///
-        ///   [rest of string was truncated]&quot;;.
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_commit1 {
             get {
@@ -1799,7 +1846,9 @@ namespace ExpressBase.Common {
         ///
         ///CREATE OR REPLACE FUNCTION public.eb_objects_exploreobject(
         ///	_id integer)
-        ///    RETURNS TABLE(idval integer, nameval text, typeval integer, statusval integer, descriptionval text, changelogval text, commitatval text, commitbyval text, refidval text, ver_numval text, work_modeval character, workingcopiesval text, json_wcval json, json_lcval json, major_verval integer, minor_verval integer, p [rest of string was truncated]&quot;;.
+        ///    RETURNS TABLE(idval integer, nameval text, typeval integer, statusval integer, descriptionval text, changelogval text, commitatval text,
+        ///	commitbyval text, refidval text, ver_numval text, work_modeval character, workingcopiesval text, json_wcval json, json_lcval json,
+        ///	major_verval integer, minor_verval intege [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_exploreobject1 {
             get {
@@ -1836,7 +1885,9 @@ namespace ExpressBase.Common {
         ///
         ///CREATE OR REPLACE FUNCTION public.eb_objects_getversiontoopen(
         ///	_id integer)
-        ///    RETURNS TABLE(idv integer, namev text, typev integer, status integer, description text, changelog text, commitat text, commitby text, refidv text, ver_num text, work_mode character, workingcopies text, json_wc json, json_lc json, major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id [rest of string was truncated]&quot;;.
+        ///    RETURNS TABLE(idv integer, namev text, typev integer, status integer, description text, changelog text, commitat text, commitby text,
+        ///	refidv text, ver_num text, work_mode character, workingcopies text, json_wc json, json_lc json, major_ver integer, minor_ver integer,
+        ///	patch_ver integer, tags text, ap [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_getversiontoopen1 {
             get {
@@ -1934,14 +1985,15 @@ namespace ExpressBase.Common {
         ///	commit_uidv integer,
         ///	relationsstring text,
         ///	tagsv text,
-        ///	appsstring text)
+        ///	appsstring text,
+        ///	disp_name text)
         ///    RETURNS text
         ///    LANGUAGE &apos;plpgsql&apos;
         ///
         ///   
         ///AS $BODY$
         ///
-        ///DECLARE refidunique text; [rest of string was truncated]&quot;;.
+        ///DECLARE [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_save1 {
             get {
@@ -2113,12 +2165,9 @@ namespace ExpressBase.Common {
         ///    obj_tags text COLLATE pg_catalog.&quot;default&quot;,
         ///    owner_uid integer,
         ///    owner_ts timestamp without time zone,
+        ///	display_name text COLLATE pg_catalog.&quot;default&quot;,
         ///    CONSTRAINT eb_objects_pkey PRIMARY KEY (id)
-        ///)
-        ///WITH (
-        ///    OIDS = FALSE
-        ///)
-        ///TABLESPACE pg_defau [rest of string was truncated]&quot;;.
+        ///) [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects1 {
             get {
