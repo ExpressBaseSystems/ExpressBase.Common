@@ -1,5 +1,6 @@
 ﻿using ExpressBase.Common;
 using ExpressBase.Common.Data;
+using ExpressBase.Common.Structures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,7 @@ namespace ExpressBase.Scheduler.Jobs
 
         public JobTypes JobType { get; set; }
 
-        public int ObjId { get; set; }
+        public EbJobArguments JobArgs { get; set; }
 
-        public List<Param> Params { get; set; }
-
-        public string SolnId { get; set; }
     }
 }
