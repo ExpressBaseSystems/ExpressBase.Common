@@ -471,7 +471,9 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             else if (prop.PropertyType == typeof(bool))
                 return string.Format(s, _name, prop.GetValue(obj).ToString().ToLower());
             else if (prop.PropertyType.GetTypeInfo().IsEnum)
-                return string.Format(s, _name, "0");
+            {
+                return string.Format(s, _name, ((int)prop.GetValue(obj)).ToString());
+            }
             else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition().Name == "IDictionary`2")
                 return string.Format(s, _name, "{\"$type\": \"System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib\",\"$values\": {}}");//need to recheck format
             else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
