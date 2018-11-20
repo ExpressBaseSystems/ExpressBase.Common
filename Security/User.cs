@@ -100,6 +100,29 @@ namespace ExpressBase.Security
 			}
 		}
 
+		public List<int> GetLocationsByObject(string RefId)
+		{
+			//Sample refid - Only for reference
+			//sourc == dest == type == src id == src verid == dst id == dst verid
+			//ebdbllz23nkqd620180220120030-ebdbllz23nkqd620180220120030-0-2257-2976-2257-2976
+			if (this.Roles.Contains(SystemRoles.SolutionOwner.ToString()))
+				return new List<int> { -1 };
+			List<int> _locs = new List<int>();	
+			int _objid = Convert.ToInt32(RefId.Split("-")[5].Trim());
+			foreach (string p in this.Permissions)
+			{
+				if (p.Contains(":") && _objid == Convert.ToInt32(p.Split("-")[2]))
+				{
+					int lid = Convert.ToInt32(p.Split(":")[1].Trim());
+					if (lid == -1)
+						return new List<int> { -1 };
+					else if (!_locs.Contains(lid))
+						_locs.Add(lid);
+				}
+			}
+			return _locs;
+		}
+
 		public User() { }
 
         /// <summary>
@@ -354,8 +377,9 @@ namespace ExpressBase.Security
 					}
 					if (context.Equals(RoutingConstants.DC) && !sysRoleExists)
 						return null;
-
-                    _user = new User
+					//if(Convert.ToInt32(ds.Rows[0][7]) != 100 && !sysRoleExists)//Constraints Status Demo Test
+					//	return null;
+					_user = new User
                     {
                         UserId = userid,
                         Email = ds.Rows[0][1].ToString(),
