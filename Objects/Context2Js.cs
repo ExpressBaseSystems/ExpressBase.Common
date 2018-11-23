@@ -149,7 +149,8 @@ function ProcRecur(src_controls, dest_controls) {
                                     if (jsonObj['$type'].includes('{0}')) 
                                         return new EbObjects.{1}(jsonObj.EbSid, jsonObj); ", toolObj.GetType().FullName, toolObj.GetType().Name);
                                 this.GetJsObject(toolObj);
-                                this.EbOnChangeUIfns += String.IsNullOrEmpty((toolObj as EbObject).UIchangeFns) ? string.Empty : ("EbOnChangeUIfns." + (toolObj as EbObject).UIchangeFns + ";");
+                                if (toolObj is EbObject)
+                                    this.EbOnChangeUIfns += String.IsNullOrEmpty((toolObj as EbObject).UIchangeFns) ? string.Empty : ("EbOnChangeUIfns." + (toolObj as EbObject).UIchangeFns + ";");
                             }
                         }
                         catch (Exception ee)
