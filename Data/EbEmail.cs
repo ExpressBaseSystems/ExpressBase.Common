@@ -54,10 +54,12 @@ namespace ExpressBase.Common.Data
                 };
                 if (attachment != null)
                     mm.Attachments.Add(new Attachment(new MemoryStream(attachment), attachmentname + ".pdf"));
-                if (cc.Length > 0)
+                if (cc!=null)
+                    if(cc.Length > 0)
                     foreach (string item in cc)
                         if (item != "") mm.CC.Add(item);
-                if (bcc.Length > 0)
+                if (bcc != null)
+                    if (bcc.Length > 0)
                     foreach (string item in bcc)
                         if (item != "") mm.Bcc.Add(item);
                 _client.Send(mm);

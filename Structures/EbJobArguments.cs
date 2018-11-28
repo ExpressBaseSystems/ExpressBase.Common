@@ -17,5 +17,9 @@ namespace ExpressBase.Common.Structures
 
         public string UserAuthId { get; set; }
 
+        public string ToUserIds { get; set; }
+
+        public string ToUserGroupIds { get; set; }
+
     }
 }
