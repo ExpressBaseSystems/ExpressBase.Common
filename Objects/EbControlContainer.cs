@@ -24,7 +24,7 @@ namespace ExpressBase.Common.Objects
 
 	public class EbControlContainer : EbControlUI
 	{
-		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
 		[HideInPropertyGrid]
 		public virtual List<EbControl> Controls { get; set; }
 
@@ -36,10 +36,10 @@ namespace ExpressBase.Common.Objects
 			this.Controls = new List<EbControl>();
 		}
 
-		[EnableInBuilder(BuilderType.WebForm)]
+		[EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
 		public virtual bool IsSpecialContainer { get; set; }
 
-		[EnableInBuilder(BuilderType.WebForm)]
+		[EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
 		[PropertyGroup("Data")]
 		[HelpText("Name Of database-table Which you want to store Data collected using this Form")]
 		public virtual string TableName { get; set; }
@@ -271,7 +271,7 @@ namespace ExpressBase.Common.Objects
 
 		public override float FontSize { get; set; }
 
-		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
 		public virtual bool IsContainer
 		{
 			get
@@ -281,7 +281,7 @@ namespace ExpressBase.Common.Objects
 			private set { }
 		}
 
-		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm)]
+		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
 		[Alias("Title")]
 		public override string Label { get; set; }
 

@@ -86,7 +86,7 @@ namespace ExpressBase.Common.Structures
         //public const int iDataVisualization = 11;
         public const int iFilterDialog = 12;
         //public const int iMobileForm = 13;
-        //public const int iUserControl = 14;
+        public const int iUserControl = 14;
         public const int iEmailBuilder = 15;
         public const int iTableVisualization = 16;
         public const int iChartVisualization = 17;
@@ -107,7 +107,7 @@ namespace ExpressBase.Common.Structures
         //public static readonly EbObjectType DataVisualization = new EbObjectType(ObjectConstants.DATA_VISUALIZATION, iDataVisualization, ObjectConstants.BMW, false);
         public static readonly EbObjectType FilterDialog = new EbObjectType(ObjectConstants.FILTER_DIALOG, iFilterDialog, ObjectConstants.BMW, false, "fa-filter");
         //public static readonly EbObjectType MobileForm = new EbObjectType(ObjectConstants.MOBILE_FORM, iMobileForm, ObjectConstants.BMW, false);
-        //public static readonly EbObjectType UserControl = new EbObjectType(ObjectConstants.USER_CONTROL, iUserControl, ObjectConstants.BMW, false);
+        public static readonly EbObjectType UserControl = new EbObjectType(ObjectConstants.USER_CONTROL, iUserControl, ObjectConstants.BMW, false, "fa-puzzle-piece");
         public static readonly EbObjectType EmailBuilder = new EbObjectType(ObjectConstants.EMAIL_BUILDER, iEmailBuilder, ObjectConstants.XMW, false, "fa-envelope-o");
         public static readonly EbObjectType TableVisualization = new EbObjectType(ObjectConstants.TABLE_VISUALIZATION, iTableVisualization, ObjectConstants.BMW, true,"fa-table");
         public static readonly EbObjectType ChartVisualization = new EbObjectType(ObjectConstants.CHART_VISUALIZATION, iChartVisualization, ObjectConstants.BMW, true, "fa-bar-chart");
@@ -143,7 +143,7 @@ namespace ExpressBase.Common.Structures
                     //DataVisualization,
                     FilterDialog,
                     //MobileForm,
-                    //UserControl,
+                    UserControl,
                     EmailBuilder,
                     TableVisualization,
                     ChartVisualization,
