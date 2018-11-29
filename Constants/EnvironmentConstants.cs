@@ -59,6 +59,9 @@ namespace ExpressBase.Common
         public const string EB_PAYPAL_USERID = "EB_PAYPAL_USERID";
         public const string EB_PAYPAL_USERSECRET = "EB_PAYPAL_USERSECRET";
 
+        public const string EB_RECAPTCHA_KEY = "EB_RECAPTCHA_KEY";
+        public const string EB_RECAPTCHA_SECRET = "EB_RECAPTCHA_SECRET";
+
         //For HOC Only
         public const string EB_FTP_HOST = "EB_FTP_HOST";
         public const string EB_FTP_USER = "EB_FTP_USER";
