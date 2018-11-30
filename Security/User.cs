@@ -390,7 +390,11 @@ namespace ExpressBase.Security
                         Roles = rolesname,
                         Permissions = ds.Rows[0][5].ToString().IsNullOrEmpty()? new List<string>(): ds.Rows[0][5].ToString().Split(',').ToList(),
 						Preference = !string.IsNullOrEmpty((string)ds.Rows[0][6])? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][6].ToString()): new Preferences { Locale= "en-US", TimeZone = "(UTC) Coordinated Universal Time", DefaultLocation = -1 }
-					};
+					};                        
+                    if(_user.Preference.DefaultLocation < 1 && _user.LocationIds.Count > 0)
+                    {
+                        _user.Preference.DefaultLocation = _user.LocationIds[0] == -1 ? 1: _user.LocationIds[0];
+                    }
                 }
             }
 
