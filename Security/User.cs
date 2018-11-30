@@ -102,15 +102,18 @@ namespace ExpressBase.Security
 
 		public List<int> GetLocationsByObject(string RefId)
 		{
-			//Sample refid - Only for reference
-			//sourc == dest == type == src id == src verid == dst id == dst verid
-			//ebdbllz23nkqd620180220120030-ebdbllz23nkqd620180220120030-0-2257-2976-2257-2976
-			if (this.Roles.Contains(SystemRoles.SolutionOwner.ToString()))
+            //Sample refid - Only for reference
+            //sourc == dest == type == src id == src verid == dst id == dst verid
+            //ebdbllz23nkqd620180220120030-ebdbllz23nkqd620180220120030-0-2257-2976-2257-2976
+            if (this.Roles.Contains(SystemRoles.SolutionOwner.ToString()))
 				return new List<int> { -1 };
 			List<int> _locs = new List<int>();	
 			int _objid = Convert.ToInt32(RefId.Split("-")[5].Trim());
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("================================="+ _objid);
 			foreach (string p in this.Permissions)
 			{
+                Console.WriteLine("=========================" + p);
 				if (p.Contains(":") && _objid == Convert.ToInt32(p.Split("-")[2]))
 				{
 					int lid = Convert.ToInt32(p.Split(":")[1].Trim());
