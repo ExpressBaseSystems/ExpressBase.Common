@@ -79,12 +79,15 @@ namespace ExpressBase.Security
 				if (_locationIds == null)
 				{
 					_locationIds = new List<int>();
-					if (this.Roles.Contains(SystemRoles.SolutionOwner.ToString()))
+                    Console.WriteLine("==========Permissions: ");
+
+                    if (this.Roles.Contains(SystemRoles.SolutionOwner.ToString()))
 						this._locationIds.Add(-1);
 					else
 						foreach (string p in this.Permissions)
 							if (p.Contains(":"))
 							{
+                                Console.WriteLine(p +"====");
 								int lid = Convert.ToInt32(p.Split(":")[1].Trim());
 								if(lid == -1)
 								{
@@ -95,8 +98,12 @@ namespace ExpressBase.Security
 								if (!this._locationIds.Contains(lid))
 									this._locationIds.Add(lid);
 							}
+
 				}
-				return _locationIds;
+                Console.WriteLine("==========LocationIds in User Obj: ");
+                foreach (int id in _locationIds)
+                    Console.WriteLine(id + "===");
+                return _locationIds;
 			}
 		}
 
