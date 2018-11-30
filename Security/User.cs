@@ -108,9 +108,12 @@ namespace ExpressBase.Security
             if (this.Roles.Contains(SystemRoles.SolutionOwner.ToString()))
 				return new List<int> { -1 };
 			List<int> _locs = new List<int>();	
+            
 			int _objid = Convert.ToInt32(RefId.Split("-")[3].Trim());
-			foreach (string p in this.Permissions)
+            Console.WriteLine("============  RefId:"+ RefId + "====ObjId:"+ _objid);
+            foreach (string p in this.Permissions)
 			{
+                Console.WriteLine("=============Permission:"+ p+ "ObjectId: "+ Convert.ToInt32(p.Split("-")[2]));
 				if (p.Contains(":") && _objid == Convert.ToInt32(p.Split("-")[2]))
 				{
 					int lid = Convert.ToInt32(p.Split(":")[1].Trim());
@@ -120,6 +123,7 @@ namespace ExpressBase.Security
 						_locs.Add(lid);
 				}
 			}
+            Console.WriteLine("========LocationIds" + _locs.ToJson());
 			return _locs;
 		}
 
