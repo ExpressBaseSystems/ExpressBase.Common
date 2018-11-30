@@ -79,15 +79,12 @@ namespace ExpressBase.Security
 				if (_locationIds == null)
 				{
 					_locationIds = new List<int>();
-                    Console.WriteLine("==========Permissions: ");
-
                     if (this.Roles.Contains(SystemRoles.SolutionOwner.ToString()))
 						this._locationIds.Add(-1);
 					else
 						foreach (string p in this.Permissions)
 							if (p.Contains(":"))
 							{
-                                Console.WriteLine(p +"====");
 								int lid = Convert.ToInt32(p.Split(":")[1].Trim());
 								if(lid == -1)
 								{
@@ -100,9 +97,6 @@ namespace ExpressBase.Security
 							}
 
 				}
-                Console.WriteLine("==========LocationIds in User Obj: ");
-                foreach (int id in _locationIds)
-                    Console.WriteLine(id + "===");
                 return _locationIds;
 			}
 		}
@@ -117,20 +111,22 @@ namespace ExpressBase.Security
 			List<int> _locs = new List<int>();	
             
 			int _objid = Convert.ToInt32(RefId.Split("-")[3].Trim());
-            Console.WriteLine("============  RefId:"+ RefId + "====ObjId:"+ _objid);
+            Console.WriteLine("=========ObjectId:"+_objid +"============Locations: ");
+
             foreach (string p in this.Permissions)
 			{
-                Console.WriteLine("=============Permission:"+ p+ "ObjectId: "+ Convert.ToInt32(p.Split("-")[2]));
 				if (p.Contains(":") && _objid == Convert.ToInt32(p.Split("-")[2]))
 				{
 					int lid = Convert.ToInt32(p.Split(":")[1].Trim());
-					if (lid == -1)
-						return new List<int> { -1 };
-					else if (!_locs.Contains(lid))
-						_locs.Add(lid);
-				}
+                    if (lid == -1)
+                        return new List<int> { -1 };
+                    else if (!_locs.Contains(lid))
+                    {
+                        _locs.Add(lid);
+                        Console.WriteLine(lid + "====");
+                    }
+                }
 			}
-            Console.WriteLine("========LocationIds" + _locs.ToJson());
 			return _locs;
 		}
 
