@@ -110,7 +110,7 @@ namespace ExpressBase.Security
 			List<int> _locs = new List<int>();	
 			int _objid = Convert.ToInt32(RefId.Split("-")[5].Trim());
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("================================="+ _objid);
+            Console.WriteLine("================================="+ this.LocationIds);
 			foreach (string p in this.Permissions)
 			{
                 Console.WriteLine("=========================" + p);
@@ -123,7 +123,7 @@ namespace ExpressBase.Security
 						_locs.Add(lid);
 				}
 			}
-			return _locs;
+			return this.LocationIds; //Only temp fix for live
 		}
 
 		public User() { }
