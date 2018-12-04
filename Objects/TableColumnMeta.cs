@@ -13,13 +13,24 @@ namespace ExpressBase.Common
         public string Default { get; set; }
     }
 
+    public class AuditTrailEntry
+    {
+        public string Name { get; set; }
+
+        public string NewVal { get; set; }
+
+        public string OldVal { get; set; }
+
+        public string DataRel { get; set; }
+
+        public AuditTrailEntry() { }
+    }
+
     public class SingleColumn
     {
         public string Name { get; set; }
 
         public dynamic Value { get; set; }
-
-        public dynamic OldValue { get; set; }
 
         public int Type { get; set; }
 
@@ -44,6 +55,9 @@ namespace ExpressBase.Common
 
     public class SingleTable : List<SingleRow>
     {
+        public string ParentTable { get; set; }
+
+        public string ParentRowId { get; set; }
     }
 
     public class WebformData 
