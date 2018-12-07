@@ -435,4 +435,23 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 1)]
         public FileClass Type { get; set; }
     }
+
+    [DataContract]
+    public class FileCategoryChangeRequest : EbServiceStackAuthRequest, IReturn<FileCategoryChangeResponse>
+    {
+        [DataMember(Order = 1)]
+        public string Category { get; set; }
+
+        [DataMember(Order = 2)]
+        public int[] FileRefId { get; set; }
+
+    }
+
+    [DataContract]
+    public class FileCategoryChangeResponse : EbServiceStackAuthRequest
+    {
+        [DataMember(Order = 1)]
+        public bool Status { set; get; }
+
+    }
 }
