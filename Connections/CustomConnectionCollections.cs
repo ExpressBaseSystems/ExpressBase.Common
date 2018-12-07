@@ -77,15 +77,16 @@ namespace ExpressBase.Common.Connections
                 if (Primary != null)
                 {
                     resp = Primary.Send(to, subject, message, cc, bcc, attachment, attachmentname);
-                    Console.WriteLine("Mail Send With Primary");
+                    Console.WriteLine("Mail Send With Primary :" + Primary.EmailAddress);
 
                 }
                 else if (this.Capacity != 0)
                 {
-                    Console.WriteLine("Mail Send using First Element");
+                    Console.WriteLine("Mail Send using First Element" + this[0].EmailAddress);
                     this[0].Send(to, subject, message, cc, bcc, attachment, attachmentname);
                 }
-                Console.WriteLine("Email Connection Empty!");
+                else
+                    Console.WriteLine("Email Connection Empty!");
 
             }
             catch (Exception e)
@@ -95,7 +96,7 @@ namespace ExpressBase.Common.Connections
                     if (FallBack != null)
                     {
                         resp = FallBack.Send(to, subject, message, cc, bcc, attachment, attachmentname);
-                        Console.WriteLine("Mail Send With Secondary");
+                        Console.WriteLine("Mail Send With FallBack : " + FallBack.EmailAddress);
                     }
                 }
                 catch (Exception ex)
