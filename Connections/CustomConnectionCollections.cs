@@ -70,11 +70,23 @@ namespace ExpressBase.Common.Connections
 
         public bool Send(string to, string subject, string message, string[] cc, string[] bcc, byte[] attachment, string attachmentname)
         {
-            bool resp =false;
+            bool resp = false;
             try
-            {              
-                resp = Primary.Send(to, subject,message,cc,bcc,attachment,attachmentname);
-                Console.WriteLine("Mail Send With Primary");
+            {
+                Console.WriteLine("Inside Mail Sending to " + to);
+                if (Primary != null)
+                {
+                    resp = Primary.Send(to, subject, message, cc, bcc, attachment, attachmentname);
+                    Console.WriteLine("Mail Send With Primary");
+
+                }
+                else if (this.Capacity != 0)
+                {
+                    Console.WriteLine("Mail Send using First Element");
+                    this[0].Send(to, subject, message, cc, bcc, attachment, attachmentname);
+                }
+                Console.WriteLine("Email Connection Empty!");
+
             }
             catch (Exception e)
             {
