@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExpressBase.Common.Structures;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -53,6 +54,11 @@ namespace ExpressBase.Common
                 __newTable.Columns.Add(col);
 
             return __newTable;
+        }
+
+        public EbDataColumn NewDataColumn(int index, string name, EbDbTypes type)
+        {
+            return new EbDataColumn(index, name, type);
         }
     }
 
