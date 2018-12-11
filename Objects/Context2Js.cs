@@ -29,7 +29,9 @@ namespace ExpressBase.Common.Objects
         public string EbEnums { get; private set; }
         public string CtrlCounters { get; private set; }
         public string JsObjects { get; private set; }
-        public string ToolBoxHtml { get; private set; }
+
+        public string ToolsHtml { get; private set; }
+        
         public string TypeRegister { get; private set; }
         public string JsonToJsObjectFuncs { get; private set; }
         public string EbObjectTypes { get; private set; }
@@ -47,7 +49,7 @@ namespace ExpressBase.Common.Objects
             this.EbEnums = string.Empty;
             this.CtrlCounters = string.Empty;
             this.JsObjects = string.Empty;
-            this.ToolBoxHtml = string.Empty;
+            this.ToolsHtml = string.Empty;
             this.TypeRegister = string.Empty;
             this.JsonToJsObjectFuncs = string.Empty;
             this.EbObjectTypes = string.Empty;
@@ -92,7 +94,7 @@ namespace ExpressBase.Common.Objects
 
             this.AllMetas = null;
             this.JsObjects = null;
-            this.ToolBoxHtml = null;
+            this.ToolsHtml = null;
             this.TypeRegister = null;
             this.JsonToJsObjectFuncs = null;
             this.EbObjectTypes = null;
@@ -143,7 +145,7 @@ function ProcRecur(src_controls, dest_controls) {
                             {
                                 object toolObj = Activator.CreateInstance(tool);
                                 if ((!_typeInfo.IsDefined(typeof(HideInToolBox))) && toolObj is EbControl)
-                                    ToolBoxHtml += (toolObj as EbControl).GetToolHtml();
+                                    ToolsHtml += (toolObj as EbControl).GetToolHtml();
                                 //ToolBoxHtml += this.GetToolHtml(tool.Name.Substring(2));
                                 this.TypeRegister += string.Format(@"
                                     if (jsonObj['$type'].includes('{0}')) 

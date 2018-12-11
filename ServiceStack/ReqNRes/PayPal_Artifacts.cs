@@ -647,9 +647,13 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
     public class BillingPlanRequest
     {
         private string _name;
+
         private string _description;
+
         private string _type = "FIXED";
+
         private List<PaymentDefinition> _paymentDef;
+
         private MerchantPreferences _merchantPref = new MerchantPreferences();
 
         [DataMember(Name = "name")]
