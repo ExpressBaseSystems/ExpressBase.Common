@@ -73,4 +73,25 @@ namespace ExpressBase.Common
             MultipleTables = new Dictionary<string, SingleTable>();
         }
     }
+
+    public class WebFormSchema
+    {
+        public string FormName { set; get; }
+
+        public List<TableSchema> Tables { set; get; }
+    }
+
+    public class TableSchema
+    {
+        public string TableName { set; get; }
+
+        public List<ColumSchema> Colums { set; get; }
+    }
+
+    public class ColumSchema
+    {
+        public string ColumName { set; get; }
+
+        public int EbDbType { set; get; }
+    }
 }
