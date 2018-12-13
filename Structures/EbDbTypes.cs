@@ -171,17 +171,20 @@
         VendorDbType Bytea { get; }
 		VendorDbType BooleanOriginal { get; }
 		dynamic GetVendorDbType(EbDbTypes e);
+        string GetVendorDbText(EbDbTypes e);
     }
 
     public struct VendorDbType
     {
         public EbDbTypes EbDbType { get; }
         public dynamic VDbType { get; }
+        public string VDbText { get; }
 
-        public VendorDbType(EbDbTypes type, dynamic vDbType)
+        public VendorDbType(EbDbTypes type, dynamic vDbType,string vDbText)
         {
             this.EbDbType = type;
             this.VDbType = vDbType;
+            this.VDbText = vDbText;
         }
     }
 }

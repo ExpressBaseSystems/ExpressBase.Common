@@ -30,7 +30,7 @@ namespace ExpressBase.Objects
         public virtual string Name { get; set; }
 
         [Description("Identity")]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder,BuilderType.DVBuilder, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.SqlFunctions, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder,BuilderType.DVBuilder, BuilderType.UserControl)]
         [EbRequired]
         [Unique]
         public string DisplayName { get; set; }
