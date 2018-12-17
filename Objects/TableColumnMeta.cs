@@ -79,6 +79,8 @@ namespace ExpressBase.Common
         public string FormName { set; get; }
 
         public List<TableSchema> Tables { set; get; }
+
+        public string MasterTable { set; get; }
     }
 
     public class TableSchema
