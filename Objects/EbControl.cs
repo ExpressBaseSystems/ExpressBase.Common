@@ -40,6 +40,7 @@ namespace ExpressBase.Common.Objects
             return Html
 .Replace("@barehtml@", this.GetBareHtml())
 .Replace("@name@", this.Name)
+.Replace("@childOf@", this.ChildOf.IsNullOrEmpty() ? string.Empty : "childOf='" + this.ChildOf + "'")
 .Replace("@ebsid@", this.EbSid_CtxId)
 .Replace("@hiddenString@", this.HiddenString)
 .Replace("@helpText@", this.HelpText)
@@ -50,6 +51,10 @@ namespace ExpressBase.Common.Objects
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string ContextId { get; set; }
+
+        [HideInPropertyGrid]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        public virtual string ChildOf { get; set; }
 
         [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]

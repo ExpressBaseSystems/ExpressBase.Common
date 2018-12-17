@@ -44,7 +44,12 @@ namespace ExpressBase.Common.Objects
 		[HelpText("Name Of database-table Which you want to store Data collected using this Form")]
 		public virtual string TableName { get; set; }
 
-		public static T Localize<T>(T formObj, Dictionary<string, string> Keys)
+        public virtual string GetHtml(bool isRootObj)
+        {
+            return string.Empty;
+        }
+
+        public static T Localize<T>(T formObj, Dictionary<string, string> Keys)
 		{
 			EbControlContainer _formObj = formObj as EbControlContainer;// need to change
 
@@ -331,5 +336,6 @@ namespace ExpressBase.Common.Objects
 				}
 			}
 		}
-	}
+        
+    }
 }
