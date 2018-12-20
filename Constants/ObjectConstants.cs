@@ -38,5 +38,6 @@ namespace ExpressBase.Common.Constants
 		public const string CHART_VISUALIZATION			= "ChartVisualization";
 		public const string BOT_FORM					= "BotForm";
         public const string SMS_BUILDER                 = "SmsBuilder";
+        public const string API                         = "Api";
 	}
 }
