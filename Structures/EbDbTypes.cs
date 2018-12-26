@@ -172,6 +172,7 @@
 		VendorDbType BooleanOriginal { get; }
 		dynamic GetVendorDbType(EbDbTypes e);
         string GetVendorDbText(EbDbTypes e);
+        VendorDbType GetVendorDbTypeStruct(EbDbTypes e);
     }
 
     public struct VendorDbType
