@@ -204,8 +204,10 @@ namespace ExpressBase.Common.Singletons
 			}
 		}
 
-		//return the difffernce timespan between utc and given timezone
-		public static TimeSpan GetDifference(string TimeZoneName, bool Negate = false)
+        //return time difference in timespan between utc and given timezone
+        //To convert utc to another timezone then pass Negate as true - assumption: Using DateTime.Add()
+        //To convert time in given timezone to utc then neglect Negate paremeter - assumption: Using DateTime.Add()
+        public static TimeSpan GetDifference(string TimeZoneName, bool Negate = false)
 		{
 			int _hour = 0, _min = 0;
 			int op = Negate ? -1 : 1;

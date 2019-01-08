@@ -17,4 +17,21 @@ namespace ExpressBase.Scheduler.Jobs
         public EbJobArguments JobArgs { get; set; }
 
     }
+
+    public class EbSchedule
+    {
+        public int Id { get; set; }
+
+        public EbTask Task { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+
+        public string JobKey { get; set; }
+
+        public string TriggerKey { get; set; }
+
+        public ScheduleStatuses Status { get; set; }
+    }
 }

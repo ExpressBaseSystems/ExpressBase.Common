@@ -145,5 +145,12 @@ namespace ExpressBase.Common
         ReportTask =3,
         MyJob = 4
     }
+
+    public enum ScheduleStatuses
+    {
+        Unscheduled = 0,
+        Active = 1,
+        Paused =2
+    }
 }
 

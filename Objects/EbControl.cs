@@ -23,7 +23,7 @@ namespace ExpressBase.Common.Objects
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        public string EbSid_CtxId
+        public virtual string EbSid_CtxId
         {
             get
             {
@@ -306,6 +306,18 @@ else
 
         [JsonIgnore]
         public virtual string GetValueJSfn
+        {
+            get
+            {
+                return @"
+                    return $('#' + this.EbSid_CtxId).val();
+                ";
+            }
+            set { }
+        }
+
+        [JsonIgnore]
+        public virtual string GetDisplayMemberJSfn
         {
             get
             {

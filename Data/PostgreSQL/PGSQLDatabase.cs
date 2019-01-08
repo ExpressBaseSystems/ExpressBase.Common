@@ -76,6 +76,11 @@ namespace ExpressBase.Common
         {
             return this.InnerDictionary[e].VDbText;
         }
+
+        public VendorDbType GetVendorDbTypeStruct(EbDbTypes e)
+        {
+            return this.InnerDictionary[e];
+        }
     }
 
     public class PGSQLDatabase : IDatabase
