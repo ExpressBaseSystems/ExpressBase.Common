@@ -326,6 +326,18 @@ else
         }
 
         [JsonIgnore]
+        public virtual string IsRequiredOKJSfn
+        {
+            get
+            {
+                return @"
+                    return !isNaNOrEmpty(this.getValue());
+                ";
+            }
+            set { }
+        }
+
+        [JsonIgnore]
         public virtual string SetValueJSfn
         {
             get
