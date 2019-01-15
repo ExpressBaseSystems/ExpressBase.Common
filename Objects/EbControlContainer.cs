@@ -118,7 +118,7 @@ namespace ExpressBase.Common.Objects
 					if (prop.IsDefined(typeof(PropertyEditor)) && prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == PropertyEditorType.MultiLanguageKeySelector)
 					{
 						string val = control.GetType().GetProperty(prop.Name).GetValue(control, null) as String;
-						if (!val.IsNullOrEmpty())
+						if (!val.IsNullOrEmpty() && !templist.Contains(val))
 							templist.Add(val); ;
 					}
 				}

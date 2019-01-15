@@ -53,7 +53,8 @@ namespace ExpressBase.Common.Objects
         DVBuilder = 11,
         EmailBuilder = 15,
         BotForm = 18,
-        SmsBuilder =19
+        SmsBuilder = 19,
+        ApiBuilder = 20
     }
 
     [ProtoBuf.ProtoContract]
@@ -80,15 +81,15 @@ namespace ExpressBase.Common.Objects
 
     public enum HorizontalAlignment
     {
-       Left,
-       Right,
-       Center
+        Left,
+        Right,
+        Center
     }
 
     public enum VerticalAlignment
     {
-       Top,
-       Bottom,
-       Middle
+        Top,
+        Bottom,
+        Middle
     }
 }

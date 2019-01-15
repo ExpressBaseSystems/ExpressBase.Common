@@ -68,6 +68,8 @@ namespace ExpressBase.Common
 
         public string MasterTable { get; set; }
 
+        public string AutoIdText { get; set; }//prefix + suffix 
+
         public WebformData()
         {
             MultipleTables = new Dictionary<string, SingleTable>();

@@ -105,10 +105,7 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.BotForm)]
         public virtual bool IsReadOnly { get; set; }
-
-        [ProtoBuf.ProtoMember(12)]
-        [System.ComponentModel.Category("Behavior")]
-        [Description("Labels")]
+        
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string ToolTipText { get; set; }
 
