@@ -19,20 +19,23 @@ namespace ExpressBase.Common.Objects.Attributes
         CollectionA2C = 10,
         JS = 11,
         SQL = 12,//not completed
-        ObjectSelector = 13,//--
-        FontSelector = 14,//--  //not completed
+        ObjectSelector = 13,
+        FontSelector = 14,
         Expandable = 15,
         String = 16,
         ImageSeletor = 17,
-        ScriptEditorCS = 18,
-        ScriptEditorJS = 19,
-        ScriptEditorSQ = 20,
+        //ScriptEditorCS = 18,//=========
+        //ScriptEditorJS = 19,
+        //ScriptEditorSQ = 20,
         MultiLanguageKeySelector = 21,
         CollectionPropsFrmSrc = 22,
         DictionaryEditor = 23,
         CollectionProp = 24,
         DDfromDictProp = 25,
         CollectionABCpropToggle = 26,
+        ScriptEditorJS = 64,
+        ScriptEditorCS = 128,
+        ScriptEditorSQ = 256
     }
 
     public class HideInToolBox : Attribute { }
@@ -131,7 +134,7 @@ namespace ExpressBase.Common.Objects.Attributes
 
     public class PropertyEditor : Attribute
     {
-        public PropertyEditorType PropertyEditorType { get; set; }
+        public int PropertyEditorType { get; set; }
 
         public string PropertyEditorSource { get; set; }
 
@@ -141,31 +144,44 @@ namespace ExpressBase.Common.Objects.Attributes
 
         public int Limit { get; set; }
 
-        public PropertyEditor(PropertyEditorType type) { this.PropertyEditorType = type; }
+        public PropertyEditor(PropertyEditorType type1)
+        {
+            this.PropertyEditorType = (int)type1;
+        }
+
+        public PropertyEditor(PropertyEditorType type1, PropertyEditorType type2)
+        {
+            this.PropertyEditorType = (int)type1 + (int)type2;
+        }
+
+        public PropertyEditor(PropertyEditorType type1, PropertyEditorType type2, PropertyEditorType type3)
+        {
+            this.PropertyEditorType = (int)type1 + (int)type2 + (int)type3;
+        }
 
         public PropertyEditor(PropertyEditorType type, string source)
         {
-            this.PropertyEditorType = type;
+            this.PropertyEditorType = (int)type;
             this.PropertyEditorSource = source;
         }
 
         public PropertyEditor(PropertyEditorType type, string source, int limit)
         {
-            this.PropertyEditorType = type;
+            this.PropertyEditorType = (int)type;
             this.PropertyEditorSource = source;
             this.Limit = limit;
         }
 
         public PropertyEditor(PropertyEditorType type, string source, string Dprop)
         {
-            this.PropertyEditorType = type;
+            this.PropertyEditorType = (int)type;
             this.PropertyEditorSource = source;
             this.DependantProp = Dprop;
         }
 
         public PropertyEditor(PropertyEditorType type, string source, string Dprop, string Dprop2)
         {
-            this.PropertyEditorType = type;
+            this.PropertyEditorType = (int)type;
             this.PropertyEditorSource = source;
             this.DependantProp = Dprop;
             this.DependantProp2 = Dprop2;

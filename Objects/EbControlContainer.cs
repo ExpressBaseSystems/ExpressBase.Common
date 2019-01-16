@@ -66,7 +66,7 @@ namespace ExpressBase.Common.Objects
 				foreach (PropertyInfo prop in props)
 				{
 					if (prop.IsDefined(typeof(PropertyEditor))
-						&& prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == PropertyEditorType.MultiLanguageKeySelector)
+						&& prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == (int)PropertyEditorType.MultiLanguageKeySelector)
 					{
 						MLKeys.Insert(0, new KeyValuePair<EbControl, string>(control, prop.Name));
 					}
@@ -115,7 +115,7 @@ namespace ExpressBase.Common.Objects
 				PropertyInfo[] props = control.GetType().GetProperties();
 				foreach (PropertyInfo prop in props)
 				{
-					if (prop.IsDefined(typeof(PropertyEditor)) && prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == PropertyEditorType.MultiLanguageKeySelector)
+					if (prop.IsDefined(typeof(PropertyEditor)) && prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == (int)PropertyEditorType.MultiLanguageKeySelector)
 					{
 						string val = control.GetType().GetProperty(prop.Name).GetValue(control, null) as String;
 						if (!val.IsNullOrEmpty() && !templist.Contains(val))
