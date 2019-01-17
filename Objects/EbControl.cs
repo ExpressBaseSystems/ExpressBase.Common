@@ -64,7 +64,7 @@ namespace ExpressBase.Common.Objects
         [Description("Labels")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [UIproperty]
-        [PropertyEditor(PropertyEditorType.ScriptEditorJS, PropertyEditorType.ScriptEditorSQ)]
+        [PropertyEditor(PropertyEditorType.ScriptEditorJS,PropertyEditorType.ScriptEditorCS, PropertyEditorType.ScriptEditorSQ)]
         [OnChangeUIFunction("Common.HELP_TEXT")]
         public virtual string HelpText { get; set; }
 

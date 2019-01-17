@@ -159,31 +159,31 @@ namespace ExpressBase.Common.Objects.Attributes
             this.PropertyEditorType = (int)type1 + (int)type2 + (int)type3;
         }
 
-        public PropertyEditor(PropertyEditorType type, string source)
+        public PropertyEditor(PropertyEditorType type, string source):this(type)
         {
-            this.PropertyEditorType = (int)type;
+            //this.PropertyEditorType = (int)type;
             this.PropertyEditorSource = source;
         }
 
-        public PropertyEditor(PropertyEditorType type, string source, int limit)
+        public PropertyEditor(PropertyEditorType type, string source, int limit):this(type, source)
         {
-            this.PropertyEditorType = (int)type;
-            this.PropertyEditorSource = source;
+            //this.PropertyEditorType = (int)type;
+            //this.PropertyEditorSource = source;
             this.Limit = limit;
         }
 
-        public PropertyEditor(PropertyEditorType type, string source, string Dprop)
+        public PropertyEditor(PropertyEditorType type, string source, string Dprop):this(type ,source)
         {
-            this.PropertyEditorType = (int)type;
-            this.PropertyEditorSource = source;
+            //this.PropertyEditorType = (int)type;
+            //this.PropertyEditorSource = source;
             this.DependantProp = Dprop;
         }
 
-        public PropertyEditor(PropertyEditorType type, string source, string Dprop, string Dprop2)
+        public PropertyEditor(PropertyEditorType type, string source, string Dprop, string Dprop2):this(type,source, Dprop)
         {
-            this.PropertyEditorType = (int)type;
-            this.PropertyEditorSource = source;
-            this.DependantProp = Dprop;
+        //    this.PropertyEditorType = (int)type;
+        //    this.PropertyEditorSource = source;
+        //    this.DependantProp = Dprop;
             this.DependantProp2 = Dprop2;
         }
     }
