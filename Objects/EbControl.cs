@@ -106,6 +106,9 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.BotForm)]
         public virtual bool IsReadOnly { get; set; }
+
+        [EnableInBuilder(BuilderType.BotForm)]
+        public virtual bool IsMaintainValue { get; set; }
         
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string ToolTipText { get; set; }
@@ -320,7 +323,7 @@ else
             get
             {
                 return @"
-                    return $('#' + this.EbSid_CtxId).val();
+                    return this.getValue();
                 ";
             }
             set { }
