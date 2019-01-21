@@ -15,7 +15,7 @@ namespace ExpressBase.Common.Objects
 
         public string group { get; set; }
 
-        public PropertyEditorType editor { get; set; }
+        public int editor { get; set; }
 
         public string[] options { get; set; }
 

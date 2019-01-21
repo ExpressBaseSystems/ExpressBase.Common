@@ -337,14 +337,14 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                         }
                         this.EbEnums += "}, ";
                     }
-                    else if (meta.editor == PropertyEditorType.ObjectSelector)
+                    else if (meta.editor == (int)PropertyEditorType.ObjectSelector)
                     {
                         if (prop.IsDefined(typeof(OSE_ObjectTypes)))
                             meta.options = prop.GetCustomAttribute<OSE_ObjectTypes>().ObjectTypes.Select(a => ((EbObjectType)a).Name).ToArray();
                     }
-                    else if (meta.editor == PropertyEditorType.Expandable && prop.PropertyType.GetTypeInfo().IsClass)
+                    else if (meta.editor == (int)PropertyEditorType.Expandable && prop.PropertyType.GetTypeInfo().IsClass)
                         meta.submeta = this.GetMetaCollection(Activator.CreateInstance(prop.PropertyType)).ToList<Meta>();
-                    else if (meta.editor == PropertyEditorType.CollectionABCpropToggle && prop.PropertyType.GetTypeInfo().BaseType.IsGenericType &&
+                    else if (meta.editor == (int)PropertyEditorType.CollectionABCpropToggle && prop.PropertyType.GetTypeInfo().BaseType.IsGenericType &&
                                 prop.PropertyType.GetTypeInfo().BaseType.GetGenericTypeDefinition() == typeof(List<>))
                     {
                         Type itemType = prop.PropertyType.GetTypeInfo().BaseType.GetGenericArguments()[0];
@@ -372,7 +372,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             {
                 if (prop.PropertyType.GetTypeInfo().IsEnum)
                 {
-                    meta.editor = PropertyEditorType.DropDown;
+                    meta.editor = (int)PropertyEditorType.DropDown;
                     this.EbEnums += "'" + prop.PropertyType.GetTypeInfo().Name + "': {";
                     foreach (dynamic enumStr in Enum.GetValues(prop.PropertyType))
                     {
@@ -382,7 +382,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     this.EbEnums += "}, ";
                 }
                 else if (prop.PropertyType != typeof(List<EbControl>))
-                    meta.editor = this.GetTypeOf(prop);
+                    meta.editor = (int)this.GetTypeOf(prop);
             }
 
             //if no helpText attribut is set, set as empty string
@@ -445,10 +445,10 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
 
                 string DefaultVal = prop.GetCustomAttribute<DefaultPropValue>().Value;
                 // For Object Selector
-                if (prop.GetType().GetTypeInfo().IsDefined(typeof(PropertyEditor)) && prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == PropertyEditorType.ObjectSelector)
+                if (prop.GetType().GetTypeInfo().IsDefined(typeof(PropertyEditor)) && prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == (int)PropertyEditorType.ObjectSelector)
                 {
                     Attribute EditorAttr = prop.GetCustomAttribute<PropertyEditor>();
-                    PropertyEditorType EditorType = (EditorAttr as PropertyEditor).PropertyEditorType;
+                    PropertyEditorType EditorType = (PropertyEditorType)(EditorAttr as PropertyEditor).PropertyEditorType;
 
                     if (EditorType is PropertyEditorType.ObjectSelector)
                         DefaultVal = DefaultVal.SingleQuoted();

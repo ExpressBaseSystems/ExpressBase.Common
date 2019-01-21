@@ -66,7 +66,7 @@ namespace ExpressBase.Common.Objects
 				foreach (PropertyInfo prop in props)
 				{
 					if (prop.IsDefined(typeof(PropertyEditor))
-						&& prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == PropertyEditorType.MultiLanguageKeySelector)
+						&& prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == (int)PropertyEditorType.MultiLanguageKeySelector)
 					{
 						MLKeys.Insert(0, new KeyValuePair<EbControl, string>(control, prop.Name));
 					}
@@ -115,10 +115,10 @@ namespace ExpressBase.Common.Objects
 				PropertyInfo[] props = control.GetType().GetProperties();
 				foreach (PropertyInfo prop in props)
 				{
-					if (prop.IsDefined(typeof(PropertyEditor)) && prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == PropertyEditorType.MultiLanguageKeySelector)
+					if (prop.IsDefined(typeof(PropertyEditor)) && prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == (int)PropertyEditorType.MultiLanguageKeySelector)
 					{
 						string val = control.GetType().GetProperty(prop.Name).GetValue(control, null) as String;
-						if (!val.IsNullOrEmpty())
+						if (!val.IsNullOrEmpty() && !templist.Contains(val))
 							templist.Add(val); ;
 					}
 				}
@@ -194,6 +194,7 @@ namespace ExpressBase.Common.Objects
 								string opFnsJs = string.Empty;
 								opFnsJs += GetOpFnJs("getValue", _ctrlObj.GetValueJSfn, TypeName);
 								opFnsJs += GetOpFnJs("getDisplayMember", _ctrlObj.GetDisplayMemberJSfn, TypeName);
+								opFnsJs += GetOpFnJs("isRequiredOK", _ctrlObj.IsRequiredOKJSfn, TypeName);
 								opFnsJs += GetOpFnJs("setValue", _ctrlObj.SetValueJSfn, TypeName);
 								opFnsJs += GetOpFnJs("hide", _ctrlObj.HideJSfn, TypeName);
 								opFnsJs += GetOpFnJs("show", _ctrlObj.ShowJSfn, TypeName);
