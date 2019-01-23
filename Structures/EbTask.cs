@@ -10,6 +10,8 @@ namespace ExpressBase.Scheduler.Jobs
 {
     public class EbTask
     {
+        public string Name { get; set; }
+
         public string Expression { get; set; }
 
         public JobTypes JobType { get; set; }
@@ -21,6 +23,8 @@ namespace ExpressBase.Scheduler.Jobs
     public class EbSchedule
     {
         public int Id { get; set; }
+
+        public string Name { get; set; }
 
         public EbTask Task { get; set; }
 

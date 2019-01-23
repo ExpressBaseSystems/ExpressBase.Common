@@ -142,7 +142,7 @@ namespace ExpressBase.Common
     {
         EmailTask = 1,
         SmsTask = 2,
-        ReportTask =3,
+        ReportTask = 3,
         MyJob = 4
     }
 
@@ -150,7 +150,8 @@ namespace ExpressBase.Common
     {
         Unscheduled = 0,
         Active = 1,
-        Paused =2
+        Paused = 2,
+        Deleted = 3
     }
 }
 
