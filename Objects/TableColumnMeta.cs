@@ -45,6 +45,8 @@ namespace ExpressBase.Common
 
         public bool IsUpdate { get; set; }
 
+        public bool IsDelete { get; set; }
+
         public List<SingleColumn> Columns { get; set; }
 
         public SingleRow()
