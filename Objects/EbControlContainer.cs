@@ -66,7 +66,7 @@ namespace ExpressBase.Common.Objects
 				foreach (PropertyInfo prop in props)
 				{
 					if (prop.IsDefined(typeof(PropertyEditor))
-						&& prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == PropertyEditorType.MultiLanguageKeySelector)
+						&& prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == (int)PropertyEditorType.MultiLanguageKeySelector)
 					{
 						MLKeys.Insert(0, new KeyValuePair<EbControl, string>(control, prop.Name));
 					}
@@ -115,10 +115,10 @@ namespace ExpressBase.Common.Objects
 				PropertyInfo[] props = control.GetType().GetProperties();
 				foreach (PropertyInfo prop in props)
 				{
-					if (prop.IsDefined(typeof(PropertyEditor)) && prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == PropertyEditorType.MultiLanguageKeySelector)
+					if (prop.IsDefined(typeof(PropertyEditor)) && prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == (int)PropertyEditorType.MultiLanguageKeySelector)
 					{
 						string val = control.GetType().GetProperty(prop.Name).GetValue(control, null) as String;
-						if (!val.IsNullOrEmpty())
+						if (!val.IsNullOrEmpty() && !templist.Contains(val))
 							templist.Add(val); ;
 					}
 				}
@@ -138,35 +138,35 @@ namespace ExpressBase.Common.Objects
 		//    }
 		//}
 
-		public virtual string GetSelectQuery(string _parentTblName)
-		{
-			string ColoumsStr = Get1stLvlColNames();
-			string qry = string.Empty;
-			if (ColoumsStr.Length > 0)
-			{
-				if (TableName == _parentTblName)
-					qry = string.Format("SELECT id, {0} FROM {1} WHERE {3} = {2};", ColoumsStr, TableName, TableRowId, "id");
-				else
-					qry = string.Format("SELECT id, {0} FROM {1} WHERE {3}={2};", ColoumsStr, TableName, TableRowId, _parentTblName + "_id");
+		//public virtual string GetSelectQuery(string _parentTblName)
+		//{
+		//	string ColoumsStr = Get1stLvlColNames();
+		//	string qry = string.Empty;
+		//	if (ColoumsStr.Length > 0)
+		//	{
+		//		if (TableName == _parentTblName)
+		//			qry = string.Format("SELECT id, {0} FROM {1} WHERE {3} = {2};", ColoumsStr, TableName, TableRowId, "id");
+		//		else
+		//			qry = string.Format("SELECT id, {0} FROM {1} WHERE {3}={2};", ColoumsStr, TableName, TableRowId, _parentTblName + "_id");
 
-			}
+		//	}
 
-			foreach (EbControl control in Controls)
-			{
-				if (control is EbControlContainer)
-				{
-					EbControlContainer _control = (control as EbControlContainer);
-					if (_control.TableName.IsNullOrEmpty())
-					{
-						_control.TableName = TableName;
-					}
-					//_control.TableName = _control.TableName.IsNullOrEmpty() ? TableName : _control.TableName;
-					_control.TableRowId = (_control.TableRowId == 0) ? TableRowId : _control.TableRowId;
-					qry += _control.GetSelectQuery(_parentTblName);
-				}
-			}
-			return qry;
-		}
+		//	foreach (EbControl control in Controls)
+		//	{
+		//		if (control is EbControlContainer)
+		//		{
+		//			EbControlContainer _control = (control as EbControlContainer);
+		//			if (_control.TableName.IsNullOrEmpty())
+		//			{
+		//				_control.TableName = TableName;
+		//			}
+		//			//_control.TableName = _control.TableName.IsNullOrEmpty() ? TableName : _control.TableName;
+		//			_control.TableRowId = (_control.TableRowId == 0) ? TableRowId : _control.TableRowId;
+		//			qry += _control.GetSelectQuery(_parentTblName);
+		//		}
+		//	}
+		//	return qry;
+		//}
 
 		public static string GetControlOpsJS(EbControlContainer ebControlContainer, BuilderType FormTypeEnum)
 		{
@@ -194,6 +194,7 @@ namespace ExpressBase.Common.Objects
 								string opFnsJs = string.Empty;
 								opFnsJs += GetOpFnJs("getValue", _ctrlObj.GetValueJSfn, TypeName);
 								opFnsJs += GetOpFnJs("getDisplayMember", _ctrlObj.GetDisplayMemberJSfn, TypeName);
+								opFnsJs += GetOpFnJs("isRequiredOK", _ctrlObj.IsRequiredOKJSfn, TypeName);
 								opFnsJs += GetOpFnJs("setValue", _ctrlObj.SetValueJSfn, TypeName);
 								opFnsJs += GetOpFnJs("hide", _ctrlObj.HideJSfn, TypeName);
 								opFnsJs += GetOpFnJs("show", _ctrlObj.ShowJSfn, TypeName);

@@ -22,7 +22,7 @@ namespace ExpressBase.Objects
         //public EbObjectType EbObjectType { get; set; }
 
         [Description("Identity")]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader,BuilderType.DataWriter, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.SqlFunctions, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader,BuilderType.DataWriter, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.SqlFunctions, BuilderType.UserControl,BuilderType.ApiBuilder)]
         [EbRequired]
         [Unique]
         [regexCheck]
@@ -30,7 +30,7 @@ namespace ExpressBase.Objects
         public virtual string Name { get; set; }
 
         [Description("Identity")]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.SqlFunctions, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder,BuilderType.DVBuilder, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.SqlFunctions, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder,BuilderType.DVBuilder, BuilderType.UserControl, BuilderType.ApiBuilder)]
         [EbRequired]
         [Unique]
         public string DisplayName { get; set; }
@@ -39,7 +39,7 @@ namespace ExpressBase.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string UIchangeFns { get; set; }  
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.Report, BuilderType.SmsBuilder, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.Report, BuilderType.SmsBuilder, BuilderType.UserControl, BuilderType.ApiBuilder)]
         public string Description { get; set; }
 
         //public string ChangeLog { get; set; }

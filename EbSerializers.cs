@@ -55,19 +55,24 @@ namespace ExpressBase.Common
             return JsonConvert.SerializeObject(obj, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
         }
 
-		//public static string Json_Serialize(object obj, JsonSerializerSettings settings)
-		//{
-		//	return JsonConvert.SerializeObject(obj, settings);
-		//}
+        //public static string Json_Serialize(object obj, JsonSerializerSettings settings)
+        //{
+        //	return JsonConvert.SerializeObject(obj, settings);
+        //}
 
-		public static T Json_Deserialize<T>(string json)
+        public static T Json_Deserialize<T>(string json)
         {
             return (T)(JsonConvert.DeserializeObject(json, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All }));
         }
 
         public static dynamic Json_Deserialize(string json)
         {
-            return JsonConvert.DeserializeObject(json, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+            return JsonConvert.DeserializeObject(json,
+                new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.All,
+                    ObjectCreationHandling = ObjectCreationHandling.Replace
+                });
         }
     }
 
