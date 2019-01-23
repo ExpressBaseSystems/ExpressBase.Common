@@ -153,5 +153,12 @@ namespace ExpressBase.Common
         Paused = 2,
         Deleted = 3
     }
+
+    public enum WebFormModes {
+        View_Mode = 1,
+        New_Mode = 2,
+        Edit_Mode = 3,
+        Fail_Mode = 4
+    }
 }
 
