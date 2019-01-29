@@ -13,6 +13,12 @@ namespace ExpressBase.Common
         [ProtoBuf.ProtoMember(1)]
         public TableColletion Tables { get; set; }
 
+        public DateTime StartTime { get; set; }
+
+        public DateTime EndTime { get; set; }
+
+        public string RowNumbers { get; set; }
+
         public EbDataSet()
         {
             //if (this.Tables == null) //Hack for deserialization issue Tables nullified by constructor call.. Need neater fix.

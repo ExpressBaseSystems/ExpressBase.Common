@@ -256,7 +256,7 @@ namespace ExpressBase.Common
             var dtStart = DateTime.Now;
             Console.WriteLine(string.Format("DoQueries Start Time : {0}", dtStart));
             EbDataSet ds = new EbDataSet();
-
+            ds.RowNumbers = "";
             try
             {
                 using (var reader = this.DoQueriesBasic(query, parameters))
@@ -271,6 +271,7 @@ namespace ExpressBase.Common
                             Type[] typeArray = this.AddColumns(dt, (reader as NpgsqlDataReader).GetColumnSchema());
                             PrepareDataTable((reader as NpgsqlDataReader), dt, typeArray);
                             ds.Tables.Add(dt);
+                            ds.RowNumbers += dt.Rows.Count.ToString()+",";
                         }
                         catch (Exception ee)
                         {
@@ -285,12 +286,15 @@ namespace ExpressBase.Common
                 throw npgse;
             }
             catch (SocketException scket) { }
-
+            
             var dtEnd = DateTime.Now;
             Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
 
             var ts = (dtEnd - dtStart).TotalMilliseconds;
             Console.WriteLine(string.Format("DoQueries Execution Time : {0}", ts));
+
+            ds.StartTime = dtStart;
+            ds.EndTime = dtEnd;
             return ds;
         }
 
