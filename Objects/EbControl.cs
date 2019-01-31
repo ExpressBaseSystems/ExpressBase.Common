@@ -45,7 +45,8 @@ namespace ExpressBase.Common.Objects
 .Replace("@hiddenString@", this.HiddenString)
 .Replace("@helpText@", this.HelpText)
 .Replace("@type@", this.ObjType)
-.Replace("@Label@ ", (Label ?? ""));
+.Replace("@Label@ ", (Label ?? ""))
+.Replace("@req@ ", (Required ? "<sup style='color: red'>*</sup>": string.Empty));
         }
 
         [HideInPropertyGrid]
