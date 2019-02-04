@@ -68,6 +68,8 @@ namespace ExpressBase.Common
 
         public Dictionary<string, SingleTable> MultipleTables { get; set; }
 
+        public Dictionary<string, SingleTable> ExtendedTables { get; set; }
+
         public string MasterTable { get; set; }
 
         public string AutoIdText { get; set; }//prefix + suffix 
@@ -75,6 +77,7 @@ namespace ExpressBase.Common
         public WebformData()
         {
             MultipleTables = new Dictionary<string, SingleTable>();
+            ExtendedTables = new Dictionary<string, SingleTable>();
         }
     }
 
@@ -91,11 +94,15 @@ namespace ExpressBase.Common
     {
         public string TableName { set; get; }
 
+        public string ParentTable { get; set; }
+
         public List<ColumSchema> Colums { set; get; }
     }
 
     public class ColumSchema
     {
+        public Object Control { get; set; }
+
         public string ColumName { set; get; }
 
         public int EbDbType { set; get; }
