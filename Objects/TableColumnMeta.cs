@@ -88,6 +88,14 @@ namespace ExpressBase.Common
         public List<TableSchema> Tables { set; get; }
 
         public string MasterTable { set; get; }
+
+        public List<Object> ExtendedControls { get; set; }
+
+        public WebFormSchema()
+        {
+            Tables = new List<TableSchema>();
+            ExtendedControls = new List<Object>();
+        }
     }
 
     public class TableSchema
@@ -96,14 +104,19 @@ namespace ExpressBase.Common
 
         public string ParentTable { get; set; }
 
-        public List<ColumSchema> Colums { set; get; }
+        public List<ColumnSchema> Columns { set; get; }
+
+        public TableSchema()
+        {
+            Columns = new List<ColumnSchema>();
+        }
     }
 
-    public class ColumSchema
+    public class ColumnSchema
     {
         public Object Control { get; set; }
 
-        public string ColumName { set; get; }
+        public string ColumnName { set; get; }
 
         public int EbDbType { set; get; }
     }
