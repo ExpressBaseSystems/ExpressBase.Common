@@ -39,7 +39,14 @@ namespace ExpressBase.Common.Objects
 		[EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
 		public virtual bool IsSpecialContainer { get; set; }
 
-		[EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.UserControl)]
+        [PropertyGroup("Appearance")]
+        [DefaultPropValue("3")]
+        [UIproperty]
+        public virtual int Padding { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
 		[PropertyGroup("Data")]
 		[HelpText("Name Of database-table Which you want to store Data collected using this Form")]
 		public virtual string TableName { get; set; }
