@@ -36,7 +36,7 @@ namespace ExpressBase.Common
 
         public bool AutoIncrement { get; set; }
 
-        public SingleColumn() { }
+        public SingleColumn() { }        
     }
 
     public class SingleRow
@@ -52,6 +52,32 @@ namespace ExpressBase.Common
         public SingleRow()
         {
             Columns = new List<SingleColumn>();
+        }
+
+        public dynamic this[string name]
+        {
+            get
+            {
+                for(int i = 0; i < this.Columns.Count; i++)
+                {
+                    if (this.Columns[i].Name.Equals(name))
+                    {
+                        return this.Columns[i].Value;
+                    }
+                }
+                throw new KeyNotFoundException { };
+            }
+            //set
+            //{
+            //    for (int i = 0; i < this.Columns.Count; i++)
+            //    {
+            //        if (this.Columns[i].Name.Equals(name))
+            //        {
+            //            this.Columns[i].Value = value;
+            //        }
+            //    }
+            //    throw new KeyNotFoundException { };
+            //}
         }
     }
 
