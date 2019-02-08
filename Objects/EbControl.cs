@@ -354,6 +354,18 @@ else
         }
 
         [JsonIgnore]
+        public virtual string SetDisplayMemberJSfn
+        {
+            get
+            {
+                return @"
+                    return this.setValue(p1);
+                ";
+            }
+            set { }
+        }
+
+        [JsonIgnore]
         public virtual string HideJSfn
         {
             get

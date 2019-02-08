@@ -30,6 +30,13 @@ namespace ExpressBase.Common.Objects
         public virtual string LabelBackColor { get; set; }
 
 		[EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        [PropertyEditor(PropertyEditorType.Expandable)]
+        [PropertyGroup("Appearance")]
+		[UIproperty]
+        [OnChangeUIFunction("Common.MARGIN")]
+        public virtual UISides Margin { get; set; }
+
+		[EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
 		[PropertyGroup("Appearance")]
 		[PropertyEditor(PropertyEditorType.Color)]
 		[Attributes.DefaultPropValue("#333333")]
@@ -49,4 +56,23 @@ namespace ExpressBase.Common.Objects
 		public virtual float FontSize { get; set; }
 
 	}
+
+
+    [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+    public class UISides
+    {
+        public UISides() { }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        public int Top { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        public int Right { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        public int Bottom { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        public int Left { get; set; }
+    }
 }

@@ -39,7 +39,14 @@ namespace ExpressBase.Common.Objects
 		[EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
 		public virtual bool IsSpecialContainer { get; set; }
 
-		[EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.UserControl)]
+        [PropertyGroup("Appearance")]
+        [DefaultPropValue("3")]
+        [UIproperty]
+        public virtual int Padding { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
 		[PropertyGroup("Data")]
 		[HelpText("Name Of database-table Which you want to store Data collected using this Form")]
 		public virtual string TableName { get; set; }
@@ -196,6 +203,7 @@ namespace ExpressBase.Common.Objects
 								opFnsJs += GetOpFnJs("getDisplayMember", _ctrlObj.GetDisplayMemberJSfn, TypeName);
 								opFnsJs += GetOpFnJs("isRequiredOK", _ctrlObj.IsRequiredOKJSfn, TypeName);
 								opFnsJs += GetOpFnJs("setValue", _ctrlObj.SetValueJSfn, TypeName);
+								opFnsJs += GetOpFnJs("setDisplayMember", _ctrlObj.SetDisplayMemberJSfn, TypeName);
 								opFnsJs += GetOpFnJs("hide", _ctrlObj.HideJSfn, TypeName);
 								opFnsJs += GetOpFnJs("show", _ctrlObj.ShowJSfn, TypeName);
 								opFnsJs += GetOpFnJs("enable", _ctrlObj.EnableJSfn, TypeName);

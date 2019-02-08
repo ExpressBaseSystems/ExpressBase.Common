@@ -251,6 +251,11 @@ namespace ExpressBase.Common.Objects.Attributes
         public const string HELP_TEXT = @"
                 $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-helptxt]').text(props.HelpText);";
 
+        public const string MARGIN = @"
+                if(props.Margin === null)
+                    props.Margin ={};
+                $(`#cont_${elementId}.Eb-ctrlContainer`).css('margin', `${props.Margin.Top}px ${props.Margin.Right}px ${props.Margin.Bottom}px ${props.Margin.Left}px`);";
+
         public static string getFunctions()
         {
             string jsonStr = "EbOnChangeUIfns.Common = {";
