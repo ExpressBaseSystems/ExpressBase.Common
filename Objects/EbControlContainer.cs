@@ -39,7 +39,14 @@ namespace ExpressBase.Common.Objects
 		[EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
 		public virtual bool IsSpecialContainer { get; set; }
 
-		[EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.UserControl)]
+        [PropertyGroup("Appearance")]
+        [DefaultPropValue("3")]
+        [UIproperty]
+        public virtual int Padding { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
 		[PropertyGroup("Data")]
 		[HelpText("Name Of database-table Which you want to store Data collected using this Form")]
 		public virtual string TableName { get; set; }
@@ -138,35 +145,35 @@ namespace ExpressBase.Common.Objects
 		//    }
 		//}
 
-		public virtual string GetSelectQuery(string _parentTblName)
-		{
-			string ColoumsStr = Get1stLvlColNames();
-			string qry = string.Empty;
-			if (ColoumsStr.Length > 0)
-			{
-				if (TableName == _parentTblName)
-					qry = string.Format("SELECT id, {0} FROM {1} WHERE {3} = {2};", ColoumsStr, TableName, TableRowId, "id");
-				else
-					qry = string.Format("SELECT id, {0} FROM {1} WHERE {3}={2};", ColoumsStr, TableName, TableRowId, _parentTblName + "_id");
+		//public virtual string GetSelectQuery(string _parentTblName)
+		//{
+		//	string ColoumsStr = Get1stLvlColNames();
+		//	string qry = string.Empty;
+		//	if (ColoumsStr.Length > 0)
+		//	{
+		//		if (TableName == _parentTblName)
+		//			qry = string.Format("SELECT id, {0} FROM {1} WHERE {3} = {2};", ColoumsStr, TableName, TableRowId, "id");
+		//		else
+		//			qry = string.Format("SELECT id, {0} FROM {1} WHERE {3}={2};", ColoumsStr, TableName, TableRowId, _parentTblName + "_id");
 
-			}
+		//	}
 
-			foreach (EbControl control in Controls)
-			{
-				if (control is EbControlContainer)
-				{
-					EbControlContainer _control = (control as EbControlContainer);
-					if (_control.TableName.IsNullOrEmpty())
-					{
-						_control.TableName = TableName;
-					}
-					//_control.TableName = _control.TableName.IsNullOrEmpty() ? TableName : _control.TableName;
-					_control.TableRowId = (_control.TableRowId == 0) ? TableRowId : _control.TableRowId;
-					qry += _control.GetSelectQuery(_parentTblName);
-				}
-			}
-			return qry;
-		}
+		//	foreach (EbControl control in Controls)
+		//	{
+		//		if (control is EbControlContainer)
+		//		{
+		//			EbControlContainer _control = (control as EbControlContainer);
+		//			if (_control.TableName.IsNullOrEmpty())
+		//			{
+		//				_control.TableName = TableName;
+		//			}
+		//			//_control.TableName = _control.TableName.IsNullOrEmpty() ? TableName : _control.TableName;
+		//			_control.TableRowId = (_control.TableRowId == 0) ? TableRowId : _control.TableRowId;
+		//			qry += _control.GetSelectQuery(_parentTblName);
+		//		}
+		//	}
+		//	return qry;
+		//}
 
 		public static string GetControlOpsJS(EbControlContainer ebControlContainer, BuilderType FormTypeEnum)
 		{
@@ -196,6 +203,7 @@ namespace ExpressBase.Common.Objects
 								opFnsJs += GetOpFnJs("getDisplayMember", _ctrlObj.GetDisplayMemberJSfn, TypeName);
 								opFnsJs += GetOpFnJs("isRequiredOK", _ctrlObj.IsRequiredOKJSfn, TypeName);
 								opFnsJs += GetOpFnJs("setValue", _ctrlObj.SetValueJSfn, TypeName);
+								opFnsJs += GetOpFnJs("setDisplayMember", _ctrlObj.SetDisplayMemberJSfn, TypeName);
 								opFnsJs += GetOpFnJs("hide", _ctrlObj.HideJSfn, TypeName);
 								opFnsJs += GetOpFnJs("show", _ctrlObj.ShowJSfn, TypeName);
 								opFnsJs += GetOpFnJs("enable", _ctrlObj.EnableJSfn, TypeName);

@@ -36,7 +36,7 @@ namespace ExpressBase.Common
 
         public bool AutoIncrement { get; set; }
 
-        public SingleColumn() { }
+        public SingleColumn() { }        
     }
 
     public class SingleRow
@@ -45,11 +45,39 @@ namespace ExpressBase.Common
 
         public bool IsUpdate { get; set; }
 
+        public bool IsDelete { get; set; }
+
         public List<SingleColumn> Columns { get; set; }
 
         public SingleRow()
         {
             Columns = new List<SingleColumn>();
+        }
+
+        public dynamic this[string name]
+        {
+            get
+            {
+                for(int i = 0; i < this.Columns.Count; i++)
+                {
+                    if (this.Columns[i].Name.Equals(name))
+                    {
+                        return this.Columns[i].Value;
+                    }
+                }
+                throw new KeyNotFoundException { };
+            }
+            //set
+            //{
+            //    for (int i = 0; i < this.Columns.Count; i++)
+            //    {
+            //        if (this.Columns[i].Name.Equals(name))
+            //        {
+            //            this.Columns[i].Value = value;
+            //        }
+            //    }
+            //    throw new KeyNotFoundException { };
+            //}
         }
     }
 
@@ -66,6 +94,8 @@ namespace ExpressBase.Common
 
         public Dictionary<string, SingleTable> MultipleTables { get; set; }
 
+        public Dictionary<string, SingleTable> ExtendedTables { get; set; }
+
         public string MasterTable { get; set; }
 
         public string AutoIdText { get; set; }//prefix + suffix 
@@ -73,6 +103,7 @@ namespace ExpressBase.Common
         public WebformData()
         {
             MultipleTables = new Dictionary<string, SingleTable>();
+            ExtendedTables = new Dictionary<string, SingleTable>();
         }
     }
 
@@ -83,18 +114,35 @@ namespace ExpressBase.Common
         public List<TableSchema> Tables { set; get; }
 
         public string MasterTable { set; get; }
+
+        public List<Object> ExtendedControls { get; set; }
+
+        public WebFormSchema()
+        {
+            Tables = new List<TableSchema>();
+            ExtendedControls = new List<Object>();
+        }
     }
 
     public class TableSchema
     {
         public string TableName { set; get; }
 
-        public List<ColumSchema> Colums { set; get; }
+        public string ParentTable { get; set; }
+
+        public List<ColumnSchema> Columns { set; get; }
+
+        public TableSchema()
+        {
+            Columns = new List<ColumnSchema>();
+        }
     }
 
-    public class ColumSchema
+    public class ColumnSchema
     {
-        public string ColumName { set; get; }
+        public Object Control { get; set; }
+
+        public string ColumnName { set; get; }
 
         public int EbDbType { set; get; }
     }

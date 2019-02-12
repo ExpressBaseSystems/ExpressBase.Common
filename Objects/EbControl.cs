@@ -45,7 +45,8 @@ namespace ExpressBase.Common.Objects
 .Replace("@hiddenString@", this.HiddenString)
 .Replace("@helpText@", this.HelpText)
 .Replace("@type@", this.ObjType)
-.Replace("@Label@ ", (Label ?? ""));
+.Replace("@Label@ ", (Label ?? ""))
+.Replace("@req@ ", (Required ? "<sup style='color: red'>*</sup>": string.Empty));
         }
 
         [HideInPropertyGrid]
@@ -64,7 +65,6 @@ namespace ExpressBase.Common.Objects
         [Description("Labels")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [UIproperty]
-        [PropertyEditor(PropertyEditorType.ScriptEditorJS,PropertyEditorType.ScriptEditorCS, PropertyEditorType.ScriptEditorSQ)]
         [OnChangeUIFunction("Common.HELP_TEXT")]
         public virtual string HelpText { get; set; }
 
@@ -348,6 +348,18 @@ else
             {
                 return @"
                     $('#' + this.EbSid_CtxId).val(p1);
+                ";
+            }
+            set { }
+        }
+
+        [JsonIgnore]
+        public virtual string SetDisplayMemberJSfn
+        {
+            get
+            {
+                return @"
+                    return this.setValue(p1);
                 ";
             }
             set { }

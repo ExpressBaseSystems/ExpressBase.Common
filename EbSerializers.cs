@@ -62,7 +62,11 @@ namespace ExpressBase.Common
 
         public static T Json_Deserialize<T>(string json)
         {
-            return (T)(JsonConvert.DeserializeObject(json, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All }));
+            return (T)(JsonConvert.DeserializeObject(json, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All,
+                ObjectCreationHandling = ObjectCreationHandling.Replace
+            }));
         }
 
         public static dynamic Json_Deserialize(string json)
