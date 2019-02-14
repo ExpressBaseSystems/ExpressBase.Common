@@ -203,6 +203,7 @@ namespace ExpressBase.Common.Objects
 								opFnsJs += GetOpFnJs("getDisplayMember", _ctrlObj.GetDisplayMemberJSfn, TypeName);
 								opFnsJs += GetOpFnJs("isRequiredOK", _ctrlObj.IsRequiredOKJSfn, TypeName);
 								opFnsJs += GetOpFnJs("setValue", _ctrlObj.SetValueJSfn, TypeName);
+								opFnsJs += GetOpFnJs("setDisplayMember", _ctrlObj.SetDisplayMemberJSfn, TypeName);
 								opFnsJs += GetOpFnJs("hide", _ctrlObj.HideJSfn, TypeName);
 								opFnsJs += GetOpFnJs("show", _ctrlObj.ShowJSfn, TypeName);
 								opFnsJs += GetOpFnJs("enable", _ctrlObj.EnableJSfn, TypeName);

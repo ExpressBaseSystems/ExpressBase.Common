@@ -29,7 +29,7 @@ namespace ExpressBase.Common.Constants
         //Notification Message Constants
         public const string UPLOADSUCCESS = "cmd.onUploadSuccess";
         public const string UPLOADFAILURE = "cmd.onUploadFailure";
-
+        public const string EXPORTTOEXCELSUCCESS = "cmd.onExportToExcel";
         //Controller Types Url catg strings
 
 

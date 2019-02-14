@@ -18,6 +18,8 @@ namespace ExpressBase.Scheduler.Jobs
 
         public EbJobArguments JobArgs { get; set; }
 
+        public string CronString { get; set; }
+
     }
 
     public class EbSchedule
