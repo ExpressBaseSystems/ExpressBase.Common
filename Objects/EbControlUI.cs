@@ -50,7 +50,7 @@ namespace ExpressBase.Common.Objects
 		[PropertyEditor(PropertyEditorType.Label)]
 		public virtual string FontFamily { get { return "Label"; } set { } }
 
-		[EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+		[EnableInBuilder(BuilderType.BotForm, BuilderType.UserControl)]
 		[PropertyGroup("Appearance")]
 		[UIproperty]
 		public virtual float FontSize { get; set; }
