@@ -105,26 +105,27 @@ namespace ExpressBase.Common
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
             _ObjectClassType = type;
+            // creates all properties of an object
+            IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
 
             //set _rootObjectType - if the object is a type of IEBRootObject and not yet set
             if (typeof(IEBRootObject).IsAssignableFrom(_ObjectClassType) && (int)_rootObjectBuilderType == -1)
                 _rootObjectBuilderType = _ObjectClassType.GetCustomAttribute<BuilderTypeEnum>().Type;
-
-            // creates all properties of an object
-            IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
-
-            // filter properties by EnableInBuilder attribute
-            PropertyInfo PropertyInfo = null;
-            properties = properties.Where(p =>
+            //if rootObject Found
+            if ((int)_rootObjectBuilderType != -1)
             {
-                PropertyInfo = _ObjectClassType.GetProperty(p.PropertyName);// takes PropertyInfo by name to get EnableInBuilder attribute
+                // filter properties by EnableInBuilder attribute
+                PropertyInfo PropertyInfo = null;
+                properties = properties.Where(p =>
+                {
+                    PropertyInfo = _ObjectClassType.GetProperty(p.PropertyName);// takes PropertyInfo by name to get EnableInBuilder attribute
 
-                if (PropertyInfo != null && PropertyInfo.IsDefined(typeof(EnableInBuilder)))
-                    return PropertyInfo.GetCustomAttribute<EnableInBuilder>().BuilderTypes.ToList().Contains(_rootObjectBuilderType);
-                else
-                    return false;
-            }).ToList();
-
+                    if (PropertyInfo != null && PropertyInfo.IsDefined(typeof(EnableInBuilder)))
+                        return PropertyInfo.GetCustomAttribute<EnableInBuilder>().BuilderTypes.ToList().Contains(_rootObjectBuilderType);
+                    else
+                        return false;
+                }).ToList();
+            }
             return properties;
         }
     }
