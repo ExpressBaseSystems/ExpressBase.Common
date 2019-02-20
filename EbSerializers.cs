@@ -96,15 +96,13 @@ namespace ExpressBase.Common
     public class ShouldSerializeContractResolver : DefaultContractResolver
     {
         private BuilderType _rootObjectBuilderType = (BuilderType)(-1);// initialize with a non existing enum  value
-
-        private Type _ObjectClassType = null;
-
+        
         public ShouldSerializeContractResolver() { }
 
         //override default CreateProperties()
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
-            _ObjectClassType = type;
+            Type _ObjectClassType = type;
             // creates all properties of an object
             IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
 
@@ -118,7 +116,7 @@ namespace ExpressBase.Common
                 PropertyInfo PropertyInfo = null;
                 properties = properties.Where(p =>
                 {
-                    PropertyInfo = _ObjectClassType.GetProperty(p.PropertyName);// takes PropertyInfo by name to get EnableInBuilder attribute
+                        PropertyInfo = _ObjectClassType.GetProperty(p.UnderlyingName);// takes PropertyInfo by name to get EnableInBuilder attribute
 
                     if (PropertyInfo != null && PropertyInfo.IsDefined(typeof(EnableInBuilder)))
                         return PropertyInfo.GetCustomAttribute<EnableInBuilder>().BuilderTypes.ToList().Contains(_rootObjectBuilderType);
