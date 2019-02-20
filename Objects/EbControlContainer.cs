@@ -22,7 +22,8 @@ namespace ExpressBase.Common.Objects
 		LessThanOrEqual
 	}
 
-	public class EbControlContainer : EbControlUI
+    [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+    public class EbControlContainer : EbControlUI
 	{
 		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
 		[HideInPropertyGrid]

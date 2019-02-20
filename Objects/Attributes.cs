@@ -97,6 +97,13 @@ namespace ExpressBase.Common.Objects.Attributes
         public Alias(string alias) { this.Name = alias; }
     }
 
+    public class BuilderTypeEnum : Attribute
+    {
+        public BuilderType Type { get; set; }
+
+        public BuilderTypeEnum(BuilderType Type) { this.Type = Type; }
+    }
+
     [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
     public class OSE_ObjectTypes : Attribute
     {

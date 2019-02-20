@@ -1,5 +1,9 @@
-﻿using ExpressBase.Common.Structures;
+﻿using ExpressBase.Common.Objects;
+using ExpressBase.Common.Objects.Attributes;
+using ExpressBase.Common.Structures;
+using ExpressBase.Objects;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using ProtoBuf;
 using ProtoBuf.Meta;
 using System;
@@ -7,6 +11,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using System.Reflection;
 
 namespace ExpressBase.Common
 {
@@ -52,7 +58,11 @@ namespace ExpressBase.Common
 
         public static string Json_Serialize(object obj)
         {
-            return JsonConvert.SerializeObject(obj, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+            return JsonConvert.SerializeObject(obj, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All,
+                ContractResolver = new ShouldSerializeContractResolver()
+            });
         }
 
         //public static string Json_Serialize(object obj, JsonSerializerSettings settings)
@@ -65,7 +75,8 @@ namespace ExpressBase.Common
             return (T)(JsonConvert.DeserializeObject(json, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All,
-                ObjectCreationHandling = ObjectCreationHandling.Replace
+                ObjectCreationHandling = ObjectCreationHandling.Replace,
+                ContractResolver = new ShouldSerializeContractResolver()
             }));
         }
 
@@ -75,8 +86,45 @@ namespace ExpressBase.Common
                 new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.All,
-                    ObjectCreationHandling = ObjectCreationHandling.Replace
+                    ObjectCreationHandling = ObjectCreationHandling.Replace,
+                    ContractResolver = new ShouldSerializeContractResolver()
                 });
+        }
+    }
+
+    // a new ContractResolver to override default CreateProperties() 
+    public class ShouldSerializeContractResolver : DefaultContractResolver
+    {
+        private BuilderType _rootObjectBuilderType = (BuilderType)(-1);// initialize with a non existing enum  value
+        
+        public ShouldSerializeContractResolver() { }
+
+        //override default CreateProperties()
+        protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+        {
+            Type _ObjectClassType = type;
+            // creates all properties of an object
+            IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
+
+            //set _rootObjectType - if the object is a type of IEBRootObject and not yet set
+            if (typeof(IEBRootObject).IsAssignableFrom(_ObjectClassType) && (int)_rootObjectBuilderType == -1)
+                _rootObjectBuilderType = _ObjectClassType.GetCustomAttribute<BuilderTypeEnum>().Type;
+            //if rootObject Found
+            if ((int)_rootObjectBuilderType != -1)
+            {
+                // filter properties by EnableInBuilder attribute
+                PropertyInfo PropertyInfo = null;
+                properties = properties.Where(p =>
+                {
+                        PropertyInfo = _ObjectClassType.GetProperty(p.UnderlyingName);// takes PropertyInfo by name to get EnableInBuilder attribute
+
+                    if (PropertyInfo != null && PropertyInfo.IsDefined(typeof(EnableInBuilder)))
+                        return PropertyInfo.GetCustomAttribute<EnableInBuilder>().BuilderTypes.ToList().Contains(_rootObjectBuilderType);
+                    else
+                        return false;
+                }).ToList();
+            }
+            return properties;
         }
     }
 

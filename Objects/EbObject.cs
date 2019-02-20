@@ -13,10 +13,12 @@ using System.Threading.Tasks;
 
 namespace ExpressBase.Objects
 {
+    // Base class for all eb Components
     public class EbObject
     {
         //public int Id { get; set; }
 
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.SqlFunctions, BuilderType.UserControl, BuilderType.ApiBuilder)]
         public string RefId { get; set; }
 
         //public EbObjectType EbObjectType { get; set; }
@@ -44,8 +46,17 @@ namespace ExpressBase.Objects
 
         //public string ChangeLog { get; set; }
 
+        [EnableInBuilder(
+            BuilderType.DisplayBlock, BuilderType.DataReader,
+            BuilderType.DataWriter,BuilderType.SqlFunctions,
+            BuilderType.FilterDialog,BuilderType.WebForm,
+            BuilderType.MobileForm, BuilderType.UserControl,
+            BuilderType.Report, BuilderType.DVBuilder,
+            BuilderType.EmailBuilder, BuilderType.BotForm,
+            BuilderType.SmsBuilder, BuilderType.ApiBuilder)]
         public string VersionNumber { get; set; }
 
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.SqlFunctions, BuilderType.UserControl, BuilderType.ApiBuilder)]
         public string Status { get; set; }
 
         public EbObject() { }
@@ -74,5 +85,9 @@ namespace ExpressBase.Objects
 
         public virtual string DiscoverRelatedRefids() { return ""; }
 
+    }
+
+    public interface IEBRootObject
+    {
     }
 }
