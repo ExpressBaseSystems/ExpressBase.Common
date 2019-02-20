@@ -96,27 +96,32 @@ namespace ExpressBase.Common
     public class ShouldSerializeContractResolver : DefaultContractResolver
     {
         private BuilderType _rootObjectBuilderType = (BuilderType)(-1);// initialize with a non existing enum  value
-        
+
         public ShouldSerializeContractResolver() { }
 
         //override default CreateProperties()
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
-            Type _ObjectClassType = type;
+            Type _CurrentClassType = type;
             // creates all properties of an object
             IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
 
             //set _rootObjectType - if the object is a type of IEBRootObject and not yet set
-            if (typeof(IEBRootObject).IsAssignableFrom(_ObjectClassType) && (int)_rootObjectBuilderType == -1)
-                _rootObjectBuilderType = _ObjectClassType.GetCustomAttribute<BuilderTypeEnum>().Type;
-            //if rootObject Found
-            if ((int)_rootObjectBuilderType != -1)
+            if (typeof(IEBRootObject).IsAssignableFrom(_CurrentClassType) && (int)_rootObjectBuilderType == -1)
+                _rootObjectBuilderType = _CurrentClassType.GetCustomAttribute<BuilderTypeEnum>().Type;
+
+            //if rootObject Found - to skip checking for individual objects which are not inside a rootObject
+            // && if decoratedby EnableInBuilder attribute - skip checking for helper objects which are not decoratedby EnableInBuilder attribute
+            if ((int)_rootObjectBuilderType != -1 && type.IsDefined(typeof(EnableInBuilder)))
             {
                 // filter properties by EnableInBuilder attribute
                 PropertyInfo PropertyInfo = null;
                 properties = properties.Where(p =>
                 {
-                        PropertyInfo = _ObjectClassType.GetProperty(p.UnderlyingName);// takes PropertyInfo by name to get EnableInBuilder attribute
+                    if (p.UnderlyingName == "sTitle")
+                        ;
+
+                    PropertyInfo = _CurrentClassType.GetProperty(p.UnderlyingName);// takes PropertyInfo by name to get EnableInBuilder attribute
 
                     if (PropertyInfo != null && PropertyInfo.IsDefined(typeof(EnableInBuilder)))
                         return PropertyInfo.GetCustomAttribute<EnableInBuilder>().BuilderTypes.ToList().Contains(_rootObjectBuilderType);
