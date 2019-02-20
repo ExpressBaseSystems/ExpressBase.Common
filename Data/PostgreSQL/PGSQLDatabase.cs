@@ -574,6 +574,7 @@ namespace ExpressBase.Common
 	                            EO.id = EO2A.obj_id 
                             WHERE
 	                            COALESCE(EO2A.eb_del, 'F') = 'F' 
+                               AND COALESCE( EO.eb_del, 'F') = 'F'
                             ORDER BY 
 	                            EO.obj_type;"; }
         }
