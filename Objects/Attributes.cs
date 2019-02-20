@@ -82,7 +82,7 @@ namespace ExpressBase.Common.Objects.Attributes
 
     public class Unique : Attribute { }
 
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, Inherited = true)]
     public class EnableInBuilder : Attribute
     {
         public BuilderType[] BuilderTypes { get; set; }

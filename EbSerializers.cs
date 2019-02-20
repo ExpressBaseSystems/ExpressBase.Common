@@ -103,6 +103,7 @@ namespace ExpressBase.Common
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
             Type _CurrentClassType = type;
+
             // creates all properties of an object
             IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
 
@@ -113,14 +114,11 @@ namespace ExpressBase.Common
             //if rootObject Found - to skip checking for individual objects which are not inside a rootObject
             // && if decoratedby EnableInBuilder attribute - skip checking for helper objects which are not decoratedby EnableInBuilder attribute
             if ((int)_rootObjectBuilderType != -1 && type.IsDefined(typeof(EnableInBuilder)))
-            {
-                // filter properties by EnableInBuilder attribute
+            {// filter properties by EnableInBuilder attribute
+
                 PropertyInfo PropertyInfo = null;
                 properties = properties.Where(p =>
                 {
-                    if (p.UnderlyingName == "sTitle")
-                        ;
-
                     PropertyInfo = _CurrentClassType.GetProperty(p.UnderlyingName);// takes PropertyInfo by name to get EnableInBuilder attribute
 
                     if (PropertyInfo != null && PropertyInfo.IsDefined(typeof(EnableInBuilder)))
