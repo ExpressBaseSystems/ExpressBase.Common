@@ -76,7 +76,7 @@ namespace ExpressBase.Common
             {
                 TypeNameHandling = TypeNameHandling.All,
                 ObjectCreationHandling = ObjectCreationHandling.Replace,
-                //ContractResolver = new ShouldSerializeContractResolver()
+                ContractResolver = new ShouldSerializeContractResolver()
             }));
         }
 
@@ -87,7 +87,7 @@ namespace ExpressBase.Common
                 {
                     TypeNameHandling = TypeNameHandling.All,
                     ObjectCreationHandling = ObjectCreationHandling.Replace,
-                    //ContractResolver = new ShouldSerializeContractResolver()
+                    ContractResolver = new ShouldSerializeContractResolver()
                 });
         }
     }
@@ -118,9 +118,6 @@ namespace ExpressBase.Common
                 PropertyInfo PropertyInfo = null;
                 properties = properties.Where(p =>
                 {
-                    if (p.UnderlyingName == "sTitle")
-                        ;
-
                     PropertyInfo = _CurrentClassType.GetProperty(p.UnderlyingName);// takes PropertyInfo by name to get EnableInBuilder attribute
 
                     if (PropertyInfo != null && PropertyInfo.IsDefined(typeof(EnableInBuilder)))
