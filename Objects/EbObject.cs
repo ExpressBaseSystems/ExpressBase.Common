@@ -19,7 +19,7 @@ namespace ExpressBase.Objects
         //public int Id { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.SqlFunctions, BuilderType.UserControl, BuilderType.ApiBuilder)]
-        public string RefId { get; set; }
+        public virtual string RefId { get; set; }
 
         //public EbObjectType EbObjectType { get; set; }
 
@@ -54,10 +54,10 @@ namespace ExpressBase.Objects
             BuilderType.Report, BuilderType.DVBuilder,
             BuilderType.EmailBuilder, BuilderType.BotForm,
             BuilderType.SmsBuilder, BuilderType.ApiBuilder)]
-        public string VersionNumber { get; set; }
+        public virtual string VersionNumber { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.SqlFunctions, BuilderType.UserControl, BuilderType.ApiBuilder)]
-        public string Status { get; set; }
+        public virtual string Status { get; set; }
 
         public EbObject() { }
 
