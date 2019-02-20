@@ -55,7 +55,6 @@ namespace ExpressBase.Common.Data
         }
     }
 
-    [EnableInBuilder(BuilderType.DataReader, BuilderType.DataWriter, BuilderType.DVBuilder)]
     public class Param
     {
         public Param() { }
