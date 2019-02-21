@@ -16,22 +16,17 @@ namespace ExpressBase.Objects
     // Base class for all eb Components
     public class EbObject
     {
-        [EnableInBuilder(BuilderType.DisplayBlock, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.SqlFunctions, BuilderType.FilterDialog, BuilderType.WebForm, BuilderType.MobileForm, BuilderType.UserControl, BuilderType.Report, BuilderType.DVBuilder, BuilderType.EmailBuilder, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.ApiBuilder)]
         public virtual string RefId { get; set; }
 
         [Description("Identity")]
-        [EnableInBuilder(BuilderType.DisplayBlock, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.SqlFunctions, BuilderType.FilterDialog, BuilderType.WebForm, BuilderType.MobileForm, BuilderType.UserControl, BuilderType.Report, BuilderType.DVBuilder, BuilderType.EmailBuilder, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.ApiBuilder)]
         [EbRequired]
         [Unique]
         public virtual string DisplayName { get; set; }
 
-        [EnableInBuilder(BuilderType.DisplayBlock, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.SqlFunctions, BuilderType.FilterDialog, BuilderType.WebForm, BuilderType.MobileForm, BuilderType.UserControl, BuilderType.Report, BuilderType.DVBuilder, BuilderType.EmailBuilder, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.ApiBuilder)]
         public virtual string Description { get; set; }
 
-        [EnableInBuilder(BuilderType.DisplayBlock, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.SqlFunctions, BuilderType.FilterDialog, BuilderType.WebForm, BuilderType.MobileForm, BuilderType.UserControl, BuilderType.Report, BuilderType.DVBuilder, BuilderType.EmailBuilder, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.ApiBuilder)]
         public virtual string VersionNumber { get; set; }
 
-        [EnableInBuilder(BuilderType.DisplayBlock, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.SqlFunctions, BuilderType.FilterDialog, BuilderType.WebForm, BuilderType.MobileForm, BuilderType.UserControl, BuilderType.Report, BuilderType.DVBuilder, BuilderType.EmailBuilder, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.ApiBuilder)]
         public virtual string Status { get; set; }
 
         [Description("Identity")]
