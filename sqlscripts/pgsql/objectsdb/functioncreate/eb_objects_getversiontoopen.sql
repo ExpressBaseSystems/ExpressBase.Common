@@ -85,7 +85,7 @@ ELSE
 SELECT 
 			EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc,
 			EOV.obj_json, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.version_num, EOV.working_mode, 
-			EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags, EO.display_name, EO.is_logenabled
+			EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags, EO.display_name, COALESCE(EO.is_logenabled,'F')
 	 INTO	idv, namev, typev, status, description, json_lc, changelog, commitat, refidv, ver_num, work_mode,
 			commitby, major_ver, minor_ver, patch_ver, tags, dispnamev, is_log
 	FROM 
