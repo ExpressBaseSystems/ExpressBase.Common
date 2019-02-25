@@ -23,7 +23,7 @@ namespace ExpressBase.Common.Objects
 	}
 
     [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-    public class EbControlContainer : EbControl
+    public class EbControlContainer : EbControlUI
 	{
 		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
 		[HideInPropertyGrid]

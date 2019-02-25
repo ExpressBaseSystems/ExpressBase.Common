@@ -48,5 +48,14 @@ namespace ExpressBase.Common.Objects
         public override bool Unique { get; set; }
 
         public override List<EbValidator> Validators { get; set; }
+
+        //UI Properties
+        public override string BackColor { get; set; }
+        public override string ForeColor { get; set; }
+        public override string LabelBackColor { get; set; }
+        public override UISides Margin { get; set; }
+        public override string LabelForeColor { get; set; }
+        public override string FontFamily { get { return "Label"; } set { } }
+        public override float FontSize { get; set; }
     }
 }
