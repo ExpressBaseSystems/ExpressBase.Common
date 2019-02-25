@@ -23,13 +23,13 @@ namespace ExpressBase.Common.Objects
 	}
 
     [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-    public class EbControlContainer : EbControlUI
+    public class EbControlContainer : EbControl
 	{
 		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
 		[HideInPropertyGrid]
 		public virtual List<EbControl> Controls { get; set; }
 
-		[HideInPropertyGrid]
+		//[HideInPropertyGrid]
 		//public EbTable Table { get; set; }
 
 		public EbControlContainer()
@@ -272,20 +272,10 @@ namespace ExpressBase.Common.Objects
 			}
 			return (ColoumsStr.Length > 0) ? ColoumsStr.Substring(0, ColoumsStr.Length - 2) : string.Empty;
 		}
-
-		public override string LabelForeColor { get; set; }
-
+        
 		public virtual int TableRowId { get; set; }
 
-		public override string LabelBackColor { get; set; }
-
 		public override string HelpText { get; set; }
-
-		public override string ForeColor { get; set; }
-
-		public override string FontFamily { get; set; }
-
-		public override float FontSize { get; set; }
 
 		[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
 		public virtual bool IsContainer
