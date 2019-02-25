@@ -187,7 +187,7 @@ function ProcRecur(src_controls, dest_controls) {
             {
                 IEnumerable<Attribute> propattrs = prop.GetCustomAttributes();////////////////
 
-                if (prop.IsDefined(typeof(EnableInBuilder))
+                if (prop.IsDefined(typeof(EnableInBuilder),false)
                              && prop.GetCustomAttribute<EnableInBuilder>().BuilderTypes.Contains(this.BuilderType))
                 {
                     _props += JsVarDecl(prop, obj);
@@ -274,7 +274,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             PropertyInfo[] props = obj.GetType().GetAllProperties();
             foreach (PropertyInfo prop in props)
             {
-                if (prop.IsDefined(typeof(EnableInBuilder)) && prop.GetCustomAttribute<EnableInBuilder>().BuilderTypes.Contains(this.BuilderType))
+                if (prop.IsDefined(typeof(EnableInBuilder),false) && prop.GetCustomAttribute<EnableInBuilder>().BuilderTypes.Contains(this.BuilderType))
                 {
                     if (!prop.IsDefined(typeof(HideInPropertyGrid)))
                         yield return GetMeta(obj, prop);
