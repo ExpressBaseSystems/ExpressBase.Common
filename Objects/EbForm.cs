@@ -1,4 +1,5 @@
 ﻿using ExpressBase.Common.Objects.Attributes;
+using ExpressBase.Objects;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Text;
 namespace ExpressBase.Common.Objects
 {
     [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-    public class EbForm : EbControlContainer
+    public class EbForm : EbControlContainer, IEBRootObject
     {
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
