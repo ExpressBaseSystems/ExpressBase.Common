@@ -552,12 +552,13 @@ namespace ExpressBase.Common
                 FROM
                     eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
                 WHERE
-                EOV.eb_objects_id=EO.id	
+                EOV.eb_objects_id = EO.id	
                 AND EO.id = ANY('{:Ids}')               			    
 				AND EOS.eb_obj_ver_id = EOV.id 
 				AND EO2A.obj_id = EO.id
 				AND EO2A.eb_del = 'F'
                 AND EOS.status = 3 
+                AND COALESCE( EO.eb_del, 'F') = 'F'
 				AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );"; } }
 
         public string EB_SIDEBARDEV_REQUEST
@@ -573,7 +574,7 @@ namespace ExpressBase.Common
                             ON
 	                            EO.id = EO2A.obj_id 
                             WHERE
-	                            COALESCE(EO2A.eb_del, 'F') = 'F' 
+	                           COALESCE(EO2A.eb_del, 'F') = 'F' 
                                AND COALESCE( EO.eb_del, 'F') = 'F'
                             ORDER BY 
 	                            EO.obj_type;"; }
@@ -660,6 +661,7 @@ namespace ExpressBase.Common
                             eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
                         WHERE
                             EOV.refid=:refid AND EOS.eb_obj_ver_id = EOV.id AND EO.id=EOV.eb_objects_id
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
                         ORDER BY
 	                        EOS.id DESC 
                         LIMIT 1
@@ -677,6 +679,7 @@ namespace ExpressBase.Common
                         eb_objects EO, eb_objects_ver EOV
                     WHERE
                         EO.id = EOV.eb_objects_id AND EOV.refid=:refid
+                        AND COALESCE( EO.eb_del, 'F') = 'F'
                     ORDER BY
                         EO.obj_type
                 ";
@@ -698,6 +701,7 @@ namespace ExpressBase.Common
 	                        EOV.commit_uid=EU.id
                         WHERE
                             EO.id = EOV.eb_objects_id AND EO.obj_type=:type
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
                         ORDER BY
                             EO.obj_name
                 ";
@@ -716,6 +720,7 @@ namespace ExpressBase.Common
                                                   WHERE dominant=:dominant))
                             AND EOV.refid =ANY(SELECT dependant FROM eb_objects_relations WHERE dominant=:dominant)    
                             AND EO.id =EOV.eb_objects_id  AND EOS.eb_obj_ver_id = EOV.id AND EOS.status = 3 AND EO.obj_type IN(16 ,17)
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
                 ";
             }
         }
@@ -735,6 +740,7 @@ namespace ExpressBase.Common
 	                        EOV.commit_uid=EU.id
                         WHERE
                             EO.id = EOV.eb_objects_id  AND EO.obj_type=:type AND COALESCE(EOV.working_mode, 'F') <> 'T'
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
                         ORDER BY
                             EO.obj_name 
                 ";
@@ -750,6 +756,7 @@ namespace ExpressBase.Common
                     eb_objects
                 WHERE
                     obj_type=:type
+                    AND COALESCE( eb_del, 'F') = 'F'
                 ORDER BY
                     obj_name
                 ";
@@ -781,6 +788,7 @@ namespace ExpressBase.Common
                             eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
                         WHERE
                             EO.id = :id AND EOV.eb_objects_id = EO.id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
                         ORDER BY EOV.eb_objects_id	LIMIT 1;";
             }
         }
@@ -790,7 +798,8 @@ namespace ExpressBase.Common
             {
                 return @"SELECT distinct(tags)
                     FROM (SELECT unnest(string_to_array(obj_tags, ',')) AS tags
-	                      FROM eb_objects)
+	                      FROM eb_objects
+                          WHERE COALESCE(eb_del, 'F') = 'F')
                     AS tags
                 ";
             }
@@ -825,6 +834,7 @@ namespace ExpressBase.Common
 		                            )  AND
 		                            EOTA.app_id = @appid AND
                                     EOTA.eb_del = 'F'
+                                    AND COALESCE( EO.eb_del, 'F') = 'F'
                         ";
             }
         }
