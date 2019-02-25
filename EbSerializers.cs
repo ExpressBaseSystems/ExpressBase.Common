@@ -61,7 +61,7 @@ namespace ExpressBase.Common
             return JsonConvert.SerializeObject(obj, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All,
-                //ContractResolver = new ShouldSerializeContractResolver()
+                ContractResolver = new ShouldSerializeContractResolver()
             });
         }
 
@@ -121,7 +121,7 @@ namespace ExpressBase.Common
                 {
                     PropertyInfo = _CurrentClassType.GetProperty(p.UnderlyingName);// takes PropertyInfo by name to get EnableInBuilder attribute
 
-                    if (PropertyInfo != null && PropertyInfo.IsDefined(typeof(EnableInBuilder)))
+                    if (PropertyInfo != null && PropertyInfo.IsDefined(typeof(EnableInBuilder),false))
                         return PropertyInfo.GetCustomAttribute<EnableInBuilder>().BuilderTypes.ToList().Contains(_rootObjectBuilderType);
                     else
                         return false;

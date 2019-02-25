@@ -4,9 +4,7 @@
 
 CREATE OR REPLACE FUNCTION public.eb_objects_getversiontoopen(
 	_id integer)
-    RETURNS TABLE(idv integer, namev text, typev integer, status integer, description text, changelog text, commitat text, commitby text,
-	refidv text, ver_num text, work_mode character, workingcopies text, json_wc json, json_lc json, major_ver integer, minor_ver integer,
-	patch_ver integer, tags text, app_id text, dispnamev text) 
+    RETURNS TABLE(idv integer, namev text, typev integer, status integer, description text, changelog text, commitat text, commitby text, refidv text, ver_num text, work_mode character, workingcopies text, json_wc json, json_lc json, major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id text, dispnamev text, is_log character) 
     LANGUAGE 'plpgsql'
 
 AS $BODY$
@@ -17,7 +15,7 @@ DECLARE
 	idv integer; namev text; typev integer; status integer;
 	description text; changelog text; commitat text; commitby text; refidv text; ver_num text; work_mode char;
 	major_ver integer; minor_ver integer; patch_ver integer; tags text; app_id text;
-	lastversionnumber text; lastversionrefid text; liveversionnumber text; liveversionrefid text; dispnamev text;
+	lastversionnumber text; lastversionrefid text; liveversionnumber text; liveversionrefid text; dispnamev text; is_log char;
 BEGIN
    
 	workingcopies := NULL;
@@ -39,9 +37,9 @@ IF no_of_workcopies = 1 THEN
 	SELECT 
 			EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc,
 			EOV.obj_json, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.version_num, EOV.working_mode, 
-			EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags,EO.display_name
+			EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags,EO.display_name, EO.is_logenabled
 	INTO	idv, namev, typev, status, description, json_wc, changelog, commitat, refidv, ver_num, work_mode, commitby,
-			major_ver, minor_ver, patch_ver, tags, dispnamev
+			major_ver, minor_ver, patch_ver, tags, dispnamev , is_log
 	FROM 
 			 eb_objects EO, eb_objects_ver EOV
 	LEFT JOIN
@@ -61,9 +59,9 @@ ELSIF no_of_workcopies = 0 THEN
         SELECT 
                 EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc, 
                 EOV.obj_json, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.version_num, EOV.working_mode, 
-				EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags, EO.display_name
+				EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags, EO.display_name, EO.is_logenabled
         INTO	idv, namev, typev, status, description, json_lc, changelog, commitat, refidv, ver_num, work_mode,
-				commitby, major_ver, minor_ver, patch_ver, tags, dispnamev
+				commitby, major_ver, minor_ver, patch_ver, tags, dispnamev, is_log
         FROM  
                 eb_objects EO, eb_objects_ver EOV
         LEFT JOIN
@@ -87,9 +85,9 @@ ELSE
 SELECT 
 			EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc,
 			EOV.obj_json, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.version_num, EOV.working_mode, 
-			EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags, EO.display_name
+			EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags, EO.display_name, COALESCE(EO.is_logenabled,'F')
 	 INTO	idv, namev, typev, status, description, json_lc, changelog, commitat, refidv, ver_num, work_mode,
-			commitby, major_ver, minor_ver, patch_ver, tags, dispnamev
+			commitby, major_ver, minor_ver, patch_ver, tags, dispnamev, is_log
 	FROM 
 			 eb_objects EO, eb_objects_ver EOV
 	LEFT JOIN
@@ -108,11 +106,10 @@ END IF;
 
 RETURN QUERY
 	SELECT idv, namev, typev, status, description, changelog, commitat, commitby, refidv, ver_num, COALESCE(work_mode,'F'), workingcopies,
-	json_wc, json_lc, major_ver, minor_ver, patch_ver, tags, app_id, dispnamev;
+	json_wc, json_lc, major_ver, minor_ver, patch_ver, tags, app_id, dispnamev, is_log;
 END
 
 $BODY$;
 
 ALTER FUNCTION public.eb_objects_getversiontoopen(integer)
     OWNER TO postgres;
-
