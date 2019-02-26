@@ -464,6 +464,8 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     return string.Format(s, _name, string.Format("'{0}'", prop.GetValue(obj)));
                 if (prop.Name.EndsWith("Color"))
                     return string.Format(s, _name, "'#FFFFFF'");
+                else if (prop.Name == "ObjType")///temp fix for test
+                    return string.Format(s, _name, "'" + prop.GetValue(obj).ToString() + "'");
                 else
                     return string.Format(s, _name, (prop.Name == "Name" || prop.Name == "EbSid") ? "id" : "''");
             }

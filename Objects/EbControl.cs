@@ -96,7 +96,7 @@ namespace ExpressBase.Common.Objects
         [PropertyEditor(PropertyEditorType.JS)]
         public string ValueExpression { get; set; }
 
-        //[HideInPropertyGrid]
+        [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string ObjType { get { return this.GetType().Name.Substring(2, this.GetType().Name.Length - 2); } set { } }
 
