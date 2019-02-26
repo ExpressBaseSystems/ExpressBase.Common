@@ -205,7 +205,6 @@ function ProcRecur(src_controls, dest_controls) {
 EbObjects.@Name = function @Name(id, jsonObj) {
     this.$type = '@Type';
     this.EbSid = id;
-	this.ObjType = '@ObjType';
     @Props
     this.EbSid_CtxId = id;
     @InitFunc
@@ -250,7 +249,6 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
     .Replace("@InitFunc", (obj is EbObject) ? (obj as EbObject).GetJsInitFunc() : string.Empty)
       .Replace("@html", (obj is EbObject) ? (obj as EbObject).GetDesignHtml() : "``")
     //.Replace("@html", (obj is EbControl) ? (obj as EbControl).GetWrapedCtrlHtml4Web(ref sampOBJ) : "``")
-    .Replace("@ObjType", obj.GetType().Name.Substring(2))
     .Replace("@4botHtml", (obj is EbControl) ? ("this.$WrapedCtrl4Bot = $(`" + (obj as EbControl).GetWrapedCtrlHtml4bot(ref sampOBJ) + "`);") : string.Empty)
     .Replace("@bareHtml", (obj is EbObject) ? (obj as EbObject).GetBareHtml() : string.Empty); //(obj as EbObject).GetDesignHtml());//
             }
@@ -464,6 +462,8 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             {
                 if (prop.Name.EndsWith("Color"))
                     return string.Format(s, _name, "'#FFFFFF'");
+                else if (prop.Name == "ObjType")///temp fix for test
+                    return string.Format(s, _name, "'" + prop.GetValue(obj).ToString() + "'");
                 else
                     return string.Format(s, _name, (prop.Name == "Name" || prop.Name == "EbSid") ? "id" : "''");
             }
