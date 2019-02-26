@@ -48,7 +48,7 @@ namespace ExpressBase.Common.Objects
 		[PropertyGroup("Appearance")]
 		[UIproperty]
 		[PropertyEditor(PropertyEditorType.Label)]
-		public virtual string FontFamily { get { return "Label"; } set { } }
+		public virtual string FontFamily { get; set; }
 
 		[EnableInBuilder(BuilderType.BotForm, BuilderType.UserControl)]
 		[PropertyGroup("Appearance")]

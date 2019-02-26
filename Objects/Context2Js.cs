@@ -31,7 +31,7 @@ namespace ExpressBase.Common.Objects
         public string JsObjects { get; private set; }
 
         public string ToolsHtml { get; private set; }
-        
+
         public string TypeRegister { get; private set; }
         public string JsonToJsObjectFuncs { get; private set; }
         public string EbObjectTypes { get; private set; }
@@ -187,7 +187,7 @@ function ProcRecur(src_controls, dest_controls) {
             {
                 IEnumerable<Attribute> propattrs = prop.GetCustomAttributes();////////////////
 
-                if (prop.IsDefined(typeof(EnableInBuilder),false)
+                if (prop.IsDefined(typeof(EnableInBuilder), false)
                              && prop.GetCustomAttribute<EnableInBuilder>().BuilderTypes.Contains(this.BuilderType))
                 {
                     _props += JsVarDecl(prop, obj);
@@ -205,7 +205,6 @@ function ProcRecur(src_controls, dest_controls) {
 EbObjects.@Name = function @Name(id, jsonObj) {
     this.$type = '@Type';
     this.EbSid = id;
-	this.ObjType = '@ObjType';
     @Props
     this.EbSid_CtxId = id;
     @InitFunc
@@ -250,7 +249,6 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
     .Replace("@InitFunc", (obj is EbObject) ? (obj as EbObject).GetJsInitFunc() : string.Empty)
       .Replace("@html", (obj is EbObject) ? (obj as EbObject).GetDesignHtml() : "``")
     //.Replace("@html", (obj is EbControl) ? (obj as EbControl).GetWrapedCtrlHtml4Web(ref sampOBJ) : "``")
-    .Replace("@ObjType", obj.GetType().Name.Substring(2))
     .Replace("@4botHtml", (obj is EbControl) ? ("this.$WrapedCtrl4Bot = $(`" + (obj as EbControl).GetWrapedCtrlHtml4bot(ref sampOBJ) + "`);") : string.Empty)
     .Replace("@bareHtml", (obj is EbObject) ? (obj as EbObject).GetBareHtml() : string.Empty); //(obj as EbObject).GetDesignHtml());//
             }
@@ -274,7 +272,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             PropertyInfo[] props = obj.GetType().GetAllProperties();
             foreach (PropertyInfo prop in props)
             {
-                if (prop.IsDefined(typeof(EnableInBuilder),false) && prop.GetCustomAttribute<EnableInBuilder>().BuilderTypes.Contains(this.BuilderType))
+                if (prop.IsDefined(typeof(EnableInBuilder), false) && prop.GetCustomAttribute<EnableInBuilder>().BuilderTypes.Contains(this.BuilderType))
                 {
                     if (!prop.IsDefined(typeof(HideInPropertyGrid)))
                         yield return GetMeta(obj, prop);
@@ -462,6 +460,8 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
 
             if (prop.PropertyType == typeof(string))
             {
+                if (!string.IsNullOrEmpty((string)prop.GetValue(obj)))
+                    return string.Format(s, _name, string.Format("'{0}'", prop.GetValue(obj)));
                 if (prop.Name.EndsWith("Color"))
                     return string.Format(s, _name, "'#FFFFFF'");
                 else
