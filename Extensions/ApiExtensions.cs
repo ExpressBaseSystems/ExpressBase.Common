@@ -16,5 +16,11 @@ namespace ExpressBase.Common.Extensions
             }
             return to;
         }
+
+        public static string B2S(this string b64)
+        {
+            byte[] data = Convert.FromBase64String(b64);
+            return Encoding.UTF8.GetString(data);
+        }
     }
 }
