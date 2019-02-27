@@ -151,8 +151,8 @@ function ProcRecur(src_controls, dest_controls) {
                                     if (jsonObj['$type'].includes('{0}')) 
                                         return new EbObjects.{1}(jsonObj.EbSid, jsonObj); ", toolObj.GetType().FullName, toolObj.GetType().Name);
                                 this.GetJsObject(toolObj);
-                                if (toolObj is EbObject)
-                                    this.EbOnChangeUIfns += String.IsNullOrEmpty((toolObj as EbObject).UIchangeFns) ? string.Empty : ("EbOnChangeUIfns." + (toolObj as EbObject).UIchangeFns + ";");
+                                if (toolObj is EbControl)
+                                    this.EbOnChangeUIfns += String.IsNullOrEmpty((toolObj as EbControl).UIchangeFns) ? string.Empty : ("EbOnChangeUIfns." + (toolObj as EbControl).UIchangeFns + ";");
                             }
                         }
                         catch (Exception ee)
@@ -163,9 +163,9 @@ function ProcRecur(src_controls, dest_controls) {
                 }
             }
 
-            this.AllMetas += "};" + this.EbEnums + "};" + this.CtrlCounters + "};";
+            this.AllMetas += string.Concat("};", this.EbEnums, "};", this.CtrlCounters + "};");
             this.TypeRegister += " };";
-            this.EbObjectTypes = "var EbObjectTypes = " + Get_EbObjTypesStr();
+            this.EbObjectTypes = string.Concat("var EbObjectTypes = ", Get_EbObjTypesStr());
         }
 
         private string GetToolHtml(string tool_name)
@@ -193,14 +193,19 @@ function ProcRecur(src_controls, dest_controls) {
                     _props += JsVarDecl(prop, obj);
                 }
             }
-            var sampOBJ = (obj as EbControl);
-            string AssemblyQname = obj.GetType().AssemblyQualifiedName;
+
+
             this.AllMetas += @"
 '@Name'  : @MetaCollection,"
 .Replace("@Name", obj.GetType().Name)
 .Replace("@MetaCollection", JsonConvert.SerializeObject(this.GetMetaCollection(obj)));
             try
             {
+                EbObject EbO_obj = (obj as EbObject);
+                bool isEbObject = obj is EbObject;
+                EbControl sampOBJ = (obj as EbControl);
+                string AssemblyQname = obj.GetType().AssemblyQualifiedName;
+
                 this.JsObjects += @"
 EbObjects.@Name = function @Name(id, jsonObj) {
     this.$type = '@Type';
@@ -243,14 +248,13 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             this.Init(id);
     }
 };"
-    .Replace("@Name", obj.GetType().Name)
-    .Replace("@Type", AssemblyQname.Split(",")[0] + "," + AssemblyQname.Split(",")[1])
-    .Replace("@Props", _props)
-    .Replace("@InitFunc", (obj is EbObject) ? (obj as EbObject).GetJsInitFunc() : string.Empty)
-      .Replace("@html", (obj is EbObject) ? (obj as EbObject).GetDesignHtml() : "``")
-    //.Replace("@html", (obj is EbControl) ? (obj as EbControl).GetWrapedCtrlHtml4Web(ref sampOBJ) : "``")
-    .Replace("@4botHtml", (obj is EbControl) ? ("this.$WrapedCtrl4Bot = $(`" + (obj as EbControl).GetWrapedCtrlHtml4bot(ref sampOBJ) + "`);") : string.Empty)
-    .Replace("@bareHtml", (obj is EbObject) ? (obj as EbObject).GetBareHtml() : string.Empty); //(obj as EbObject).GetDesignHtml());//
+.Replace("@Name", obj.GetType().Name)
+.Replace("@Type", AssemblyQname.Split(",")[0] + "," + AssemblyQname.Split(",")[1])
+.Replace("@Props", _props)
+.Replace("@InitFunc", isEbObject ? EbO_obj.GetJsInitFunc() : string.Empty)
+.Replace("@html", isEbObject ? EbO_obj.GetDesignHtml() : "``")
+.Replace("@4botHtml", (obj is EbControl) ? ("this.$WrapedCtrl4Bot = $(`" + (obj as EbControl).GetWrapedCtrlHtml4bot(ref sampOBJ) + "`);") : string.Empty)
+.Replace("@bareHtml", isEbObject ? EbO_obj.GetBareHtml() : string.Empty);
             }
             catch (Exception e)
             {

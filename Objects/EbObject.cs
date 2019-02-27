@@ -1,7 +1,6 @@
 ﻿using ExpressBase.Common.Extensions;
 using ExpressBase.Common.Objects;
 using ExpressBase.Common.Objects.Attributes;
-using ExpressBase.Objects;
 using ServiceStack;
 using ServiceStack.Redis;
 using System;
@@ -40,10 +39,6 @@ namespace ExpressBase.Objects
         [InputMask("[a-z][a-z0-9]*(_[a-z0-9]+)*")]
         public virtual string Name { get; set; }
 
-        [HideInPropertyGrid]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        public virtual string UIchangeFns { get; set; }
-
         // methods
 
         public virtual void BeforeRedisSet() { }
@@ -69,7 +64,7 @@ namespace ExpressBase.Objects
         public virtual void ReplaceRefid(Dictionary<string, string> RefidMap) { }
 
         public virtual string DiscoverRelatedRefids() { return ""; }
-
+        
     }
 
     public interface IEBRootObject

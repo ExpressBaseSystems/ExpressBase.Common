@@ -43,10 +43,10 @@ namespace ExpressBase.Common.Objects
         [OnChangeUIFunction("Common.HELP_TEXT")]
         [UIproperty]
         public virtual string HelpText { get; set; }
+        
 
-        [HideInPropertyGrid]
         [JsonIgnore]
-        public override string UIchangeFns { get; set; }
+        public virtual string UIchangeFns { get; set; }
 
         public virtual EbDbTypes EbDbType { get { return EbDbTypes.Decimal; } set { } }
 
@@ -223,8 +223,8 @@ else
 
         [JsonIgnore]
         public virtual string ClearJSfn { get { return @"$('#' + this.EbSid_CtxId).val('');"; } set { } }
-        
-        //methods
+
+        //methods        
         protected string ReplacePropsInHTML(string Html)
         {
             return Html
