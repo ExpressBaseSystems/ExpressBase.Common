@@ -17,37 +17,15 @@ namespace ExpressBase.Common.Objects
 {
     public class EbControl : EbObject
     {
+        public EbControl() { this.Validators = new List<EbValidator>(); }
+
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string EbSid { get; set; }
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        public virtual string EbSid_CtxId
-        {
-            get
-            {
-                if (!ContextId.IsNullOrEmpty())
-                    return string.Concat(ContextId, "_", EbSid);
-                else
-                    return EbSid;
-            }
-            set { }
-        }
-
-        protected string ReplacePropsInHTML(string Html)
-        {
-            return Html
-.Replace("@barehtml@", this.GetBareHtml())
-.Replace("@name@", this.Name)
-.Replace("@childOf@", this.ChildOf.IsNullOrEmpty() ? string.Empty : "childOf='" + this.ChildOf + "'")
-.Replace("@ebsid@", this.EbSid_CtxId)
-.Replace("@hiddenString@", this.HiddenString)
-.Replace("@helpText@", this.HelpText)
-.Replace("@type@", this.ObjType)
-.Replace("@Label@ ", (Label ?? ""))
-.Replace("@req@ ", (Required ? "<sup style='color: red'>*</sup>": string.Empty));
-        }
+        public virtual string EbSid_CtxId { get { return (!ContextId.IsNullOrEmpty()) ? string.Concat(ContextId, "_", EbSid) : EbSid; } set { } }
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
@@ -60,22 +38,20 @@ namespace ExpressBase.Common.Objects
         [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual bool Unique { get; set; }
-
-        [System.ComponentModel.Category("Behavior")]
-        [Description("Labels")]
+        
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [UIproperty]
         [OnChangeUIFunction("Common.HELP_TEXT")]
+        [UIproperty]
         public virtual string HelpText { get; set; }
 
         [HideInPropertyGrid]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [JsonIgnore]
         public override string UIchangeFns { get; set; }
 
         public virtual EbDbTypes EbDbType { get { return EbDbTypes.Decimal; } set { } }
 
         [Description("Labels")]
-        [System.ComponentModel.Category("Behavior")]
+        [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [UIproperty]
         [Unique]
@@ -110,7 +86,7 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.BotForm)]
         public virtual bool IsMaintainValue { get; set; }
-        
+
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string ToolTipText { get; set; }
 
@@ -131,12 +107,9 @@ namespace ExpressBase.Common.Objects
         public virtual int Top { get; set; }
 
         [ProtoBuf.ProtoMember(17)]
-        [System.ComponentModel.Category("Layout")]
+        [PropertyGroup("Layout")]
         public virtual int Height { get; set; }
 
-        //[ProtoBuf.ProtoMember(18)]
-        //[System.ComponentModel.Category("Layout")]
-        //public virtual int Width { get; set; }
         [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual bool Required { get; set; }
@@ -169,7 +142,7 @@ else
 ";
 
         [ProtoBuf.ProtoMember(21)]
-        [System.ComponentModel.Category("Behavior")]
+        [PropertyGroup("Behavior")]
         public virtual bool ReadOnly { get; set; }
 
         protected string ReadOnlyString
@@ -202,12 +175,68 @@ else
         public virtual string VisibleExpression { get; set; }
 
         [ProtoBuf.ProtoMember(28)]
-        [System.ComponentModel.Category("Accessibility")]
+        [PropertyGroup("Accessibility")]
         public virtual int TabIndex { get; set; }
 
-        public EbControl()
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [PropertyGroup("Events")]
+        [PropertyEditor(PropertyEditorType.JS)]
+        public virtual string OnChange { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        public virtual string DefaultValue { get; set; }
+
+        public virtual string GetToolHtml() { return @"<div eb-type='@toolName' class='tool'>@toolName</div>".Replace("@toolName", this.GetType().Name.Substring(2)); }
+
+        [JsonIgnore]
+        public virtual string GetValueJSfn { get { return @"return $('#' + this.EbSid_CtxId).val();"; } set { } }
+
+        [JsonIgnore]
+        public virtual string GetDisplayMemberJSfn { get { return @"return this.getValue();"; } set { } }
+
+        [JsonIgnore]
+        public virtual string IsRequiredOKJSfn { get { return @"return !isNaNOrEmpty(this.getValue());"; } set { } }
+
+        [JsonIgnore]
+        public virtual string SetValueJSfn { get { return @"$('#' + this.EbSid_CtxId).val(p1);"; } set { } }
+
+        [JsonIgnore]
+        public virtual string SetDisplayMemberJSfn { get { return @"return this.setValue(p1);"; } set { } }
+
+        [JsonIgnore]
+        public virtual string HideJSfn { get { return @"$('#cont_' + this.EbSid_CtxId).hide(300);"; } set { } }
+
+        [JsonIgnore]
+        public virtual string ShowJSfn { get { return @"$('#cont_' + this.EbSid_CtxId).show(300);"; } set { } }
+
+        [JsonIgnore]
+        public virtual string EnableJSfn { get { return @"$('#cont_' + this.EbSid_CtxId + ' *').prop('disabled',false).css('pointer-events', 'inherit');"; } set { } }
+
+        [JsonIgnore]
+        public virtual string DisableJSfn { get { return @"$('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none');"; } set { } }
+
+        [JsonIgnore]
+        public virtual string ResetJSfn { get { return @"$('#' + this.EbSid_CtxId).val('');"; } set { } }
+
+        [JsonIgnore]
+        public virtual string RefreshJSfn { get { return @"$('#' + this.EbSid_CtxId).val('');"; } set { } }
+
+        [JsonIgnore]
+        public virtual string ClearJSfn { get { return @"$('#' + this.EbSid_CtxId).val('');"; } set { } }
+        
+        //methods
+        protected string ReplacePropsInHTML(string Html)
         {
-            this.Validators = new List<EbValidator>();
+            return Html
+.Replace("@barehtml@", this.GetBareHtml())
+.Replace("@name@", this.Name)
+.Replace("@childOf@", this.ChildOf.IsNullOrEmpty() ? string.Empty : "childOf='" + this.ChildOf + "'")
+.Replace("@ebsid@", this.EbSid_CtxId)
+.Replace("@hiddenString@", this.HiddenString)
+.Replace("@helpText@", this.HelpText)
+.Replace("@type@", this.ObjType)
+.Replace("@Label@ ", (Label ?? ""))
+.Replace("@req@ ", (Required ? "<sup style='color: red'>*</sup>" : string.Empty));
         }
 
         public virtual string GetHead() { return string.Empty; }
@@ -219,25 +248,7 @@ else
             return '"' + "<div>no GetWrapedCtrlHtml4bot() defined</div>" + '"';
         }
 
-        //        public virtual string GetWrapedCtrlHtml4Web(string barehtml)
-        //        {
-        //            string ResHTML = string.Empty;
-
-        //            ResHTML = @"
-        //<div id='cont_@name@' class='Eb-ctrlContainer' Ctype='@type@' style='@hiddenString'>
-        //    <span class='eb-ctrl-label' ui-label id='@nameLbl'>@label@</span>
-        //       @barehtml@
-        //    <span class='helpText'> @helpText </span>
-        //</div>"
-        //.Replace("@barehtml@", barehtml).RemoveCR().GraveAccentQuoted();
-
-        //            return ResHTML;
-        //        }
-
-        public virtual VendorDbType GetvDbType(IVendorDbTypes vDbTypes)
-        {
-            return vDbTypes.String;
-        }
+        public virtual VendorDbType GetvDbType(IVendorDbTypes vDbTypes) { return vDbTypes.String; }
 
         public virtual string GetWrapedCtrlHtml4bot(ref EbControl ChildObj)
         {
@@ -291,171 +302,6 @@ else
         public virtual void SetData(object value) { }
 
         public virtual object GetData() { return null; }
-        public virtual string GetToolHtml() { return @"<div eb-type='@toolName' class='tool'>@toolName</div>".Replace("@toolName", this.GetType().Name.Substring(2)); }
-
-        protected string WrapWithDblQuotes(string input)
-        {
-            return "\"" + input + "\"";
-        }
-
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyGroup("Events")]
-        [PropertyEditor(PropertyEditorType.JS)]
-        public virtual string OnChange { get; set; }
-
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        public virtual string DefaultValue { get; set; }
-
-        [JsonIgnore]
-        public virtual string GetValueJSfn
-        {
-            get
-            {
-                return @"
-                    return $('#' + this.EbSid_CtxId).val();
-                ";
-            }
-            set { }
-        }
-
-        [JsonIgnore]
-        public virtual string GetDisplayMemberJSfn
-        {
-            get
-            {
-                return @"
-                    return this.getValue();
-                ";
-            }
-            set { }
-        }
-
-        [JsonIgnore]
-        public virtual string IsRequiredOKJSfn
-        {
-            get
-            {
-                return @"
-                    return !isNaNOrEmpty(this.getValue());
-                ";
-            }
-            set { }
-        }
-
-        [JsonIgnore]
-        public virtual string SetValueJSfn
-        {
-            get
-            {
-                return @"
-                    $('#' + this.EbSid_CtxId).val(p1);
-                ";
-            }
-            set { }
-        }
-
-        [JsonIgnore]
-        public virtual string SetDisplayMemberJSfn
-        {
-            get
-            {
-                return @"
-                    return this.setValue(p1);
-                ";
-            }
-            set { }
-        }
-
-        [JsonIgnore]
-        public virtual string HideJSfn
-        {
-            get
-            {
-                return @"
-                    $('#cont_' + this.EbSid_CtxId).hide(300);
-                ";
-            }
-            set { }
-        }
-
-        [JsonIgnore]
-        public virtual string ShowJSfn
-        {
-            get
-            {
-                return @"
-                    $('#cont_' + this.EbSid_CtxId).show(300);
-                ";
-            }
-            set { }
-        }
-
-        [JsonIgnore]
-        public virtual string EnableJSfn
-        {
-            get
-            {
-                return @"
-                    $('#cont_' + this.EbSid_CtxId + ' *').prop('disabled',false).css('pointer-events', 'inherit');
-                ";
-            }
-            set { }
-        }
-
-        [JsonIgnore]
-        public virtual string DisableJSfn
-        {
-            get
-            {
-                return @"
-                    $('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none');
-                ";
-            }
-            set { }
-        }
-
-        [JsonIgnore]
-        public virtual string ResetJSfn
-        {
-            get
-            {
-                return @"
-                    $('#' + this.EbSid_CtxId).val('');
-                ";
-            }
-            set { }
-        }
-
-        [JsonIgnore]
-        public virtual string RefreshJSfn
-        {
-            get
-            {
-                return @"
-                    $('#' + this.EbSid_CtxId).val('');
-                ";
-            }
-            set { }
-        }
-
-        [JsonIgnore]
-        public virtual string ClearJSfn
-        {
-            get
-            {
-                return @"
-                    $('#' + this.EbSid_CtxId).val('');
-                ";
-            }
-            set { }
-        }
-    }
-
-    public enum SubType
-    {
-        WithDecimalPlaces,
-        WithTextTransform,
-        WithEbDateType
     }
 
     [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
@@ -463,6 +309,8 @@ else
     [UsedWithTopObjectParent(typeof(EbObject))]
     public class EbValidator
     {
+        public EbValidator() { }
+
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public string EbSid { get; set; }
@@ -487,7 +335,5 @@ else
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public string FailureMSG { get; set; }
-
-        public EbValidator() { }
     }
 }

@@ -18,7 +18,6 @@ namespace ExpressBase.Common.Objects
 		[PropertyEditor(PropertyEditorType.Color)]
 		[UIproperty]
         [OnChangeUIFunction("Common.FORECOLOR")]
-        [System.ComponentModel.Category("Accessibility")]
 		[Attributes.DefaultPropValue("#333333")]
 		public virtual string ForeColor { get; set; }
 

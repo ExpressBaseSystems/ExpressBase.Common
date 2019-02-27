@@ -16,6 +16,9 @@ namespace ExpressBase.Objects
     // Base class for all eb Components
     public class EbObject
     {
+
+        public EbObject() { }
+
         public virtual string RefId { get; set; }
 
         [Description("Identity")]
@@ -41,7 +44,7 @@ namespace ExpressBase.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string UIchangeFns { get; set; }
 
-        public EbObject() { }
+        // methods
 
         public virtual void BeforeRedisSet() { }
 
