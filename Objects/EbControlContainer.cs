@@ -7,6 +7,7 @@ using ExpressBase.Common.Objects.Attributes;
 using ServiceStack;
 using ExpressBase.Common.Extensions;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace ExpressBase.Common.Objects
 {
@@ -53,6 +54,28 @@ namespace ExpressBase.Common.Objects
         [HelpText("Name Of database-table Which you want to store Data collected using this Form")]
         public virtual string TableName { get; set; }
 
+        [JsonIgnore]
+        public override string OnChange { get; set; }
+
+        [JsonIgnore]
+        public override bool Required { get; set; }
+
+        [JsonIgnore]
+        public override bool Unique { get; set; }
+
+        [JsonIgnore]
+        public override string ToolTipText{ get; set; }
+
+        [JsonIgnore]
+        public override string FontFamily { get; set; }
+
+        [JsonIgnore]
+        public override string DefaultValue { get; set; }
+
+        [JsonIgnore]
+        public override List<EbValidator> Validators { get; set; }
+
+        //methods
         public virtual string GetHtml(bool isRootObj)
         {
             return string.Empty;
