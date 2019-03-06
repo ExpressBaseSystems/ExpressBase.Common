@@ -160,5 +160,12 @@ namespace ExpressBase.Common
         Edit_Mode = 3,
         Fail_Mode = 4
     }
+
+    public enum RedisOperations
+    {
+        Edit,
+        Delete
+    }
+
 }
 
