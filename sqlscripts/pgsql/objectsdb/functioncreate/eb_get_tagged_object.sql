@@ -6,10 +6,6 @@ CREATE OR REPLACE FUNCTION public.eb_get_tagged_object(
 	in_tags text)
     RETURNS TABLE(obj_name text, refid text, version_num text, obj_type integer, status integer, objtags text) 
     LANGUAGE 'plpgsql'
-
-    COST 100
-    VOLATILE 
-    ROWS 1000
 AS $BODY$
 
 BEGIN
