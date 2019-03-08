@@ -167,5 +167,16 @@ namespace ExpressBase.Common
         Delete
     }
 
+    public enum DBOperations
+    {
+        SELECT,
+        CREATE,
+        INSERT,
+        DELETE,
+        ALTER,
+        UPDATE,
+        DROP,
+        TRUNCATE
+    }
 }
 

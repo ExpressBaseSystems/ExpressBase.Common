@@ -103,6 +103,7 @@ namespace ExpressBase.Common.Data
         private const string CONNECTION_STRING_BARE = "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= {2};Password={3};Pooling=true;Min Pool Size=1;Connection Lifetime=180;Max Pool Size=50;Incr Pool Size=5";
         private string _cstr;
         private EbBaseDbConnection EbBaseDbConnection { get; set; }
+        public string DBName { get; }
 
         public OracleDB(EbBaseDbConnection dbconf)
         {
@@ -394,8 +395,9 @@ namespace ExpressBase.Common.Data
             return rslt;
         }
 
-        public void CreateTable(string query)
+        public int CreateTable(string query)
         {
+            int res = 0;
             using (var con = GetNewConnection() as OracleConnection)
             {
                 try
@@ -404,7 +406,7 @@ namespace ExpressBase.Common.Data
                     using (OracleCommand cmd = new OracleCommand(query, con))
                     {
                         cmd.BindByName = true;
-                        var xx = cmd.ExecuteNonQuery();
+                        res = cmd.ExecuteNonQuery();
                     }
                 }
                 catch (OracleException orcl)
@@ -414,7 +416,7 @@ namespace ExpressBase.Common.Data
                 }
                 catch (SocketException scket) { }
             }
-
+            return res;
         }
 
         public int InsertTable(string query, params DbParameter[] parameters)
@@ -448,6 +450,64 @@ namespace ExpressBase.Common.Data
         }
 
         public int UpdateTable(string query, params DbParameter[] parameters)
+        {
+            int rslt = 0;
+            using (var con = GetNewConnection() as OracleConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (OracleCommand cmd = new OracleCommand(query, con))
+                    {
+                        cmd.BindByName = true;
+                        if (Regex.IsMatch(query, @"\:+") && parameters != null && parameters.Length > 0)
+                        {
+                            cmd.Parameters.AddRange(parameters);
+                        }
+
+                        rslt = cmd.ExecuteNonQuery();
+                    }
+                }
+
+                catch (Exception orcl)
+                {
+                    Console.WriteLine(orcl.Message);
+                }
+            }
+
+            return rslt;
+        }
+
+        public int AlterTable(string query, params DbParameter[] parameters)
+        {
+            int rslt = 0;
+            using (var con = GetNewConnection() as OracleConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (OracleCommand cmd = new OracleCommand(query, con))
+                    {
+                        cmd.BindByName = true;
+                        if (Regex.IsMatch(query, @"\:+") && parameters != null && parameters.Length > 0)
+                        {
+                            cmd.Parameters.AddRange(parameters);
+                        }
+
+                        rslt = cmd.ExecuteNonQuery();
+                    }
+                }
+
+                catch (Exception orcl)
+                {
+                    Console.WriteLine(orcl.Message);
+                }
+            }
+
+            return rslt;
+        }
+
+        public int DeleteTable(string query, params DbParameter[] parameters)
         {
             int rslt = 0;
             using (var con = GetNewConnection() as OracleConnection)

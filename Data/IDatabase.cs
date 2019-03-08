@@ -34,12 +34,14 @@ namespace ExpressBase.Common
         void CommitTransaction();
         bool IsInTransaction();
         bool IsTableExists(string query, params DbParameter[] parameters);
-        void CreateTable(string query);
+        int CreateTable(string query);
         int InsertTable(string query, params DbParameter[] parameters);
+        int AlterTable(string query, params DbParameter[] parameters);
+        int DeleteTable(string query, params DbParameter[] parameters);
         int UpdateTable(string query, params DbParameter[] parameters);
         EbDbTypes ConvertToDbType(Type typ);
         ColumnColletion GetColumnSchema(string table);
-
+        string DBName { get; }
         //string ConvertToDbDate(string datetime_);
 
         //---------------------sql query

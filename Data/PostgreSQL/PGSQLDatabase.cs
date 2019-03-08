@@ -45,24 +45,24 @@ namespace ExpressBase.Common
         private PGSQLEbDbTypes()
         {
             this.InnerDictionary = new Dictionary<EbDbTypes, VendorDbType>();
-            this.InnerDictionary.Add(EbDbTypes.AnsiString, new VendorDbType(EbDbTypes.AnsiString, NpgsqlDbType.Text,"text"));
-            this.InnerDictionary.Add(EbDbTypes.Binary, new VendorDbType(EbDbTypes.Binary, NpgsqlDbType.Bytea,"bytea"));
+            this.InnerDictionary.Add(EbDbTypes.AnsiString, new VendorDbType(EbDbTypes.AnsiString, NpgsqlDbType.Text, "text"));
+            this.InnerDictionary.Add(EbDbTypes.Binary, new VendorDbType(EbDbTypes.Binary, NpgsqlDbType.Bytea, "bytea"));
             this.InnerDictionary.Add(EbDbTypes.Byte, new VendorDbType(EbDbTypes.Byte, NpgsqlDbType.Char, "char"));
-            this.InnerDictionary.Add(EbDbTypes.Date, new VendorDbType(EbDbTypes.Date, NpgsqlDbType.Date,"timestamp without time zone"));
+            this.InnerDictionary.Add(EbDbTypes.Date, new VendorDbType(EbDbTypes.Date, NpgsqlDbType.Date, "timestamp without time zone"));
             this.InnerDictionary.Add(EbDbTypes.DateTime, new VendorDbType(EbDbTypes.DateTime, NpgsqlDbType.Timestamp, "timestamp with time zone"));
             this.InnerDictionary.Add(EbDbTypes.Decimal, new VendorDbType(EbDbTypes.Decimal, NpgsqlDbType.Numeric, "decimal"));
             this.InnerDictionary.Add(EbDbTypes.Double, new VendorDbType(EbDbTypes.Double, NpgsqlDbType.Double, "double precision"));
             this.InnerDictionary.Add(EbDbTypes.Int16, new VendorDbType(EbDbTypes.Int16, NpgsqlDbType.Smallint, "smallint"));
             this.InnerDictionary.Add(EbDbTypes.Int32, new VendorDbType(EbDbTypes.Int32, NpgsqlDbType.Integer, "integer"));
             this.InnerDictionary.Add(EbDbTypes.Int64, new VendorDbType(EbDbTypes.Int64, NpgsqlDbType.Bigint, "bigint"));
-            this.InnerDictionary.Add(EbDbTypes.Object, new VendorDbType(EbDbTypes.Object, NpgsqlDbType.Json,"jsonb"));
-            this.InnerDictionary.Add(EbDbTypes.String, new VendorDbType(EbDbTypes.String, NpgsqlDbType.Text,"text"));
-            this.InnerDictionary.Add(EbDbTypes.Time, new VendorDbType(EbDbTypes.Time, NpgsqlDbType.Time,"time"));
-            this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, NpgsqlDbType.Numeric,"numeric"));
+            this.InnerDictionary.Add(EbDbTypes.Object, new VendorDbType(EbDbTypes.Object, NpgsqlDbType.Json, "jsonb"));
+            this.InnerDictionary.Add(EbDbTypes.String, new VendorDbType(EbDbTypes.String, NpgsqlDbType.Text, "text"));
+            this.InnerDictionary.Add(EbDbTypes.Time, new VendorDbType(EbDbTypes.Time, NpgsqlDbType.Time, "time"));
+            this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, NpgsqlDbType.Numeric, "numeric"));
             this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, NpgsqlDbType.Json, "jsonb"));
-            this.InnerDictionary.Add(EbDbTypes.Bytea, new VendorDbType(EbDbTypes.Bytea, NpgsqlDbType.Bytea,"bytea"));
-            this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, NpgsqlDbType.Char,"char"));
-            this.InnerDictionary.Add(EbDbTypes.BooleanOriginal, new VendorDbType(EbDbTypes.BooleanOriginal, NpgsqlDbType.Boolean,"bool"));
+            this.InnerDictionary.Add(EbDbTypes.Bytea, new VendorDbType(EbDbTypes.Bytea, NpgsqlDbType.Bytea, "bytea"));
+            this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, NpgsqlDbType.Char, "char"));
+            this.InnerDictionary.Add(EbDbTypes.BooleanOriginal, new VendorDbType(EbDbTypes.BooleanOriginal, NpgsqlDbType.Boolean, "bool"));
         }
 
         public static IVendorDbTypes Instance => new PGSQLEbDbTypes();
@@ -106,6 +106,7 @@ namespace ExpressBase.Common
         //SSL Mode=Require; Use SSL Stream=true;
         private string _cstr;
         private EbBaseDbConnection EbBaseDbConnection { get; set; }
+        public string DBName { get; }
 
         public PGSQLDatabase(EbBaseDbConnection dbconf)
         {
@@ -114,6 +115,7 @@ namespace ExpressBase.Common
                 _cstr = string.Format(CONNECTION_STRING_BARE, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port, this.EbBaseDbConnection.DatabaseName, this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password, this.EbBaseDbConnection.Timeout);
             else
                 _cstr = string.Format(CONNECTION_STRING_BARE_WITHOUT_SSL, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port, this.EbBaseDbConnection.DatabaseName, this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password, this.EbBaseDbConnection.Timeout);
+            DBName = EbBaseDbConnection.DatabaseName;
         }
 
         public DbConnection GetNewConnection(string dbName)
@@ -143,11 +145,11 @@ namespace ExpressBase.Common
             else if (type == EbDbTypes.Int64)
                 val = Convert.ToInt64(value);
             else if (type == EbDbTypes.Boolean)
-                val = Convert.ToBoolean(value) ? 'T' : 'F' ;
-			else if (type == EbDbTypes.BooleanOriginal)
-				val = Convert.ToBoolean(value);
+                val = Convert.ToBoolean(value) ? 'T' : 'F';
+            else if (type == EbDbTypes.BooleanOriginal)
+                val = Convert.ToBoolean(value);
 
-			return new NpgsqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = val };
+            return new NpgsqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = val };
         }
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type)
@@ -245,7 +247,8 @@ namespace ExpressBase.Common
             {
                 throw npgse;
             }
-            catch (SocketException scket) {
+            catch (SocketException scket)
+            {
             }
 
             return null;
@@ -271,7 +274,7 @@ namespace ExpressBase.Common
                             Type[] typeArray = this.AddColumns(dt, (reader as NpgsqlDataReader).GetColumnSchema());
                             PrepareDataTable((reader as NpgsqlDataReader), dt, typeArray);
                             ds.Tables.Add(dt);
-                            ds.RowNumbers += dt.Rows.Count.ToString()+",";
+                            ds.RowNumbers += dt.Rows.Count.ToString() + ",";
                         }
                         catch (Exception ee)
                         {
@@ -286,13 +289,13 @@ namespace ExpressBase.Common
                 throw npgse;
             }
             catch (SocketException scket) { }
-            
+
             var dtEnd = DateTime.Now;
             Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
 
             var ts = (dtEnd - dtStart).TotalMilliseconds;
             Console.WriteLine(string.Format("DoQueries Execution Time : {0}", ts));
-            ds.RowNumbers = (ds.RowNumbers.Length>3)?ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 3): ds.RowNumbers;
+            ds.RowNumbers = (ds.RowNumbers.Length > 3) ? ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 3) : ds.RowNumbers;
             ds.StartTime = dtStart;
             ds.EndTime = dtEnd;
             return ds;
@@ -356,8 +359,8 @@ namespace ExpressBase.Common
                 column.ColumnIndex = pos++;
                 dt.Columns.Add(column);
             }
-			if(schema.Count > 0)
-				dt.TableName = schema[0].BaseTableName;
+            if (schema.Count > 0)
+                dt.TableName = schema[0].BaseTableName;
             return typeArray;
         }
 
@@ -427,8 +430,9 @@ namespace ExpressBase.Common
             return false;
         }
 
-        public void CreateTable(string query)
+        public int CreateTable(string query)
         {
+            int res = 0;
             using (var con = GetNewConnection() as NpgsqlConnection)
             {
                 try
@@ -436,7 +440,7 @@ namespace ExpressBase.Common
                     con.Open();
                     using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
                     {
-                        var xx = cmd.ExecuteNonQuery();
+                       res = cmd.ExecuteNonQuery();
                     }
                 }
                 catch (Npgsql.NpgsqlException npgse)
@@ -445,6 +449,7 @@ namespace ExpressBase.Common
                 }
                 catch (SocketException scket) { }
             }
+            return res;
         }
 
         public int InsertTable(string query, params DbParameter[] parameters)
@@ -473,6 +478,56 @@ namespace ExpressBase.Common
         }
 
         public int UpdateTable(string query, params DbParameter[] parameters)
+        {
+            using (var con = GetNewConnection() as NpgsqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+
+                        return cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    throw npgse;
+                }
+                catch (SocketException scket) { }
+            }
+
+            return 0;
+        }
+
+        public int AlterTable(string query, params DbParameter[] parameters)
+        {
+            using (var con = GetNewConnection() as NpgsqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+
+                        return cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    throw npgse;
+                }
+                catch (SocketException scket) { }
+            }
+
+            return 0;
+        }
+
+        public int DeleteTable(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as NpgsqlConnection)
             {
