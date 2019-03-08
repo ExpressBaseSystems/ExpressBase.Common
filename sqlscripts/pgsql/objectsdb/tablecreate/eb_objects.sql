@@ -14,6 +14,8 @@ CREATE TABLE public.eb_objects
     owner_uid integer,
     owner_ts timestamp without time zone,
 	display_name text COLLATE pg_catalog."default",
+    is_logenabled char(1) DEFAULT 'F',
+    eb_del char(1) DEFAULT 'F',
     CONSTRAINT eb_objects_pkey PRIMARY KEY (id)
 )
 WITH (

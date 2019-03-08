@@ -11,9 +11,6 @@ CREATE OR REPLACE FUNCTION public.eb_object_create_minor_version(
 	relationsstring text)
     RETURNS text
     LANGUAGE 'plpgsql'
-
-    COST 100
-    VOLATILE 
 AS $BODY$
 
 DECLARE refidunique text; inserted_objid integer; inserted_obj_ver_id integer; objid integer; committed_refidunique text; 

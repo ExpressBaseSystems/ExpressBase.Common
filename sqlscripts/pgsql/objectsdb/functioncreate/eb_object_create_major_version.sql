@@ -10,10 +10,7 @@ CREATE OR REPLACE FUNCTION public.eb_object_create_major_version(
 	cur_pid text,
 	relationsstring text)
     RETURNS text
-    LANGUAGE 'plpgsql'
-
-    COST 100
-    VOLATILE 
+    LANGUAGE 'plpgsql' 
 AS $BODY$
 
 DECLARE refidunique text; inserted_obj_ver_id integer; objid integer; committed_refidunique text;
