@@ -43,6 +43,10 @@ namespace ExpressBase.Common.Objects
         [OnChangeUIFunction("Common.HELP_TEXT")]
         [UIproperty]
         public virtual string HelpText { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [UIproperty]
+        public Script ScriptTest { get; set; }
         
 
         [JsonIgnore]
@@ -68,9 +72,9 @@ namespace ExpressBase.Common.Objects
         [Alias("Validators")]
         public virtual List<EbValidator> Validators { get; set; }
 
-        [EnableInBuilder(BuilderType.BotForm)]
-        [PropertyEditor(PropertyEditorType.JS)]
-        public string ValueExpression { get; set; }
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
+        public Script ValueExpression { get; set; }
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
@@ -330,8 +334,8 @@ else
         public bool IsWarningOnly { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyEditor(PropertyEditorType.JS)]
-        public string JScode { get; set; }
+        [PropertyEditor(PropertyEditorType.ScriptEditorCS)]
+        public Script JScode { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public string FailureMSG { get; set; }

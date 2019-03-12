@@ -93,4 +93,11 @@ namespace ExpressBase.Common.Objects
         Bottom,
         Middle
     }
+
+    public enum ScriptingLanguage
+    {
+        JS,
+        CSharp,
+        SQL
+    }
 }
