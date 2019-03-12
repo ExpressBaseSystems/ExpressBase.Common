@@ -5,10 +5,10 @@ using System.Text;
 
 namespace ExpressBase.Objects
 {
-    public class Script
+    public class EbScript
     {
         public string Code { get; set; }
 
-        public ScriptingLanguage Lang{ get; set; }
+        public ScriptingLanguage Lang { get; set; }
     }
 }
