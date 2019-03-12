@@ -294,8 +294,8 @@ namespace ExpressBase.Common
             Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
 
             var ts = (dtEnd - dtStart).TotalMilliseconds;
-            Console.WriteLine(string.Format("DoQueries Execution Time : {0}", ts));
-            ds.RowNumbers = (ds.RowNumbers.Length > 3) ? ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 3) : ds.RowNumbers;
+            Console.WriteLine(string.Format("DoQueries Execution Time : {0}", ts));            
+            ds.RowNumbers = ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 1)/*(ds.RowNumbers.Length>3)?ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 3): ds.RowNumbers*/;
             ds.StartTime = dtStart;
             ds.EndTime = dtEnd;
             return ds;
