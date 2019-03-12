@@ -43,10 +43,6 @@ namespace ExpressBase.Common.Objects
         [OnChangeUIFunction("Common.HELP_TEXT")]
         [UIproperty]
         public virtual string HelpText { get; set; }
-
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [UIproperty]
-        public EbScript ScriptTest { get; set; }
         
 
         [JsonIgnore]
@@ -334,7 +330,7 @@ else
         public bool IsWarningOnly { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyEditor(PropertyEditorType.ScriptEditorCS)]
+        [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
         public EbScript JScode { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
