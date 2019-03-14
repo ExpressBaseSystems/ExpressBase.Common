@@ -76,7 +76,7 @@ namespace ExpressBase.Common
             {
                 TypeNameHandling = TypeNameHandling.All,
                 ObjectCreationHandling = ObjectCreationHandling.Replace,
-                //ContractResolver = new ShouldSerializeContractResolver()
+                ContractResolver = new ShouldSerializeContractResolver()
             }));
         }
 
@@ -87,7 +87,7 @@ namespace ExpressBase.Common
                 {
                     TypeNameHandling = TypeNameHandling.All,
                     ObjectCreationHandling = ObjectCreationHandling.Replace,
-                    //ContractResolver = new ShouldSerializeContractResolver()
+                    ContractResolver = new ShouldSerializeContractResolver()
                 });
         }
     }
