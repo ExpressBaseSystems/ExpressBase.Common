@@ -201,6 +201,11 @@ else
         public virtual string OnChange { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [PropertyGroup("a_test")]
+        [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
+        public virtual EbScript OnChangeFn { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string DefaultValue { get; set; }
 
         public virtual string GetToolHtml() { return @"<div eb-type='@toolName' class='tool'>@toolName</div>".Replace("@toolName", this.GetType().Name.Substring(2)); }
@@ -240,6 +245,9 @@ else
 
         [JsonIgnore]
         public virtual string ClearJSfn { get { return @"$('#' + this.EbSid_CtxId).val('');"; } set { } }
+
+        [JsonIgnore]
+        public virtual string OnChangeBindJSFn { get { return @"$('#' + this.EbSid_CtxId).on('change', p1);"; } set { } }
 
         //methods        
         protected string ReplacePropsInHTML(string Html)
