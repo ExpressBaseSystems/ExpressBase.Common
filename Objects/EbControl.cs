@@ -24,7 +24,7 @@ namespace ExpressBase.Common.Objects
         public void OnDeserializedMethod(StreamingContext context)
         {
             if (this._OnChange == null && !string.IsNullOrEmpty(OnChange))
-                this._OnChange = new EbScript { Code = OnChange.FromBase64(), Lang = ScriptingLanguage.CSharp };
+                this._OnChange = new EbScript { Code = OnChange.FromBase64(), Lang = ScriptingLanguage.JS };
             else if (this._OnChange == null)
                 this._OnChange = new EbScript();
         }
