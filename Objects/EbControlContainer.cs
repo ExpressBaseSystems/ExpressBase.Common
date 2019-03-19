@@ -236,6 +236,7 @@ namespace ExpressBase.Common.Objects
                                 opFnsJs += GetOpFnJs("reset", _ctrlObj.ResetJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("refresh", _ctrlObj.RefreshJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("clear", _ctrlObj.ClearJSfn, TypeName);
+                                opFnsJs += GetOpFnJs("bindOnChange", _ctrlObj.OnChangeBindJSFn, TypeName);
 
 
                                 string fn = string.Concat("function ", TypeName, "(jsonObj){ $.extend(this, jsonObj);", opFnsJs, "}").RemoveCR();
