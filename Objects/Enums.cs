@@ -96,8 +96,8 @@ namespace ExpressBase.Common.Objects
 
     public enum ScriptingLanguage
     {
-        JS,
-        CSharp,
-        SQL
+        JS = 0,
+        CSharp = 1,
+        SQL = 2
     }
 }

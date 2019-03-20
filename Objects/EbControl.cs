@@ -12,12 +12,22 @@ using Newtonsoft.Json;
 using ExpressBase.Common.JsonConverters;
 using ExpressBase.Common.Structures;
 using ExpressBase.Common.Extensions;
+using System.Runtime.Serialization;
 
 namespace ExpressBase.Common.Objects
 {
     public class EbControl : EbObject
     {
         public EbControl() { this.Validators = new List<EbValidator>(); }
+
+        [OnDeserialized]
+        public void OnDeserializedMethod(StreamingContext context)
+        {
+            if (this._OnChange == null && !string.IsNullOrEmpty(OnChange))
+                this._OnChange = new EbScript { Code = OnChange.FromBase64(), Lang = ScriptingLanguage.JS };
+            else if (this._OnChange == null)
+                this._OnChange = new EbScript();
+        }
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
@@ -38,12 +48,12 @@ namespace ExpressBase.Common.Objects
         [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual bool Unique { get; set; }
-        
+
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [OnChangeUIFunction("Common.HELP_TEXT")]
         [UIproperty]
         public virtual string HelpText { get; set; }
-        
+
 
         [JsonIgnore]
         public virtual string UIchangeFns { get; set; }
@@ -59,8 +69,8 @@ namespace ExpressBase.Common.Objects
         [PropertyEditor(PropertyEditorType.MultiLanguageKeySelector)]
         public virtual string Label { get; set; }
 
-        [EnableInBuilder(BuilderType.BotForm, BuilderType.FilterDialog)]
-        [PropertyEditor(PropertyEditorType.JS)]
+        //[EnableInBuilder(BuilderType.BotForm, BuilderType.FilterDialog)]
+        //[PropertyEditor(PropertyEditorType.JS)]
         public string VisibleIf { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
@@ -68,8 +78,8 @@ namespace ExpressBase.Common.Objects
         [Alias("Validators")]
         public virtual List<EbValidator> Validators { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
+        //[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        //[PropertyEditor(PropertyEditorType.ScriptEditorJS)]
         public string ValueExpression { get; set; }
 
         [HideInPropertyGrid]
@@ -180,8 +190,20 @@ else
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyGroup("Events")]
+        [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
+        [Alias("OnChange")]
+        public virtual EbScript _OnChange { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [PropertyGroup("Events")]
         [PropertyEditor(PropertyEditorType.JS)]
+        [Alias("OnChange old")]
         public virtual string OnChange { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [PropertyGroup("a_test")]
+        [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
+        public virtual EbScript OnChangeFn { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string DefaultValue { get; set; }
@@ -223,6 +245,9 @@ else
 
         [JsonIgnore]
         public virtual string ClearJSfn { get { return @"$('#' + this.EbSid_CtxId).val('');"; } set { } }
+
+        [JsonIgnore]
+        public virtual string OnChangeBindJSFn { get { return @"$('#' + this.EbSid_CtxId).on('change', p1);"; } set { } }
 
         //methods        
         protected string ReplacePropsInHTML(string Html)
