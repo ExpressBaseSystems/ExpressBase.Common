@@ -68,19 +68,27 @@ namespace ExpressBase.Common.Objects
         [OnChangeUIFunction("Common.LABEL")]
         [PropertyEditor(PropertyEditorType.MultiLanguageKeySelector)]
         public virtual string Label { get; set; }
-
-        //[EnableInBuilder(BuilderType.BotForm, BuilderType.FilterDialog)]
-        //[PropertyEditor(PropertyEditorType.JS)]
-        public string VisibleIf { get; set; }
-
+        
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.Collection)]
         [Alias("Validators")]
         public virtual List<EbValidator> Validators { get; set; }
+        
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
+        [Alias("Visible Expression")]
+        public virtual EbScript VisibleExpr { get; set; }
 
-        //[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        //[PropertyEditor(PropertyEditorType.ScriptEditorJS)]
-        public string ValueExpression { get; set; }
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
+        [Alias("Value Expression")]
+        public virtual EbScript ValueExpr { get; set; }
+
+        //to store front end data value of the control  
+        public object ValueFE { get; set; }
+
+        //to store back end data value of the control  
+        public object ValueBE { get; set; }
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]

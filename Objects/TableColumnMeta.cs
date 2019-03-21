@@ -53,7 +53,7 @@ namespace ExpressBase.Common
         {
             Columns = new List<SingleColumn>();
         }
-
+        
         public dynamic this[string name]
         {
             get
@@ -78,6 +78,19 @@ namespace ExpressBase.Common
             //    }
             //    throw new KeyNotFoundException { };
             //}
+        }
+
+        public void SetType(string name, EbDbTypes ebDbType)
+        {
+            for (int i = 0; i < this.Columns.Count; i++)
+            {
+                if (this.Columns[i].Name.Equals(name))
+                {
+                    this.Columns[i].Type = (int)ebDbType;
+                    return;
+                }
+            }
+            throw new KeyNotFoundException();
         }
     }
 
