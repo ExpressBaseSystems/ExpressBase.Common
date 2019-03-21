@@ -239,7 +239,7 @@ namespace ExpressBase.Common.Objects
                                 opFnsJs += GetOpFnJs("bindOnChange", _ctrlObj.OnChangeBindJSFn, TypeName);
 
 
-                                string fn = string.Concat("function ", TypeName, "(jsonObj){ $.extend(this, jsonObj);", opFnsJs, "}").RemoveCR();
+                                string fn = string.Concat("function ", TypeName, "(jsonObj){ $.extend(this, jsonObj);", opFnsJs, "}");//.RemoveCR();
 
                                 JSCode += string.Concat(@"
                                                         ControlOps.", TypeName, " = ", fn); ;
@@ -259,7 +259,7 @@ namespace ExpressBase.Common.Objects
         private static string GetOpFnJs(string opFnName, string JSfn, string TypeName)
         {
             return string.Concat(@"
-                                    this.", opFnName, " = function(p1) { ", JSfn, "};").RemoveCR();
+                                    this.", opFnName, " = function(p1) { ", JSfn, "};");//.RemoveCR();
         }
 
         public static void SetContextId(EbControlContainer FormObj, string contextId)
