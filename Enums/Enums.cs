@@ -158,7 +158,8 @@ namespace ExpressBase.Common
         View_Mode = 1,
         New_Mode = 2,
         Edit_Mode = 3,
-        Fail_Mode = 4
+        Fail_Mode = 4,
+        Preview_Mode = 5
     }
 
     public enum RedisOperations

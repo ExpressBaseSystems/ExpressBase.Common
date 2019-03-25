@@ -21,7 +21,7 @@ namespace ExpressBase.Common.Objects
         public EbControl() { this.Validators = new List<EbValidator>(); }
 
         [OnDeserialized]
-        public void OnDeserializedMethod(StreamingContext context)
+        public void OnDeserialized(StreamingContext context)
         {
             if (this._OnChange == null && !string.IsNullOrEmpty(OnChange))
                 this._OnChange = new EbScript { Code = OnChange.FromBase64(), Lang = ScriptingLanguage.JS };
