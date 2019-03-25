@@ -198,7 +198,7 @@ else
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyGroup("Events")]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
-        [Alias("OnChange")]
+        [Alias("OnChangeFeb")]
         public virtual EbScript _OnChange { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
@@ -208,8 +208,9 @@ else
         public virtual string OnChange { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyGroup("a_test")]
+        [PropertyGroup("Behavior")]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
+        [Alias("OnChange")]
         public virtual EbScript OnChangeFn { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
