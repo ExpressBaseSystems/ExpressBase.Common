@@ -600,7 +600,9 @@ namespace ExpressBase.Common
 
         public string EB_SIDEBARUSER_REQUEST { get { return @"
                 SELECT id, applicationname,app_icon
-                FROM eb_applications;
+                FROM eb_applications
+                WHERE COALESCE(eb_del, 'F') = 'F';
+
                 SELECT
                     EO.id, EO.obj_type, EO.obj_name,
                     EOV.version_num, EOV.refid, EO2A.app_id, EO.obj_desc, EOS.status, EOS.id, display_name
@@ -619,7 +621,8 @@ namespace ExpressBase.Common
         public string EB_SIDEBARDEV_REQUEST
         {
             get { return @"
-                SELECT id, applicationname,app_icon FROM eb_applications;
+                SELECT id, applicationname,app_icon FROM eb_applications
+                WHERE COALESCE(eb_del, 'F') = 'F';
                             SELECT 
 	                            EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, COALESCE(EO2A.app_id, 0),display_name
                             FROM 
@@ -647,7 +650,7 @@ namespace ExpressBase.Common
 									(SELECT COUNT(user_id) FROM eb_role2user WHERE role_id=R.id AND eb_del='F') AS user_count,
 									(SELECT COUNT(distinct permissionname) FROM eb_role2permission RP, eb_objects2application OA WHERE role_id = R.id AND app_id=A.id AND RP.obj_id=OA.obj_id AND RP.eb_del = 'F' AND OA.eb_del = 'F') AS permission_count
 								FROM eb_roles R, eb_applications A
-								WHERE R.applicationid = A.id AND R.role_name ~* :searchtext;";
+								WHERE R.applicationid = A.id AND R.role_name ~* :searchtext AND A.eb_del = 'F';";
             }
         }
         public string EB_GETMANAGEROLESRESPONSE_QUERY { get { return @"
