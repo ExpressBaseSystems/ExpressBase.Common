@@ -172,11 +172,6 @@ else
         [PropertyGroup("Behavior")]
         public virtual bool Hidden { get; set; }
 
-        protected string HiddenString
-        {
-            get { return (this.Hidden ? "visibility: hidden;" : string.Empty); }
-        }
-
         [ProtoBuf.ProtoMember(23)]
         public virtual bool SkipPersist { get; set; }
 
@@ -265,7 +260,7 @@ else
 .Replace("@name@", this.Name)
 .Replace("@childOf@", this.ChildOf.IsNullOrEmpty() ? string.Empty : "childOf='" + this.ChildOf + "'")
 .Replace("@ebsid@", this.EbSid_CtxId)
-.Replace("@hiddenString@", this.HiddenString)
+.Replace("@isHidden@", this.Hidden.ToString())
 .Replace("@helpText@", this.HelpText)
 .Replace("@type@", this.ObjType)
 .Replace("@Label@ ", (Label ?? ""))
