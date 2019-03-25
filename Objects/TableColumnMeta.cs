@@ -34,6 +34,8 @@ namespace ExpressBase.Common
 
         public int Type { get; set; }
 
+        public Object Control { get; set; }
+
         public bool AutoIncrement { get; set; }
 
         public SingleColumn() { }        
@@ -67,26 +69,40 @@ namespace ExpressBase.Common
                 }
                 throw new KeyNotFoundException { };
             }
-            //set
-            //{
-            //    for (int i = 0; i < this.Columns.Count; i++)
-            //    {
-            //        if (this.Columns[i].Name.Equals(name))
-            //        {
-            //            this.Columns[i].Value = value;
-            //        }
-            //    }
-            //    throw new KeyNotFoundException { };
-            //}
+            set
+            {
+                for (int i = 0; i < this.Columns.Count; i++)
+                {
+                    if (this.Columns[i].Name.Equals(name))
+                    {
+                        this.Columns[i].Value = value;
+                        return;
+                    }
+                }
+                throw new KeyNotFoundException { };
+            }
         }
 
-        public void SetType(string name, EbDbTypes ebDbType)
+        public void SetEbDbType(string name, EbDbTypes ebDbType)
         {
             for (int i = 0; i < this.Columns.Count; i++)
             {
                 if (this.Columns[i].Name.Equals(name))
                 {
                     this.Columns[i].Type = (int)ebDbType;
+                    return;
+                }
+            }
+            throw new KeyNotFoundException();
+        }
+
+        public void SetControl(string name, Object control)
+        {
+            for (int i = 0; i < this.Columns.Count; i++)
+            {
+                if (this.Columns[i].Name.Equals(name))
+                {
+                    this.Columns[i].Control = control;
                     return;
                 }
             }
