@@ -1,50 +1,39 @@
-﻿-- DROP TABLE eb_usersanonymous;
-
-CREATE TABLE eb_usersanonymous
+﻿CREATE TABLE eb_usersanonymous
 (
-    id integer NOT NULL auto_increment,
-    fullname varchar(255),
-    socialid varchar(255),
-    email varchar(255),
-    sex varchar(20),
-    phoneno varchar(20),
-    firstvisit date,
-    lastvisit date,
-    appid INT,
-    totalvisits INT DEFAULT 1,
-    ebuserid INT DEFAULT 1,
-    modifiedby INT,
-    modifiedat date,
-    remarks varchar(50),
-    ipaddress varchar(20),
-    browser varchar(50),
-    city varchar(50),
-    region varchar(50),
-    country varchar(50),
-    latitude varchar(50),
-    longitude varchar(50),
-    timezone varchar(50),
-    iplocationjson longtext,
-    PRIMARY KEY (id)
+  id integer NOT NULL auto_increment,
+  fullname text,
+  socialid varchar(50),
+  email varchar(50),
+  sex text,
+  phoneno text,
+  firstvisit timestamp DEFAULT CURRENT_TIMESTAMP,
+  lastvisit timestamp DEFAULT CURRENT_TIMESTAMP,
+  appid integer,
+  totalvisits integer DEFAULT 1,
+  ebuserid integer DEFAULT 1,
+  modifiedby integer,
+  modifiedat timestamp DEFAULT CURRENT_TIMESTAMP,
+  remarks text,
+  ipaddress text,
+  browser text,
+  city text,
+  region text,
+  country text,
+  latitude text,
+  longitude text,
+  timezone text,
+  iplocationjson text,
+  CONSTRAINT eb_usersprospective_pkey PRIMARY KEY (id)
 );
 
--- Index: eb_usersanonymous_email_idx
-
--- DROP INDEX eb_usersanonymous_email_idx;
-
 CREATE INDEX eb_usersanonymous_email_idx
-    ON eb_usersanonymous (email );
-
--- Index: eb_usersanonymous_id_idx
-
--- DROP INDEX eb_usersanonymous_id_idx;
-
+ON eb_usersanonymous(email)
+USING btree;
+  
 CREATE INDEX eb_usersanonymous_id_idx
-    ON eb_usersanonymous (id);
-
--- Index: eb_usersanonymous_socialid_idx
-
--- DROP INDEX eb_usersanonymous_socialid_idx;
-
+ON eb_usersanonymous(id)
+USING btree;
+  
 CREATE INDEX eb_usersanonymous_socialid_idx
-    ON eb_usersanonymous (socialid);
+ON eb_usersanonymous(socialid)
+USING btree;

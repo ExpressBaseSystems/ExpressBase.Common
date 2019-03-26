@@ -1,20 +1,15 @@
-﻿-- Table: public.eb_locations
-
--- DROP TABLE eb_locations;
-
-CREATE TABLE eb_locations
+﻿CREATE TABLE eb_locations
 (
-    id integer NOT NULL AUTO_INCREMENT,
-    shortname text,
-    longname text,
-    image text,
-    meta_json text,
-    CONSTRAINT eb_locations_pkey PRIMARY KEY (id)
+  id integer NOT NULL auto_increment,
+  shortname varchar(20),
+  longname text,
+  image text,
+  meta_json text,
+  CONSTRAINT eb_locations_pkey PRIMARY KEY (id)
 );
 
--- Index: eb_locationsid_idx
 
--- ALTER TABLE eb_locations DROP INDEX eb_locationsid_idx;
+create index eb_locations_idx on eb_locations(id) using btree;
 
-CREATE INDEX eb_locationsid_idx
-    ON eb_locations(id);
+
+create index eb_locations_shortname_idx on eb_locations(shortname) using btree;

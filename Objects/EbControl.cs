@@ -21,7 +21,7 @@ namespace ExpressBase.Common.Objects
         public EbControl() { this.Validators = new List<EbValidator>(); }
 
         [OnDeserialized]
-        public void OnDeserializedMethod(StreamingContext context)
+        public void OnDeserialized(StreamingContext context)
         {
             if (this._OnChange == null && !string.IsNullOrEmpty(OnChange))
                 this._OnChange = new EbScript { Code = OnChange.FromBase64(), Lang = ScriptingLanguage.JS };
@@ -139,6 +139,10 @@ namespace ExpressBase.Common.Objects
 
         public virtual bool isSelfCollection { get; set; }
 
+        [PropertyGroup("Behavior")]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        public virtual bool DoNotPersist { get; set; }
+
         protected string RequiredString
         {
             get { return (this.Required ? "$('#{0}').focusout(function() { isRequired(this); }); $('#{0}Lbl').html( $('#{0}Lbl').text() + '<sup style=\"color: red\">*</sup>') ".Replace("{0}", this.Name) : string.Empty); }
@@ -172,11 +176,6 @@ else
         [PropertyGroup("Behavior")]
         public virtual bool Hidden { get; set; }
 
-        protected string HiddenString
-        {
-            get { return (this.Hidden ? "visibility: hidden;" : string.Empty); }
-        }
-
         [ProtoBuf.ProtoMember(23)]
         public virtual bool SkipPersist { get; set; }
 
@@ -199,7 +198,7 @@ else
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyGroup("Events")]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
-        [Alias("OnChange")]
+        [Alias("OnChangeFeb")]
         public virtual EbScript _OnChange { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
@@ -209,8 +208,9 @@ else
         public virtual string OnChange { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyGroup("a_test")]
+        [PropertyGroup("Behavior")]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
+        [Alias("OnChange")]
         public virtual EbScript OnChangeFn { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
@@ -265,7 +265,7 @@ else
 .Replace("@name@", this.Name)
 .Replace("@childOf@", this.ChildOf.IsNullOrEmpty() ? string.Empty : "childOf='" + this.ChildOf + "'")
 .Replace("@ebsid@", this.EbSid_CtxId)
-.Replace("@hiddenString@", this.HiddenString)
+.Replace("@isHidden@", this.Hidden.ToString())
 .Replace("@helpText@", this.HelpText)
 .Replace("@type@", this.ObjType)
 .Replace("@Label@ ", (Label ?? ""))

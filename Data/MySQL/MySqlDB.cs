@@ -52,6 +52,7 @@ namespace ExpressBase.Common
             this.InnerDictionary.Add(EbDbTypes.Time, new VendorDbType(EbDbTypes.Time, MySqlDbType.Time,"Time"));
             this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, MySqlDbType.LongText,"LongText"));
             this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, MySqlDbType.JSON,"Json"));
+            this.InnerDictionary.Add(EbDbTypes.Bytea, new VendorDbType(EbDbTypes.Bytea, MySqlDbType.Blob, "bytea"));
             this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, MySqlDbType.VarChar,"Varchar"));
         }
 
@@ -96,8 +97,8 @@ namespace ExpressBase.Common
 
 
         //private const string CONNECTION_STRING_BARE = "Host={0}; Port={1}; Database={2}; Username={3}; Password={4}; SSL Mode=Require; Use SSL Stream=true; Trust Server Certificate=true; Pooling=true; CommandTimeout={5};";
-        //private const string CONNECTION_STRING_BARE = "Server={0}; Port={1}; Database={2}; Uid={3}; pwd={4}; ";
-        private const string CONNECTION_STRING_BARE = "Server=35.200.156.92; Port=3306; Database=northwind; Uid=jith; pwd=MyNewPass123#; ";
+        private const string CONNECTION_STRING_BARE = "Server={0}; Port={1}; Database={2}; Uid={3}; pwd={4};SslMode=none; ";
+        //private const string CONNECTION_STRING_BARE = "Server=35.200.199.41; Port=3306; Database=test_eb; Uid=josevin; pwd=Josevin@1234; ";
         private string _cstr;
         private EbBaseDbConnection EbBaseDbConnection { get; set; }
         public string DBName { get; }
@@ -624,8 +625,10 @@ namespace ExpressBase.Common
         public string EB_SAVEROLES_QUERY { get; set; }
         public string EB_SAVEUSER_QUERY { get; set; }
         public string EB_SAVEUSERGROUP_QUERY { get; set; }
-        public string EB_USER_ROLE_PRIVS { get; set; }
-        public string EB_INITROLE2USER { get; set; }
+        public string EB_USER_ROLE_PRIVS { get { return "SELECT DISTINCT privilege_type FROM information_schema.USER_PRIVILEGES WHERE grantee=\"'@uname'@'%'\""; } }
+        //SELECT DISTINCT privilege_type FROM information_schema.USER_PRIVILEGES WHERE grantee="'@uname'@'%'";
+        public string EB_INITROLE2USER { get { return "INSERT INTO eb_role2user(role_id, user_id, createdat) VALUES (@role_id, @user_id, now());"; } }
+        //public string EB_INITROLE2USER { get; set; }
         public string EB_MANAGEUSER_FIRST_QUERY { get; set; }
 
         public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ { get; set; }
