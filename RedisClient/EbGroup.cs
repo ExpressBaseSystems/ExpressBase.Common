@@ -22,6 +22,7 @@ namespace ExpressBase.Common
         public string Key { set; get; }
         public object Obj { set; get; }
         public string Type { set; get; }
+        public long Idltm { get; set; }
     }
 
     public class EbRedisLogs
@@ -34,7 +35,15 @@ namespace ExpressBase.Common
     }
     public class EbRedisLogValues
     {
-        public string Prev_val { get; set; }
-        public string New_val { get; set; }
+        public object Prev_val { get; set; }
+        public object New_val { get; set; }
+    }
+
+    public class EbRedisGroupDetails
+    {
+        public string Refid { get; set; }
+        public string Disp_Name { get; set; }
+        public Int32 Obj_Type { get; set; }
+        public string Version { get; set; }
     }
 }
