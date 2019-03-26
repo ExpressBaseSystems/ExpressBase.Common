@@ -1,25 +1,19 @@
-﻿-- DROP TABLE eb_usergroup;
-
-CREATE TABLE eb_usergroup
+﻿CREATE TABLE eb_usergroup
 (
-    id integer NOT NULL auto_increment,
-    name varchar(255),
-    description varchar(255),
-    eb_del char NOT NULL DEFAULT 'F',
-    PRIMARY KEY (id),
-    CHECK (eb_del = 'T' OR eb_del = 'F')
+  id integer NOT NULL auto_increment,
+  name varchar(50),
+  description text,
+  eb_del1 boolean,
+  eb_del char NOT NULL DEFAULT 'F',
+  CONSTRAINT eb_usergroup_pkey PRIMARY KEY (id),
+  CONSTRAINT eb_usergroup_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );
 
--- Index: eb_usergroup_eb_del_idx
+CREATE INDEX eb_usergroup_idx
+ON eb_usergroup(id) 
+USING btree;
 
--- DROP INDEX eb_usergroup_eb_del_idx;
+CREATE INDEX eb_usergroup_name_idx
+ON eb_usergroup(name) 
+USING btree;
 
-CREATE INDEX eb_usergroup_eb_del_idx
-    ON eb_usergroup (eb_del);
-
--- Index: eb_usergroup_id_idx
-
--- DROP INDEX eb_usergroup_id_idx;
-
-CREATE INDEX eb_usergroup_id_idx
-    ON eb_usergroup (id);

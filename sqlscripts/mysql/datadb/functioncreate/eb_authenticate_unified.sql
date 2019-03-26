@@ -1,50 +1,52 @@
-﻿-- FUNCTION: eb_authenticate_unified(text, text, text, text)
-
--- DROP PROCEDURE IF EXISTS eb_authenticate_unified;
-
-DELIMITER $$
-CREATE PROCEDURE eb_authenticate_unified(
-	uname text ,
-	pwd text,
-	social text,
-	wc text)
+﻿CREATE DEFINER=`josevin`@`%` PROCEDURE `eb_authenticate_unified`(IN uname text,
+    IN pwd text,
+    IN social text,
+    IN wc text,
+    IN ipaddress text)
 BEGIN
-	DECLARE userid INTEGER;
-	DECLARE email TEXT;
-	DECLARE fullname TEXT;
-	DECLARE roles_a TEXT;
-	DECLARE rolename_a TEXT;
-	DECLARE permissions TEXT;
-	DECLARE preferencesjson TEXT;
-    
-	IF uname 	= '' THEN SET uname 	= NULL; END IF;
-	IF pwd 		= '' THEN SET pwd 		= NULL; END IF;
-	IF social 	= '' THEN SET social 	= NULL; END IF;
-	IF wc 		= '' THEN SET wc 		= NULL; END IF;
-	-- NORMAL
+DECLARE userid INTEGER;
+DECLARE email TEXT;
+DECLARE fullname TEXT;
+DECLARE roles_a TEXT;
+DECLARE rolename_a TEXT;
+DECLARE permissions TEXT;
+DECLARE preferencesjson TEXT;
+DECLARE constraintstatus TEXT;
+
+If uname ='' then set uname=null; end if;
+If pwd ='' then set pwd=null; end if;
+If social ='' then set social=null; end if;
+If wc ='' then set wc=null; end if;
+If ipaddress ='' then set ipaddress=null; end if;
+
+-- NORMAL
 	IF uname IS NOT NULL AND pwd IS NOT NULL AND social IS NULL THEN
         SELECT eb_users.id, eb_users.email, eb_users.fullname, eb_users.preferencesjson
         FROM eb_users WHERE eb_users.email = uname AND pwd = pwd AND statusid = 0 INTO userid, email, fullname, preferencesjson;
     END IF;
-    -- SSO
+    
+-- SSO
     IF uname IS NOT NULL AND pwd IS NULL AND social IS NULL THEN
         SELECT eb_users.id, eb_users.email, eb_users.fullname, eb_users.preferencesjson
         FROM eb_users WHERE eb_users.email = uname AND statusid = 0 INTO userid, email, fullname, preferencesjson;
     END IF;
-    -- SOCIAL
+    
+ -- SOCIAL
     IF uname IS NULL AND pwd IS NULL AND social IS NOT NULL THEN
         SELECT eb_users.id, eb_users.email, eb_users.fullname, eb_users.preferencesjson
         FROM eb_users WHERE eb_users.fbid = social AND statusid = 0 INTO userid, email, fullname, preferencesjson;
     END IF;
 
 	IF userid > 0 THEN
-		CALL eb_getroles(userid, wc);-- it will create eb_roles_tmp with values 
-    
-        SELECT roles, role_name FROM eb_roles_tmp INTO roles_a, rolename_a;
+    call eb_getroles(userid, wc);
+        SELECT roles, role_name FROM eb_roles_tmp as a INTO roles_a, rolename_a;
 
-        SELECT eb_getpermissions(group_concat(roles_a)) INTO permissions;
-
-        CREATE TEMPORARY TABLE IF NOT EXISTS eb_authenticate_unified  
-			SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson;
+        call eb_getpermissions(roles_a);-- INTO permissions;
+		select (select group_concat(value) from permissions_tmp) into permissions;
+		SELECT eb_getconstraintstatus(userid, ipaddress)  INTO constraintstatus;
+   -- drop temporary table if exists eb_authenticate_unified_tmp;
+ CREATE temporary table eb_authenticate_unified_tmp  
+         SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson, constraintstatus;
+		select * from eb_authenticate_unified_tmp;
    	END IF;
-END;
+END

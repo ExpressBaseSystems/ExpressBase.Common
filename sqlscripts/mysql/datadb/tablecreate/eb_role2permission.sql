@@ -2,38 +2,32 @@
 
 CREATE TABLE eb_role2permission
 (
-    id INT NOT NULL auto_increment,
-    role_id INT,
-    permissionname varchar(50),
-    createdby INT,
-    createdat timestamp,
-    obj_id INT,
-    op_id INT,
-    revokedby INT,
-    revokedat timestamp,
-    permissionname_backup varchar(50),
-    eb_del char(1) NOT NULL DEFAULT 'F',
-    PRIMARY KEY (id),
-    CHECK (eb_del = 'T' OR eb_del = 'F')
+  id integer NOT NULL auto_increment,
+  role_id integer,
+  eb_del1 boolean DEFAULT false,
+  permissionname text,
+  createdby integer,
+  createdat timestamp DEFAULT CURRENT_TIMESTAMP,
+  obj_id integer,
+  op_id integer,
+  revokedby integer,
+  revokedat timestamp DEFAULT CURRENT_TIMESTAMP,
+  permissionname_backup text,
+  eb_del char NOT NULL DEFAULT 'F',
+  CONSTRAINT eb_role2permission_pkey PRIMARY KEY (id),
+  CONSTRAINT eb_role2permission_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );
 
--- Index: eb_role2permission_eb_del_idx
+CREATE INDEX eb_role2permission_idx
+ON eb_role2permission(id) 
+USING btree;
 
--- DROP INDEX eb_role2permission_eb_del_idx;
 
 CREATE INDEX eb_role2permission_eb_del_idx
-    ON eb_role2permission (eb_del);
+ON eb_role2permission(eb_del) 
+USING btree;
 
--- Index: eb_role2permission_role_id_idx
-
--- DROP INDEX eb_role2permission_role_id_idx;
 
 CREATE INDEX eb_role2permission_role_id_idx
-    ON eb_role2permission (role_id);
-
--- Index: public.eb_role2permission_id_idx
-
--- DROP INDEX eb_role2permission_id_idx;
-
-CREATE INDEX eb_role2permission_id_idx
-    ON eb_role2permission (id);
+ON eb_role2permission(role_id)
+USING btree;

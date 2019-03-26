@@ -125,6 +125,40 @@ namespace ExpressBase.Common
         UPDATE
     }
 
+    public enum MySqlSysRoles
+    {
+        //CONNECT,
+        //RESOURCE,
+        //DBA
+        ALTER,
+        ALTER_ROUTINE,
+        CREATE,
+        CREATE_ROUTINE,
+        CREATE_TABLESPACE,
+        CREATE_TEMPORARY_TABLES,
+        CREATE_USER,
+        CREATE_VIEW,
+        DELETE,
+        DROP,
+        EVENT,
+        EXECUTE,
+        FILE,
+        INDEX,
+        INSERT,
+        LOCK_TABLES,
+        PROCESS,
+        REFERENCES,
+        RELOAD,
+        REPLICATION_CLIENT,
+        REPLICATION_SLAVE,
+        SELECT,
+        SHOW_DATABASES,
+        SHOW_VIEW,
+        SHUTDOWN,
+        SUPER, TRIGGER,
+        UPDATE
+    }
+
     public enum SurveyQTypes
     {
         SingleSelect = 1,
@@ -154,7 +188,8 @@ namespace ExpressBase.Common
         Deleted = 3
     }
 
-    public enum WebFormModes {
+    public enum WebFormModes
+    {
         View_Mode = 1,
         New_Mode = 2,
         Edit_Mode = 3,
