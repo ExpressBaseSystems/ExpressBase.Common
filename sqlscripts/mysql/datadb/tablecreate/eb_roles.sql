@@ -1,29 +1,26 @@
-﻿-- DROP TABLE eb_roles;
-
-CREATE TABLE eb_roles
+﻿CREATE TABLE eb_roles
 (
-    id INT NOT NULL AUTO_INCREMENT,
-    role_name varchar(255)  NOT NULL,
-    applicationname varchar(255),
-    applicationid INT,
-    description varchar(255),
-    eb_del char(1) NOT NULL DEFAULT 'F',
-    is_anonymous char(1) NOT NULL DEFAULT 'F',
-    PRIMARY KEY (id),
-    UNIQUE (role_name),
-    CHECK(eb_del = 'T' OR eb_del = 'F')
-)AUTO_INCREMENT=100;
+  id integer NOT NULL auto_increment,
+  role_name varchar(25) NOT NULL,
+  eb_del1 boolean,
+  applicationname text,
+  applicationid integer,
+  description text,
+  eb_del char NOT NULL DEFAULT 'F',
+  is_anonymous char,
+  CONSTRAINT eb_roles_id_pkey PRIMARY KEY (id),
+  CONSTRAINT eb_rolename_unique UNIQUE (role_name),
+  CONSTRAINT eb_roles_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
+);
 
--- Index: eb_roles_eb_del_idx
+CREATE INDEX eb_roles_idx
+ON eb_roles(id) 
+USING btree;
 
--- DROP INDEX public.eb_roles_eb_del_idx;
+CREATE INDEX eb_roles_name_idx
+ON eb_roles(role_name) 
+USING btree;
 
-CREATE INDEX eb_roles_eb_del_idx
-    ON eb_roles (eb_del);
-
--- Index: eb_roles_id_idx
-
--- DROP INDEX public.eb_roles_id_idx;
-
-CREATE UNIQUE INDEX eb_roles_id_idx
-    ON eb_roles (id);
+CREATE INDEX eb_roles_appid_idx
+ON eb_roles(applicationid) 
+USING btree;

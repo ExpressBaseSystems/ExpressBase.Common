@@ -1,36 +1,26 @@
-﻿-- DROP TABLE eb_role2role;
-
-CREATE TABLE eb_role2role
+﻿CREATE TABLE eb_role2role
 (
-    id INT NOT NULL auto_increment,
-    role1_id INT,
-    role2_id INT,
-    createdby INT,
-    createdat timestamp ,
-    revokedby INT,
-    revokedat timestamp ,
-    eb_del char(1) NOT NULL DEFAULT 'F',
-    PRIMARY KEY (id),
-    CHECK (eb_del = 'T' OR eb_del = 'F')
+  id integer NOT NULL auto_increment,
+  role1_id integer,
+  role2_id integer,
+  eb_del1 boolean DEFAULT false,
+  createdby integer,
+  createdat timestamp DEFAULT CURRENT_TIMESTAMP,
+  revokedby integer,
+  revokedat timestamp DEFAULT CURRENT_TIMESTAMP,
+  eb_del char NOT NULL DEFAULT 'F',
+  CONSTRAINT eb_role2role_id_pkey PRIMARY KEY (id),
+  CONSTRAINT eb_role2role_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );
 
--- Index: eb_role2role_eb_del_idx
-
--- DROP INDEX eb_role2role_eb_del_idx;
-
-CREATE INDEX eb_role2role_eb_del_idx
-    ON eb_role2role (eb_del);
-
--- Index: eb_role2role_id_idx
-
--- DROP INDEX eb_role2role_id_idx;
+CREATE INDEX eb_role2role_eb_del_idx 
+ON eb_role2role(eb_del)
+USING btree;
 
 CREATE UNIQUE INDEX eb_role2role_id_idx
-    ON eb_role2role (id);
-
--- Index: eb_role2role_role1_id_idx
-
--- DROP INDEX eb_role2role_role1_id_idx;
+ON eb_role2role (id)
+USING btree;
 
 CREATE INDEX eb_role2role_role1_id_idx
-    ON eb_role2role (role1_id);
+ON eb_role2role(role1_id)
+USING btree;
