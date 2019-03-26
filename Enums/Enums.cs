@@ -161,6 +161,12 @@ namespace ExpressBase.Common
         Fail_Mode = 4
     }
 
+    public enum WebFormDVModes
+    {
+        View_Mode = 0,
+        New_Mode = 1
+    }
+
     public enum RedisOperations
     {
         Edit,
