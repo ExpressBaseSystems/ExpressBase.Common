@@ -37,7 +37,7 @@ namespace ExpressBase.Objects
         public virtual string VersionNumber { get; set; }
 
         public virtual string Status { get; set; }
-               
+
         // methods
 
         public virtual void BeforeRedisSet() { }
@@ -63,7 +63,9 @@ namespace ExpressBase.Objects
         public virtual void ReplaceRefid(Dictionary<string, string> RefidMap) { }
 
         public virtual string DiscoverRelatedRefids() { return ""; }
-        
+
+        public virtual void BeforeSave() { }
+
     }
 
     public interface IEBRootObject
