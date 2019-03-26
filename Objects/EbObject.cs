@@ -15,6 +15,13 @@ namespace ExpressBase.Objects
     // Base class for all eb Components
     public class EbObject
     {
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.SqlFunctions, BuilderType.UserControl, BuilderType.ApiBuilder, BuilderType.DVBuilder)]
+        [EbRequired]
+        [Unique]
+        [regexCheck]
+        [PropertyGroup("Behavior")]
+        [InputMask("[a-z][a-z0-9]*(_[a-z0-9]+)*")]
+        public virtual string Name { get; set; }
 
         public EbObject() { }
 
@@ -30,14 +37,6 @@ namespace ExpressBase.Objects
         public virtual string VersionNumber { get; set; }
 
         public virtual string Status { get; set; }
-
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.SqlFunctions, BuilderType.UserControl, BuilderType.ApiBuilder,BuilderType.DVBuilder)]
-        [EbRequired]
-        [Unique]
-        [regexCheck]
-        [PropertyGroup("Behavior")]
-        [InputMask("[a-z][a-z0-9]*(_[a-z0-9]+)*")]
-        public virtual string Name { get; set; }
 
         // methods
 
@@ -64,7 +63,9 @@ namespace ExpressBase.Objects
         public virtual void ReplaceRefid(Dictionary<string, string> RefidMap) { }
 
         public virtual string DiscoverRelatedRefids() { return ""; }
-        
+
+        public virtual void BeforeSave() { }
+
     }
 
     public interface IEBRootObject

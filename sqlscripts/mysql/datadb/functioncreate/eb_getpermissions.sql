@@ -1,22 +1,11 @@
-﻿
--- DROP FUNCTION  IF EXISTS  eb_getpermissions;
-
-DELIMITER $$
-CREATE FUNCTION eb_getpermissions(
-	roles VARCHAR(255))
-RETURNS TEXT
-DETERMINISTIC
+﻿CREATE DEFINER=`josevin`@`%` PROCEDURE `eb_getpermissions`(IN roles text)
 BEGIN
-	
-    DECLARE _permissions  TEXT;
-    SET _permissions = 
-    (SELECT 
-	   GROUP_CONCAT( permissionname) AS permissions
-	FROM 
-		eb_role2permission
-	WHERE FIND_IN_SET(role_id,roles) AND eb_del='F');
-    RETURN _permissions;
-END$$
-DELIMITER ;
-
--- SELECT eb_getpermissions('1,2,3,50')
+declare _permission text;
+drop temporary table if exists permissions_tmp;
+set _permission=(
+	SELECT GROUP_CONCAT(concat( _per.permissionname,':', _loc.locationid) separator ',') FROM eb_role2permission _per, eb_role2location _loc
+		WHERE _per.role_id = _loc.roleid AND _per.role_id = FIND_IN_SET(role_id,roles) AND _per.eb_del='F' AND _loc.eb_del='F');
+create temporary table permissions_tmp(value text);
+insert into permissions_tmp(value) values (_permission);	
+select * from permissions_tmp;
+END

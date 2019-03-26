@@ -1,11 +1,6 @@
-﻿-- FUNCTION AS PROCEDURE: eb_botdetails(integer)
-
--- DROP PROCEDURE IF EXISTS eb_botdetails;
-
-DELIMITER $$       
-CREATE PROCEDURE eb_botdetails(IN solutionid integer)  
+﻿CREATE DEFINER=`josevin`@`%` PROCEDURE `eb_botdetails`(solutionid integer)
 BEGIN
-	SELECT 
+SELECT 
 		name, 
 		url, 
 		botid, 
@@ -17,4 +12,4 @@ BEGIN
 		eb_bots 
 	WHERE 
 		solution_id = solutionid;
-END$$
+END

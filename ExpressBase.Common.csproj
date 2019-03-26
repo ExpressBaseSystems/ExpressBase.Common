@@ -16,10 +16,14 @@
     <None Remove="sqlscripts\PostGreSql\**" />
   </ItemGroup>
   <ItemGroup>
+      <EmbeddedResource Include="sqlscripts\mysql\datadb\functioncreate\**" />
+      <EmbeddedResource Include="sqlscripts\mysql\datadb\tablecreate\**" />
       <EmbeddedResource Include="sqlscripts\oracle\datadb\functioncreate\**" />
       <EmbeddedResource Include="sqlscripts\oracle\datadb\tablecreate\**" />
       <EmbeddedResource Include="sqlscripts\pgsql\datadb\functioncreate\**" />
       <EmbeddedResource Include="sqlscripts\pgsql\datadb\tablecreate\**" />
+      <EmbeddedResource Include="sqlscripts\mysql\objectsdb\functioncreate\**" />
+      <EmbeddedResource Include="sqlscripts\mysql\objectsdb\tablecreate\**" />
       <EmbeddedResource Include="sqlscripts\oracle\objectsdb\functioncreate\**" />
       <EmbeddedResource Include="sqlscripts\oracle\objectsdb\tablecreate\**" />
       <EmbeddedResource Include="sqlscripts\pgsql\objectsdb\functioncreate\**" />
@@ -28,11 +32,15 @@
       <None Remove="sqlscripts\pgsql\datadb\tablecreate\eb_schedules.txt" />
       <None Remove="sqlscripts\pgsql\objectsdb\functioncreate\string_to_table_util_fn.sql" />
       <None Remove="sqlscripts\pgsql\objectsdb\tablecreate\eb_executionlogs.sql" />
+      <EmbeddedResource Include="sqlscripts\mysql\eb_extras.sql" />
       <EmbeddedResource Include="sqlscripts\pgsql\eb_extras.sql" />
       <EmbeddedResource Include="sqlscripts\oracle\eb_extras.sql" />
+      <EmbeddedResource Include="sqlscripts\mysql\eb_compilefunctions.sql" />
       <EmbeddedResource Include="sqlscripts\pgsql\eb_compilefunctions.sql" />
       <EmbeddedResource Include="sqlscripts\oracle\eb_compilefunctions.sql" />
-      
+
+      <EmbeddedResource Include="sqlscripts\mysql\filesdb\functioncreate\**" />
+      <EmbeddedResource Include="sqlscripts\mysql\filesdb\tablecreate\**" />
       <EmbeddedResource Include="sqlscripts\oracle\filesdb\functioncreate\**" />
       <EmbeddedResource Include="sqlscripts\oracle\filesdb\tablecreate\**" />
       <EmbeddedResource Include="sqlscripts\pgsql\filesdb\functioncreate\**" />
@@ -70,7 +78,7 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
-    <Folder Include="sqlscripts\mysql\filesdb\" />
+    <Folder Include="sqlscripts\mysql\filesdb\functioncreate\" />
     <Folder Include="sqlscripts\oracle\filesdb\functioncreate\" />
     <Folder Include="sqlscripts\oracle\filesdb\tablecreate\" />
     <Folder Include="sqlscripts\pgsql\filesdb\functioncreate\" />
