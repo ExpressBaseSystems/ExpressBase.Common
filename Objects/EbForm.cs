@@ -30,7 +30,7 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public override string Status { get; set; }
 
-        public override string DefaultValue { get; set; }
+        public override dynamic DefaultValue { get; set; }
 
         public override string HelpText { get; set; }
 

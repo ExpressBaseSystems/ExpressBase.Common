@@ -70,7 +70,7 @@ namespace ExpressBase.Common.Objects
         public override string FontFamily { get; set; }
 
         [JsonIgnore]
-        public override string DefaultValue { get; set; }
+        public override dynamic DefaultValue { get; set; }
 
         [JsonIgnore]
         public override List<EbValidator> Validators { get; set; }
