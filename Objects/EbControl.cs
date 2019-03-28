@@ -214,7 +214,7 @@ else
         public virtual EbScript OnChangeFn { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        public virtual dynamic DefaultValue { get; set; }
+        public virtual string DefaultValue { get; set; }
 
         public virtual string GetToolHtml() { return @"<div eb-type='@toolName' class='tool'>@toolName</div>".Replace("@toolName", this.GetType().Name.Substring(2)); }
 
