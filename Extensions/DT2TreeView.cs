@@ -5,29 +5,48 @@ using System.Text;
 
 namespace ExpressBase.Common.Extensions
 {
+    public class TreeData<T>
+    {
+        public List<Node<T>> Tree { set; get; }
+
+        public List<EbDataRow> RowsOrdered { set; get; }
+
+        public TreeData()
+        {
+            RowsOrdered = new RowColletion();
+            Tree = new List<Node<T>>();
+        }
+    }
+
     public class Node<T> 
     {
         internal Node() { }
+
         public T Item { get; internal set; }
+
         public int Level { get; internal set; }
+
         public IList<Node<T>> Children { get; internal set; }
-        public bool IsGroup { get { return this.Children.Any(); } }
+
+        public bool IsGroup { set;get; }
     }
 
     public static class DT2TreeView
     {
-        public static List<Node<T>> ToTree<T>(
+        public static TreeData<T> ToTree<T>(
         this IEnumerable<T> source,
         Func<T, bool> startWith,
-        Func<T, T, bool> connectBy)
+        Func<T, T, bool> connectBy,
+        string group)
         {
             if (source == null) throw new ArgumentNullException("source");
             if (startWith == null) throw new ArgumentNullException("startWith");
             if (connectBy == null) throw new ArgumentNullException("connectBy");
-            List<int> Proc = new List<int>();
 
-            List<Node<T>> Tree = source.ToTree(startWith, connectBy, null, Proc).ToList<Node<T>>();
-            return Tree;
+            List<int> Proc = new List<int>();
+            TreeData<T> treedata = new TreeData<T>();
+            treedata.Tree = source.ToTree(startWith, connectBy, null, Proc,treedata.RowsOrdered,group).ToList<Node<T>>();
+            return treedata;
         }
 
         private static IEnumerable<Node<T>> ToTree<T>(
@@ -35,7 +54,9 @@ namespace ExpressBase.Common.Extensions
             Func<T, bool> startWith,
             Func<T, T, bool> connectBy,
             Node<T> parent,
-            List<int> proc)
+            List<int> proc,
+            List<EbDataRow> RowsOrdered,
+            string group)
         {
             int level = (parent == null ? 0 : parent.Level + 1);
 
@@ -53,11 +74,14 @@ namespace ExpressBase.Common.Extensions
                     {
                         Level = level,
                         Item = value,
+                        IsGroup =Convert.ToBoolean((value as EbDataRow)[group]),
                         Children = children.AsReadOnly()
                     };
 
+                    RowsOrdered.Add(value as EbDataRow);
+
                     T tmpValue = value;
-                    children.AddRange(source.ToTree(possibleSub => connectBy(tmpValue, possibleSub), connectBy, newNode, proc));
+                    children.AddRange(source.ToTree(possibleSub => connectBy(tmpValue, possibleSub), connectBy, newNode, proc, RowsOrdered, group));
 
                     yield return newNode;
                 }
