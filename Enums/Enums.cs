@@ -63,6 +63,16 @@ namespace ExpressBase.Common
         FTP = 10
     }
 
+    public enum EbIntegrations
+    {
+        PostgreSQL = 1,
+        Oracle = 2,
+        MySQL = 3,
+        SQLServer = 4,
+        Twilio = 5,
+        ExpertTexting = 6,
+        MongoDB = 7
+    }
 
     public enum StudioFormTypes
     {
@@ -195,6 +205,12 @@ namespace ExpressBase.Common
         Edit_Mode = 3,
         Fail_Mode = 4,
         Preview_Mode = 5
+    }
+
+    public enum WebFormDVModes
+    {
+        View_Mode = 0,
+        New_Mode = 1
     }
 
     public enum RedisOperations

@@ -676,7 +676,7 @@ namespace ExpressBase.Common.Data
 
         public string EB_SIDEBARUSER_REQUEST { get { return @"
                        SELECT id, applicationname,app_icon
-                FROM eb_applications;
+                FROM eb_applications ORDER BY applicationname;
                 SELECT
                     EO.id, EO.obj_type, EO.obj_name,
                     EOV.version_num, EOV.refid, EO2A.app_id,EO.obj_desc
@@ -694,7 +694,7 @@ namespace ExpressBase.Common.Data
         public string EB_SIDEBARDEV_REQUEST
         {
             get { return @"
-                            SELECT id, applicationname,app_icon FROM eb_applications;
+                            SELECT id, applicationname,app_icon FROM eb_applications ORDER BY applicationname;
                             SELECT 
 	                            EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, COALESCE(EO2A.app_id, 0)
                             FROM 
