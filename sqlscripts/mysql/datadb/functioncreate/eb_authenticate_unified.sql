@@ -1,8 +1,17 @@
-﻿CREATE DEFINER=`josevin`@`%` PROCEDURE `eb_authenticate_unified`(IN uname text,
+﻿CREATE PROCEDURE eb_authenticate_unified(IN uname text,
     IN pwd text,
     IN social text,
     IN wc text,
-    IN ipaddress text)
+    IN ipaddress text,
+    out userid1 integer,
+    out email1 text,
+    out fullname1 text,
+    out roles_a1 TEXT,
+	out rolename_a1 TEXT,
+	out permissions1 TEXT,
+	out preferencesjson1 text,
+	out constraintstatus1 TEXT
+    )
 BEGIN
 DECLARE userid INTEGER;
 DECLARE email TEXT;
@@ -38,15 +47,18 @@ If ipaddress ='' then set ipaddress=null; end if;
     END IF;
 
 	IF userid > 0 THEN
-    call eb_getroles(userid, wc);
-        SELECT roles, role_name FROM eb_roles_tmp as a INTO roles_a, rolename_a;
+    call eb_getroles(userid, wc,@roless,@role_names);
+        SELECT @roless, @role_names INTO roles_a, rolename_a;
 
-        call eb_getpermissions(roles_a);-- INTO permissions;
-		select (select group_concat(value) from permissions_tmp) into permissions;
+        call eb_getpermissions(roles_a,@out_permission);-- INTO permissions;
+		select @out_permission into permissions;
 		SELECT eb_getconstraintstatus(userid, ipaddress)  INTO constraintstatus;
-   -- drop temporary table if exists eb_authenticate_unified_tmp;
+  drop temporary table if exists eb_authenticate_unified_tmp;
  CREATE temporary table eb_authenticate_unified_tmp  
-         SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson, constraintstatus;
-		select * from eb_authenticate_unified_tmp;
-   	END IF;
+         SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson, constraintstatus ;
+         -- into userid1, email1, fullname1, roles_a1, rolename_a1, permissions1, preferencesjson1, constraintstatus1;
+		         SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson, constraintstatus
+                 from eb_authenticate_unified_tmp into userid1, email1, fullname1, roles_a1, rolename_a1, permissions1, preferencesjson1, constraintstatus1;
+   	
+    END IF;
 END

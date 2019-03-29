@@ -1,9 +1,10 @@
-﻿CREATE DEFINER=`josevin`@`%` FUNCTION `eb_object_create_minor_version`(idv text,
-    obj_typev integer,
-    commit_uidv integer,
-    src_pid text,
-    cur_pid text,
-    relationsstring text) RETURNS text CHARSET latin1
+﻿CREATE PROCEDURE eb_object_create_minor_version(in idv text,
+    in obj_typev integer,
+    in commit_uidv integer,
+    in src_pid text,
+    in cur_pid text,
+    in relationsstring text,
+    out committed_refidunique1 text)
 BEGIN
 DECLARE refidunique text;
 DECLARE inserted_objid integer;
@@ -46,26 +47,22 @@ set committed_refidunique=refidunique;
 UPDATE eb_objects_ver SET refid = refidunique WHERE id = inserted_obj_ver_id;
 
 INSERT INTO eb_objects_status(eb_obj_ver_id, status, uid, ts) VALUES(inserted_obj_ver_id, 0, commit_uidv, NOW());     
-  drop temporary table if exists temp_dommi;
-CREATE TEMPORARY TABLE temp_dommi
-	SELECT dominant from eb_objects_relations WHERE dependant = refidunique
-		AND dominant NOT IN (SELECT value FROM relationsv);
-  
-UPDATE eb_objects_relations 
+ 
+ UPDATE eb_objects_relations 
       SET 
         eb_del = 'T', removed_by = commit_uidv , removed_at = NOW()
       WHERE 
-        dominant IN(
-         select value from temp_dommi);   
+        dominant IN(select * from(
+            select dominant from eb_objects_relations WHERE dependant = refidunique and dominant not in 
+        (select `value` from relationsv))as a);
             
- INSERT INTO eb_objects_relations 
+            INSERT INTO eb_objects_relations 
         (dominant, dependant) 
     SELECT 
-      value, refidunique 
-      FROM (select value from temp_dommi
-        where value not in
-      (select dominant from eb_objects_relations 
-                            WHERE dependant = refidunique )) as dominantvals; 
-                            
-RETURN committed_refidunique;
+      `value`, refidunique 
+      FROM (SELECT `value` from relationsv where `value` not in
+       (select dominant from eb_objects_relations 
+                            WHERE dependant = refidunique )) as dominantvals;                            
+    select committed_refidunique into committed_refidunique1; 	
+
 END

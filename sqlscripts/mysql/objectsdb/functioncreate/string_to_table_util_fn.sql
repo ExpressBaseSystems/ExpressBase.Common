@@ -1,4 +1,4 @@
-﻿CREATE DEFINER=`josevin`@`%` PROCEDURE `STR_TO_TBL`(fullstr text)
+﻿CREATE PROCEDURE STR_TO_TBL(fullstr text)
 BEGIN
 DECLARE a INT Default 0 ;
       DECLARE str VARCHAR(255);
@@ -18,4 +18,14 @@ DECLARE a INT Default 0 ;
    END LOOP simple_loop;
    
    
+END
+
+CREATE FUNCTION SPLIT_STR(x VARCHAR(255),
+	  delim VARCHAR(12),
+	  pos INT) RETURNS varchar(255) CHARSET latin1
+BEGIN
+RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(x, delim, pos),
+		   LENGTH(SUBSTRING_INDEX(x, delim, pos -1)) + 1),
+		   delim, '');
+RETURN 1;
 END

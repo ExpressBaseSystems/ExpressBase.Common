@@ -1,4 +1,26 @@
-﻿CREATE DEFINER=`josevin`@`%` PROCEDURE `eb_objects_getversiontoopen`(_id integer)
+﻿CREATE PROCEDURE eb_objects_getversiontoopen(in _id integer,
+ out out_idv integer, 
+ out out_namev text, 
+ out out_typev integer, 
+ out out_status integer, 
+ out out_description text, 
+ out out_changelog text, 
+ out out_commitat text, 
+ out out_commitby text, 
+ out out_refidv text, 
+ out out_ver_num text, 
+ out out_work_mode character, 
+ out out_workingcopies text, 
+ out out_json_wc json, 
+ out out_json_lc json, 
+ out out_major_ver integer, 
+ out out_minor_ver integer, 
+ out out_patch_ver integer, 
+ out out_tags text, 
+ out out_app_id text, 
+ out out_dispnamev text, 
+ out out_is_log character
+)
 BEGIN
 DECLARE workingcopies text;
 DECLARE	json_wc json;
@@ -114,17 +136,11 @@ SELECT
 		AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS, eb_objects_ver EOV WHERE EOS.eb_obj_ver_id = (SELECT MAX(EOV.id) FROM eb_objects_ver EOV WHERE EOV.eb_objects_id = _id AND working_mode='T') AND EOV.working_mode='T');
 END IF;
 -- drop temporary table if exists eb_objects_getversiontoopen_tmp;
-drop temporary table if exists eb_objects_getversiontoopen_tmp;
--- insert into eb_objects_getversiontoopen_tmp(idv,namev ,typev ,status,
- -- description ,changelog ,commitat ,commitby ,refidv ,ver_num ,work_mode ,workingcopies ,
- -- json_wc ,json_lc ,major_ver ,minor_ver ,patch_ver ,tags ,app_id ,dispnamev ,is_log )
- create temporary table eb_objects_getversiontoopen_tmp(idv integer,namev text,typev integer,status integer,
- description text,changelog text,commitat text,commitby text,refidv text,ver_num text,work_mode char,workingcopies text,
- json_wc json,json_lc json,major_ver integer,minor_ver integer,patch_ver integer,tags text,app_id text,dispnamev text,is_log char);
-insert into eb_objects_getversiontoopen_tmp(idv,namev ,typev ,status,
-   description ,changelog ,commitat ,commitby ,refidv ,ver_num ,work_mode ,workingcopies ,
-   json_wc ,json_lc ,major_ver ,minor_ver ,patch_ver ,tags ,app_id ,dispnamev ,is_log )
-
-values( idv, namev, typev, status, description, changelog, commitat, commitby, refidv, ver_num, COALESCE(work_mode,'F') , workingcopies,
-	json_wc, json_lc, major_ver, minor_ver, patch_ver, tags, app_id, dispnamev, is_log);
+select
+    idv, namev, typev, status, description, changelog, commitat, commitby, refidv, ver_num, COALESCE(work_mode,'F') , workingcopies,
+	json_wc, json_lc, major_ver, minor_ver, patch_ver, tags, app_id, dispnamev, is_log 
+    into
+    out_idv , out_namev , out_typev , out_status , out_description , out_changelog , out_commitat , out_commitby , out_refidv , 
+    out_ver_num , out_work_mode , out_workingcopies , out_json_wc , out_json_lc , out_major_ver , out_minor_ver , out_patch_ver , 
+    out_tags ,out_app_id , out_dispnamev , out_is_log; 
 END
