@@ -1,4 +1,4 @@
-﻿CREATE DEFINER=`josevin`@`%` PROCEDURE `eb_createormodifyuserandroles`(IN _userid integer,
+﻿CREATE PROCEDURE eb_createormodifyuserandroles(IN _userid integer,
     IN _id integer,
     IN _fullname text,
     IN _nickname text,
@@ -18,21 +18,18 @@
     IN _statusid integer,
     IN _hide text,
     IN _anonymoususerid integer,
-    IN _preferences text)
+    IN _preferences text,
+    OUT out_uid integer)
 BEGIN
 DECLARE uid integer; 
--- DECLARE _roles integer[];
--- DECLARE _group integer[];
 
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value integer);
         
-	CALL STR_TO_TBL(_roles);  -- fill to temp_array_table
+	CALL STR_TO_TBL(_roles_temp);  -- fill to temp_array_table
 	CREATE TEMPORARY TABLE IF NOT EXISTS _roles SELECT `value` FROM temp_array_table;
-   drop temporary table if exists temp_array_table1;
-   CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table1(value integer);
-    
+  
 	CALL STR_TO_TBL(_group_temp);  -- fill to temp_array_table
-	CREATE TEMPORARY TABLE IF NOT EXISTS _group SELECT `value` FROM temp_array_table1;
+	CREATE TEMPORARY TABLE IF NOT EXISTS _group SELECT `value` FROM temp_array_table;
     
 IF _id > 1 THEN
 	IF _statusid > 99 THEN
@@ -63,10 +60,10 @@ ELSE
     VALUES (_fullname, _nickname, _email, _pwd, _dob, _sex, _alternateemail, _phnoprimary, _phnosecondary, _landline, _phextension, _fbid, _fbname, _userid, NOW(), _statusid, _hide, _preferences);
     select last_insert_id() INTO uid;
       
-   INSERT INTO eb_role2user (role_id,user_id,createdby,createdat) SELECT roleid, uid,_userid,NOW() 
+   INSERT INTO eb_role2user (role_id,user_id,createdby,createdat) SELECT `value`, uid,_userid,NOW() 
     FROM (select `value` from _roles) AS roleid;
     
-   INSERT INTO eb_user2usergroup(userid,groupid,createdby,createdat) SELECT uid, groupid,_userid,NOW() 
+   INSERT INTO eb_user2usergroup(userid,groupid,createdby,createdat) SELECT uid, `value`,_userid,NOW() 
     FROM (select `value` from _group) AS groupid;
 	
 	IF _id > 0 THEN
@@ -78,7 +75,7 @@ ELSE
    
 END IF;
   IF _userid > 0 THEN
-	    	SELECT uid;
+	    	SELECT uid into out_uid;
   END IF;
 
 END

@@ -124,18 +124,24 @@ namespace ExpressBase.Common.Data
                     ObjectsDB = new PGSQLDatabase(Connections.ObjectsDbConnection);
                 else if (Connections.ObjectsDbConnection != null && Connections.ObjectsDbConnection.DatabaseVendor == DatabaseVendors.ORACLE)
                     ObjectsDB = new OracleDB(Connections.ObjectsDbConnection);
+                else if (Connections.ObjectsDbConnection != null && Connections.ObjectsDbConnection.DatabaseVendor == DatabaseVendors.MYSQL)
+                    ObjectsDB = new MySqlDB(Connections.ObjectsDbConnection);
 
                 // DATA DB 
                 if (Connections.DataDbConnection != null && Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.PGSQL)
                     DataDB = new PGSQLDatabase(Connections.DataDbConnection);
                 else if (Connections.DataDbConnection != null && Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.ORACLE)
                     DataDB = new OracleDB(Connections.DataDbConnection);
+                else if (Connections.DataDbConnection != null && Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.MYSQL)
+                    DataDB = new MySqlDB(Connections.DataDbConnection);
 
                 // DATA DB RO
                 if (Connections.DataDbROConnection != null && Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.PGSQL)
                     DataDBRO = new PGSQLDatabase(Connections.DataDbConnection);
                 else if (Connections.DataDbROConnection != null && Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.ORACLE)
                     DataDBRO = new OracleDB(Connections.DataDbConnection);
+                else if (Connections.DataDbROConnection != null && Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.MYSQL)
+                    DataDBRO = new MySqlDB(Connections.DataDbConnection);
 
                 // LOGS DB
                 LogsDB = new PGSQLDatabase(EbConnectionsConfigProvider.InfraConnections.LogsDbConnection);

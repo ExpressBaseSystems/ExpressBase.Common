@@ -1,18 +1,19 @@
-﻿CREATE DEFINER=`josevin`@`%` PROCEDURE `eb_objects_create_new_object`(obj_namev text,
-    obj_descv text,
-    obj_typev integer,
-    obj_cur_statusv integer,
-    obj_jsonv json,
-    commit_uidv integer,
-    src_pid text,
-    cur_pid text,
-    relationsstring text,
-    issave text,
-    tagsv text,
-    appsstring text,
-    s_obj_id text,
-    s_ver_id text,
-    disp_name text)
+﻿CREATE PROCEDURE eb_objects_create_new_object(in obj_namev text,
+    in obj_descv text,
+    in obj_typev integer,
+    in obj_cur_statusv integer,
+    in obj_jsonv json,
+    in commit_uidv integer,
+    in src_pid text,
+    in cur_pid text,
+    in relationsstring text,
+    in issave text,
+    in tagsv text,
+    in appsstring text,
+    in s_obj_id text,
+    in s_ver_id text,
+    in disp_name text,
+    out out_refid_of_commit_version text)
 BEGIN
 DECLARE refidunique text;
 DECLARE inserted_objid integer;
@@ -69,5 +70,5 @@ DECLARE version_number text;
 	/*applications table*/
 	INSERT INTO eb_objects2application (app_id,obj_id) VALUES ((select `value` from apps),inserted_objid);
 		
-	  select refid_of_commit_version;
+	  select refid_of_commit_version into out_refid_of_commit_version;
 END

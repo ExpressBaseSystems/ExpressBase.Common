@@ -1,4 +1,4 @@
-﻿CREATE DEFINER=`josevin`@`%` FUNCTION `eb_objects_change_status`(idv text,
+﻿CREATE FUNCTION eb_objects_change_status(idv text,
     statusv integer,
     commit_uid integer,
     changelogv text) RETURNS int(11)

@@ -1,5 +1,7 @@
-﻿CREATE DEFINER=`josevin`@`%` PROCEDURE `eb_getroles`(IN userid integer,
-    IN wc text)
+﻿CREATE PROCEDURE eb_getroles(IN userid integer,
+    IN wc text,
+    out roless text,
+    out role_names text)
 BEGIN
 DECLARE app_type varchar(20);
 IF wc = 'tc' OR wc = 'dc' THEN
@@ -31,7 +33,7 @@ IF wc = 'tc' OR wc = 'dc' THEN
 				
                 select * from (
 						SELECT e1.role2_id AS role_id FROM  eb_role2role e1 
-                        join (SELECT e.role2_id,e.role1_id FROM eb_role2role e WHERE  eb_del='F')q on q.role1_id = e1.role2_id 
+                        join (SELECT e.role2_id,e.role1_id FROM eb_role2role e WHERE  e.eb_del='F')q on q.role2_id = e1.role2_id 
 							WHERE e1.role1_id = ANY(SELECT role_id FROM eb_role2user WHERE user_id = userid AND eb_del = 'F') AND e1.eb_del = 'F'
 												
 					)as r
@@ -46,4 +48,6 @@ IF wc = 'tc' OR wc = 'dc' THEN
 		WHERE 
 			role_id < 100 OR 
 			applicationid IS NOT NULL ;
+            
+ select roles,role_name from eb_roles_tmp into roless,role_names;
 END

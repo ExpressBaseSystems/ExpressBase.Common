@@ -251,12 +251,35 @@ namespace ExpressBase.Security
 			}
 		}
 
-		public static User GetDetailsNormal(IDatabase df, string uname, string pass, string context)
+		public static User GetDetailsNormal(IDatabase df, string uname, string pwd, string context, string social,string ipaddress)
         {
-
             try {
-                var ds = df.DoQuery(df.EB_AUTHETICATE_USER_NORMAL, new DbParameter[] { df.GetNewParameter("uname", EbDbTypes.String, uname), df.GetNewParameter("pass", EbDbTypes.String, pass), df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context) });
-                return InitUserObject(ds, context);
+                if(df.Vendor == DatabaseVendors.MYSQL)
+                {
+                    var ds = df.DoProcedure(df.EB_AUTHETICATE_USER_NORMAL, 
+                            new DbParameter[] { df.GetNewParameter("uname", EbDbTypes.String, uname),
+                                df.GetNewParameter("pwd", EbDbTypes.String, pwd),
+                                df.GetNewParameter("social", EbDbTypes.String, social),
+                                df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),
+                                df.GetNewParameter("ipaddress", EbDbTypes.String, ipaddress),
+                                df.GetNewOutParameter("userid1", EbDbTypes.Int32),
+                                df.GetNewOutParameter("email1", EbDbTypes.String),
+                                df.GetNewOutParameter("fullname1", EbDbTypes.String),
+                                df.GetNewOutParameter("roles_a1", EbDbTypes.String),
+                                df.GetNewOutParameter("rolename_a1", EbDbTypes.String),
+                                df.GetNewOutParameter("permissions1", EbDbTypes.String),
+                                df.GetNewOutParameter("preferencesjson1", EbDbTypes.String),
+                                df.GetNewOutParameter("constraintstatus1", EbDbTypes.String)
+                                });
+
+                    return InitUserObject(ds, context);
+                }
+                else
+                {
+                    var ds = df.DoQuery(df.EB_AUTHETICATE_USER_NORMAL, new DbParameter[] { df.GetNewParameter("uname", EbDbTypes.String, uname), df.GetNewParameter("pass", EbDbTypes.String, pwd), df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context) });
+                    return InitUserObject(ds, context);
+                }
+                //return null;
             }
             catch(Exception e)
             {
@@ -393,7 +416,7 @@ namespace ExpressBase.Security
                         FullName = ds.Rows[0][2].ToString(),
                         Roles = rolesname,
                         Permissions = ds.Rows[0][5].ToString().IsNullOrEmpty()? new List<string>(): ds.Rows[0][5].ToString().Split(',').ToList(),
-						Preference = !string.IsNullOrEmpty((string)ds.Rows[0][6])? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][6].ToString()): new Preferences { Locale= "en-US", TimeZone = "(UTC) Coordinated Universal Time", DefaultLocation = -1 }
+						Preference = !string.IsNullOrEmpty(ds.Rows[0][6].ToString())? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][6].ToString()): new Preferences { Locale= "en-US", TimeZone = "(UTC) Coordinated Universal Time", DefaultLocation = -1 }
 					};                        
                     if(_user.Preference.DefaultLocation < 1 && _user.LocationIds.Count > 0)
                     {
