@@ -1,5 +1,31 @@
-﻿CREATE DEFINER=`josevin`@`%` PROCEDURE `eb_objects_update_dashboard`(_refid text)
+﻿CREATE PROCEDURE eb_objects_update_dashboard(_refid text,
+out namev1 text,
+out status1 integer,
+out ver_num1 text,
+out work_mode1 character,
+out workingcopies1 text,
+out major_ver1 integer,
+out minor_ver1 integer,
+out patch_ver1 integer,
+out tags1 text, 
+out app_id1 text,
+out lastversionrefidval1 text,
+out lastversionnumberval1 text,
+out lastversioncommit_tsval1 text,
+out lastversion_statusval1 integer,
+out lastversioncommit_byname1 text,
+out lastversioncommit_byid1 integer,
+out liveversionrefidval1 text,
+out liveversionnumberval1 text, 
+out liveversioncommit_tsval1 text, 
+out liveversion_statusval1 integer, 
+out liveversioncommit_byname1 text, 
+out liveversioncommit_byid1 integer, 
+out owner_uidval1 integer, 
+out owner_tsval1 text, 
+out owner_nameval1 text)
 BEGIN
+  
 DECLARE workingcopies text;
 DECLARE _id integer;
 DECLARE namev text;
@@ -33,11 +59,11 @@ set workingcopies = NULL;
 
 SELECT eb_objects_id INTO _id FROM eb_objects_ver WHERE refid = _refid;
 
-select string_agg(EA.applicationname,',') INTO app_id from eb_objects2application E2O ,eb_applications EA where 
+select group_concat(EA.applicationname,',') INTO app_id from eb_objects2application E2O ,eb_applications EA where 
  obj_id = _id and E2O.eb_del = 'F' and EA.id = E2O.app_id ;
  
  SELECT 
-	string_agg((json_object( version_num, refid)),',') INTO workingcopies
+	group_concat((json_object( version_num, refid)),',') INTO workingcopies
 FROM 
 	eb_objects_ver 
 WHERE 
@@ -96,6 +122,12 @@ SELECT namev, status, ver_num,
 	COALESCE(work_mode,'F'), workingcopies, major_ver, minor_ver, patch_ver, tags, app_id,
 	lastversionrefidval, lastversionnumberval, lastversioncommit_tsval, lastversion_statusval, lastversioncommit_byname,lastversioncommit_byid,
 	liveversionrefidval, liveversionnumberval, liveversioncommit_tsval, liveversion_statusval, liveversioncommit_byname,liveversioncommit_byid,
-	owner_uidVal, owner_tsVal, owner_nameVal;
+	owner_uidVal, owner_tsVal, owner_nameVal 
+    into namev1, status1, ver_num1,
+	work_mode1, workingcopies1, major_ver1, minor_ver1, patch_ver1, tags1, app_id1,
+	lastversionrefidval1, lastversionnumberval1, lastversioncommit_tsval1, lastversion_statusval1, 
+    lastversioncommit_byname1,lastversioncommit_byid1,liveversionrefidval1, liveversionnumberval1, 
+    liveversioncommit_tsval1, liveversion_statusval1, liveversioncommit_byname1,liveversioncommit_byid1,
+	owner_uidVal1, owner_tsVal1, owner_nameVal1;
     
 END

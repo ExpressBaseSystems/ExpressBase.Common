@@ -1,4 +1,5 @@
-﻿CREATE DEFINER=`josevin`@`%` PROCEDURE `eb_getpermissions`(IN roles text)
+﻿CREATE PROCEDURE eb_getpermissions(IN roles text,
+out out_permission text)
 BEGIN
 declare _permission text;
 drop temporary table if exists permissions_tmp;
@@ -7,5 +8,5 @@ set _permission=(
 		WHERE _per.role_id = _loc.roleid AND _per.role_id = FIND_IN_SET(role_id,roles) AND _per.eb_del='F' AND _loc.eb_del='F');
 create temporary table permissions_tmp(value text);
 insert into permissions_tmp(value) values (_permission);	
-select * from permissions_tmp;
+select `value` from permissions_tmp into out_permission;
 END

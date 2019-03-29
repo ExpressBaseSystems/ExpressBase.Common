@@ -97,7 +97,7 @@ namespace ExpressBase.Common
 
 
         //private const string CONNECTION_STRING_BARE = "Host={0}; Port={1}; Database={2}; Username={3}; Password={4}; SSL Mode=Require; Use SSL Stream=true; Trust Server Certificate=true; Pooling=true; CommandTimeout={5};";
-        private const string CONNECTION_STRING_BARE = "Server={0}; Port={1}; Database={2}; Uid={3}; pwd={4};SslMode=none; ";
+        private const string CONNECTION_STRING_BARE = "Server={0}; Port={1}; Database={2}; Uid={3}; pwd={4};SslMode=none; Allow User Variables=True;";
         //private const string CONNECTION_STRING_BARE = "Server=35.200.199.41; Port=3306; Database=test_eb; Uid=josevin; pwd=Josevin@1234; ";
         private string _cstr;
         private EbBaseDbConnection EbBaseDbConnection { get; set; }
@@ -229,14 +229,14 @@ namespace ExpressBase.Common
                 try
                 {
                     con.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(procedure_name,con))
+                    using (MySqlCommand cmd = new MySqlCommand())
                     {
-                        //cmd.Connection = con;
-                        //cmd.CommandText = procedure_name;
+                        cmd.Connection = con;
+                        cmd.CommandText = procedure_name;
                         //cmd.CommandText = "eb_authenticate_unified";
                         cmd.CommandType = CommandType.StoredProcedure;
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
+                        //if (parameters != null && parameters.Length > 0)
+                        cmd.Parameters.AddRange(parameters);
                         var reader = cmd.ExecuteNonQuery();
 
 

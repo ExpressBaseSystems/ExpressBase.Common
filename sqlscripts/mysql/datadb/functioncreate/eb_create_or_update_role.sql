@@ -1,10 +1,11 @@
-﻿CREATE DEFINER=`josevin`@`%` PROCEDURE `eb_create_or_update_role`(application_id integer,
-    role_name text,
-    role_desc text,
-    isanonym text,
-    userid integer,
-    permissions text,
-    roleid integer)
+﻿CREATE PROCEDURE eb_create_or_update_role(in application_id integer,
+    in role_name text,
+    in role_desc text,
+    in isanonym text,
+    in userid integer,
+    in permissions text,
+    in roleid integer,
+    out out_rid integer)
 BEGIN
 DECLARE rid INTEGER; 
 DECLARE errornum INTEGER;
@@ -34,24 +35,23 @@ IF roleid = null THEN
     SET 
         eb_del = 'T',revokedat = NOW(),revokedby = userid 
     WHERE 
-        role_id = roleid AND eb_del = 'F' AND permissionname in(select * from(
-           SELECT permissionname from eb_role2permission WHERE role_id = roleid AND eb_del = 'F')as t1)
-       and permissionname not in 
-		(select * from (SELECT `value` from permissions_tmp) as t2);
+        role_id = roleid AND eb_del = 'F' AND permissionname IN(
+         select * from(select permissionname from eb_role2permission WHERE role_id = roleid AND eb_del = 'F' and  permissionname
+        not in (select `value` from  permissions_tmp))as a);
+            
 INSERT INTO eb_role2permission 
         (permissionname, role_id, createdby, createdat, op_id, obj_id) 
     SELECT 
          `value`, rid, userid, NOW(), 
         cast( SPLIT_STR(`value`,'-',4) as unsigned int),
         cast( SPLIT_STR(`value`,'-',3) as unsigned int)
-    FROM permissions_tmp where `value` not in 
-    (select permissionname from eb_role2permission WHERE role_id = roleid AND eb_del = 'F') ;
+    FROM ( (select `value` from permissions_tmp where `value` not in 
+    (select permissionname from eb_role2permission WHERE role_id = roleid AND eb_del = 'F')) )as a;
     
     -- (select `value` as permissionname from permissions_tmp where permissionname not in 
   --  (select permissionname from eb_role2permission WHERE role_id = roleid AND eb_del = 'F')
   --   )as p ;
- create temporary table eb_create_or_update_role_tmp(value integer);
- insert into eb_create_or_update_role_tmp(value)values(rid);
-select rid from eb_create_or_update_role_tmp;
+ 
+select rid into out_rid;
 -- EXCEPTION WHEN unique_violation THEN errornum := 23505;
 END

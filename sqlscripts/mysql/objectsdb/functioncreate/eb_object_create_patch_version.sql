@@ -1,9 +1,10 @@
-﻿CREATE DEFINER=`josevin`@`%` FUNCTION `eb_object_create_patch_version`(idv text,
-    obj_typev integer,
-    commit_uidv integer,
-    src_pid text,
-    cur_pid text,
-    relationsstring text) RETURNS text CHARSET latin1
+﻿CREATE PROCEDURE eb_object_create_patch_version(in idv text,
+    in obj_typev integer,
+    in commit_uidv integer,
+    in src_pid text,
+    in cur_pid text,
+    in relationsstring text,
+    out committed_refidunique1 text)
 BEGIN
 DECLARE refidunique text;
 DECLARE inserted_obj_ver_id integer;
@@ -15,8 +16,11 @@ DECLARE patch integer;
 DECLARE version_number text;
 -- DECLARE relationsv text[];
 
-CREATE TEMPORARY table relationsv(id int auto_increment, value text);
-insert into relationsv(value) values(relationsstring);
+drop temporary table if exists temp_array_table;
+drop temporary table if exists relationsv;
+CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value TEXT);
+	CALL STR_TO_TBL(relationsstring);  -- fill to temp_array_table
+	CREATE TEMPORARY TABLE IF NOT EXISTS relationsv SELECT `value` FROM temp_array_table;
 
 SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, major, minor, patch  FROM eb_objects_ver WHERE refid=idv;
 
@@ -49,15 +53,15 @@ UPDATE eb_objects_relations
 SET 
 	eb_del = 'T', removed_by = commit_uidv , removed_at = NOW()
 WHERE 
-	dominant IN(
+	dominant IN(select * from(
 	select dominant from eb_objects_relations WHERE dependant = refidunique and dominant not in
-	(select value from relationsv ));
+	(select `value` from relationsv ))as a);
 
 INSERT INTO eb_objects_relations (dominant, dependant) 
 	SELECT 
-	  dominantvals, refidunique 
-	FROM (select value from relationsv where dominant not in (
-    select dominant from eb_objects_relations 
-	WHERE dependant = refidunique )) as dominantvals;  
-RETURN committed_refidunique;
+	  `value`, refidunique 
+	FROM (SELECT `value` from relationsv where `value` not in
+	(select dominant from eb_objects_relations 
+							WHERE dependant = refidunique )) as dominantvals;     
+select committed_refidunique into committed_refidunique1;
 END

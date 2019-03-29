@@ -1,4 +1,4 @@
-﻿CREATE DEFINER=`josevin`@`%` PROCEDURE `eb_authenticate_anonymous`(IN in_socialid text,
+﻿CREATE PROCEDURE eb_authenticate_anonymous(IN in_socialid text,
     IN in_fullname text ,
     IN in_emailid text ,
     IN in_phone text ,
@@ -12,7 +12,14 @@
     IN in_timezone text ,
     IN in_iplocationjson text,
     IN in_appid integer,
-    IN in_wc text)
+    IN in_wc text,
+    out out_userid1 integer,
+    out out_email1 text,
+    out out_fullname1 text,
+    out out_roles_a1 text,
+    out out_rolename_a1 text,
+    out out_permissions1 text,
+    out out_preferencesjson1 text)
 BEGIN
 DECLARE out_userid INTEGER;
 DECLARE out_email TEXT;
@@ -42,10 +49,10 @@ If in_wc ='' then set in_wc=null; end if;
 set is_anon_auth_req = FALSE;
 
 IF in_socialid IS NOT NULL THEN
-  CALL eb_authenticate_unified('', '',in_socialid,in_wc,'');
-   SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson
-    FROM  eb_authenticate_unified_tmp 
-    INTO out_userid, out_email, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson;
+  CALL eb_authenticate_unified('', '',in_socialid,in_wc,'',@userid, @email, @fullname, @roles_a, @rolename_a, @permissions,@preferencesjson,@constraintstatus);
+   /*SELECT  userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson
+    FROM  eb_authenticate_unified_tmp */
+   select @userid, @email, @fullname, @roles_a, @rolename_a, @permissions,@preferencesjson,@constraintstatus INTO out_userid, out_email, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson;
     
     IF out_userid IS NULL THEN
     
@@ -90,10 +97,12 @@ ELSE
 END IF;
 
 IF is_anon_auth_req THEN
-   DROP TABLE IF EXISTS eb_authenticate_unified_tmp;
-	SELECT email, fullname, roles_a, rolename_a, permissions, preferencesjson
-    FROM ( select eb_authenticate_unified('','', 'anonymous@anonym.com', '294de3557d9d00b3d2d8a1e6aab028cf', in_wc) )as a
-    INTO out_email, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson;
+   -- DROP TABLE IF EXISTS eb_authenticate_unified_tmp;
+   call eb_authenticate_unified('anonymous@anonym.com', '294de3557d9d00b3d2d8a1e6aab028cf','', in_wc,'',@userid, @email, @fullname, @roles_a, @rolename_a, @permissions,@preferencesjson,@constraintstatus);
+	SELECT @email, @fullname, @roles_a, @rolename_a, @permissions,@preferencesjson
+       INTO out_email, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson;
 END IF;
-    
+        SELECT out_userid, out_email, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson into 
+        out_userid1 ,out_email1, out_fullname1, out_roles_a1 ,out_rolename_a1 ,out_permissions1 ,out_preferencesjson1 ; 
+
 END
