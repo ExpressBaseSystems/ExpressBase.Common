@@ -1,4 +1,4 @@
-CREATE DEFINER=`josevin`@`%` FUNCTION `eb_currval`(seq text) RETURNS int(11)
+CREATE FUNCTION eb_currval(seq text) RETURNS int(11)
 BEGIN
 DECLARE curval integer;
 DECLARE exce text;

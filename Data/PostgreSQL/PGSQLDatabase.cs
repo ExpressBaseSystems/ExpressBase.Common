@@ -301,6 +301,11 @@ namespace ExpressBase.Common
             return ds;
         }
 
+        public EbDataTable DoProcedure(string query, params DbParameter[] parameters)
+        {
+            return null;
+        }
+
         public int DoNonQuery(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as NpgsqlConnection)

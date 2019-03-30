@@ -318,7 +318,12 @@ namespace ExpressBase.Common.Data
             return ds;
         }
 
-        public int DoNonQuery(string query, params DbParameter[] parameters)
+        public EbDataTable DoProcedure(string query, params DbParameter[] parameters)
+        {
+            return null;
+        }
+
+            public int DoNonQuery(string query, params DbParameter[] parameters)
         {
             var return_val = 0;
             List<DbParameter> dbParameter = new List<DbParameter>();
