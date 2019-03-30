@@ -99,6 +99,9 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string BareControlHtml { get; set; }
 
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        public virtual bool IsDisable { get; set; }
+
         [EnableInBuilder(BuilderType.BotForm)]
         public virtual bool IsReadOnly { get; set; }
 
@@ -240,10 +243,10 @@ else
         public virtual string ShowJSfn { get { return @"$('#cont_' + this.EbSid_CtxId).show(300);"; } set { } }
 
         [JsonIgnore]
-        public virtual string EnableJSfn { get { return @"$('#cont_' + this.EbSid_CtxId + ' *').prop('disabled',false).css('pointer-events', 'inherit');"; } set { } }
+        public virtual string EnableJSfn { get { return @"$('#cont_' + this.EbSid_CtxId + ' *').prop('disabled',false).css('pointer-events', 'inherit').find('[ui-inp]').css('background-color', '#fff');"; } set { } }
 
         [JsonIgnore]
-        public virtual string DisableJSfn { get { return @"$('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none');"; } set { } }
+        public virtual string DisableJSfn { get { return @"$('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none').find('[ui-inp]').css('background-color', '#f3f3f3');"; } set { } }
 
         [JsonIgnore]
         public virtual string ResetJSfn { get { return @"$('#' + this.EbSid_CtxId).val('');"; } set { } }
