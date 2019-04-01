@@ -65,15 +65,31 @@ namespace ExpressBase.Common
 
     public enum EbIntegrations
     {
-        PostgreSQL = 1,
-        Oracle = 2,
-        MySQL = 3,
-        SQLServer = 4,
+        PGSQL = 1,
+        MYSQL = 2,
+        MSSQL = 3,
+        ORACLE = 4,
         Twilio = 5,
         ExpertTexting = 6,
-        MongoDB = 7
+        MongoDB = 7,
+        SMTP = 8
     }
 
+    public enum SmtpProviders
+    {
+        Gmail = 1
+    }
+
+    public enum EbConnections
+    {
+        EbOBJECTS = 1,
+        EbDATA = 2,
+        EbDATA_RO = 3,
+        EbFILES = 4,
+        EbLOGS = 5,
+        SMTP = 6,
+        SMS = 7,
+    }
     public enum StudioFormTypes
     {
         Desktop,

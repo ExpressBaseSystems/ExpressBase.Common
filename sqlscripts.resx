@@ -637,9 +637,6 @@
   <data name="eb_userstatus2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\mysql\datadb\tablecreate\eb_userstatus.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="string_to_table_util_fn" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sqlscripts\mysql\objectsdb\functioncreate\string_to_table_util_fn.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
   <data name="eb_compilefunctions2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\mysql\eb_compilefunctions.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
@@ -651,5 +648,23 @@
   </data>
   <data name="eb_files_bytea2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\mysql\filesdb\tablecreate\eb_files_bytea.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="split_str_util" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\objectsdb\functioncreate\split_str_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="split_str_util1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\objectsdb\functioncreate\split_str_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="split_str_util2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\objectsdb\functioncreate\split_str_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="str_to_tbl_util" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\objectsdb\functioncreate\str_to_tbl_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="str_to_tbl_util1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\objectsdb\functioncreate\str_to_tbl_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="str_to_tbl_util2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\objectsdb\functioncreate\str_to_tbl_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>
