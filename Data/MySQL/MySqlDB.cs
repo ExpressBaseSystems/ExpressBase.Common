@@ -97,7 +97,7 @@ namespace ExpressBase.Common
 
 
         //private const string CONNECTION_STRING_BARE = "Host={0}; Port={1}; Database={2}; Username={3}; Password={4}; SSL Mode=Require; Use SSL Stream=true; Trust Server Certificate=true; Pooling=true; CommandTimeout={5};";
-        private const string CONNECTION_STRING_BARE = "Server={0}; Port={1}; Database={2}; Uid={3}; pwd={4};SslMode=none; ";
+        private const string CONNECTION_STRING_BARE = "Server={0}; Port={1}; Database={2}; Uid={3}; pwd={4};SslMode=none; Allow User Variables=True;";
         //private const string CONNECTION_STRING_BARE = "Server=35.200.199.41; Port=3306; Database=test_eb; Uid=josevin; pwd=Josevin@1234; ";
         private string _cstr;
         private EbBaseDbConnection EbBaseDbConnection { get; set; }
@@ -131,12 +131,13 @@ namespace ExpressBase.Common
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type, object value)
         {
-            return new MySqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = value };
+            return new MySqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = value , Direction = ParameterDirection.Input };
         }
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type)
         {
             return new MySqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type));
+            //return new MySqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Direction = ParameterDirection.Input };
         }
 
         public System.Data.Common.DbParameter GetNewOutParameter(string parametername, EbDbTypes type)
@@ -190,6 +191,8 @@ namespace ExpressBase.Common
                         if (parameters != null && parameters.Length > 0)
                             cmd.Parameters.AddRange(parameters);
 
+                        //cmd.CommandType = CommandType.StoredProcedure;
+
                         using (var reader = cmd.ExecuteReader())
                         {
                             //Type[] typeArray = this.AddColumns(dt, reader.GetColumnSchema());
@@ -200,7 +203,7 @@ namespace ExpressBase.Common
 
                             //PrepareDataTable(reader, dt, typeArray);
                         }
-
+                        //int x = cmd.ExecuteNonQuery();
                     }
                 }
                 catch (MySqlException myexce)
@@ -216,6 +219,50 @@ namespace ExpressBase.Common
             return dt;
         }
 
+        public EbDataTable DoProcedure(string query, params DbParameter[] parameters)
+        {
+            EbDataTable tbl = new EbDataTable();
+            using (var con = GetNewConnection() as MySqlConnection)
+            {
+                int index = query.IndexOf("(");
+                string procedure_name = query.Substring(0,index);
+                try
+                {
+                    con.Open();
+                    using (MySqlCommand cmd = new MySqlCommand())
+                    {
+                        cmd.Connection = con;
+                        cmd.CommandText = procedure_name;
+                        //cmd.CommandText = "eb_authenticate_unified";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        //if (parameters != null && parameters.Length > 0)
+                        cmd.Parameters.AddRange(parameters);
+                        var reader = cmd.ExecuteNonQuery();
+
+
+                        tbl.Rows.Add(new EbDataRow());
+                        int i = 0; 
+                        foreach (var param in parameters)
+                        {
+                            if (param.Direction == ParameterDirection.Output)
+                            {
+                                tbl.Columns.Add(new EbDataColumn(i++,param.ParameterName,(EbDbTypes)param.DbType));
+                                tbl.Rows[0][param.ParameterName] = cmd.Parameters["@"+ param.ParameterName].Value;
+                            }
+                        }
+                        return tbl;
+                        //var msg = cmd.Parameters["@userid1"].Value.ToString();
+                    }
+                }
+                catch(Exception e)
+                {
+
+                }
+            }
+                return null;
+            
+        }
+
         public DbDataReader DoQueriesBasic(string query, params DbParameter[] parameters)
         {
             var con = GetNewConnection() as MySqlConnection;
@@ -226,8 +273,9 @@ namespace ExpressBase.Common
                 {
                     if (parameters != null && parameters.Length > 0)
                         cmd.Parameters.AddRange(parameters);
-
-                    return cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                    cmd.Prepare();
+                    var reader = cmd.ExecuteReader(); ;
+                    return reader;
                 }
             }
             catch (MySqlException myexce)
@@ -242,46 +290,85 @@ namespace ExpressBase.Common
 
         public EbDataSet DoQueries(string query, params DbParameter[] parameters)
         {
-            var dtStart = DateTime.Now;
             EbDataSet ds = new EbDataSet();
-
-            try
+            query = query.Trim();
+            string[] qry_ary = query.Split(";");
+            using (var con = GetNewConnection() as MySqlConnection)
             {
-                using (var reader = this.DoQueriesBasic(query, parameters))
+                //foreach(string qry in qry_ary)
+                for (int i = 0; i < qry_ary.Length && qry_ary[i] != string.Empty && qry_ary[i] != " "; i++)
                 {
-                    do
+                    try
                     {
-                        try
+                        con.Open();
+                        using (MySqlCommand cmd = new MySqlCommand(qry_ary[i], con))
                         {
-                            EbDataTable dt = new EbDataTable();
-                            //Type[] typeArray = this.AddColumns(dt, (reader as MySqlDataReader).GetColumnSchema());
-                            //PrepareDataTable((reader as MySqlDataReader), dt, typeArray);
-                            //ds.Tables.Add(dt);
+                            if (parameters != null && parameters.Length > 0)
+                                cmd.Parameters.AddRange(parameters);
+                            using (var reader = cmd.ExecuteReader())
+                            {
+                                EbDataTable dt = new EbDataTable();
+                                DataTable schema = reader.GetSchemaTable();
 
-                            DataTable schema = reader.GetSchemaTable();
-                            this.AddColumns(dt, schema);
-                            PrepareDataTable(reader as MySqlDataReader, dt);
+                                this.AddColumns(dt, schema);
+                                PrepareDataTable(reader, dt);
+                                ds.Tables.Add(dt);
+
+                            }
+                            cmd.Parameters.Clear();
                         }
-                        catch (Exception ee)
-                        {
-                            throw ee;
-                        }
+                        con.Close();
                     }
-                    while (reader.NextResult());
+                    catch(Exception e)
+                    {
+
+                    }
                 }
             }
-            catch (MySqlException myexce)
-            {
-
-                throw myexce;
-            }
-            catch (SocketException scket) { }
-
-            var dtEnd = DateTime.Now;
-            var ts = (dtEnd - dtStart).TotalMilliseconds;
-            Console.WriteLine(string.Format("-------------------------------------> {0}", ts));
-            return ds;
+                return ds;
         }
+
+        //public EbDataSet DoQueries(string query, params DbParameter[] parameters)
+        //{
+        //    var dtStart = DateTime.Now;
+        //    EbDataSet ds = new EbDataSet();
+
+        //    try
+        //    {
+        //        using (var reader = this.DoQueriesBasic(query, parameters))
+        //        {
+        //            do
+        //            {
+        //                try
+        //                {
+        //                    EbDataTable dt = new EbDataTable();
+        //                    DataTable schema = reader.GetSchemaTable();
+
+        //                    this.AddColumns(dt, schema);
+        //                    PrepareDataTable((MySqlDataReader)reader, dt);
+        //                    ds.Tables.Add(dt);
+
+        //                }
+        //                catch (Exception ee)
+        //                {
+        //                    throw ee;
+        //                }
+        //            }
+        //            while (reader.NextResult());
+        //        }
+        //    }
+        //    catch (MySqlException myexce)
+        //    {
+
+        //        throw myexce;
+        //    }
+        //    catch (SocketException scket) { }
+
+        //    var dtEnd = DateTime.Now;
+        //    var ts = (dtEnd - dtStart).TotalMilliseconds;
+        //    Console.WriteLine(string.Format("-------------------------------------> {0}", ts));
+        //    return ds;
+        //}
 
         public int DoNonQuery(string query, params DbParameter[] parameters)
         {
@@ -612,61 +699,407 @@ namespace ExpressBase.Common
             return cols;
         }
 
-        public string EB_AUTHETICATE_USER_NORMAL { get; set; }
-        public string EB_AUTHENTICATEUSER_SOCIAL { get; set; }
-        public string EB_AUTHENTICATEUSER_SSO { get; set; }
-        public string EB_AUTHENTICATE_ANONYMOUS { get; set; }
-        public string EB_SIDEBARUSER_REQUEST { get; set; }
-        public string EB_SIDEBARDEV_REQUEST { get; set; }
-        public string EB_SIDEBARCHECK { get; set; }
-        public string EB_GETROLESRESPONSE_QUERY { get; set; }
-        public string EB_GETMANAGEROLESRESPONSE_QUERY { get; set; }
-        public string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get; set; }
-        public string EB_SAVEROLES_QUERY { get; set; }
-        public string EB_SAVEUSER_QUERY { get; set; }
-        public string EB_SAVEUSERGROUP_QUERY { get; set; }
+        //public string EB_AUTHETICATE_USER_NORMAL { get { return "call eb_authenticate_unified(@uname, @pass, @wc,'','');"; } }
+        //public string EB_AUTHETICATE_USER_NORMAL { get { return "call eb_authenticate_unified('mysql_testing@gmail.com','e2c17211da1da86fa2b38dd77360cf12','','tc','', @userid, @email, @fullname, @roles_a, @rolename_a, @permissions, @preferencesjson, @constraintstatus);"; } }
+        public string EB_AUTHETICATE_USER_NORMAL { get { return "eb_authenticate_unified(@uname,@pwd,@social,@wc,@ipaddress, @userid, @email, @fullname, @roles_a, @rolename_a, @permissions, @preferencesjson, @constraintstatus);"; } }
+        public string EB_AUTHENTICATEUSER_SOCIAL { get { return "call eb_authenticate_unified(social := @social, wc := @wc);"; } }
+        public string EB_AUTHENTICATEUSER_SSO { get { return "call eb_authenticate_unified(social := @social, wc := @wc);"; } }
+        public string EB_AUTHENTICATE_ANONYMOUS { get { return "call eb_authenticate_anonymous(@params in_appid := :appid ,in_wc := :wc);"; } }
+        public string EB_SIDEBARUSER_REQUEST { get { return @"
+                SELECT id, applicationname,app_icon
+                FROM eb_applications;
+                SELECT
+                    EO.id, EO.obj_type, EO.obj_name,
+                    EOV.version_num, EOV.refid, EO2A.app_id, EO.obj_desc, EOS.status, EOS.id, display_name
+                FROM
+                    eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A
+                WHERE
+                EOV.eb_objects_id = EO.id
+                AND EO.id =any(select '{@Ids}')                  
+AND EOS.eb_obj_ver_id = EOV.id
+AND EO2A.obj_id = EO.id
+AND EO2A.eb_del = 'F'
+                AND EOS.status = 3
+                AND COALESCE( EO.eb_del, 'F') = 'F'
+AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );"; } }
+        public string EB_SIDEBARDEV_REQUEST { get { return @"
+                SELECT id, applicationname,app_icon FROM eb_applications;
+                            SELECT
+                            EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, COALESCE(EO2A.app_id, 0),display_name
+                            FROM
+                            eb_objects EO
+                            LEFT JOIN
+                            eb_objects2application EO2A
+                            ON
+                            EO.id = EO2A.obj_id
+                            WHERE
+                           COALESCE(EO2A.eb_del, 'F') = 'F'
+                               AND COALESCE( EO.eb_del, 'F') = 'F'
+                            ORDER BY
+                            EO.obj_type;"; } }
+        public string EB_SIDEBARCHECK { get { return "AND EO.id = any (select '{@Ids}')"; } }
+        public string EB_GETROLESRESPONSE_QUERY
+        {
+            get
+            {
+                return
+                    @"SELECT R.id,R.role_name,R.description,A.applicationname,
+(SELECT COUNT(role1_id) FROM eb_role2role WHERE role1_id=R.id AND eb_del='F') AS subrole_count,
+(SELECT COUNT(user_id) FROM eb_role2user WHERE role_id=R.id AND eb_del='F') AS user_count,
+(SELECT COUNT(distinct permissionname) FROM eb_role2permission RP, eb_objects2application OA WHERE role_id = R.id AND app_id=A.id AND RP.obj_id=OA.obj_id AND RP.eb_del = 'F' AND OA.eb_del = 'F') AS permission_count
+FROM eb_roles R, eb_applications A
+WHERE R.applicationid = A.id AND R.role_name like '@searchtext';";
+            }
+        }
+        public string EB_GETMANAGEROLESRESPONSE_QUERY { get { return @"
+SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY applicationname;
+SELECT DISTINCT EO.id, EO.obj_name, EO.obj_type, EO2A.app_id
+FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A
+WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3
+AND EOS.id = ANY(SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id)
+AND EO.id = EO2A.obj_id AND EO2A.eb_del = 'F';
+SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> @id ORDER BY role_name;
+SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';
+SELECT id, longname, shortname FROM eb_locations;"; } }
+        public string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get { return @"
+                                   SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = @id;
+                               SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = @id AND eb_del = 'F';
+                               SELECT A.applicationname, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = @id AND A.eb_del = 'F';
+                               SELECT A.id, A.fullname, A.email, B.id FROM eb_users A, eb_role2user B
+                                WHERE A.id = B.user_id AND A.eb_del = 'F' AND B.eb_del = 'F' AND B.role_id = @id;
+                               SELECT locationid FROM eb_role2location WHERE roleid = @id AND eb_del='F'; "; } }
+        public string EB_SAVEROLES_QUERY
+        {
+            get
+            {
+                return "call eb_create_or_update_rbac_roles(@role_id, @applicationid, @createdby, @role_name, @description, @is_anonym, @users, @dependants, @permission, @locations " +
+");";
+            }
+        }
+        public string EB_SAVEUSER_QUERY { get { return "call eb_createormodifyuserandroles(@userid,@id,@fullname,@nickname,@email,@pwd,@dob,@sex,@alternateemail,@phprimary,@phsecondary,@phlandphone,@extension,@fbid,@fbname,@roles,@groups,@statusid,@hide,@anonymoususerid,@preference);"; } }
+        public string EB_SAVEUSERGROUP_QUERY { get { return "SELECT * FROM eb_createormodifyusergroup(@userid,@id,@name,@description,@users,@ipconstrnw,@ipconstrold,@dtconstrnw,@dtconstrold);"; } }
         public string EB_USER_ROLE_PRIVS { get { return "SELECT DISTINCT privilege_type FROM information_schema.USER_PRIVILEGES WHERE grantee=\"'@uname'@'%'\""; } }
         //SELECT DISTINCT privilege_type FROM information_schema.USER_PRIVILEGES WHERE grantee="'@uname'@'%'";
         public string EB_INITROLE2USER { get { return "INSERT INTO eb_role2user(role_id, user_id, createdat) VALUES (@role_id, @user_id, now());"; } }
         //public string EB_INITROLE2USER { get; set; }
-        public string EB_MANAGEUSER_FIRST_QUERY { get; set; }
+        public string EB_MANAGEUSER_FIRST_QUERY
+        {
+            get
+            {
+                return @"SELECT id, role_name, description FROM eb_roles ORDER BY role_name;
+                    SELECT id, name,description FROM eb_usergroup ORDER BY name;
+                    SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';
+                    ";
+            }
+        }
 
-        public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ { get; set; }
-        public string EB_PARTICULAR_VERSION_OF_AN_OBJ { get; set; }
-        public string EB_LATEST_COMMITTED_VERSION_OF_AN_OBJ { get; set; }
-        public string EB_ALL_LATEST_COMMITTED_VERSION_OF_AN_OBJ { get; set; }
-        public string EB_GET_LIVE_OBJ_RELATIONS { get; set; }
-        public string EB_GET_TAGGED_OBJECTS { get; set; }
-        public string EB_GET_ALL_COMMITTED_VERSION_LIST { get; set; }
-        public string EB_GET_OBJ_LIST_FROM_EBOBJECTS { get; set; }
-        public string EB_GET_OBJ_STATUS_HISTORY { get; set; }
-        public string EB_LIVE_VERSION_OF_OBJS { get; set; }
-        public string EB_GET_ALL_TAGS { get; set; }
+        public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
+        {
+            get
+            {
+                return @"SELECT
+EOV.id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.commit_uid, EU.fullname
+                    FROM
+                        eb_objects_ver EOV, eb_users EU
+                    WHERE
+                        EOV.commit_uid = EU.id AND
+                        EOV.eb_objects_id=(SELECT eb_objects_id FROM eb_objects_ver WHERE refid=@refid)
+                    ORDER BY
+                        EOV.id DESC
+                ";
+            }
+        }
+        public string EB_PARTICULAR_VERSION_OF_AN_OBJ
+        {
+            get
+            {
+                return @"SELECT
+                            obj_json, version_num, status, EO.obj_tags, EO.obj_type
+                        FROM
+                            eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
+                        WHERE
+                            EOV.refid=@refid AND EOS.eb_obj_ver_id = EOV.id AND EO.id=EOV.eb_objects_id
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                        ORDER BY
+                        EOS.id DESC
+                        LIMIT 1
+                ";
+            }
+        }
+        public string EB_LATEST_COMMITTED_VERSION_OF_AN_OBJ
+        {
+            get
+            {
+                return @"SELECT
+                        EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status, EO.obj_desc,
+                        EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.obj_json, EOV.refid
+                    FROM
+                        eb_objects EO, eb_objects_ver EOV
+                    WHERE
+                        EO.id = EOV.eb_objects_id AND EOV.refid=@refid
+                        AND COALESCE( EO.eb_del, 'F') = 'F'
+                    ORDER BY
+                        EO.obj_type
+                ";
+            }
+        }
+        public string EB_ALL_LATEST_COMMITTED_VERSION_OF_AN_OBJ
+        {
+            get
+            {
+                return @"SELECT
+                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
+                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog,EOV.commit_ts, EOV.commit_uid, EOV.refid,
+                            EU.fullname, EO.display_name
+                        FROM
+                            eb_objects EO, eb_objects_ver EOV
+                        LEFT JOIN
+                        eb_users EU
+                        ON
+                        EOV.commit_uid=EU.id
+                        WHERE
+                            EO.id = EOV.eb_objects_id AND EO.obj_type=@type
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                        ORDER BY
+                            EO.obj_name
+                ";
+            }
+        }
+        public string EB_GET_LIVE_OBJ_RELATIONS
+        {
+            get
+            {
+                return @"SELECT
+                        EO.obj_name, EOV.refid, EOV.version_num, EO.obj_type,EOS.status
+                        FROM
+                        eb_objects EO, eb_objects_ver EOV,eb_objects_status EOS
+                        WHERE
+                        EO.id = ANY (SELECT eb_objects_id FROM eb_objects_ver WHERE refid IN(SELECT dependant FROM eb_objects_relations
+                                                  WHERE dominant=@dominant))
+                            AND EOV.refid =ANY(SELECT dependant FROM eb_objects_relations WHERE dominant=@dominant)   
+                            AND EO.id =EOV.eb_objects_id  AND EOS.eb_obj_ver_id = EOV.id AND EOS.status = 3 AND EO.obj_type IN(16 ,17)
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                ";
+            }
+        }
+        public string EB_GET_TAGGED_OBJECTS
+        {
+            get
+            {
+                return "call eb_get_tagged_object(@tags);";
+            }
+        }
+        public string EB_GET_ALL_COMMITTED_VERSION_LIST
+        {
+            get
+            {
+                return @"SELECT
+                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
+                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.refid,
+                            EU.fullname, EO.display_name
+                        FROM
+                            eb_objects EO, eb_objects_ver EOV
+                        LEFT JOIN
+                        eb_users EU
+                        ON
+                        EOV.commit_uid=EU.id
+                        WHERE
+                            EO.id = EOV.eb_objects_id  AND EO.obj_type=@type AND COALESCE(EOV.working_mode, 'F') <> 'T'
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                        ORDER BY
+                            EO.obj_name
+                ";
+            }
+        }
+        public string EB_GET_OBJ_LIST_FROM_EBOBJECTS
+        {
+            get
+            {
+                return @"SELECT
+                    id, obj_name, obj_type, obj_cur_status, obj_desc 
+                FROM
+                    eb_objects
+                WHERE
+                    obj_type=@type
+                    AND COALESCE( eb_del, 'F') = 'F'
+                ORDER BY
+                    obj_name
+                ";
+            }
+        }
+        public string EB_GET_OBJ_STATUS_HISTORY
+        {
+            get
+            {
+                return @"SELECT
+                            EOS.eb_obj_ver_id, EOS.status, EU.fullname, EOS.ts, EOS.changelog, EOV.commit_uid  
+                        FROM
+                            eb_objects_status EOS, eb_objects_ver EOV, eb_users EU
+                        WHERE
+                            eb_obj_ver_id = EOV.id AND EOV.refid = @refid AND EOV.commit_uid=EU.id
+                        ORDER BY
+                        EOS.id DESC
+                ";
+            }
+        }
+        public string EB_LIVE_VERSION_OF_OBJS
+        {
+            get
+            {
+                return @"SELECT
+                            EO.id, EO.obj_name, EO.obj_type, EO.obj_desc,
+                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.obj_json, EOV.refid, EOS.status
+                        FROM
+                            eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
+                        WHERE
+                            EO.id = @id AND EOV.eb_objects_id = EO.id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                        ORDER BY EOV.eb_objects_id	LIMIT 1; ";
+            }
+        }
+        public string EB_GET_ALL_TAGS
+        {
+            get
+            {
+                return @"drop temporary table if exists temp_array_table;
+                            create temporary table if not exists temp_array_table(value text);
+                                set @ab='';
+                                    select trim(',' from group_concat(obj_tags)) from eb_objects WHERE COALESCE(eb_del, 'F') = 'F' into @ab;
+                                        call STR_TO_TBL(@ab);
+                                    drop temporary table if exists tags_tmp;
+                            CREATE TEMPORARY TABLE IF NOT EXISTS tags_tmp SELECT `value` FROM temp_array_table;
+                            SELECT distinct(value) as tags
+                                FROM  tags_tmp;
+
+                ";
+            }
+        }
 
 
-        public string EB_GET_BOT_FORM { get; set; }
-        public string IS_TABLE_EXIST { get; set; }
+        public string EB_GET_BOT_FORM
+        {
+            get
+            {
+                return @"
+                            SELECT DISTINCT
+                            EOV.refid, EO.obj_name
+                            FROM
+                            eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EOTA
+                            WHERE
+                            EO.id = EOV.eb_objects_id  AND
+                            EO.id = EOTA.obj_id  AND
+                            EOS.eb_obj_ver_id = EOV.id AND
+                            EO.id = any(select @Ids) AND
+                            EOS.status = 3 AND
+                            (
+                            EO.obj_type = 16 OR
+                            EO.obj_type = 17
+                            OR EO.obj_type = 18
+                            )  AND
+                            EOTA.app_id = @appid AND
+                                    EOTA.eb_del = 'F'
+                                    AND COALESCE( EO.eb_del, 'F') = 'F';
+                        ";
+            }
+        }
+        public string IS_TABLE_EXIST
+        {
+            get
+            {
+                return @"SELECT EXISTS (SELECT 1 FROM   information_schema.tables WHERE  table_schema = 'test_eb' AND table_name like @tbl);";
+            }
+        }
 
-        public string EB_CREATE_NEW_OBJECT { get; set; }
-        public string EB_SAVE_OBJECT { get; set; }
-        public string EB_COMMIT_OBJECT { get; set; }
-        public string EB_EXPLORE_OBJECT { get; set; }
-        public string EB_MAJOR_VERSION_OF_OBJECT { get; set; }
-        public string EB_MINOR_VERSION_OF_OBJECT { get; set; }
-        public string EB_CHANGE_STATUS_OBJECT { get; set; }
-        public string EB_PATCH_VERSION_OF_OBJECT { get; set; }
-        public string EB_UPDATE_DASHBOARD { get; set; }
-        public string EB_LOCATION_CONFIGURATION { get; set; }
-        //public string EB_AUTHETICATE_USER_NORMAL { get; set; }
-        //public string EB_AUTHETICATE_USER_NORMAL { get; set; }
-        //public string EB_AUTHETICATE_USER_NORMAL { get; set; }
-        //public string EB_AUTHETICATE_USER_NORMAL { get; set; }
-        //public string EB_AUTHETICATE_USER_NORMAL { get; set; }
-        //public string EB_AUTHETICATE_USER_NORMAL { get; set; }
-        //public string EB_AUTHETICATE_USER_NORMAL { get; set; }
-        //public string EB_AUTHETICATE_USER_NORMAL { get; set; }
-        //public string EB_AUTHETICATE_USER_NORMAL { get; set; }
-        //public string EB_AUTHETICATE_USER_NORMAL { get; set; }
+        public string EB_CREATE_NEW_OBJECT
+        {
+            get
+            {
+                return @"
+                    call eb_objects_create_new_object(@obj_name, @obj_desc, @obj_type, @obj_cur_status, @obj_json, @commit_uid, @src_pid, @cur_pid, @relations, @issave, @tags, @app_id, @s_obj_id, @s_ver_id, @disp_name)
+                ";
+            }
+        }
+        public string EB_SAVE_OBJECT
+        {
+            get
+            {
+                return @"
+                    select eb_objects_save1(@id, @obj_name, @obj_desc, @obj_type, @obj_json, @commit_uid, @relations, @tags, @app_id, @disp_name)
+                ";
+            }
+        }
+        public string EB_COMMIT_OBJECT
+        {
+            get
+            {
+                return @"
+                    select eb_objects_commit(@id, @obj_name, @obj_desc, @obj_type, @obj_json, @obj_changelog,  @commit_uid, @relations, @tags, @app_id, @disp_name)
+                ";
+            }
+        }
+        public string EB_EXPLORE_OBJECT
+        {
+            get
+            {
+                return @"
+                    call eb_objects_exploreobject(@id)                   
+                ";
+            }
+        }
+        public string EB_MAJOR_VERSION_OF_OBJECT
+        {
+            get
+            {
+                return @"  
+                    call eb_object_create_major_version(@id, @obj_type, @commit_uid, @src_pid, @cur_pid, @relations)
+                ";
+            }
+        }
+        public string EB_MINOR_VERSION_OF_OBJECT
+        {
+            get
+            {
+                return @"  
+                    select eb_object_create_minor_version(@id, @obj_type, @commit_uid, @src_pid, @cur_pid, @relations)
+                ";
+            }
+        }
+        public string EB_CHANGE_STATUS_OBJECT
+        {
+            get
+            {
+                return @"  
+                    select eb_objects_change_status(@id, @status, @commit_uid, @obj_changelog)
+                ";
+            }
+        }
+        public string EB_PATCH_VERSION_OF_OBJECT
+        {
+            get
+            {
+                return @"
+                    select eb_object_create_patch_version(@id, @obj_type, @commit_uid, @src_pid, @cur_pid, @relations)
+                ";
+            }
+        }
+        public string EB_UPDATE_DASHBOARD
+        {
+            get
+            {
+                return @"  
+                  call FROM eb_objects_update_Dashboard(@refid)
+                ";
+            }
+        }
+        public string EB_LOCATION_CONFIGURATION
+        {
+            get
+            {
+                return @"";
+            }
+        }
+
+
 
     }
 }

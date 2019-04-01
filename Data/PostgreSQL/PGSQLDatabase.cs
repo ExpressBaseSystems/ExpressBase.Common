@@ -301,6 +301,11 @@ namespace ExpressBase.Common
             return ds;
         }
 
+        public EbDataTable DoProcedure(string query, params DbParameter[] parameters)
+        {
+            return null;
+        }
+
         public int DoNonQuery(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as NpgsqlConnection)
@@ -601,7 +606,7 @@ namespace ExpressBase.Common
         public string EB_SIDEBARUSER_REQUEST { get { return @"
                 SELECT id, applicationname,app_icon
                 FROM eb_applications
-                WHERE COALESCE(eb_del, 'F') = 'F';
+                WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
 
                 SELECT
                     EO.id, EO.obj_type, EO.obj_name,
@@ -622,7 +627,7 @@ namespace ExpressBase.Common
         {
             get { return @"
                 SELECT id, applicationname,app_icon FROM eb_applications
-                WHERE COALESCE(eb_del, 'F') = 'F';
+                WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
                             SELECT 
 	                            EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, COALESCE(EO2A.app_id, 0),display_name
                             FROM 

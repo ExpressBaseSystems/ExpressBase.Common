@@ -1,7 +1,9 @@
-﻿CREATE DEFINER=`josevin`@`%` PROCEDURE `eb_create_or_update_role2user`(roleid integer,
-    userid integer,
-    usersid text)
+﻿CREATE PROCEDURE eb_create_or_update_role2user(in roleid integer,
+    in userid integer,
+    in usersid text,
+    out out_r integer)
 BEGIN
+declare a integer;
 drop temporary table if exists temp_array_table;
 drop temporary table if exists usersid_tmp;
 
@@ -23,5 +25,6 @@ UPDATE eb_role2user
         
     FROM (select `value` from usersid_tmp 
      where `value` not in(select user_id from eb_role2user WHERE role_id = roleid and eb_del = 'F')) AS users;
-
+set a=0;
+select a into out_r;
 END

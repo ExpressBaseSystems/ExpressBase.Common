@@ -223,6 +223,12 @@ namespace ExpressBase.Common
         Preview_Mode = 5
     }
 
+    public enum WebFormDVModes
+    {
+        View_Mode = 0,
+        New_Mode = 1
+    }
+
     public enum RedisOperations
     {
         Edit,

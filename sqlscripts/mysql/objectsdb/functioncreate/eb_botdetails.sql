@@ -1,4 +1,4 @@
-﻿CREATE DEFINER=`josevin`@`%` PROCEDURE `eb_botdetails`(solutionid integer)
+﻿CREATE PROCEDURE eb_botdetails(in solutionid integer)
 BEGIN
 SELECT 
 		name, 

@@ -67,7 +67,7 @@ namespace ExpressBase.Common
                         return this.Columns[i].Value;
                     }
                 }
-                throw new KeyNotFoundException { };
+                return null;
             }
             set
             {
@@ -126,9 +126,7 @@ namespace ExpressBase.Common
         public Dictionary<string, SingleTable> ExtendedTables { get; set; }
 
         public string MasterTable { get; set; }
-
-        public string AutoIdText { get; set; }//prefix + suffix 
-
+        
         public WebformData()
         {
             MultipleTables = new Dictionary<string, SingleTable>();

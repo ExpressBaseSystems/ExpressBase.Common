@@ -26,6 +26,7 @@ namespace ExpressBase.Common
 
         T DoQuery<T>(string query, params DbParameter[] parameters);
         EbDataTable DoQuery(string query, params DbParameter[] parameters);
+        EbDataTable DoProcedure(string query, params DbParameter[] parameters);
         DbDataReader DoQueriesBasic(string query, params DbParameter[] parameters);
         EbDataSet DoQueries(string query, params DbParameter[] parameters);
         int DoNonQuery(string query, params DbParameter[] parameters);
