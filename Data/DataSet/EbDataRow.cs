@@ -34,6 +34,13 @@ namespace ExpressBase.Common
             base.Add(o);
         }
 
+        public bool IsDBNull(int index)
+        {
+            if(index > -1)
+                return base[index] == DBNull.Value;
+            return false;
+        }
+
         new public object this[int index]
         {
             get
