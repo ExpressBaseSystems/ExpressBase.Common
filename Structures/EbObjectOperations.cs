@@ -171,11 +171,19 @@ namespace ExpressBase.Common.Structures
 
     public class WFOperations : EbOperations
     {
-        public readonly EbOperation Access;
+        public readonly EbOperation New;
+        public readonly EbOperation View;
+        public readonly EbOperation Edit;
+        public readonly EbOperation Delete;
+        public readonly EbOperation Cancel;
 
         private WFOperations()
         {
-            Access = new EbOperation(OperationConstants.ACCESS, 0, OperationConstants.XXW);
+            New = new EbOperation(OperationConstants.NEW, 0, OperationConstants.XXW);
+            View = new EbOperation(OperationConstants.VIEW, 1, OperationConstants.XXW);
+            Edit = new EbOperation(OperationConstants.EDIT, 2, OperationConstants.XXW);
+            Delete = new EbOperation(OperationConstants.DELETE, 3, OperationConstants.XXW);
+            Cancel = new EbOperation(OperationConstants.CANCEL, 4, OperationConstants.XXW);
         }
 
         public static EbOperations Instance
@@ -190,7 +198,11 @@ namespace ExpressBase.Common.Structures
         {
             get
             {
-                yield return Access;
+                yield return New;
+                yield return View;
+                yield return Edit;
+                yield return Delete;
+                yield return Cancel;
             }
         }
     }
