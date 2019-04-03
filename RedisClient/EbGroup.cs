@@ -35,8 +35,8 @@ namespace ExpressBase.Common
     }
     public class EbRedisLogValues
     {
-        public object Prev_val { get; set; }
-        public object New_val { get; set; }
+        public string Prev_val { get; set; }
+        public string New_val { get; set; }
     }
 
     public class EbRedisGroupDetails
