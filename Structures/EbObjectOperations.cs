@@ -68,7 +68,18 @@ namespace ExpressBase.Common.Structures
 
 			return Null;
 		}
-	}
+
+        public EbOperation Get(string name)
+        {
+            foreach (EbOperation o in Enumerator)
+            {
+                if (o.Name == name)
+                    return o;
+            }
+
+            return Null;
+        }
+    }
 
 	public class TVOperations : EbOperations
 	{
