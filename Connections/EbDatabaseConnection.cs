@@ -212,6 +212,9 @@ namespace ExpressBase.Common.Connections
                                                 infra.DataDB.GetNewParameter("@dt", EbDbTypes.DateTime,dt )
                                            };
             EbDataTable iCount = infra.DataDB.DoQuery(query, parameters);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("- " +this.Id);
+            Console.ForegroundColor = ConsoleColor.White;
             return Convert.ToInt32(iCount.Rows[0][0]);
         }
     }
@@ -362,6 +365,9 @@ namespace ExpressBase.Common.Connections
                                                 infra.DataDB.GetNewParameter("dt", EbDbTypes.DateTime, dt)
                                            };
             var iCount = infra.DataDB.DoQuery(query, parameters);
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write("- " + this.Id);
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
     }
