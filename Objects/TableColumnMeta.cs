@@ -11,6 +11,8 @@ namespace ExpressBase.Common
         public VendorDbType Type { get; set; }
 
         public string Default { get; set; }
+
+        public bool Unique { get; set; }
     }
 
     public class AuditTrailEntry
