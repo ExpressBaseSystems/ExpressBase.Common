@@ -18,12 +18,12 @@ namespace ExpressBase.Common
         Unlimited
     }
 
-    public enum DatabaseVendors
+    public enum DatabaseVendors // Used to cast to EbIntegrations. Dont change order n name
     {
-        PGSQL,
-        MYSQL,
-        MSSQL,
-        ORACLE,
+        PGSQL = 1,
+        MYSQL = 2,
+        MSSQL = 3,
+        ORACLE = 4
     }
 
     public enum FilesDbVendors
@@ -72,7 +72,8 @@ namespace ExpressBase.Common
         Twilio = 5,
         ExpertTexting = 6,
         MongoDB = 7,
-        SMTP = 8
+        SMTP = 8,
+        Cloudinary = 9
     }
 
     public enum SmtpProviders
@@ -84,12 +85,13 @@ namespace ExpressBase.Common
     {
         EbOBJECTS = 1,
         EbDATA = 2,
-        EbDATA_RO = 3,
-        EbFILES = 4,
-        EbLOGS = 5,
-        SMTP = 6,
-        SMS = 7,
+        EbFILES = 3,
+        EbLOGS = 4,
+        SMTP = 5,
+        SMS = 6,
+        Cloudinary = 7
     }
+
     public enum StudioFormTypes
     {
         Desktop,

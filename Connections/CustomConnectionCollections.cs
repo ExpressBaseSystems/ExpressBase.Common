@@ -1,5 +1,7 @@
 ﻿using ExpressBase.Common.Data;
 using ExpressBase.Common.Messaging;
+using ExpressBase.Common.Messaging.ExpertTexting;
+using ExpressBase.Common.Messaging.Twilio;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -9,6 +11,21 @@ namespace ExpressBase.Common.Connections
 {
     public class EbSmsConCollection : List<ISMSConnection>
     {
+        public EbSmsConCollection(SmsConfigCollection conf)
+        {
+            if (conf.Primary.Type == EbIntegrations.Twilio)
+                Primary = new Messaging.TwilioConnection(conf.Primary as EbTwilioConfig);
+            else if (conf.Primary.Type == EbIntegrations.ExpertTexting)
+                Primary = new Messaging.ExpertTextingConnection(conf.Primary as EbExpertTextingConfig);
+            if (conf.FallBack != null)
+            {
+                if (conf.FallBack.Type == EbIntegrations.Twilio)
+                    FallBack = new Messaging.TwilioConnection(conf.FallBack as EbTwilioConfig);
+                else if (conf.FallBack.Type == EbIntegrations.ExpertTexting)
+                    FallBack = new Messaging.ExpertTextingConnection(conf.FallBack as EbExpertTextingConfig);
+            }
+        }
+
         public ISMSConnection Primary { get; set; }
 
         public ISMSConnection FallBack { get; set; }
@@ -39,34 +56,20 @@ namespace ExpressBase.Common.Connections
             }
             return resp;
         }
-
-        //[OnDeserializing]
-        //public void Process(StreamingContext context)
-        //{            
-        //    foreach (ISMSConnection con in this)
-        //    {
-        //        if (con.Preference == ConPreferences.PRIMARY)
-        //            Primary = con;
-        //        else if (con.Preference == ConPreferences.FALLBACK)
-        //            FallBack = con;
-        //    }
-        //}
-        public void Process()
-        {
-            foreach (ISMSConnection con in this)
-            {
-                if (con.Preference == ConPreferences.PRIMARY)
-                    Primary = con;
-                else if (con.Preference == ConPreferences.FALLBACK)
-                    FallBack = con;
-            }
-        }
     }
-    public class EbMailConCollection : List<EbEmail>
+    public class EbMailConCollection : List<EbSmtp>
     {
-        public EbEmail Primary { get; set; }
+        public EbMailConCollection(EmailConfigCollection conf)
+        {
+            if (conf.Primary != null)
+                Primary = new EbSmtp(conf.Primary);
+            if (conf.FallBack != null)
+                FallBack = new EbSmtp(conf.FallBack);
+        }
 
-        public EbEmail FallBack { get; set; }
+        public EbSmtp Primary { get; set; }
+
+        public EbSmtp FallBack { get; set; }
 
         public bool Send(string to, string subject, string message, string[] cc, string[] bcc, byte[] attachment, string attachmentname)
         {
@@ -77,12 +80,12 @@ namespace ExpressBase.Common.Connections
                 if (Primary != null)
                 {
                     resp = Primary.Send(to, subject, message, cc, bcc, attachment, attachmentname);
-                    Console.WriteLine("Mail Send With Primary :" + Primary.EmailAddress);
+                    Console.WriteLine("Mail Send With Primary :" + Primary.Config.EmailAddress);
 
                 }
                 else if (this.Capacity != 0)
                 {
-                    Console.WriteLine("Mail Send using First Element" + this[0].EmailAddress);
+                    Console.WriteLine("Mail Send using First Element" + this[0].Config.EmailAddress);
                     this[0].Send(to, subject, message, cc, bcc, attachment, attachmentname);
                 }
                 else
@@ -96,7 +99,7 @@ namespace ExpressBase.Common.Connections
                     if (FallBack != null)
                     {
                         resp = FallBack.Send(to, subject, message, cc, bcc, attachment, attachmentname);
-                        Console.WriteLine("Mail Send With FallBack : " + FallBack.EmailAddress);
+                        Console.WriteLine("Mail Send With FallBack : " + FallBack.Config.EmailAddress);
                     }
                 }
                 catch (Exception ex)
@@ -106,15 +109,6 @@ namespace ExpressBase.Common.Connections
             }
             return resp;
         }
-        public void Process()
-        {
-            foreach (EbEmail con in this)
-            {
-                if (con.Preference == ConPreferences.PRIMARY)
-                    Primary = con;
-                else if (con.Preference == ConPreferences.FALLBACK)
-                    FallBack = con;
-            }
-        }
+
     }
 }

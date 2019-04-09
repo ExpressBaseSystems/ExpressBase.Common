@@ -105,22 +105,22 @@ namespace ExpressBase.Common
         private const string CONNECTION_STRING_BARE = "Host={0}; Port={1}; Database={2}; Username={3}; Password={4};  Trust Server Certificate=true; Pooling=true; CommandTimeout={5};SSL Mode=Require; Use SSL Stream=true; ";
         //SSL Mode=Require; Use SSL Stream=true;
         private string _cstr;
-        private EbBaseDbConnection EbBaseDbConnection { get; set; }
+        private EbDbConfig DbConfig { get; set; }
         public string DBName { get; }
 
-        public PGSQLDatabase(EbBaseDbConnection dbconf)
+        public PGSQLDatabase(EbDbConfig dbconf)
         {
-            this.EbBaseDbConnection = dbconf;
+            this.DbConfig = dbconf;
             if (dbconf.IsSSL)
-                _cstr = string.Format(CONNECTION_STRING_BARE, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port, this.EbBaseDbConnection.DatabaseName, this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password, this.EbBaseDbConnection.Timeout);
+                _cstr = string.Format(CONNECTION_STRING_BARE, this.DbConfig.Server, this.DbConfig.Port, this.DbConfig.DatabaseName, this.DbConfig.UserName, this.DbConfig.Password, this.DbConfig.Timeout);
             else
-                _cstr = string.Format(CONNECTION_STRING_BARE_WITHOUT_SSL, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port, this.EbBaseDbConnection.DatabaseName, this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password, this.EbBaseDbConnection.Timeout);
-            DBName = EbBaseDbConnection.DatabaseName;
+                _cstr = string.Format(CONNECTION_STRING_BARE_WITHOUT_SSL, this.DbConfig.Server, this.DbConfig.Port, this.DbConfig.DatabaseName, this.DbConfig.UserName, this.DbConfig.Password, this.DbConfig.Timeout);
+            DBName = DbConfig.DatabaseName;
         }
 
         public DbConnection GetNewConnection(string dbName)
         {
-            return new NpgsqlConnection(string.Format(CONNECTION_STRING_BARE, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port, dbName, this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password, this.EbBaseDbConnection.Timeout));
+            return new NpgsqlConnection(string.Format(CONNECTION_STRING_BARE, this.DbConfig.Server, this.DbConfig.Port, dbName, this.DbConfig.UserName, this.DbConfig.Password, this.DbConfig.Timeout));
         }
 
         public DbConnection GetNewConnection()
@@ -1005,7 +1005,7 @@ namespace ExpressBase.Common
 
     public class PGSQLFileDatabase : PGSQLDatabase, INoSQLDatabase
     {
-        public PGSQLFileDatabase(EbBaseDbConnection dbconf) : base(dbconf)
+        public PGSQLFileDatabase(EbDbConfig dbconf) : base(dbconf)
         {
             InfraConId = dbconf.Id;
         }

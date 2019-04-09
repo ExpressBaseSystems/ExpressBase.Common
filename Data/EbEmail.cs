@@ -54,6 +54,61 @@ namespace ExpressBase.Common.Data
                 };
                 if (attachment != null)
                     mm.Attachments.Add(new Attachment(new MemoryStream(attachment), attachmentname + ".pdf"));
+                if (cc != null)
+                    if (cc.Length > 0)
+                        foreach (string item in cc)
+                            if (item != "") mm.CC.Add(item);
+                if (bcc != null)
+                    if (bcc.Length > 0)
+                        foreach (string item in bcc)
+                            if (item != "") mm.Bcc.Add(item);
+                _client.Send(mm);
+                sentStatus = true;
+                Console.WriteLine("Smtp Send success" + to);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Smtp Send Exception" + e.Message);
+                sentStatus = false;
+            }
+            return sentStatus;
+        }
+    }
+
+    public class EbSmtp
+    {
+        public EbSmtp(EbSmtpConfig config)
+        {
+            Config = config;
+            Client = new SmtpClient();
+            Client.Host = Config.Host;
+            Client.Port = Config.Port;
+            Client.Credentials = new NetworkCredential { UserName = Config.EmailAddress, Password = Config.Password };
+            Client.EnableSsl = Config.EnableSsl;
+
+        }
+
+        public EbSmtpConfig Config { get; set; }
+
+        private SmtpClient Client { get; set; }
+
+
+
+        public bool Send(string to, string subject, string message, string[] cc, string[] bcc, byte[] attachment, string attachmentname)
+        {
+           
+            bool sentStatus;
+            try
+            {
+                MailMessage mm = new MailMessage(Config.EmailAddress, to)
+                {
+                    Subject = subject,
+                    IsBodyHtml = true,
+                    Body = message
+
+                };
+                if (attachment != null)
+                    mm.Attachments.Add(new Attachment(new MemoryStream(attachment), attachmentname + ".pdf"));
                 if (cc!=null)
                     if(cc.Length > 0)
                     foreach (string item in cc)
@@ -62,7 +117,7 @@ namespace ExpressBase.Common.Data
                     if (bcc.Length > 0)
                     foreach (string item in bcc)
                         if (item != "") mm.Bcc.Add(item);
-                _client.Send(mm);
+                Client.Send(mm);
                 sentStatus = true;
                 Console.WriteLine("Smtp Send success" + to);
             }

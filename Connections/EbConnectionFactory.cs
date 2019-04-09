@@ -11,18 +11,25 @@ using ServiceStack;
 using ServiceStack.Logging;
 using ServiceStack.Redis;
 using System;
+using System.Collections.Generic;
 
 namespace ExpressBase.Common.Data
 {
     public class EbConnectionFactory : IEbConnectionFactory
     {
-        public IDatabase ObjectsDB { get; private set; }
-
         public IDatabase DataDB { get; private set; }
 
         public IDatabase DataDBRO { get; private set; }
 
-        public INoSQLDatabase FilesDB { get; private set; }
+        public IDatabase DataDBRW { get; private set; }
+
+        public IDatabase ObjectsDB { get; private set; }
+
+        public IDatabase ObjectsDBRO { get; private set; }
+
+        public IDatabase ObjectsDBRW { get; private set; }
+
+        public List<INoSQLDatabase> FilesDB { get; private set; }
 
         public IDatabase LogsDB { get; private set; }
 
@@ -30,7 +37,7 @@ namespace ExpressBase.Common.Data
 
         public EbSmsConCollection SMSConnection { get; private set; }
 
-        public IImageManipulate ImageManipulate { get; private set; }
+        public List<IImageManipulate> ImageManipulate { get; private set; }
 
         public IFTP FTP { get; private set; }
 
@@ -53,7 +60,7 @@ namespace ExpressBase.Common.Data
                     if (this.SolutionId == CoreConstants.EXPRESSBASE)
                         _connections = EbConnectionsConfigProvider.InfraConnections;
                     else
-                        _connections = this.Redis.Get<EbConnectionsConfig>(string.Format(CoreConstants.SOLUTION_CONNECTION_REDIS_KEY, this.SolutionId));
+                        _connections = this.Redis.Get<EbConnectionsConfig>(string.Format(CoreConstants.SOLUTION_INTEGRATION_REDIS_KEY, this.SolutionId));
                 }
 
                 return _connections;
@@ -119,69 +126,123 @@ namespace ExpressBase.Common.Data
         {
             if (this.Connections != null)
             {
-                //OBJECTS DB
-                if (Connections.ObjectsDbConnection != null && Connections.ObjectsDbConnection.DatabaseVendor == DatabaseVendors.PGSQL)
-                    ObjectsDB = new PGSQLDatabase(Connections.ObjectsDbConnection);
-                else if (Connections.ObjectsDbConnection != null && Connections.ObjectsDbConnection.DatabaseVendor == DatabaseVendors.ORACLE)
-                    ObjectsDB = new OracleDB(Connections.ObjectsDbConnection);
-                else if (Connections.ObjectsDbConnection != null && Connections.ObjectsDbConnection.DatabaseVendor == DatabaseVendors.MYSQL)
-                    ObjectsDB = new MySqlDB(Connections.ObjectsDbConnection);
 
                 // DATA DB 
-                if (Connections.DataDbConnection != null && Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.PGSQL)
-                    DataDB = new PGSQLDatabase(Connections.DataDbConnection);
-                else if (Connections.DataDbConnection != null && Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.ORACLE)
-                    DataDB = new OracleDB(Connections.DataDbConnection);
-                else if (Connections.DataDbConnection != null && Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.MYSQL)
-                    DataDB = new MySqlDB(Connections.DataDbConnection);
+                if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
+                    DataDB = new PGSQLDatabase(Connections.DataDbConfig);
+                else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
+                    DataDB = new OracleDB(Connections.DataDbConfig);
+                else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
+                    DataDB = new MySqlDB(Connections.DataDbConfig);
 
                 // DATA DB RO
-                if (Connections.DataDbROConnection != null && Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.PGSQL)
-                    DataDBRO = new PGSQLDatabase(Connections.DataDbConnection);
-                else if (Connections.DataDbROConnection != null && Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.ORACLE)
-                    DataDBRO = new OracleDB(Connections.DataDbConnection);
-                else if (Connections.DataDbROConnection != null && Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.MYSQL)
-                    DataDBRO = new MySqlDB(Connections.DataDbConnection);
+                if (!(string.IsNullOrEmpty(Connections.DataDbConfig.ReadOnlyUserName) || string.IsNullOrEmpty(Connections.DataDbConfig.ReadOnlyPassword)))
+                {
+                    Connections.DataDbConfig.UserName = Connections.DataDbConfig.ReadOnlyUserName;
+                    Connections.DataDbConfig.Password = Connections.DataDbConfig.ReadOnlyPassword;
+                    if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
+                        DataDBRO = new PGSQLDatabase(Connections.DataDbConfig);
+                    else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
+                        DataDBRO = new OracleDB(Connections.DataDbConfig);
+                    else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
+                        DataDBRO = new MySqlDB(Connections.DataDbConfig);
+                }
+
+
+                // DATA DB RW
+                if (!(string.IsNullOrEmpty(Connections.DataDbConfig.ReadWriteUserName) || string.IsNullOrEmpty(Connections.DataDbConfig.ReadWritePassword)))
+                {
+                    Connections.DataDbConfig.UserName = Connections.DataDbConfig.ReadWriteUserName;
+                    Connections.DataDbConfig.Password = Connections.DataDbConfig.ReadWritePassword;
+                    if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
+                        DataDBRO = new PGSQLDatabase(Connections.DataDbConfig);
+                    else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
+                        DataDBRO = new OracleDB(Connections.DataDbConfig);
+                    else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
+                        DataDBRO = new MySqlDB(Connections.DataDbConfig);
+                }
+
+                //OBJECTS DB
+                if (Connections.ObjectsDbConfig == null)
+                    Connections.ObjectsDbConfig = Connections.DataDbConfig;
+
+                if (Connections.ObjectsDbConfig != null && Connections.ObjectsDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
+                    ObjectsDB = new PGSQLDatabase(Connections.ObjectsDbConfig);
+                else if (Connections.ObjectsDbConfig != null && Connections.ObjectsDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
+                    ObjectsDB = new OracleDB(Connections.ObjectsDbConfig);
+                else if (Connections.ObjectsDbConfig != null && Connections.ObjectsDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
+                    ObjectsDB = new MySqlDB(Connections.ObjectsDbConfig);
+
+                // OBJECTS DB RO
+                if (!(string.IsNullOrEmpty(Connections.DataDbConfig.ReadOnlyUserName) || string.IsNullOrEmpty(Connections.DataDbConfig.ReadOnlyPassword)))
+                {
+                    Connections.DataDbConfig.UserName = Connections.DataDbConfig.ReadOnlyUserName;
+                    Connections.DataDbConfig.Password = Connections.DataDbConfig.ReadOnlyPassword;
+                    if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
+                        DataDBRO = new PGSQLDatabase(Connections.DataDbConfig);
+                    else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
+                        DataDBRO = new OracleDB(Connections.DataDbConfig);
+                    else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
+                        DataDBRO = new MySqlDB(Connections.DataDbConfig);
+                }
+
+
+                // OBJECTS DB RW
+                if (!(string.IsNullOrEmpty(Connections.DataDbConfig.ReadWriteUserName) || string.IsNullOrEmpty(Connections.DataDbConfig.ReadWritePassword)))
+                {
+                    Connections.DataDbConfig.UserName = Connections.DataDbConfig.ReadWriteUserName;
+                    Connections.DataDbConfig.Password = Connections.DataDbConfig.ReadWritePassword;
+                    if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
+                        DataDBRO = new PGSQLDatabase(Connections.DataDbConfig);
+                    else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
+                        DataDBRO = new OracleDB(Connections.DataDbConfig);
+                    else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
+                        DataDBRO = new MySqlDB(Connections.DataDbConfig);
+                }
+
+
 
                 // LOGS DB
                 LogsDB = new PGSQLDatabase(EbConnectionsConfigProvider.InfraConnections.LogsDbConnection);
 
 
                 //Files DB
-                if (Connections.FilesDbConnection != null)
-                {
-                    if (Connections.FilesDbConnection.FilesDbVendor == FilesDbVendors.MongoDB)
-                        FilesDB = new MongoDBDatabase(this.SolutionId, Connections.FilesDbConnection);
-                    else if (Connections.FilesDbConnection.FilesDbVendor == FilesDbVendors.PGSQL)
-                        FilesDB = new PGSQLFileDatabase(Connections.FilesDbConnection);
-                    else if (Connections.FilesDbConnection.FilesDbVendor == FilesDbVendors.ORACLE)
-                        FilesDB = new OracleFilesDB(Connections.FilesDbConnection);
-                }
-                else
-                {
-                    if (Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.PGSQL)
-                        FilesDB = new PGSQLFileDatabase(Connections.DataDbConnection);
-                    else if (Connections.DataDbConnection.DatabaseVendor == DatabaseVendors.ORACLE)
-                        FilesDB = new OracleFilesDB(Connections.DataDbConnection);
-                }
+                FilesDB = new List<INoSQLDatabase>();
 
-                if (Connections.EmailConnections != null)
+                if (Connections.FilesDbConfig == null)
+                    Connections.FilesDbConfig = new FilesConfigCollection();
+                if (Connections.FilesDbConfig.Count == 0)
+                    Connections.FilesDbConfig.Add(Connections.DataDbConfig);
+                for (int i = 0; i < Connections.FilesDbConfig.Count; i++)
                 {
-                    Connections.EmailConnections.Process();
-                    EmailConnection = Connections.EmailConnections;
-                }
-                if (Connections.SMSConnections != null)
-                {
-                    Connections.SMSConnections.Process();
-                    SMSConnection = Connections.SMSConnections;
+                    if (Connections.FilesDbConfig[i].Type == EbIntegrations.MongoDB)
+                        FilesDB.Add(new MongoDBDatabase(this.SolutionId, Connections.FilesDbConfig[i] as EbMongoConfig));
+                    else if (Connections.FilesDbConfig[i].Type == EbIntegrations.PGSQL)
+                        FilesDB.Add(new PGSQLFileDatabase(Connections.FilesDbConfig[i] as PostgresConfig));
+                    else if (Connections.FilesDbConfig[i].Type == EbIntegrations.ORACLE)
+                        FilesDB.Add(new OracleFilesDB(Connections.FilesDbConfig[i] as OracleConfig));
+                    //else if (Connections.FilesDbConfig[i].Type == EbIntegrations.MYSQL)
+                    //    FilesDB.Add(new MySQLFilesDB(Connections.FilesDbConfig[i] as MySqlConfig));
                 }
 
+                if (Connections.EmailConfigs != null)
+                {
+                    EmailConnection = new EbMailConCollection(Connections.EmailConfigs);
+                }
+                if (Connections.SMSConfigs != null)
+                {                    
+                    SMSConnection = new EbSmsConCollection(Connections.SMSConfigs);
+                }
 
-                if (Connections.CloudinaryConnection != null)
-                    ImageManipulate = new EbCloudinary(Connections.CloudinaryConnection);
-
-                if (Connections.FTPConnection != null)
-                    FTP = new EbFTP(Connections.FTPConnection);
+                if (Connections.CloudinaryConfigs != null && Connections.CloudinaryConfigs.Count > 0)
+                {
+                    if (ImageManipulate == null)
+                        ImageManipulate = new List<IImageManipulate>();
+                    for (int i = 0; i < Connections.CloudinaryConfigs.Count; i++)
+                        ImageManipulate.Add(new EbCloudinary(Connections.CloudinaryConfigs[i]));
+                }
+                //if (Connections.FTPConnection != null)
+                //    FTP = new EbFTP(Connections.FTPConnection);
 
             }
             else

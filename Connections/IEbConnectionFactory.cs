@@ -8,19 +8,25 @@ namespace ExpressBase.Common.Data
 {
     public interface IEbConnectionFactory
     {
-        IDatabase ObjectsDB { get; }
-
         IDatabase DataDB { get; }
 
         IDatabase DataDBRO { get; }
 
-        INoSQLDatabase FilesDB { get; }
+        IDatabase DataDBRW { get; }
+
+        IDatabase ObjectsDB { get; }
+
+        IDatabase ObjectsDBRO { get; }
+
+        IDatabase ObjectsDBRW { get; }
+
+        List<INoSQLDatabase> FilesDB { get; }
 
         IDatabase LogsDB { get; }
 
         EbSmsConCollection SMSConnection { get; }
 
-        IImageManipulate ImageManipulate { get; }
+        List<IImageManipulate> ImageManipulate { get; }
 
         EbMailConCollection EmailConnection { get; }
     }

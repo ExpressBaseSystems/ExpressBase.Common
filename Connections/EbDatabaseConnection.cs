@@ -10,38 +10,38 @@ using System.Text;
 namespace ExpressBase.Common.Connections
 {
 
-    public static class EbConnectionExtens
-    {
-        public static void Persist(this IEbConnection con, string TenantAccountId, EbConnectionFactory infra, bool IsNew, int UserId)
-        {
-            if (IsNew)
-            {
-                string sql = "INSERT INTO eb_connections (con_type, solution_id, nick_name, con_obj,date_created,eb_user_id) VALUES (@con_type, @solution_id, @nick_name, @con_obj , NOW() , @eb_user_id) RETURNING id";
-                DbParameter[] parameters = {
-                                                infra.DataDB.GetNewParameter("con_type", EbDbTypes.String, con.EbConnectionType.ToString()),
-                                                infra.DataDB.GetNewParameter("solution_id", EbDbTypes.String, TenantAccountId),
-                                                infra.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(con.NickName))?con.NickName:string.Empty),
-                                                infra.DataDB.GetNewParameter("con_obj", EbDbTypes.Json,EbSerializers.Json_Serialize(con) ),
-                                                infra.DataDB.GetNewParameter("eb_user_id", EbDbTypes.Int32, UserId )
-                                           };
-                var iCount = infra.DataDB.DoQuery(sql, parameters);
-            }
-            else if (!IsNew)
-            {
-                string sql = @"UPDATE eb_connections SET eb_del = 'T' WHERE con_type = @con_type AND solution_id = @solution_id AND id = @id; 
-                              INSERT INTO eb_connections (con_type, solution_id, nick_name, con_obj, date_created, eb_user_id) VALUES (@con_type, @solution_id, @nick_name, @con_obj, NOW() , @eb_user_id)";
-                DbParameter[] parameters = {
-                                                infra.DataDB.GetNewParameter("con_type", EbDbTypes.String, con.EbConnectionType.ToString()),
-                                                infra.DataDB.GetNewParameter("solution_id", EbDbTypes.String, TenantAccountId),
-                                                infra.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(con.NickName))?con.NickName:string.Empty),
-                                                infra.DataDB.GetNewParameter("con_obj", EbDbTypes.Json,EbSerializers.Json_Serialize(con)),
-                                                infra.DataDB.GetNewParameter("eb_user_id", EbDbTypes.Int32, UserId ),
-                                                infra.DataDB.GetNewParameter("id", EbDbTypes.Int32, con.Id)
-                                           };
-                var iCount = infra.DataDB.DoNonQuery(sql, parameters);
-            }
-        }
-    }
+    //public static class EbConnectionExtens
+    //{
+    //    public static void Persist(this IEbConnection con, string TenantAccountId, EbConnectionFactory infra, bool IsNew, int UserId)
+    //    {
+    //        if (IsNew)
+    //        {
+    //            string sql = "INSERT INTO eb_connections (con_type, solution_id, nick_name, con_obj,date_created,eb_user_id) VALUES (@con_type, @solution_id, @nick_name, @con_obj , NOW() , @eb_user_id) RETURNING id";
+    //            DbParameter[] parameters = {
+    //                                            infra.DataDB.GetNewParameter("con_type", EbDbTypes.String, con.EbConnectionType.ToString()),
+    //                                            infra.DataDB.GetNewParameter("solution_id", EbDbTypes.String, TenantAccountId),
+    //                                            infra.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(con.NickName))?con.NickName:string.Empty),
+    //                                            infra.DataDB.GetNewParameter("con_obj", EbDbTypes.Json,EbSerializers.Json_Serialize(con) ),
+    //                                            infra.DataDB.GetNewParameter("eb_user_id", EbDbTypes.Int32, UserId )
+    //                                       };
+    //            var iCount = infra.DataDB.DoQuery(sql, parameters);
+    //        }
+    //        else if (!IsNew)
+    //        {
+    //            string sql = @"UPDATE eb_connections SET eb_del = 'T' WHERE con_type = @con_type AND solution_id = @solution_id AND id = @id; 
+    //                          INSERT INTO eb_connections (con_type, solution_id, nick_name, con_obj, date_created, eb_user_id) VALUES (@con_type, @solution_id, @nick_name, @con_obj, NOW() , @eb_user_id)";
+    //            DbParameter[] parameters = {
+    //                                            infra.DataDB.GetNewParameter("con_type", EbDbTypes.String, con.EbConnectionType.ToString()),
+    //                                            infra.DataDB.GetNewParameter("solution_id", EbDbTypes.String, TenantAccountId),
+    //                                            infra.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(con.NickName))?con.NickName:string.Empty),
+    //                                            infra.DataDB.GetNewParameter("con_obj", EbDbTypes.Json,EbSerializers.Json_Serialize(con)),
+    //                                            infra.DataDB.GetNewParameter("eb_user_id", EbDbTypes.Int32, UserId ),
+    //                                            infra.DataDB.GetNewParameter("id", EbDbTypes.Int32, con.Id)
+    //                                       };
+    //            var iCount = infra.DataDB.DoNonQuery(sql, parameters);
+    //        }
+    //    }
+    //}
 
     public interface IEbConnection
     {
@@ -174,6 +174,9 @@ namespace ExpressBase.Common.Connections
 
         public virtual EbIntegrations Type { get; }
 
+        public bool IsDefault { get; set; }       
+
+
         public void PersistIntegrationConf(string Sol_Id, EbConnectionFactory infra, int UserId)
         {
             string query = @"INSERT INTO eb_integration_configs (solution_id, nickname, type, con_obj, created_by, created_at, eb_del) 
@@ -218,48 +221,39 @@ namespace ExpressBase.Common.Connections
 
         public string ReadOnlyPassword { get; set; }
 
+        public DatabaseVendors DatabaseVendor { get { return (DatabaseVendors)Type; } set { } }
     }
 
     public class PostgresConfig : EbDbConfig
     {
         public override EbIntegrations Type { get { return EbIntegrations.PGSQL; } }
-        private const string CONNECTION_STRING_BARE = @"Host={0}; Port={1}; Database={2}; Username={3}; Password={4};  Trust Server Certificate=true; 
-                                                        Pooling=true; CommandTimeout={5};SSL Mode=Require; Use SSL Stream=true; ";
     }
 
     public class OracleConfig : EbDbConfig
     {
         public override EbIntegrations Type { get { return EbIntegrations.ORACLE; } }
-        private const string CONNECTION_STRING_BARE = @"Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))" +
-            "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= {2};Password={3};Pooling=true;Min Pool Size=1;" +
-            "Connection Lifetime=180;Max Pool Size=50;Incr Pool Size=5";
     }
 
     public class MySqlConfig : EbDbConfig
     {
         public override EbIntegrations Type { get { return EbIntegrations.MYSQL; } }
-        private const string CONNECTION_STRING_BARE = "Server={0}; Port={1}; Database={2}; Uid={3}; pwd={4};SslMode=none; ";
     }
-
-    public class EbTwilioConfig : EbIntegrationConf
+    public class EbSmsConfig : EbIntegrationConf
     {
         public string UserName { get; set; }
 
         public string Password { get; set; }
 
         public string From { get; set; }
+    }
 
+    public class EbTwilioConfig : EbSmsConfig
+    {
         public override EbIntegrations Type { get { return EbIntegrations.Twilio; } }
     }
 
-    public class EbExpertTextingConfig : EbIntegrationConf
+    public class EbExpertTextingConfig : EbSmsConfig
     {
-        public string UserName { get; set; }
-
-        public string Password { get; set; }
-
-        public string From { get; set; }
-
         public string ApiKey { get; set; }
 
         public override EbIntegrations Type { get { return EbIntegrations.ExpertTexting; } }
@@ -294,7 +288,7 @@ namespace ExpressBase.Common.Connections
 
         public override EbIntegrations Type { get { return EbIntegrations.SMTP; } }
     }
-
+    
     public class EbIntegration
     {
         public int Id { get; set; }
