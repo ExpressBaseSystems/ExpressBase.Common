@@ -174,7 +174,7 @@ namespace ExpressBase.Common.Connections
 
         public virtual EbIntegrations Type { get; }
 
-        public void PersistIntegrationConf(string Sol_Id, EbConnectionFactory infra, int UserId)
+        public int PersistIntegrationConf(string Sol_Id, EbConnectionFactory infra, int UserId)
         {
             string query = @"INSERT INTO eb_integration_configs (solution_id, nickname, type, con_obj, created_by, created_at, eb_del) 
                                VALUES (@solution_id, @nick_name, @type, @con_obj, @uid, NOW() , 'F') RETURNING id;";
@@ -190,7 +190,28 @@ namespace ExpressBase.Common.Connections
                                                 infra.DataDB.GetNewParameter("uid", EbDbTypes.Int32, UserId ),
                                                 infra.DataDB.GetNewParameter("id", EbDbTypes.Int32, this.Id)
                                            };
-            var iCount = infra.DataDB.DoQuery(query, parameters);
+            EbDataTable iCount = infra.DataDB.DoQuery(query, parameters);
+            return Convert.ToInt32(iCount.Rows[0][0]);
+        }
+        public int PersistConfForHelper(string Sol_Id, EbConnectionFactory infra, int UserId,DateTime dt)
+        {
+            string query = @"INSERT INTO eb_integration_configs (solution_id, nickname, type, con_obj, created_by, created_at, eb_del) 
+                               VALUES (@solution_id, @nick_name, @type, @con_obj, @uid, @dt , 'F') RETURNING id;";
+
+            //if (con.Id>0)
+            //    query += @"UPDATE eb_integration_configs SET eb_del = 'T', modified_at = NOW(), modified_by = @uid WHERE id = @id;";
+
+            DbParameter[] parameters = {
+                                                infra.DataDB.GetNewParameter("solution_id", EbDbTypes.String, Sol_Id),
+                                                infra.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(this.NickName))?this.NickName:string.Empty),
+                                                infra.DataDB.GetNewParameter("type", EbDbTypes.String, this.Type.ToString()),
+                                                infra.DataDB.GetNewParameter("con_obj", EbDbTypes.Json,EbSerializers.Json_Serialize(this) ),
+                                                infra.DataDB.GetNewParameter("uid", EbDbTypes.Int32, UserId ),
+                                                infra.DataDB.GetNewParameter("id", EbDbTypes.Int32, this.Id),
+                                                infra.DataDB.GetNewParameter("@dt", EbDbTypes.DateTime,dt )
+                                           };
+            EbDataTable iCount = infra.DataDB.DoQuery(query, parameters);
+            return Convert.ToInt32(iCount.Rows[0][0]);
         }
     }
 
@@ -295,6 +316,17 @@ namespace ExpressBase.Common.Connections
         public override EbIntegrations Type { get { return EbIntegrations.SMTP; } }
     }
 
+    public class EbCloudinaryConfig : EbIntegrationConf
+    {
+        public string Cloud { get; set; }
+
+        public string ApiKey { get; set; }
+
+        public string ApiSecret { get; set; }
+
+        public override EbIntegrations Type { get { return EbIntegrations.Cloudinary; } }
+    }
+
     public class EbIntegration
     {
         public int Id { get; set; }
@@ -320,6 +352,22 @@ namespace ExpressBase.Common.Connections
                                                 infra.DataDB.GetNewParameter("conf_id", EbDbTypes.Int32, this.ConfigId),
                                                 infra.DataDB.GetNewParameter("uid", EbDbTypes.Int32, UserId),
                                                 infra.DataDB.GetNewParameter("id", EbDbTypes.Int32, this.Id)
+                                           };
+            var iCount = infra.DataDB.DoQuery(query, parameters);
+        }
+        public void PersistIntegrationForHelper(string Sol_Id, EbConnectionFactory infra, int UserId, DateTime dt)
+        {
+            string query = @"INSERT INTO eb_integrations (solution_id, type, preference, eb_integration_conf_id, created_at, created_by, eb_del) 
+                               VALUES (@solution_id, @type, @preference, @conf_id, @dt, @uid, 'F') RETURNING id;";
+
+            DbParameter[] parameters = {
+                                                infra.DataDB.GetNewParameter("solution_id", EbDbTypes.String, Sol_Id),
+                                                infra.DataDB.GetNewParameter("type", EbDbTypes.String, this.Type.ToString()),
+                                                infra.DataDB.GetNewParameter("preference", EbDbTypes.Int32,Preference),
+                                                infra.DataDB.GetNewParameter("conf_id", EbDbTypes.Int32, this.ConfigId),
+                                                infra.DataDB.GetNewParameter("uid", EbDbTypes.Int32, UserId),
+                                                infra.DataDB.GetNewParameter("id", EbDbTypes.Int32, this.Id),
+                                                infra.DataDB.GetNewParameter("dt", EbDbTypes.DateTime, dt)
                                            };
             var iCount = infra.DataDB.DoQuery(query, parameters);
         }
