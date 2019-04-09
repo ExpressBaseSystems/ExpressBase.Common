@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_executionlogs
 (
-    id integer NOT NULL DEFAULT nextval('executionlogs_id_seq'::regclass),
+    id serial,
     rows character varying COLLATE pg_catalog."default",
     exec_time integer,
     created_by integer,
