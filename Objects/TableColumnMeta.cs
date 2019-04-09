@@ -11,6 +11,8 @@ namespace ExpressBase.Common
         public VendorDbType Type { get; set; }
 
         public string Default { get; set; }
+
+        public bool Unique { get; set; }
     }
 
     public class AuditTrailEntry
@@ -125,12 +127,18 @@ namespace ExpressBase.Common
 
         public Dictionary<string, SingleTable> ExtendedTables { get; set; }
 
+        public Dictionary<string, bool> DisableDelete { get; set; }
+
+        public Dictionary<string, bool> DisableCancel { get; set; }
+
         public string MasterTable { get; set; }
         
         public WebformData()
         {
             MultipleTables = new Dictionary<string, SingleTable>();
             ExtendedTables = new Dictionary<string, SingleTable>();
+            DisableDelete = new Dictionary<string, bool>();
+            DisableCancel = new Dictionary<string, bool>();
         }
     }
 
