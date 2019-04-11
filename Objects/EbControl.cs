@@ -231,7 +231,7 @@ else
         public virtual string IsRequiredOKJSfn { get { return @"return !isNaNOrEmpty(this.getValue());"; } set { } }
 
         [JsonIgnore]
-        public virtual string SetValueJSfn { get { return @"$('#' + this.EbSid_CtxId).val(p1);"; } set { } }
+        public virtual string SetValueJSfn { get { return @"$('#' + this.EbSid_CtxId).val(p1).trigger('change');"; } set { } }
 
         [JsonIgnore]
         public virtual string SetDisplayMemberJSfn { get { return @"return this.setValue(p1);"; } set { } }
