@@ -1,4 +1,5 @@
 ﻿using ExpressBase.Common;
+using ExpressBase.Common.Singletons;
 using ExpressBase.Common.Structures;
 using Newtonsoft.Json;
 using ServiceStack;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
@@ -438,6 +440,33 @@ namespace ExpressBase.Security
 
 		[DataMember(Order = 3)]
 		public int DefaultLocation { get; set; }
-	}
+
+        [DataMember(Order = 4)]
+        public string ShortDatePattern
+        {
+            get
+            {
+                try
+                {
+                    return CultureInfo.GetCultureInfo(this.Locale).DateTimeFormat.ShortDatePattern;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception thrown when tried to get short date pattern : " + ex.Message);
+                    return "yyyy-MM-dd";
+                }
+            }
+        }
+
+        [DataMember(Order = 5)]
+        public string ShortDate
+        {
+            get
+            {
+                return DateTime.UtcNow.Add(CultureHelper.GetDifference(this.TimeZone, true)).ToString(this.ShortDatePattern, CultureInfo.InvariantCulture);
+            }
+        }
+
+    }
 }
 
