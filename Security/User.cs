@@ -446,15 +446,16 @@ namespace ExpressBase.Security
         {
             get
             {
-                try
-                {
-                    return CultureInfo.GetCultureInfo(this.Locale).DateTimeFormat.ShortDatePattern;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Exception thrown when tried to get short date pattern : " + ex.Message);
-                    return "yyyy-MM-dd";
-                }
+                return "dd-MM-yyyy";
+                //try
+                //{
+                //    return CultureInfo.GetCultureInfo(this.Locale).DateTimeFormat.ShortDatePattern;
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine("Exception thrown when tried to get short date pattern : " + ex.Message);
+                //    return "yyyy-MM-dd";
+                //}
             }
         }
 
