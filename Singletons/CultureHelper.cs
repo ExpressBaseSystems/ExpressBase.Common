@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
 
 namespace ExpressBase.Common.Singletons
 {
@@ -37,6 +39,27 @@ namespace ExpressBase.Common.Singletons
 				return mycultures;
 			}
 		}
+
+        private static Dictionary<string, SerializedCulture> cultureinfos = new Dictionary<string, SerializedCulture>();
+
+        public static SerializedCulture GetCultureInfo(string CultureName)
+        {            
+            if (!cultureinfos.ContainsKey(CultureName))
+            {
+                var Serialized = new JsonSerializer();
+                using (var Stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("ExpressBase.Common.cultures." + CultureName.ToLower() + ".json"))
+                {
+                    if (Stream == null)
+                        return null;
+                    using (var StreamReader = new StreamReader(Stream, System.Text.Encoding.UTF32))
+                    using (var JsonTextReader = new JsonTextReader(StreamReader))
+                    {
+                        cultureinfos.Add(CultureName, Serialized.Deserialize<SerializedCulture>(JsonTextReader));
+                    }
+                }
+            }
+            return cultureinfos[CultureName];
+        }
 
 		public static string __culturesAsJson = null;
 		public static string CulturesAsJson
@@ -245,4 +268,174 @@ namespace ExpressBase.Common.Singletons
 	{
 		public string Name { get; set; }
 	}
+
+
+    public class SerializedNumberFormatInfo
+    {
+        public void PopulateFromCultureInfo(System.Globalization.CultureInfo Culture)
+        {
+            this.CurrencyDecimalDigits = Culture.NumberFormat.CurrencyDecimalDigits;
+            this.CurrencyDecimalSeparator = Culture.NumberFormat.CurrencyDecimalSeparator;
+            this.CurrencyGroupSeparator = Culture.NumberFormat.CurrencyGroupSeparator;
+            this.CurrencyGroupSizes = Culture.NumberFormat.CurrencyGroupSizes;
+            this.CurrencyNegativePattern = Culture.NumberFormat.CurrencyNegativePattern;
+            this.CurrencyPositivePattern = Culture.NumberFormat.CurrencyPositivePattern;
+            this.CurrencySymbol = Culture.NumberFormat.CurrencySymbol;
+            this.DigitSubstitution = Culture.NumberFormat.DigitSubstitution;
+            this.NaNSymbol = Culture.NumberFormat.NaNSymbol;
+            this.NativeDigits = Culture.NumberFormat.NativeDigits;
+            this.NegativeInfinitySymbol = Culture.NumberFormat.NegativeInfinitySymbol;
+            this.NegativeSign = Culture.NumberFormat.NegativeSign;
+            this.NumberDecimalDigits = Culture.NumberFormat.NumberDecimalDigits;
+            this.NumberDecimalSeparator = Culture.NumberFormat.NumberDecimalSeparator;
+            this.NumberGroupSeparator = Culture.NumberFormat.NumberGroupSeparator;
+            this.NumberGroupSizes = Culture.NumberFormat.NumberGroupSizes;
+            this.NumberNegativePattern = Culture.NumberFormat.NumberNegativePattern;
+            this.PercentDecimalDigits = Culture.NumberFormat.PercentDecimalDigits;
+            this.PercentDecimalSeparator = Culture.NumberFormat.PercentDecimalSeparator;
+            this.PercentGroupSeparator = Culture.NumberFormat.PercentGroupSeparator;
+            this.PercentGroupSizes = Culture.NumberFormat.PercentGroupSizes;
+            this.PercentNegativePattern = Culture.NumberFormat.PercentNegativePattern;
+            this.PercentPositivePattern = Culture.NumberFormat.PercentPositivePattern;
+            this.PercentSymbol = Culture.NumberFormat.PercentSymbol;
+            this.PerMilleSymbol = Culture.NumberFormat.PerMilleSymbol;
+            this.PositiveInfinitySymbol = Culture.NumberFormat.PositiveInfinitySymbol;
+            this.PositiveSign = Culture.NumberFormat.PositiveSign;
+        }
+        public void PopulateIntoCultureInfo(System.Globalization.CultureInfo Culture)
+        {
+            Culture.NumberFormat.CurrencyDecimalDigits = this.CurrencyDecimalDigits;
+            Culture.NumberFormat.CurrencyDecimalSeparator = this.CurrencyDecimalSeparator;
+            Culture.NumberFormat.CurrencyGroupSeparator = this.CurrencyGroupSeparator;
+            Culture.NumberFormat.CurrencyGroupSizes = this.CurrencyGroupSizes;
+            Culture.NumberFormat.CurrencyNegativePattern = this.CurrencyNegativePattern;
+            Culture.NumberFormat.CurrencyPositivePattern = this.CurrencyPositivePattern;
+            Culture.NumberFormat.CurrencySymbol = this.CurrencySymbol;
+            Culture.NumberFormat.DigitSubstitution = this.DigitSubstitution;
+            Culture.NumberFormat.NaNSymbol = this.NaNSymbol;
+            Culture.NumberFormat.NativeDigits = this.NativeDigits;
+            Culture.NumberFormat.NegativeInfinitySymbol = this.NegativeInfinitySymbol;
+            Culture.NumberFormat.NegativeSign = this.NegativeSign;
+            Culture.NumberFormat.NumberDecimalDigits = this.NumberDecimalDigits;
+            Culture.NumberFormat.NumberDecimalSeparator = this.NumberDecimalSeparator;
+            Culture.NumberFormat.NumberGroupSeparator = this.NumberGroupSeparator;
+            Culture.NumberFormat.NumberGroupSizes = this.NumberGroupSizes;
+            Culture.NumberFormat.NumberNegativePattern = this.NumberNegativePattern;
+            Culture.NumberFormat.PercentDecimalDigits = this.PercentDecimalDigits;
+            Culture.NumberFormat.PercentDecimalSeparator = this.PercentDecimalSeparator;
+            Culture.NumberFormat.PercentGroupSeparator = this.PercentGroupSeparator;
+            Culture.NumberFormat.PercentGroupSizes = this.PercentGroupSizes;
+            Culture.NumberFormat.PercentNegativePattern = this.PercentNegativePattern;
+            Culture.NumberFormat.PercentPositivePattern = this.PercentPositivePattern;
+            Culture.NumberFormat.PercentSymbol = this.PercentSymbol;
+            Culture.NumberFormat.PerMilleSymbol = this.PerMilleSymbol;
+            Culture.NumberFormat.PositiveInfinitySymbol = this.PositiveInfinitySymbol;
+            Culture.NumberFormat.PositiveSign = this.PositiveSign;
+        }
+        public int NumberDecimalDigits { get; set; }
+        public string NumberDecimalSeparator { get; set; }
+        public string NumberGroupSeparator { get; set; }
+        public int[] NumberGroupSizes { get; set; }
+        public int NumberNegativePattern { get; set; }
+        public int PercentDecimalDigits { get; set; }
+        public string PercentDecimalSeparator { get; set; }
+        public string PercentGroupSeparator { get; set; }
+        public int[] PercentGroupSizes { get; set; }
+        public int PercentNegativePattern { get; set; }
+        public int PercentPositivePattern { get; set; }
+        public string PercentSymbol { get; set; }
+        public string PerMilleSymbol { get; set; }
+        public string NegativeSign { get; set; }
+        public string NegativeInfinitySymbol { get; set; }
+        public string[] NativeDigits { get; set; }
+        public string NaNSymbol { get; set; }
+        public DigitShapes DigitSubstitution { get; set; }
+        public string CurrencySymbol { get; set; }
+        public int CurrencyPositivePattern { get; set; }
+        public int CurrencyNegativePattern { get; set; }
+        public int[] CurrencyGroupSizes { get; set; }
+        public string CurrencyGroupSeparator { get; set; }
+        public string CurrencyDecimalSeparator { get; set; }
+        public int CurrencyDecimalDigits { get; set; }
+        public string PositiveInfinitySymbol { get; set; }
+        public string PositiveSign { get; set; }
+    }
+
+    public class SerializedDateTimeFormatInfo
+    {
+        public void PopulateFromCultureInfo(System.Globalization.CultureInfo Culture)
+        {
+            this.AbbreviatedDayNames = Culture.DateTimeFormat.AbbreviatedDayNames;
+            this.AbbreviatedMonthGenitiveNames = Culture.DateTimeFormat.AbbreviatedMonthGenitiveNames;
+            this.AbbreviatedMonthNames = Culture.DateTimeFormat.AbbreviatedMonthNames;
+            this.AMDesignator = Culture.DateTimeFormat.AMDesignator;
+            this.CalendarWeekRule = Culture.DateTimeFormat.CalendarWeekRule;
+            this.DateSeparator = Culture.DateTimeFormat.DateSeparator;
+            this.DayNames = Culture.DateTimeFormat.DayNames;
+            this.FirstDayOfWeek = Culture.DateTimeFormat.FirstDayOfWeek;
+            this.FullDateTimePattern = Culture.DateTimeFormat.FullDateTimePattern;
+            this.LongDatePattern = Culture.DateTimeFormat.LongDatePattern;
+            this.LongTimePattern = Culture.DateTimeFormat.LongTimePattern;
+            this.MonthDayPattern = Culture.DateTimeFormat.MonthDayPattern;
+            this.MonthGenitiveNames = Culture.DateTimeFormat.MonthGenitiveNames;
+            this.MonthNames = Culture.DateTimeFormat.MonthNames;
+            this.PMDesignator = Culture.DateTimeFormat.PMDesignator;
+            this.ShortDatePattern = Culture.DateTimeFormat.ShortDatePattern;
+            this.ShortestDayNames = Culture.DateTimeFormat.ShortestDayNames;
+            this.ShortTimePattern = Culture.DateTimeFormat.ShortTimePattern;
+            this.TimeSeparator = Culture.DateTimeFormat.TimeSeparator;
+            this.YearMonthPattern = Culture.DateTimeFormat.YearMonthPattern;
+        }
+        public void PopulateIntoCultureInfo(System.Globalization.CultureInfo Culture)
+        {
+            Culture.DateTimeFormat.AbbreviatedDayNames = this.AbbreviatedDayNames;
+            Culture.DateTimeFormat.AbbreviatedMonthGenitiveNames = this.AbbreviatedMonthGenitiveNames;
+            Culture.DateTimeFormat.AbbreviatedMonthNames = this.AbbreviatedMonthNames;
+            Culture.DateTimeFormat.AMDesignator = this.AMDesignator;
+            Culture.DateTimeFormat.CalendarWeekRule = this.CalendarWeekRule;
+            Culture.DateTimeFormat.DateSeparator = this.DateSeparator;
+            Culture.DateTimeFormat.DayNames = this.DayNames;
+            Culture.DateTimeFormat.FirstDayOfWeek = this.FirstDayOfWeek;
+            Culture.DateTimeFormat.FullDateTimePattern = this.FullDateTimePattern;
+            Culture.DateTimeFormat.LongDatePattern = this.LongDatePattern;
+            Culture.DateTimeFormat.LongTimePattern = this.LongTimePattern;
+            Culture.DateTimeFormat.MonthDayPattern = this.MonthDayPattern;
+            Culture.DateTimeFormat.MonthGenitiveNames = this.MonthGenitiveNames;
+            Culture.DateTimeFormat.MonthNames = this.MonthNames;
+            Culture.DateTimeFormat.PMDesignator = this.PMDesignator;
+            Culture.DateTimeFormat.ShortDatePattern = this.ShortDatePattern;
+            Culture.DateTimeFormat.ShortestDayNames = this.ShortestDayNames;
+            Culture.DateTimeFormat.ShortTimePattern = this.ShortTimePattern;
+            Culture.DateTimeFormat.TimeSeparator = this.TimeSeparator;
+            Culture.DateTimeFormat.YearMonthPattern = this.YearMonthPattern;
+        }
+        public string ShortTimePattern { get; set; }
+        public string[] DayNames { get; set; }
+        public DayOfWeek FirstDayOfWeek { get; set; }
+        public string FullDateTimePattern { get; set; }
+        public string TimeSeparator { get; set; }
+        public string LongDatePattern { get; set; }
+        public string LongTimePattern { get; set; }
+        public string MonthDayPattern { get; set; }
+        public string DateSeparator { get; set; }
+        public string[] MonthNames { get; set; }
+        public string PMDesignator { get; set; }
+        public string ShortDatePattern { get; set; }
+        public string[] ShortestDayNames { get; set; }
+        public string[] MonthGenitiveNames { get; set; }
+        public CalendarWeekRule CalendarWeekRule { get; set; }
+        public string UniversalSortableDateTimePattern { get; }
+        public string[] AbbreviatedDayNames { get; set; }
+        public string YearMonthPattern { get; set; }
+        public string[] AbbreviatedMonthNames { get; set; }
+        public string AMDesignator { get; set; }
+        public string[] AbbreviatedMonthGenitiveNames { get; set; }
+    }
+
+    public class SerializedCulture
+    {
+        public SerializedNumberFormatInfo NumberFormatInfo { get; set; }
+        public SerializedDateTimeFormatInfo DateTimeFormatInfo { get; set; }
+    }
+
 }

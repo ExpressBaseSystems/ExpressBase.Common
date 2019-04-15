@@ -449,7 +449,7 @@ namespace ExpressBase.Security
                 return "yyyy-MM-dd";
                 //try
                 //{
-                //    return CultureInfo.GetCultureInfo(this.Locale).DateTimeFormat.ShortDatePattern;
+                //    return CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern;
                 //}
                 //catch (Exception ex)
                 //{
@@ -467,6 +467,33 @@ namespace ExpressBase.Security
                 return DateTime.UtcNow.Add(CultureHelper.GetDifference(this.TimeZone, true)).ToString(this.ShortDatePattern, CultureInfo.InvariantCulture);
             }
         }
+
+        //----------------------------------Cultures json Test-----------------------------------
+        [DataMember(Order = 6)]
+        public string ShortDatePatternTest
+        {
+            get
+            {
+                try
+                {
+                    return CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception thrown when tried to get short date pattern : " + ex.Message);
+                    return "yyyy-MM-dd";
+                }
+            }
+        }
+        [DataMember(Order = 7)]
+        public string ShortDateTest
+        {
+            get
+            {
+                return DateTime.UtcNow.Add(CultureHelper.GetDifference(this.TimeZone, true)).ToString(this.ShortDatePatternTest, CultureInfo.InvariantCulture);
+            }
+        }
+        //------------------------------------------------------------------------------------------
 
     }
 }
