@@ -1,4 +1,5 @@
 ﻿using ExpressBase.Common;
+using ExpressBase.Common.Helpers;
 using ExpressBase.Common.Singletons;
 using ExpressBase.Common.Structures;
 using Newtonsoft.Json;
@@ -476,12 +477,12 @@ namespace ExpressBase.Security
             {
                 try
                 {
-                    return CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern;
+                    return MomentJSHelpers.GenerateMomentJSFormatString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureHelper.GetCultureInfo(this.Locale));
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Exception thrown when tried to get short date pattern : " + ex.Message);
-                    return "yyyy-MM-dd";
+                    Console.WriteLine("Exception thrown when tried to get short date PATTERN test.............. : " + ex.Message);
+                    return "YYYY[-]MM[-]DD";
                 }
             }
         }
@@ -489,8 +490,16 @@ namespace ExpressBase.Security
         public string ShortDateTest
         {
             get
-            {
-                return DateTime.UtcNow.Add(CultureHelper.GetDifference(this.TimeZone, true)).ToString(this.ShortDatePatternTest, CultureInfo.InvariantCulture);
+            {                
+                try
+                {
+                    return DateTime.UtcNow.Add(CultureHelper.GetDifference(this.TimeZone, true)).ToString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureInfo.InvariantCulture);                    
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception thrown when tried to get short DATE test................. : " + ex.Message);
+                    return DateTime.UtcNow.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                }
             }
         }
         //------------------------------------------------------------------------------------------
