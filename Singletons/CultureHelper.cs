@@ -1,7 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using ExpressBase.Common.Helpers;
+using Newtonsoft.Json;
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Text;
 
 namespace ExpressBase.Common.Singletons
 {
@@ -37,6 +40,27 @@ namespace ExpressBase.Common.Singletons
 				return mycultures;
 			}
 		}
+
+        private static Dictionary<string, SerializedCulture> cultureinfos = new Dictionary<string, SerializedCulture>();
+
+        public static SerializedCulture GetCultureInfo(string CultureName)
+        {            
+            if (!cultureinfos.ContainsKey(CultureName))
+            {
+                var Serialized = new JsonSerializer();
+                using (var Stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("ExpressBase.Common.cultures." + CultureName.ToLower() + ".json"))
+                {
+                    if (Stream == null)
+                        return null;
+                    using (var StreamReader = new StreamReader(Stream, System.Text.Encoding.UTF32))
+                    using (var JsonTextReader = new JsonTextReader(StreamReader))
+                    {
+                        cultureinfos.Add(CultureName, Serialized.Deserialize<SerializedCulture>(JsonTextReader));
+                    }
+                }
+            }
+            return cultureinfos[CultureName];
+        }
 
 		public static string __culturesAsJson = null;
 		public static string CulturesAsJson
@@ -245,4 +269,5 @@ namespace ExpressBase.Common.Singletons
 	{
 		public string Name { get; set; }
 	}
+        
 }

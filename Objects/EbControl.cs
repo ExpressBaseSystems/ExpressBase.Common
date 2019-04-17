@@ -360,7 +360,7 @@ else
         public string Name { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        public bool IsDisabled { get; set; }
+        public virtual bool IsDisabled { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual bool IsWarningOnly { get; set; }
