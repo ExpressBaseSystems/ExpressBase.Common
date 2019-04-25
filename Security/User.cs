@@ -1,4 +1,5 @@
 ﻿using ExpressBase.Common;
+using ExpressBase.Common.Extensions;
 using ExpressBase.Common.Helpers;
 using ExpressBase.Common.Singletons;
 using ExpressBase.Common.Structures;
@@ -465,7 +466,7 @@ namespace ExpressBase.Security
         {
             get
             {
-                return DateTime.UtcNow.Add(CultureHelper.GetDifference(this.TimeZone, true)).ToString(this.ShortDatePattern, CultureInfo.InvariantCulture);
+                return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(this.ShortDatePattern, CultureInfo.InvariantCulture);
             }
         }
 
@@ -493,11 +494,44 @@ namespace ExpressBase.Security
             {                
                 try
                 {
-                    return DateTime.UtcNow.Add(CultureHelper.GetDifference(this.TimeZone, true)).ToString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureInfo.InvariantCulture);                    
+                    return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureInfo.InvariantCulture);                    
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine("Exception thrown when tried to get short DATE test................. : " + ex.Message);
+                    return DateTime.UtcNow.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                }
+            }
+        }
+
+        [DataMember(Order = 7)]
+        public string ShortTimePatternTest
+        {
+            get
+            {
+                try
+                {
+                    return MomentJSHelpers.GenerateMomentJSFormatString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern, CultureHelper.GetCultureInfo(this.Locale));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception thrown when tried to get short time PATTERN test.............. : " + ex.Message);
+                    return "HH[ ]mm";
+                }
+            }
+        }
+        [DataMember(Order = 8)]
+        public string ShortTimeTest
+        {
+            get
+            {
+                try
+                {
+                    return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern, CultureInfo.InvariantCulture);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception thrown when tried to get short TIME test................. : " + ex.Message);
                     return DateTime.UtcNow.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
                 }
             }
