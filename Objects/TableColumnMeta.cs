@@ -25,6 +25,8 @@ namespace ExpressBase.Common
 
         public string DataRel { get; set; }
 
+        public string TableName { get; set; }
+
         public AuditTrailEntry() { }
     }
 
