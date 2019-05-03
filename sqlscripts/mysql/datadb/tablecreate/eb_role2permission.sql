@@ -13,7 +13,7 @@ CREATE TABLE eb_role2permission
   revokedby integer,
   revokedat timestamp DEFAULT CURRENT_TIMESTAMP,
   permissionname_backup text,
-  eb_del char NOT NULL DEFAULT 'F',
+  eb_del char(1) DEFAULT 'F',
   CONSTRAINT eb_role2permission_pkey PRIMARY KEY (id),
   CONSTRAINT eb_role2permission_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );

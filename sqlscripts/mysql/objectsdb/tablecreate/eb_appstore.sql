@@ -8,7 +8,7 @@ CREATE TABLE eb_appstore
   created_by integer,
   created_at timestamp,
   json json,
-  eb_del boolean,
+  eb_del char(1) DEFAULT 'F',
   currency text,
   CONSTRAINT eb_app_store_pkey PRIMARY KEY (id)
 );

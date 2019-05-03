@@ -4,7 +4,7 @@
   name varchar(50),
   description text,
   eb_del1 boolean,
-  eb_del char NOT NULL DEFAULT 'F',
+  eb_del char(1) DEFAULT 'F',
   CONSTRAINT eb_usergroup_pkey PRIMARY KEY (id),
   CONSTRAINT eb_usergroup_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );

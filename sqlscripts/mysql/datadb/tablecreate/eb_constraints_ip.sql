@@ -4,7 +4,7 @@ CREATE TABLE eb_constraints_ip
   usergroup_id integer,
   ip varchar(25),
   description text,
-  eb_del character(1) DEFAULT 'F',
+  eb_del char(1) DEFAULT 'F',
   eb_created_by integer,
   eb_created_at timestamp DEFAULT  CURRENT_TIMESTAMP,
   eb_revoked_by integer,

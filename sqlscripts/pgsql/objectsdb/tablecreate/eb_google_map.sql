@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_google_map
 (
-    id serial,
+    id serial primary key,
     lattitude text ,
     longitude text,
     name text,

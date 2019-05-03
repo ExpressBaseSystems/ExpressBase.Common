@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_surveys
 (
-    id serial,
+    id serial primary key,
     name text COLLATE pg_catalog."default",
     startdate timestamp without time zone,
     enddate timestamp without time zone,

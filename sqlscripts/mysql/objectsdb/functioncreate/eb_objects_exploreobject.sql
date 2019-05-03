@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE eb_objects_exploreobject(in _id integer,
+﻿CREATE PROCEDURE eb_objects_exploreobject(in id integer,
 out idval1 integer,
 out nameval1 text,
 out typeval1 integer,
@@ -74,7 +74,7 @@ DECLARE dispnameval text;
 DECLARE is_logv text;
 
 -- drop temporary table if exists eb_objects_getversiontoopen_tmp;
- call eb_objects_getversiontoopen(_id,@out_idv , @out_namev , @out_typev , @out_status , @out_description , @out_changelog , @out_commitat , @out_commitby , @out_refidv , 
+ call eb_objects_getversiontoopen(id,@out_idv , @out_namev , @out_typev , @out_status , @out_description , @out_changelog , @out_commitat , @out_commitby , @out_refidv , 
     @out_ver_num , @out_work_mode , @out_workingcopies , @out_json_wc , @out_json_lc , @out_major_ver , @out_minor_ver , @out_patch_ver , 
     @out_tags ,@out_app_id , @out_dispnamev , @out_is_log);
 -- Live version details
@@ -84,7 +84,7 @@ SELECT
 FROM
     eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO, eb_users EU
 WHERE
-    EO.id = _id AND EOV.eb_objects_id = _id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id AND EOV.commit_uid = EU.id;
+    EO.id = id AND EOV.eb_objects_id = id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id AND EOV.commit_uid = EU.id;
     
  -- Latest commited vaersion details
 SELECT
@@ -93,7 +93,7 @@ SELECT
 FROM
     eb_objects_ver EOV, eb_objects_status EOS, eb_users EU
 WHERE
-    EOV.eb_objects_id = _id AND EOS.eb_obj_ver_id = EOV.id AND EOV.commit_uid = EU.id AND COALESCE(EOV.working_mode,'F') = 'F'
+    EOV.eb_objects_id = id AND EOS.eb_obj_ver_id = EOV.id AND EOV.commit_uid = EU.id AND COALESCE(EOV.working_mode,'F') = 'F'
     ORDER BY commit_ts DESC LIMIT 1;   
 -- Owner details
 SELECT  
@@ -103,7 +103,7 @@ INTO
 FROM 
 	eb_objects EO, eb_users EU
 WHERE 
-	EO.id = _id AND EU.id = EO.owner_uid;
+	EO.id = id AND EU.id = EO.owner_uid;
 
 SELECT @out_idv , @out_namev , @out_typev , @out_status , @out_description , @out_changelog , @out_commitat , @out_commitby , @out_refidv , 
     @out_ver_num , @out_work_mode , @out_workingcopies , @out_json_wc , @out_json_lc , @out_major_ver , @out_minor_ver , @out_patch_ver , 

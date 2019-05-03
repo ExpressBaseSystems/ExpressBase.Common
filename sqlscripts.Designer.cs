@@ -99,7 +99,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_applications
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    applicationname text COLLATE pg_catalog.&quot;default&quot;,
         ///    description text COLLATE pg_catalog.&quot;default&quot;,
         ///    app_icon text COLLATE pg_catalog.&quot;default&quot;,
@@ -107,7 +107,7 @@ namespace ExpressBase.Common {
         ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///	app_settings text COLLATE pg_catalog.&quot;default&quot;,
         ///    CONSTRAINT eb_applications_pkey PRIMARY KEY (id),
-        ///    CONSTRAINT eb_applications_eb [rest of string was truncated]&quot;;.
+        ///    CONSTRAINT eb_app [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_applications1 {
             get {
@@ -125,7 +125,7 @@ namespace ExpressBase.Common {
         ///  application_type_old text,
         ///  app_icon text,
         ///  application_type integer,
-        ///  eb_del char NOT NULL DEFAULT &apos;F&apos;,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  app_settings text,
         ///  CONSTRAINT eb_applications_pkey PRIMARY KEY (id),
         ///  CONSTRAINT eb_applications_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
@@ -133,11 +133,46 @@ namespace ExpressBase.Common {
         ///
         ///CREATE INDEX eb_applications_eb_del_idx ON eb_applications (eb_del) USING btree;
         ///
-        ///        /// [rest of string was truncated]&quot;;.
+        ///
+        ///CREAT [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_applications2 {
             get {
                 return ResourceManager.GetString("eb_applications2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_appstore
+        ///
+        ///-- DROP TABLE public.eb_appstore;
+        ///
+        ///CREATE TABLE public.eb_appstore
+        ///(
+        ///    id serial primary key,-- integer NOT NULL DEFAULT nextval(&apos;eb_app_store_id_seq&apos;::regclass),
+        ///    app_name text COLLATE &quot;default&quot;.pg_catalog,
+        ///    status integer,
+        ///    user_tenant_acc_id text COLLATE &quot;default&quot;.pg_catalog,
+        ///    cost integer,
+        ///    created_by integer,
+        ///    created_at timestamp without time zone,
+        ///    json json,
+        ///    eb_del boolean,
+        ///    currency text COLLATE &quot;default&quot;.pg_catalog,
+        ///    CO [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_appstore {
+            get {
+                return ResourceManager.GetString("eb_appstore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- need to update.
+        /// </summary>
+        public static string eb_appstore1 {
+            get {
+                return ResourceManager.GetString("eb_appstore1", resourceCulture);
             }
         }
         
@@ -152,7 +187,7 @@ namespace ExpressBase.Common {
         ///  created_by integer,
         ///  created_at timestamp,
         ///  json json,
-        ///  eb_del boolean,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  currency text,
         ///  CONSTRAINT eb_app_store_pkey PRIMARY KEY (id)
         ///);
@@ -163,9 +198,9 @@ namespace ExpressBase.Common {
         ///
         ///.
         /// </summary>
-        public static string eb_appstore {
+        public static string eb_appstore2 {
             get {
-                return ResourceManager.GetString("eb_appstore", resourceCulture);
+                return ResourceManager.GetString("eb_appstore2", resourceCulture);
             }
         }
         
@@ -176,7 +211,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_audit_lines
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    masterid integer,
         ///    fieldname text COLLATE pg_catalog.&quot;default&quot;,
         ///    oldvalue text COLLATE pg_catalog.&quot;default&quot;,
@@ -193,12 +228,20 @@ namespace ExpressBase.Common {
         ///-- Index: eb_audit_lines_id_idx
         ///
         ///-- DROP INDEX public.eb_audit_lines_id_idx;
-        ///
-        ///CREATE IND [rest of string was truncated]&quot;;.
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_audit_lines {
             get {
                 return ResourceManager.GetString("eb_audit_lines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- need for update.
+        /// </summary>
+        public static string eb_audit_lines1 {
+            get {
+                return ResourceManager.GetString("eb_audit_lines1", resourceCulture);
             }
         }
         
@@ -220,9 +263,9 @@ namespace ExpressBase.Common {
         ///create index eb_audit_lines_masterid_idx on eb_audit_lines(masterid) using btree;
         ///.
         /// </summary>
-        public static string eb_audit_lines1 {
+        public static string eb_audit_lines2 {
             get {
-                return ResourceManager.GetString("eb_audit_lines1", resourceCulture);
+                return ResourceManager.GetString("eb_audit_lines2", resourceCulture);
             }
         }
         
@@ -233,7 +276,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_audit_master
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    formid text COLLATE pg_catalog.&quot;default&quot;,
         ///    eb_createdby integer,
         ///    eb_createdat timestamp without time zone,
@@ -252,11 +295,20 @@ namespace ExpressBase.Common {
         ///
         ///-- DROP INDEX public.eb_audit_master_id_idx;
         ///
-        ///CREATE INDEX eb_audit_master_id_id [rest of string was truncated]&quot;;.
+        ///CREATE INDEX eb_audit_ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_audit_master {
             get {
                 return ResourceManager.GetString("eb_audit_master", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- need to update.
+        /// </summary>
+        public static string eb_audit_master1 {
+            get {
+                return ResourceManager.GetString("eb_audit_master1", resourceCulture);
             }
         }
         
@@ -276,9 +328,9 @@ namespace ExpressBase.Common {
         ///create index eb_audit_master_formid_idx on eb_audit_master(formid) using btree;
         ///.
         /// </summary>
-        public static string eb_audit_master1 {
+        public static string eb_audit_master2 {
             get {
-                return ResourceManager.GetString("eb_audit_master1", resourceCulture);
+                return ResourceManager.GetString("eb_audit_master2", resourceCulture);
             }
         }
         
@@ -413,7 +465,7 @@ namespace ExpressBase.Common {
         ///DECLARE roles_a TEXT;
         ///DECLARE rolename_a TEXT;
         ///DECLARE permissions TEXT;
-        ///DECLARE pre [rest of string was truncated]&quot;;.
+        ///DECLARE pref [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_authenticate_unified2 {
             get {
@@ -450,6 +502,15 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -- need updation.
+        /// </summary>
+        public static string eb_botdetails1 {
+            get {
+                return ResourceManager.GetString("eb_botdetails1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CREATE PROCEDURE eb_botdetails(in solutionid integer)
         ///BEGIN
         ///SELECT 
@@ -466,9 +527,9 @@ namespace ExpressBase.Common {
         ///		solution_id = solutionid;
         ///END.
         /// </summary>
-        public static string eb_botdetails1 {
+        public static string eb_botdetails2 {
             get {
-                return ResourceManager.GetString("eb_botdetails1", resourceCulture);
+                return ResourceManager.GetString("eb_botdetails2", resourceCulture);
             }
         }
         
@@ -510,7 +571,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_bots
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    name text COLLATE pg_catalog.&quot;default&quot;,
         ///    url text COLLATE pg_catalog.&quot;default&quot;,
         ///    welcome_msg text COLLATE pg_catalog.&quot;default&quot;,
@@ -521,7 +582,7 @@ namespace ExpressBase.Common {
         ///    modified_at timestamp without time zone,
         ///    created_by integer,
         ///    app_id integer,
-        ///    fullname text COLLATE p [rest of string was truncated]&quot;;.
+        ///    fullname te [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_bots1 {
             get {
@@ -603,7 +664,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_constraints_datetime
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    usergroup_id integer,
         ///    type integer,
         ///    start_datetime timestamp without time zone,
@@ -612,12 +673,20 @@ namespace ExpressBase.Common {
         ///    eb_del character(1) COLLATE pg_catalog.&quot;default&quot; DEFAULT &apos;F&apos;::bpchar,
         ///    eb_created_by integer,
         ///    eb_created_at timestamp without time zone,
-        ///    eb_revoked_by integer,
-        ///    eb_re [rest of string was truncated]&quot;;.
+        ///    eb_revoked_by integer [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_constraints_datetime {
             get {
                 return ResourceManager.GetString("eb_constraints_datetime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- need to update.
+        /// </summary>
+        public static string eb_constraints_datetime1 {
+            get {
+                return ResourceManager.GetString("eb_constraints_datetime1", resourceCulture);
             }
         }
         
@@ -630,18 +699,18 @@ namespace ExpressBase.Common {
         ///  start_datetime timestamp DEFAULT  CURRENT_TIMESTAMP,
         ///  end_datetime timestamp DEFAULT  CURRENT_TIMESTAMP,
         ///  days_coded integer,
-        ///  eb_del character(1) DEFAULT &apos;F&apos;,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  eb_created_by integer,
         ///  eb_created_at timestamp DEFAULT  CURRENT_TIMESTAMP,
         ///  eb_revoked_by integer,
         ///  eb_revoked_at timestamp DEFAULT  CURRENT_TIMESTAMP,
         ///  title text,
         ///  description text,
-        ///  CONSTRAINT eb_constra [rest of string was truncated]&quot;;.
+        ///  CONSTRAINT eb_constraints_ [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string eb_constraints_datetime1 {
+        public static string eb_constraints_datetime2 {
             get {
-                return ResourceManager.GetString("eb_constraints_datetime1", resourceCulture);
+                return ResourceManager.GetString("eb_constraints_datetime2", resourceCulture);
             }
         }
         
@@ -652,7 +721,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_constraints_ip
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    usergroup_id integer,
         ///    ip text COLLATE pg_catalog.&quot;default&quot;,
         ///    description text COLLATE pg_catalog.&quot;default&quot;,
@@ -661,11 +730,20 @@ namespace ExpressBase.Common {
         ///    eb_created_at timestamp without time zone,
         ///    eb_revoked_by integer,
         ///    eb_revoked_at timestamp without time zone,
-        ///    CONSTRAINT eb_constr [rest of string was truncated]&quot;;.
+        ///    CONSTRAI [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_constraints_ip {
             get {
                 return ResourceManager.GetString("eb_constraints_ip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- need updation.
+        /// </summary>
+        public static string eb_constraints_ip1 {
+            get {
+                return ResourceManager.GetString("eb_constraints_ip1", resourceCulture);
             }
         }
         
@@ -676,7 +754,7 @@ namespace ExpressBase.Common {
         ///  usergroup_id integer,
         ///  ip varchar(25),
         ///  description text,
-        ///  eb_del character(1) DEFAULT &apos;F&apos;,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  eb_created_by integer,
         ///  eb_created_at timestamp DEFAULT  CURRENT_TIMESTAMP,
         ///  eb_revoked_by integer,
@@ -689,11 +767,12 @@ namespace ExpressBase.Common {
         ///USING btree;
         ///
         ///
-        ///CREATE INDEX eb_constraints_ip_ip_ [rest of string was truncated]&quot;;.
+        ///CREATE INDEX eb_constraints_ip_ip_idx
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string eb_constraints_ip1 {
+        public static string eb_constraints_ip2 {
             get {
-                return ResourceManager.GetString("eb_constraints_ip1", resourceCulture);
+                return ResourceManager.GetString("eb_constraints_ip2", resourceCulture);
             }
         }
         
@@ -753,27 +832,24 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_rbac_roles(in roleid integer,
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_rbac_roles(in role_id integer,
         ///    in applicationid integer,
-        ///    in userid integer,
+        ///    in createdby integer,
         ///    in role_name text,
         ///    in description text,
-        ///    in isanonym text,
+        ///    in is_anonym text,
         ///    in users text,
-        ///    in dependantroles text,
-        ///    in permissions text,
+        ///    in dependants text,
+        ///    in permission text,
         ///    in locations text,
         ///    out out_r integer)
         ///BEGIN
         ///DECLARE rid INTEGER;
-        ///declare users_str text;
-        ///declare dependantroles_str text;
-        ///declare permissions_str text;
-        ///declare locations_str text;
         ///declare a integer;
-        ///set rid := roleid;
+        ///set rid = role_id;
         ///
-        ///dro [rest of string was truncated]&quot;;.
+        ///call eb_create_or_update_role(applicationid, role_name, description, is_anonym, createdby, permission, role_id,@out_rid);
+        ///  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_rbac_roles2 {
             get {
@@ -836,23 +912,23 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_role(in application_id integer,
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_role(in applicationid integer,
         ///    in role_name text,
-        ///    in role_desc text,
-        ///    in isanonym text,
-        ///    in userid integer,
-        ///    in permissions text,
-        ///    in roleid integer,
+        ///    in description text,
+        ///    in is_anonym text,
+        ///    in createdby integer,
+        ///    in permissions_str text,
+        ///    in role_id integer,
         ///    out out_rid integer)
         ///BEGIN
         ///DECLARE rid INTEGER; 
         ///DECLARE errornum INTEGER;
         ///-- DECLARE CONTINUE HANDLER FOR SQLSTATE &apos;23505&apos; select 0; 
         ///
-        ///if roleid=0 then set roleid=null; end if;
+        ///if role_id=0 then set role_id=null; end if;
         ///
         ///drop temporary table if exists eb_create_or_update_role_tmp;
-        ///drop temporary table if exists temp_array_ta [rest of string was truncated]&quot;;.
+        ///drop temporary table if exists te [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_role2 {
             get {
@@ -909,20 +985,21 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_role2loc(in _roleid integer,
-        ///in _userid integer,
-        ///in _locations text,
-        ///out out_r integer)
+        ///   Looks up a localized string similar to CREATE DEFINER=`josevin`@`%` PROCEDURE `eb_create_or_update_role2loc`(in rid integer,
+        ///in createdby integer,
+        ///in locations_str text
+        ///-- ,out r3 integer
+        ///)
         ///BEGIN
         ///declare a integer;
         ///drop temporary table if exists temp_array_table;
         ///drop temporary table if exists location_tmp;
         ///
         ///CREATE TEMPORARY TABLE temp_array_table(value integer);
-        ///	CALL STR_TO_TBL(_locations);  
+        ///	CALL STR_TO_TBL(locations_str);  
         ///	CREATE TEMPORARY TABLE IF NOT EXISTS location_tmp SELECT `value` FROM temp_array_table;
         ///
-        ///UPDATE eb_role2location SET eb_del = &apos;T&apos;, eb_revokedat = NOW(), eb_revokedby [rest of string was truncated]&quot;;.
+        ///UPDATE eb_role2location er2l SET er2l.eb_del = &apos;T [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_role2loc2 {
             get {
@@ -982,10 +1059,11 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_role2role(in roleid integer,
-        ///in userid integer,
-        ///in dependantroles text,
-        ///out out_r integer)
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_role2role(in rid integer,
+        ///in createdby integer,
+        ///in dependantroles_str text
+        ///-- ,out r2 integer
+        ///)
         ///BEGIN
         ///declare a integer;
         ///drop temporary table if exists temp_array_table;
@@ -993,10 +1071,9 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value integer);
         ///        
-        ///CALL STR_TO_TBL(dependantroles);  -- fill to temp_array_table
+        ///CALL STR_TO_TBL(dependantroles_str);  -- fill to temp_array_table
         ///CREATE TEMPORARY TABLE IF NOT EXISTS dependantroles_tmp SELECT `value` FROM temp_array_table;
-        ///    
-        /// UPD [rest of string was truncated]&quot;;.
+        ///    [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_role2role2 {
             get {
@@ -1055,20 +1132,20 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_role2user(in roleid integer,
-        ///    in userid integer,
-        ///    in usersid text,
-        ///    out out_r integer)
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_role2user(in rid integer,
+        ///    in createdby integer,
+        ///    in users_str text
+        ///   -- ,out r1 integer
+        ///    )
         ///BEGIN
         ///declare a integer;
         ///drop temporary table if exists temp_array_table;
         ///drop temporary table if exists usersid_tmp;
         ///
         ///CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value integer);
-        ///	CALL STR_TO_TBL(usersid);  -- fill to temp_array_table
+        ///	CALL STR_TO_TBL(users_str);  -- fill to temp_array_table
         ///	CREATE TEMPORARY TABLE IF NOT EXISTS usersid_tmp SELECT `value` FROM temp_array_table;
-        ///UPDATE eb_role2user 
-        ///    SET 
+        ///UPDATE eb_role2user er2u
         ///   [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_role2user2 {
@@ -1111,6 +1188,15 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -- need updation.
+        /// </summary>
+        public static string eb_createbot1 {
+            get {
+                return ResourceManager.GetString("eb_createbot1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CREATE FUNCTION eb_createbot(_sol_id text,
         ///    _name text,
         ///    _fullname text,
@@ -1127,9 +1213,9 @@ namespace ExpressBase.Common {
         ///IF (_id &gt; 0) THEN
         ///   	UPDATE eb_bots SET name=_name, fullname = _fullname, url=_url, welcome_msg=_wel_msg, modified_by=_userid, modified_at=NOW(),botid=(select @botid1:=botid),app_id=(select @app_id1:=app_id)  WHER [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string eb_createbot1 {
+        public static string eb_createbot2 {
             get {
-                return ResourceManager.GetString("eb_createbot1", resourceCulture);
+                return ResourceManager.GetString("eb_createbot2", resourceCulture);
             }
         }
         
@@ -1180,26 +1266,28 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_createormodifyuserandroles(IN _userid integer,
-        ///    IN _id integer,
-        ///    IN _fullname text,
-        ///    IN _nickname text,
-        ///    IN _email text,
-        ///    IN _pwd text,
-        ///    IN _dob date,
-        ///    IN _sex text,
-        ///    IN _alternateemail text,
-        ///    IN _phnoprimary text,
-        ///    IN _phnosecondary text,
-        ///    IN _landline text,
-        ///    IN _phextension text,
-        ///    IN _fbid text,
-        ///    IN _fbname text,
-        ///    IN _roles_temp text,
-        ///    IN _group_temp text,
-        ///    IN _statusid integer,
-        ///    IN _hide text,
-        ///    IN _anonymousus [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_createormodifyuserandroles(IN userid integer,
+        ///    IN id integer,
+        ///    IN fullname text,
+        ///    IN nickname text,
+        ///    IN email text,
+        ///    IN pwd text,
+        ///    IN dob date,
+        ///    IN sex text,
+        ///    IN alternateemail text,
+        ///    IN phprimary text,
+        ///    IN phsecondary text,
+        ///    IN phlandphone text,
+        ///    IN extension text,
+        ///    IN fbid text,
+        ///    IN fbname text,
+        ///    IN roles text,
+        ///    IN `groups` text,
+        ///    IN statusid integer,
+        ///    IN hide text,
+        ///    IN anonymoususerid integer,
+        ///    IN preference text,
+        ///    OUT out [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_createormodifyuserandroles2 {
             get {
@@ -1261,22 +1349,26 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_createormodifyusergroup(IN _userid integer,
-        ///    IN _id integer,
-        ///    IN _name text,
-        ///    IN _description text,
-        ///    IN _users text,
-        ///    IN _ipconstr_new text,
-        ///    IN _ipconstr_old text,
-        ///    IN _dtconstr_new text,
-        ///    IN _dtconstr_old text,
+        ///   Looks up a localized string similar to CREATE DEFINER=`josevin`@`%` PROCEDURE `eb_createormodifyusergroup`(IN userid integer,
+        ///    IN id integer,
+        ///    IN name text,
+        ///    IN description text,
+        ///    IN users text,
+        ///    IN ipconstrnw text,
+        ///    IN ipconstrold text,
+        ///    IN dtconstrnw text,
+        ///    IN dtconstrold text,
         ///    OUT out_gid integer)
         ///BEGIN
         ///DECLARE gid integer;
-        ///
-        ///drop temporary table if exists temp_array_table;
-        ///drop temporary table if exists users;
-        ///CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(id int auto_increment primary key, value integ [rest of string was truncated]&quot;;.
+        ///declare nwip text;
+        ///declare nwdesc text;
+        ///declare nwtitle text;
+        ///declare nwdesc1 text;
+        ///declare nwtype int;
+        ///declare nwstart datetime default now();
+        ///declare nwend datetime default now();
+        ///de [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_createormodifyusergroup2 {
             get {
@@ -1361,6 +1453,43 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_executionlogs
+        ///
+        ///-- DROP TABLE public.eb_executionlogs;
+        ///
+        ///CREATE TABLE public.eb_executionlogs
+        ///(
+        ///    id serial primary key, -- INTEGER NOT NULL DEFAULT nextval(&apos;executionlogs_id_seq&apos;::regclass),
+        ///    rows character varying COLLATE pg_catalog.&quot;default&quot;,
+        ///    exec_time integer,
+        ///    created_by integer,
+        ///    created_at timestamp without time zone,
+        ///    refid text COLLATE pg_catalog.&quot;default&quot;,
+        ///    params json
+        ///)
+        ///WITH (
+        ///    OIDS = FALSE
+        ///)
+        ///TABLESPACE pg_default;
+        ///
+        ///ALTER TABLE public.e [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_executionlogs {
+            get {
+                return ResourceManager.GetString("eb_executionlogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- need updation.
+        /// </summary>
+        public static string eb_executionlogs1 {
+            get {
+                return ResourceManager.GetString("eb_executionlogs1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_executionlogs
         ///(
         ///  id integer NOT NULL auto_increment,
@@ -1376,9 +1505,9 @@ namespace ExpressBase.Common {
         ///create index eb_executionlogs_idx on eb_executionlogs(id) using btree;
         ///.
         /// </summary>
-        public static string eb_executionlogs {
+        public static string eb_executionlogs2 {
             get {
-                return ResourceManager.GetString("eb_executionlogs", resourceCulture);
+                return ResourceManager.GetString("eb_executionlogs2", resourceCulture);
             }
         }
         
@@ -1432,7 +1561,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_files_ref
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    userid integer NOT NULL,
         ///    --filestore_id text COLLATE pg_catalog.&quot;default&quot;,
         ///    --length bigint,
@@ -1442,7 +1571,7 @@ namespace ExpressBase.Common {
         ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    filecategory integer,
         ///    filename text COLLATE pg_catalog.&quot;default&quot;,
-        ///    --img_manp_ser_ [rest of string was truncated]&quot;;.
+        ///    --i [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files {
             get {
@@ -1457,7 +1586,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_files_bytea
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    filename text COLLATE pg_catalog.&quot;default&quot;,
         ///    bytea bytea,
         ///    meta json,
@@ -1476,7 +1605,7 @@ namespace ExpressBase.Common {
         ///
         ///-- DROP INDEX public.eb_files_id_idx;
         ///
-        ///CREATE INDEX eb_files_bytea_id [rest of string was truncated]&quot;;.
+        ///CREATE INDEX eb_fi [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files_bytea {
             get {
@@ -1580,7 +1709,7 @@ namespace ExpressBase.Common {
         ///  tags text,
         ///  filetype text,
         ///  uploadts timestamp,
-        ///  eb_del char NOT NULL DEFAULT &apos;F&apos;,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  filecategory integer,
         ///  filename varchar(75),
         ///  CONSTRAINT eb_files_ref_pkey PRIMARY KEY (id),
@@ -1595,7 +1724,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE INDEX eb_files_ref_userid_idx
         ///ON eb_files_ref(userid) 
-        ///USI [rest of string was truncated]&quot;;.
+        ///USING btr [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files2 {
             get {
@@ -1671,7 +1800,7 @@ namespace ExpressBase.Common {
         ///drop temporary table if exists tags_tbl;
         ///CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value text);
         ///	CALL STR_TO_TBL(tags);  -- fill to temp_array_table
-        ///	CREATE TEMPORARY TABLE IF NOT EXISTS tags_tbl SELECT `value` FROM temp_array_tab [rest of string was truncated]&quot;;.
+        ///	CREATE TEMPORARY TABLE IF NOT EXISTS tags_tbl SELECT `value` FROM temp_array_tabl [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_get_tagged_object2 {
             get {
@@ -1713,6 +1842,15 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -- need updation.
+        /// </summary>
+        public static string eb_getconstraintstatus1 {
+            get {
+                return ResourceManager.GetString("eb_getconstraintstatus1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CREATE FUNCTION eb_getconstraintstatus(in_userid integer,
         ///    in_ip text) RETURNS int(11)
         ///BEGIN
@@ -1731,11 +1869,11 @@ namespace ExpressBase.Common {
         ///    
         /// insert into arrip(value)
         ///		SELECT ip  FROM eb_constraints_ip 
-        ///		WHERE userg [rest of string was truncated]&quot;;.
+        ///		WHERE usergr [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string eb_getconstraintstatus1 {
+        public static string eb_getconstraintstatus2 {
             get {
-                return ResourceManager.GetString("eb_getconstraintstatus1", resourceCulture);
+                return ResourceManager.GetString("eb_getconstraintstatus2", resourceCulture);
             }
         }
         
@@ -1793,7 +1931,7 @@ namespace ExpressBase.Common {
         ///	SELECT GROUP_CONCAT(concat( _per.permissionname,&apos;:&apos;, _loc.locationid) separator &apos;,&apos;) FROM eb_role2permission _per, eb_role2location _loc
         ///		WHERE _per.role_id = _loc.roleid AND _per.role_id = FIND_IN_SET(role_id,roles) AND _per.eb_del=&apos;F&apos; AND _loc.eb_del=&apos;F&apos;);
         ///create temporary table permissions_tmp(value text);
-        ///insert into permi [rest of string was truncated]&quot;;.
+        ///insert into permis [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_getpermissions2 {
             get {
@@ -1834,13 +1972,11 @@ namespace ExpressBase.Common {
         ///CREATE OR REPLACE FUNCTION public.eb_getroles(
         ///	userid integer,
         ///	wc text)
-        ///    RETURNS TABLE(roles text, role_name text) 
+        ///    RETURNS SETOF &quot;TABLE(roles text, role_name text)&quot;
         ///    LANGUAGE &apos;plpgsql&apos;
+        ///    COST 100.0
         ///
-        ///    COST 100
-        ///    VOLATILE 
-        ///    ROWS 1000
-        ///AS $BODY$
+        ///AS $function$
         ///
         ///	DECLARE app_type integer[];
         ///BEGIN
@@ -1852,7 +1988,7 @@ namespace ExpressBase.Common {
         ///    app_type:=&apos;{1}&apos;;
         ///    END IF;
         ///	IF wc = &apos;mc&apos; THEN
-        ///     [rest of string was truncated]&quot;;.
+        ///    app_type:=&apos;{2}&apos;;        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_getroles1 {
             get {
@@ -1864,25 +2000,26 @@ namespace ExpressBase.Common {
         ///   Looks up a localized string similar to CREATE PROCEDURE eb_getroles(IN userid integer,
         ///    IN wc text,
         ///    out roless text,
-        ///    out role_names text)
+        ///     out role_names text
+        ///    )
         ///BEGIN
         ///DECLARE app_type varchar(20);
         ///IF wc = &apos;tc&apos; OR wc = &apos;dc&apos; THEN
         ///    set app_type=&apos;1, 2, 3&apos;;
         ///    END IF;
         ///    IF wc = &apos;uc&apos; THEN
-        ///    set app_type:=&apos;1&apos;;
+        ///    set app_type=&apos;1&apos;;
         ///    END IF;
         ///	IF wc = &apos;mc&apos; THEN
-        ///   set app_type:=&apos;2&apos;;
+        ///   set app_type=&apos;2&apos;;
         ///    END IF;
         ///    IF wc = &apos;bc&apos; THEN
-        ///   set app_type:=&apos;3&apos;;
+        ///   set app_type=&apos;3&apos;;
         ///    END IF;
         ///    
-        ///   
-        ///    CREATE TEMPORARY TABLE IF NOT EXISTS eb_roles_tmp SELECT 	
-        ///		GROUP_CONCAT(UROLES.role_id) as ro [rest of string was truncated]&quot;;.
+        ///	   SELECT 	
+        ///		GROUP_CONCAT(UROLES.role_id) as roles,
+        ///		group_concat(CASE WHEN UROLES.role_name is NU [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_getroles2 {
             get {
@@ -1921,7 +2058,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_google_map
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    lattitude text ,
         ///    longitude text,
         ///    name text,
@@ -1940,8 +2077,7 @@ namespace ExpressBase.Common {
         ///-- DROP INDEX public.eb_google_map_idx;
         ///
         ///CREATE INDEX eb_google_map_idx
-        ///    ON public.eb_google_map USING btree
-        ///    (id)        /// [rest of string was truncated]&quot;;.
+        ///    ON public.eb_google_map USING btre [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_google_map1 {
             get {
@@ -1977,7 +2113,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_keys
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    key text COLLATE pg_catalog.&quot;default&quot; NOT NULL,
         ///    CONSTRAINT eb_keys_pkey PRIMARY KEY (id)
         ///)
@@ -2005,28 +2141,34 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -- need updation.
+        /// </summary>
+        public static string eb_keys1 {
+            get {
+                return ResourceManager.GetString("eb_keys1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_keys
         ///(
         ///  id bigint NOT NULL auto_increment,
-        ///  key1 varchar(75) NOT NULL,
+        ///  `key` varchar(75) NOT NULL,
         ///  CONSTRAINT eb_keys_pkey PRIMARY KEY (id)
         ///);
-        ///
         ///
         ///CREATE INDEX eb_keys_idx
         ///ON eb_keys(id) 
         ///USING btree;
         ///
-        ///
-        ///
         ///CREATE INDEX eb_keys_key1_idx
-        ///ON eb_keys(key1) 
+        ///ON eb_keys(`key`) 
         ///USING btree;
         ///.
         /// </summary>
-        public static string eb_keys1 {
+        public static string eb_keys2 {
             get {
-                return ResourceManager.GetString("eb_keys1", resourceCulture);
+                return ResourceManager.GetString("eb_keys2", resourceCulture);
             }
         }
         
@@ -2037,7 +2179,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_keyvalue
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    key_id bigint NOT NULL,
         ///    lang_id integer NOT NULL,
         ///    value text COLLATE pg_catalog.&quot;default&quot; NOT NULL,
@@ -2056,11 +2198,20 @@ namespace ExpressBase.Common {
         ///
         ///-- DROP INDEX public.eb_keyvalue_id_idx;
         ///
-        ///CREATE INDEX eb_keyvalue_id_idx        /// [rest of string was truncated]&quot;;.
+        ///CREATE INDEX eb_keyv [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_keyvalue {
             get {
                 return ResourceManager.GetString("eb_keyvalue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- need updation.
+        /// </summary>
+        public static string eb_keyvalue1 {
+            get {
+                return ResourceManager.GetString("eb_keyvalue1", resourceCulture);
             }
         }
         
@@ -2085,9 +2236,9 @@ namespace ExpressBase.Common {
         ///ON eb_keyvalue(key_id) 
         ///USING btree;.
         /// </summary>
-        public static string eb_keyvalue1 {
+        public static string eb_keyvalue2 {
             get {
-                return ResourceManager.GetString("eb_keyvalue1", resourceCulture);
+                return ResourceManager.GetString("eb_keyvalue2", resourceCulture);
             }
         }
         
@@ -2098,7 +2249,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_languages
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    language text COLLATE pg_catalog.&quot;default&quot; NOT NULL,
         ///    CONSTRAINT eb_languages_pkey PRIMARY KEY (id)
         ///)
@@ -2115,13 +2266,20 @@ namespace ExpressBase.Common {
         ///-- DROP INDEX public.eb_languages_id_idx;
         ///
         ///CREATE INDEX eb_languages_id_idx
-        ///    ON public.eb_languages USING btree
-        ///    (id)
-        /// [rest of string was truncated]&quot;;.
+        ///    ON public.eb_languages USING btree [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_languages {
             get {
                 return ResourceManager.GetString("eb_languages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- need updation.
+        /// </summary>
+        public static string eb_languages1 {
+            get {
+                return ResourceManager.GetString("eb_languages1", resourceCulture);
             }
         }
         
@@ -2145,9 +2303,9 @@ namespace ExpressBase.Common {
         ///USING btree;
         ///.
         /// </summary>
-        public static string eb_languages1 {
+        public static string eb_languages2 {
             get {
-                return ResourceManager.GetString("eb_languages1", resourceCulture);
+                return ResourceManager.GetString("eb_languages2", resourceCulture);
             }
         }
         
@@ -2184,7 +2342,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_location_config
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    keys text COLLATE pg_catalog.&quot;default&quot;,
         ///    isrequired &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///	keytype text COLLATE pg_catalog.&quot;default&quot;,
@@ -2199,7 +2357,7 @@ namespace ExpressBase.Common {
         ///ALTER TABLE public.eb_location_config
         ///    OWNER to postgres;
         ///
-        ///-- Index: eb_locationsconfi [rest of string was truncated]&quot;;.
+        ///-- Index: eb_lo [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_location_config1 {
             get {
@@ -2214,7 +2372,7 @@ namespace ExpressBase.Common {
         ///  keys1 varchar(100),
         ///  isrequired char,
         ///  keytype text,
-        ///  eb_del char,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  CONSTRAINT eb_location_config_pkey PRIMARY KEY (id)
         ///);
         ///
@@ -2262,7 +2420,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_locations
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    shortname text COLLATE pg_catalog.&quot;default&quot; DEFAULT &apos;default&apos;::text,
         ///    longname text COLLATE pg_catalog.&quot;default&quot; DEFAULT &apos;default&apos;::text,
         ///    image text COLLATE pg_catalog.&quot;default&quot;,
@@ -2274,8 +2432,7 @@ namespace ExpressBase.Common {
         ///)
         ///TABLESPACE pg_default;
         ///
-        ///ALTER TABLE public.eb_locations
-        ///    [rest of string was truncated]&quot;;.
+        ///ALTER TABLE public.eb_lo [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_locations1 {
             get {
@@ -2355,12 +2512,12 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_object_create_major_version(in idv text,
-        ///    in obj_typev integer,
-        ///    in commit_uidv integer,
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_object_create_major_version(in id text,
+        ///    in obj_type integer,
+        ///    in commit_uid integer,
         ///    in src_pid text,
         ///    in cur_pid text,
-        ///    in relationsstring text,
+        ///    in relations text,
         ///    out committed_refidunique1 text)
         ///BEGIN
         ///DECLARE refidunique text;
@@ -2369,10 +2526,10 @@ namespace ExpressBase.Common {
         ///DECLARE committed_refidunique text;
         ///DECLARE major integer;
         ///DECLARE version_number text;
-        ///-- DECLARE relationsv text[];
         ///
         ///drop temporary table if exists temp_array_table;
-        ///drop tempora [rest of string was truncated]&quot;;.
+        ///drop temporary table if exists relationsv;
+        ///CREATE TE [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_object_create_major_version2 {
             get {
@@ -2427,12 +2584,12 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_object_create_minor_version(in idv text,
-        ///    in obj_typev integer,
-        ///    in commit_uidv integer,
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_object_create_minor_version(in id text,
+        ///    in obj_type integer,
+        ///    in commit_uid integer,
         ///    in src_pid text,
         ///    in cur_pid text,
-        ///    in relationsstring text,
+        ///    in relations text,
         ///    out committed_refidunique1 text)
         ///BEGIN
         ///DECLARE refidunique text;
@@ -2443,8 +2600,9 @@ namespace ExpressBase.Common {
         ///DECLARE minor integer;
         ///DECLARE major integer;
         ///DECLARE version_number text;
-        ///-- DECLARE relationsv text[];
-        ///drop t [rest of string was truncated]&quot;;.
+        ///
+        ///drop temporary table if exists relationsv;
+        ///dr [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_object_create_minor_version2 {
             get {
@@ -2500,12 +2658,12 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_object_create_patch_version(in idv text,
-        ///    in obj_typev integer,
-        ///    in commit_uidv integer,
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_object_create_patch_version(in id text,
+        ///    in obj_type integer,
+        ///    in commit_uid integer,
         ///    in src_pid text,
         ///    in cur_pid text,
-        ///    in relationsstring text,
+        ///    in relations text,
         ///    out committed_refidunique1 text)
         ///BEGIN
         ///DECLARE refidunique text;
@@ -2516,9 +2674,9 @@ namespace ExpressBase.Common {
         ///DECLARE minor integer;
         ///DECLARE patch integer;
         ///DECLARE version_number text;
-        ///-- DECLARE relationsv text[];
         ///
-        ///drop temporary [rest of string was truncated]&quot;;.
+        ///drop temporary table if exists temp_array_table;
+        ///drop  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_object_create_patch_version2 {
             get {
@@ -2527,27 +2685,23 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BEGIN
+        ///   Looks up a localized string similar to -- Table: public.eb_objects
         ///
-        ///	EXECUTE IMMEDIATE &apos;CREATE SEQUENCE eb_objects_id_seq START WITH 1&apos;;
+        ///-- DROP TABLE public.eb_objects;
         ///
-        ///
-        ///	EXECUTE IMMEDIATE &apos;CREATE TABLE eb_objects
-        ///	(
-        ///		id NUMBER NOT NULL,
-        ///		obj_name VARCHAR(100),
-        ///		obj_type NUMBER,
-        ///		obj_cur_status NUMBER,
-        ///		obj_desc varchar(200),
-        ///		applicationid NUMBER,
-        ///		obj_tags varchar(30),
-        ///		owner_uid NUMBER,
-        ///		owner_ts timestamp,
-        ///		CONSTRAINT test PRIMARY KEY (id)
-        ///	)&apos;;
-        ///
-        ///	EXECUTE IMMEDIATE &apos;CREATE INDEX eb_objects_type_idx ON eb_objects (obj_type)&apos;;
-        ///	EXECUTE IMMEDIATE &apos;CREATE OR REPLACE TR [rest of string was truncated]&quot;;.
+        ///CREATE TABLE public.eb_objects
+        ///(
+        ///    id serial primary key,
+        ///    obj_name text COLLATE pg_catalog.&quot;default&quot;,
+        ///    obj_type integer,
+        ///    obj_cur_status integer,
+        ///    obj_desc text COLLATE pg_catalog.&quot;default&quot;,
+        ///    applicationid integer,
+        ///    obj_tags text COLLATE pg_catalog.&quot;default&quot;,
+        ///    owner_uid integer,
+        ///    owner_ts timestamp without time zone,
+        ///	display_name text COLLATE pg_catalog.&quot;default&quot;,
+        ///    is_logenabled char(1) DEFAULT &apos;F&apos;, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects {
             get {
@@ -2617,31 +2771,29 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE FUNCTION eb_objects_change_status(idv text,
-        ///    statusv integer,
+        ///   Looks up a localized string similar to CREATE FUNCTION eb_objects_change_status(id text,
+        ///    status integer,
         ///    commit_uid integer,
-        ///    changelogv text) RETURNS int(11)
+        ///    obj_changelog text) RETURNS int(11)
         ///BEGIN
         ///DECLARE inserted_obj_ver_id integer;
         ///
         ///INSERT INTO
         ///	eb_objects_status(eb_obj_ver_id)
         ///SELECT
-        ///	id
+        ///	eov.id
         ///FROM
-        ///	eb_objects_ver
+        ///	eb_objects_ver eov
         ///WHERE
-        ///	refid=idv;
+        ///	eov.refid=id;
         ///select last_insert_id() INTO inserted_obj_ver_id;
         ///
         ///UPDATE
-        ///	eb_objects_status 
+        ///	eb_objects_status eos
         ///SET
-        ///	status = statusv, uid = commit_uid, ts = NOW(), changelog = changelogv
+        ///	eos.status = status, eos.uid = commit_uid, eos.ts = NOW(), eos.changelog = obj_changelog
         ///WHERE
-        ///	id = inserted_obj_ver_id;
-        ///RETURN 0;
-        ///END.
+        ///	eos.id = inserted_obj_ve [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_change_status2 {
             get {
@@ -2704,16 +2856,16 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_commit(in idv text,
-        ///    in obj_namev text,
-        ///    in obj_descv text,
-        ///    in obj_typev integer,
-        ///    in obj_jsonv json,
-        ///    in obj_changelogv text,
-        ///    in commit_uidv integer,
-        ///    in relationsstring text,
-        ///    in tagsv text,
-        ///    in appsstring text,
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_commit(in id text,
+        ///    in obj_name text,
+        ///    in obj_desc text,
+        ///    in obj_type integer,
+        ///    in obj_json json,
+        ///    in obj_changelog text,
+        ///    in commit_uid integer,
+        ///    in relations text,
+        ///    in tags text,
+        ///    in app_id text,
         ///    in disp_name text,
         ///    out out_committed_refidunique text)
         ///BEGIN
@@ -2722,7 +2874,8 @@ namespace ExpressBase.Common {
         ///DECLARE objid integer;
         ///DECLARE committed_refidunique text;
         ///DECLARE major integer;
-        ///DECLARE m [rest of string was truncated]&quot;;.
+        ///DECLARE minor integer;
+        ///DECL [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_commit2 {
             get {
@@ -2778,25 +2931,26 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_create_new_object(in obj_namev text,
-        ///    in obj_descv text,
-        ///    in obj_typev integer,
-        ///    in obj_cur_statusv integer,
-        ///    in obj_jsonv json,
-        ///    in commit_uidv integer,
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_create_new_object(in obj_name text,
+        ///    in obj_desc text,
+        ///    in obj_type integer,
+        ///    in obj_cur_status integer,
+        ///    in obj_json json,
+        ///    in commit_uid integer,
         ///    in src_pid text,
         ///    in cur_pid text,
-        ///    in relationsstring text,
+        ///    in relations text,
         ///    in issave text,
-        ///    in tagsv text,
-        ///    in appsstring text,
+        ///    in tags text,
+        ///    in app_id text,
         ///    in s_obj_id text,
         ///    in s_ver_id text,
         ///    in disp_name text,
         ///    out out_refid_of_commit_version text)
         ///BEGIN
         ///DECLARE refidunique text;
-        ///DECLARE inserted_objid [rest of string was truncated]&quot;;.
+        ///DECLARE inserted_objid integer;
+        ///DECLARE [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_create_new_object2 {
             get {
@@ -2832,7 +2986,7 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_exploreobject(in _id integer,
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_exploreobject(in id integer,
         ///out idval1 integer,
         ///out nameval1 text,
         ///out typeval1 integer,
@@ -2851,7 +3005,7 @@ namespace ExpressBase.Common {
         ///out minor_verval1 integer,
         ///out patch_verval1 integer,
         ///out	tagsval1 text,
-        ///out app_idval1 [rest of string was truncated]&quot;;.
+        ///out app_idval1  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_exploreobject2 {
             get {
@@ -2955,7 +3109,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_objects_relations
         ///(
-        ///	id serial,
+        ///	id serial primary key,
         ///    dominant text COLLATE pg_catalog.&quot;default&quot;,
         ///    dependant text COLLATE pg_catalog.&quot;default&quot;,
         ///    eb_del1 boolean,
@@ -2963,7 +3117,7 @@ namespace ExpressBase.Common {
         ///    removed_at timestamp without time zone,
         ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT eb_objects_relations_pkey PRIMARY KEY (id),
-        ///    CONSTRAINT eb_objects_relations_eb_del_check CHECK (eb_del = &apos;T [rest of string was truncated]&quot;;.
+        ///    CONSTRAINT eb_objects_relations_eb_del_check CHECK  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_relations1 {
             get {
@@ -2980,7 +3134,7 @@ namespace ExpressBase.Common {
         ///  eb_del1 boolean,
         ///  removed_by integer,
         ///  removed_at timestamp,
-        ///  eb_del char NOT NULL DEFAULT &apos;F&apos;,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  CONSTRAINT eb_objects_relations_pkey PRIMARY KEY (id),
         ///  CONSTRAINT eb_objects_relations_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
@@ -2990,7 +3144,7 @@ namespace ExpressBase.Common {
         /// (eb_del)  USING btree;
         /// 
         /// CREATE INDEX eb_objects_relations_id_idx
-        /// [rest of string was truncated]&quot;;.
+        ///  ON e [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_relations2 {
             get {
@@ -3056,25 +3210,25 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_save(in refidv text,
-        ///    in obj_namev text,
-        ///    in obj_descv text,
-        ///    in obj_typev integer,
-        ///    in obj_jsonv json,
-        ///    in commit_uidv integer,
-        ///    in relationsstring text,
-        ///    in tagsv text,
-        ///    in appsstring text,
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_save(in id text,
+        ///    in obj_name text,
+        ///    in obj_desc text,
+        ///    in obj_type integer,
+        ///    in obj_json json,
+        ///    in commit_uid integer,
+        ///    in relations text,
+        ///    in tags text,
+        ///    in app_id text,
         ///    in disp_name text,
         ///    out out_refidv text)
         ///BEGIN
         ///DECLARE refidunique text;
-        ///DECLARE inserted_objid integer;
-        ///DECLARE inserted_obj_ver_id integer;
         ///DECLARE objid integer;
         ///
         ///drop temporary table if exists temp_array_table;
-        ///drop temporary table if exis [rest of string was truncated]&quot;;.
+        ///drop temporary table if exists relationsv;
+        ///CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value TEXT);
+        ///	CALL ST [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_save2 {
             get {
@@ -3116,7 +3270,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_objects_status
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    refid text COLLATE pg_catalog.&quot;default&quot;,
         ///    status integer,
         ///    uid integer,
@@ -3131,7 +3285,7 @@ namespace ExpressBase.Common {
         ///TABLESPACE pg_default;
         ///
         ///ALTER TABLE public.eb_objects_status
-        ///    OWNER to postgres [rest of string was truncated]&quot;;.
+        ///    OWNER [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_status1 {
             get {
@@ -3206,7 +3360,7 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_update_dashboard(_refid text,
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_update_Dashboard(in refid text,
         ///out namev1 text,
         ///out status1 integer,
         ///out ver_num1 text,
@@ -3223,7 +3377,7 @@ namespace ExpressBase.Common {
         ///out lastversion_statusval1 integer,
         ///out lastversioncommit_byname1 text,
         ///out lastversioncommit_byid1 integer,
-        ///out liveversion [rest of string was truncated]&quot;;.
+        ///out liveversionrefidval1 text, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_update_dashboard2 {
             get {
@@ -3268,7 +3422,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_objects_ver
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    eb_objects_id integer,
         ///    obj_changelog text COLLATE pg_catalog.&quot;default&quot;,
         ///    commit_uid integer,
@@ -3279,7 +3433,7 @@ namespace ExpressBase.Common {
         ///    major_ver_num integer,
         ///    minor_ver_num integer,
         ///    patch_ver_num integer,
-        ///    working_mode1 boolean DEF [rest of string was truncated]&quot;;.
+        ///    working_mode1 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_ver1 {
             get {
@@ -3305,8 +3459,9 @@ namespace ExpressBase.Common {
         ///  status_id integer,
         ///  ver_num text,
         ///  working_mode char NOT NULL DEFAULT &apos;F&apos;,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  CONSTRAINT eb_objects_ver_pkey PRIMARY KEY (id),
-        ///  CONSTRAINT eb_objects_ver_working_mod [rest of string was truncated]&quot;;.
+        ///  CONSTR [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_ver2 {
             get {
@@ -3315,24 +3470,27 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_objects
+        ///   Looks up a localized string similar to BEGIN
         ///
-        ///-- DROP TABLE public.eb_objects;
+        ///	EXECUTE IMMEDIATE &apos;CREATE SEQUENCE eb_objects_id_seq START WITH 1&apos;;
         ///
-        ///CREATE TABLE public.eb_objects
-        ///(
-        ///    id serial,
-        ///    obj_name text COLLATE pg_catalog.&quot;default&quot;,
-        ///    obj_type integer,
-        ///    obj_cur_status integer,
-        ///    obj_desc text COLLATE pg_catalog.&quot;default&quot;,
-        ///    applicationid integer,
-        ///    obj_tags text COLLATE pg_catalog.&quot;default&quot;,
-        ///    owner_uid integer,
-        ///    owner_ts timestamp without time zone,
-        ///	display_name text COLLATE pg_catalog.&quot;default&quot;,
-        ///    is_logenabled char(1) DEFAULT &apos;F&apos;,
-        ///    eb_del [rest of string was truncated]&quot;;.
+        ///
+        ///	EXECUTE IMMEDIATE &apos;CREATE TABLE eb_objects
+        ///	(
+        ///		id NUMBER NOT NULL,
+        ///		obj_name VARCHAR(100),
+        ///		obj_type NUMBER,
+        ///		obj_cur_status NUMBER,
+        ///		obj_desc varchar(200),
+        ///		applicationid NUMBER,
+        ///		obj_tags varchar(30),
+        ///		owner_uid NUMBER,
+        ///		owner_ts timestamp,
+        ///		CONSTRAINT test PRIMARY KEY (id)
+        ///	)&apos;;
+        ///
+        ///	EXECUTE IMMEDIATE &apos;CREATE INDEX eb_objects_type_idx ON eb_objects (obj_type)&apos;;
+        ///	EXECUTE IMMEDIATE &apos;CREATE OR REPLACE TR [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects1 {
             get {
@@ -3352,7 +3510,7 @@ namespace ExpressBase.Common {
         ///  owner_ts timestamp,
         ///  display_name text,
         ///  is_logenabled char,
-        ///  eb_del char,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  CONSTRAINT eb_objects_pkey PRIMARY KEY (id),
         ///  CONSTRAINT uniq_obj_name UNIQUE (obj_name));
         ///  
@@ -3361,8 +3519,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE INDEX eb_objects_type_idx
         ///  ON eb_objects
-        ///  (obj_type)USING btree;
-        ///        /// [rest of string was truncated]&quot;;.
+        ///  (obj_type) [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects2 {
             get {
@@ -3405,7 +3562,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_objects2application
         ///(
-        ///	id serial,
+        ///	id serial primary key,
         ///    app_id integer,
         ///    obj_id integer,
         ///    eb_del1 boolean DEFAULT false,
@@ -3417,9 +3574,7 @@ namespace ExpressBase.Common {
         ///WITH (
         ///    OIDS = FALSE
         ///)
-        ///TABLESPACE pg_default;
-        ///
-        ///A [rest of string was truncated]&quot;;.
+        ///TABLESPACE pg_d [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects2application1 {
             get {
@@ -3436,7 +3591,7 @@ namespace ExpressBase.Common {
         ///  eb_del1 boolean DEFAULT false,
         ///  removed_by int,
         ///  removed_at timestamp,
-        ///  eb_del char NOT NULL DEFAULT &apos;F&apos;,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  CONSTRAINT eb_objects2application_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;),
         ///  CONSTRAINT eb_objects2application_pkey PRIMARY KEY(id)
         ///);
@@ -3446,7 +3601,7 @@ namespace ExpressBase.Common {
         ///  ON eb_objects2application
         ///  (app_id) USING btree;
         ///
-        ///CREATE INDEX eb_objects2applicatio [rest of string was truncated]&quot;;.
+        ///CREATE INDEX eb_objects2application_eb_d [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects2application2 {
             get {
@@ -3461,7 +3616,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_query_choices
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    q_id integer,
         ///    choice text COLLATE pg_catalog.&quot;default&quot;,
         ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
@@ -3479,12 +3634,20 @@ namespace ExpressBase.Common {
         ///
         ///-- DROP INDEX public.eb_query_choices_id_idx;
         ///
-        ///CREATE INDEX eb_query_choices_id_idx
-        ///    ON [rest of string was truncated]&quot;;.
+        ///CREATE INDEX eb_query_choices_id [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_query_choices {
             get {
                 return ResourceManager.GetString("eb_query_choices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- need updation.
+        /// </summary>
+        public static string eb_query_choices1 {
+            get {
+                return ResourceManager.GetString("eb_query_choices1", resourceCulture);
             }
         }
         
@@ -3494,7 +3657,7 @@ namespace ExpressBase.Common {
         ///  id integer NOT NULL auto_increment,
         ///  q_id integer,
         ///  choice text,
-        ///  eb_del char DEFAULT &apos;F&apos;,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  score integer,
         ///  constraint eb_query_choices_key  primary key(id)
         ///);
@@ -3510,9 +3673,47 @@ namespace ExpressBase.Common {
         ///USING btree;
         ///.
         /// </summary>
-        public static string eb_query_choices1 {
+        public static string eb_query_choices2 {
             get {
-                return ResourceManager.GetString("eb_query_choices1", resourceCulture);
+                return ResourceManager.GetString("eb_query_choices2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_revokedbaccess2user(text, text)
+        ///
+        ///-- DROP FUNCTION public.eb_revokedbaccess2user(text, text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_revokedbaccess2user(
+        ///	username text,
+        ///	dbname text)
+        ///    RETURNS boolean
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///    COST 100.0
+        ///
+        ///AS $function$
+        ///
+        ///DECLARE dbs text;
+        ///BEGIN
+        ///  
+        ///    FOR dbs IN (SELECT datname FROM pg_database WHERE datistemplate = false)
+        ///    LOOP
+        ///  	  EXECUTE &apos;REVOKE CONNECT ON DATABASE &quot;&apos; || dbs || &apos;&quot; FROM &apos; || username;
+        ///  	END LOOP;
+        ///    EXECUT [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_revokedbaccess2user {
+            get {
+                return ResourceManager.GetString("eb_revokedbaccess2user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- need to update.
+        /// </summary>
+        public static string eb_revokedbaccess2user1 {
+            get {
+                return ResourceManager.GetString("eb_revokedbaccess2user1", resourceCulture);
             }
         }
         
@@ -3536,9 +3737,9 @@ namespace ExpressBase.Common {
         ///    END IF;
         ///     REVOKE ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string eb_revokedbaccess2user {
+        public static string eb_revokedbaccess2user2 {
             get {
-                return ResourceManager.GetString("eb_revokedbaccess2user", resourceCulture);
+                return ResourceManager.GetString("eb_revokedbaccess2user2", resourceCulture);
             }
         }
         
@@ -3549,7 +3750,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_role2location
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    roleid integer,
         ///    locationid integer,
         ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
@@ -3564,7 +3765,7 @@ namespace ExpressBase.Common {
         ///)
         ///TABLESPACE pg_default;
         ///
-        ///ALTER TABLE public.eb_role2locat [rest of string was truncated]&quot;;.
+        ///ALTER TABLE public.e [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2location {
             get {
@@ -3606,7 +3807,7 @@ namespace ExpressBase.Common {
         ///  id integer NOT NULL auto_increment,
         ///  roleid integer,
         ///  locationid integer,
-        ///  eb_del char DEFAULT &apos;F&apos;,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  eb_createdby integer,
         ///  eb_createdat timestamp DEFAULT CURRENT_TIMESTAMP,
         ///  eb_revokedby integer,
@@ -3620,7 +3821,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE INDEX eb_role2location_roleid_idx
         ///ON eb_role2location(roleid) 
-        ///USING  [rest of string was truncated]&quot;;.
+        ///USI [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2location2 {
             get {
@@ -3676,10 +3877,10 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_role2permission
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    role_id integer,
         ///    eb_del1 boolean DEFAULT false,
-        ///    permissionname text COLLATE pg_catalog.&quot; [rest of string was truncated]&quot;;.
+        ///    permissionname text COLLATE  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2permission1 {
             get {
@@ -3703,9 +3904,9 @@ namespace ExpressBase.Common {
         ///  revokedby integer,
         ///  revokedat timestamp DEFAULT CURRENT_TIMESTAMP,
         ///  permissionname_backup text,
-        ///  eb_del char NOT NULL DEFAULT &apos;F&apos;,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  CONSTRAINT eb_role2permission_pkey PRIMARY KEY (id),
-        ///  CONSTRAINT eb_r [rest of string was truncated]&quot;;.
+        ///  CONSTRAINT eb_role2pe [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2permission2 {
             get {
@@ -3748,7 +3949,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_role2role
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    role1_id integer,
         ///    role2_id integer,
         ///    eb_del1 boolean DEFAULT false,
@@ -3758,7 +3959,7 @@ namespace ExpressBase.Common {
         ///    revokedat timestamp without time zone,
         ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT eb_role2role_id_pkey PRIMARY KEY (id),
-        ///    CONSTRAINT eb_role2role_eb_del_check CHECK (eb_del = &apos;T&apos;::&quot;cha [rest of string was truncated]&quot;;.
+        ///    CONSTRAINT eb_role2role_eb_del_check CHECK (eb_del [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2role1 {
             get {
@@ -3777,13 +3978,13 @@ namespace ExpressBase.Common {
         ///  createdat timestamp DEFAULT CURRENT_TIMESTAMP,
         ///  revokedby integer,
         ///  revokedat timestamp DEFAULT CURRENT_TIMESTAMP,
-        ///  eb_del char NOT NULL DEFAULT &apos;F&apos;,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  CONSTRAINT eb_role2role_id_pkey PRIMARY KEY (id),
         ///  CONSTRAINT eb_role2role_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
         ///CREATE INDEX eb_role2role_eb_del_idx 
-        ///ON eb_role2 [rest of string was truncated]&quot;;.
+        ///ON eb_role2role(e [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2role2 {
             get {
@@ -3828,7 +4029,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_role2user
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    role_id integer,
         ///    user_id integer,
         ///    eb_del1 boolean DEFAULT false,
@@ -3838,7 +4039,7 @@ namespace ExpressBase.Common {
         ///    revokedat timestamp without time zone,
         ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT eb_role2user_id_pkey PRIMARY KEY (id),
-        ///    CONSTRAINT eb_role2user_eb_del_check CHECK (eb_del = &apos;T&apos;::&quot;char&quot; [rest of string was truncated]&quot;;.
+        ///    CONSTRAINT eb_role2user_eb_del_check CHECK (eb_del = [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2user1 {
             get {
@@ -3857,13 +4058,13 @@ namespace ExpressBase.Common {
         ///  createdat timestamp DEFAULT CURRENT_TIMESTAMP,
         ///  revokedby integer,
         ///  revokedat timestamp DEFAULT CURRENT_TIMESTAMP,
-        ///  eb_del char NOT NULL DEFAULT &apos;F&apos;,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  CONSTRAINT eb_role2user_id_pkey PRIMARY KEY (id),
         ///  CONSTRAINT eb_role2user_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
         ///CREATE INDEX eb_role2user_eb_del_idx
-        ///ON eb_role2use [rest of string was truncated]&quot;;.
+        ///ON eb_role2user(eb_d [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2user2 {
             get {
@@ -3905,7 +4106,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_roles
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    role_name text COLLATE pg_catalog.&quot;default&quot; NOT NULL,
         ///    eb_del1 boolean,
         ///    applicationname text COLLATE pg_catalog.&quot;default&quot;,
@@ -3914,7 +4115,7 @@ namespace ExpressBase.Common {
         ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    is_anonymous &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT eb_roles_id_pkey PRIMARY KEY (id),
-        ///    CONSTRAINT eb_rolename_u [rest of string was truncated]&quot;;.
+        ///    CONSTRAINT e [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_roles1 {
             get {
@@ -3931,7 +4132,7 @@ namespace ExpressBase.Common {
         ///  applicationname text,
         ///  applicationid integer,
         ///  description text,
-        ///  eb_del char NOT NULL DEFAULT &apos;F&apos;,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  is_anonymous char,
         ///  CONSTRAINT eb_roles_id_pkey PRIMARY KEY (id),
         ///  CONSTRAINT eb_rolename_unique UNIQUE (role_name),
@@ -3942,11 +4143,47 @@ namespace ExpressBase.Common {
         ///ON eb_roles(id) 
         ///USING btree;
         ///
-        ///CREATE INDEX eb_rol [rest of string was truncated]&quot;;.
+        ///CREATE INDEX eb_roles_nam [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_roles2 {
             get {
                 return ResourceManager.GetString("eb_roles2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_schedules
+        ///
+        ///-- DROP TABLE public.eb_schedules;
+        ///
+        ///CREATE TABLE public.eb_schedules
+        ///(
+        ///    id serial primary key,-- integer NOT NULL DEFAULT nextval(&apos;eb_schedules_id_seq&apos;::regclass),
+        ///    task json,
+        ///    created_by integer,
+        ///    created_at timestamp without time zone,
+        ///    eb_del &quot;char&quot;,
+        ///    jobkey text COLLATE pg_catalog.&quot;default&quot;,
+        ///    triggerkey text COLLATE pg_catalog.&quot;default&quot;,
+        ///    status numeric,
+        ///    obj_id numeric,
+        ///    name text COLLATE pg_catalog.&quot;default&quot;
+        ///)
+        ///WITH (
+        ///    OI [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_schedules {
+            get {
+                return ResourceManager.GetString("eb_schedules", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- need updation.
+        /// </summary>
+        public static string eb_schedules1 {
+            get {
+                return ResourceManager.GetString("eb_schedules1", resourceCulture);
             }
         }
         
@@ -3957,7 +4194,7 @@ namespace ExpressBase.Common {
         ///  task json,
         ///  created_by integer,
         ///  created_at timestamp,
-        ///  eb_del char,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  jobkey text,
         ///  triggerkey text,
         ///  status numeric,
@@ -3971,9 +4208,9 @@ namespace ExpressBase.Common {
         ///ON eb_schedules(id) 
         ///USING btree;.
         /// </summary>
-        public static string eb_schedules {
+        public static string eb_schedules2 {
             get {
-                return ResourceManager.GetString("eb_schedules", resourceCulture);
+                return ResourceManager.GetString("eb_schedules2", resourceCulture);
             }
         }
         
@@ -3984,7 +4221,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_survey_lines
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    masterid integer,
         ///    questionid integer,
         ///    eb_createdate timestamp without time zone,
@@ -4000,13 +4237,20 @@ namespace ExpressBase.Common {
         ///ALTER TABLE public.eb_survey_lines
         ///    OWNER to postgres;
         ///
-        ///-- Index: eb_survey_lines_id_idx
-        ///
-        ///-- DROP  [rest of string was truncated]&quot;;.
+        ///-- Index: eb_survey_lines_id_idx [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_survey_lines {
             get {
                 return ResourceManager.GetString("eb_survey_lines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- need updation.
+        /// </summary>
+        public static string eb_survey_lines1 {
+            get {
+                return ResourceManager.GetString("eb_survey_lines1", resourceCulture);
             }
         }
         
@@ -4034,9 +4278,9 @@ namespace ExpressBase.Common {
         ///USING btree;
         ///.
         /// </summary>
-        public static string eb_survey_lines1 {
+        public static string eb_survey_lines2 {
             get {
-                return ResourceManager.GetString("eb_survey_lines1", resourceCulture);
+                return ResourceManager.GetString("eb_survey_lines2", resourceCulture);
             }
         }
         
@@ -4047,7 +4291,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_survey_master
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    surveyid integer,
         ///    userid integer,
         ///    anonid integer,
@@ -4066,11 +4310,20 @@ namespace ExpressBase.Common {
         ///-- DROP INDEX public.eb_survey_master_id_idx;
         ///
         ///CREATE INDEX eb_survey_master_id_idx
-        ///    ON public.eb_su [rest of string was truncated]&quot;;.
+        ///    ON  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_survey_master {
             get {
                 return ResourceManager.GetString("eb_survey_master", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- need updation.
+        /// </summary>
+        public static string eb_survey_master1 {
+            get {
+                return ResourceManager.GetString("eb_survey_master1", resourceCulture);
             }
         }
         
@@ -4098,9 +4351,9 @@ namespace ExpressBase.Common {
         ///ON eb_survey_master(userid) 
         ///USING btree;.
         /// </summary>
-        public static string eb_survey_master1 {
+        public static string eb_survey_master2 {
             get {
-                return ResourceManager.GetString("eb_survey_master1", resourceCulture);
+                return ResourceManager.GetString("eb_survey_master2", resourceCulture);
             }
         }
         
@@ -4111,7 +4364,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_survey_queries
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    query text COLLATE pg_catalog.&quot;default&quot;,
         ///    q_type integer
         ///)
@@ -4129,13 +4382,20 @@ namespace ExpressBase.Common {
         ///-- DROP INDEX public.eb_survey_queries_id_idx;
         ///
         ///CREATE INDEX eb_survey_queries_id_idx
-        ///    ON public.eb_survey_queries USING btree
-        ///    (id)
-        ///  [rest of string was truncated]&quot;;.
+        ///    ON public.eb_survey_queries USING btree        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_survey_queries {
             get {
                 return ResourceManager.GetString("eb_survey_queries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- need updation.
+        /// </summary>
+        public static string eb_survey_queries1 {
+            get {
+                return ResourceManager.GetString("eb_survey_queries1", resourceCulture);
             }
         }
         
@@ -4152,9 +4412,9 @@ namespace ExpressBase.Common {
         ///ON eb_survey_queries(id) 
         ///USING btree;.
         /// </summary>
-        public static string eb_survey_queries1 {
+        public static string eb_survey_queries2 {
             get {
-                return ResourceManager.GetString("eb_survey_queries1", resourceCulture);
+                return ResourceManager.GetString("eb_survey_queries2", resourceCulture);
             }
         }
         
@@ -4165,7 +4425,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_surveys
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    name text COLLATE pg_catalog.&quot;default&quot;,
         ///    startdate timestamp without time zone,
         ///    enddate timestamp without time zone,
@@ -4183,13 +4443,20 @@ namespace ExpressBase.Common {
         ///
         ///-- Index: eb_surveys_id_idx
         ///
-        ///-- DROP INDEX public.eb_surveys_id_idx;
-        ///
-        ///CR [rest of string was truncated]&quot;;.
+        ///-- DROP INDEX public.eb_surveys_i [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_surveys {
             get {
                 return ResourceManager.GetString("eb_surveys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- need updation.
+        /// </summary>
+        public static string eb_surveys1 {
+            get {
+                return ResourceManager.GetString("eb_surveys1", resourceCulture);
             }
         }
         
@@ -4209,9 +4476,9 @@ namespace ExpressBase.Common {
         ///ON eb_surveys(id)
         ///USING btree;.
         /// </summary>
-        public static string eb_surveys1 {
+        public static string eb_surveys2 {
             get {
-                return ResourceManager.GetString("eb_surveys1", resourceCulture);
+                return ResourceManager.GetString("eb_surveys2", resourceCulture);
             }
         }
         
@@ -4244,11 +4511,20 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- not using till now.
+        ///   Looks up a localized string similar to -- need updation.
         /// </summary>
         public static string eb_update_rel1 {
             get {
                 return ResourceManager.GetString("eb_update_rel1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- not using till now.
+        /// </summary>
+        public static string eb_update_rel2 {
+            get {
+                return ResourceManager.GetString("eb_update_rel2", resourceCulture);
             }
         }
         
@@ -4289,7 +4565,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_user2usergroup
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    userid integer,
         ///    groupid integer,
         ///    eb_del1 boolean DEFAULT false,
@@ -4299,7 +4575,7 @@ namespace ExpressBase.Common {
         ///    revokedat timestamp without time zone,
         ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT eb_user2usergroup_pkey PRIMARY KEY (id),
-        ///    CONSTRAINT eb_user2usergroup_eb_del_check CHECK  [rest of string was truncated]&quot;;.
+        ///    CONSTRAINT eb_user2usergroup_eb_del_ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_user2usergroup1 {
             get {
@@ -4318,13 +4594,14 @@ namespace ExpressBase.Common {
         ///  createdat timestamp DEFAULT CURRENT_TIMESTAMP,
         ///  revokedby integer,
         ///  revokedat timestamp DEFAULT CURRENT_TIMESTAMP,
-        ///  eb_del char NOT NULL DEFAULT &apos;F&apos;,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  CONSTRAINT eb_user2usergroup_pkey PRIMARY KEY (id),
         ///  CONSTRAINT eb_user2usergroup_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
         ///
-        ///CREATE INDEX eb_user2usergroup_eb_del_i [rest of string was truncated]&quot;;.
+        ///CREATE INDEX eb_user2usergroup_eb_del_idx
+        ///ON [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_user2usergroup2 {
             get {
@@ -4368,7 +4645,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_usersanonymous
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    fullname text COLLATE pg_catalog.&quot;default&quot;,
         ///    socialid text COLLATE pg_catalog.&quot;default&quot;,
         ///    email text COLLATE pg_catalog.&quot;default&quot;,
@@ -4377,7 +4654,7 @@ namespace ExpressBase.Common {
         ///    firstvisit timestamp(4) without time zone,
         ///    lastvisit timestamp(4) without time zone,
         ///    appid integer,
-        ///    totalvisits intege [rest of string was truncated]&quot;;.
+        ///    totalv [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_useranonymous1 {
             get {
@@ -4448,7 +4725,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_usergroup
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    name text COLLATE pg_catalog.&quot;default&quot;,
         ///    description text COLLATE pg_catalog.&quot;default&quot;,
         ///    eb_del1 boolean,
@@ -4461,7 +4738,7 @@ namespace ExpressBase.Common {
         ///)
         ///TABLESPACE pg_default;
         ///
-        ///ALTER TABLE pub [rest of string was truncated]&quot;;.
+        ///ALT [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_usergroup1 {
             get {
@@ -4476,7 +4753,7 @@ namespace ExpressBase.Common {
         ///  name varchar(50),
         ///  description text,
         ///  eb_del1 boolean,
-        ///  eb_del char NOT NULL DEFAULT &apos;F&apos;,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  CONSTRAINT eb_usergroup_pkey PRIMARY KEY (id),
         ///  CONSTRAINT eb_usergroup_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
@@ -4536,7 +4813,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_users
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    email text COLLATE pg_catalog.&quot;default&quot;,
         ///    pwd text COLLATE pg_catalog.&quot;default&quot;,
         ///    eb_del1 boolean DEFAULT false,
@@ -4545,8 +4822,7 @@ namespace ExpressBase.Common {
         ///    middlename text COLLATE pg_catalog.&quot;default&quot;,
         ///    dob date,
         ///    phnoprimary text COLLATE pg_catalog.&quot;default&quot;,
-        ///    phnosecondary text COLLATE pg_catalog.&quot;default&quot;,
-        ///    [rest of string was truncated]&quot;;.
+        ///    phnosecondary text COLLATE pg_catalog.&quot;de [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_users1 {
             get {
@@ -4613,7 +4889,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE public.eb_userstatus
         ///(
-        ///    id serial,
+        ///    id serial primary key,
         ///    createdby integer,
         ///    createdat timestamp without time zone,
         ///    userid integer,
@@ -4632,7 +4908,7 @@ namespace ExpressBase.Common {
         ///
         ///-- DROP INDEX public.eb_userstatus_id_idx;
         ///
-        ///CREATE INDEX eb_usersta [rest of string was truncated]&quot;;.
+        ///CREATE INDE [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_userstatus1 {
             get {
@@ -4684,20 +4960,26 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- Utility function For Mysql Blank implementation.
+        ///   Looks up a localized string similar to CREATE PROCEDURE STR_TO_TBL_GRP(fullstr text)
+        ///BEGIN
+        ///DECLARE a INT Default 0 ;
+        ///      DECLARE str VARCHAR(255);
+        ///       
+        ///	  TRUNCATE TABLE temp_array_table;
+        ///      set @delim=&apos;$$&apos;;
+        ///      simple_loop: LOOP
+        ///         SET a=a+1;
+        ///         SET str := (SELECT split_str(fullstr,@delim,a));
+        ///         IF str=&apos;&apos; THEN
+        ///            LEAVE simple_loop;
+        ///         END IF;
+        ///         -- Do Inserts into temp table here with str going into the row
+        ///         
+        ///         INSERT INTO temp_array_table(value) values (TRIM((SELEC [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string split_str_util1 {
+        public static string str_to_tbl_grp_util {
             get {
-                return ResourceManager.GetString("split_str_util1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Utility function For Mysql Blank implementation.
-        /// </summary>
-        public static string split_str_util2 {
-            get {
-                return ResourceManager.GetString("split_str_util2", resourceCulture);
+                return ResourceManager.GetString("str_to_tbl_grp_util", resourceCulture);
             }
         }
         
@@ -4706,7 +4988,7 @@ namespace ExpressBase.Common {
         ///BEGIN
         ///DECLARE a INT Default 0 ;
         ///      DECLARE str VARCHAR(255);
-        ///        
+        ///       
         ///	  TRUNCATE TABLE temp_array_table;
         ///      
         ///      simple_loop: LOOP
@@ -4717,7 +4999,7 @@ namespace ExpressBase.Common {
         ///         END IF;
         ///         -- Do Inserts into temp table here with str going into the row
         ///         
-        ///         INSERT INTO temp_array_table(value) values (TRIM((SELECT split_str(fullstr,&apos;, [rest of string was truncated]&quot;;.
+        ///         INSERT INTO temp_array_table(value) values (TRIM((SELECT split_str(fullstr,&apos;,&apos;, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string str_to_tbl_util {
             get {
@@ -4726,20 +5008,26 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- mysql string to table implementation.
+        ///   Looks up a localized string similar to CREATE PROCEDURE string_to_rows(fullstr text)
+        ///BEGIN
+        ///DECLARE a INT Default 0 ;
+        ///      DECLARE str VARCHAR(255);
+        ///      drop temporary table if exists temp_array_table1;
+        ///        create temporary table if not exists temp_array_table1(value text);
+        ///	
+        ///      simple_loop: LOOP
+        ///         SET a=a+1;
+        ///         SET str := (SELECT split_str(fullstr,&apos;,&apos;,a));
+        ///         IF str=&apos;&apos; THEN
+        ///            LEAVE simple_loop;
+        ///         END IF;
+        ///         -- Do Inserts into temp table here with str going into the row
+        ///         
+        ///         INSERT [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string str_to_tbl_util1 {
+        public static string string_to_rows_util {
             get {
-                return ResourceManager.GetString("str_to_tbl_util1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- mysql string to table implementation.
-        /// </summary>
-        public static string str_to_tbl_util2 {
-            get {
-                return ResourceManager.GetString("str_to_tbl_util2", resourceCulture);
+                return ResourceManager.GetString("string_to_rows_util", resourceCulture);
             }
         }
     }

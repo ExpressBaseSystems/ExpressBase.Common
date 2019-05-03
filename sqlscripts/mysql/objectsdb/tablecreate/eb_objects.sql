@@ -9,7 +9,7 @@
   owner_ts timestamp,
   display_name text,
   is_logenabled char,
-  eb_del char,
+  eb_del char(1) DEFAULT 'F',
   CONSTRAINT eb_objects_pkey PRIMARY KEY (id),
   CONSTRAINT uniq_obj_name UNIQUE (obj_name));
   

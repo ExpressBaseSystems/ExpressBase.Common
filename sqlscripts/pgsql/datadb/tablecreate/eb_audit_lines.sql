@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_audit_lines
 (
-    id serial,
+    id serial primary key,
     masterid integer,
     fieldname text COLLATE pg_catalog."default",
     oldvalue text COLLATE pg_catalog."default",

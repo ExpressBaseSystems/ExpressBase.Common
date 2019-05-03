@@ -6,7 +6,7 @@
   eb_del1 boolean,
   removed_by integer,
   removed_at timestamp,
-  eb_del char NOT NULL DEFAULT 'F',
+  eb_del char(1) DEFAULT 'F',
   CONSTRAINT eb_objects_relations_pkey PRIMARY KEY (id),
   CONSTRAINT eb_objects_relations_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );

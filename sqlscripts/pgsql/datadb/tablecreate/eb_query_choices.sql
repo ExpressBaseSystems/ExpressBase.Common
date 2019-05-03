@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_query_choices
 (
-    id serial,
+    id serial primary key,
     q_id integer,
     choice text COLLATE pg_catalog."default",
     eb_del "char" DEFAULT 'F'::"char",

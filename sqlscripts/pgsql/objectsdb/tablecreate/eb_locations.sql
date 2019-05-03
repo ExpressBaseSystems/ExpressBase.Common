@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_locations
 (
-    id serial,
+    id serial primary key,
     shortname text COLLATE pg_catalog."default" DEFAULT 'default'::text,
     longname text COLLATE pg_catalog."default" DEFAULT 'default'::text,
     image text COLLATE pg_catalog."default",

@@ -6,7 +6,7 @@
   applicationname text,
   applicationid integer,
   description text,
-  eb_del char NOT NULL DEFAULT 'F',
+  eb_del char(1) DEFAULT 'F',
   is_anonymous char,
   CONSTRAINT eb_roles_id_pkey PRIMARY KEY (id),
   CONSTRAINT eb_rolename_unique UNIQUE (role_name),
@@ -24,3 +24,5 @@ USING btree;
 CREATE INDEX eb_roles_appid_idx
 ON eb_roles(applicationid) 
 USING btree;
+
+alter table eb_roles auto_increment = 101;

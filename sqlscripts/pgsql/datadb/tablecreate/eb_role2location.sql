@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_role2location
 (
-    id serial,
+    id serial primary key,
     roleid integer,
     locationid integer,
     eb_del "char" DEFAULT 'F'::"char",

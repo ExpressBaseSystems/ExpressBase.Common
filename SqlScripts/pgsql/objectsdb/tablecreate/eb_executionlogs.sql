@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_executionlogs
 (
-    id integer NOT NULL DEFAULT nextval('executionlogs_id_seq'::regclass),
+    id serial primary key, -- INTEGER NOT NULL DEFAULT nextval('executionlogs_id_seq'::regclass),
     rows character varying COLLATE pg_catalog."default",
     exec_time integer,
     created_by integer,
@@ -19,3 +19,6 @@ TABLESPACE pg_default;
 
 ALTER TABLE public.eb_executionlogs
     OWNER to postgres;
+
+
+-- ALTER SEQUENCE executionlogs_id_seq INCREMENT 1 RESTART 2 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1;

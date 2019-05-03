@@ -4,7 +4,7 @@
   keys1 varchar(100),
   isrequired char,
   keytype text,
-  eb_del char,
+  eb_del char(1) DEFAULT 'F',
   CONSTRAINT eb_location_config_pkey PRIMARY KEY (id)
 );
 

@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_bots
 (
-    id serial,
+    id serial primary key,
     name text COLLATE pg_catalog."default",
     url text COLLATE pg_catalog."default",
     welcome_msg text COLLATE pg_catalog."default",

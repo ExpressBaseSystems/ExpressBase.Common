@@ -34,7 +34,7 @@ SELECT * FROM eb_create_or_update_role(applicationid, role_name, description, is
   
 IF isanonym = 'T' THEN
 	_users := '{1}';
-	dependantroles := '{}';
+	_dependantroles := '{}';
 END IF;
 
 PERFORM eb_create_or_update_role2user(rid, userid, _users);

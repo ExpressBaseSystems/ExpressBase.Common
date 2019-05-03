@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE eb_objects_update_dashboard(_refid text,
+﻿CREATE PROCEDURE eb_objects_update_Dashboard(in refid text,
 out namev1 text,
 out status1 integer,
 out ver_num1 text,
@@ -57,10 +57,10 @@ DECLARE owner_nameVal text;
 
 set workingcopies = NULL;
 
-SELECT eb_objects_id INTO _id FROM eb_objects_ver WHERE refid = _refid;
+SELECT EO.eb_objects_id  FROM eb_objects_ver EO WHERE EO.refid = refid INTO _id;
 
-select group_concat(EA.applicationname,',') INTO app_id from eb_objects2application E2O ,eb_applications EA where 
- obj_id = _id and E2O.eb_del = 'F' and EA.id = E2O.app_id ;
+select group_concat(EA.applicationname,',')  from eb_objects2application E2O ,eb_applications EA where 
+ obj_id = _id and E2O.eb_del = 'F' and EA.id = E2O.app_id INTO app_id;
  
  SELECT 
 	group_concat((json_object( version_num, refid)),',') INTO workingcopies
@@ -71,39 +71,40 @@ WHERE
     
 -- Live version details
 SELECT
-    EOV.version_num, EOV.refid, EOV.commit_ts, EOS.status, EOV.commit_uid, EU.firstname INTO
-	liveversionnumberval, liveversionrefidval, liveversioncommit_tsval, liveversion_statusval,liveversioncommit_byid,liveversioncommit_byname
+    EOV.version_num, EOV.refid, EOV.commit_ts, EOS.status, EOV.commit_uid, EU.firstname 
 FROM
     eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO, eb_users EU
 WHERE
-    EO.id = _id AND EOV.eb_objects_id = _id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id AND EOV.commit_uid = EU.id;
+    EO.id = _id AND EOV.eb_objects_id = _id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id AND EOV.commit_uid = EU.id
+    INTO
+	liveversionnumberval, liveversionrefidval, liveversioncommit_tsval, liveversion_statusval,liveversioncommit_byid,liveversioncommit_byname;
 
 -- Latest commited vaersion details
 SELECT
     EOV.version_num, EOV.refid, EOV.commit_ts, EOS.status, EU.firstname,  EOV.commit_uid
-    INTO lastversionnumberval, lastversionrefidval, lastversioncommit_tsval, lastversion_statusval, lastversioncommit_byname, lastversioncommit_byid
+    
 FROM
     eb_objects_ver EOV, eb_objects_status EOS, eb_users EU
 WHERE
     EOV.eb_objects_id = _id AND EOS.eb_obj_ver_id = EOV.id AND EOV.commit_uid = EU.id AND COALESCE(EOV.working_mode,'F') = 'F'
-    ORDER BY commit_ts DESC LIMIT 1;
+    ORDER BY EOV.commit_ts DESC LIMIT 1 
+    INTO lastversionnumberval, lastversionrefidval, lastversioncommit_tsval, lastversion_statusval, lastversioncommit_byname, lastversioncommit_byid;
 
 -- Owner details
 SELECT  
 	EO.owner_uid, EO.owner_ts, EU.firstname
-INTO 
-	owner_uidVal, owner_tsVal, owner_nameVal
+
 FROM 
 	eb_objects EO, eb_users EU
 WHERE 
-	EO.id = _id AND EU.id = EO.owner_uid;
+	EO.id = _id AND EU.id = EO.owner_uid INTO 
+	owner_uidVal, owner_tsVal, owner_nameVal;
 	
 
 	SELECT 
 			EO.obj_name, EOS.status,EOV.version_num, EOV.working_mode,
 		    EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags
-	INTO	namev, status, ver_num, work_mode,
-			 major_ver, minor_ver, patch_ver, tags
+	
 	FROM 
 			 eb_objects EO, eb_objects_ver EOV
 	LEFT JOIN
@@ -115,8 +116,10 @@ WHERE
 	ON 
 		EOS.eb_obj_ver_id = EOV.id										 
 	WHERE 
-			EOV.refid = _refid AND EOV.eb_objects_id = EO.id
-			AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id);
+			EOV.refid = refid AND EOV.eb_objects_id = EO.id
+			AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id) 
+INTO	namev, status, ver_num, work_mode,
+			 major_ver, minor_ver, patch_ver, tags;
             
 SELECT namev, status, ver_num,
 	COALESCE(work_mode,'F'), workingcopies, major_ver, minor_ver, patch_ver, tags, app_id,

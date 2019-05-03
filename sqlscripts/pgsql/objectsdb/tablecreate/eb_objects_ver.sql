@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_objects_ver
 (
-    id serial,
+    id serial primary key,
     eb_objects_id integer,
     obj_changelog text COLLATE pg_catalog."default",
     commit_uid integer,

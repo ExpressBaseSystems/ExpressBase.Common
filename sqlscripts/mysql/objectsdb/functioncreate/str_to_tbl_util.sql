@@ -2,7 +2,7 @@ CREATE PROCEDURE STR_TO_TBL(fullstr text)
 BEGIN
 DECLARE a INT Default 0 ;
       DECLARE str VARCHAR(255);
-        
+       
 	  TRUNCATE TABLE temp_array_table;
       
       simple_loop: LOOP
@@ -15,5 +15,5 @@ DECLARE a INT Default 0 ;
          
          INSERT INTO temp_array_table(value) values (TRIM((SELECT split_str(fullstr,',',a))));
    END LOOP simple_loop;
-      
+     
 END

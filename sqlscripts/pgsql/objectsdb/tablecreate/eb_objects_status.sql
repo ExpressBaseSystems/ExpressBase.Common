@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_objects_status
 (
-    id serial,
+    id serial primary key,
     refid text COLLATE pg_catalog."default",
     status integer,
     uid integer,
