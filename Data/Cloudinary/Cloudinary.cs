@@ -15,10 +15,10 @@ namespace ExpressBase.Common.Integrations
             _account = account;
         }
 
-        public EbCloudinary(EbCloudinaryConnection con)
+        public EbCloudinary(EbCloudinaryConfig conf)
         {
-            _account = con.Account;
-            InfraConId = con.Id;
+            _account = new CloudinaryDotNet.Account(conf.Cloud, conf.ApiKey, conf.ApiSecret);
+            InfraConId = conf.Id;
         }
 
         private Account _account { get; set; }

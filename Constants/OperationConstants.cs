@@ -32,5 +32,11 @@ namespace ExpressBase.Common.Constants
 
 		public const string ACCESS = "Access";
 
-	}
+        public const string NEW = "New";
+        public const string VIEW = "View";
+        public const string EDIT = "Edit";
+        public const string DELETE = "Delete";
+        public const string CANCEL = "Cancel";
+
+    }
 }

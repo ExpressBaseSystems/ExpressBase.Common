@@ -10,6 +10,7 @@ namespace ExpressBase.Common.Constants
         public const string EXPRESSBASE = "expressbase";
 
         public const string SOLUTION_CONNECTION_REDIS_KEY = "EbSolutionConnections_{0}";
+        public const string SOLUTION_INTEGRATION_REDIS_KEY = "EbSolutionIntegrations_{0}";
 
         public const string STAGING = "Staging";
         public const string PRODUCTION = "Production";

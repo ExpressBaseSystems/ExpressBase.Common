@@ -21,19 +21,21 @@ namespace ExpressBase.Common.Data.MongoDB
         private BsonDocument Metadata { get; set; }
 
         public int InfraConId { get; set; }
-
-        public MongoDBDatabase(EbFilesDbConnection dbconf)
+        private const string CONNECTION_STRING_BARE = "mongodb://{0}:{1}@{2}:{3}/admin?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin";
+        public MongoDBDatabase(EbMongoConfig dbconf)
         {
             InfraConId = dbconf.Id;
             this.TenantId = EnvironmentConstants.EB_INFRASTRUCTURE;
-            mongoClient = new MongoClient(dbconf.FilesDB_url);
+            string _cstr = string.Format(CONNECTION_STRING_BARE, dbconf.UserName, dbconf.Password, dbconf.Host, dbconf.Port);
+            mongoClient = new MongoClient(_cstr);
             mongoDatabase = mongoClient.GetDatabase(this.TenantId);
         }
 
-        public MongoDBDatabase(string tenantId, EbFilesDbConnection dbconf)
+        public MongoDBDatabase(string tenantId, EbMongoConfig dbconf)
         {
             this.TenantId = tenantId;
-            mongoClient = new MongoClient(dbconf.FilesDB_url);
+            string _cstr = string.Format(CONNECTION_STRING_BARE, dbconf.UserName, dbconf.Password, dbconf.Host, dbconf.Port);
+            mongoClient = new MongoClient(_cstr);
             mongoDatabase = mongoClient.GetDatabase(this.TenantId);
         }
 

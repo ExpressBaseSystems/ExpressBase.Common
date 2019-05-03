@@ -1,4 +1,7 @@
 ﻿using ExpressBase.Common;
+using ExpressBase.Common.Extensions;
+using ExpressBase.Common.Helpers;
+using ExpressBase.Common.Singletons;
 using ExpressBase.Common.Structures;
 using Newtonsoft.Json;
 using ServiceStack;
@@ -7,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
@@ -438,6 +442,102 @@ namespace ExpressBase.Security
 
 		[DataMember(Order = 3)]
 		public int DefaultLocation { get; set; }
-	}
+
+        [DataMember(Order = 4)]
+        public string ShortDatePattern
+        {
+            get
+            {
+                return "yyyy-MM-dd";
+                //try
+                //{
+                //    return CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern;
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine("Exception thrown when tried to get short date pattern : " + ex.Message);
+                //    return "yyyy-MM-dd";
+                //}
+            }
+        }
+
+        [DataMember(Order = 5)]
+        public string ShortDate
+        {
+            get
+            {
+                return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(this.ShortDatePattern, CultureInfo.InvariantCulture);
+            }
+        }
+
+        //----------------------------------Cultures json Test-----------------------------------
+        [DataMember(Order = 6)]
+        public string ShortDatePatternTest
+        {
+            get
+            {
+                try
+                {
+                    return MomentJSHelpers.GenerateMomentJSFormatString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureHelper.GetCultureInfo(this.Locale));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception thrown when tried to get short date PATTERN test.............. : " + ex.Message);
+                    return "YYYY[-]MM[-]DD";
+                }
+            }
+        }
+        [DataMember(Order = 7)]
+        public string ShortDateTest
+        {
+            get
+            {                
+                try
+                {
+                    return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureInfo.InvariantCulture);                    
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception thrown when tried to get short DATE test................. : " + ex.Message);
+                    return DateTime.UtcNow.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                }
+            }
+        }
+
+        [DataMember(Order = 7)]
+        public string ShortTimePatternTest
+        {
+            get
+            {
+                try
+                {
+                    return MomentJSHelpers.GenerateMomentJSFormatString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern, CultureHelper.GetCultureInfo(this.Locale));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception thrown when tried to get short time PATTERN test.............. : " + ex.Message);
+                    return "HH[ ]mm";
+                }
+            }
+        }
+        [DataMember(Order = 8)]
+        public string ShortTimeTest
+        {
+            get
+            {
+                try
+                {
+                    return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern, CultureInfo.InvariantCulture);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception thrown when tried to get short TIME test................. : " + ex.Message);
+                    return DateTime.UtcNow.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                }
+            }
+        }
+        //------------------------------------------------------------------------------------------
+
+    }
 }
 

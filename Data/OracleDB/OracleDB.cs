@@ -102,13 +102,13 @@ namespace ExpressBase.Common.Data
 
         private const string CONNECTION_STRING_BARE = "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = XE)));" + "User Id= {2};Password={3};Pooling=true;Min Pool Size=1;Connection Lifetime=180;Max Pool Size=50;Incr Pool Size=5";
         private string _cstr;
-        private EbBaseDbConnection EbBaseDbConnection { get; set; }
+        private EbDbConfig DbConfig { get; set; }
         public string DBName { get; }
 
-        public OracleDB(EbBaseDbConnection dbconf)
+        public OracleDB(EbDbConfig dbconf)
         {
-            this.EbBaseDbConnection = dbconf;
-            _cstr = string.Format(CONNECTION_STRING_BARE, this.EbBaseDbConnection.Server, this.EbBaseDbConnection.Port, this.EbBaseDbConnection.UserName, this.EbBaseDbConnection.Password);
+            this.DbConfig = dbconf;
+            _cstr = string.Format(CONNECTION_STRING_BARE, this.DbConfig.Server, this.DbConfig.Port, this.DbConfig.UserName, this.DbConfig.Password);
         }
         public OracleDB()
         {
@@ -1105,7 +1105,7 @@ namespace ExpressBase.Common.Data
 
     public class OracleFilesDB : OracleDB, INoSQLDatabase
     {
-        public OracleFilesDB(EbBaseDbConnection dbconf) : base(dbconf) { }
+        public OracleFilesDB(EbDbConfig dbconf) : base(dbconf) { }
 
         public int InfraConId { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
