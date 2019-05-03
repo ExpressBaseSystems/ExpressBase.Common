@@ -318,14 +318,16 @@ namespace ExpressBase.Common
                             }
                             cmd.Parameters.Clear();
                         }
-                        con.Close();
+                        
                     }
                 }
                 catch(Exception e)
                 {
 
                 }
+                con.Close();
             }
+            
                 return ds;
         }
 
