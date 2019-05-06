@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_keyvalue
 (
-    id serial,
+    id serial primary key,
     key_id bigint NOT NULL,
     lang_id integer NOT NULL,
     value text COLLATE pg_catalog."default" NOT NULL,

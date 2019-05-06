@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_keys
 (
-    id serial,
+    id serial primary key,
     key text COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT eb_keys_pkey PRIMARY KEY (id)
 )

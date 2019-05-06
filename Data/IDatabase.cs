@@ -64,6 +64,8 @@ namespace ExpressBase.Common
         string EB_INITROLE2USER { get; }
 		string EB_MANAGEUSER_FIRST_QUERY { get; }
 
+        string EB_GETUSERDETAILS { get; }
+
         //........objects db query.....
         string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ { get; }
         string EB_PARTICULAR_VERSION_OF_AN_OBJ { get; }
@@ -79,7 +81,12 @@ namespace ExpressBase.Common
 
         string EB_GET_BOT_FORM { get; }
         string IS_TABLE_EXIST { get; }
-        
+        string EB_CREATEAPPLICATION { get; }
+        string EB_CREATEAPPLICATION_DEV { get; }
+
+        string EB_GET_MLSEARCHRESULT { get; }
+        string EB_MLADDKEY { get; }
+        string EB_SAVELOCATION { get; }
 
         //....obj function call....
         string EB_CREATE_NEW_OBJECT { get; }

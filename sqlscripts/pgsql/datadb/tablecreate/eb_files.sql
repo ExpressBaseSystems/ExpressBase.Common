@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_files_ref
 (
-    id serial,
+    id serial primary key,
     userid integer NOT NULL,
     --filestore_id text COLLATE pg_catalog."default",
     --length bigint,
@@ -35,7 +35,7 @@ ALTER TABLE public.eb_files_ref
 
 CREATE TABLE public.eb_files_ref_variations
 (
-    id serial,
+    id serial primary key,
     eb_files_ref_id integer NOT NULL,
     filestore_sid text COLLATE pg_catalog."default",
     length bigint,

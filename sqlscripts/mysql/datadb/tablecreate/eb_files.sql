@@ -5,7 +5,7 @@
   tags text,
   filetype text,
   uploadts timestamp,
-  eb_del char NOT NULL DEFAULT 'F',
+  eb_del char(1) DEFAULT 'F',
   filecategory integer,
   filename varchar(75),
   CONSTRAINT eb_files_ref_pkey PRIMARY KEY (id),

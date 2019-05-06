@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_survey_lines
 (
-    id serial,
+    id serial primary key,
     masterid integer,
     questionid integer,
     eb_createdate timestamp without time zone,

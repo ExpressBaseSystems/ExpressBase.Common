@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_constraints_datetime
 (
-    id serial,
+    id serial primary key,
     usergroup_id integer,
     type integer,
     start_datetime timestamp without time zone,

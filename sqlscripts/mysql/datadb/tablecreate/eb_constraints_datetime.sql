@@ -6,7 +6,7 @@ CREATE TABLE eb_constraints_datetime
   start_datetime timestamp DEFAULT  CURRENT_TIMESTAMP,
   end_datetime timestamp DEFAULT  CURRENT_TIMESTAMP,
   days_coded integer,
-  eb_del character(1) DEFAULT 'F',
+  eb_del char(1) DEFAULT 'F',
   eb_created_by integer,
   eb_created_at timestamp DEFAULT  CURRENT_TIMESTAMP,
   eb_revoked_by integer,

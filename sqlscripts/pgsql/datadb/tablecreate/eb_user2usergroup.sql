@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_user2usergroup
 (
-    id serial,
+    id serial primary key,
     userid integer,
     groupid integer,
     eb_del1 boolean DEFAULT false,

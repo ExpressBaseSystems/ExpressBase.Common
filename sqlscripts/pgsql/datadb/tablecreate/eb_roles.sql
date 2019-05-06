@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_roles
 (
-    id serial,
+    id serial primary key,
     role_name text COLLATE pg_catalog."default" NOT NULL,
     eb_del1 boolean,
     applicationname text COLLATE pg_catalog."default",
@@ -45,3 +45,4 @@ CREATE UNIQUE INDEX eb_roles_id_idx
     ON public.eb_roles USING btree
     (id)
     TABLESPACE pg_default;
+

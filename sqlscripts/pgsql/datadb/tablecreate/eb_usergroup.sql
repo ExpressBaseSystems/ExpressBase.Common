@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_usergroup
 (
-    id serial,
+    id serial primary key,
     name text COLLATE pg_catalog."default",
     description text COLLATE pg_catalog."default",
     eb_del1 boolean,

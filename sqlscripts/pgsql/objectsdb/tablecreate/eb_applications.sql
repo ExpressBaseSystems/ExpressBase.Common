@@ -6,7 +6,7 @@
 
 CREATE TABLE public.eb_applications
 (
-    id serial,
+    id serial primary key,
     applicationname text COLLATE pg_catalog."default",
     description text COLLATE pg_catalog."default",
     app_icon text COLLATE pg_catalog."default",

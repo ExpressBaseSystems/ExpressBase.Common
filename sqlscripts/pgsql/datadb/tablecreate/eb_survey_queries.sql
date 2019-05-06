@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_survey_queries
 (
-    id serial,
+    id serial primary key,
     query text COLLATE pg_catalog."default",
     q_type integer
 )

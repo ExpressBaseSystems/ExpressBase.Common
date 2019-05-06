@@ -50,15 +50,12 @@ If ipaddress ='' then set ipaddress=null; end if;
     call eb_getroles(userid, wc,@roless,@role_names);
         SELECT @roless, @role_names INTO roles_a, rolename_a;
 
-        call eb_getpermissions(roles_a,@out_permission);-- INTO permissions;
+        call eb_getpermissions(roles_a,@out_permission);
 		select @out_permission into permissions;
 		SELECT eb_getconstraintstatus(userid, ipaddress)  INTO constraintstatus;
-  drop temporary table if exists eb_authenticate_unified_tmp;
- CREATE temporary table eb_authenticate_unified_tmp  
-         SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson, constraintstatus ;
-         -- into userid1, email1, fullname1, roles_a1, rolename_a1, permissions1, preferencesjson1, constraintstatus1;
-		         SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson, constraintstatus
-                 from eb_authenticate_unified_tmp into userid1, email1, fullname1, roles_a1, rolename_a1, permissions1, preferencesjson1, constraintstatus1;
+  
+  SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson, constraintstatus 
+         into userid1, email1, fullname1, roles_a1, rolename_a1, permissions1, preferencesjson1, constraintstatus1;
    	
     END IF;
 END

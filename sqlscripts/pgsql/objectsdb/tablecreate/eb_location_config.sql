@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_location_config
 (
-    id serial,
+    id serial primary key,
     keys text COLLATE pg_catalog."default",
     isrequired "char" NOT NULL DEFAULT 'F'::"char",
 	keytype text COLLATE pg_catalog."default",

@@ -1,1 +1,0 @@
-﻿-- Utility function For Mysql Blank implementation

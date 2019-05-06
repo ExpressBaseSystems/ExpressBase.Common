@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_survey_master
 (
-    id serial,
+    id serial primary key,
     surveyid integer,
     userid integer,
     anonid integer,

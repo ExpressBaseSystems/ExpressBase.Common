@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_role2role
 (
-    id serial,
+    id serial primary key,
     role1_id integer,
     role2_id integer,
     eb_del1 boolean DEFAULT false,
