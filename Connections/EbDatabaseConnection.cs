@@ -172,7 +172,7 @@ namespace ExpressBase.Common.Connections
 
         public string NickName { get; set; }
 
-        public virtual EbIntegrations Type { get; }
+        public virtual EbIntegrations Type { get; set; }
 
         public bool IsDefault { get; set; }
         public int PersistIntegrationConf(string Sol_Id, EbConnectionFactory infra, int UserId)
@@ -243,7 +243,7 @@ namespace ExpressBase.Common.Connections
 
         public string ReadOnlyPassword { get; set; }
 
-        public DatabaseVendors DatabaseVendor { get { return (DatabaseVendors)Type; } set { } }
+        public DatabaseVendors DatabaseVendor { get { return (DatabaseVendors)Type; } set { Type = (EbIntegrations)value; } }
     }
 
     public class PostgresConfig : EbDbConfig
