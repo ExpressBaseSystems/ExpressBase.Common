@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_constraints_ip
 (
-    id serial primary key,
+    id serial,
     usergroup_id integer,
     ip text COLLATE pg_catalog."default",
     description text COLLATE pg_catalog."default",

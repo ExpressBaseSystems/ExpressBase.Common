@@ -4,24 +4,24 @@
     in src_pid text,
     in cur_pid text,
     in relations text,
-    out committed_refidunique1 text)
+    out committed_refidunique text)
 BEGIN
 DECLARE refidunique text;
 DECLARE inserted_objid integer;
 DECLARE inserted_obj_ver_id integer;
 DECLARE objid integer;
-DECLARE committed_refidunique text; 
+DECLARE temp_committed_refidunique text; 
 DECLARE minor integer;
 DECLARE major integer;
 DECLARE version_number text;
 
-drop temporary table if exists relationsv;
-drop temporary table if exists temp_array_table;
+DROP TEMPORARY TABLE IF EXISTS relationsv;
+DROP TEMPORARY TABLE IF EXISTS temp_array_table;
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value TEXT);
     CALL STR_TO_TBL(relations);  -- fill to temp_array_table
 	CREATE TEMPORARY TABLE IF NOT EXISTS relationsv SELECT `value` FROM temp_array_table;
 
-SELECT eb_objects_id, major_ver_num into objid, major FROM eb_objects_ver WHERE refid=id;
+SELECT eb_objects_id, major_ver_num INTO objid, major FROM eb_objects_ver WHERE refid=id;
 SELECT MAX(minor_ver_num) into minor FROM eb_objects_ver WHERE eb_objects_id = objid AND major_ver_num = major;
 
 INSERT INTO 
@@ -32,9 +32,9 @@ INSERT INTO
 		eb_objects_ver
 	WHERE
 		refid=id;
-select last_insert_id() from eb_objects_ver INTO inserted_obj_ver_id;
+SELECT last_insert_id() INTO inserted_obj_ver_id;
    
-set version_number = CONCAT_WS('.', major, minor+1, 0, 'w');   
+SET version_number = CONCAT_WS('.', major, minor+1, 0, 'w');   
    
 UPDATE eb_objects_ver eov
 	SET
@@ -42,8 +42,8 @@ UPDATE eb_objects_ver eov
 	WHERE
 			eov.id = inserted_obj_ver_id ;
 
-set refidunique = CONCAT_WS('-', src_pid, cur_pid, obj_type, objid, inserted_obj_ver_id, objid, inserted_obj_ver_id);  
-set committed_refidunique=refidunique;            
+SET refidunique = CONCAT_WS('-', src_pid, cur_pid, obj_type, objid, inserted_obj_ver_id, objid, inserted_obj_ver_id);  
+SET temp_committed_refidunique=refidunique;            
      
 UPDATE eb_objects_ver eov SET eov.refid = refidunique WHERE eov.id = inserted_obj_ver_id;
 
@@ -54,7 +54,7 @@ INSERT INTO eb_objects_status(eb_obj_ver_id, status, uid, ts) VALUES(inserted_ob
         eb_del = 'T', removed_by = commit_uid , removed_at = NOW()
       WHERE 
         dominant IN(select * from(
-            select dominant from eb_objects_relations WHERE dependant = refidunique and dominant not in 
+            select dominant from eb_objects_relations WHERE dependant = refidunique AND dominant NOT IN 
         (select `value` from relationsv))as a);
             
             INSERT INTO eb_objects_relations 
@@ -62,8 +62,8 @@ INSERT INTO eb_objects_status(eb_obj_ver_id, status, uid, ts) VALUES(inserted_ob
     SELECT 
       `value`, refidunique 
       FROM (SELECT `value` from relationsv where `value` not in
-       (select dominant from eb_objects_relations 
+       (SELECT dominant FROM eb_objects_relations 
                             WHERE dependant = refidunique )) as dominantvals;                            
-    select committed_refidunique into committed_refidunique1; 	
+    SELECT temp_committed_refidunique INTO committed_refidunique; 	
 
 END

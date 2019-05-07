@@ -2,8 +2,8 @@ CREATE PROCEDURE string_to_rows(fullstr text)
 BEGIN
 DECLARE a INT Default 0 ;
       DECLARE str VARCHAR(255);
-      drop temporary table if exists temp_array_table1;
-        create temporary table if not exists temp_array_table1(value text);
+      DROP TEMPORARY TABLE IF EXISTS temp_array_table1;
+        CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table1(value text);
 	
       simple_loop: LOOP
          SET a=a+1;

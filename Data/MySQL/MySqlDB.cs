@@ -705,12 +705,16 @@ namespace ExpressBase.Common
             }
             return cols;
         }
+        
+        public string EB_AUTHETICATE_USER_NORMAL { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @tmp_userid, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraintstatus);"; } }
 
-        public string EB_AUTHETICATE_USER_NORMAL { get { return "eb_authenticate_unified(@uname,@pwd,@social,@wc,@ipaddress, @userid, @email, @fullname, @roles_a, @rolename_a, @permissions, @preferencesjson, @constraintstatus);"; } }
-        public string EB_AUTHENTICATEUSER_SOCIAL { get { return "eb_authenticate_unified(@uname,@pwd,@social,@wc,@ipaddress, @userid, @email, @fullname, @roles_a, @rolename_a, @permissions, @preferencesjson, @constraintstatus);"; } }
-        public string EB_AUTHENTICATEUSER_SSO { get { return "eb_authenticate_unified(@uname,@pwd,@social,@wc,@ipaddress, @userid, @email, @fullname, @roles_a, @rolename_a, @permissions, @preferencesjson, @constraintstatus);"; } }
-        public string EB_AUTHENTICATE_ANONYMOUS { get { return "eb_authenticate_anonymous(@in_socialid,@in_fullname,@in_emailid,@in_phone,@in_user_ip,@in_user_browser," +
-                    "@in_city,@in_region,@in_country,@in_latitude,@in_longitude,@in_timezone,@in_iplocationjson,@in_appid,@in_wc,@out_userid1,@out_email1,@out_fullname1,@out_roles_a1,@out_rolename_a1,@out_permissions1,@out_preferencesjson1); "; } }
+        public string EB_AUTHENTICATEUSER_SOCIAL { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @tmp_userid, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraintstatus);"; } }
+
+        public string EB_AUTHENTICATEUSER_SSO { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @tmp_userid, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraintstatus);"; } }
+
+        public string EB_AUTHENTICATE_ANONYMOUS { get { return @"eb_authenticate_anonymous(@in_socialid, @in_fullname, @in_emailid, @in_phone, @in_user_ip, @in_user_browser,@in_city,
+                @in_region, @in_country, @in_latitude, @in_longitude, @in_timezone, @in_iplocationjson, @in_appid, @in_wc, @out_userid, @out_email, @out_fullname, @out_roles_a, @out_rolename_a, @out_permissions, @out_preferencesjson); "; } }
+
         public string EB_SIDEBARUSER_REQUEST { get { return @"
                 SELECT id, applicationname,app_icon
                 FROM eb_applications
@@ -729,21 +733,23 @@ namespace ExpressBase.Common
                     AND EOS.status = 3
                     AND COALESCE( EO.eb_del, 'F') = 'F'
                     AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );"; } }
+
         public string EB_SIDEBARDEV_REQUEST { get { return @"
-                SELECT id, applicationname,app_icon FROM eb_applications;
-                SELECT
-                    EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, COALESCE(EO2A.app_id, 0),display_name
-                FROM
-                    eb_objects EO
-                LEFT JOIN
-                    eb_objects2application EO2A
-                ON
-                    EO.id = EO2A.obj_id
-                WHERE
-                    COALESCE(EO2A.eb_del, 'F') = 'F'
-                    AND COALESCE( EO.eb_del, 'F') = 'F'
-                ORDER BY
-                    EO.obj_type;"; } }
+                 SELECT id, applicationname,app_icon FROM eb_applications
+                WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
+                        SELECT
+                            EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, COALESCE(EO2A.app_id, 0),display_name
+                        FROM
+                        eb_objects EO
+                        LEFT JOIN
+                            eb_objects2application EO2A
+                        ON
+                            EO.id = EO2A.obj_id
+                        WHERE
+                            COALESCE(EO2A.eb_del, 'F') = 'F'
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                        ORDER BY
+                            EO.obj_type;"; } }
 
         public string EB_SIDEBARCHECK { get { return "AND EO.id = any (select ':Ids')"; } }
 
@@ -753,12 +759,12 @@ namespace ExpressBase.Common
             {
                 return
                     @"SELECT R.id,R.role_name,R.description,A.applicationname,
-                        (SELECT COUNT(role1_id) FROM eb_role2role WHERE role1_id=R.id AND eb_del='F') AS subrole_count,
-                        (SELECT COUNT(user_id) FROM eb_role2user WHERE role_id=R.id AND eb_del='F') AS user_count,
+                        (SELECT COUNT(role1_id) FROM eb_role2role WHERE role1_id=R.id AND eb_del = 'F') AS subrole_count,
+                        (SELECT COUNT(user_id) FROM eb_role2user WHERE role_id=R.id AND eb_del = 'F') AS user_count,
                         (SELECT COUNT(distinct permissionname) FROM eb_role2permission RP, eb_objects2application OA WHERE role_id = R.id 
-                        AND app_id=A.id AND RP.obj_id=OA.obj_id AND RP.eb_del = 'F' AND OA.eb_del = 'F') AS permission_count
+                        AND app_id = A.id AND RP.obj_id = OA.obj_id AND RP.eb_del = 'F' AND OA.eb_del = 'F') AS permission_count
                         FROM eb_roles R, eb_applications A
-                        WHERE R.applicationid = A.id AND A.eb_del='F' AND R.role_name like '@searchtext';";
+                        WHERE R.applicationid = A.id AND A.eb_del = 'F' AND R.role_name like '@searchtext';";
             }
         }
 
@@ -787,27 +793,31 @@ namespace ExpressBase.Common
                     SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> @id ORDER BY role_name;
                     SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';
                     SELECT id, longname, shortname FROM eb_locations;"; } }
+
         public string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get { return @"
                                    SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = @id;
                                SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = @id AND eb_del = 'F';
                                SELECT A.applicationname, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = @id AND A.eb_del = 'F';
                                SELECT A.id, A.fullname, A.email, B.id FROM eb_users A, eb_role2user B
                                 WHERE A.id = B.user_id AND A.eb_del = 'F' AND B.eb_del = 'F' AND B.role_id = @id;
-                               SELECT locationid FROM eb_role2location WHERE roleid = @id AND eb_del='F'; "; } }
+                               SELECT locationid FROM eb_role2location WHERE roleid = @id AND eb_del = 'F'; "; } }
         public string EB_SAVEROLES_QUERY
         {
             get
             {
-                return "eb_create_or_update_rbac_roles(@role_id, @applicationid, @createdby, @role_name, @description, @is_anonym, @users, @dependants, @permission, @locations,@out_r " +
-");";
+                return @"eb_create_or_update_rbac_roles(@role_id, @applicationid, @createdby, @role_name, @description, @is_anonym, @users, @dependants, @permission, @locations, @out_r);";
             }
         }
-        public string EB_SAVEUSER_QUERY { get { return "eb_createormodifyuserandroles(@userid, @id, @fullname, @nickname, @email, @pwd, @dob,@sex,@alternateemail,@phprimary,@phsecondary,@phlandphone,@extension,@fbid,@fbname,@roles,@groups,@statusid,@hide,@anonymoususerid,@preference,@out_uid" +
-                    ");"; } }
-        public string EB_SAVEUSERGROUP_QUERY { get { return "eb_createormodifyusergroup(@userid, @id, @name, @description, @users, @ipconstrnw, @ipconstrold,@dtconstrnw,@dtconstrold,@out_gid);"; } }
 
-        public string EB_USER_ROLE_PRIVS { get { return "SELECT DISTINCT privilege_type FROM information_schema.USER_PRIVILEGES WHERE grantee=\"'@uname'@'%'\""; } }
+        public string EB_SAVEUSER_QUERY { get { return @"eb_createormodifyuserandroles(@userid, @id, @fullname, @nickname, @email, @pwd, @dob, @sex, @alternateemail, @phprimary, @phsecondary, @phlandphone, @extension, @fbid,
+                                                            @fbname, @roles, @groups, @statusid, @hide ,@anonymoususerid, @preference, @out_uid);"; } }
+
+        public string EB_SAVEUSERGROUP_QUERY { get { return "eb_createormodifyusergroup(@userid, @id, @name, @description, @users, @ipconstrnw, @ipconstrold, @dtconstrnw, @dtconstrold, @out_gid);"; } }
+        
+        public string EB_USER_ROLE_PRIVS { get { return "SELECT DISTINCT privilege_type FROM information_schema.USER_PRIVILEGES WHERE grantee = \"'@uname'@'%'\""; } }
+
         public string EB_INITROLE2USER { get { return "INSERT INTO eb_role2user(role_id, user_id, createdat) VALUES (@role_id, @user_id, now());"; } }
+
         public string EB_MANAGEUSER_FIRST_QUERY
         {
             get
@@ -839,8 +849,8 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"INSERT INTO eb_applications (applicationname,application_type, description,app_icon) VALUES (:applicationname,:apptype, :description,:appicon);
-                           select last_insert_id(); ";
+                return @"INSERT INTO eb_applications (applicationname,application_type,description,app_icon) VALUES (:applicationname, :apptype, :description, :appicon);
+                           SELECT last_insert_id(); ";
             }
         }
 
@@ -848,8 +858,8 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"INSERT INTO eb_applications (applicationname,application_type, description,app_icon) VALUES (@applicationname,@apptype, @description,@appicon); 
-                        select last_insert_id();";
+                return @"INSERT INTO eb_applications (applicationname,application_type,description,app_icon) VALUES (@applicationname, @apptype, @description, @appicon); 
+                        SELECT last_insert_id();";
             }
         }
 
@@ -863,7 +873,7 @@ namespace ExpressBase.Common
                         eb_objects_ver EOV, eb_users EU
                     WHERE
                         EOV.commit_uid = EU.id AND
-                        EOV.eb_objects_id=(SELECT eb_objects_id FROM eb_objects_ver WHERE refid=@refid)
+                        EOV.eb_objects_id = (SELECT eb_objects_id FROM eb_objects_ver WHERE refid = @refid)
                     ORDER BY
                         EOV.id DESC
                 ";
@@ -878,7 +888,7 @@ namespace ExpressBase.Common
                         FROM
                             eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
                         WHERE
-                            EOV.refid=@refid AND EOS.eb_obj_ver_id = EOV.id AND EO.id=EOV.eb_objects_id
+                            EOV.refid = @refid AND EOS.eb_obj_ver_id = EOV.id AND EO.id = EOV.eb_objects_id
                             AND COALESCE( EO.eb_del, 'F') = 'F'
                         ORDER BY
                         EOS.id DESC
@@ -896,10 +906,10 @@ namespace ExpressBase.Common
                     FROM
                         eb_objects EO, eb_objects_ver EOV
                     WHERE
-                        EO.id = EOV.eb_objects_id AND EOV.refid=@refid
+                        EO.id = EOV.eb_objects_id AND EOV.refid = @refid
                         AND COALESCE( EO.eb_del, 'F') = 'F'
                     ORDER BY
-                        EO.obj_type
+                        EO.obj_type;
                 ";
             }
         }
@@ -914,14 +924,14 @@ namespace ExpressBase.Common
                         FROM
                             eb_objects EO, eb_objects_ver EOV
                         LEFT JOIN
-                        eb_users EU
+                            eb_users EU
                         ON
-                        EOV.commit_uid=EU.id
+                            EOV.commit_uid = EU.id
                         WHERE
-                            EO.id = EOV.eb_objects_id AND EO.obj_type=@type
+                            EO.id = EOV.eb_objects_id AND EO.obj_type = @type
                             AND COALESCE( EO.eb_del, 'F') = 'F'
                         ORDER BY
-                            EO.obj_name
+                            EO.obj_name;
                 ";
             }
         }
@@ -930,15 +940,15 @@ namespace ExpressBase.Common
             get
             {
                 return @"SELECT
-                        EO.obj_name, EOV.refid, EOV.version_num, EO.obj_type,EOS.status
+                            EO.obj_name, EOV.refid, EOV.version_num, EO.obj_type,EOS.status
                         FROM
-                        eb_objects EO, eb_objects_ver EOV,eb_objects_status EOS
+                            eb_objects EO, eb_objects_ver EOV,eb_objects_status EOS
                         WHERE
-                        EO.id = ANY (SELECT eb_objects_id FROM eb_objects_ver WHERE refid IN(SELECT dependant FROM eb_objects_relations
-                                                  WHERE dominant=@dominant))
-                            AND EOV.refid =ANY(SELECT dependant FROM eb_objects_relations WHERE dominant=@dominant)   
-                            AND EO.id =EOV.eb_objects_id  AND EOS.eb_obj_ver_id = EOV.id AND EOS.status = 3 AND EO.obj_type IN(16 ,17)
-                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                            EO.id = ANY (SELECT eb_objects_id FROM eb_objects_ver WHERE refid IN(SELECT dependant FROM eb_objects_relations
+                                                  WHERE dominant = @dominant))
+                            AND EOV.refid = ANY(SELECT dependant FROM eb_objects_relations WHERE dominant = @dominant)   
+                            AND EO.id = EOV.eb_objects_id  AND EOS.eb_obj_ver_id = EOV.id AND EOS.status = 3 AND EO.obj_type IN(16 ,17)
+                            AND COALESCE( EO.eb_del, 'F') = 'F';
                 ";
             }
         }
@@ -960,14 +970,14 @@ namespace ExpressBase.Common
                         FROM
                             eb_objects EO, eb_objects_ver EOV
                         LEFT JOIN
-                        eb_users EU
+                            eb_users EU
                         ON
-                        EOV.commit_uid=EU.id
+                            EOV.commit_uid = EU.id
                         WHERE
-                            EO.id = EOV.eb_objects_id  AND EO.obj_type=@type AND COALESCE(EOV.working_mode, 'F') <> 'T'
+                            EO.id = EOV.eb_objects_id  AND EO.obj_type = @type AND COALESCE(EOV.working_mode, 'F') <> 'T'
                             AND COALESCE( EO.eb_del, 'F') = 'F'
                         ORDER BY
-                            EO.obj_name
+                            EO.obj_name;
                 ";
             }
         }
@@ -976,14 +986,14 @@ namespace ExpressBase.Common
             get
             {
                 return @"SELECT
-                    id, obj_name, obj_type, obj_cur_status, obj_desc 
-                FROM
-                    eb_objects
-                WHERE
-                    obj_type=@type
-                    AND COALESCE( eb_del, 'F') = 'F'
-                ORDER BY
-                    obj_name
+                            id, obj_name, obj_type, obj_cur_status, obj_desc 
+                         FROM
+                            eb_objects
+                        WHERE
+                            obj_type = @type
+                            AND COALESCE( eb_del, 'F') = 'F'
+                        ORDER BY
+                            obj_name;
                 ";
             }
         }
@@ -998,7 +1008,7 @@ namespace ExpressBase.Common
                         WHERE
                             eb_obj_ver_id = EOV.id AND EOV.refid = @refid AND EOV.commit_uid=EU.id
                         ORDER BY
-                        EOS.id DESC
+                        EOS.id DESC;
                 ";
             }
         }
@@ -1021,8 +1031,8 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"set @ab='';
-                                    select distinct trim(',' from group_concat(obj_tags)) from eb_objects WHERE COALESCE(eb_del, 'F') = 'F' into @ab;
+                return @"SET @ab='';
+                                    SELECT DISTINCT trim(',' from group_concat(obj_tags)) FROM eb_objects WHERE COALESCE(eb_del, 'F') = 'F' INTO @ab;
                                         call string_to_rows(@ab);
 
                 ";
@@ -1037,7 +1047,7 @@ namespace ExpressBase.Common
 											SELECT A.id, A.`key`, B.id, B.language, C.id, C.value
 											FROM (SELECT * FROM eb_keys WHERE LOWER(`key`) LIKE LOWER(:KEY) ORDER BY `key` ASC LIMIT :LIMIT OFFSET :OFFSET ) A,
 													eb_languages B, eb_keyvalue C
-											WHERE A.id=C.key_id AND B.id=C.lang_id  
+											WHERE A.id=C.key_id AND B.id = C.lang_id  
 											ORDER BY A.`key` ASC, B.language ASC;";
             }
         }
@@ -1047,7 +1057,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"INSERT INTO eb_keys (`key`) VALUES(@KEY);
-                          select last_insert_id();";
+                          SELECT last_insert_id();";
             }
         }
 
@@ -1057,23 +1067,23 @@ namespace ExpressBase.Common
             {
                 return @"
                             SELECT DISTINCT
-                            EOV.refid, EO.obj_name
+                                EOV.refid, EO.obj_name
                             FROM
-                            eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EOTA
+                                eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EOTA
                             WHERE
-                            EO.id = EOV.eb_objects_id  AND
-                            EO.id = EOTA.obj_id  AND
-                            EOS.eb_obj_ver_id = EOV.id AND
-                            EO.id = any(select @Ids) AND
-                            EOS.status = 3 AND
-                            (
-                            EO.obj_type = 16 OR
-                            EO.obj_type = 17
-                            OR EO.obj_type = 18
-                            )  AND
-                            EOTA.app_id = @appid AND
-                                    EOTA.eb_del = 'F'
-                                    AND COALESCE( EO.eb_del, 'F') = 'F';
+                                EO.id = EOV.eb_objects_id  AND
+                                EO.id = EOTA.obj_id  AND
+                                EOS.eb_obj_ver_id = EOV.id AND
+                                EO.id = any(select @Ids) AND
+                                EOS.status = 3 AND
+                                (
+                                EO.obj_type = 16 OR
+                                EO.obj_type = 17
+                                OR EO.obj_type = 18
+                                )  AND
+                                EOTA.app_id = @appid AND
+                                EOTA.eb_del = 'F'
+                                AND COALESCE( EO.eb_del, 'F') = 'F';
                         ";
             }
         }
@@ -1089,46 +1099,47 @@ namespace ExpressBase.Common
         {
             get
             {
-                return "eb_objects_create_new_object(@obj_name, @obj_desc, @obj_type, @obj_cur_status, @obj_json, @commit_uid, @src_pid, @cur_pid, @relations, @issave, @tags,@app_id, @s_obj_id, @s_ver_id, @disp_name, @out_refid_of_commit_version)";
+                return "eb_objects_create_new_object(@obj_name, @obj_desc, @obj_type, @obj_cur_status, @obj_json, @commit_uid, @src_pid, @cur_pid, @relations, @issave, @tags, @app_id, @s_obj_id, @s_ver_id, @disp_name, @out_refid_of_commit_version)";
             }
         }
         public string EB_SAVE_OBJECT
         {
             get
             {
-                return "eb_objects_save(@id, @obj_name, @obj_desc, @obj_type, @obj_json, @commit_uid, @relations, @tags, @app_id, @disp_name,@out_refidv)";
+                return "eb_objects_save(@id, @obj_name, @obj_desc, @obj_type, @obj_json, @commit_uid, @relations, @tags, @app_id, @disp_name, @out_refidv)";
             }
         }
         public string EB_COMMIT_OBJECT
         {
             get
             {
-                return "eb_objects_commit(@id, @obj_name, @obj_desc, @obj_type, @obj_json, @obj_changelog,  @commit_uid, @relations, @tags, @app_id, @disp_name,@out_committed_refidunique)";
+                return "eb_objects_commit(@id, @obj_name, @obj_desc, @obj_type, @obj_json, @obj_changelog,  @commit_uid, @relations, @tags, @app_id, @disp_name, @out_committed_refidunique)";
             }
         }
         public string EB_EXPLORE_OBJECT
         {
             get
             {
-                return "eb_objects_exploreobject(@id,@idval1, @nameval1, @typeval1,@statusval1,@descriptionval1,@changelogval1,@commitatval1,@commitbyval1," +
-                    "@refidval1,@ver_numval1,@work_modeval1,@workingcopiesval1,@json_wcval1,@json_lcval1,@major_verval1,@minor_verval1,@patch_verval1,@tagsval1," +
-                    "@app_idval1,@lastversionrefidval1,@lastversionnumberval1,@lastversioncommit_tsval1,@lastversion_statusval1,@lastversioncommit_byname1," +
-                    "@lastversioncommit_byid1,@liveversionrefidval1,@liveversionnumberval1,@liveversioncommit_tsval1,@liveversion_statusval1,@liveversioncommit_byname1," +
-                    "@liveversioncommit_byid1,@owner_uidVal1,@owner_tsVal1,@wner_nameVal1,@dispnameval1,@is_logv1)";
+                return @"eb_objects_exploreobject(@id, @idval, @nameval, @typeval, @statusval, @descriptionval, @changelogval, @commitatval, @commitbyval,
+                        @refidval, @ver_numval, @work_modeval, @workingcopiesval, @json_wcval, @json_lcval, @major_verval, @minor_verval, @patch_verval,
+                        @tagsval, @app_idval, @lastversionrefidval, @lastversionnumberval, @lastversioncommit_tsval, @lastversion_statusval,
+                        @lastversioncommit_byname, @lastversioncommit_byid, @liveversionrefidval, @liveversionnumberval, @liveversioncommit_tsval,
+                        @liveversion_statusval, @liveversioncommit_byname, @liveversioncommit_byid, @owner_uidVal, @owner_tsVal, @wner_nameVal, @dispnameval,
+                        @is_logv)";
             }
         }
         public string EB_MAJOR_VERSION_OF_OBJECT
         {
             get
             {
-                return "eb_object_create_major_version(@id, @obj_type, @commit_uid, @src_pid, @cur_pid, @relations,@committed_refidunique1)";
+                return "eb_object_create_major_version(@id, @obj_type, @commit_uid, @src_pid, @cur_pid, @relations, @committed_refidunique)";
             }
         }
         public string EB_MINOR_VERSION_OF_OBJECT
         {
             get
             {
-                return " eb_object_create_minor_version(@id, @obj_type, @commit_uid, @src_pid, @cur_pid, @relations,@committed_refidunique1)";
+                return " eb_object_create_minor_version(@id, @obj_type, @commit_uid, @src_pid, @cur_pid, @relations, @committed_refidunique)";
             }
         }
         public string EB_CHANGE_STATUS_OBJECT
@@ -1144,16 +1155,17 @@ namespace ExpressBase.Common
         {
             get
             {
-                return "eb_object_create_patch_version(@id, @obj_type, @commit_uid, @src_pid, @cur_pid, @relations,@committed_refidunique1)";
+                return "eb_object_create_patch_version(@id, @obj_type, @commit_uid, @src_pid, @cur_pid, @relations, @committed_refidunique)";
             }
         }
         public string EB_UPDATE_DASHBOARD
         {
             get
             {
-                return "eb_objects_update_Dashboard(@refid,@namev1 ,@status1,@ver_num1 ,@work_mode1,@workingcopies1 ,@major_ver1,@minor_ver1,@patch_ver1,@tags1,@app_id1,@lastversionrefidval1," +
-                    "@lastversionnumberval1,@lastversioncommit_tsval1,@lastversion_statusval1,@lastversioncommit_byname1,@lastversioncommit_byid1,@liveversionrefidval1,@liveversionnumberval1," +
-                    "@liveversioncommit_tsval1,@liveversion_statusval1,@liveversioncommit_byname1,@liveversioncommit_byid1,@owner_uidval1,@owner_tsval1,@owner_nameval1)";
+                return @"eb_objects_update_Dashboard(@refid, @namev, @status, @ver_num, @work_mode, @workingcopies, @major_ver, @minor_ver, @patch_ver, @tags,
+                        @app_id, @lastversionrefidval, @lastversionnumberval, @lastversioncommit_tsval, @lastversion_statusval, @lastversioncommit_byname, 
+                        @lastversioncommit_byid, @liveversionrefidval, @liveversionnumberval, @liveversioncommit_tsval, @liveversion_statusval, 
+                        @liveversioncommit_byname, @liveversioncommit_byid, @owner_uidval, @owner_tsval, @owner_nameval)";
             }
         }
         public string EB_LOCATION_CONFIGURATION
@@ -1168,8 +1180,8 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"INSERT INTO eb_locations(longname,shortname,image,meta_json) VALUES(:lname,:sname,:img,:meta);
-                        select last_insert_id();";
+                return @"INSERT INTO eb_locations(longname,shortname,image,meta_json) VALUES(:lname, :sname, :img, :meta);
+                        SELECT last_insert_id();";
             }
         }
 

@@ -61,7 +61,7 @@ FROM
 WHERE 
 	eb_objects_id=_id AND working_mode='T';
 
- select group_concat(EA.applicationname,',') INTO app_id from eb_objects2application E2O ,eb_applications EA where 
+ SELECT group_concat(EA.applicationname,',') INTO app_id FROM eb_objects2application E2O ,eb_applications EA WHERE 
  obj_id = _id and E2O.eb_del = 'F' and EA.id = E2O.app_id ;
  
   -- one working copy	

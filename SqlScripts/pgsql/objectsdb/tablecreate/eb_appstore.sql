@@ -4,16 +4,16 @@
 
 CREATE TABLE public.eb_appstore
 (
-    id serial primary key,-- integer NOT NULL DEFAULT nextval('eb_app_store_id_seq'::regclass),
-    app_name text COLLATE "default".pg_catalog,
+    id serial,-- integer NOT NULL DEFAULT nextval('eb_app_store_id_seq'::regclass),
+    app_name text COLLATE pg_catalog."default",
     status integer,
-    user_tenant_acc_id text COLLATE "default".pg_catalog,
+    user_tenant_acc_id text COLLATE pg_catalog."default",
     cost integer,
     created_by integer,
     created_at timestamp without time zone,
     json json,
     eb_del boolean,
-    currency text COLLATE "default".pg_catalog,
+    currency text COLLATE pg_catalog."default",
     CONSTRAINT eb_app_store_pkey PRIMARY KEY (id)
 )
 WITH (

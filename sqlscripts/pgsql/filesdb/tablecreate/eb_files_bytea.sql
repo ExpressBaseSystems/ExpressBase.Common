@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_files_bytea
 (
-    id serial primary key,
+    id serial,
     filename text COLLATE pg_catalog."default",
     bytea bytea,
     meta json,

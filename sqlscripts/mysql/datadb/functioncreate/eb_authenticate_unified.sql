@@ -3,14 +3,14 @@
     IN social text,
     IN wc text,
     IN ipaddress text,
-    out userid1 integer,
-    out email1 text,
-    out fullname1 text,
-    out roles_a1 TEXT,
-	out rolename_a1 TEXT,
-	out permissions1 TEXT,
-	out preferencesjson1 text,
-	out constraintstatus1 TEXT
+    out tmp_userid integer,
+    out tmp_email text,
+    out tmp_fullname text,
+    out tmp_roles_a TEXT,
+	out tmp_rolename_a TEXT,
+	out tmp_permissions TEXT,
+	out tmp_preferencesjson text,
+	out tmp_constraintstatus TEXT
     )
 BEGIN
 DECLARE userid INTEGER;
@@ -55,7 +55,7 @@ If ipaddress ='' then set ipaddress=null; end if;
 		SELECT eb_getconstraintstatus(userid, ipaddress)  INTO constraintstatus;
   
   SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson, constraintstatus 
-         into userid1, email1, fullname1, roles_a1, rolename_a1, permissions1, preferencesjson1, constraintstatus1;
+         into tmp_userid, tmp_email, tmp_fullname, tmp_roles_a, tmp_rolename_a, tmp_permissions, tmp_preferencesjson, tmp_constraintstatus;
    	
     END IF;
 END

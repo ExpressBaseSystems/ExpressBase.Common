@@ -266,14 +266,14 @@ namespace ExpressBase.Security
                                 df.GetNewParameter("social", EbDbTypes.String, social),
                                 df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),
                                 df.GetNewParameter("ipaddress", EbDbTypes.String, ipaddress),
-                                df.GetNewOutParameter("userid1", EbDbTypes.Int32),
-                                df.GetNewOutParameter("email1", EbDbTypes.String),
-                                df.GetNewOutParameter("fullname1", EbDbTypes.String),
-                                df.GetNewOutParameter("roles_a1", EbDbTypes.String),
-                                df.GetNewOutParameter("rolename_a1", EbDbTypes.String),
-                                df.GetNewOutParameter("permissions1", EbDbTypes.String),
-                                df.GetNewOutParameter("preferencesjson1", EbDbTypes.String),
-                                df.GetNewOutParameter("constraintstatus1", EbDbTypes.String)
+                                df.GetNewOutParameter("tmp_userid", EbDbTypes.Int32),
+                                df.GetNewOutParameter("tmp_email", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_fullname", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_roles_a", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_rolename_a", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_permissions", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_preferencesjson", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_constraintstatus", EbDbTypes.String)
                                 });
 
                     return InitUserObject(ds, context);

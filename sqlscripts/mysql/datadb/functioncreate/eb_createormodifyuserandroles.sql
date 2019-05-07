@@ -22,9 +22,11 @@
     OUT out_uid integer)
 BEGIN
 DECLARE uid integer; 
+DROP TEMPORARY TABLE IF EXISTS temp_array_table;
+DROP TEMPORARY TABLE IF EXISTS _roles;
+DROP TEMPORARY TABLE IF EXISTS _group;
 
-CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value integer);
-        
+CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value integer);        
 	CALL STR_TO_TBL(roles);  -- fill to temp_array_table
 	CREATE TEMPORARY TABLE IF NOT EXISTS _roles SELECT `value` FROM temp_array_table;
   
@@ -44,33 +46,33 @@ IF id > 1 THEN
    WHERE eu.id = id;
 			
    INSERT INTO eb_role2user(user_id,createdby,createdat,role_id) SELECT id,userid,NOW(),`value` FROM 
-   (select `value` from _roles where `value` not in 
-		(SELECT er2u.role_id from eb_role2user er2u WHERE er2u.user_id = id AND er2u.eb_del = 'F')) AS roleid;
+   (SELECT `value` from _roles WHERE `value` not in 
+		(SELECT er2u.role_id FROM eb_role2user er2u WHERE er2u.user_id = id AND er2u.eb_del = 'F')) AS roleid;
    UPDATE eb_role2user er2u2 SET er2u2.eb_del = 'T',er2u2.revokedby = userid,er2u2.revokedat =NOW() WHERE er2u2.user_id = id 
    AND er2u2.eb_del = 'F' AND er2u2.role_id IN(
-		select * from (SELECT er2u1.role_id from eb_role2user er2u1 WHERE er2u1.user_id = id AND er2u1.eb_del = 'F' and er2u1.role_id not in( 
-		SELECT `value` from _roles))as aa);
+		SELECT * FROM (SELECT er2u1.role_id from eb_role2user er2u1 WHERE er2u1.user_id = id AND er2u1.eb_del = 'F' and er2u1.role_id not in( 
+		SELECT `value` FROM _roles))as aa);
 
    INSERT INTO eb_user2usergroup(userid,createdby,createdat,groupid) SELECT id,userid,NOW(),`value` FROM 
-   (select `value` from _group where `value` not in(
-		SELECT eu2g.groupid from eb_user2usergroup eu2g WHERE eu2g.userid = id AND eu2g.eb_del = 'F')) AS groupid;
+   (SELECT `value` FROM _group WHERE `value` NOT IN(
+		SELECT eu2g.groupid FROM eb_user2usergroup eu2g WHERE eu2g.userid = id AND eu2g.eb_del = 'F')) AS groupid;
    UPDATE eb_user2usergroup eu2g SET eu2g.eb_del = 'T',eu2g.revokedby = userid,eu2g.revokedat =NOW() WHERE eu2g.userid = id 
-	AND eu2g.eb_del = 'F' AND eu2g.groupid IN(select * from (
-		SELECT eu2g1.groupid from eb_user2usergroup eu2g1 WHERE eu2g1.userid = id AND eu2g1.eb_del = 'F' 
+	AND eu2g.eb_del = 'F' AND eu2g.groupid IN(SELECT * FROM (
+		SELECT eu2g1.groupid FROM eb_user2usergroup eu2g1 WHERE eu2g1.userid = id AND eu2g1.eb_del = 'F' 
         and eu2g1.groupid not in( 
-		select `value` from _group))as ab);
+		SELECT `value` FROM _group))as ab);
 
 ELSE
 
    INSERT INTO eb_users (fullname, nickname, email, pwd, dob, sex, alternateemail, phnoprimary, phnosecondary, landline, phextension, fbid, fbname, createdby, createdat, statusid, hide, preferencesjson) 
     VALUES (fullname, nickname, email, pwd, dob, sex, alternateemail, phprimary, phsecondary, phlandphone, extension, fbid, fbname, userid, NOW(), statusid, hide, preference);
-    select last_insert_id() from eb_users INTO uid;
+    SELECT last_insert_id() INTO uid;
       
    INSERT INTO eb_role2user (role_id,user_id,createdby,createdat) SELECT `value`, uid,userid,NOW() 
-    FROM (select `value` from _roles) AS roleid;
+    FROM (SELECT `value` FROM _roles) AS roleid;
     
    INSERT INTO eb_user2usergroup(userid,groupid,createdby,createdat) SELECT uid, `value`,userid,NOW() 
-    FROM (select `value` from _group) AS groupid;
+    FROM (SELECT `value` FROM _group) AS groupid;
 	
 	IF id > 0 THEN
 		UPDATE eb_usersanonymous SET modifiedby = userid, modifiedat = NOW(), ebuserid = uid

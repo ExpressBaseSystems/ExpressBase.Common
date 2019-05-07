@@ -5,8 +5,8 @@ in dependantroles_str text
 )
 BEGIN
 declare a integer;
-drop temporary table if exists temp_array_table;
-drop temporary table if exists dependantroles_tmp;
+DROP TEMPORARY TABLE IF EXISTS temp_array_table;
+DROP TEMPORARY TABLE IF EXISTS dependantroles_tmp;
 
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value integer);
         
@@ -20,7 +20,7 @@ CREATE TEMPORARY TABLE IF NOT EXISTS dependantroles_tmp SELECT `value` FROM temp
         er2r.role1_id = rid AND er2r.eb_del = 'F' AND er2r.role2_id IN
             (select * from (SELECT er2r1.role2_id from eb_role2role er2r1 WHERE er2r1.role1_id = rid and er2r1.eb_del = 'F'
        and  er2r1.role2_id not in 
-            (select `value` from dependantroles_tmp))as a) ;
+            (SELECT `value` FROM dependantroles_tmp))as a) ;
 
     INSERT INTO eb_role2role 
         (role2_id, role1_id, createdby, createdat) 

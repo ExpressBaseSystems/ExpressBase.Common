@@ -4,11 +4,12 @@
 
 CREATE TABLE public.eb_survey_master
 (
-    id serial primary key,
+    id serial,
     surveyid integer,
     userid integer,
     anonid integer,
-    eb_createdate timestamp without time zone
+    eb_createdate timestamp without time zone,
+	CONSTRAINT eb_survey_master_pkey PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE

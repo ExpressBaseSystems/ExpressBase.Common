@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_schedules
 (
-    id serial primary key,-- integer NOT NULL DEFAULT nextval('eb_schedules_id_seq'::regclass),
+    id serial,
     task json,
     created_by integer,
     created_at timestamp without time zone,
@@ -13,7 +13,8 @@ CREATE TABLE public.eb_schedules
     triggerkey text COLLATE pg_catalog."default",
     status numeric,
     obj_id numeric,
-    name text COLLATE pg_catalog."default"
+    name text COLLATE pg_catalog."default",
+	CONSTRAINT eb_schedules_pkey PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE

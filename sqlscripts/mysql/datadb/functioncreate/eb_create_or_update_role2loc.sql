@@ -1,12 +1,12 @@
-CREATE DEFINER=`josevin`@`%` PROCEDURE `eb_create_or_update_role2loc`(in rid integer,
+CREATE PROCEDURE eb_create_or_update_role2loc(in rid integer,
 in createdby integer,
 in locations_str text
 -- ,out r3 integer
 )
 BEGIN
 declare a integer;
-drop temporary table if exists temp_array_table;
-drop temporary table if exists location_tmp;
+DROP TEMPORARY TABLE IF EXISTS temp_array_table;
+DROP TEMPORARY TABLE IF EXISTS location_tmp;
 
 CREATE TEMPORARY TABLE temp_array_table(value integer);
 	CALL STR_TO_TBL(locations_str);  

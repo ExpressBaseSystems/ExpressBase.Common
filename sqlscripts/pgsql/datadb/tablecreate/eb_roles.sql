@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_roles
 (
-    id serial primary key,
+    id serial,
     role_name text COLLATE pg_catalog."default" NOT NULL,
     eb_del1 boolean,
     applicationname text COLLATE pg_catalog."default",

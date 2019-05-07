@@ -20,14 +20,14 @@ DECLARE minor integer;
 DECLARE patch integer;
 DECLARE version_number text;
 
-drop temporary table if exists temp_array_table;
-drop temporary table if exists relationsv;
+DROP TEMPORARY TABLE IF EXISTS temp_array_table;
+DROP TEMPORARY TABLE IF EXISTS relationsv;
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value TEXT);
 	CALL STR_TO_TBL(relations);  -- fill to temp_array_table
 	CREATE TEMPORARY TABLE IF NOT EXISTS relationsv SELECT `value` FROM temp_array_table;
     
-drop temporary table if exists apps;
-drop temporary table if exists temp_array_table;
+DROP TEMPORARY TABLE IF EXISTS apps;
+DROP TEMPORARY TABLE IF EXISTS temp_array_table;
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table( value integer);
 	CALL STR_TO_TBL(app_id);  -- fill to temp_array_table
 	CREATE TEMPORARY TABLE IF NOT EXISTS apps SELECT `value` FROM temp_array_table;
@@ -68,23 +68,23 @@ SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, ma
       `value`, id 
       FROM (SELECT `value` from relationsv where `value`
         not in 
-      (select dominant from eb_objects_relations 
+      (SELECT dominant FROM eb_objects_relations 
                             WHERE dependant = id )) as dominantvals;  
 -- application table  
 UPDATE eb_objects2application 
     SET 
         eb_del = 'T', removed_by = commit_uid , removed_at = NOW()
     WHERE 
-        app_id IN(select * from (
-       select app_id from eb_objects2application WHERE obj_id = objid AND eb_del='F' and app_id not in 
-        ( select `value` from apps))as b)
+        app_id IN(SELECT * FROM (
+       SELECT app_id FROM eb_objects2application WHERE obj_id = objid AND eb_del='F' and app_id not in 
+        ( SELECT `value` FROM apps))as b)
 		AND obj_id = objid;
             
         INSERT INTO eb_objects2application (app_id, obj_id) 
         SELECT 
      		`value`, objid
-      	FROM (select `value` from apps where `value` not in
-        (select app_id from eb_objects2application WHERE obj_id = objid AND eb_del='F'))as appvals;
+      	FROM (SELECT `value` FROM apps where `value` not in
+        (SELECT app_id FROM eb_objects2application WHERE obj_id = objid AND eb_del='F'))as appvals;
      
-select committed_refidunique into out_committed_refidunique;
+SELECT committed_refidunique INTO out_committed_refidunique;
 END
