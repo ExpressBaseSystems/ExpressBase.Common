@@ -169,6 +169,8 @@ namespace ExpressBase.Common
 
         public List<ColumnSchema> Columns { set; get; }
 
+        public bool IsGridTable { get; set; }
+
         public TableSchema()
         {
             Columns = new List<ColumnSchema>();
