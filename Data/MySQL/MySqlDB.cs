@@ -37,23 +37,23 @@ namespace ExpressBase.Common
         private MySQLEbDbTypes()
         {
             this.InnerDictionary = new Dictionary<EbDbTypes, VendorDbType>();
-            this.InnerDictionary.Add(EbDbTypes.AnsiString, new VendorDbType(EbDbTypes.AnsiString, MySqlDbType.Text,"text"));
-            this.InnerDictionary.Add(EbDbTypes.Binary, new VendorDbType(EbDbTypes.Binary, MySqlDbType.Binary,"Binary"));
+            this.InnerDictionary.Add(EbDbTypes.AnsiString, new VendorDbType(EbDbTypes.AnsiString, MySqlDbType.Text, "text"));
+            this.InnerDictionary.Add(EbDbTypes.Binary, new VendorDbType(EbDbTypes.Binary, MySqlDbType.Binary, "Binary"));
             this.InnerDictionary.Add(EbDbTypes.Byte, new VendorDbType(EbDbTypes.Byte, MySqlDbType.Byte, "Byte"));
-            this.InnerDictionary.Add(EbDbTypes.Date, new VendorDbType(EbDbTypes.Date, MySqlDbType.Date,"Date"));
-            this.InnerDictionary.Add(EbDbTypes.DateTime, new VendorDbType(EbDbTypes.DateTime, MySqlDbType.Timestamp,"Timestamp"));
-            this.InnerDictionary.Add(EbDbTypes.Decimal, new VendorDbType(EbDbTypes.Decimal, MySqlDbType.Decimal,"Decimal"));
-            this.InnerDictionary.Add(EbDbTypes.Double, new VendorDbType(EbDbTypes.Double, MySqlDbType.Double,"Double"));
-            this.InnerDictionary.Add(EbDbTypes.Int16, new VendorDbType(EbDbTypes.Int16, MySqlDbType.Int16,"Int16"));
-            this.InnerDictionary.Add(EbDbTypes.Int32, new VendorDbType(EbDbTypes.Int32, MySqlDbType.Int32,"Int32"));
-            this.InnerDictionary.Add(EbDbTypes.Int64, new VendorDbType(EbDbTypes.Int64, MySqlDbType.Int64,"Int64"));
-            this.InnerDictionary.Add(EbDbTypes.Object, new VendorDbType(EbDbTypes.Object, MySqlDbType.JSON,"Json"));
-            this.InnerDictionary.Add(EbDbTypes.String, new VendorDbType(EbDbTypes.String, MySqlDbType.Text,"Text"));
-            this.InnerDictionary.Add(EbDbTypes.Time, new VendorDbType(EbDbTypes.Time, MySqlDbType.Time,"Time"));
-            this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, MySqlDbType.LongText,"LongText"));
-            this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, MySqlDbType.JSON,"Json"));
+            this.InnerDictionary.Add(EbDbTypes.Date, new VendorDbType(EbDbTypes.Date, MySqlDbType.Date, "Date"));
+            this.InnerDictionary.Add(EbDbTypes.DateTime, new VendorDbType(EbDbTypes.DateTime, MySqlDbType.Timestamp, "Timestamp"));
+            this.InnerDictionary.Add(EbDbTypes.Decimal, new VendorDbType(EbDbTypes.Decimal, MySqlDbType.Decimal, "Decimal"));
+            this.InnerDictionary.Add(EbDbTypes.Double, new VendorDbType(EbDbTypes.Double, MySqlDbType.Double, "Double"));
+            this.InnerDictionary.Add(EbDbTypes.Int16, new VendorDbType(EbDbTypes.Int16, MySqlDbType.Int16, "Int16"));
+            this.InnerDictionary.Add(EbDbTypes.Int32, new VendorDbType(EbDbTypes.Int32, MySqlDbType.Int32, "Int32"));
+            this.InnerDictionary.Add(EbDbTypes.Int64, new VendorDbType(EbDbTypes.Int64, MySqlDbType.Int64, "Int64"));
+            this.InnerDictionary.Add(EbDbTypes.Object, new VendorDbType(EbDbTypes.Object, MySqlDbType.JSON, "Json"));
+            this.InnerDictionary.Add(EbDbTypes.String, new VendorDbType(EbDbTypes.String, MySqlDbType.Text, "Text"));
+            this.InnerDictionary.Add(EbDbTypes.Time, new VendorDbType(EbDbTypes.Time, MySqlDbType.Time, "Time"));
+            this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, MySqlDbType.LongText, "LongText"));
+            this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, MySqlDbType.JSON, "Json"));
             this.InnerDictionary.Add(EbDbTypes.Bytea, new VendorDbType(EbDbTypes.Bytea, MySqlDbType.Blob, "bytea"));
-            this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, MySqlDbType.VarChar,"Varchar"));
+            this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, MySqlDbType.VarChar, "Varchar"));
         }
 
         public static IVendorDbTypes Instance => new MySQLEbDbTypes();
@@ -76,8 +76,6 @@ namespace ExpressBase.Common
 
     public class MySqlDB : IDatabase
     {
-
-
         public DatabaseVendors Vendor
         {
             get
@@ -95,7 +93,7 @@ namespace ExpressBase.Common
         }
 
         private const string CONNECTION_STRING_BARE = "Server={0}; Port={1}; Database={2}; Uid={3}; Pwd={4}; SslMode=None; Allow User Variables=True;";
-     
+
         private string _cstr;
         private EbDbConfig DbConfig { get; set; }
         public string DBName { get; }
@@ -128,7 +126,7 @@ namespace ExpressBase.Common
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type, object value)
         {
-            return new MySqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = value , Direction = ParameterDirection.Input };
+            return new MySqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = value, Direction = ParameterDirection.Input };
         }
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type)
@@ -165,7 +163,6 @@ namespace ExpressBase.Common
                 }
                 catch (MySqlException myexce)
                 {
-
                     throw myexce;
                 }
                 catch (SocketException scket) { }
@@ -176,45 +173,40 @@ namespace ExpressBase.Common
 
         public EbDataTable DoQuery(string query, params DbParameter[] parameters)
         {
-                if(query.Contains(":"))
-                {
-                    query = query.Replace(":", "@");
-                }
-                EbDataTable dt = new EbDataTable();
+            if(query.Contains(":"))
+            {
+                query = query.Replace(":", "@");
+            }
+            EbDataTable dt = new EbDataTable();
 
-                using (var con = GetNewConnection() as MySqlConnection)
+            using (var con = GetNewConnection() as MySqlConnection)
+            {
+                try
                 {
-                    try
+                    con.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, con))
                     {
-                        con.Open();
-                        using (MySqlCommand cmd = new MySqlCommand(query, con))
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            if (parameters != null && parameters.Length > 0)
-                                cmd.Parameters.AddRange(parameters);
-
-                            using (var reader = cmd.ExecuteReader())
-                            {
-                                
-                                DataTable schema = reader.GetSchemaTable();
-                                this.AddColumns(dt, schema);
-                                PrepareDataTable(reader, dt);
-
-                               
-                            }
-                            
+                            DataTable schema = reader.GetSchemaTable();
+                            this.AddColumns(dt, schema);
+                            PrepareDataTable(reader, dt);
                         }
                     }
-                    catch (MySqlException myexce)
-                    {
-
-                        throw myexce;
-                    }
-                    catch (SocketException scket)
-                    {
-                    }
                 }
+                catch (MySqlException myexce)
+                {
+                    throw myexce;
+                }
+                catch (SocketException scket)
+                {
+                }
+            }
 
-                return dt; 
+            return dt;
         }
 
         public EbDataTable DoProcedure(string query, params DbParameter[] parameters)
@@ -235,9 +227,8 @@ namespace ExpressBase.Common
                         cmd.Parameters.AddRange(parameters);
                         var reader = cmd.ExecuteNonQuery();
 
-
                         tbl.Rows.Add(new EbDataRow());
-                        int i = 0; 
+                        int i = 0;
                         foreach (var param in parameters)
                         {
                             if (param.Direction == ParameterDirection.Output)
@@ -254,7 +245,7 @@ namespace ExpressBase.Common
 
                 }
             }
-                return null;
+            return null;
         }
 
         public DbDataReader DoQueriesBasic(string query, params DbParameter[] parameters)
@@ -278,7 +269,6 @@ namespace ExpressBase.Common
             }
             catch (MySqlException myexce)
             {
-
                 throw myexce;
             }
             catch (SocketException scket) { }
@@ -301,7 +291,6 @@ namespace ExpressBase.Common
                 try
                 {
                     for (int i = 0; i < qry_ary.Length && qry_ary[i] != string.Empty && qry_ary[i] != " "; i++)
-                    
                     {
                         using (MySqlCommand cmd = new MySqlCommand(qry_ary[i], con))
                         {
@@ -318,7 +307,6 @@ namespace ExpressBase.Common
                             }
                             cmd.Parameters.Clear();
                         }
-                        
                     }
                 }
                 catch(Exception e)
@@ -327,8 +315,7 @@ namespace ExpressBase.Common
                 }
                 con.Close();
             }
-            
-                return ds;
+            return ds;
         }
 
         //public EbDataSet DoQueries(string query, params DbParameter[] parameters)
@@ -381,7 +368,7 @@ namespace ExpressBase.Common
                 {
                     if (query.Contains(":"))
                     {
-                         query = query.Replace(":", "@");
+                        query = query.Replace(":", "@");
                     }
                     con.Open();
                     using (MySqlCommand cmd = new MySqlCommand(query, con))
@@ -394,7 +381,6 @@ namespace ExpressBase.Common
                 }
                 catch (MySqlException myexce)
                 {
-
                     throw myexce;
                 }
                 catch (SocketException scket) { }
@@ -452,7 +438,6 @@ namespace ExpressBase.Common
                 column.ColumnIndex = pos++;
 
                 dt.Columns.Add(column);
-
             }
         }
 
@@ -510,7 +495,6 @@ namespace ExpressBase.Common
             }
         }
 
-
         public bool IsTableExists(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as MySqlConnection)
@@ -528,7 +512,6 @@ namespace ExpressBase.Common
                 }
                 catch (MySqlException myexce)
                 {
-
                     throw myexce;
                 }
                 catch (SocketException scket) { }
@@ -547,16 +530,16 @@ namespace ExpressBase.Common
                     con.Open();
                     using (MySqlCommand cmd = new MySqlCommand(query, con))
                     {
-                         xx = cmd.ExecuteNonQuery();
+                        xx = cmd.ExecuteNonQuery();
                     }
                 }
                 catch (MySqlException myexce)
                 {
-
                     throw myexce;
                 }
                 catch (SocketException scket) { }
             }
+
             return xx;
         }
 
@@ -577,7 +560,6 @@ namespace ExpressBase.Common
                 }
                 catch (MySqlException myexce)
                 {
-
                     throw myexce;
                 }
                 catch (SocketException scket) { }
@@ -603,7 +585,6 @@ namespace ExpressBase.Common
                 }
                 catch (MySqlException myexce)
                 {
-
                     throw myexce;
                 }
                 catch (SocketException scket) { }
@@ -691,7 +672,6 @@ namespace ExpressBase.Common
                                 EbDataColumn column = new EbDataColumn(columnName, ConvertToDbType(type));
                                 column.ColumnIndex = pos++;
                                 cols.Add(column);
-
                             }
                         }
                     }
@@ -705,7 +685,7 @@ namespace ExpressBase.Common
             }
             return cols;
         }
-        
+
         public string EB_AUTHETICATE_USER_NORMAL { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @tmp_userid, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraintstatus);"; } }
 
         public string EB_AUTHENTICATEUSER_SOCIAL { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @tmp_userid, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraintstatus);"; } }
@@ -782,7 +762,7 @@ namespace ExpressBase.Common
                         WHERE R.applicationid = A.id AND A.eb_del = 'F';";
             }
         }
-        
+
         public string EB_GETMANAGEROLESRESPONSE_QUERY { get { return @"
                     SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY applicationname;
                     SELECT DISTINCT EO.id, EO.obj_name, EO.obj_type, EO2A.app_id
@@ -813,7 +793,7 @@ namespace ExpressBase.Common
                                                             @fbname, @roles, @groups, @statusid, @hide ,@anonymoususerid, @preference, @out_uid);"; } }
 
         public string EB_SAVEUSERGROUP_QUERY { get { return "eb_createormodifyusergroup(@userid, @id, @name, @description, @users, @ipconstrnw, @ipconstrold, @dtconstrnw, @dtconstrold, @out_gid);"; } }
-        
+
         public string EB_USER_ROLE_PRIVS { get { return "SELECT DISTINCT privilege_type FROM information_schema.USER_PRIVILEGES WHERE grantee = \"'@uname'@'%'\""; } }
 
         public string EB_INITROLE2USER { get { return "INSERT INTO eb_role2user(role_id, user_id, createdat) VALUES (@role_id, @user_id, now());"; } }
@@ -956,7 +936,7 @@ namespace ExpressBase.Common
         {
             get
             {
-                return "call eb_get_tagged_object(@tags);";
+                return @"eb_get_tagged_object(@tags);";
             }
         }
         public string EB_GET_ALL_COMMITTED_VERSION_LIST
@@ -1038,7 +1018,7 @@ namespace ExpressBase.Common
                 ";
             }
         }
-        
+
         public string EB_GET_MLSEARCHRESULT
         {
             get
@@ -1065,8 +1045,7 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"
-                            SELECT DISTINCT
+                return @"SELECT DISTINCT
                                 EOV.refid, EO.obj_name
                             FROM
                                 eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EOTA
@@ -1083,8 +1062,7 @@ namespace ExpressBase.Common
                                 )  AND
                                 EOTA.app_id = @appid AND
                                 EOTA.eb_del = 'F'
-                                AND COALESCE( EO.eb_del, 'F') = 'F';
-                        ";
+                                AND COALESCE( EO.eb_del, 'F') = 'F';";
             }
         }
         public string IS_TABLE_EXIST
@@ -1139,16 +1117,14 @@ namespace ExpressBase.Common
         {
             get
             {
-                return " eb_object_create_minor_version(@id, @obj_type, @commit_uid, @src_pid, @cur_pid, @relations, @committed_refidunique)";
+                return "eb_object_create_minor_version(@id, @obj_type, @commit_uid, @src_pid, @cur_pid, @relations, @committed_refidunique)";
             }
         }
         public string EB_CHANGE_STATUS_OBJECT
         {
             get
             {
-                return @"  
-                    select eb_objects_change_status(@id, @status, @commit_uid, @obj_changelog)
-                ";
+                return @"SELECT eb_objects_change_status(@id, @status, @commit_uid, @obj_changelog)";
             }
         }
         public string EB_PATCH_VERSION_OF_OBJECT
