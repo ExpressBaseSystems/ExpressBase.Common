@@ -19,11 +19,12 @@ declare nwstart datetime default now();
 declare nwend datetime default now();
 declare nwdays int;
  set gid=id;
+
 DROP TEMPORARY TABLE IF EXISTS temp_array_table;
 DROP TEMPORARY TABLE IF EXISTS users;
-CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(id int auto_increment primary key, value integer);
+CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value integer);
 	CALL STR_TO_TBL(users);  -- fill to temp_array_table
-	CREATE TEMPORARY TABLE IF NOT EXISTS users SELECT id,`value` FROM temp_array_table;
+	CREATE TEMPORARY TABLE IF NOT EXISTS users SELECT `value` FROM temp_array_table;
  
     DROP TEMPORARY TABLE IF EXISTS ipdel;
 	CALL STR_TO_TBL(ipconstrold);  -- fill to temp_array_table
@@ -68,20 +69,81 @@ ELSE
     	FROM (select `value` from users) AS userid;
 
 END IF;
+if(ipconstrnw !="") then
+
+DROP TEMPORARY TABLE IF EXISTS temp_array_table;
+DROP TABLE IF EXISTS nwip_temp;
+	SELECT i1.`value` FROM ipnew i1 WHERE i1.id=1 INTO @tmp_nwip;
+CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value text);
+	CALL STR_TO_TBL(@tmp_nwip);
+	CREATE TABLE IF NOT EXISTS nwip_temp(id integer auto_increment primary key, value text) 
+		SELECT `value` FROM temp_array_table;
+
+DROP TABLE IF EXISTS nwdesc_temp;
+	SELECT i1.`value` FROM ipnew i1 WHERE i1.id=2 INTO @tmp_nwips;
+	CALL STR_TO_TBL(@tmp_nwips);
+	CREATE TABLE IF NOT EXISTS nwdesc_temp(id integer auto_increment primary key, value text) 
+		SELECT `value` FROM temp_array_table;
 
 INSERT INTO eb_constraints_ip(usergroup_id, ip, description, eb_created_by, eb_created_at, eb_del)
-	select gid, a.nwip, a.nwdesc, userid, NOW(), 'F' from (
-    select i1.`value` as nwip,i2.`value` as nwdesc from ipnew i1,ipnew i2 where i1.id=1 and i2.id=2)as a;
+	select gid, n.nwip, n.nwdesc, userid, NOW(), 'F' from (
+    select i1.`value` as nwip,i2.`value` as nwdesc from nwip_temp i1,nwdesc_temp i2 WHERE i1.id = i2.id)as n;
+    
+end if;   
 
+if(dtconstrnw !="") then
+DROP TABLE IF EXISTS nwtitle_temp;
+	SELECT d1.`value` FROM dtnew d1 WHERE d1.id=1 into @tmp_nwtitle;
+	CALL STR_TO_TBL(@tmp_nwtitle);
+	CREATE TABLE IF NOT EXISTS nwtitle_temp(id integer auto_increment primary key, value text)
+		SELECT `value` FROM temp_array_table;
+
+DROP TABLE IF EXISTS nwdescd_temp;
+	SELECT d1.`value` FROM dtnew d1 WHERE d1.id=2 into @tmp_nwdescd;
+	CALL STR_TO_TBL(@tmp_nwdescd);
+	CREATE TABLE IF NOT EXISTS nwdescd_temp(id integer auto_increment primary key, value text)
+		SELECT `value` FROM temp_array_table;
+
+DROP TEMPORARY TABLE IF EXISTS temp_array_table;
+DROP TABLE IF EXISTS nwtype_temp;
+CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value text);
+	SELECT d1.`value` FROM dtnew d1 WHERE d1.id=3 into @tmp_nwtype;
+	CALL STR_TO_TBL(@tmp_nwtype);
+	CREATE TABLE IF NOT EXISTS nwtype_temp(id integer auto_increment primary key, value text)
+		SELECT `value` FROM temp_array_table;
+
+DROP TABLE IF EXISTS nwdays_temp;
+	SELECT d1.`value` FROM dtnew d1 WHERE d1.id=6 into @tmp_nwdays;
+	CALL STR_TO_TBL(@tmp_nwdays);
+	CREATE TABLE IF NOT EXISTS nwdays_temp(id integer auto_increment primary key, value text)
+		SELECT `value` FROM temp_array_table;
+
+DROP TEMPORARY TABLE IF EXISTS temp_array_table;
+DROP TABLE IF EXISTS nwstart_temp;
+CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value text);
+	SELECT d1.`value` FROM dtnew d1 WHERE d1.id=4 into @tmp_nwstart;
+	CALL STR_TO_TBL(@tmp_nwstart);
+	CREATE TABLE IF NOT EXISTS nwstart_temp(id integer auto_increment primary key, value text)
+		SELECT `value` FROM temp_array_table;
+    
+DROP TABLE IF EXISTS nwend_temp;
+	SELECT d1.`value` FROM dtnew d1 WHERE d1.id=5 into @tmp_nwend;
+	CALL STR_TO_TBL(@tmp_nwend);
+	CREATE TABLE IF NOT EXISTS nwend_temp(id integer auto_increment primary key, value text)
+		SELECT `value` FROM temp_array_table; 
+ 
 INSERT INTO eb_constraints_datetime(usergroup_id, title, description, type, start_datetime, end_datetime, days_coded, eb_created_by, eb_created_at, eb_del)
-	SELECT gid, b.nwtitle, b.nwdesc1, b.nwtype, b.nwstart, b.nwend, b.nwdays, userid, NOW(), 'F' FROM(
-    SELECT d1.`value` as nwtitle,d2.`value` as nwdesc1,convert(d3.`value`,unsigned int) as nwtype,
-    convert(d4.`value`,datetime) as nwstart,convert(d5.`value`,datetime) as nwend,
-    convert(d6.`value`,unsigned integer) as nwdays
-    FROM dtnew d1,dtnew d2,dtnew d3,dtnew d4,dtnew d5,dtnew d6 WHERE d1.id=1 and d2.id=2 and d3.id=3 and d4.id=4 
-    and d5.id=5 and d6.id=6
-    )as b; 
-	
+	SELECT gid, d.nwtitle, d.nwdescd, d.nwtype, d.nwstart, d.nwend, d.nwdays, userid, NOW(), 'F' FROM(
+    SELECT d1.`value` as nwtitle,d2.`value` as nwdescd,convert(d3.`value`,unsigned int) as nwtype,
+    convert(d4.`value`,datetime) as nwstart,convert(d5.`value`,datetime) as nwend,convert(d6.`value`,unsigned int) as nwdays
+    FROM nwtitle_temp d1,nwdescd_temp d2,nwtype_temp d3,nwstart_temp d4,nwend_temp d5,nwdays_temp d6
+    WHERE d1.id = d2.id AND d1.id = d3.id AND d1.id = d4.id AND d1.id = d5.id AND d1.id = d6.id 
+    AND d2.id = d3.id AND d2.id = d4.id AND d2.id = d5.id AND d2.id = d6.id 
+    AND d3.id = d4.id AND d3.id = d5.id AND d3.id = d6.id 
+    AND d4.id = d5.id AND d4.id = d6.id 
+    AND d5.id = d6.id
+    )as d; 
+end if;	
  SELECT gid into out_gid;
 
 END
