@@ -1,5 +1,4 @@
-CREATE FUNCTION eb_getconstraintstatus(in_userid integer,
-    in_ip text) RETURNS int(11)
+CREATE FUNCTION eb_getconstraintstatus(in_userid integer,in_ip text) RETURNS int(11)
 BEGIN
 DECLARE ipfound BOOL;
 DECLARE countdtc INTEGER;
@@ -9,7 +8,7 @@ declare arrip1 text;
 declare c integer;
 
 -- IP CONSTRAINT
-drop temporary table if exists arrip;
+DROP TEMPORARY TABLE IF EXISTS arrip;
 	CREATE TEMPORARY TABLE IF NOT EXISTS arrip(id int auto_increment primary key, value integer);
     
 	IF in_ip IS NOT NULL THEN

@@ -227,8 +227,9 @@ namespace ExpressBase.Common
 
     public enum WebFormDVModes
     {
-        View_Mode = 0,
-        New_Mode = 1
+        _SELECT_ = 0,
+        View_Mode = 1,
+        New_Mode = 2
     }
 
     public enum RedisOperations

@@ -8,7 +8,8 @@ CREATE TABLE public.eb_audit_lines
     masterid integer,
     fieldname text COLLATE pg_catalog."default",
     oldvalue text COLLATE pg_catalog."default",
-    newvalue text COLLATE pg_catalog."default"
+    newvalue text COLLATE pg_catalog."default",
+	CONSTRAINT eb_audit_lines_pkey PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE

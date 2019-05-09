@@ -8,7 +8,8 @@ CREATE TABLE public.eb_query_choices
     q_id integer,
     choice text COLLATE pg_catalog."default",
     eb_del "char" DEFAULT 'F'::"char",
-    score integer
+    score integer,
+	CONSTRAINT eb_query_choices_pkey PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE

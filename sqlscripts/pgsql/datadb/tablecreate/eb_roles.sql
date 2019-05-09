@@ -45,3 +45,4 @@ CREATE UNIQUE INDEX eb_roles_id_idx
     ON public.eb_roles USING btree
     (id)
     TABLESPACE pg_default;
+

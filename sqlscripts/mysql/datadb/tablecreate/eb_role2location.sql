@@ -3,7 +3,7 @@ CREATE TABLE eb_role2location
   id integer NOT NULL auto_increment,
   roleid integer,
   locationid integer,
-  eb_del char DEFAULT 'F',
+  eb_del char(1) DEFAULT 'F',
   eb_createdby integer,
   eb_createdat timestamp DEFAULT CURRENT_TIMESTAMP,
   eb_revokedby integer,

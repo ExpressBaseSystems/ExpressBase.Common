@@ -697,6 +697,30 @@ namespace ExpressBase.Common
             }
         }
 
+        public string EB_GETUSERDETAILS
+        {
+            get
+            {
+                return @"SELECT id,fullname,email FROM eb_users WHERE LOWER(fullname) LIKE LOWER('%' || :searchtext || '%') AND eb_del = 'F' ORDER BY fullname ASC;";
+            }
+        }
+
+        public string EB_CREATEAPPLICATION
+        {
+            get
+            {
+                return @"INSERT INTO eb_applications (applicationname,application_type, description,app_icon) VALUES (:applicationname,:apptype, :description,:appicon) RETURNING id";
+            }
+        }
+
+        public string EB_CREATEAPPLICATION_DEV
+        {
+            get
+            {
+                return @"INSERT INTO eb_applications (applicationname,application_type, description,app_icon) VALUES (:applicationname,:apptype, :description,:appicon) RETURNING id;";
+            }
+        }
+
         //.......OBJECTS QUERIES.....
         public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
         {
@@ -867,6 +891,28 @@ namespace ExpressBase.Common
                 ";
             }
         }
+
+        public string EB_GET_MLSEARCHRESULT
+        {
+            get
+            {
+                return @"SELECT count(*) FROM (SELECT * FROM eb_keys WHERE LOWER(key) LIKE LOWER(@KEY)) AS Temp;
+											SELECT A.id, A.key, B.id, B.language, C.id, C.value
+											FROM (SELECT * FROM eb_keys WHERE LOWER(key) LIKE LOWER(@KEY) ORDER BY key ASC OFFSET @OFFSET LIMIT @LIMIT) A,
+													eb_languages B, eb_keyvalue C
+											WHERE A.id=C.key_id AND B.id=C.lang_id  
+											ORDER BY A.key ASC, B.language ASC;";
+            }
+        }
+
+        public string EB_MLADDKEY
+        {
+            get
+            {
+                return @"INSERT INTO eb_keys (key) VALUES(@KEY) RETURNING id;";
+            }
+        }
+              
         public string EB_GET_TAGGED_OBJECTS
         {
             get
@@ -998,6 +1044,14 @@ namespace ExpressBase.Common
             get
             {
                 return @"";
+            }
+        }
+
+        public string EB_SAVELOCATION
+        {
+            get
+            {
+                return @"INSERT INTO eb_locations(longname,shortname,image,meta_json) VALUES(:lname,:sname,:img,:meta) RETURNING id;";
             }
         }
 

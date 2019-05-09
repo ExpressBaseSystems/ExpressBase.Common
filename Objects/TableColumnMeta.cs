@@ -25,6 +25,8 @@ namespace ExpressBase.Common
 
         public string DataRel { get; set; }
 
+        public string TableName { get; set; }
+
         public AuditTrailEntry() { }
     }
 
@@ -166,6 +168,8 @@ namespace ExpressBase.Common
         public string ParentTable { get; set; }
 
         public List<ColumnSchema> Columns { set; get; }
+
+        public bool IsGridTable { get; set; }
 
         public TableSchema()
         {

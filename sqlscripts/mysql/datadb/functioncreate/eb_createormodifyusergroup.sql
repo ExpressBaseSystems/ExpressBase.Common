@@ -1,84 +1,87 @@
-﻿CREATE PROCEDURE eb_createormodifyusergroup(IN _userid integer,
-    IN _id integer,
-    IN _name text,
-    IN _description text,
-    IN _users text,
-    IN _ipconstr_new text,
-    IN _ipconstr_old text,
-    IN _dtconstr_new text,
-    IN _dtconstr_old text,
+﻿CREATE PROCEDURE eb_createormodifyusergroup(IN userid integer,
+    IN id integer,
+    IN name text,
+    IN description text,
+    IN users text,
+    IN ipconstrnw text,
+    IN ipconstrold text,
+    IN dtconstrnw text,
+    IN dtconstrold text,
     OUT out_gid integer)
 BEGIN
 DECLARE gid integer;
-
-drop temporary table if exists temp_array_table;
-drop temporary table if exists users;
+declare nwip text;
+declare nwdesc text;
+declare nwtitle text;
+declare nwdesc1 text;
+declare nwtype int;
+declare nwstart datetime default now();
+declare nwend datetime default now();
+declare nwdays int;
+ set gid=id;
+DROP TEMPORARY TABLE IF EXISTS temp_array_table;
+DROP TEMPORARY TABLE IF EXISTS users;
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(id int auto_increment primary key, value integer);
-	CALL STR_TO_TBL(_users);  -- fill to temp_array_table
+	CALL STR_TO_TBL(users);  -- fill to temp_array_table
 	CREATE TEMPORARY TABLE IF NOT EXISTS users SELECT id,`value` FROM temp_array_table;
  
-     drop temporary table if exists ipdel;
-	CALL STR_TO_TBL(_ipconstr_old);  -- fill to temp_array_table
+    DROP TEMPORARY TABLE IF EXISTS ipdel;
+	CALL STR_TO_TBL(ipconstrold);  -- fill to temp_array_table
 	CREATE TEMPORARY TABLE IF NOT EXISTS ipdel SELECT `value` FROM temp_array_table;    
    
-   drop temporary table if exists dtdel;
-  	CALL STR_TO_TBL(_dtconstr_old);  -- fill to temp_array_table
+   DROP TEMPORARY TABLE IF EXISTS dtdel;
+  	CALL STR_TO_TBL(dtconstrold);  -- fill to temp_array_table
 	CREATE TEMPORARY TABLE IF NOT EXISTS dtdel SELECT `value` FROM temp_array_table;    
-    
+     
+	DROP TEMPORARY TABLE IF EXISTS temp_array_table;
+	DROP TABLE IF EXISTS ipnew;
+CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value TEXT);
+	CALL STR_TO_TBL_GRP(ipconstrnw);  -- fill to temp_array_table
+	CREATE TABLE IF NOT EXISTS ipnew(id int auto_increment primary key,value text) SELECT `value` FROM temp_array_table;    
  
-	drop temporary table if exists temp_array_table;
-	drop table if exists ipnew;
-CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(id int auto_increment primary key,value TEXT);
-	CALL STR_TO_TBL(_ipconstr_new);  -- fill to temp_array_table
-	CREATE TABLE IF NOT EXISTS ipnew SELECT id,`value` FROM temp_array_table;    
- 
-    drop table if exists dtnew;
-	CALL STR_TO_TBL(_dtconstr_new);  -- fill to temp_array_table
-	CREATE TABLE IF NOT EXISTS dtnew SELECT id,`value` FROM temp_array_table;    
- 
-  
-set gid=_id;
-
-    IF _id > 0 THEN
-	UPDATE eb_usergroup SET name=_name, description=_description WHERE id=_id;
-	INSERT INTO eb_user2usergroup(userid,groupid,createdby,createdat) SELECT `value`,_id,_userid,NOW() FROM 
-   		(select `value` from users where `value` not in 
-			(SELECT userid from eb_user2usergroup WHERE groupid = _id AND eb_del = 'F')) AS userid;
-	UPDATE eb_user2usergroup SET eb_del = 'T',revokedby = _userid,revokedat =NOW() WHERE groupid = _id AND eb_del = 'F' AND userid IN(
-		select * from (SELECT userid from eb_user2usergroup WHERE groupid = _id AND eb_del = 'F' and userid not in 
+    DROP TABLE IF EXISTS dtnew;
+	CALL STR_TO_TBL_GRP(dtconstrnw);  -- fill to temp_array_table
+	CREATE TABLE IF NOT EXISTS dtnew(id int auto_increment primary key,value text) SELECT `value` FROM temp_array_table;    
+   
+    IF id > 0 THEN
+   
+	UPDATE eb_usergroup eu SET eu.name=name, eu.description=description WHERE eu.id=id;
+	INSERT INTO eb_user2usergroup(userid,groupid,createdby,createdat) SELECT `value`,id,userid,NOW() FROM 
+   		(SELECT `value` FROM users WHERE `value` NOT IN 
+			(SELECT eu2g2.userid from eb_user2usergroup eu2g2 WHERE eu2g2.groupid = id AND eu2g2.eb_del = 'F')) AS userid;
+	UPDATE eb_user2usergroup eu2g SET eu2g.eb_del = 'T',eu2g.revokedby = userid,eu2g.revokedat =NOW() WHERE eu2g.groupid = id 
+		AND eu2g.eb_del = 'F' AND eu2g.userid IN(
+		SELECT * FROM (SELECT eu2g1.userid FROM eb_user2usergroup eu2g1 WHERE eu2g1.groupid = id AND eu2g1.eb_del = 'F' and eu2g1.userid not in 
 	 (select `value` from users))as a);
-	SET SQL_SAFE_UPDATES=0;
-	UPDATE eb_constraints_ip SET eb_del = 'T', eb_revoked_by = _userid, eb_revoked_at = NOW()
-		WHERE usergroup_id = _id AND eb_del = 'F' AND id IN(select `value` from ipdel);
-		
-	UPDATE eb_constraints_datetime SET eb_del = 'T', eb_revoked_by = _userid, eb_revoked_at = NOW()
-		WHERE usergroup_id = _id AND eb_del = 'F' AND id IN(SELECT `value` from dtdel);
+	-- SET SQL_SAFE_UPDATES=0;
+	UPDATE eb_constraints_ip eci SET eci.eb_del = 'T', eci.eb_revoked_by = userid, eci.eb_revoked_at = NOW()
+		WHERE eci.usergroup_id = id AND eci.eb_del = 'F' AND eci.id IN(select `value` from ipdel);
+		-- SET SQL_SAFE_UPDATES=0;
+	UPDATE eb_constraints_datetime ecd SET ecd.eb_del = 'T', ecd.eb_revoked_by = userid, ecd.eb_revoked_at = NOW()
+		WHERE ecd.usergroup_id = id AND ecd.eb_del = 'F' AND ecd.id IN(SELECT `value` from dtdel);
 
 ELSE
 
-	INSERT INTO eb_usergroup (name,description,eb_del) VALUES (_name,_description,'F') ;
+	INSERT INTO eb_usergroup (name,description,eb_del) VALUES (name,description,'F') ;
     select last_insert_id() INTO gid;
-	INSERT INTO eb_user2usergroup(userid,groupid,createdby,createdat) SELECT `value`, gid,_userid,NOW() 
+	INSERT INTO eb_user2usergroup(userid,groupid,createdby,createdat) SELECT `value`, gid,userid,NOW() 
     	FROM (select `value` from users) AS userid;
 
 END IF;
 
 INSERT INTO eb_constraints_ip(usergroup_id, ip, description, eb_created_by, eb_created_at, eb_del)
-	SELECT gid, nwip.nwip, nwdesc.nwdesc, _userid, NOW(), 'F'
-		FROM  ( (select `value` as nwip from ipnew where id=2) as nwip, (select `value` as nwdesc from ipnew where id=3)as nwdesc ) ;
+	select gid, a.nwip, a.nwdesc, userid, NOW(), 'F' from (
+    select i1.`value` as nwip,i2.`value` as nwdesc from ipnew i1,ipnew i2 where i1.id=1 and i2.id=2)as a;
 
 INSERT INTO eb_constraints_datetime(usergroup_id, title, description, type, start_datetime, end_datetime, days_coded, eb_created_by, eb_created_at, eb_del)
-	SELECT gid, nwtitle, nwdesc, nwtype, nwstart, nwend, nwdays, _userid, NOW(), 'F' 
-		FROM ((select `value` as nwtitle from dtnew where id=2)as nwtitle,
-					(select `value` as nwdesc from dtnew where id=3)as nwdesc,
-					(select convert(`value`,unsigned int) as nwtype from dtnew where id=4)as nwtype,
-					(select convert(`value`,datetime) as nwstart from dtnew where id=5)as nwstart,
-					(select convert(`value`,datetime) as nwend from dtnew where id=6)as nwend,
-					(select convert(`value`,unsigned integer) as nwdays from dtnew where id=7)as nwdays
-					);
-	drop table if exists ipnew;
-    drop table if exists dtnew;
-
+	SELECT gid, b.nwtitle, b.nwdesc1, b.nwtype, b.nwstart, b.nwend, b.nwdays, userid, NOW(), 'F' FROM(
+    SELECT d1.`value` as nwtitle,d2.`value` as nwdesc1,convert(d3.`value`,unsigned int) as nwtype,
+    convert(d4.`value`,datetime) as nwstart,convert(d5.`value`,datetime) as nwend,
+    convert(d6.`value`,unsigned integer) as nwdays
+    FROM dtnew d1,dtnew d2,dtnew d3,dtnew d4,dtnew d5,dtnew d6 WHERE d1.id=1 and d2.id=2 and d3.id=3 and d4.id=4 
+    and d5.id=5 and d6.id=6
+    )as b; 
+	
  SELECT gid into out_gid;
 
 END

@@ -3,14 +3,14 @@
     IN social text,
     IN wc text,
     IN ipaddress text,
-    out userid1 integer,
-    out email1 text,
-    out fullname1 text,
-    out roles_a1 TEXT,
-	out rolename_a1 TEXT,
-	out permissions1 TEXT,
-	out preferencesjson1 text,
-	out constraintstatus1 TEXT
+    out tmp_userid integer,
+    out tmp_email text,
+    out tmp_fullname text,
+    out tmp_roles_a TEXT,
+	out tmp_rolename_a TEXT,
+	out tmp_permissions TEXT,
+	out tmp_preferencesjson text,
+	out tmp_constraintstatus TEXT
     )
 BEGIN
 DECLARE userid INTEGER;
@@ -50,15 +50,12 @@ If ipaddress ='' then set ipaddress=null; end if;
     call eb_getroles(userid, wc,@roless,@role_names);
         SELECT @roless, @role_names INTO roles_a, rolename_a;
 
-        call eb_getpermissions(roles_a,@out_permission);-- INTO permissions;
+        call eb_getpermissions(roles_a,@out_permission);
 		select @out_permission into permissions;
 		SELECT eb_getconstraintstatus(userid, ipaddress)  INTO constraintstatus;
-  drop temporary table if exists eb_authenticate_unified_tmp;
- CREATE temporary table eb_authenticate_unified_tmp  
-         SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson, constraintstatus ;
-         -- into userid1, email1, fullname1, roles_a1, rolename_a1, permissions1, preferencesjson1, constraintstatus1;
-		         SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson, constraintstatus
-                 from eb_authenticate_unified_tmp into userid1, email1, fullname1, roles_a1, rolename_a1, permissions1, preferencesjson1, constraintstatus1;
+  
+  SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson, constraintstatus 
+         into tmp_userid, tmp_email, tmp_fullname, tmp_roles_a, tmp_rolename_a, tmp_permissions, tmp_preferencesjson, tmp_constraintstatus;
    	
     END IF;
 END

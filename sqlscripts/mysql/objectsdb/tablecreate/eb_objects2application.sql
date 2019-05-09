@@ -6,7 +6,7 @@
   eb_del1 boolean DEFAULT false,
   removed_by int,
   removed_at timestamp,
-  eb_del char NOT NULL DEFAULT 'F',
+  eb_del char(1) DEFAULT 'F',
   CONSTRAINT eb_objects2application_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F'),
   CONSTRAINT eb_objects2application_pkey PRIMARY KEY(id)
 );

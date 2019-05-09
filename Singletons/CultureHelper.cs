@@ -1,7 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using ExpressBase.Common.Helpers;
+using Newtonsoft.Json;
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Text;
 
 namespace ExpressBase.Common.Singletons
 {
@@ -37,6 +40,27 @@ namespace ExpressBase.Common.Singletons
 				return mycultures;
 			}
 		}
+
+        private static Dictionary<string, SerializedCulture> cultureinfos = new Dictionary<string, SerializedCulture>();
+
+        public static SerializedCulture GetCultureInfo(string CultureName)
+        {            
+            if (!cultureinfos.ContainsKey(CultureName))
+            {
+                var Serialized = new JsonSerializer();
+                using (var Stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("ExpressBase.Common.cultures." + CultureName.ToLower() + ".json"))
+                {
+                    if (Stream == null)
+                        return null;
+                    using (var StreamReader = new StreamReader(Stream, System.Text.Encoding.UTF32))
+                    using (var JsonTextReader = new JsonTextReader(StreamReader))
+                    {
+                        cultureinfos.Add(CultureName, Serialized.Deserialize<SerializedCulture>(JsonTextReader));
+                    }
+                }
+            }
+            return cultureinfos[CultureName];
+        }
 
 		public static string __culturesAsJson = null;
 		public static string CulturesAsJson
@@ -203,33 +227,7 @@ namespace ExpressBase.Common.Singletons
 				return __timezonesAsJson;
 			}
 		}
-
-        //return time difference in timespan between utc and given timezone
-        //To convert utc to another timezone then pass Negate as true - assumption: Using DateTime.Add()
-        //To convert time in given timezone to utc then neglect Negate paremeter - assumption: Using DateTime.Add()
-        public static TimeSpan GetDifference(string TimeZoneName, bool Negate = false)
-		{
-			int _hour = 0, _min = 0;
-			int op = Negate ? -1 : 1;
-			try
-			{
-				if (TimeZoneName.Length > 10)
-				{
-					if (TimeZoneName.Substring(4, 1).Equals("+"))
-					{
-						op *= -1;
-					}
-					_hour = Convert.ToInt32(TimeZoneName.Substring(5, 2)) * op;
-					_min = Convert.ToInt32(TimeZoneName.Substring(8, 2)) * op;
-				}				
-			}
-			catch(Exception ex)
-			{
-				Console.WriteLine("Exception in GetTimeSpanDifference : " + ex.Message); 
-			}
-			
-			return new TimeSpan(_hour, _min, 0);
-		}
+        
 	}
 
 	public class Culture
@@ -245,4 +243,31 @@ namespace ExpressBase.Common.Singletons
 	{
 		public string Name { get; set; }
 	}
+
+
+    //public static class CultureJsonBuilder
+    //{
+    //    public static void ExportCultures()
+    //    {
+    //        foreach (var Culture in System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures))
+    //        {
+    //            if (!string.IsNullOrEmpty(Culture.Name))
+    //                ExportCulture(Culture);
+    //        }
+    //    }
+    //    static void ExportCulture(System.Globalization.CultureInfo Culture)
+    //    {
+    //        var Details = new SerializedCulture
+    //        {
+    //            NumberFormatInfo = new SerializedNumberFormatInfo(),
+    //            DateTimeFormatInfo = new SerializedDateTimeFormatInfo()
+    //        };
+    //        Details.NumberFormatInfo.PopulateFromCultureInfo(Culture);
+    //        Details.DateTimeFormatInfo.PopulateFromCultureInfo(Culture);
+    //        var JSON = Newtonsoft.Json.JsonConvert.SerializeObject(Details, Newtonsoft.Json.Formatting.None);
+    //        System.IO.Directory.CreateDirectory(System.IO.Path.Combine(System.AppContext.BaseDirectory, "culturestest"));
+    //        System.IO.File.WriteAllText(System.IO.Path.Combine(System.AppContext.BaseDirectory, "culturestest", Culture.Name.ToLower() + ".json"), JSON, System.Text.Encoding.UTF32);
+    //    }
+    //}
+
 }

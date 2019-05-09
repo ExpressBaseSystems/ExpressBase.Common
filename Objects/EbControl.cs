@@ -42,6 +42,10 @@ namespace ExpressBase.Common.Objects
         public virtual string ContextId { get; set; }
 
         [HideInPropertyGrid]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
+        public string DBareHtml { get; set; }
+
+        [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string ChildOf { get; set; }
 
@@ -228,19 +232,19 @@ else
         public virtual string GetDisplayMemberJSfn { get { return @"return this.getValue();"; } set { } }
 
         [JsonIgnore]
-        public virtual string IsRequiredOKJSfn { get { return @"return !isNaNOrEmpty(this.getValue());"; } set { } }
+        public virtual string IsRequiredOKJSfn { get { return @"return !this.isInVisibleInUI ? !isNaNOrEmpty(this.getValue()) : true;"; } set { } }
 
         [JsonIgnore]
-        public virtual string SetValueJSfn { get { return @"$('#' + this.EbSid_CtxId).val(p1);"; } set { } }
+        public virtual string SetValueJSfn { get { return @"$('#' + this.EbSid_CtxId).val(p1).trigger('change');"; } set { } }
 
         [JsonIgnore]
         public virtual string SetDisplayMemberJSfn { get { return @"return this.setValue(p1);"; } set { } }
 
         [JsonIgnore]
-        public virtual string HideJSfn { get { return @"$('#cont_' + this.EbSid_CtxId).hide(300);"; } set { } }
+        public virtual string HideJSfn { get { return @"$('#cont_' + this.EbSid_CtxId).hide(300); this.isInVisibleInUI = true;"; } set { } }
 
         [JsonIgnore]
-        public virtual string ShowJSfn { get { return @"$('#cont_' + this.EbSid_CtxId).show(300);"; } set { } }
+        public virtual string ShowJSfn { get { return @"$('#cont_' + this.EbSid_CtxId).show(300); this.isInVisibleInUI = false;"; } set { } }
 
         [JsonIgnore]
         public virtual string EnableJSfn { get { return @"$('#cont_' + this.EbSid_CtxId + ' *').prop('disabled',false).css('pointer-events', 'inherit').find('[ui-inp]').css('background-color', '#fff');"; } set { } }
@@ -360,7 +364,7 @@ else
         public string Name { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        public bool IsDisabled { get; set; }
+        public virtual bool IsDisabled { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual bool IsWarningOnly { get; set; }

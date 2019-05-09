@@ -8,7 +8,8 @@ CREATE TABLE public.eb_audit_master
     formid text COLLATE pg_catalog."default",
     eb_createdby integer,
     eb_createdat timestamp without time zone,
-	dataid integer
+	dataid integer,
+	CONSTRAINT eb_audit_masters_pkey PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE

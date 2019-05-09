@@ -9,7 +9,8 @@ CREATE TABLE public.eb_surveys
     startdate timestamp without time zone,
     enddate timestamp without time zone,
     status integer,
-    questions text COLLATE pg_catalog."default"
+    questions text COLLATE pg_catalog."default",
+	CONSTRAINT eb_surveys_pkey PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE

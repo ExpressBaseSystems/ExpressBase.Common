@@ -61,11 +61,10 @@ FROM
 WHERE 
 	eb_objects_id=_id AND working_mode='T';
 
- select group_concat(EA.applicationname,',') INTO app_id from eb_objects2application E2O ,eb_applications EA where 
+ SELECT group_concat(EA.applicationname,',') INTO app_id FROM eb_objects2application E2O ,eb_applications EA WHERE 
  obj_id = _id and E2O.eb_del = 'F' and EA.id = E2O.app_id ;
  
- 
- -- one working copy	
+  -- one working copy	
 IF no_of_workcopies = 1 THEN
 	SELECT 
 			EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc,
@@ -135,7 +134,7 @@ SELECT
 		AND EOV.id = (SELECT MAX(EOV.id) FROM eb_objects_ver EOV WHERE EOV.eb_objects_id = _id AND working_mode='T')
 		AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS, eb_objects_ver EOV WHERE EOS.eb_obj_ver_id = (SELECT MAX(EOV.id) FROM eb_objects_ver EOV WHERE EOV.eb_objects_id = _id AND working_mode='T') AND EOV.working_mode='T');
 END IF;
--- drop temporary table if exists eb_objects_getversiontoopen_tmp;
+
 select
     idv, namev, typev, status, description, changelog, commitat, commitby, refidv, ver_num, COALESCE(work_mode,'F') , workingcopies,
 	json_wc, json_lc, major_ver, minor_ver, patch_ver, tags, app_id, dispnamev, is_log 
