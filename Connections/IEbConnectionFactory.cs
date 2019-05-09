@@ -20,7 +20,7 @@ namespace ExpressBase.Common.Data
 
         IDatabase ObjectsDBRW { get; }
 
-        List<INoSQLDatabase> FilesDB { get; }
+        FilesCollection FilesDB { get; }
 
         IDatabase LogsDB { get; }
 

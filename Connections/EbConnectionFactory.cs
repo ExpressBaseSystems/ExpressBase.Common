@@ -29,7 +29,7 @@ namespace ExpressBase.Common.Data
 
         public IDatabase ObjectsDBRW { get; private set; }
 
-        public List<INoSQLDatabase> FilesDB { get; private set; }
+        public FilesCollection FilesDB { get; private set; }
 
         public IDatabase LogsDB { get; private set; }
 
@@ -55,6 +55,7 @@ namespace ExpressBase.Common.Data
         {
             get
             {
+
                 if (_connections == null && !string.IsNullOrEmpty(this.SolutionId))
                 {
                     if (this.SolutionId == CoreConstants.EXPRESSBASE)
@@ -126,7 +127,9 @@ namespace ExpressBase.Common.Data
         {
             if (this.Connections != null)
             {
-
+                string _userName = Connections.DataDbConfig.UserName;
+                string _passWord = Connections.DataDbConfig.Password;
+                
                 // DATA DB 
                 if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
                     DataDB = new PGSQLDatabase(Connections.DataDbConfig);
@@ -147,7 +150,8 @@ namespace ExpressBase.Common.Data
                     else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
                         DataDBRO = new MySqlDB(Connections.DataDbConfig);
                 }
-
+                else if (DataDBRO == null)
+                    DataDBRO = DataDB;
 
                 // DATA DB RW
                 if (!(string.IsNullOrEmpty(Connections.DataDbConfig.ReadWriteUserName) || string.IsNullOrEmpty(Connections.DataDbConfig.ReadWritePassword)))
@@ -155,17 +159,22 @@ namespace ExpressBase.Common.Data
                     Connections.DataDbConfig.UserName = Connections.DataDbConfig.ReadWriteUserName;
                     Connections.DataDbConfig.Password = Connections.DataDbConfig.ReadWritePassword;
                     if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
-                        DataDBRO = new PGSQLDatabase(Connections.DataDbConfig);
+                        DataDBRW = new PGSQLDatabase(Connections.DataDbConfig);
                     else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
-                        DataDBRO = new OracleDB(Connections.DataDbConfig);
+                        DataDBRW = new OracleDB(Connections.DataDbConfig);
                     else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
-                        DataDBRO = new MySqlDB(Connections.DataDbConfig);
+                        DataDBRW = new MySqlDB(Connections.DataDbConfig);
                 }
+                else if (DataDBRW == null)
+                    DataDBRW = DataDB;
 
                 //OBJECTS DB
                 if (Connections.ObjectsDbConfig == null)
+                {
+                    Connections.DataDbConfig.UserName =_userName;
+                    Connections.DataDbConfig.Password = _passWord;
                     Connections.ObjectsDbConfig = Connections.DataDbConfig;
-
+                }
                 if (Connections.ObjectsDbConfig != null && Connections.ObjectsDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
                     ObjectsDB = new PGSQLDatabase(Connections.ObjectsDbConfig);
                 else if (Connections.ObjectsDbConfig != null && Connections.ObjectsDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
@@ -179,13 +188,14 @@ namespace ExpressBase.Common.Data
                     Connections.DataDbConfig.UserName = Connections.DataDbConfig.ReadOnlyUserName;
                     Connections.DataDbConfig.Password = Connections.DataDbConfig.ReadOnlyPassword;
                     if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
-                        DataDBRO = new PGSQLDatabase(Connections.DataDbConfig);
+                        ObjectsDBRO = new PGSQLDatabase(Connections.DataDbConfig);
                     else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
-                        DataDBRO = new OracleDB(Connections.DataDbConfig);
+                        ObjectsDBRO = new OracleDB(Connections.DataDbConfig);
                     else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
-                        DataDBRO = new MySqlDB(Connections.DataDbConfig);
+                        ObjectsDBRO = new MySqlDB(Connections.DataDbConfig);
                 }
-
+                else if (ObjectsDBRO == null)
+                    ObjectsDBRO = ObjectsDB;
 
                 // OBJECTS DB RW
                 if (!(string.IsNullOrEmpty(Connections.DataDbConfig.ReadWriteUserName) || string.IsNullOrEmpty(Connections.DataDbConfig.ReadWritePassword)))
@@ -193,44 +203,58 @@ namespace ExpressBase.Common.Data
                     Connections.DataDbConfig.UserName = Connections.DataDbConfig.ReadWriteUserName;
                     Connections.DataDbConfig.Password = Connections.DataDbConfig.ReadWritePassword;
                     if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
-                        DataDBRO = new PGSQLDatabase(Connections.DataDbConfig);
+                        ObjectsDBRW = new PGSQLDatabase(Connections.DataDbConfig);
                     else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
-                        DataDBRO = new OracleDB(Connections.DataDbConfig);
+                        ObjectsDBRW = new OracleDB(Connections.DataDbConfig);
                     else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
-                        DataDBRO = new MySqlDB(Connections.DataDbConfig);
+                        ObjectsDBRW = new MySqlDB(Connections.DataDbConfig);
                 }
-
-
+                else if (ObjectsDBRW == null)
+                    ObjectsDBRW = ObjectsDB;
 
                 // LOGS DB
                 LogsDB = new PGSQLDatabase(EbConnectionsConfigProvider.InfraConnections.LogsDbConnection);
 
 
                 //Files DB
-                FilesDB = new List<INoSQLDatabase>();
-
+                FilesDB = new FilesCollection();
+                bool IsDefaultConIdCorrect = false;
                 if (Connections.FilesDbConfig == null)
                     Connections.FilesDbConfig = new FilesConfigCollection();
-                if (Connections.FilesDbConfig.Count == 0)
-                    Connections.FilesDbConfig.Add(Connections.DataDbConfig);
-                for (int i = 0; i < Connections.FilesDbConfig.Count; i++)
+                if (Connections.FilesDbConfig.Integrations.Count == 0)
                 {
-                    if (Connections.FilesDbConfig[i].Type == EbIntegrations.MongoDB)
-                        FilesDB.Add(new MongoDBDatabase(this.SolutionId, Connections.FilesDbConfig[i] as EbMongoConfig));
-                    else if (Connections.FilesDbConfig[i].Type == EbIntegrations.PGSQL)
-                        FilesDB.Add(new PGSQLFileDatabase(Connections.FilesDbConfig[i] as PostgresConfig));
-                    else if (Connections.FilesDbConfig[i].Type == EbIntegrations.ORACLE)
-                        FilesDB.Add(new OracleFilesDB(Connections.FilesDbConfig[i] as OracleConfig));
-                    //else if (Connections.FilesDbConfig[i].Type == EbIntegrations.MYSQL)
-                    //    FilesDB.Add(new MySQLFilesDB(Connections.FilesDbConfig[i] as MySqlConfig));
+                    Connections.DataDbConfig.UserName = _userName;
+                    Connections.DataDbConfig.Password = _passWord;
+                    Connections.FilesDbConfig.Integrations.Add(Connections.DataDbConfig);
+                    FilesDB.DefaultConId = Connections.DataDbConfig.Id;
                 }
-
+                else
+                {
+                    for (int i = 0; i < Connections.FilesDbConfig.Integrations.Count; i++)
+                    {
+                        if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.MongoDB)
+                            FilesDB.Add(new MongoDBDatabase(this.SolutionId, Connections.FilesDbConfig.Integrations[i] as EbMongoConfig));
+                        else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.PGSQL)
+                            FilesDB.Add(new PGSQLFileDatabase(Connections.FilesDbConfig.Integrations[i] as PostgresConfig));
+                        else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.ORACLE)
+                            FilesDB.Add(new OracleFilesDB(Connections.FilesDbConfig.Integrations[i] as OracleConfig));
+                        //else if (Connections.FilesDbConfig[i].Type == EbIntegrations.MYSQL)
+                        //    FilesDB.Add(new MySQLFilesDB(Connections.FilesDbConfig[i] as MySqlConfig));
+                        if (Connections.FilesDbConfig.DefaultConId == Connections.FilesDbConfig.Integrations[i].Id)
+                            IsDefaultConIdCorrect = true;
+                    }
+                    if (IsDefaultConIdCorrect)
+                        FilesDB.DefaultConId = Connections.FilesDbConfig.DefaultConId;
+                    else
+                        throw new Exception("DefaultConId doesn't found in the files-config list..!!");
+                }
+                //EmailConfigs
                 if (Connections.EmailConfigs != null)
                 {
                     EmailConnection = new EbMailConCollection(Connections.EmailConfigs);
                 }
                 if (Connections.SMSConfigs != null)
-                {                    
+                {
                     SMSConnection = new EbSmsConCollection(Connections.SMSConfigs);
                 }
 
