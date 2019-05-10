@@ -35,14 +35,14 @@ CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value integer);
 	CREATE TEMPORARY TABLE IF NOT EXISTS dtdel SELECT `value` FROM temp_array_table;    
      
 	DROP TEMPORARY TABLE IF EXISTS temp_array_table;
-	DROP TABLE IF EXISTS ipnew;
+	DROP temporary TABLE IF EXISTS ipnew;
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value TEXT);
 	CALL STR_TO_TBL_GRP(ipconstrnw);  -- fill to temp_array_table
-	CREATE TABLE IF NOT EXISTS ipnew(id int auto_increment primary key,value text) SELECT `value` FROM temp_array_table;    
+	CREATE temporary TABLE IF NOT EXISTS ipnew(id int auto_increment primary key,value text) SELECT `value` FROM temp_array_table;    
  
     DROP TABLE IF EXISTS dtnew;
 	CALL STR_TO_TBL_GRP(dtconstrnw);  -- fill to temp_array_table
-	CREATE TABLE IF NOT EXISTS dtnew(id int auto_increment primary key,value text) SELECT `value` FROM temp_array_table;    
+	CREATE temporary TABLE IF NOT EXISTS dtnew(id int auto_increment primary key,value text) SELECT `value` FROM temp_array_table;    
    
     IF id > 0 THEN
    
@@ -71,18 +71,18 @@ ELSE
 END IF;
 if(ipconstrnw !="") then
 
-DROP TEMPORARY TABLE IF EXISTS temp_array_table;
-DROP TABLE IF EXISTS nwip_temp;
-	SELECT i1.`value` FROM ipnew i1 WHERE i1.id=1 INTO @tmp_nwip;
-CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value text);
+	DROP TEMPORARY TABLE IF EXISTS temp_array_table;
+	DROP TEMPORARY TABLE IF EXISTS nwip_temp;
+		SELECT i1.`value` FROM ipnew i1 WHERE i1.id=1 INTO @tmp_nwip;
+	CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value text);
 	CALL STR_TO_TBL(@tmp_nwip);
-	CREATE TABLE IF NOT EXISTS nwip_temp(id integer auto_increment primary key, value text) 
+	CREATE TEMPORARY TABLE IF NOT EXISTS nwip_temp(id integer auto_increment primary key, value text) 
 		SELECT `value` FROM temp_array_table;
 
-DROP TABLE IF EXISTS nwdesc_temp;
+	DROP TEMPORARY TABLE IF EXISTS nwdesc_temp;
 	SELECT i1.`value` FROM ipnew i1 WHERE i1.id=2 INTO @tmp_nwips;
 	CALL STR_TO_TBL(@tmp_nwips);
-	CREATE TABLE IF NOT EXISTS nwdesc_temp(id integer auto_increment primary key, value text) 
+	CREATE TEMPORARY TABLE IF NOT EXISTS nwdesc_temp(id integer auto_increment primary key, value text) 
 		SELECT `value` FROM temp_array_table;
 
 INSERT INTO eb_constraints_ip(usergroup_id, ip, description, eb_created_by, eb_created_at, eb_del)
@@ -92,44 +92,42 @@ INSERT INTO eb_constraints_ip(usergroup_id, ip, description, eb_created_by, eb_c
 end if;   
 
 if(dtconstrnw !="") then
-DROP TABLE IF EXISTS nwtitle_temp;
+	DROP TEMPORARY TABLE IF EXISTS temp_array_table;
+	DROP TEMPORARY TABLE IF EXISTS nwtitle_temp;
+	CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value text);
 	SELECT d1.`value` FROM dtnew d1 WHERE d1.id=1 into @tmp_nwtitle;
 	CALL STR_TO_TBL(@tmp_nwtitle);
-	CREATE TABLE IF NOT EXISTS nwtitle_temp(id integer auto_increment primary key, value text)
+	CREATE TEMPORARY TABLE IF NOT EXISTS nwtitle_temp(id integer auto_increment primary key, value text)
 		SELECT `value` FROM temp_array_table;
 
-DROP TABLE IF EXISTS nwdescd_temp;
+DROP TEMPORARY TABLE IF EXISTS nwdescd_temp;
 	SELECT d1.`value` FROM dtnew d1 WHERE d1.id=2 into @tmp_nwdescd;
 	CALL STR_TO_TBL(@tmp_nwdescd);
-	CREATE TABLE IF NOT EXISTS nwdescd_temp(id integer auto_increment primary key, value text)
+	CREATE TEMPORARY TABLE IF NOT EXISTS nwdescd_temp(id integer auto_increment primary key, value text)
 		SELECT `value` FROM temp_array_table;
 
-DROP TEMPORARY TABLE IF EXISTS temp_array_table;
-DROP TABLE IF EXISTS nwtype_temp;
-CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value text);
+DROP TEMPORARY TABLE IF EXISTS nwtype_temp;
 	SELECT d1.`value` FROM dtnew d1 WHERE d1.id=3 into @tmp_nwtype;
 	CALL STR_TO_TBL(@tmp_nwtype);
-	CREATE TABLE IF NOT EXISTS nwtype_temp(id integer auto_increment primary key, value text)
+	CREATE TEMPORARY TABLE IF NOT EXISTS nwtype_temp(id integer auto_increment primary key, value text)
 		SELECT `value` FROM temp_array_table;
 
-DROP TABLE IF EXISTS nwdays_temp;
+DROP TEMPORARY TABLE IF EXISTS nwdays_temp;
 	SELECT d1.`value` FROM dtnew d1 WHERE d1.id=6 into @tmp_nwdays;
 	CALL STR_TO_TBL(@tmp_nwdays);
-	CREATE TABLE IF NOT EXISTS nwdays_temp(id integer auto_increment primary key, value text)
+	CREATE TEMPORARY TABLE IF NOT EXISTS nwdays_temp(id integer auto_increment primary key, value text)
 		SELECT `value` FROM temp_array_table;
 
-DROP TEMPORARY TABLE IF EXISTS temp_array_table;
-DROP TABLE IF EXISTS nwstart_temp;
-CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value text);
+DROP TEMPORARY TABLE IF EXISTS nwstart_temp;
 	SELECT d1.`value` FROM dtnew d1 WHERE d1.id=4 into @tmp_nwstart;
 	CALL STR_TO_TBL(@tmp_nwstart);
-	CREATE TABLE IF NOT EXISTS nwstart_temp(id integer auto_increment primary key, value text)
+	CREATE TEMPORARY TABLE IF NOT EXISTS nwstart_temp(id integer auto_increment primary key, value text)
 		SELECT `value` FROM temp_array_table;
     
-DROP TABLE IF EXISTS nwend_temp;
+DROP TEMPORARY TABLE IF EXISTS nwend_temp;
 	SELECT d1.`value` FROM dtnew d1 WHERE d1.id=5 into @tmp_nwend;
 	CALL STR_TO_TBL(@tmp_nwend);
-	CREATE TABLE IF NOT EXISTS nwend_temp(id integer auto_increment primary key, value text)
+	CREATE TEMPORARY TABLE IF NOT EXISTS nwend_temp(id integer auto_increment primary key, value text)
 		SELECT `value` FROM temp_array_table; 
  
 INSERT INTO eb_constraints_datetime(usergroup_id, title, description, type, start_datetime, end_datetime, days_coded, eb_created_by, eb_created_at, eb_del)
