@@ -461,12 +461,12 @@ namespace ExpressBase.Security
             {
                 try
                 {
-                    return MomentJSHelpers.GenerateMomentJSFormatString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureHelper.GetCultureInfo(this.Locale));
+                    return MomentJSHelpers.GenerateMomentJSFormatString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureHelper.GetCultureInfo(this.Locale)).ReplaceAll("[", "").ReplaceAll("]", "");
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine("Exception thrown when tried to get short date PATTERN .............. : " + ex.Message);
-                    return "YYYY[-]MM[-]DD";
+                    return "YYYY-MM-DD";
                 }
             }
         }
@@ -477,8 +477,8 @@ namespace ExpressBase.Security
             {                
                 try
                 {
-                    return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-                    //return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureInfo.InvariantCulture);                    
+                    //return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureInfo.InvariantCulture);                    
                 }
                 catch (Exception ex)
                 {
@@ -488,23 +488,23 @@ namespace ExpressBase.Security
             }
         }
 
-        [DataMember(Order = 7)]
+        [DataMember(Order = 8)]
         public string ShortTimePattern
         {
             get
             {
                 try
                 {
-                    return MomentJSHelpers.GenerateMomentJSFormatString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern, CultureHelper.GetCultureInfo(this.Locale));
+                    return MomentJSHelpers.GenerateMomentJSFormatString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern, CultureHelper.GetCultureInfo(this.Locale)).ReplaceAll("[", "").ReplaceAll("]", "");
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine("Exception thrown when tried to get short time PATTERN .............. : " + ex.Message);
-                    return "HH[ ]mm";
+                    return "HH mm";
                 }
             }
         }
-        [DataMember(Order = 8)]
+        [DataMember(Order = 9)]
         public string ShortTime
         {
             get
