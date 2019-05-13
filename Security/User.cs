@@ -442,37 +442,20 @@ namespace ExpressBase.Security
 
 		[DataMember(Order = 3)]
 		public int DefaultLocation { get; set; }
-
-        [DataMember(Order = 4)]
-        public string ShortDatePattern
+        
+        public string GetShortDatePattern()
         {
-            get
-            {
-                return "yyyy-MM-dd";
-                //try
-                //{
-                //    return CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern;
-                //}
-                //catch (Exception ex)
-                //{
-                //    Console.WriteLine("Exception thrown when tried to get short date pattern : " + ex.Message);
-                //    return "yyyy-MM-dd";
-                //}
-            }
+            return CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern;
         }
 
-        [DataMember(Order = 5)]
-        public string ShortDate
+        public string GetShortTimePattern()
         {
-            get
-            {
-                return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(this.ShortDatePattern, CultureInfo.InvariantCulture);
-            }
+            return CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern;
         }
 
         //----------------------------------Cultures json Test-----------------------------------
         [DataMember(Order = 6)]
-        public string ShortDatePatternTest
+        public string ShortDatePattern
         {
             get
             {
@@ -482,30 +465,31 @@ namespace ExpressBase.Security
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Exception thrown when tried to get short date PATTERN test.............. : " + ex.Message);
+                    Console.WriteLine("Exception thrown when tried to get short date PATTERN .............. : " + ex.Message);
                     return "YYYY[-]MM[-]DD";
                 }
             }
         }
         [DataMember(Order = 7)]
-        public string ShortDateTest
+        public string ShortDate
         {
             get
             {                
                 try
                 {
-                    return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureInfo.InvariantCulture);                    
+                    return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    //return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureInfo.InvariantCulture);                    
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Exception thrown when tried to get short DATE test................. : " + ex.Message);
+                    Console.WriteLine("Exception thrown when tried to get short DATE ................. : " + ex.Message);
                     return DateTime.UtcNow.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
                 }
             }
         }
 
         [DataMember(Order = 7)]
-        public string ShortTimePatternTest
+        public string ShortTimePattern
         {
             get
             {
@@ -515,13 +499,13 @@ namespace ExpressBase.Security
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Exception thrown when tried to get short time PATTERN test.............. : " + ex.Message);
+                    Console.WriteLine("Exception thrown when tried to get short time PATTERN .............. : " + ex.Message);
                     return "HH[ ]mm";
                 }
             }
         }
         [DataMember(Order = 8)]
-        public string ShortTimeTest
+        public string ShortTime
         {
             get
             {
@@ -531,8 +515,8 @@ namespace ExpressBase.Security
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Exception thrown when tried to get short TIME test................. : " + ex.Message);
-                    return DateTime.UtcNow.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    Console.WriteLine("Exception thrown when tried to get short TIME ................. : " + ex.Message);
+                    return DateTime.UtcNow.ToString("hh:mm tt", CultureInfo.InvariantCulture);
                 }
             }
         }
