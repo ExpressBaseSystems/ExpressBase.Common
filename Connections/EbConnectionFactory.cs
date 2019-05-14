@@ -129,7 +129,7 @@ namespace ExpressBase.Common.Data
             {
                 string _userName = Connections.DataDbConfig.UserName;
                 string _passWord = Connections.DataDbConfig.Password;
-                
+
                 // DATA DB 
                 if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
                     DataDB = new PGSQLDatabase(Connections.DataDbConfig);
@@ -171,7 +171,7 @@ namespace ExpressBase.Common.Data
                 //OBJECTS DB
                 if (Connections.ObjectsDbConfig == null)
                 {
-                    Connections.DataDbConfig.UserName =_userName;
+                    Connections.DataDbConfig.UserName = _userName;
                     Connections.DataDbConfig.Password = _passWord;
                     Connections.ObjectsDbConfig = Connections.DataDbConfig;
                 }
@@ -225,7 +225,7 @@ namespace ExpressBase.Common.Data
                 {
                     Connections.DataDbConfig.UserName = _userName;
                     Connections.DataDbConfig.Password = _passWord;
-                    Connections.FilesDbConfig.Integrations.Add(Connections.DataDbConfig);
+                    FilesDB.Add(new PGSQLFileDatabase(Connections.DataDbConfig));
                     FilesDB.DefaultConId = Connections.DataDbConfig.Id;
                 }
                 else
