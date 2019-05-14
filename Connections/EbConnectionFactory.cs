@@ -248,6 +248,8 @@ namespace ExpressBase.Common.Data
                     else
                         throw new Exception("DefaultConId doesn't found in the files-config list..!!");
                 }
+                Console.WriteLine("Files DB Collection Count(Init DB) : " + FilesDB.Count);
+
                 //EmailConfigs
                 if (Connections.EmailConfigs != null)
                 {
