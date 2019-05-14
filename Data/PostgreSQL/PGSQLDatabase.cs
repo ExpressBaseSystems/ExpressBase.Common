@@ -1114,6 +1114,8 @@ namespace ExpressBase.Common
 
         public string UploadFile(string filename, byte[] bytea, EbFileCategory cat)
         {
+            Console.WriteLine("Before PostGre Upload File");
+
             int rtn = 0;
             try
             {
@@ -1132,6 +1134,7 @@ namespace ExpressBase.Common
             {
                 Console.WriteLine("Exception :  " + npg.Message);
             }
+            Console.WriteLine("After PostGre Upload File , fileStore id: " + rtn.ToString());
             return rtn.ToString();
         }
     }
