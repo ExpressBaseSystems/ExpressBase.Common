@@ -175,6 +175,7 @@ namespace ExpressBase.Common.Connections
         public virtual EbIntegrations Type { get; }
 
         public bool IsDefault { get; set; }
+
         public int PersistIntegrationConf(string Sol_Id, EbConnectionFactory infra, int UserId)
         {
             string query = @"INSERT INTO eb_integration_configs (solution_id, nickname, type, con_obj, created_by, created_at, eb_del) 
@@ -260,6 +261,7 @@ namespace ExpressBase.Common.Connections
     {
         public override EbIntegrations Type { get { return EbIntegrations.MYSQL; } }
     }
+
     public class EbSmsConfig : EbIntegrationConf
     {
         public string UserName { get; set; }
