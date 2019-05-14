@@ -70,7 +70,7 @@ namespace ExpressBase.Common.Data
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in Upload File");
+                Console.WriteLine("Error in Upload File" + e.Message + "\nStack Trace: "+ e.StackTrace);
                 return null;
             }
             
