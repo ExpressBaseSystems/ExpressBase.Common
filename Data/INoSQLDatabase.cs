@@ -1,4 +1,5 @@
 ﻿using ExpressBase.Common.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace ExpressBase.Common.Data
@@ -52,11 +53,21 @@ namespace ExpressBase.Common.Data
 
         public string UploadFile(string filename, byte[] bytea, EbFileCategory category, int _infraConId)
         {
-            if (_infraConId == 0)
+            Console.WriteLine("Inside Upload FilesDB Collection");
+
+            try
             {
-                _infraConId = DefaultConId;
+                if (_infraConId == 0)
+                {
+                    _infraConId = DefaultConId;
+                }
+                this.UsedConId = _infraConId;
+
             }
-            this.UsedConId = _infraConId;
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Upload File");
+            }
             return this[this.UsedConId].UploadFile(filename, bytea, category);
         }
 
