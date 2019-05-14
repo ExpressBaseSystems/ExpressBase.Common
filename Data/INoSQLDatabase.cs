@@ -55,6 +55,9 @@ namespace ExpressBase.Common.Data
         {
             Console.WriteLine("Inside Upload FilesDB Collection");
 
+            Console.WriteLine("InfraCon Id: " + _infraConId);
+            Console.WriteLine("Default Con Id: " + DefaultConId);
+
             try
             {
                 if (_infraConId == 0)
@@ -62,13 +65,15 @@ namespace ExpressBase.Common.Data
                     _infraConId = DefaultConId;
                 }
                 this.UsedConId = _infraConId;
-
+                Console.WriteLine("Used Con Id: " + UsedConId);
+                return this[this.UsedConId].UploadFile(filename, bytea, category);
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error in Upload File");
+                return null;
             }
-            return this[this.UsedConId].UploadFile(filename, bytea, category);
+            
         }
 
         public byte[] DownloadFileById(string filestoreid, EbFileCategory category, int _infraConId)
