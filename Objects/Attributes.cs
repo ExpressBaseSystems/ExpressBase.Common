@@ -32,7 +32,9 @@ namespace ExpressBase.Common.Objects.Attributes
         DictionaryEditor = 23,
         CollectionProp = 24,// collection editor - toggles a property (A - B - C)
         DDfromDictProp = 25,
-        CollectionABCpropToggle = 26,// collection editor - toggles a property, disable a prop (A - B - C)
+        CollectionABCpropToggle = 26,// collection editor - toggles a property, disable a prop (A - B - C)(if the property value is true it come)
+        CollectionABCFrmSrc = 27,// collection editor
+        Mapper = 35,// 
         ScriptEditorJS = 64,
         ScriptEditorCS = 128,
         ScriptEditorSQ = 256
@@ -166,31 +168,23 @@ namespace ExpressBase.Common.Objects.Attributes
             this.PropertyEditorType = (int)type1 + (int)type2 + (int)type3;
         }
 
-        public PropertyEditor(PropertyEditorType type, string source):this(type)
+        public PropertyEditor(PropertyEditorType type, string source) : this(type)
         {
-            //this.PropertyEditorType = (int)type;
             this.PropertyEditorSource = source;
         }
 
-        public PropertyEditor(PropertyEditorType type, string source, int limit):this(type, source)
+        public PropertyEditor(PropertyEditorType type, string source, int limit) : this(type, source)
         {
-            //this.PropertyEditorType = (int)type;
-            //this.PropertyEditorSource = source;
             this.Limit = limit;
         }
 
-        public PropertyEditor(PropertyEditorType type, string source, string Dprop):this(type ,source)
+        public PropertyEditor(PropertyEditorType type, string source, string Dprop) : this(type, source)
         {
-            //this.PropertyEditorType = (int)type;
-            //this.PropertyEditorSource = source;
             this.DependantProp = Dprop;
         }
 
-        public PropertyEditor(PropertyEditorType type, string source, string Dprop, string Dprop2):this(type,source, Dprop)
+        public PropertyEditor(PropertyEditorType type, string source, string Dprop, string Dprop2) : this(type, source, Dprop)
         {
-        //    this.PropertyEditorType = (int)type;
-        //    this.PropertyEditorSource = source;
-        //    this.DependantProp = Dprop;
             this.DependantProp2 = Dprop2;
         }
     }

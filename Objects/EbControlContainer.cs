@@ -45,7 +45,7 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.UserControl)]
         [PropertyGroup("Appearance")]
-        [DefaultPropValue("3")]
+        [DefaultPropValue("8")]
         [UIproperty]
         public virtual int Padding { get; set; }
 

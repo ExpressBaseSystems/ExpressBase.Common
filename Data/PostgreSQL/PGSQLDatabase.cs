@@ -660,7 +660,7 @@ namespace ExpressBase.Common
         }
         public string EB_GETMANAGEROLESRESPONSE_QUERY { get { return @"
 									SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY applicationname;
-									SELECT DISTINCT EO.id, EO.obj_name, EO.obj_type, EO2A.app_id
+									SELECT DISTINCT EO.id, EO.display_name, EO.obj_type, EO2A.app_id
 										FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
 										WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3 
 										AND EOS.id = ANY(SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id)
@@ -1414,6 +1414,8 @@ namespace ExpressBase.Common
 
         public string UploadFile(string filename, byte[] bytea, EbFileCategory cat)
         {
+            Console.WriteLine("Before PostGre Upload File");
+
             int rtn = 0;
             try
             {
@@ -1432,6 +1434,7 @@ namespace ExpressBase.Common
             {
                 Console.WriteLine("Exception :  " + npg.Message);
             }
+            Console.WriteLine("After PostGre Upload File , fileStore id: " + rtn.ToString());
             return rtn.ToString();
         }
     }
