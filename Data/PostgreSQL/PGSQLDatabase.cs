@@ -660,7 +660,7 @@ namespace ExpressBase.Common
         }
         public string EB_GETMANAGEROLESRESPONSE_QUERY { get { return @"
 									SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY applicationname;
-									SELECT DISTINCT EO.id, EO.obj_name, EO.obj_type, EO2A.app_id
+									SELECT DISTINCT EO.id, EO.display_name, EO.obj_type, EO2A.app_id
 										FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
 										WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3 
 										AND EOS.id = ANY(SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id)
@@ -721,7 +721,189 @@ namespace ExpressBase.Common
             }
         }
 
-        //.......OBJECTS QUERIES.....
+        public string EB_UNIQUEEMAILCHECK
+        {
+            get
+            {
+                return @"SELECT id FROM eb_users WHERE LOWER(email) LIKE LOWER('%' || :email || '%') AND eb_del = 'F'";
+            }
+        }
+
+        public string EB_GETTABLESCHEMA
+        {
+            get
+            {
+                return @"SELECT ACols.*, BCols.foreign_table_name, BCols.foreign_column_name 
+                        FROM
+                            (SELECT 
+                                TCols.*, CCols.constraint_type 
+                             FROM
+                                (SELECT
+                                    T.table_name, C.column_name, C.data_type
+                                FROM 
+                                    information_schema.tables T,
+                                    information_schema.columns C
+                                WHERE
+                                    T.table_name = C.table_name AND
+                                    T.table_schema='public'
+                                ) TCols
+                            LEFT JOIN
+                                (SELECT 
+                                    TC.table_name,TC.constraint_type,KCU.column_name 
+                                FROM
+                                    information_schema.table_constraints TC,
+                                    information_schema.key_column_usage KCU
+                                WHERE
+                                    TC.constraint_name=KCU.constraint_name AND
+                                    (TC.constraint_type = 'PRIMARY KEY' OR TC.constraint_type = 'FOREIGN KEY') AND
+                                    TC.table_schema='public'
+                                ) CCols
+                             ON 
+                                CCols.table_name=TCols.table_name AND
+                                CCols.column_name=TCols.column_name
+                            ) ACols
+                        LEFT JOIN
+                            (SELECT
+                                tc.constraint_name, tc.table_name, kcu.column_name, 
+                                ccu.table_name AS foreign_table_name,
+                                ccu.column_name AS foreign_column_name 
+                            FROM 
+                                information_schema.table_constraints AS tc 
+                            JOIN 
+                                information_schema.key_column_usage AS kcu
+                            ON 
+                                tc.constraint_name = kcu.constraint_name
+                            JOIN  
+                                information_schema.constraint_column_usage AS ccu
+                            ON 
+                                ccu.constraint_name = tc.constraint_name
+                            WHERE 
+                                constraint_type = 'FOREIGN KEY' AND tc.table_schema='public'
+                            ) BCols
+                            ON
+                                ACols.table_name=BCols.table_name AND  ACols.column_name=BCols.column_name
+                        ORDER BY
+                            table_name, column_name";
+            }
+        }
+
+        public string EB_GETCHART2DETAILS
+        {
+            get
+            {
+                return @"SELECT created_at FROM eb_executionlogs WHERE refid = :refid AND created_at::TIMESTAMP::DATE =current_date";
+            }
+        }
+
+        public string EB_GETPROFILERS
+        {
+            get
+            {
+                return @"SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid = :refid);
+                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid = :refid);
+                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid = :refid AND EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date));
+                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid = :refid AND EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date));
+                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid= :refid and created_at::date = current_date);
+                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid= :refid and created_at::date = current_date);
+                             SELECT COUNT(*) FROM eb_executionlogs WHERE refid = :refid;
+                             SELECT COUNT(*) FROM eb_executionlogs WHERE created_at::date = current_date AND refid = :refid;
+                             SELECT COUNT(*) FROM eb_executionlogs WHERE EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date) and refid = :refid;";
+            }
+        }
+
+        public string EB_GETUSEREMAILS
+        {
+            get
+            {
+                return @"SELECT id, email FROM eb_users WHERE id = ANY
+                             (string_to_array(:userids,',')::int[]);
+                           SELECT distinct id, email FROM eb_users WHERE id = ANY(SELECT userid FROM eb_user2usergroup WHERE 
+                                groupid = ANY(string_to_array(:groupids,',')::int[])) ;";
+            }
+        }
+
+        public string EB_GETPARTICULARSSURVEY
+        {
+            get
+            {
+                return @"SELECT name,startdate,enddate,status FROM eb_surveys WHERE id = :id;
+							SELECT * FROM
+								(SELECT UNNEST(string_to_array(S.questions, ',')::int[]) AS q_id FROM eb_surveys S WHERE id = :id) QUES_IDS, 
+								(SELECT Q.id, Q.query, Q.q_type FROM eb_survey_queries Q) QUES_ANS,
+								(SELECT C.choice,C.score,C.id, C.q_id from eb_query_choices C WHERE eb_del = 'F' ) QUES_QRY
+								WHERE QUES_IDS.q_id = QUES_ANS.id
+									AND QUES_QRY.q_id = QUES_ANS.id";
+            }
+        }
+
+        public string EB_SURVEYMASTER
+        {
+            get
+            {
+                return @"INSERT INTO eb_survey_master(surveyid,userid,anonid,eb_createdate) VALUES(:sid,:uid,:anid,now()) RETURNING id;";
+            }
+        }
+
+        // DBClient
+
+        public string EB_GETDBCLIENTTTABLES
+        {
+            get { return @"
+                SELECT Q1.table_name, Q1.table_schema, i.indexname FROM 
+                (SELECT
+                    table_name, table_schema
+                FROM
+                    information_schema.tables s
+                WHERE
+                    table_schema != 'pg_catalog'
+                    AND table_schema != 'information_schema'
+                    AND table_type='BASE TABLE'
+                    AND table_name NOT LIKE 'eb_%')Q1
+                LEFT JOIN
+                    pg_indexes i
+                ON
+                   Q1.table_name = i.tablename ORDER BY tablename;
+
+                SELECT 
+                    table_name, column_name, data_type
+                FROM
+                    information_schema.columns
+                WHERE
+                    table_schema != 'pg_catalog' AND
+                    table_schema != 'information_schema' AND 
+                    table_name NOT LIKE 'eb_%'
+                ORDER BY table_name;
+
+               SELECT
+                   c.conname AS constraint_name,
+                   c.contype AS constraint_type,
+                   tbl.relname AS tabless,
+                   ARRAY_AGG(col.attname
+                   ORDER BY
+                   u.attposition)
+                   AS columns,
+                   pg_get_constraintdef(c.oid) AS definition
+               FROM 
+                    pg_constraint c
+               JOIN 
+                    LATERAL UNNEST(c.conkey) WITH
+                    ORDINALITY AS u(attnum, attposition) ON TRUE
+               JOIN 
+                    pg_class tbl ON tbl.oid = c.conrelid
+               JOIN 
+                    pg_namespace sch ON sch.oid = tbl.relnamespace
+               JOIN 
+                    pg_attribute col ON(col.attrelid = tbl.oid AND col.attnum = u.attnum)
+               WHERE
+                    tbl.relname NOT LIKE 'eb_%'
+               GROUP BY 
+                    constraint_name, constraint_type, tabless, definition
+               ORDER BY 
+                    tabless;";
+            }
+        }
+
+       //.......OBJECTS QUERIES.....
         public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
         {
             get
@@ -956,6 +1138,43 @@ namespace ExpressBase.Common
             }
         }
 
+        public string Eb_ALLOBJNVER
+        {
+            get
+            {
+                return @"SELECT 
+                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
+                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.refid,
+                            EU.fullname
+                        FROM 
+                            eb_objects EO, eb_objects_ver EOV
+                        LEFT JOIN
+	                        eb_users EU
+                        ON 
+	                        EOV.commit_uid=EU.id
+                        WHERE
+                            EO.id = ANY(string_to_array(:ids,',')::int[]) AND
+                            EO.id = EOV.eb_objects_id AND COALESCE(EOV.working_mode, 'F') <> 'T'
+                        ORDER BY
+                            EO.obj_name; ";
+            }
+        }
+
+        public string EB_CREATELOCATIONCONFIG1Q
+        {
+            get
+            {
+                return @"INSERT INTO eb_location_config (keys,isrequired,keytype,eb_del) VALUES(:keys,:isrequired,:type,'F') RETURNING id; ";
+            }
+        }
+
+        public string EB_CREATELOCATIONCONFIG2Q
+        {
+            get
+            {
+                return @"UPDATE eb_location_config SET keys = :keys ,isrequired = :isrequired , keytype = :type WHERE id = :keyid;";
+            }
+        }
 
         //.....OBJECTS FUNCTION CALL......
         public string EB_CREATE_NEW_OBJECT
@@ -1055,6 +1274,87 @@ namespace ExpressBase.Common
             }
         }
 
+        public string EB_CREATEBOT
+        {
+            get
+            {
+                return @"SELECT * FROM eb_createbot(@solid, @name, @fullname, @url, @welcome_msg, @uid, @botid)";
+            }
+        }
+
+        //....Files query
+
+        public string EB_IMGREFUPDATESQL
+        {
+            get
+            {
+                return @"INSERT INTO eb_files_ref_variations 
+                            (eb_files_ref_id, filestore_sid, length, imagequality_id, is_image, img_manp_ser_con_id, filedb_con_id)
+                         VALUES 
+                            (:refid, :filestoreid, :length, :imagequality_id, :is_image, :imgmanpserid, :filedb_con_id) RETURNING id";
+            }
+        }
+
+        public string EB_DPUPDATESQL
+        {
+            get
+            {
+                return @"INSERT INTO eb_files_ref_variations 
+                            (eb_files_ref_id, filestore_sid, length, imagequality_id, is_image, img_manp_ser_con_id, filedb_con_id)
+                         VALUES 
+                             (:refid, :filestoreid, :length, :imagequality_id, :is_image, :imgmanpserid, :filedb_con_id) RETURNING id;
+                        UPDATE eb_users SET dprefid = :refid WHERE id=:userid";
+            }
+        }
+
+        public string EB_LOGOUPDATESQL
+        {
+            get
+            {
+                return @"INSERT INTO eb_files_ref_variations 
+                            (eb_files_ref_id, filestore_sid, length, imagequality_id, is_image, img_manp_ser_con_id, filedb_con_id)
+                        VALUES 
+                            (:refid, :filestoreid, :length, :imagequality_id, :is_image, :imgmanpserid, :filedb_con_id) RETURNING id;
+                        UPDATE eb_solutions SET logorefid = :refid WHERE isolution_id = :solnid;";
+            }
+        }
+
+        public string Eb_MQ_UPLOADFILE
+        {
+            get
+            {
+                return @"INSERT INTO eb_files_ref_variations 
+                            (eb_files_ref_id, filestore_sid, length, is_image, filedb_con_id)
+                         VALUES 
+                            (:refid, :filestoresid, :length, :is_image, :filedb_con_id) RETURNING id";
+            }
+        }
+
+        public string EB_FILEEXISTS
+        {
+            get
+            {
+                return @"UPDATE eb_image_migration_counter 
+                         SET
+                            is_exist = @exist
+                         WHERE
+                            filename = @fname
+                            AND customer_id = @cid 
+                         RETURNING id";
+            }
+        }
+
+        public string EB_GETFILEREFID
+        {
+            get
+            {
+                return @"INSERT INTO
+                            eb_files_ref (userid, filename, filetype, tags, filecategory) 
+                         VALUES 
+                            (@userid, @filename, @filetype, @tags, @filecategory) 
+                        RETURNING id;";
+            }
+        }
     }
 
     public class PGSQLFileDatabase : PGSQLDatabase, INoSQLDatabase

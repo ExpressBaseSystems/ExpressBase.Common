@@ -23,7 +23,7 @@ namespace ExpressBase.Common
         VendorDbType IVendorDbTypes.Decimal { get { return InnerDictionary[EbDbTypes.Decimal]; } }
         VendorDbType IVendorDbTypes.Double { get { return InnerDictionary[EbDbTypes.Double]; } }
         VendorDbType IVendorDbTypes.Int16 { get { return InnerDictionary[EbDbTypes.Int16]; } }
-        VendorDbType IVendorDbTypes.Int32 { get { return InnerDictionary[EbDbTypes.Int32]; } }
+        VendorDbType IVendorDbTypes.Int32 { get { return InnerDictionary[EbDbTypes.Decimal]; } }
         VendorDbType IVendorDbTypes.Int64 { get { return InnerDictionary[EbDbTypes.Int64]; } }
         VendorDbType IVendorDbTypes.Object { get { return InnerDictionary[EbDbTypes.Object]; } }
         VendorDbType IVendorDbTypes.String { get { return InnerDictionary[EbDbTypes.String]; } }
@@ -31,6 +31,7 @@ namespace ExpressBase.Common
         VendorDbType IVendorDbTypes.VarNumeric { get { return InnerDictionary[EbDbTypes.VarNumeric]; } }
         VendorDbType IVendorDbTypes.Json { get { return InnerDictionary[EbDbTypes.Json]; } }
         VendorDbType IVendorDbTypes.Bytea { get { return InnerDictionary[EbDbTypes.Bytea]; } }
+        //VendorDbType IVendorDbTypes.Boolean { get { return InnerDictionary[EbDbTypes.Boolean]; } } changed bcoz of issue in webform services in tbl crreation
         VendorDbType IVendorDbTypes.Boolean { get { return InnerDictionary[EbDbTypes.Boolean]; } }
         VendorDbType IVendorDbTypes.BooleanOriginal { get { return InnerDictionary[EbDbTypes.BooleanOriginal]; } }
 
@@ -45,7 +46,7 @@ namespace ExpressBase.Common
             this.InnerDictionary.Add(EbDbTypes.Decimal, new VendorDbType(EbDbTypes.Decimal, MySqlDbType.Decimal, "Decimal"));
             this.InnerDictionary.Add(EbDbTypes.Double, new VendorDbType(EbDbTypes.Double, MySqlDbType.Double, "Double"));
             this.InnerDictionary.Add(EbDbTypes.Int16, new VendorDbType(EbDbTypes.Int16, MySqlDbType.Int16, "Int16"));
-            this.InnerDictionary.Add(EbDbTypes.Int32, new VendorDbType(EbDbTypes.Int32, MySqlDbType.Int32, "Int32"));
+            this.InnerDictionary.Add(EbDbTypes.Int32, new VendorDbType(EbDbTypes.Int32, MySqlDbType.Decimal, "Int32"));
             this.InnerDictionary.Add(EbDbTypes.Int64, new VendorDbType(EbDbTypes.Int64, MySqlDbType.Int64, "Int64"));
             this.InnerDictionary.Add(EbDbTypes.Object, new VendorDbType(EbDbTypes.Object, MySqlDbType.JSON, "Json"));
             this.InnerDictionary.Add(EbDbTypes.String, new VendorDbType(EbDbTypes.String, MySqlDbType.Text, "Text"));
@@ -53,7 +54,7 @@ namespace ExpressBase.Common
             this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, MySqlDbType.LongText, "LongText"));
             this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, MySqlDbType.JSON, "Json"));
             this.InnerDictionary.Add(EbDbTypes.Bytea, new VendorDbType(EbDbTypes.Bytea, MySqlDbType.Blob, "bytea"));
-            this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, MySqlDbType.VarChar, "Varchar"));
+            this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, MySqlDbType.VarChar+"(1)", "Varchar"));
         }
 
         public static IVendorDbTypes Instance => new MySQLEbDbTypes();
@@ -173,7 +174,7 @@ namespace ExpressBase.Common
 
         public EbDataTable DoQuery(string query, params DbParameter[] parameters)
         {
-            if(query.Contains(":"))
+            if (query.Contains(":"))
             {
                 query = query.Replace(":", "@");
             }
@@ -215,7 +216,7 @@ namespace ExpressBase.Common
             using (var con = GetNewConnection() as MySqlConnection)
             {
                 int index = query.IndexOf("(");
-                string procedure_name = query.Substring(0,index);
+                string procedure_name = query.Substring(0, index);
                 try
                 {
                     con.Open();
@@ -233,14 +234,14 @@ namespace ExpressBase.Common
                         {
                             if (param.Direction == ParameterDirection.Output)
                             {
-                                tbl.Columns.Add(new EbDataColumn(i++,param.ParameterName,(EbDbTypes)param.DbType));
-                                tbl.Rows[0][param.ParameterName] = cmd.Parameters["@"+ param.ParameterName].Value;
+                                tbl.Columns.Add(new EbDataColumn(i++, param.ParameterName, (EbDbTypes)param.DbType));
+                                tbl.Rows[0][param.ParameterName] = cmd.Parameters["@" + param.ParameterName].Value;
                             }
                         }
                         return tbl;
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
 
                 }
@@ -309,7 +310,7 @@ namespace ExpressBase.Common
                         }
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
 
                 }
@@ -706,13 +707,13 @@ namespace ExpressBase.Common
                     eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A
                 WHERE
                     EOV.eb_objects_id = EO.id
-                    AND EO.id = any (select ':Ids')                  
+                    AND EO.id = any (SELECT ':Ids')                  
                     AND EOS.eb_obj_ver_id = EOV.id
                     AND EO2A.obj_id = EO.id
                     AND EO2A.eb_del = 'F'
                     AND EOS.status = 3
                     AND COALESCE( EO.eb_del, 'F') = 'F'
-                    AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );"; } }
+                    AND EOS.id = ANY( SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id );"; } }
 
         public string EB_SIDEBARDEV_REQUEST { get { return @"
                  SELECT id, applicationname,app_icon FROM eb_applications
@@ -731,7 +732,7 @@ namespace ExpressBase.Common
                         ORDER BY
                             EO.obj_type;"; } }
 
-        public string EB_SIDEBARCHECK { get { return "AND EO.id = any (select ':Ids')"; } }
+        public string EB_SIDEBARCHECK { get { return "AND EO.id = any (SELECT ':Ids')"; } }
 
         public string EB_GETROLESRESPONSE_QUERY
         {
@@ -744,7 +745,7 @@ namespace ExpressBase.Common
                         (SELECT COUNT(distinct permissionname) FROM eb_role2permission RP, eb_objects2application OA WHERE role_id = R.id 
                         AND app_id = A.id AND RP.obj_id = OA.obj_id AND RP.eb_del = 'F' AND OA.eb_del = 'F') AS permission_count
                         FROM eb_roles R, eb_applications A
-                        WHERE R.applicationid = A.id AND A.eb_del = 'F' AND R.role_name like '@searchtext';";
+                        WHERE R.applicationid = A.id AND A.eb_del = 'F' AND R.role_name LIKE '@searchtext';";
             }
         }
 
@@ -765,7 +766,7 @@ namespace ExpressBase.Common
 
         public string EB_GETMANAGEROLESRESPONSE_QUERY { get { return @"
                     SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY applicationname;
-                    SELECT DISTINCT EO.id, EO.obj_name, EO.obj_type, EO2A.app_id
+                    SELECT DISTINCT EO.id, EO.display_name, EO.obj_type, EO2A.app_id
                         FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A
                             WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3
                                 AND EOS.id = ANY(SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id)
@@ -842,6 +843,179 @@ namespace ExpressBase.Common
                         SELECT last_insert_id();";
             }
         }
+
+        public string EB_UNIQUEEMAILCHECK
+        {
+            get
+            {
+                return @"SELECT id FROM eb_users WHERE LOWER(email) LIKE LOWER(concat('%',:email,'%')) AND eb_del = 'F'";
+            }
+        }
+
+        public string EB_GETTABLESCHEMA
+        {
+            get
+            {
+                return @"SELECT 
+                            ACols.*, BCols.foreign_table_name, BCols.foreign_column_name 
+                         FROM
+                            (SELECT 
+                                    TCols.*, CCols.constraint_type FROM
+                                (SELECT
+                                        T.table_name, C.column_name, C.data_type
+                                FROM 
+                                        information_schema.tables T,
+                                        information_schema.columns C
+                                WHERE
+                                        T.table_name = C.table_name 
+                                ) TCols
+                           LEFT JOIN
+                                (SELECT 
+                                    TC.table_name,TC.constraint_type,KCU.column_name 
+                                FROM
+                                    information_schema.table_constraints TC,
+                                    information_schema.key_column_usage KCU
+                                WHERE
+                                    TC.constraint_name=KCU.constraint_name AND
+                                    (TC.constraint_type = 'PRIMARY KEY' OR TC.constraint_type = 'FOREIGN KEY') 
+                                ) CCols
+                             ON 
+                                CCols.table_name=TCols.table_name AND
+                                CCols.column_name=TCols.column_name) ACols
+                    LEFT JOIN
+                            (SELECT
+                                tc.constraint_name, tc.table_name, kcu.column_name, 
+                                kcu.REFERENCED_TABLE_NAME AS foreign_table_name,
+                                kcu.REFERENCED_COLUMN_NAME AS foreign_column_name 
+                            FROM 
+                                information_schema.table_constraints AS tc 
+                            JOIN 
+                                information_schema.key_column_usage AS kcu
+                            ON 
+                                tc.constraint_name = kcu.constraint_name
+                            WHERE 
+                                tc.constraint_type = 'FOREIGN KEY' ) BCols
+                     ON
+                            ACols.table_name=BCols.table_name AND  ACols.column_name=BCols.column_name
+                    ORDER BY
+                        table_name, column_name;";
+            }
+        }
+
+        public string EB_GETCHART2DETAILS
+        {
+            get
+            {
+                return @"SELECT created_at FROM eb_executionlogs WHERE refid = :refid AND cast(created_at as date) = current_date;";
+            }
+        }
+
+        public string EB_GETPROFILERS
+        {
+            get
+            {
+                return @"SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid = :refid);
+                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid = :refid);
+                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid = :refid AND EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date));
+                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid = :refid AND EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date));
+                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid= :refid and created_at::date = current_date);
+                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid= :refid and created_at::date = current_date);
+                             SELECT COUNT(*) FROM eb_executionlogs WHERE refid = :refid;
+                             SELECT COUNT(*) FROM eb_executionlogs WHERE cast(created_at as date) = current_date AND refid = :refid;
+                             SELECT COUNT(*) FROM eb_executionlogs WHERE EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date) and refid = :refid;";
+            }
+        }
+
+        public string EB_GETUSEREMAILS
+        {
+            get
+            {
+                return @"call string_to_rows(@userids);
+                            SELECT id, email FROM eb_users WHERE id = ANY(SELECT CONVERT(`value`, unsigned int) FROM temp_array_table1);
+                         call string_to_rows(@groupids);
+                             SELECT distinct id, email FROM eb_users WHERE id = ANY(SELECT userid FROM eb_user2usergroup 
+                                WHERE
+                                    groupid = ANY(SELECT CONVERT(`value`, unsigned int) FROM temp_array_table1) );";
+            }
+        }
+
+        public string EB_GETPARTICULARSSURVEY
+        {
+            get
+            {
+                return @"SELECT name,startdate,enddate,status FROM eb_surveys WHERE id = :id;
+                         SELECT questions AS q_id FROM eb_surveys WHERE id = :id into @qstns;
+                         call string_to_rows(@qstns);
+                         SELECT * FROM (SELECT CONVERT(`value`,unsigned int) AS q_id FROM temp_array_table1) QUES_IDS, 
+								(SELECT Q.id, Q.query, Q.q_type FROM eb_survey_queries Q) QUES_ANS,
+								(SELECT C.choice,C.score,C.id, C.q_id FROM eb_query_choices C WHERE eb_del = 'F' ) QUES_QRY
+								WHERE QUES_IDS.q_id = QUES_ANS.id
+									AND QUES_QRY.q_id = QUES_ANS.id;";
+            }
+        }
+                
+        public string EB_SURVEYMASTER
+        {
+            get
+            {
+                return @"INSERT INTO eb_survey_master(surveyid,userid,anonid,eb_createdate) VALUES(:sid,:uid,:anid,now());
+                            SELECT last_insert_id();";
+            }
+        }
+
+        // DBClient
+
+        public string EB_GETDBCLIENTTTABLES
+        {
+            get { return @"
+                 SELECT Q1.table_name, Q1.table_schema, i.index_name 
+                 FROM 
+                    (SELECT
+                        table_name, table_schema,table_type
+                    FROM
+                        information_schema.tables 
+                    WHERE
+                        table_schema != 'sys' 
+                        AND table_schema != 'information_schema'
+                        AND table_schema != 'performance_schema'                   
+                        AND table_schema != 'mysql'
+                        AND table_type='BASE TABLE'
+                        AND table_name NOT LIKE 'eb_%'
+                    )Q1
+                    LEFT JOIN
+                        information_schema.statistics  i
+                    ON
+                        Q1.table_name = i.table_name ORDER BY table_name;
+                    SELECT 
+                        table_name, column_name, data_type
+                    FROM
+                        information_schema.columns
+                    WHERE
+                        table_schema != 'sys' AND
+                        table_schema != 'information_schema'  
+                        AND table_schema != 'performance_schema'                   
+                        AND table_schema != 'mysql'
+                        AND table_name NOT LIKE 'eb_%'
+                    ORDER BY table_name;
+                    SELECT
+                        c.constraint_name AS constraint_name,
+                        c.constraint_type AS constraint_type,
+                        c.table_name AS tabless,
+                        group_concat(col.column_name) as columns                   
+                    FROM 
+                        information_schema.table_constraints c              
+                    JOIN 
+                        information_schema.columns col ON(col.table_schema = c.table_schema AND col.table_name = c.table_name)
+                    WHERE
+                        col.table_name NOT LIKE 'eb_%'
+                    GROUP BY 
+                        constraint_name, constraint_type, tabless-- , definition
+                    ORDER BY 
+                        tabless;";
+            }
+        }
+
+        //.......OBJECTS QUERIES.....
 
         public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
         {
@@ -973,8 +1147,7 @@ namespace ExpressBase.Common
                             obj_type = @type
                             AND COALESCE( eb_del, 'F') = 'F'
                         ORDER BY
-                            obj_name;
-                ";
+                            obj_name; ";
             }
         }
         public string EB_GET_OBJ_STATUS_HISTORY
@@ -988,8 +1161,7 @@ namespace ExpressBase.Common
                         WHERE
                             eb_obj_ver_id = EOV.id AND EOV.refid = @refid AND EOV.commit_uid=EU.id
                         ORDER BY
-                        EOS.id DESC;
-                ";
+                        EOS.id DESC; ";
             }
         }
         public string EB_LIVE_VERSION_OF_OBJS
@@ -1053,7 +1225,7 @@ namespace ExpressBase.Common
                                 EO.id = EOV.eb_objects_id  AND
                                 EO.id = EOTA.obj_id  AND
                                 EOS.eb_obj_ver_id = EOV.id AND
-                                EO.id = any(select @Ids) AND
+                                EO.id = any(SELECT @Ids) AND
                                 EOS.status = 3 AND
                                 (
                                 EO.obj_type = 16 OR
@@ -1072,6 +1244,48 @@ namespace ExpressBase.Common
                 return @"SELECT EXISTS (SELECT 1 FROM   information_schema.tables WHERE  table_schema = 'test_eb' AND table_name like @tbl);";
             }
         }
+
+        public string Eb_ALLOBJNVER
+        {
+            get
+            {
+                return @"call string_to_rows(@ids);
+                        SELECT 
+                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
+                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.refid,
+                            EU.fullname
+                        FROM 
+                            eb_objects EO, eb_objects_ver EOV
+                        LEFT JOIN
+	                        eb_users EU
+                        ON 
+	                        EOV.commit_uid=EU.id
+                        WHERE
+                            EO.id = ANY(SELECT CONVERT(`value`, unsigned int) from temp_array_table1) AND
+                            EO.id = EOV.eb_objects_id AND COALESCE(EOV.working_mode, 'F') <> 'T'
+                        ORDER BY
+                            EO.obj_name; ";
+            }
+        }
+
+        public string EB_CREATELOCATIONCONFIG1Q
+        {
+            get
+            {
+                return @"INSERT INTO eb_location_config (`keys`,isrequired,keytype,eb_del) VALUES(:keys,:isrequired,:type,'F');
+                          SELECT last_insert_id()";
+            }
+        }
+
+        public string EB_CREATELOCATIONCONFIG2Q
+        {
+            get
+            {
+                return @"UPDATE eb_location_config SET `keys` = :keys ,isrequired = :isrequired , keytype = :type WHERE id = :keyid;";
+            }
+        }
+
+        //.....OBJECTS FUNCTION CALL......
 
         public string EB_CREATE_NEW_OBJECT
         {
@@ -1161,5 +1375,90 @@ namespace ExpressBase.Common
             }
         }
 
+        public string EB_CREATEBOT
+        {
+            get
+            {
+                return @"SELECT eb_createbot(@solid, @name, @fullname, @url, @welcome_msg, @uid, @botid)";
+            }
+        }
+
+        //....Files query
+
+        public string EB_IMGREFUPDATESQL
+        {
+            get
+            {
+                return @"INSERT INTO eb_files_ref_variations 
+                            (eb_files_ref_id, filestore_sid, length, imagequality_id, is_image, img_manp_ser_con_id, filedb_con_id)
+                         VALUES 
+                            (:refid, :filestoreid, :length, :imagequality_id, :is_image, :imgmanpserid, :filedb_con_id);
+                        SELECT last_insert_id();";
+            }
+        }
+
+        public string EB_DPUPDATESQL
+        {
+            get
+            {
+                return @"INSERT INTO eb_files_ref_variations 
+                            (eb_files_ref_id, filestore_sid, length, imagequality_id, is_image, img_manp_ser_con_id, filedb_con_id)
+                         VALUES 
+                             (:refid, :filestoreid, :length, :imagequality_id, :is_image, :imgmanpserid, :filedb_con_id);
+                         SELECT last_insert_id();
+                        UPDATE eb_users SET dprefid = :refid WHERE id=:userid";
+            }
+        }
+
+        public string EB_LOGOUPDATESQL
+        {
+            get
+            {
+                return @"INSERT INTO eb_files_ref_variations 
+                            (eb_files_ref_id, filestore_sid, length, imagequality_id, is_image, img_manp_ser_con_id, filedb_con_id)
+                        VALUES 
+                            (:refid, :filestoreid, :length, :imagequality_id, :is_image, :imgmanpserid, :filedb_con_id);
+                        SELECT last_insert_id();
+                        UPDATE eb_solutions SET logorefid = :refid WHERE isolution_id = :solnid;";
+            }
+        }
+
+        public string Eb_MQ_UPLOADFILE
+        {
+            get
+            {
+                return @"INSERT INTO eb_files_ref_variations 
+                            (eb_files_ref_id, filestore_sid, length, is_image, filedb_con_id)
+                         VALUES 
+                            (:refid, :filestoresid, :length, :is_image, :filedb_con_id);
+                        SELECT last_insert_id();";
+            }
+        }
+
+        public string EB_FILEEXISTS
+        {
+            get
+            {
+                return @"UPDATE eb_image_migration_counter 
+                         SET
+                            is_exist = @exist
+                         WHERE
+                            filename = @fname
+                            AND customer_id = @cid;
+                        SELECT last_insert_id();";
+            }
+        }
+
+        public string EB_GETFILEREFID
+        {
+            get
+            {
+                return @"INSERT INTO
+                            eb_files_ref (userid, filename, filetype, tags, filecategory) 
+                         VALUES 
+                            (@userid, @filename, @filetype, @tags, @filecategory); 
+                        SELECT last_insert_id();";
+            }
+        }
     }
 }

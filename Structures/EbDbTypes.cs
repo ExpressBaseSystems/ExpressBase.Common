@@ -50,7 +50,7 @@
         //
         // Summary:
         //     An integral type representing signed 16-bit integers with values between -32768
-        //     and 32767.
+        //     and 32767.        
         Int16 = 10,
         //
         // Summary:
@@ -135,7 +135,11 @@
 
         Bytea =29,
 
-		BooleanOriginal = 30
+		BooleanOriginal = 30,
+
+        Int = 31,
+
+        VarChar = 32
     }
 
     public interface IVendorDbTypes
