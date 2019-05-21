@@ -445,12 +445,12 @@ namespace ExpressBase.Security
         
         public string GetShortDatePattern()
         {
-            return CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern;
+            return CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern;
         }
 
         public string GetShortTimePattern()
         {
-            return CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern;
+            return CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern;
         }
 
         //----------------------------------Cultures json Test-----------------------------------
@@ -461,7 +461,7 @@ namespace ExpressBase.Security
             {
                 try
                 {
-                    return MomentJSHelpers.GenerateMomentJSFormatString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureHelper.GetCultureInfo(this.Locale)).ReplaceAll("[", "").ReplaceAll("]", "");
+                    return MomentJSHelpers.GenerateMomentJSFormatString(CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureHelper.GetSerializedCultureInfo(this.Locale)).ReplaceAll("[", "").ReplaceAll("]", "");
                 }
                 catch (Exception ex)
                 {
@@ -478,7 +478,7 @@ namespace ExpressBase.Security
                 try
                 {
                     //return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-                    return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureInfo.InvariantCulture);                    
+                    return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureInfo.InvariantCulture);                    
                 }
                 catch (Exception ex)
                 {
@@ -495,7 +495,7 @@ namespace ExpressBase.Security
             {
                 try
                 {
-                    return MomentJSHelpers.GenerateMomentJSFormatString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern, CultureHelper.GetCultureInfo(this.Locale)).ReplaceAll("[", "").ReplaceAll("]", "");
+                    return MomentJSHelpers.GenerateMomentJSFormatString(CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern, CultureHelper.GetSerializedCultureInfo(this.Locale)).ReplaceAll("[", "").ReplaceAll("]", "");
                 }
                 catch (Exception ex)
                 {
@@ -511,7 +511,7 @@ namespace ExpressBase.Security
             {
                 try
                 {
-                    return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern, CultureInfo.InvariantCulture);
+                    return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern, CultureInfo.InvariantCulture);
                 }
                 catch (Exception ex)
                 {
