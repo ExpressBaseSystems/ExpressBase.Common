@@ -41,13 +41,14 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
         public virtual bool IsSpecialContainer { get; set; }
+        
 
-
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        [PropertyEditor(PropertyEditorType.Expandable)]
         [PropertyGroup("Appearance")]
-        [DefaultPropValue("8")]
         [UIproperty]
-        public virtual int Padding { get; set; }
+        [OnChangeUIFunction("Common.PADDING")]
+        public virtual UISides Padding { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
         [PropertyGroup("Data")]
