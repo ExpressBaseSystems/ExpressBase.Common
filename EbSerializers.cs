@@ -83,14 +83,37 @@ namespace ExpressBase.Common
 
         public static dynamic Json_Deserialize(string json)
         {
-            return JsonConvert.DeserializeObject(json,
-                new JsonSerializerSettings
+            try
+            {
+                return JsonConvert.DeserializeObject(json,
+                    new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All,
+                        ObjectCreationHandling = ObjectCreationHandling.Replace,
+                        MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead
+                        //ContractResolver = new ShouldSerializeContractResolver()
+                    });
+            }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+                if (e.Message.Split(". Path")[0].Split("to type ")[1] == "'ExpressBase.Common.Objects.UISides'")
                 {
-                    TypeNameHandling = TypeNameHandling.All,
-                    ObjectCreationHandling = ObjectCreationHandling.Replace,
-                    MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead
-                    //ContractResolver = new ShouldSerializeContractResolver()
-                });
+                    for (int i = 200; i > -101; i--)
+                    {
+                        json = json.Replace("\"Padding\":"+i, "\"Padding\":{\"$type\":\"ExpressBase.Common.Objects.UISides, ExpressBase.Common\",\"Top\":0,\"Right\":0,\"Bottom\":0,\"Left\":0}");
+                    }
+
+                    return JsonConvert.DeserializeObject(json,
+                    new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All,
+                        ObjectCreationHandling = ObjectCreationHandling.Replace,
+                        MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead
+                        //ContractResolver = new ShouldSerializeContractResolver()
+                    });
+                }
+                return 0;
+            }
         }
     }
 

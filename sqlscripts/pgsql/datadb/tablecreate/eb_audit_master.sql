@@ -9,6 +9,7 @@ CREATE TABLE public.eb_audit_master
     eb_createdby integer,
     eb_createdat timestamp without time zone,
 	dataid integer,
+	actiontype integer,
 	CONSTRAINT eb_audit_masters_pkey PRIMARY KEY (id)
 )
 WITH (

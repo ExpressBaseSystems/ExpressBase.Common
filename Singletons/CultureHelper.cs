@@ -43,7 +43,7 @@ namespace ExpressBase.Common.Singletons
 
         private static Dictionary<string, SerializedCulture> cultureinfos = new Dictionary<string, SerializedCulture>();
 
-        public static SerializedCulture GetCultureInfo(string CultureName)
+        public static SerializedCulture GetSerializedCultureInfo(string CultureName)
         {            
             if (!cultureinfos.ContainsKey(CultureName))
             {

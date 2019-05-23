@@ -253,9 +253,13 @@ namespace ExpressBase.Common.Objects.Attributes
                 $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-helptxt]').text(props.HelpText);";
 
         public const string MARGIN = @"
-                if(props.Margin === null)
-                    props.Margin ={};
                 $(`#cont_${elementId}.Eb-ctrlContainer`).css('margin', `${props.Margin.Top}px ${props.Margin.Right}px ${props.Margin.Bottom}px ${props.Margin.Left}px`);";
+
+        public const string ROOT_OBJ_PADDING = @"
+                $(`#${elementId}`).css('padding', `${props.Padding.Top}px ${props.Padding.Right}px ${props.Padding.Bottom}px ${props.Padding.Left}px`);";
+
+        public const string PADDING = @"
+                $(`#cont_${elementId}.Eb-ctrlContainer`).css('padding', `${props.Padding.Top}px ${props.Padding.Right}px ${props.Padding.Bottom}px ${props.Padding.Left}px`);";
 
         public static string getFunctions()
         {

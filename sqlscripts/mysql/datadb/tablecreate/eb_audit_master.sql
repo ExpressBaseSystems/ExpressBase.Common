@@ -5,6 +5,7 @@ CREATE TABLE eb_audit_master
   eb_createdby integer,
   eb_createdat timestamp,
   dataid integer,
+  actiontype integer,
   constraint eb_audit_master_pkey primary key(id)
 );
 

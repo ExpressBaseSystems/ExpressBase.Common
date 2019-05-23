@@ -505,11 +505,16 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                 else
                 {
                     object Obj = Activator.CreateInstance(prop.PropertyType);
+                    SetAllDefaultPropVals(Obj);
                     return string.Format(s, _name, EbSerializers.Json_Serialize(Obj));
                 }
             }
             else
                 return string.Format(s, _name, "null");
+        }
+
+        private void SetAllDefaultPropVals(Object Obj) {
+
         }
     }
 }

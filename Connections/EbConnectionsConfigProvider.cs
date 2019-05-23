@@ -24,7 +24,7 @@ namespace ExpressBase.Common.Connections
                     {
                         DataDbConfig = new PostgresConfig
                         {
-                          //  DatabaseVendor = DatabaseVendors.PGSQL,
+                            //  DatabaseVendor = DatabaseVendors.PGSQL,
                             Server = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_SERVER),
                             Port = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_PORT)),
                             DatabaseName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DBNAME),
@@ -45,7 +45,22 @@ namespace ExpressBase.Common.Connections
                             Timeout = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_TIMEOUT)),
                             IsSSL = true,
                             IsDefault = true
-                        }
+                        },
+                        EmailConfigs = new EmailConfigCollection
+                        {
+                            Primary = new EbSmtpConfig
+                            {
+                                EmailAddress = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_EMAIL_ADDRESS),
+                                Host = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_EMAIL_HOST),
+                                Password =  Environment.GetEnvironmentVariable(EnvironmentConstants.EB_EMAIL_PASSWORD),
+                                Port = Convert.ToInt32(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_EMAIL_PORT)),
+                                ProviderName = SmtpProviders.Gmail,
+                                Id = 1,
+                                NickName = "EbTest",
+                                IsDefault = true,
+                                EnableSsl = true,
+                            }
+                        },
                         //FilesDbConnection = new Connections.EbFilesDbConnection
                         //{
                         //    FilesDbVendor = FilesDbVendors.MongoDB,
