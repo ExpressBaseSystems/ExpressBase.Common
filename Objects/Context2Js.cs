@@ -297,6 +297,8 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             {
                 if (attr is Alias)
                     meta.alias = (attr as Alias).Name;
+                if (attr is PropertyPriority)
+                    meta.Priority = (attr as PropertyPriority).Priority;
                 else if (attr is PropertyGroup)
                     meta.group = (attr as PropertyGroup).Name;
                 else if (attr is HelpText)
@@ -505,7 +507,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                 else
                 {
                     object Obj = Activator.CreateInstance(prop.PropertyType);
-                    SetAllDefaultPropVals(Obj);
+                    SetAllDefaultPropVals(prop.PropertyType, Obj);
                     return string.Format(s, _name, EbSerializers.Json_Serialize(Obj));
                 }
             }
@@ -513,8 +515,23 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                 return string.Format(s, _name, "null");
         }
 
-        private void SetAllDefaultPropVals(Object Obj) {
-
+        private dynamic SetAllDefaultPropVals(Type propType, dynamic Obj) {
+            //PropertyInfo[] props = propType.GetProperties();
+            //foreach (PropertyInfo prop in props)
+            //{
+            //    dynamic val = prop.GetCustomAttribute<DefaultPropValue>().Value;
+            //    //System.ComponentModel.TypeConverter.ConvertTo(Obj, Obj.GetType());
+            //    //UISides t = Obj as UISides;
+            //    try
+            //    {
+            //        prop.SetValue(Obj, val, null);
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Console.WriteLine( e.Message);
+            //    }
+            //}
+            return Obj;
         }
     }
 }

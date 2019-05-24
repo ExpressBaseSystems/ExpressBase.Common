@@ -196,6 +196,13 @@ namespace ExpressBase.Common.Objects.Attributes
         public PropertyGroup(string groupName) { this.Name = groupName; }
     }
 
+    public class PropertyPriority : Attribute
+    {
+        public int Priority { get; set; }
+
+        public PropertyPriority(int Priority) { this.Priority = Priority; }
+    }
+
     public class ListType : Attribute
     {
         public Type TypeOfList { get; set; }

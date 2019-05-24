@@ -13,6 +13,8 @@ namespace ExpressBase.Common.Objects
 
         public string alias { get; set; }
 
+        public int Priority { get; set; }
+
         public string group { get; set; }
 
         public int editor { get; set; }
