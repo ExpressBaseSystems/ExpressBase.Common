@@ -8,6 +8,7 @@ using ServiceStack;
 using ExpressBase.Common.Extensions;
 using System.Linq;
 using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace ExpressBase.Common.Objects
 {
@@ -26,6 +27,14 @@ namespace ExpressBase.Common.Objects
     [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
     public class EbControlContainer : EbControlUI
     {
+
+        [OnDeserialized]
+        public void OnDeserializedMethod(StreamingContext context)
+        {
+            if (this.Padding == null)
+                this.Padding = new UISides();
+        }
+
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
         public virtual List<EbControl> Controls { get; set; }
