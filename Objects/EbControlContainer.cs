@@ -8,6 +8,7 @@ using ServiceStack;
 using ExpressBase.Common.Extensions;
 using System.Linq;
 using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace ExpressBase.Common.Objects
 {
@@ -26,6 +27,14 @@ namespace ExpressBase.Common.Objects
     [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
     public class EbControlContainer : EbControlUI
     {
+
+        [OnDeserialized]
+        public void OnDeserializedMethod(StreamingContext context)
+        {
+            if (this.Padding == null)
+                this.Padding = new UISides();
+        }
+
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
         public virtual List<EbControl> Controls { get; set; }
@@ -41,13 +50,14 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
         public virtual bool IsSpecialContainer { get; set; }
+        
 
-
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        [PropertyEditor(PropertyEditorType.Expandable)]
         [PropertyGroup("Appearance")]
-        [DefaultPropValue("8")]
         [UIproperty]
-        public virtual int Padding { get; set; }
+        [OnChangeUIFunction("Common.PADDING")]
+        public virtual UISides Padding { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
         [PropertyGroup("Data")]

@@ -181,6 +181,7 @@ else
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyGroup("Behavior")]
+        [PropertyPriority(99)]
         public virtual bool Hidden { get; set; }
 
         [ProtoBuf.ProtoMember(23)]

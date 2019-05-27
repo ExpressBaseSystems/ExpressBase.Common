@@ -62,6 +62,11 @@ namespace ExpressBase.Common
         public const string EB_RECAPTCHA_KEY = "EB_RECAPTCHA_KEY";
         public const string EB_RECAPTCHA_SECRET = "EB_RECAPTCHA_SECRET";
 
+        public const string EB_EMAIL_ADDRESS = "EB_EMAIL_ADDRESS";
+        public const string EB_EMAIL_HOST = "EB_EMAIL_HOST";
+        public const string EB_EMAIL_PASSWORD = "EB_EMAIL_PASSWORD";
+        public const string EB_EMAIL_PORT = "EB_EMAIL_PORT";
+
         //For HOC Only
         public const string EB_FTP_HOST = "EB_FTP_HOST";
         public const string EB_FTP_USER = "EB_FTP_USER";

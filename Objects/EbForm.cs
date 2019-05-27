@@ -30,6 +30,13 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public override string Status { get; set; }
 
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        [PropertyEditor(PropertyEditorType.Expandable)]
+        [PropertyGroup("Appearance")]
+        [UIproperty]
+        [OnChangeUIFunction("Common.ROOT_OBJ_PADDING")]
+        public override UISides Padding { get; set; }
+
         public override string DefaultValue { get; set; }
 
         public override string HelpText { get; set; }
