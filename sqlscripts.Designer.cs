@@ -61,6 +61,96 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE OR REPLACE FUNCTION public.cur_val(
+        ///	text)
+        ///    RETURNS integer
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///    COST 100.0
+        ///
+        ///AS $function$
+        ///
+        ///DECLARE seq ALIAS FOR $1;
+        ///DECLARE result integer;
+        ///BEGIN
+        ///result := 0;
+        ///EXECUTE &apos;SELECT currval(&apos;&apos;&apos; || seq || &apos;&apos;&apos;)&apos; INTO result;
+        ///RETURN result;
+        ///EXCEPTION WHEN OTHERS THEN
+        ///--do nothing
+        ///RETURN result;
+        ///END;
+        ///
+        ///$function$;
+        ///
+        ///.
+        /// </summary>
+        public static string cur_val {
+            get {
+                return ResourceManager.GetString("cur_val", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE OR REPLACE FUNCTION public.cur_val(
+        ///	text)
+        ///    RETURNS integer
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///    COST 100.0
+        ///
+        ///AS $function$
+        ///
+        ///DECLARE seq ALIAS FOR $1;
+        ///DECLARE result integer;
+        ///BEGIN
+        ///result := 0;
+        ///EXECUTE &apos;SELECT currval(&apos;&apos;&apos; || seq || &apos;&apos;&apos;)&apos; INTO result;
+        ///RETURN result;
+        ///EXCEPTION WHEN OTHERS THEN
+        ///--do nothing
+        ///RETURN result;
+        ///END;
+        ///
+        ///$function$;
+        ///
+        ///.
+        /// </summary>
+        public static string cur_val1 {
+            get {
+                return ResourceManager.GetString("cur_val1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE OR REPLACE FUNCTION public.cur_val(
+        ///	text)
+        ///    RETURNS integer
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///    COST 100.0
+        ///
+        ///AS $function$
+        ///
+        ///DECLARE seq ALIAS FOR $1;
+        ///DECLARE result integer;
+        ///BEGIN
+        ///result := 0;
+        ///EXECUTE &apos;SELECT currval(&apos;&apos;&apos; || seq || &apos;&apos;&apos;)&apos; INTO result;
+        ///RETURN result;
+        ///EXCEPTION WHEN OTHERS THEN
+        ///--do nothing
+        ///RETURN result;
+        ///END;
+        ///
+        ///$function$;
+        ///
+        ///.
+        /// </summary>
+        public static string cur_val2 {
+            get {
+                return ResourceManager.GetString("cur_val2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DECLARE
         ///	eb_del varchar(10);
         ///BEGIN
@@ -281,6 +371,7 @@ namespace ExpressBase.Common {
         ///    eb_createdby integer,
         ///    eb_createdat timestamp without time zone,
         ///	dataid integer,
+        ///	actiontype integer,
         ///	CONSTRAINT eb_audit_masters_pkey PRIMARY KEY (id)
         ///)
         ///WITH (
@@ -294,7 +385,7 @@ namespace ExpressBase.Common {
         ///
         ///-- Index: eb_audit_master_id_idx
         ///
-        ///-- DROP INDEX public.eb_audit [rest of string was truncated]&quot;;.
+        ///-- DROP [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_audit_master {
             get {
@@ -319,6 +410,7 @@ namespace ExpressBase.Common {
         ///  eb_createdby integer,
         ///  eb_createdat timestamp,
         ///  dataid integer,
+        ///  actiontype integer,
         ///  constraint eb_audit_master_pkey primary key(id)
         ///);
         ///
@@ -1561,6 +1653,7 @@ namespace ExpressBase.Common {
         ///(
         ///    id serial,
         ///    userid integer NOT NULL,
+        ///	filename text COLLATE pg_catalog.&quot;default&quot;,
         ///    --filestore_id text COLLATE pg_catalog.&quot;default&quot;,
         ///    --length bigint,
         ///    tags text COLLATE pg_catalog.&quot;default&quot;,
@@ -1568,8 +1661,8 @@ namespace ExpressBase.Common {
         ///    uploadts timestamp without time zone,
         ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    filecategory integer,
-        ///    filename text COLLATE pg_catalog.&quot;default&quot;,
-        ///    --img_manp_ser_ [rest of string was truncated]&quot;;.
+        ///    context text,
+        ///    [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files {
             get {
@@ -1704,12 +1797,13 @@ namespace ExpressBase.Common {
         ///(
         ///  id integer NOT NULL auto_increment,
         ///  userid integer NOT NULL,
+        ///  filename varchar(75),
         ///  tags text,
         ///  filetype text,
         ///  uploadts timestamp,
         ///  eb_del char(1) DEFAULT &apos;F&apos;,
-        ///  filecategory integer,
-        ///  filename varchar(75),
+        ///  filecategory integer,  
+        ///  context text,
         ///  CONSTRAINT eb_files_ref_pkey PRIMARY KEY (id),
         ///  CONSTRAINT eb_files_ref_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
@@ -1721,8 +1815,7 @@ namespace ExpressBase.Common {
         ///
         ///
         ///CREATE INDEX eb_files_ref_userid_idx
-        ///ON eb_files_ref(userid) 
-        ///USING btr [rest of string was truncated]&quot;;.
+        ///ON eb_files_ref( [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files2 {
             get {
@@ -2429,17 +2522,16 @@ namespace ExpressBase.Common {
         ///   Looks up a localized string similar to CREATE TABLE eb_location_config
         ///(
         ///  id integer NOT NULL auto_increment,
-        ///  keys1 varchar(100),
+        ///  `keys` varchar(100),
         ///  isrequired char,
         ///  keytype text,
-        ///  eb_del char(1) DEFAULT &apos;F&apos;,
+        ///  eb_del char,
         ///  CONSTRAINT eb_location_config_pkey PRIMARY KEY (id)
         ///);
         ///
         ///
         ///
         ///create index eb_location_config_idx on eb_location_config(id) using btree;
-        ///
         ///.
         /// </summary>
         public static string eb_location_config2 {
