@@ -528,15 +528,18 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             PropertyInfo[] props = propType.GetProperties();
             foreach (PropertyInfo prop in props)
             {
-                object val = prop.GetCustomAttribute<DefaultPropValue>().Value;
-                try
+                if (prop.GetCustomAttribute<DefaultPropValue>() != null)
                 {
-                    if (val != null)
-                        prop.SetValue(Obj, (object)val, null);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
+                    object val = prop.GetCustomAttribute<DefaultPropValue>().Value;
+                    try
+                    {
+                        if (val != null)
+                            prop.SetValue(Obj, (object)val, null);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
                 }
             }
             return Obj;
