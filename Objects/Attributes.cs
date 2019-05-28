@@ -212,9 +212,9 @@ namespace ExpressBase.Common.Objects.Attributes
 
     public class DefaultPropValue : Attribute
     {
-        public string Value { get; set; }
+        public dynamic Value { get; set; }
 
-        public DefaultPropValue(string val) { this.Value = val; }
+        public DefaultPropValue(object val) { this.Value = val; }
     }
 
     public class HelpText : Attribute
