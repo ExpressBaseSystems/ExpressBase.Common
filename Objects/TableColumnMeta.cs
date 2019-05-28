@@ -49,6 +49,8 @@ namespace ExpressBase.Common
     {        
         public string RowId { get; set; }
 
+        public int LocId { get; set; }
+
         public bool IsUpdate { get; set; }
 
         public bool IsDelete { get; set; }
