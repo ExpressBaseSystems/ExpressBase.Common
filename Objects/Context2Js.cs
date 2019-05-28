@@ -506,31 +506,39 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                 }
                 else
                 {
-                    object Obj = Activator.CreateInstance(prop.PropertyType);
-                    SetAllDefaultPropVals(prop.PropertyType, Obj);
-                    return string.Format(s, _name, EbSerializers.Json_Serialize(Obj));
+                    try
+                    {
+                        object Obj = Activator.CreateInstance(prop.PropertyType);
+                        SetAllDefaultPropVals(prop.PropertyType, Obj);
+                        return string.Format(s, _name, EbSerializers.Json_Serialize(Obj));
+                    }
+                    catch (Exception e)
+                    {
+                        Console.Write(e.Message);
+                        return "";
+                    }
                 }
             }
             else
                 return string.Format(s, _name, "null");
         }
 
-        private dynamic SetAllDefaultPropVals(Type propType, dynamic Obj) {
-            //PropertyInfo[] props = propType.GetProperties();
-            //foreach (PropertyInfo prop in props)
-            //{
-            //    dynamic val = prop.GetCustomAttribute<DefaultPropValue>().Value;
-            //    //System.ComponentModel.TypeConverter.ConvertTo(Obj, Obj.GetType());
-            //    //UISides t = Obj as UISides;
-            //    try
-            //    {
-            //        prop.SetValue(Obj, val, null);
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        Console.WriteLine( e.Message);
-            //    }
-            //}
+        private dynamic SetAllDefaultPropVals(Type propType, object Obj)
+        {
+            PropertyInfo[] props = propType.GetProperties();
+            foreach (PropertyInfo prop in props)
+            {
+                object val = prop.GetCustomAttribute<DefaultPropValue>().Value;
+                try
+                {
+                    if (val != null)
+                        prop.SetValue(Obj, (object)val, null);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
             return Obj;
         }
     }

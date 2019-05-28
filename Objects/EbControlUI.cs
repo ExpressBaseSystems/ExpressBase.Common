@@ -63,19 +63,19 @@ namespace ExpressBase.Common.Objects
         public UISides() { }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
-        [DefaultPropValue("8")]
+        [DefaultPropValue(8)]
         public int Top { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
-        [DefaultPropValue("8")]
+        [DefaultPropValue(8)]
         public int Right { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
-        [DefaultPropValue("8")]
+        [DefaultPropValue(8)]
         public int Bottom { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
-        [DefaultPropValue("8")]
+        [DefaultPropValue(8)]
         public int Left { get; set; }
     }
 }
