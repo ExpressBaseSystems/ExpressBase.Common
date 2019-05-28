@@ -1,6 +1,8 @@
 ﻿
 
 using ExpressBase.Common.Connections;
+using ExpressBase.Common.Data;
+using ExpressBase.Common.Enums;
 using ExpressBase.Common.Structures;
 using MySql.Data.MySqlClient;
 using System;
@@ -54,7 +56,7 @@ namespace ExpressBase.Common
             this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, MySqlDbType.LongText, "LongText"));
             this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, MySqlDbType.JSON, "Json"));
             this.InnerDictionary.Add(EbDbTypes.Bytea, new VendorDbType(EbDbTypes.Bytea, MySqlDbType.Blob, "bytea"));
-            this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, MySqlDbType.VarChar+"(1)", "Varchar"));
+            this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, MySqlDbType.VarChar + "(1)", "Varchar"));
         }
 
         public static IVendorDbTypes Instance => new MySQLEbDbTypes();
@@ -609,9 +611,9 @@ namespace ExpressBase.Common
                         return cmd.ExecuteNonQuery();
                     }
                 }
-                catch (Npgsql.NpgsqlException npgse)
+                catch (MySqlException myexce)
                 {
-                    throw npgse;
+                    throw myexce;
                 }
                 catch (SocketException scket) { }
             }
@@ -634,9 +636,9 @@ namespace ExpressBase.Common
                         return cmd.ExecuteNonQuery();
                     }
                 }
-                catch (Npgsql.NpgsqlException npgse)
+                catch (MySqlException myexce)
                 {
-                    throw npgse;
+                    throw myexce;
                 }
                 catch (SocketException scket) { }
             }
@@ -686,7 +688,7 @@ namespace ExpressBase.Common
             }
             return cols;
         }
-
+       
         public string EB_AUTHETICATE_USER_NORMAL { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @tmp_userid, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraintstatus);"; } }
 
         public string EB_AUTHENTICATEUSER_SOCIAL { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @tmp_userid, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraintstatus);"; } }
@@ -953,7 +955,7 @@ namespace ExpressBase.Common
 									AND QUES_QRY.q_id = QUES_ANS.id;";
             }
         }
-                
+
         public string EB_SURVEYMASTER
         {
             get
@@ -963,11 +965,44 @@ namespace ExpressBase.Common
             }
         }
 
+        public string EB_CURRENT_TIMESTAMP
+        {
+            get
+            {
+                return @"UTC_TIMESTAMP()";
+            }
+        }
+
+        public string EB_UPDATEAUDITTRAIL
+        {
+            get
+            {
+                return @"
+INSERT INTO 
+                            eb_audit_master(formid, dataid, actiontype, eb_createdby, eb_createdat) 
+                        VALUES 
+                            (:formid, :dataid, :actiontype, :eb_createdby, UTC_TIMESTAMP());
+                        SELECT last_insert_id();";
+            }
+        }
+
+        public string EB_SAVESURVEY
+        {
+            get
+            {
+                return @"
+INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:name, :start, :end, :status, :questions);
+                        SELECT last_insert_id();";
+            }
+        }
+
         // DBClient
 
         public string EB_GETDBCLIENTTTABLES
         {
-            get { return @"
+            get
+            {
+                return @"
                  SELECT Q1.table_name, Q1.table_schema, i.index_name 
                  FROM 
                     (SELECT
@@ -1371,7 +1406,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"INSERT INTO eb_locations(longname,shortname,image,meta_json) VALUES(:lname, :sname, :img, :meta);
-                        SELECT last_insert_id();";
+                        SELECT LAST_INSERT_ID();";
             }
         }
 
@@ -1393,7 +1428,7 @@ namespace ExpressBase.Common
                             (eb_files_ref_id, filestore_sid, length, imagequality_id, is_image, img_manp_ser_con_id, filedb_con_id)
                          VALUES 
                             (:refid, :filestoreid, :length, :imagequality_id, :is_image, :imgmanpserid, :filedb_con_id);
-                        SELECT last_insert_id();";
+                        SELECT LAST_INSERT_ID();";
             }
         }
 
@@ -1405,7 +1440,7 @@ namespace ExpressBase.Common
                             (eb_files_ref_id, filestore_sid, length, imagequality_id, is_image, img_manp_ser_con_id, filedb_con_id)
                          VALUES 
                              (:refid, :filestoreid, :length, :imagequality_id, :is_image, :imgmanpserid, :filedb_con_id);
-                         SELECT last_insert_id();
+                         SELECT LAST_INSERT_ID();
                         UPDATE eb_users SET dprefid = :refid WHERE id=:userid";
             }
         }
@@ -1418,7 +1453,7 @@ namespace ExpressBase.Common
                             (eb_files_ref_id, filestore_sid, length, imagequality_id, is_image, img_manp_ser_con_id, filedb_con_id)
                         VALUES 
                             (:refid, :filestoreid, :length, :imagequality_id, :is_image, :imgmanpserid, :filedb_con_id);
-                        SELECT last_insert_id();
+                        SELECT LAST_INSERT_ID();
                         UPDATE eb_solutions SET logorefid = :refid WHERE isolution_id = :solnid;";
             }
         }
@@ -1431,21 +1466,7 @@ namespace ExpressBase.Common
                             (eb_files_ref_id, filestore_sid, length, is_image, filedb_con_id)
                          VALUES 
                             (:refid, :filestoresid, :length, :is_image, :filedb_con_id);
-                        SELECT last_insert_id();";
-            }
-        }
-
-        public string EB_FILEEXISTS
-        {
-            get
-            {
-                return @"UPDATE eb_image_migration_counter 
-                         SET
-                            is_exist = @exist
-                         WHERE
-                            filename = @fname
-                            AND customer_id = @cid;
-                        SELECT last_insert_id();";
+                        SELECT LAST_INSERT_ID();";
             }
         }
 
@@ -1457,8 +1478,138 @@ namespace ExpressBase.Common
                             eb_files_ref (userid, filename, filetype, tags, filecategory) 
                          VALUES 
                             (@userid, @filename, @filetype, @tags, @filecategory); 
-                        SELECT last_insert_id();";
+                        SELECT LAST_INSERT_ID();";
+            }
+        }
+
+        public string EB_UPLOAD_IDFETCHQUERY
+        {
+            get
+            {
+                return @"INSERT INTO
+                            eb_files_ref (userid, filename, filetype, tags, filecategory, uploadts) 
+                        VALUES 
+                            (@userid, @filename, @filetype, @tags, @filecategory, NOW()); 
+                        SELECT LAST_INSERT_ID()";
+            }
+        }
+
+        public string EB_SMSSERVICE_POST
+        {
+            get
+            {
+                return @"INSERT INTO logs_sms
+                            (uri, send_to, send_from, message_body, status, error_message, user_id, context_id) 
+                        VALUES 
+                            (@uri, @to, @from, @message_body, @status, @error_message, @user_id, @context_id);
+                        SELECT LAST_INSERT_ID()";
+            }
+        }
+        
+        public string EB_FILECATEGORYCHANGE
+        {
+            get
+            {
+                return @"
+CALL string_to_rows(@ids);
+UPDATE 
+	eb_files_ref FR
+SET
+	tags = json_set(cast(tags as json),
+		'$.Category',@categry
+		(SELECT CAST(CONCAT('[""',@categry,'""]')AS json)))
+WHERE
+    FR.id = (SELECT CAST(`value` AS unsigned int) FROM temp_array_table1);";
             }
         }
     }
+
+    public class MySQLFilesDB : MySqlDB, INoSQLDatabase
+    {
+        public MySQLFilesDB(EbDbConfig dbconf) : base(dbconf)
+        {
+            InfraConId = dbconf.Id;
+        }
+
+        public int InfraConId { get; set; }
+
+        public byte[] DownloadFileById(string filestoreid, EbFileCategory cat)
+        {
+            byte[] filebyte = null;
+            int ifileid;
+            Int32.TryParse(filestoreid, out ifileid);
+            try
+            {
+                using (MySqlConnection con = GetNewConnection() as MySqlConnection)
+                {
+                    con.Open();
+                    string sql = "SELECT bytea FROM eb_files_bytea WHERE id = @filestore_id AND filecategory = @cat;";
+                    MySqlCommand cmd = new MySqlCommand(sql, con);
+                    cmd.Parameters.Add(GetNewParameter("filestore_id", EbDbTypes.Int32, ifileid));
+                    cmd.Parameters.Add(GetNewParameter("cat", EbDbTypes.Int32, (int)cat));
+                    filebyte = (byte[])cmd.ExecuteScalar();
+                }
+            }
+            catch (MySqlException mexce)
+            {
+                Console.WriteLine("Exception :  " + mexce.Message);
+            }
+            return filebyte;
+        }
+
+        public byte[] DownloadFileByName(string filename, EbFileCategory cat)
+        {
+            byte[] filebyte = null;
+            try
+            {
+                using (MySqlConnection con = GetNewConnection() as MySqlConnection)
+                {
+                    con.Open();
+                    string sql = "SELECT bytea FROM eb_files_bytea WHERE filename = @filename AND filecategory = @cat;";
+                    MySqlCommand cmd = new MySqlCommand(sql, con);
+                    cmd.Parameters.Add(GetNewParameter("filename", EbDbTypes.String, filename));
+                    cmd.Parameters.Add(GetNewParameter("cat", EbDbTypes.Int32, (int)cat));
+                    filebyte = (byte[])cmd.ExecuteScalar();
+                }
+            }
+            catch (MySqlException mexce)
+            {
+                Console.WriteLine("Exception :  " + mexce.Message);
+            }
+            return filebyte;
+        }
+
+
+        public string UploadFile(string filename, byte[] bytea, EbFileCategory cat)
+        {
+            Console.WriteLine("Before Mysql Upload File");
+
+            string rtn = null;
+            try
+            {
+                using (MySqlConnection con = GetNewConnection() as MySqlConnection)
+                {
+                    con.Open();
+                    string sql = @"INSERT INTO eb_files_bytea(filename, bytea, filecategory) VALUES(@filename, @bytea, @cat);SELECT last_insert_id();";
+
+                    using (MySqlCommand cmd = new MySqlCommand(sql, con))
+                    {
+                        cmd.Parameters.Add(GetNewParameter("filename", EbDbTypes.String, filename));
+                        cmd.Parameters.Add(GetNewParameter("bytea", EbDbTypes.Bytea, bytea));
+                        cmd.Parameters.Add(GetNewParameter("cat", EbDbTypes.Int32, (int)cat));
+                        rtn = cmd.ExecuteScalar().ToString();
+                    }
+                    
+                    con.Close();
+                }
+            }
+            catch (MySqlException mexce)
+            {
+                Console.WriteLine("Exception :  " + mexce.Message);
+            }
+            Console.WriteLine("After Mysql Upload File , fileStore id: " + rtn.ToString());
+            return rtn.ToString();
+        }
+    }
+
 }

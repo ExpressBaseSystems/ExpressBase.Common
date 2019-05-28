@@ -74,6 +74,10 @@ namespace ExpressBase.Common
         string EB_GETPARTICULARSSURVEY { get; }
         string EB_SURVEYMASTER { get; }
 
+        string EB_CURRENT_TIMESTAMP { get; }
+        string EB_UPDATEAUDITTRAIL { get; }
+        string EB_SAVESURVEY { get; }
+
         //........objects db query.....
         string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ { get; }
         string EB_PARTICULAR_VERSION_OF_AN_OBJ { get; }
@@ -117,8 +121,10 @@ namespace ExpressBase.Common
         string EB_DPUPDATESQL { get; }
         string EB_LOGOUPDATESQL { get; }
         string Eb_MQ_UPLOADFILE { get; }
-        string EB_FILEEXISTS { get; }
         string EB_GETFILEREFID { get; }
+        string EB_UPLOAD_IDFETCHQUERY { get; }
+        string EB_SMSSERVICE_POST { get; }
+        string EB_FILECATEGORYCHANGE { get; }
 
     }
 }

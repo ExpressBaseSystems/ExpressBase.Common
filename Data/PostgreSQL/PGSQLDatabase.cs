@@ -604,7 +604,7 @@ namespace ExpressBase.Common
         public string EB_AUTHENTICATE_ANONYMOUS { get { return "SELECT * FROM eb_authenticate_anonymous(@params in_appid := :appid ,in_wc := :wc);"; } }
 
         public string EB_SIDEBARUSER_REQUEST { get { return @"
-                SELECT id, applicationname,app_icon
+SELECT id, applicationname,app_icon
                 FROM eb_applications
                 WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
 
@@ -626,7 +626,7 @@ namespace ExpressBase.Common
         public string EB_SIDEBARDEV_REQUEST
         {
             get { return @"
-                SELECT id, applicationname,app_icon FROM eb_applications
+SELECT id, applicationname,app_icon FROM eb_applications
                 WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
                             SELECT 
 	                            EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, COALESCE(EO2A.app_id, 0),display_name
@@ -649,8 +649,8 @@ namespace ExpressBase.Common
         {
             get
             {
-                return
-                    @"SELECT R.id,R.role_name,R.description,A.applicationname,
+                return @"
+SELECT R.id,R.role_name,R.description,A.applicationname,
 									(SELECT COUNT(role1_id) FROM eb_role2role WHERE role1_id=R.id AND eb_del='F') AS subrole_count,
 									(SELECT COUNT(user_id) FROM eb_role2user WHERE role_id=R.id AND eb_del='F') AS user_count,
 									(SELECT COUNT(distinct permissionname) FROM eb_role2permission RP, eb_objects2application OA WHERE role_id = R.id AND app_id=A.id AND RP.obj_id=OA.obj_id AND RP.eb_del = 'F' AND OA.eb_del = 'F') AS permission_count
@@ -659,7 +659,7 @@ namespace ExpressBase.Common
             }
         }
         public string EB_GETMANAGEROLESRESPONSE_QUERY { get { return @"
-									SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY applicationname;
+SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY applicationname;
 									SELECT DISTINCT EO.id, EO.display_name, EO.obj_type, EO2A.app_id
 										FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
 										WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3 
@@ -669,7 +669,7 @@ namespace ExpressBase.Common
 									SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';
 									SELECT id, longname, shortname FROM eb_locations;"; } }
         public string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get { return @"
-                                    SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = :id;
+SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = :id;
 									SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = :id AND eb_del = 'F';
 									SELECT A.applicationname, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = :id AND A.eb_del = 'F';
 									SELECT A.id, A.fullname, A.email, B.id FROM eb_users A, eb_role2user B
@@ -691,7 +691,8 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"SELECT id, role_name, description FROM eb_roles ORDER BY role_name;
+                return @"
+SELECT id, role_name, description FROM eb_roles ORDER BY role_name;
                         SELECT id, name,description FROM eb_usergroup ORDER BY name;
 						SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';";
             }
@@ -701,7 +702,13 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"SELECT id,fullname,email FROM eb_users WHERE LOWER(fullname) LIKE LOWER('%' || :searchtext || '%') AND eb_del = 'F' ORDER BY fullname ASC;";
+                return @"
+SELECT id,fullname,email 
+                    FROM 
+                        eb_users 
+                    WHERE 
+                        LOWER(fullname) LIKE LOWER('%' || :searchtext || '%') AND eb_del = 'F' 
+                    ORDER BY fullname ASC;";
             }
         }
 
@@ -709,7 +716,8 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"INSERT INTO eb_applications (applicationname,application_type, description,app_icon) VALUES (:applicationname,:apptype, :description,:appicon) RETURNING id";
+                return @"
+INSERT INTO eb_applications (applicationname,application_type, description,app_icon) VALUES (:applicationname,:apptype, :description,:appicon) RETURNING id";
             }
         }
 
@@ -717,7 +725,8 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"INSERT INTO eb_applications (applicationname,application_type, description,app_icon) VALUES (:applicationname,:apptype, :description,:appicon) RETURNING id;";
+                return @"
+INSERT INTO eb_applications (applicationname,application_type, description,app_icon) VALUES (:applicationname,:apptype, :description,:appicon) RETURNING id;";
             }
         }
 
@@ -725,7 +734,8 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"SELECT id FROM eb_users WHERE LOWER(email) LIKE LOWER('%' || :email || '%') AND eb_del = 'F'";
+                return @"
+SELECT id FROM eb_users WHERE LOWER(email) LIKE LOWER('%' || :email || '%') AND eb_del = 'F'";
             }
         }
 
@@ -733,7 +743,8 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"SELECT ACols.*, BCols.foreign_table_name, BCols.foreign_column_name 
+                return @"
+SELECT ACols.*, BCols.foreign_table_name, BCols.foreign_column_name 
                         FROM
                             (SELECT 
                                 TCols.*, CCols.constraint_type 
@@ -791,7 +802,8 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"SELECT created_at FROM eb_executionlogs WHERE refid = :refid AND created_at::TIMESTAMP::DATE =current_date";
+                return @"
+SELECT created_at FROM eb_executionlogs WHERE refid = :refid AND created_at::TIMESTAMP::DATE =current_date";
             }
         }
 
@@ -799,7 +811,8 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid = :refid);
+                return @"
+SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid = :refid);
                              SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid = :refid);
                              SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid = :refid AND EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date));
                              SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid = :refid AND EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date));
@@ -815,7 +828,8 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"SELECT id, email FROM eb_users WHERE id = ANY
+                return @"
+SELECT id, email FROM eb_users WHERE id = ANY
                              (string_to_array(:userids,',')::int[]);
                            SELECT distinct id, email FROM eb_users WHERE id = ANY(SELECT userid FROM eb_user2usergroup WHERE 
                                 groupid = ANY(string_to_array(:groupids,',')::int[])) ;";
@@ -826,7 +840,8 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"SELECT name,startdate,enddate,status FROM eb_surveys WHERE id = :id;
+                return @"
+SELECT name,startdate,enddate,status FROM eb_surveys WHERE id = :id;
 							SELECT * FROM
 								(SELECT UNNEST(string_to_array(S.questions, ',')::int[]) AS q_id FROM eb_surveys S WHERE id = :id) QUES_IDS, 
 								(SELECT Q.id, Q.query, Q.q_type FROM eb_survey_queries Q) QUES_ANS,
@@ -840,7 +855,40 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"INSERT INTO eb_survey_master(surveyid,userid,anonid,eb_createdate) VALUES(:sid,:uid,:anid,now()) RETURNING id;";
+                return @"
+INSERT INTO 
+                        eb_survey_master(surveyid,userid,anonid,eb_createdate) 
+                    VALUES
+                        (:sid,:uid,:anid,now()) RETURNING id;";
+            }
+        }
+
+        public string EB_CURRENT_TIMESTAMP
+        {
+            get
+            {
+                return @"CURRENT_TIMESTAMP AT TIME ZONE 'UTC'";
+            }
+        }
+
+        public string EB_UPDATEAUDITTRAIL
+        {
+            get
+            {
+                return @"
+INSERT INTO 
+                            eb_audit_master(formid, dataid, actiontype, eb_createdby, eb_createdat) 
+                        VALUES 
+                            (:formid, :dataid, :actiontype, :eb_createdby, CURRENT_TIMESTAMP AT TIME ZONE 'UTC') RETURNING id;";
+            }
+        }
+
+        public string EB_SAVESURVEY
+        {
+            get
+            {
+                return @"
+INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:name, :start, :end, :status, :questions) RETURNING id;";
             }
         }
 
@@ -849,7 +897,7 @@ namespace ExpressBase.Common
         public string EB_GETDBCLIENTTTABLES
         {
             get { return @"
-                SELECT Q1.table_name, Q1.table_schema, i.indexname FROM 
+SELECT Q1.table_name, Q1.table_schema, i.indexname FROM 
                 (SELECT
                     table_name, table_schema
                 FROM
@@ -1330,19 +1378,19 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_FILEEXISTS
-        {
-            get
-            {
-                return @"UPDATE eb_image_migration_counter 
-                         SET
-                            is_exist = @exist
-                         WHERE
-                            filename = @fname
-                            AND customer_id = @cid 
-                         RETURNING id";
-            }
-        }
+        //public string EB_FILEEXISTS
+        //{
+        //    get
+        //    {
+        //        return @"UPDATE eb_image_migration_counter 
+        //                 SET
+        //                    is_exist = @exist
+        //                 WHERE
+        //                    filename = @fname
+        //                    AND customer_id = @cid 
+        //                 RETURNING id";
+        //    }
+        //}
 
         public string EB_GETFILEREFID
         {
@@ -1353,6 +1401,45 @@ namespace ExpressBase.Common
                          VALUES 
                             (@userid, @filename, @filetype, @tags, @filecategory) 
                         RETURNING id;";
+            }
+        }
+
+        public string EB_UPLOAD_IDFETCHQUERY
+        {
+            get
+            {
+                return @"INSERT INTO
+                            eb_files_ref (userid, filename, filetype, tags, filecategory, uploadts) 
+                        VALUES 
+                            (@userid, @filename, @filetype, @tags, @filecategory, NOW()) 
+                        RETURNING id";
+            }
+        }
+
+        public string EB_SMSSERVICE_POST
+        {
+            get
+            {
+                return @"INSERT INTO logs_sms
+                            (uri, send_to, send_from, message_body, status, error_message, user_id, context_id) 
+                        VALUES 
+                            (@uri, @to, @from, @message_body, @status, @error_message, @user_id, @context_id) RETURNING id";
+            }
+        }
+
+        public string EB_FILECATEGORYCHANGE
+        {
+            get
+            {
+                return @"UPDATE 
+	                        eb_files_ref FR
+                        SET
+	                        tags = jsonb_set(cast(tags as jsonb),
+							'{Category}',
+							(SELECT (cast(tags as jsonb)->'Category')-0 || to_jsonb(:categry::text)),
+                            true)
+                        WHERE 
+                            FR.id = ANY(string_to_array(:ids,',')::int[]);";
             }
         }
     }
