@@ -37,6 +37,7 @@ namespace ExpressBase.Common.Constants
         public const string EDIT = "Edit";
         public const string DELETE = "Delete";
         public const string CANCEL = "Cancel";
+        public const string AUDIT_TRAIL = "AuditTrail";
 
     }
 }
