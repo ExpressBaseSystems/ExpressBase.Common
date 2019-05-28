@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION public.cur_val(
+CREATE OR REPLACE FUNCTION public.eb_currval(
 	text)
     RETURNS integer
     LANGUAGE 'plpgsql'
@@ -18,4 +18,3 @@ RETURN result;
 END;
 
 $function$;
-

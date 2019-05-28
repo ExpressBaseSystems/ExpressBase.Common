@@ -382,12 +382,6 @@
   <data name="eb_files_bytea1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\oracle\filesdb\tablecreate\eb_files_bytea.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="eb_currval" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sqlscripts\pgsql\objectsdb\functioncreate\eb_currval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_currval1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sqlscripts\oracle\objectsdb\functioncreate\eb_currval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
   <data name="eb_applications2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\mysql\objectsdb\tablecreate\eb_applications.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
@@ -420,9 +414,6 @@
   </data>
   <data name="eb_create_or_update_role2user2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\mysql\datadb\functioncreate\eb_create_or_update_role2user.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="eb_currval2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sqlscripts\mysql\objectsdb\functioncreate\eb_currval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_getpermissions2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\mysql\datadb\functioncreate\eb_getpermissions.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
@@ -742,13 +733,16 @@
   <data name="eb_image_migration_counter2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\mysql\datadb\tablecreate\eb_image_migration_counter.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="cur_val" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\pgsql\objectsdb\functioncreate\cur_val.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="eb_currval" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\pgsql\datadb\functioncreate\eb_currval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="cur_val1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\oracle\objectsdb\functioncreate\cur_val.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="eb_currval1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\oracle\datadb\functioncreate\eb_currval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="cur_val2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\mysql\objectsdb\functioncreate\cur_val.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="eb_currval2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\mysql\datadb\functioncreate\eb_currval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_persist_currval" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SqlScripts\mysql\datadb\functioncreate\eb_persist_currval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>

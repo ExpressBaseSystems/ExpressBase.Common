@@ -61,96 +61,6 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE OR REPLACE FUNCTION public.cur_val(
-        ///	text)
-        ///    RETURNS integer
-        ///    LANGUAGE &apos;plpgsql&apos;
-        ///    COST 100.0
-        ///
-        ///AS $function$
-        ///
-        ///DECLARE seq ALIAS FOR $1;
-        ///DECLARE result integer;
-        ///BEGIN
-        ///result := 0;
-        ///EXECUTE &apos;SELECT currval(&apos;&apos;&apos; || seq || &apos;&apos;&apos;)&apos; INTO result;
-        ///RETURN result;
-        ///EXCEPTION WHEN OTHERS THEN
-        ///--do nothing
-        ///RETURN result;
-        ///END;
-        ///
-        ///$function$;
-        ///
-        ///.
-        /// </summary>
-        public static string cur_val {
-            get {
-                return ResourceManager.GetString("cur_val", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE OR REPLACE FUNCTION public.cur_val(
-        ///	text)
-        ///    RETURNS integer
-        ///    LANGUAGE &apos;plpgsql&apos;
-        ///    COST 100.0
-        ///
-        ///AS $function$
-        ///
-        ///DECLARE seq ALIAS FOR $1;
-        ///DECLARE result integer;
-        ///BEGIN
-        ///result := 0;
-        ///EXECUTE &apos;SELECT currval(&apos;&apos;&apos; || seq || &apos;&apos;&apos;)&apos; INTO result;
-        ///RETURN result;
-        ///EXCEPTION WHEN OTHERS THEN
-        ///--do nothing
-        ///RETURN result;
-        ///END;
-        ///
-        ///$function$;
-        ///
-        ///.
-        /// </summary>
-        public static string cur_val1 {
-            get {
-                return ResourceManager.GetString("cur_val1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE OR REPLACE FUNCTION public.cur_val(
-        ///	text)
-        ///    RETURNS integer
-        ///    LANGUAGE &apos;plpgsql&apos;
-        ///    COST 100.0
-        ///
-        ///AS $function$
-        ///
-        ///DECLARE seq ALIAS FOR $1;
-        ///DECLARE result integer;
-        ///BEGIN
-        ///result := 0;
-        ///EXECUTE &apos;SELECT currval(&apos;&apos;&apos; || seq || &apos;&apos;&apos;)&apos; INTO result;
-        ///RETURN result;
-        ///EXCEPTION WHEN OTHERS THEN
-        ///--do nothing
-        ///RETURN result;
-        ///END;
-        ///
-        ///$function$;
-        ///
-        ///.
-        /// </summary>
-        public static string cur_val2 {
-            get {
-                return ResourceManager.GetString("cur_val2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to DECLARE
         ///	eb_del varchar(10);
         ///BEGIN
@@ -1468,30 +1378,26 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE OR REPLACE FUNCTION public.eb_currval(seq text)
-        ///RETURNS integer
-        ///LANGUAGE &apos;plpgsql&apos;
-        ///AS $BODY$
-        ///DECLARE curval integer; exce text;
+        ///   Looks up a localized string similar to CREATE OR REPLACE FUNCTION public.eb_currval(
+        ///	text)
+        ///    RETURNS integer
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///    COST 100.0
+        ///
+        ///AS $function$
+        ///
+        ///DECLARE seq ALIAS FOR $1;
+        ///DECLARE result integer;
         ///BEGIN
-        ///SELECT currval(seq) into curval;
-        ///RETURN curval;
+        ///result := 0;
+        ///EXECUTE &apos;SELECT currval(&apos;&apos;&apos; || seq || &apos;&apos;&apos;)&apos; INTO result;
+        ///RETURN result;
         ///EXCEPTION WHEN OTHERS THEN
-        ///	IF SQLSTATE = &apos;55000&apos; THEN
-        ///    	RETURN 0;      
-        ///    ELSE
-        ///    	RAISE EXCEPTION &apos;%&apos;, SQLERRM;
-        ///    END IF;
+        ///--do nothing
+        ///RETURN result;
         ///END;
         ///
-        ///$BODY$;
-        ///
-        ///
-        ///
-        ///
-        ///
-        ///
-        ///.
+        ///$function$;.
         /// </summary>
         public static string eb_currval {
             get {
@@ -1527,14 +1433,14 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE FUNCTION eb_currval(seq text) RETURNS int(11)
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_currval(seq text, out curval int)
         ///BEGIN
-        ///DECLARE curval integer;
-        ///DECLARE exce text;
-        ///DECLARE CONTINUE HANDLER FOR SQLSTATE &apos;42000&apos; return 0; 
-        ///SELECT last_insert_id() into curval;
-        ///RETURN curval;
-        ///RETURN 1;
+        ///
+        ///DECLARE _curval int;
+        ///
+        ///SELECT max(`value`) FROM tmp_currval WHERE name = seq INTO _curval;
+        ///SELECT _curval INTO curval;
+        ///
         ///END.
         /// </summary>
         public static string eb_currval2 {
@@ -3763,6 +3669,21 @@ namespace ExpressBase.Common {
         public static string eb_objects2application2 {
             get {
                 return ResourceManager.GetString("eb_objects2application2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_persist_currval(seq_name text)
+        ///BEGIN
+        ///
+        ///CREATE TEMPORARY TABLE IF NOT EXISTS tmp_currval(name text, value integer);
+        ///INSERT INTO tmp_currval(name, value) VALUES(seq_name, SELECT last_insert_id()));
+        ///
+        ///END.
+        /// </summary>
+        public static string eb_persist_currval {
+            get {
+                return ResourceManager.GetString("eb_persist_currval", resourceCulture);
             }
         }
         
