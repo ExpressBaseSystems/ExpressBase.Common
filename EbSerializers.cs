@@ -100,6 +100,7 @@ namespace ExpressBase.Common
                     for (int i = 200; i > -101; i--)
                     {
                         json = json.Replace("\"Padding\":" + i, "\"Padding\":{\"$type\":\"ExpressBase.Common.Objects.UISides, ExpressBase.Common\",\"Top\":0,\"Right\":0,\"Bottom\":0,\"Left\":0}");
+                        json = json.Replace("\"Padding\": " + i, "\"Padding\":{\"$type\":\"ExpressBase.Common.Objects.UISides, ExpressBase.Common\",\"Top\":0,\"Right\":0,\"Bottom\":0,\"Left\":0}");
                     }
 
                     return JsonConvert.DeserializeObject(json,
