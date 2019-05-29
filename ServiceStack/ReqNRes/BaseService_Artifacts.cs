@@ -30,6 +30,12 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     public abstract class EbServiceStackNoAuthRequest
     { }
 
+    public interface IEbTenentRequest
+    {
+        string SolnId { get; set; }
+        int UserId { get; set; }
+    }
+
     [ProtoBuf.ProtoContract]
     //[ProtoBuf.ProtoInclude(1, typeof(DataSourceColumnsResponse))]
     public interface IEbSSResponse
