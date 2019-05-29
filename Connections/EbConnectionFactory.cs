@@ -12,6 +12,7 @@ using ServiceStack.Logging;
 using ServiceStack.Redis;
 using System;
 using System.Collections.Generic;
+using static ExpressBase.Common.MySqlDB;
 
 namespace ExpressBase.Common.Data
 {
@@ -226,7 +227,12 @@ namespace ExpressBase.Common.Data
                 {
                     Connections.DataDbConfig.UserName = _userName;
                     Connections.DataDbConfig.Password = _passWord;
-                    FilesDB.Add(new PGSQLFileDatabase(Connections.DataDbConfig));
+                    if(Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
+                        FilesDB.Add(new PGSQLFileDatabase(Connections.DataDbConfig));
+                    else if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
+                        FilesDB.Add(new OracleFilesDB(Connections.DataDbConfig));
+                    else if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
+                        FilesDB.Add(new MySQLFilesDB(Connections.DataDbConfig));
                     FilesDB.DefaultConId = Connections.DataDbConfig.Id;
                 }
                 else
@@ -239,8 +245,8 @@ namespace ExpressBase.Common.Data
                             FilesDB.Add(new PGSQLFileDatabase(Connections.FilesDbConfig.Integrations[i] as PostgresConfig));
                         else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.ORACLE)
                             FilesDB.Add(new OracleFilesDB(Connections.FilesDbConfig.Integrations[i] as OracleConfig));
-                        //else if (Connections.FilesDbConfig[i].Type == EbIntegrations.MYSQL)
-                        //    FilesDB.Add(new MySQLFilesDB(Connections.FilesDbConfig[i] as MySqlConfig));
+                        else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.MYSQL)
+                            FilesDB.Add(new MySQLFilesDB(Connections.FilesDbConfig.Integrations[i] as MySqlConfig));
                         if (Connections.FilesDbConfig.DefaultConId == Connections.FilesDbConfig.Integrations[i].Id)
                             IsDefaultConIdCorrect = true;
                     }

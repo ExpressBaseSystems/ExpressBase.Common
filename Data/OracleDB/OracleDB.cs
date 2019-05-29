@@ -39,19 +39,19 @@ namespace ExpressBase.Common.Data
         VendorDbType IVendorDbTypes.Json { get { return InnerDictionary[EbDbTypes.Json]; } }
         VendorDbType IVendorDbTypes.Bytea { get { return InnerDictionary[EbDbTypes.Bytea]; } }
         VendorDbType IVendorDbTypes.Boolean { get { return InnerDictionary[EbDbTypes.Boolean]; } }
-		VendorDbType IVendorDbTypes.BooleanOriginal { get { return InnerDictionary[EbDbTypes.BooleanOriginal]; } }
+        VendorDbType IVendorDbTypes.BooleanOriginal { get { return InnerDictionary[EbDbTypes.BooleanOriginal]; } }
 
-		private OracleEbDbTypes()
+        private OracleEbDbTypes()
         {
             this.InnerDictionary = new Dictionary<EbDbTypes, VendorDbType>();
-            this.InnerDictionary.Add(EbDbTypes.AnsiString, new VendorDbType(EbDbTypes.AnsiString, OracleDbType.Clob,"to_clob({0})"));
+            this.InnerDictionary.Add(EbDbTypes.AnsiString, new VendorDbType(EbDbTypes.AnsiString, OracleDbType.Clob, "to_clob({0})"));
             this.InnerDictionary.Add(EbDbTypes.Binary, new VendorDbType(EbDbTypes.Binary, OracleDbType.Blob, "to_blob({0})"));
-            this.InnerDictionary.Add(EbDbTypes.Byte, new VendorDbType(EbDbTypes.Byte, OracleDbType.Byte,"to_single_byte({0})"));
-            this.InnerDictionary.Add(EbDbTypes.Date, new VendorDbType(EbDbTypes.Date, OracleDbType.Date,"to_date({0})"));
-            this.InnerDictionary.Add(EbDbTypes.DateTime, new VendorDbType(EbDbTypes.DateTime, OracleDbType.TimeStamp,"to_timestamp({0})"));
-            this.InnerDictionary.Add(EbDbTypes.Decimal, new VendorDbType(EbDbTypes.Decimal, OracleDbType.Decimal,"to_decimal({0})"));
-            this.InnerDictionary.Add(EbDbTypes.Double, new VendorDbType(EbDbTypes.Double, OracleDbType.Double,"to_binary_double({0})"));
-            this.InnerDictionary.Add(EbDbTypes.Int16, new VendorDbType(EbDbTypes.Int16, OracleDbType.Int16,"to_number({})"));
+            this.InnerDictionary.Add(EbDbTypes.Byte, new VendorDbType(EbDbTypes.Byte, OracleDbType.Byte, "to_single_byte({0})"));
+            this.InnerDictionary.Add(EbDbTypes.Date, new VendorDbType(EbDbTypes.Date, OracleDbType.Date, "to_date({0})"));
+            this.InnerDictionary.Add(EbDbTypes.DateTime, new VendorDbType(EbDbTypes.DateTime, OracleDbType.TimeStamp, "to_timestamp({0})"));
+            this.InnerDictionary.Add(EbDbTypes.Decimal, new VendorDbType(EbDbTypes.Decimal, OracleDbType.Decimal, "to_decimal({0})"));
+            this.InnerDictionary.Add(EbDbTypes.Double, new VendorDbType(EbDbTypes.Double, OracleDbType.Double, "to_binary_double({0})"));
+            this.InnerDictionary.Add(EbDbTypes.Int16, new VendorDbType(EbDbTypes.Int16, OracleDbType.Int16, "to_number({})"));
             this.InnerDictionary.Add(EbDbTypes.Int32, new VendorDbType(EbDbTypes.Int32, OracleDbType.Int32, "to_number({})"));
             this.InnerDictionary.Add(EbDbTypes.Int64, new VendorDbType(EbDbTypes.Int64, OracleDbType.Int64, "to_number({})"));
             this.InnerDictionary.Add(EbDbTypes.Object, new VendorDbType(EbDbTypes.Object, OracleDbType.Clob, "to_clob({0})"));
@@ -60,9 +60,9 @@ namespace ExpressBase.Common.Data
             this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, OracleDbType.NVarchar2, "to_number({})"));
             this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, OracleDbType.Clob, "to_clob({0})"));
             this.InnerDictionary.Add(EbDbTypes.Bytea, new VendorDbType(EbDbTypes.Bytea, OracleDbType.Blob, "to_blob({0})"));
-            this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, OracleDbType.Char,"to_char({0})"));
-			this.InnerDictionary.Add(EbDbTypes.BooleanOriginal, new VendorDbType(EbDbTypes.BooleanOriginal, OracleDbType.Char, "to_char({0})"));
-		}
+            this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, OracleDbType.Char, "to_char({0})"));
+            this.InnerDictionary.Add(EbDbTypes.BooleanOriginal, new VendorDbType(EbDbTypes.BooleanOriginal, OracleDbType.Char, "to_char({0})"));
+        }
 
         public static IVendorDbTypes Instance => new OracleEbDbTypes();
 
@@ -323,7 +323,7 @@ namespace ExpressBase.Common.Data
             return null;
         }
 
-            public int DoNonQuery(string query, params DbParameter[] parameters)
+        public int DoNonQuery(string query, params DbParameter[] parameters)
         {
             var return_val = 0;
             List<DbParameter> dbParameter = new List<DbParameter>();
@@ -557,15 +557,15 @@ namespace ExpressBase.Common.Data
                         {
                             cmd.BindByName = true;
                             int pos = 0;
-							int _fieldCount = reader.FieldCount;
-							while (reader.Read())
-							{
-								object[] oArray = new object[_fieldCount];
-								reader.GetValues(oArray);
-								EbDataColumn column = new EbDataColumn(oArray[1].ToString(), ConvertToDbType(oArray[2].ToString()));
-								column.ColumnIndex = pos++;
-								cols.Add(column);
-							}
+                            int _fieldCount = reader.FieldCount;
+                            while (reader.Read())
+                            {
+                                object[] oArray = new object[_fieldCount];
+                                reader.GetValues(oArray);
+                                EbDataColumn column = new EbDataColumn(oArray[1].ToString(), ConvertToDbType(oArray[2].ToString()));
+                                column.ColumnIndex = pos++;
+                                cols.Add(column);
+                            }
                         }
                     }
                 }
@@ -634,23 +634,23 @@ namespace ExpressBase.Common.Data
             return EbDbTypes.String;
         }
 
-		public EbDbTypes ConvertToDbType(string _typ)
-		{
-			if (_typ == "DATE")
-				return EbDbTypes.Date;
-			else if (_typ == "CHAR")
-				return EbDbTypes.Boolean;
-			else if (_typ == "NUMBER")
-				return EbDbTypes.Decimal;
-			else if (_typ == "TIMESTAMP(6)")
-				return EbDbTypes.DateTime;
+        public EbDbTypes ConvertToDbType(string _typ)
+        {
+            if (_typ == "DATE")
+                return EbDbTypes.Date;
+            else if (_typ == "CHAR")
+                return EbDbTypes.Boolean;
+            else if (_typ == "NUMBER")
+                return EbDbTypes.Decimal;
+            else if (_typ == "TIMESTAMP(6)")
+                return EbDbTypes.DateTime;
             else if (_typ == "Byte[]")
                 return EbDbTypes.Bytea;
             return EbDbTypes.String;
-		}
-		
+        }
 
-		private void PrepareDataTable(OracleDataReader reader, EbDataTable dt)
+
+        private void PrepareDataTable(OracleDataReader reader, EbDataTable dt)
         {
             int _fieldCount = reader.FieldCount;
             while (reader.Read())
@@ -904,6 +904,35 @@ namespace ExpressBase.Common.Data
             }
         }
 
+        public string EB_CURRENT_TIMESTAMP
+        {
+            get
+            {
+                return @"CURRENT_TIMESTAMP AT TIME ZONE 'UTC'";
+            }
+        }
+
+        public string EB_UPDATEAUDITTRAIL
+        {
+            get
+            {
+                return @"
+INSERT INTO 
+                            eb_audit_master(formid, dataid, actiontype, eb_createdby, eb_createdat) 
+                        VALUES 
+                            (:formid, :dataid, :actiontype, :eb_createdby, CURRENT_TIMESTAMP AT TIME ZONE 'UTC') RETURNING id;";
+            }
+        }
+
+        public string EB_SAVESURVEY
+        {
+            get
+            {
+                return @"
+INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:name, :start, :end, :status, :questions) RETURNING id;";
+            }
+        }
+
         // DBClient
 
         public string EB_GETDBCLIENTTTABLES
@@ -1102,7 +1131,7 @@ namespace ExpressBase.Common.Data
                 return @"INSERT INTO eb_keys (key) VALUES(@KEY) RETURNING id;";
             }
         }
-              
+
         public string EB_GET_BOT_FORM
         {
             get
@@ -1326,20 +1355,6 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        public string EB_FILEEXISTS
-        {
-            get
-            {
-                return @"UPDATE eb_image_migration_counter 
-                         SET
-                            is_exist = @exist
-                         WHERE
-                            filename = @fname
-                            AND customer_id = @cid 
-                         RETURNING id;";
-            }
-        }
-
         public string EB_GETFILEREFID
         {
             get
@@ -1349,6 +1364,45 @@ namespace ExpressBase.Common.Data
                          VALUES 
                             (@userid, @filename, @filetype, @tags, @filecategory) 
                         RETURNING id;";
+            }
+        }
+
+        public string EB_UPLOAD_IDFETCHQUERY
+        {
+            get
+            {
+                return @"INSERT INTO
+                            eb_files_ref (userid, filename, filetype, tags, filecategory, uploadts) 
+                        VALUES 
+                            (@userid, @filename, @filetype, @tags, @filecategory, NOW()) 
+                        RETURNING id";
+            }
+        }
+
+        public string EB_SMSSERVICE_POST
+        {
+            get
+            {
+                return @"INSERT INTO logs_sms
+                            (uri, send_to, send_from, message_body, status, error_message, user_id, context_id) 
+                        VALUES 
+                            (@uri, @to, @from, @message_body, @status, @error_message, @user_id, @context_id) RETURNING id";
+            }
+        }
+
+        public string EB_FILECATEGORYCHANGE
+        {
+            get
+            {
+                return @"UPDATE 
+	                        eb_files_ref FR
+                        SET
+	                        tags = jsonb_set(cast(tags as jsonb),
+							'{Category}',
+							(SELECT (cast(tags as jsonb)->'Category')-0 || to_jsonb(:categry::text)),
+                            true)
+                        WHERE 
+                            FR.id = ANY(string_to_array(:ids,',')::int[]);";
             }
         }
     }
