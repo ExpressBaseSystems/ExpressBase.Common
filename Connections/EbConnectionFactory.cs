@@ -96,10 +96,11 @@ namespace ExpressBase.Common.Data
 
             if (string.IsNullOrEmpty(this.SolutionId))
                 throw new Exception("Fatal Error :: Solution Id is null or Empty!");
-
+            
             this.Redis = c.Resolve<IRedisClientsManager>().GetClient() as RedisClient;
 
-            InitDatabases();
+           //if(SolutionId != CoreConstants.EXPRESSBASE) 
+                InitDatabases();
         }
 
         // TO CREATE NEW SOLUTION DB IN DATA CENTER
