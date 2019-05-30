@@ -51,7 +51,7 @@ namespace ExpressBase.Common.Connections
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("SMS Sending Failed: " + e.StackTrace);
+                    Console.WriteLine("SMS Sending Failed: " + ex.StackTrace);
                 }
             }
             return resp;

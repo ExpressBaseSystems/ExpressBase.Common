@@ -64,18 +64,18 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
         [DefaultPropValue(8)]
-        public int Top { get; set; }
+        public virtual int Top { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
         [DefaultPropValue(8)]
-        public int Right { get; set; }
+        public virtual int Right { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
         [DefaultPropValue(8)]
-        public int Bottom { get; set; }
+        public virtual int Bottom { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
         [DefaultPropValue(8)]
-        public int Left { get; set; }
+        public virtual int Left { get; set; }
     }
 }

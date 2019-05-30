@@ -35,7 +35,7 @@ namespace ExpressBase.Common.Objects
         [PropertyGroup("Appearance")]
         [UIproperty]
         [OnChangeUIFunction("Common.ROOT_OBJ_PADDING")]
-        public override UISides Padding { get; set; }
+        public new  UISides Padding { get; set; }
 
         public override string DefaultValue { get; set; }
 
