@@ -32,7 +32,8 @@ namespace ExpressBase.Common.Connections
                             Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_PASSWORD),
                             Timeout = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_TIMEOUT)),
                             IsSSL = true,
-                            IsDefault = true
+                            IsDefault = true,
+                            Id = 0
                         },
                         LogsDbConnection = new PostgresConfig
                         {
