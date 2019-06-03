@@ -174,6 +174,8 @@ function ProcRecur(src_controls, dest_controls) {
 
         private void GetJsObject(object obj)
         {
+            if ((obj as EbControl).ObjType == "TableLayout")
+                ;
             this.CtrlCounters += obj.GetType().GetTypeInfo().Name.Substring(2) + "Counter : 0,";
             string _props = string.Empty;
 
@@ -508,7 +510,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     try
                     {
                         object Obj = Activator.CreateInstance(prop.PropertyType);
-                        SetAllDefaultPropVals(prop.PropertyType, Obj);
+                        SetAllDefaultPropVals(prop, Obj);
                         return string.Format(s, _name, EbSerializers.Json_Serialize(Obj));
                     }
                     catch (Exception e)
@@ -522,29 +524,35 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                 return string.Format(s, _name, "null");
         }
 
-        private dynamic SetAllDefaultPropVals(Type propType, object Obj)
+        private dynamic SetAllDefaultPropVals(PropertyInfo prop, object Obj)
         {
-            PropertyInfo[] props = propType.GetProperties();
-            int i = 0;
-            if (propType.GetCustomAttribute<DefaultPropValue>() != null && propType.GetCustomAttribute<DefaultPropValue>().Values.Count !=0)
-            {
-                List<Object> vals = propType.GetCustomAttribute<DefaultPropValue>().Values;
+            if (prop.Name == "Padding")
+                ;
+            if (prop.GetCustomAttribute<DefaultPropValue>() != null)
+                ;
+            //PropertyInfo[] props = propType.GetProperties();
+            //int i = 0;
+            //if (propType.GetCustomAttribute<DefaultPropValue>() != null)
+            //    ;
+            //if (propType.GetCustomAttribute<DefaultPropValue>() != null && propType.GetCustomAttribute<DefaultPropValue>().Values.Count !=0)
+            //{
+            //    List<Object> vals = propType.GetCustomAttribute<DefaultPropValue>().Values;
 
-                foreach (Object val in vals)   
-             {
-                    i++;
-                    try
-                    {
-                        PropertyInfo prop = props[i];
-                        if (val != null)
-                            prop.SetValue(Obj, val, null);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
-                }
-            }
+            //    foreach (Object val in vals)   
+            // {
+            //        i++;
+            //        try
+            //        {
+            //            PropertyInfo prop = props[i];
+            //            if (val != null)
+            //                prop.SetValue(Obj, val, null);
+            //        }
+            //        catch (Exception e)
+            //        {
+            //            Console.WriteLine(e.Message);
+            //        }
+            //    }
+            //}
             return Obj;
         }
     }

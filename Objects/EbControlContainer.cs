@@ -57,6 +57,7 @@ namespace ExpressBase.Common.Objects
         [PropertyGroup("Appearance")]
         [UIproperty]
         [OnChangeUIFunction("Common.PADDING")]
+        //[DefaultPropValue(11, 22, 33, 44)]
         public virtual UISides Padding { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]

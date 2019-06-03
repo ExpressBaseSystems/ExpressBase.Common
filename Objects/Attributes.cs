@@ -214,19 +214,26 @@ namespace ExpressBase.Common.Objects.Attributes
     public class DefaultPropValue : Attribute
     {
         public dynamic Value { get; set; }
-        public List<Object> Values { get; set; }
+        public List<Object> Values = new List<object>();
         //public Type ClassType { get; set; }
 
-        public DefaultPropValue(object val,object val2,object val3,object val4) {
-            this.Value = val;
-            if(Value != null)
-                this.Values.Add(Value);
-            if(val2 != null)
-                this.Values.Add(val2);
-            if(val3 != null)
-                this.Values.Add(val3);
-            if(val4 != null)
-                this.Values.Add(val4);
+        public DefaultPropValue(object val, object val2, object val3, object val4)
+        {
+            try
+            {
+                this.Value = val;
+                if (Value != null)
+                    this.Values.Add(Value);
+                if (val2 != null)
+                    this.Values.Add(val2);
+                if (val3 != null)
+                    this.Values.Add(val3);
+                if (val4 != null)
+                    this.Values.Add(val4);
+            }
+            catch (Exception ee) {
+                ;
+            }
         }
 
         public DefaultPropValue(object val)
