@@ -525,15 +525,19 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
         private dynamic SetAllDefaultPropVals(Type propType, object Obj)
         {
             PropertyInfo[] props = propType.GetProperties();
-            foreach (PropertyInfo prop in props)
+            int i = 0;
+            if (propType.GetCustomAttribute<DefaultPropValue>() != null && propType.GetCustomAttribute<DefaultPropValue>().Values.Count !=0)
             {
-                if (prop.GetCustomAttribute<DefaultPropValue>() != null)
-                {
-                    object val = prop.GetCustomAttribute<DefaultPropValue>().Value;
+                List<Object> vals = propType.GetCustomAttribute<DefaultPropValue>().Values;
+
+                foreach (Object val in vals)   
+             {
+                    i++;
                     try
                     {
+                        PropertyInfo prop = props[i];
                         if (val != null)
-                            prop.SetValue(Obj, (object)val, null);
+                            prop.SetValue(Obj, val, null);
                     }
                     catch (Exception e)
                     {
