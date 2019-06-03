@@ -174,8 +174,6 @@ function ProcRecur(src_controls, dest_controls) {
 
         private void GetJsObject(object obj)
         {
-            if ((obj as EbControl).ObjType == "TableLayout")
-                ;
             this.CtrlCounters += obj.GetType().GetTypeInfo().Name.Substring(2) + "Counter : 0,";
             string _props = string.Empty;
 
@@ -445,7 +443,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             {
                 _name = prop.GetCustomAttribute<JsonPropertyAttribute>().PropertyName;
             }
-            if (prop.IsDefined(typeof(DefaultPropValue)))
+            if (prop.IsDefined(typeof(DefaultPropValue)) && (prop.PropertyType.IsPrimitive || prop.PropertyType == typeof(string)))
             {
 
                 string DefaultVal = prop.GetCustomAttribute<DefaultPropValue>().Value;
@@ -499,7 +497,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     return string.Format(s, _name, "[]");
                 }
             }
-            else if (prop.PropertyType.IsClass)
+            else if (prop.PropertyType.IsClass && !prop.PropertyType.IsPrimitive)
             {
                 if (prop.PropertyType == typeof(EbFont))
                 {
@@ -526,33 +524,29 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
 
         private dynamic SetAllDefaultPropVals(PropertyInfo prop, object Obj)
         {
-            if (prop.Name == "Padding")
-                ;
-            if (prop.GetCustomAttribute<DefaultPropValue>() != null)
-                ;
-            //PropertyInfo[] props = propType.GetProperties();
-            //int i = 0;
-            //if (propType.GetCustomAttribute<DefaultPropValue>() != null)
-            //    ;
-            //if (propType.GetCustomAttribute<DefaultPropValue>() != null && propType.GetCustomAttribute<DefaultPropValue>().Values.Count !=0)
-            //{
-            //    List<Object> vals = propType.GetCustomAttribute<DefaultPropValue>().Values;
+            PropertyInfo[] props = Obj.GetType().GetProperties();
+            int i = 0;
+            if (prop.GetCustomAttribute<DefaultPropValue>() != null && prop.GetCustomAttribute<DefaultPropValue>().Values.Count != 0)
+            {
+                List<Object> vals = prop.GetCustomAttribute<DefaultPropValue>().Values;
 
-            //    foreach (Object val in vals)   
-            // {
-            //        i++;
-            //        try
-            //        {
-            //            PropertyInfo prop = props[i];
-            //            if (val != null)
-            //                prop.SetValue(Obj, val, null);
-            //        }
-            //        catch (Exception e)
-            //        {
-            //            Console.WriteLine(e.Message);
-            //        }
-            //    }
-            //}
+                foreach (object val in vals)
+                {
+                    try
+                    {
+                        PropertyInfo propInfo = props[i];
+                        if (val != null)
+                            propInfo.SetValue(Obj, val, null);
+                        else
+                            break;
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                    i++;
+                }
+            }
             return Obj;
         }
     }

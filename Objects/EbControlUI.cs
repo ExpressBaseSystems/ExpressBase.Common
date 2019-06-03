@@ -33,6 +33,7 @@ namespace ExpressBase.Common.Objects
         [PropertyGroup("Appearance")]
 		[UIproperty]
         [OnChangeUIFunction("Common.MARGIN")]
+        [DefaultPropValue(8, 8, 8, 8)]
         public virtual UISides Margin { get; set; }
 
 		[EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]

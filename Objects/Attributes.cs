@@ -214,7 +214,7 @@ namespace ExpressBase.Common.Objects.Attributes
     public class DefaultPropValue : Attribute
     {
         public dynamic Value { get; set; }
-        public List<Object> Values = new List<object>();
+        public List<object> Values = new List<object>();
         //public Type ClassType { get; set; }
 
         public DefaultPropValue(object val, object val2, object val3, object val4)
