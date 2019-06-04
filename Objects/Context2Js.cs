@@ -443,7 +443,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             {
                 _name = prop.GetCustomAttribute<JsonPropertyAttribute>().PropertyName;
             }
-            if (prop.IsDefined(typeof(DefaultPropValue)))
+            if (prop.IsDefined(typeof(DefaultPropValue)) && (prop.PropertyType.IsPrimitive || prop.PropertyType == typeof(string)))
             {
 
                 string DefaultVal = prop.GetCustomAttribute<DefaultPropValue>().Value;
@@ -497,7 +497,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     return string.Format(s, _name, "[]");
                 }
             }
-            else if (prop.PropertyType.IsClass)
+            else if (prop.PropertyType.IsClass && !prop.PropertyType.IsPrimitive)
             {
                 if (prop.PropertyType == typeof(EbFont))
                 {
@@ -508,7 +508,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     try
                     {
                         object Obj = Activator.CreateInstance(prop.PropertyType);
-                        SetAllDefaultPropVals(prop.PropertyType, Obj);
+                        SetAllDefaultPropVals(prop, Obj);
                         return string.Format(s, _name, EbSerializers.Json_Serialize(Obj));
                     }
                     catch (Exception e)
@@ -522,23 +522,29 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                 return string.Format(s, _name, "null");
         }
 
-        private dynamic SetAllDefaultPropVals(Type propType, object Obj)
+        private dynamic SetAllDefaultPropVals(PropertyInfo prop, object Obj)
         {
-            PropertyInfo[] props = propType.GetProperties();
-            foreach (PropertyInfo prop in props)
+            PropertyInfo[] props = Obj.GetType().GetProperties();
+            int i = 0;
+            if (prop.GetCustomAttribute<DefaultPropValue>() != null && prop.GetCustomAttribute<DefaultPropValue>().Values.Count != 0)
             {
-                if (prop.GetCustomAttribute<DefaultPropValue>() != null)
+                List<Object> vals = prop.GetCustomAttribute<DefaultPropValue>().Values;
+
+                foreach (object val in vals)
                 {
-                    object val = prop.GetCustomAttribute<DefaultPropValue>().Value;
                     try
                     {
+                        PropertyInfo propInfo = props[i];
                         if (val != null)
-                            prop.SetValue(Obj, (object)val, null);
+                            propInfo.SetValue(Obj, val, null);
+                        else
+                            break;
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e.Message);
                     }
+                    i++;
                 }
             }
             return Obj;
