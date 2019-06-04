@@ -3,7 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Deterministic>false</Deterministic>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Remove="sqlscripts\oracle\InfraDb\**" />
     <Compile Remove="sqlscripts\oracle\ObjectsDb\Tables\**" />
