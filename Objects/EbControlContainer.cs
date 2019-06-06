@@ -271,7 +271,7 @@ namespace ExpressBase.Common.Objects
         private static string GetOpFnJs(string opFnName, string JSfn, string TypeName)
         {
             return string.Concat(@"
-                                    this.", opFnName, " = function(p1) { ", JSfn, "};");//.RemoveCR();
+                                    this.", opFnName, " = function(p1, p2) { ", JSfn, "};");//.RemoveCR();
         }
 
         public static void SetContextId(EbControlContainer FormObj, string contextId)
