@@ -1,14 +1,13 @@
-﻿CREATE PROCEDURE eb_create_or_update_role2user(in rid integer,
-    in createdby integer,
-    in users_str text
-   -- ,out r1 integer
+﻿CREATE PROCEDURE eb_create_or_update_role2user(IN rid INTEGER,
+    IN createdby INTEGER,
+    IN users_str TEXT   
     )
 BEGIN
-declare a integer;
+DECLARE a INTEGER;
 DROP TEMPORARY TABLE IF EXISTS temp_array_table;
 DROP TEMPORARY TABLE IF EXISTS usersid_tmp;
 
-CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value integer);
+CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value INTEGER);
 	CALL STR_TO_TBL(users_str);  -- fill to temp_array_table
 	CREATE TEMPORARY TABLE IF NOT EXISTS usersid_tmp SELECT `value` FROM temp_array_table;
 UPDATE eb_role2user er2u
@@ -17,7 +16,7 @@ UPDATE eb_role2user er2u
     WHERE 
         er2u.role_id = rid AND er2u.eb_del = 'F' AND er2u.user_id IN(SELECT * FROM (
             SELECT user_id FROM eb_role2user WHERE role_id = rid AND eb_del = 'F' AND user_id NOT IN 
-       (SELECT `value` FROM usersid_tmp))as q) ;
+       (SELECT `value` FROM usersid_tmp))AS q) ;
 
     INSERT INTO eb_role2user 
         (user_id, role_id, createdby, createdat) 
@@ -26,6 +25,5 @@ UPDATE eb_role2user er2u
         
     FROM (SELECT `value` FROM usersid_tmp 
      WHERE `value` NOT IN(SELECT er2u1.user_id FROM eb_role2user er2u1 WHERE er2u1.role_id = rid AND er2u1.eb_del = 'F')) AS users;
--- set a=0;
--- select a into r1;
+
 END

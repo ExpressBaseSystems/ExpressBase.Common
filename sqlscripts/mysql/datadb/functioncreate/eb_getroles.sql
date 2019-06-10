@@ -1,26 +1,26 @@
-﻿CREATE PROCEDURE eb_getroles(IN userid integer,
-    IN wc text,
-    out roless text,
-     out role_names text
+﻿CREATE PROCEDURE eb_getroles(IN userid INTEGER,
+    IN wc TEXT,
+    OUT roless TEXT,
+    OUT role_names TEXT
     )
 BEGIN
-DECLARE app_type varchar(20);
+DECLARE app_type VARCHAR(20);
 IF wc = 'tc' OR wc = 'dc' THEN
-    set app_type='1, 2, 3';
-    END IF;
-    IF wc = 'uc' THEN
-    set app_type='1';
-    END IF;
-	IF wc = 'mc' THEN
-   set app_type='2';
-    END IF;
-    IF wc = 'bc' THEN
-   set app_type='3';
-    END IF;
+    SET app_type = '1, 2, 3';
+END IF;
+IF wc = 'uc' THEN
+    SET app_type = '1';
+END IF;
+IF wc = 'mc' THEN
+   SET app_type = '2';
+END IF;
+IF wc = 'bc' THEN
+   SET app_type = '3';
+END IF;
     
-	   SELECT 	
-		GROUP_CONCAT(UROLES.role_id) as roles,
-		group_concat(CASE WHEN UROLES.role_name is NULL THEN 'SYS' ELSE UROLES.role_name END) as role_name 
+SELECT 	
+		GROUP_CONCAT(UROLES.role_id) AS roles,
+		GROUP_CONCAT(CASE WHEN UROLES.role_name IS NULL THEN 'SYS' ELSE UROLES.role_name END) AS role_name 
 	FROM 
 		(SELECT qury.role_id, r.role_name, r.applicationid FROM
 		(
@@ -41,11 +41,11 @@ IF wc = 'tc' OR wc = 'dc' THEN
 			) AS ROLES
 		) AS qury
 		LEFT JOIN
-			(SELECT * FROM eb_roles er WHERE er.applicationid = ANY(SELECT ea.id FROM eb_applications ea WHERE find_in_set(ea.application_type,app_type)) AND er.eb_del = 'F' ) r
+			(SELECT * FROM eb_roles er WHERE er.applicationid = ANY(SELECT ea.id FROM eb_applications ea WHERE FIND_IN_SET(ea.application_type,app_type)) AND er.eb_del = 'F' ) r
 		ON
 			qury.role_id = r.id
 		) UROLES
 		WHERE 
 			role_id < 100 OR 
-			applicationid IS NOT NULL into roless,role_names;
+			applicationid IS NOT NULL INTO roless,role_names;
 END

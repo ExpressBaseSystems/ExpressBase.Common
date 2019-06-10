@@ -10,6 +10,12 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         int UserId { get; set; }
     }
 
+    public interface IEbTenentRequest
+    {
+        string SolnId { get; set; }
+        int UserId { get; set; }
+    }
+
     [DataContract]
     public abstract class EbServiceStackAuthRequest
     {
@@ -29,12 +35,6 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     [DataContract]
     public abstract class EbServiceStackNoAuthRequest
     { }
-
-    public interface IEbTenentRequest
-    {
-        string SolnId { get; set; }
-        int UserId { get; set; }
-    }
 
     [ProtoBuf.ProtoContract]
     //[ProtoBuf.ProtoInclude(1, typeof(DataSourceColumnsResponse))]

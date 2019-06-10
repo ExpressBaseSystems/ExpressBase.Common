@@ -1,10 +1,10 @@
-CREATE PROCEDURE STR_TO_TBL(fullstr text)
+CREATE PROCEDURE STR_TO_TBL(fullstr TEXT)
 BEGIN
-DECLARE a INT Default 0 ;
-      DECLARE str VARCHAR(255);
-       
-	  TRUNCATE TABLE temp_array_table;
-      
+DECLARE a INT DEFAULT 0 ;
+DECLARE str VARCHAR(255);
+
+TRUNCATE TABLE temp_array_table;
+   
       simple_loop: LOOP
          SET a=a+1;
          SET str := (SELECT split_str(fullstr,',',a));
