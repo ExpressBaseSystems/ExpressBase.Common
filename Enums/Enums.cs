@@ -46,7 +46,8 @@ namespace ExpressBase.Common
     public enum ConPreferences
     {
         PRIMARY = 1,
-        FALLBACK = 2
+        FALLBACK = 2,
+        OTHER = 3 
     }
 
     public enum EbConnectionTypes
@@ -187,6 +188,10 @@ namespace ExpressBase.Common
         UPDATE,
         CREATE_ROLE,
         DROP_ROLE,
+    }
+
+    public enum MySqlSysRolesv1
+    {
         XA_RECOVER_ADMIN,
         SYSTEM_VARIABLES_ADMIN,
         SET_USER_ID,
