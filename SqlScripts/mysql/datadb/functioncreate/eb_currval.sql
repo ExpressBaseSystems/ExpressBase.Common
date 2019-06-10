@@ -1,10 +1,10 @@
-CREATE PROCEDURE eb_currval(seq text)
+CREATE FUNCTION eb_currval(seq TEXT) RETURNS int(11)
 BEGIN
 
-DECLARE _curval int;
-SELECT max(`value`) FROM tmp_currval WHERE name = seq INTO _curval;
+DECLARE _curval INTEGER;
+
+SELECT MAX(`value`) FROM tmp_currval WHERE name = seq INTO _curval;
 IF _curval IS NULL THEN SET _curval=0; END IF; 
 
-SELECT _curval;
-
+RETURN _curval;
 END

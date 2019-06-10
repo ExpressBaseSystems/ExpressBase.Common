@@ -129,6 +129,9 @@ namespace ExpressBase.Common
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type, object value)
         {
+            
+            if (type == EbDbTypes.Boolean)
+               value = Convert.ToBoolean(value) ? 'T' : 'F';
             return new MySqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = value, Direction = ParameterDirection.Input };
         }
 
@@ -168,7 +171,9 @@ namespace ExpressBase.Common
                 {
                     throw myexce;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket)
+                {                    
+                }
             }
 
             return obj;
@@ -314,7 +319,7 @@ namespace ExpressBase.Common
                 }
                 catch (Exception e)
                 {
-
+                    throw e;
                 }
                 con.Close();
             }
@@ -386,7 +391,9 @@ namespace ExpressBase.Common
                 {
                     throw myexce;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket)
+                {
+                }
 
                 return 0;
             }
@@ -451,7 +458,7 @@ namespace ExpressBase.Common
             else if (_typ == typeof(string))
                 return EbDbTypes.String;
             else if (_typ == typeof(bool))
-                return EbDbTypes.Boolean;
+                return EbDbTypes.Boolean;            
             else if (_typ == typeof(decimal) || _typ == typeof(Double))
                 return EbDbTypes.Decimal;
             else if (_typ == typeof(int) || _typ == typeof(Int32) || _typ == typeof(Int16) || _typ == typeof(Single))
@@ -517,7 +524,9 @@ namespace ExpressBase.Common
                 {
                     throw myexce;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket)
+                {
+                }
             }
 
             return false;
@@ -540,7 +549,9 @@ namespace ExpressBase.Common
                 {
                     throw myexce;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket)
+                {
+                }
             }
 
             return xx;
@@ -548,6 +559,11 @@ namespace ExpressBase.Common
 
         public int InsertTable(string query, params DbParameter[] parameters)
         {
+            if (query.Contains(":"))
+            {
+                query = query.Replace(":", "@");
+            }
+
             using (var con = GetNewConnection() as MySqlConnection)
             {
                 try
@@ -573,6 +589,10 @@ namespace ExpressBase.Common
 
         public int UpdateTable(string query, params DbParameter[] parameters)
         {
+            if (query.Contains(":"))
+            {
+                query = query.Replace(":", "@");
+            }
             using (var con = GetNewConnection() as MySqlConnection)
             {
                 try
@@ -674,14 +694,13 @@ namespace ExpressBase.Common
                                 Type type = (Type)(dr["DataType"]);
                                 EbDataColumn column = new EbDataColumn(columnName, ConvertToDbType(type));
                                 column.ColumnIndex = pos++;
-                                cols.Add(column);
+                                cols.BaseAdd(column);
                             }
                         }
                     }
                 }
                 catch (MySqlException myexce)
                 {
-
                     throw myexce;
                 }
                 catch (SocketException scket) { }
@@ -778,7 +797,7 @@ namespace ExpressBase.Common
                     SELECT id, longname, shortname FROM eb_locations;"; } }
 
         public string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get { return @"
-                                   SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = @id;
+                               SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = @id;
                                SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = @id AND eb_del = 'F';
                                SELECT A.applicationname, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = @id AND A.eb_del = 'F';
                                SELECT A.id, A.fullname, A.email, B.id FROM eb_users A, eb_role2user B
@@ -805,10 +824,10 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"SELECT id, role_name, description FROM eb_roles ORDER BY role_name;
-                    SELECT id, name,description FROM eb_usergroup ORDER BY name;
-                    SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';
-                    ";
+                return @"
+                        SELECT id, role_name, description FROM eb_roles ORDER BY role_name;
+                        SELECT id, name,description FROM eb_usergroup ORDER BY name;
+                        SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';";
             }
         }
 
@@ -833,7 +852,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"INSERT INTO eb_applications (applicationname,application_type,description,app_icon) VALUES (:applicationname, :apptype, :description, :appicon);
-                           SELECT last_insert_id(); ";
+                           SELECT LAST_INSERT_ID(); ";
             }
         }
 
@@ -842,7 +861,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"INSERT INTO eb_applications (applicationname,application_type,description,app_icon) VALUES (@applicationname, @apptype, @description, @appicon); 
-                        SELECT last_insert_id();";
+                        SELECT LAST_INSERT_ID();";
             }
         }
 
@@ -961,7 +980,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"INSERT INTO eb_survey_master(surveyid,userid,anonid,eb_createdate) VALUES(:sid,:uid,:anid,now());
-                            SELECT last_insert_id();";
+                            SELECT LAST_INSERT_ID();";
             }
         }
 
@@ -982,7 +1001,7 @@ INSERT INTO
                             eb_audit_master(formid, dataid, actiontype, eb_createdby, eb_createdat) 
                         VALUES 
                             (:formid, :dataid, :actiontype, :eb_createdby, UTC_TIMESTAMP());
-                        SELECT last_insert_id();";
+                        SELECT LAST_INSERT_ID();";
             }
         }
 
@@ -992,7 +1011,7 @@ INSERT INTO
             {
                 return @"
 INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:name, :start, :end, :status, :questions);
-                        SELECT last_insert_id();";
+                        SELECT LAST_INSERT_ID();";
             }
         }
 
@@ -1064,7 +1083,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                         EOV.commit_uid = EU.id AND
                         EOV.eb_objects_id = (SELECT eb_objects_id FROM eb_objects_ver WHERE refid = @refid)
                     ORDER BY
-                        EOV.id DESC
+                        EOV.id DESC;
                 ";
             }
         }
@@ -1081,7 +1100,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                             AND COALESCE( EO.eb_del, 'F') = 'F'
                         ORDER BY
                         EOS.id DESC
-                        LIMIT 1
+                        LIMIT 1;
                 ";
             }
         }
@@ -1166,8 +1185,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                             EO.id = EOV.eb_objects_id  AND EO.obj_type = @type AND COALESCE(EOV.working_mode, 'F') <> 'T'
                             AND COALESCE( EO.eb_del, 'F') = 'F'
                         ORDER BY
-                            EO.obj_name;
-                ";
+                            EO.obj_name; ";
             }
         }
         public string EB_GET_OBJ_LIST_FROM_EBOBJECTS
@@ -1244,7 +1262,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"INSERT INTO eb_keys (`key`) VALUES(@KEY);
-                          SELECT last_insert_id();";
+                          SELECT LAST_INSERT_ID();";
             }
         }
 
@@ -1308,7 +1326,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"INSERT INTO eb_location_config (`keys`,isrequired,keytype,eb_del) VALUES(:keys,:isrequired,:type,'F');
-                          SELECT last_insert_id()";
+                          SELECT LAST_INSERT_ID()";
             }
         }
 
@@ -1347,12 +1365,13 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
         {
             get
             {
-                return @"eb_objects_exploreobject(@id, @idval, @nameval, @typeval, @statusval, @descriptionval, @changelogval, @commitatval, @commitbyval,
-                        @refidval, @ver_numval, @work_modeval, @workingcopiesval, @json_wcval, @json_lcval, @major_verval, @minor_verval, @patch_verval,
-                        @tagsval, @app_idval, @lastversionrefidval, @lastversionnumberval, @lastversioncommit_tsval, @lastversion_statusval,
-                        @lastversioncommit_byname, @lastversioncommit_byid, @liveversionrefidval, @liveversionnumberval, @liveversioncommit_tsval,
-                        @liveversion_statusval, @liveversioncommit_byname, @liveversioncommit_byid, @owner_uidVal, @owner_tsVal, @wner_nameVal, @dispnameval,
-                        @is_logv)";
+                return @"
+                        eb_objects_exploreobject(@id, @idval, @nameval, @typeval, @statusval, @descriptionval, @changelogval, @commitatval, @commitbyval,
+                                @refidval, @ver_numval, @work_modeval, @workingcopiesval, @json_wcval, @json_lcval, @major_verval, @minor_verval, @patch_verval,
+                                @tagsval, @app_idval, @lastversionrefidval, @lastversionnumberval, @lastversioncommit_tsval, @lastversion_statusval,
+                                @lastversioncommit_byname, @lastversioncommit_byid, @liveversionrefidval, @liveversionnumberval, @liveversioncommit_tsval,
+                                @liveversion_statusval, @liveversioncommit_byname, @liveversioncommit_byid, @owner_uidVal, @owner_tsVal, @wner_nameVal, @dispnameval,
+                                @is_logv)";
             }
         }
         public string EB_MAJOR_VERSION_OF_OBJECT

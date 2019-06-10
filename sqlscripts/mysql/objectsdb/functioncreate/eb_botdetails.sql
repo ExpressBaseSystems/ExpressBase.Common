@@ -1,4 +1,12 @@
-﻿CREATE PROCEDURE eb_botdetails(in solutionid integer)
+﻿CREATE PROCEDURE eb_botdetails(IN solutionid INTEGER,
+OUT botname TEXT, 
+OUT returnurl TEXT, 
+OUT returnbotid TEXT, 
+OUT createdby TEXT, 
+OUT createdat TIMESTAMP, 
+OUT modifiedby TEXT, 
+OUT modifiedat TIMESTAMP, 
+OUT returnwelcome TEXT)
 BEGIN
 SELECT 
 		name, 
@@ -11,5 +19,6 @@ SELECT
 	FROM 
 		eb_bots 
 	WHERE 
-		solution_id = solutionid;
+		solution_id = solutionid INTO botname,returnurl,returnbotid,createdby,
+        createdat,modifiedby,modifiedat,returnwelcome;
 END
