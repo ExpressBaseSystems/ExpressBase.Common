@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace ExpressBase.Common.Objects
@@ -297,6 +296,8 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             {
                 if (attr is Alias)
                     meta.alias = (attr as Alias).Name;
+                if (attr is PropertyPriority)
+                    meta.Priority = (attr as PropertyPriority).Priority;
                 else if (attr is PropertyGroup)
                     meta.group = (attr as PropertyGroup).Name;
                 else if (attr is HelpText)
@@ -442,7 +443,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             {
                 _name = prop.GetCustomAttribute<JsonPropertyAttribute>().PropertyName;
             }
-            if (prop.IsDefined(typeof(DefaultPropValue)))
+            if (prop.IsDefined(typeof(DefaultPropValue)) && (prop.PropertyType.IsPrimitive || prop.PropertyType == typeof(string)))
             {
 
                 string DefaultVal = prop.GetCustomAttribute<DefaultPropValue>().Value;
@@ -496,7 +497,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     return string.Format(s, _name, "[]");
                 }
             }
-            else if (prop.PropertyType.IsClass)
+            else if (prop.PropertyType.IsClass && !prop.PropertyType.IsPrimitive)
             {
                 if (prop.PropertyType == typeof(EbFont))
                 {
@@ -504,12 +505,49 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                 }
                 else
                 {
-                    object Obj = Activator.CreateInstance(prop.PropertyType);
-                    return string.Format(s, _name, EbSerializers.Json_Serialize(Obj));
+                    try
+                    {
+                        object Obj = Activator.CreateInstance(prop.PropertyType);
+                        SetAllDefaultPropVals(prop, Obj);
+                        return string.Format(s, _name, EbSerializers.Json_Serialize(Obj));
+                    }
+                    catch (Exception e)
+                    {
+                        Console.Write(e.Message);
+                        return "";
+                    }
                 }
             }
             else
                 return string.Format(s, _name, "null");
+        }
+
+        private dynamic SetAllDefaultPropVals(PropertyInfo prop, object Obj)
+        {
+            PropertyInfo[] props = Obj.GetType().GetProperties();
+            int i = 0;
+            if (prop.GetCustomAttribute<DefaultPropValue>() != null && prop.GetCustomAttribute<DefaultPropValue>().Values.Count != 0)
+            {
+                List<Object> vals = prop.GetCustomAttribute<DefaultPropValue>().Values;
+
+                foreach (object val in vals)
+                {
+                    try
+                    {
+                        PropertyInfo propInfo = props[i];
+                        if (val != null)
+                            propInfo.SetValue(Obj, val, null);
+                        else
+                            break;
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                    i++;
+                }
+            }
+            return Obj;
         }
     }
 }

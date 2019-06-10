@@ -79,12 +79,19 @@ namespace ExpressBase.Common.Data
     {
         public EbSmtp(EbSmtpConfig config)
         {
-            Config = config;
-            Client = new SmtpClient();
-            Client.Host = Config.Host;
-            Client.Port = Config.Port;
-            Client.Credentials = new NetworkCredential { UserName = Config.EmailAddress, Password = Config.Password };
-            Client.EnableSsl = Config.EnableSsl;
+            try
+            {
+                Config = config;
+                Client = new SmtpClient();
+                Client.Host = Config.Host;
+                Client.Port = Config.Port;
+                Client.Credentials = new NetworkCredential { UserName = Config.EmailAddress, Password = Config.Password };
+                Client.EnableSsl = Config.EnableSsl;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("ERROR: EbSmtp Config Error");
+            }
 
         }
 

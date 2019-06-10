@@ -253,7 +253,9 @@ namespace ExpressBase.Common
     {
         _SELECT_ = 0,
         View_Mode = 1,
-        New_Mode = 2
+        New_Mode = 2,
+        View_Mode_Partial = 11,
+        New_Mode_Partial = 12
     }
 
     public enum RedisOperations

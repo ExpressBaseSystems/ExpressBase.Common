@@ -187,7 +187,7 @@ namespace ExpressBase.Common.Structures
         public readonly EbOperation Edit;
         public readonly EbOperation Delete;
         public readonly EbOperation Cancel;
-        public readonly EbOperation Print;
+        public readonly EbOperation AuditTrail;
 
         private WFOperations()
         {
@@ -196,7 +196,7 @@ namespace ExpressBase.Common.Structures
             Edit = new EbOperation(OperationConstants.EDIT, 2, OperationConstants.XXW);
             Delete = new EbOperation(OperationConstants.DELETE, 3, OperationConstants.XXW);
             Cancel = new EbOperation(OperationConstants.CANCEL, 4, OperationConstants.XXW);
-            Print = new EbOperation(OperationConstants.PRINT, 5, OperationConstants.XXW);
+            AuditTrail = new EbOperation(OperationConstants.AUDIT_TRAIL, 5, OperationConstants.XXW);
         }
 
         public static EbOperations Instance
@@ -216,7 +216,7 @@ namespace ExpressBase.Common.Structures
                 yield return Edit;
                 yield return Delete;
                 yield return Cancel;
-                yield return Print;
+                yield return AuditTrail;
             }
         }
     }

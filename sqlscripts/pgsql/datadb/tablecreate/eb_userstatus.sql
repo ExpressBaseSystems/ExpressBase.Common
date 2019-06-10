@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_userstatus
 (
-    id serial primary key,
+    id serial,
     createdby integer,
     createdat timestamp without time zone,
     userid integer,

@@ -4,9 +4,10 @@
 
 CREATE TABLE public.eb_survey_queries
 (
-    id serial primary key,
+    id serial,
     query text COLLATE pg_catalog."default",
-    q_type integer
+    q_type integer,
+	CONSTRAINT eb_survey_queries_pkey PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE

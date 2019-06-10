@@ -4,13 +4,14 @@
 
 CREATE TABLE public.eb_survey_lines
 (
-    id serial primary key,
+    id serial,
     masterid integer,
     questionid integer,
     eb_createdate timestamp without time zone,
     choiceids text COLLATE pg_catalog."default",
     questype integer,
-    answer text COLLATE pg_catalog."default"
+    answer text COLLATE pg_catalog."default",
+	CONSTRAINT eb_survey_lines_pkey PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE

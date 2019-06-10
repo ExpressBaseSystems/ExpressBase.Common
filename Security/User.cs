@@ -266,14 +266,14 @@ namespace ExpressBase.Security
                                 df.GetNewParameter("social", EbDbTypes.String, social),
                                 df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),
                                 df.GetNewParameter("ipaddress", EbDbTypes.String, ipaddress),
-                                df.GetNewOutParameter("userid1", EbDbTypes.Int32),
-                                df.GetNewOutParameter("email1", EbDbTypes.String),
-                                df.GetNewOutParameter("fullname1", EbDbTypes.String),
-                                df.GetNewOutParameter("roles_a1", EbDbTypes.String),
-                                df.GetNewOutParameter("rolename_a1", EbDbTypes.String),
-                                df.GetNewOutParameter("permissions1", EbDbTypes.String),
-                                df.GetNewOutParameter("preferencesjson1", EbDbTypes.String),
-                                df.GetNewOutParameter("constraintstatus1", EbDbTypes.String)
+                                df.GetNewOutParameter("tmp_userid", EbDbTypes.Int32),
+                                df.GetNewOutParameter("tmp_email", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_fullname", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_roles_a", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_rolename_a", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_permissions", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_preferencesjson", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_constraintstatus", EbDbTypes.String)
                                 });
 
                     return InitUserObject(ds, context);
@@ -442,97 +442,81 @@ namespace ExpressBase.Security
 
 		[DataMember(Order = 3)]
 		public int DefaultLocation { get; set; }
-
-        [DataMember(Order = 4)]
-        public string ShortDatePattern
+        
+        public string GetShortDatePattern()
         {
-            get
-            {
-                return "yyyy-MM-dd";
-                //try
-                //{
-                //    return CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern;
-                //}
-                //catch (Exception ex)
-                //{
-                //    Console.WriteLine("Exception thrown when tried to get short date pattern : " + ex.Message);
-                //    return "yyyy-MM-dd";
-                //}
-            }
+            return CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern;
         }
 
-        [DataMember(Order = 5)]
-        public string ShortDate
+        public string GetShortTimePattern()
         {
-            get
-            {
-                return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(this.ShortDatePattern, CultureInfo.InvariantCulture);
-            }
+            return CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern;
         }
 
         //----------------------------------Cultures json Test-----------------------------------
         [DataMember(Order = 6)]
-        public string ShortDatePatternTest
+        public string ShortDatePattern
         {
             get
             {
                 try
                 {
-                    return MomentJSHelpers.GenerateMomentJSFormatString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureHelper.GetCultureInfo(this.Locale));
+                    return MomentJSHelpers.GenerateMomentJSFormatString(CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureHelper.GetSerializedCultureInfo(this.Locale)).ReplaceAll("[", "").ReplaceAll("]", "");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Exception thrown when tried to get short date PATTERN test.............. : " + ex.Message);
-                    return "YYYY[-]MM[-]DD";
+                    Console.WriteLine("Exception thrown when tried to get short date PATTERN .............. : " + ex.Message);
+                    return "YYYY-MM-DD";
                 }
             }
         }
         [DataMember(Order = 7)]
-        public string ShortDateTest
+        public string ShortDate
         {
             get
             {                
                 try
                 {
-                    return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureInfo.InvariantCulture);                    
+                    //return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureInfo.InvariantCulture);                    
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Exception thrown when tried to get short DATE test................. : " + ex.Message);
+                    Console.WriteLine("Exception thrown when tried to get short DATE ................. : " + ex.Message);
                     return DateTime.UtcNow.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
                 }
             }
         }
 
-        [DataMember(Order = 7)]
-        public string ShortTimePatternTest
+        [DataMember(Order = 8)]
+        public string ShortTimePattern
         {
             get
             {
                 try
                 {
-                    return MomentJSHelpers.GenerateMomentJSFormatString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern, CultureHelper.GetCultureInfo(this.Locale));
+                    return MomentJSHelpers.GenerateMomentJSFormatString(CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern, CultureHelper.GetSerializedCultureInfo(this.Locale)).ReplaceAll("[", "").ReplaceAll("]", "");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Exception thrown when tried to get short time PATTERN test.............. : " + ex.Message);
-                    return "HH[ ]mm";
+                    Console.WriteLine("Exception thrown when tried to get short time PATTERN .............. : " + ex.Message);
+                    return "HH mm";
                 }
             }
         }
-        [DataMember(Order = 8)]
-        public string ShortTimeTest
+        [DataMember(Order = 9)]
+        public string ShortTime
         {
             get
             {
                 try
                 {
-                    return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(CultureHelper.GetCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern, CultureInfo.InvariantCulture);
+                    return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern, CultureInfo.InvariantCulture);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Exception thrown when tried to get short TIME test................. : " + ex.Message);
-                    return DateTime.UtcNow.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    Console.WriteLine("Exception thrown when tried to get short TIME ................. : " + ex.Message);
+                    return DateTime.UtcNow.ToString("hh:mm tt", CultureInfo.InvariantCulture);
                 }
             }
         }

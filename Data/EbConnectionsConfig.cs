@@ -81,9 +81,16 @@ namespace ExpressBase.Common.Data
 
 
 
-    public class FilesConfigCollection : List<EbIntegrationConf>
+    public class FilesConfigCollection
     {
+        public List<EbIntegrationConf> Integrations { get; set; }
 
+        public int DefaultConId { get; set; }
+
+        public FilesConfigCollection()
+        {
+            this.Integrations = new List<EbIntegrationConf>();
+        }
     }
 
     public class EmailConfigCollection

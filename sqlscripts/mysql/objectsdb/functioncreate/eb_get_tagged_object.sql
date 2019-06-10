@@ -1,16 +1,15 @@
-﻿CREATE PROCEDURE eb_get_tagged_object(in_tags text)
+﻿CREATE PROCEDURE eb_get_tagged_object(in_tags TEXT)
 BEGIN
-declare tags text;
+DECLARE tags TEXT;
 
 SELECT 
-			group_concat(EO.obj_tags) into tags
+			GROUP_CONCAT(EO.obj_tags) INTO tags
                     FROM 
-	                    eb_objects EO;
-                 
+	                    eb_objects EO;            
  
-drop temporary table if exists temp_array_table;
-drop temporary table if exists tags_tbl;
-CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value text);
+DROP TEMPORARY TABLE IF EXISTS temp_array_table;
+DROP TEMPORARY TABLE IF EXISTS tags_tbl;
+CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value TEXT);
 	CALL STR_TO_TBL(tags);  -- fill to temp_array_table
 	CREATE TEMPORARY TABLE IF NOT EXISTS tags_tbl SELECT `value` FROM temp_array_table;
     

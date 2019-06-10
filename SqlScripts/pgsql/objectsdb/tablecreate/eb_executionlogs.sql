@@ -4,13 +4,14 @@
 
 CREATE TABLE public.eb_executionlogs
 (
-    id serial primary key, -- INTEGER NOT NULL DEFAULT nextval('executionlogs_id_seq'::regclass),
+    id serial, -- INTEGER NOT NULL DEFAULT nextval('executionlogs_id_seq'::regclass),
     rows character varying COLLATE pg_catalog."default",
     exec_time integer,
     created_by integer,
     created_at timestamp without time zone,
     refid text COLLATE pg_catalog."default",
-    params json
+    params json,
+	CONSTRAINT eb_executionlogs_pkey PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE

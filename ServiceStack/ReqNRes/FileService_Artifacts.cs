@@ -29,6 +29,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 3)]
         public byte[] Byte { get; set; }
+
+        [DataMember(Order =4)]
+        public int InfraConID { get; set; }
     }
 
     [DataContract]
@@ -104,6 +107,10 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 12)]
         public string SolutionId { get; set; }
+
+        [DataMember(Order = 13)]
+        public int InfraConID { get; set; }
+
     }
 
     [DataContract]
@@ -144,6 +151,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 12)]
         public string SolutionId { get; set; }
+
+        [DataMember(Order = 13)]
+        public int InfraConID { get; set; }
     }
 
     [DataContract]
@@ -184,6 +194,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 12)]
         public string SolutionId { get; set; }
+
+         [DataMember(Order = 13)]
+        public int InfraConID { get; set; }
     }
 
     [DataContract]
@@ -239,6 +252,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 9)]
         public int ImgManipulationServiceId { get; set; }
+
+        [DataMember(Order = 10)]
+        public int InfraConID { get; set; }
     }
 
     [DataContract]
@@ -274,6 +290,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 10)]
         public int ImgManipulationServiceId { get; set; }
+
+        [DataMember(Order = 11)]
+        public int InfraConID { get; set; }
     }
 
     [DataContract]
@@ -410,7 +429,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class DownloadLogoExtRequest : EbServiceStackNoAuthRequest,IReturn<DownloadFileResponse>
+    public class DownloadLogoExtRequest : EbServiceStackNoAuthRequest, IReturn<DownloadFileResponse>
     {
         [DataMember(Order = 2)]
         public string SolnId { get; set; }

@@ -33,6 +33,7 @@ namespace ExpressBase.Common.Objects
         [PropertyGroup("Appearance")]
 		[UIproperty]
         [OnChangeUIFunction("Common.MARGIN")]
+        [DefaultPropValue(8, 8, 8, 8)]
         public virtual UISides Margin { get; set; }
 
 		[EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
@@ -63,15 +64,19 @@ namespace ExpressBase.Common.Objects
         public UISides() { }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
-        public int Top { get; set; }
+        [DefaultPropValue(8)]
+        public virtual int Top { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
-        public int Right { get; set; }
+        [DefaultPropValue(8)]
+        public virtual int Right { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
-        public int Bottom { get; set; }
+        [DefaultPropValue(8)]
+        public virtual int Bottom { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
-        public int Left { get; set; }
+        [DefaultPropValue(8)]
+        public virtual int Left { get; set; }
     }
 }

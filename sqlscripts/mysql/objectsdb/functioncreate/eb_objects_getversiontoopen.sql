@@ -1,68 +1,68 @@
-﻿CREATE PROCEDURE eb_objects_getversiontoopen(in _id integer,
- out out_idv integer, 
- out out_namev text, 
- out out_typev integer, 
- out out_status integer, 
- out out_description text, 
- out out_changelog text, 
- out out_commitat text, 
- out out_commitby text, 
- out out_refidv text, 
- out out_ver_num text, 
- out out_work_mode character, 
- out out_workingcopies text, 
- out out_json_wc json, 
- out out_json_lc json, 
- out out_major_ver integer, 
- out out_minor_ver integer, 
- out out_patch_ver integer, 
- out out_tags text, 
- out out_app_id text, 
- out out_dispnamev text, 
- out out_is_log character
+﻿CREATE PROCEDURE eb_objects_getversiontoopen(IN _id INTEGER,
+ OUT out_idv INTEGER, 
+ OUT out_namev TEXT, 
+ OUT out_typev INTEGER, 
+ OUT out_status INTEGER, 
+ OUT out_description TEXT, 
+ OUT out_changelog TEXT, 
+ OUT out_commitat TEXT, 
+ OUT out_commitby TEXT, 
+ OUT out_refidv TEXT, 
+ OUT out_ver_num TEXT, 
+ OUT out_work_mode CHARACTER, 
+ OUT out_workingcopies TEXT, 
+ OUT out_json_wc JSON, 
+ OUT out_json_lc JSON, 
+ OUT out_major_ver INTEGER, 
+ OUT out_minor_ver INTEGER, 
+ OUT out_patch_ver INTEGER, 
+ OUT out_tags TEXT, 
+ OUT out_app_id TEXT, 
+ OUT out_dispnamev TEXT, 
+ OUT out_is_log CHARACTER
 )
 BEGIN
-DECLARE workingcopies text;
-DECLARE	json_wc json;
-DECLARE json_lc json;
-DECLARE no_of_workcopies integer;
-DECLARE	idv integer;
-DECLARE namev text;
-DECLARE typev integer;
-DECLARE status integer;
-DECLARE	description text;
-DECLARE changelog text;
-DECLARE commitat text;
-DECLARE commitby text;
-DECLARE refidv text;
-DECLARE ver_num text;
-DECLARE work_mode char;
-DECLARE	major_ver integer;
-DECLARE minor_ver integer;
-DECLARE patch_ver integer;
-DECLARE tags text;
-DECLARE app_id text;
-DECLARE	lastversionnumber text;
-DECLARE lastversionrefid text;
-DECLARE liveversionnumber text;
-DECLARE liveversionrefid text;
-DECLARE dispnamev text;
-DECLARE is_log char;
+DECLARE workingcopies TEXT;
+DECLARE	json_wc JSON;
+DECLARE json_lc JSON;
+DECLARE no_of_workcopies INTEGER;
+DECLARE	idv INTEGER;
+DECLARE namev TEXT;
+DECLARE typev INTEGER;
+DECLARE status INTEGER;
+DECLARE	description TEXT;
+DECLARE changelog TEXT;
+DECLARE commitat TEXT;
+DECLARE commitby TEXT;
+DECLARE refidv TEXT;
+DECLARE ver_num TEXT;
+DECLARE work_mode CHAR;
+DECLARE	major_ver INTEGER;
+DECLARE minor_ver INTEGER;
+DECLARE patch_ver INTEGER;
+DECLARE tags TEXT;
+DECLARE app_id TEXT;
+DECLARE	lastversionnumber TEXT;
+DECLARE lastversionrefid TEXT;
+DECLARE liveversionnumber TEXT;
+DECLARE liveversionrefid TEXT;
+DECLARE dispnamev TEXT;
+DECLARE is_log CHAR;
 
-set workingcopies = NULL;
-set	json_wc = NULL;
-set	json_lc =NULL;
+SET workingcopies = NULL;
+SET	json_wc = NULL;
+SET	json_lc = NULL;
 
 -- Fetching all working copies
 SELECT 
-	group_concat((json_object( version_num, refid)),','),count(*) INTO workingcopies, no_of_workcopies
+	GROUP_CONCAT((json_object( version_num, refid)),','),COUNT(*) INTO workingcopies, no_of_workcopies
 FROM 
 	eb_objects_ver 
 WHERE 
-	eb_objects_id=_id AND working_mode='T';
+	eb_objects_id = _id AND working_mode='T';
 
- select group_concat(EA.applicationname,',') INTO app_id from eb_objects2application E2O ,eb_applications EA where 
- obj_id = _id and E2O.eb_del = 'F' and EA.id = E2O.app_id ;
+ SELECT GROUP_CONCAT(EA.applicationname,',') INTO app_id FROM eb_objects2application E2O ,eb_applications EA WHERE 
+ obj_id = _id AND E2O.eb_del = 'F' AND EA.id = E2O.app_id ;
  
   -- one working copy	
 IF no_of_workcopies = 1 THEN
@@ -77,7 +77,7 @@ IF no_of_workcopies = 1 THEN
 	LEFT JOIN
 		eb_users EU
 	ON 
-		EOV.commit_uid=EU.id
+		EOV.commit_uid = EU.id
 	LEFT JOIN
 		eb_objects_status EOS
 	ON 
@@ -86,7 +86,7 @@ IF no_of_workcopies = 1 THEN
 			EO.id = _id AND EOV.eb_objects_id = EO.id AND working_mode='T'
 			AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id);
 -- No working copy			
-elseif no_of_workcopies = 0 THEN
+ELSEIF no_of_workcopies = 0 THEN
         SELECT 
                 EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc, 
                 EOV.obj_json, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.version_num, EOV.working_mode, 
@@ -98,16 +98,16 @@ elseif no_of_workcopies = 0 THEN
         LEFT JOIN
                 eb_users EU
         ON 
-                EOV.commit_uid=EU.id	
+                EOV.commit_uid = EU.id	
 		LEFT JOIN
 			eb_objects_status EOS
 		ON 
 			EOS.eb_obj_ver_id = EOV.id									 
         WHERE 
                 EO.id = _id AND EOV.eb_objects_id = EO.id  AND
-                major_ver_num=(Select max(major_ver_num) from eb_objects_ver where eb_objects_id=_id) AND 
-                minor_ver_num=(Select max(minor_ver_num) from eb_objects_ver where eb_objects_id=_id AND  
-				major_ver_num=(Select max(major_ver_num) from eb_objects_ver where eb_objects_id=_id)) AND
+                major_ver_num = (SELECT MAX(major_ver_num) FROM eb_objects_ver WHERE eb_objects_id = _id) AND 
+                minor_ver_num = (SELECT MAX(minor_ver_num) FROM eb_objects_ver WHERE eb_objects_id = _id AND  
+				major_ver_num = (SELECT MAX(major_ver_num) FROM eb_objects_ver WHERE eb_objects_id = _id)) AND
                 COALESCE(working_mode, 'F') <> 'T'
 				AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id);  
  
@@ -124,7 +124,7 @@ SELECT
 	LEFT JOIN
 		eb_users EU
 	ON 
-		EOV.commit_uid=EU.id
+		EOV.commit_uid = EU.id
 	LEFT JOIN
 		eb_objects_status EOS
 	ON 
@@ -132,13 +132,17 @@ SELECT
 	WHERE 
 		EO.id = _id AND EOV.eb_objects_id = EO.id AND working_mode='T'
 		AND EOV.id = (SELECT MAX(EOV.id) FROM eb_objects_ver EOV WHERE EOV.eb_objects_id = _id AND working_mode='T')
-		AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS, eb_objects_ver EOV WHERE EOS.eb_obj_ver_id = (SELECT MAX(EOV.id) FROM eb_objects_ver EOV WHERE EOV.eb_objects_id = _id AND working_mode='T') AND EOV.working_mode='T');
+		AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS, eb_objects_ver EOV 
+						WHERE EOS.eb_obj_ver_id = (
+								SELECT MAX(EOV.id) FROM eb_objects_ver EOV 
+									WHERE EOV.eb_objects_id = _id AND working_mode='T') 
+							AND EOV.working_mode='T');
 END IF;
 
-select
+SELECT
     idv, namev, typev, status, description, changelog, commitat, commitby, refidv, ver_num, COALESCE(work_mode,'F') , workingcopies,
 	json_wc, json_lc, major_ver, minor_ver, patch_ver, tags, app_id, dispnamev, is_log 
-    into
+    INTO
     out_idv , out_namev , out_typev , out_status , out_description , out_changelog , out_commitat , out_commitby , out_refidv , 
     out_ver_num , out_work_mode , out_workingcopies , out_json_wc , out_json_lc , out_major_ver , out_minor_ver , out_patch_ver , 
     out_tags ,out_app_id , out_dispnamev , out_is_log; 

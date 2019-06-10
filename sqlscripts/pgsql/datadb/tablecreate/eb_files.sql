@@ -4,8 +4,9 @@
 
 CREATE TABLE public.eb_files_ref
 (
-    id serial primary key,
+    id serial,
     userid integer NOT NULL,
+	filename text COLLATE pg_catalog."default",
     --filestore_id text COLLATE pg_catalog."default",
     --length bigint,
     tags text COLLATE pg_catalog."default",
@@ -13,7 +14,7 @@ CREATE TABLE public.eb_files_ref
     uploadts timestamp without time zone,
     eb_del "char" NOT NULL DEFAULT 'F'::"char",
     filecategory integer,
-    filename text COLLATE pg_catalog."default",
+    context text,
     --img_manp_ser_id integer,
     CONSTRAINT eb_files_ref_pkey PRIMARY KEY (id),
     CONSTRAINT eb_files_ref_eb_del_check CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
@@ -35,7 +36,7 @@ ALTER TABLE public.eb_files_ref
 
 CREATE TABLE public.eb_files_ref_variations
 (
-    id serial primary key,
+    id serial,
     eb_files_ref_id integer NOT NULL,
     filestore_sid text COLLATE pg_catalog."default",
     length bigint,

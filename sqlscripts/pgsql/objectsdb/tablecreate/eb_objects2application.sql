@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_objects2application
 (
-	id serial primary key,
+	id serial,
     app_id integer,
     obj_id integer,
     eb_del1 boolean DEFAULT false,

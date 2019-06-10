@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_objects_relations
 (
-	id serial primary key,
+	id serial,
     dominant text COLLATE pg_catalog."default",
     dependant text COLLATE pg_catalog."default",
     eb_del1 boolean,

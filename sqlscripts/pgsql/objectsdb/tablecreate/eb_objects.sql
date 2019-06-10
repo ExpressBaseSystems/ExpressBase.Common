@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_objects
 (
-    id serial primary key,
+    id serial,
     obj_name text COLLATE pg_catalog."default",
     obj_type integer,
     obj_cur_status integer,

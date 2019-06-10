@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_usersanonymous
 (
-    id serial primary key,
+    id serial,
     fullname text COLLATE pg_catalog."default",
     socialid text COLLATE pg_catalog."default",
     email text COLLATE pg_catalog."default",

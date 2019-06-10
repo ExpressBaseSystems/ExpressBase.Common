@@ -4,7 +4,7 @@
 
 CREATE TABLE public.eb_languages
 (
-    id serial primary key,
+    id serial,
     language text COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT eb_languages_pkey PRIMARY KEY (id)
 )
