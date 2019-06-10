@@ -724,15 +724,6 @@
   <data name="str_to_tbl_util" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\mysql\objectsdb\functioncreate\str_to_tbl_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="eb_image_migration_counter" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\pgsql\datadb\tablecreate\eb_image_migration_counter.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_image_migration_counter1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\oracle\datadb\tablecreate\eb_image_migration_counter.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_image_migration_counter2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\mysql\datadb\tablecreate\eb_image_migration_counter.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
   <data name="eb_currval" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\pgsql\datadb\functioncreate\eb_currval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
