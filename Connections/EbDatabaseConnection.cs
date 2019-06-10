@@ -339,7 +339,7 @@ namespace ExpressBase.Common.Connections
 
     public class EbSmtpConfig : EbIntegrationConf
     {
-        public string ProviderName { get; set; }
+        public SmtpProviders ProviderName { get; set; }
 
         public string Host { get; set; }
 
