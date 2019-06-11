@@ -63,8 +63,20 @@ namespace ExpressBase.Common
         string EB_USER_ROLE_PRIVS { get; }
         string EB_INITROLE2USER { get; }
 		string EB_MANAGEUSER_FIRST_QUERY { get; }
-
         string EB_GETUSERDETAILS { get; }
+        string EB_GETDBCLIENTTTABLES { get; }
+        string EB_UNIQUEEMAILCHECK { get; }
+
+        string EB_GETTABLESCHEMA { get; }
+        string EB_GETCHART2DETAILS { get; }
+        string EB_GETPROFILERS { get; }
+        string EB_GETUSEREMAILS { get; }
+        string EB_GETPARTICULARSSURVEY { get; }
+        string EB_SURVEYMASTER { get; }
+
+        string EB_CURRENT_TIMESTAMP { get; }
+        string EB_UPDATEAUDITTRAIL { get; }
+        string EB_SAVESURVEY { get; }
 
         //........objects db query.....
         string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ { get; }
@@ -84,10 +96,13 @@ namespace ExpressBase.Common
         string EB_CREATEAPPLICATION { get; }
         string EB_CREATEAPPLICATION_DEV { get; }
 
+        string EB_CREATELOCATIONCONFIG1Q { get; }
+        string EB_CREATELOCATIONCONFIG2Q { get; }
         string EB_GET_MLSEARCHRESULT { get; }
         string EB_MLADDKEY { get; }
         string EB_SAVELOCATION { get; }
-
+        string Eb_ALLOBJNVER { get; }
+                
         //....obj function call....
         string EB_CREATE_NEW_OBJECT { get; }
         string EB_SAVE_OBJECT { get; }
@@ -99,6 +114,18 @@ namespace ExpressBase.Common
         string EB_PATCH_VERSION_OF_OBJECT { get; }
         string EB_UPDATE_DASHBOARD { get; }
         string EB_LOCATION_CONFIGURATION { get;}
+        string EB_CREATEBOT { get; }
+
+        //....files query...
+        string EB_IMGREFUPDATESQL { get; }
+        string EB_DPUPDATESQL { get; }
+        string EB_LOGOUPDATESQL { get; }
+        string Eb_MQ_UPLOADFILE { get; }
+        string EB_GETFILEREFID { get; }
+        string EB_UPLOAD_IDFETCHQUERY { get; }
+        string EB_SMSSERVICE_POST { get; }
+        string EB_FILECATEGORYCHANGE { get; }
+
     }
 }
 

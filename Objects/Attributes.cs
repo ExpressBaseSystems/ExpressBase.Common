@@ -1,5 +1,6 @@
 ﻿using ExpressBase.Common.Structures;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace ExpressBase.Common.Objects.Attributes
@@ -32,7 +33,9 @@ namespace ExpressBase.Common.Objects.Attributes
         DictionaryEditor = 23,
         CollectionProp = 24,// collection editor - toggles a property (A - B - C)
         DDfromDictProp = 25,
-        CollectionABCpropToggle = 26,// collection editor - toggles a property, disable a prop (A - B - C)
+        CollectionABCpropToggle = 26,// collection editor - toggles a property, disable a prop (A - B - C)(if the property value is true it come)
+        CollectionABCFrmSrc = 27,// collection editor
+        Mapper = 35,// 
         ScriptEditorJS = 64,
         ScriptEditorCS = 128,
         ScriptEditorSQ = 256
@@ -166,31 +169,23 @@ namespace ExpressBase.Common.Objects.Attributes
             this.PropertyEditorType = (int)type1 + (int)type2 + (int)type3;
         }
 
-        public PropertyEditor(PropertyEditorType type, string source):this(type)
+        public PropertyEditor(PropertyEditorType type, string source) : this(type)
         {
-            //this.PropertyEditorType = (int)type;
             this.PropertyEditorSource = source;
         }
 
-        public PropertyEditor(PropertyEditorType type, string source, int limit):this(type, source)
+        public PropertyEditor(PropertyEditorType type, string source, int limit) : this(type, source)
         {
-            //this.PropertyEditorType = (int)type;
-            //this.PropertyEditorSource = source;
             this.Limit = limit;
         }
 
-        public PropertyEditor(PropertyEditorType type, string source, string Dprop):this(type ,source)
+        public PropertyEditor(PropertyEditorType type, string source, string Dprop) : this(type, source)
         {
-            //this.PropertyEditorType = (int)type;
-            //this.PropertyEditorSource = source;
             this.DependantProp = Dprop;
         }
 
-        public PropertyEditor(PropertyEditorType type, string source, string Dprop, string Dprop2):this(type,source, Dprop)
+        public PropertyEditor(PropertyEditorType type, string source, string Dprop, string Dprop2) : this(type, source, Dprop)
         {
-        //    this.PropertyEditorType = (int)type;
-        //    this.PropertyEditorSource = source;
-        //    this.DependantProp = Dprop;
             this.DependantProp2 = Dprop2;
         }
     }
@@ -202,6 +197,13 @@ namespace ExpressBase.Common.Objects.Attributes
         public PropertyGroup(string groupName) { this.Name = groupName; }
     }
 
+    public class PropertyPriority : Attribute
+    {
+        public int Priority { get; set; }
+
+        public PropertyPriority(int Priority) { this.Priority = Priority; }
+    }
+
     public class ListType : Attribute
     {
         public Type TypeOfList { get; set; }
@@ -211,9 +213,34 @@ namespace ExpressBase.Common.Objects.Attributes
 
     public class DefaultPropValue : Attribute
     {
-        public string Value { get; set; }
+        public dynamic Value { get; set; }
+        public List<object> Values = new List<object>();
+        //public Type ClassType { get; set; }
 
-        public DefaultPropValue(string val) { this.Value = val; }
+        public DefaultPropValue(object val, object val2, object val3, object val4)
+        {
+            try
+            {
+                this.Value = val;
+                if (Value != null)
+                    this.Values.Add(Value);
+                if (val2 != null)
+                    this.Values.Add(val2);
+                if (val3 != null)
+                    this.Values.Add(val3);
+                if (val4 != null)
+                    this.Values.Add(val4);
+            }
+            catch (Exception ee) {
+                ;
+            }
+        }
+
+        public DefaultPropValue(object val)
+        {
+            //this.ClassType = ClassType;
+            this.Value = val;
+        }
     }
 
     public class HelpText : Attribute
@@ -259,9 +286,13 @@ namespace ExpressBase.Common.Objects.Attributes
                 $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-helptxt]').text(props.HelpText);";
 
         public const string MARGIN = @"
-                if(props.Margin === null)
-                    props.Margin ={};
                 $(`#cont_${elementId}.Eb-ctrlContainer`).css('margin', `${props.Margin.Top}px ${props.Margin.Right}px ${props.Margin.Bottom}px ${props.Margin.Left}px`);";
+
+        public const string ROOT_OBJ_PADDING = @"
+                $(`#${elementId}`).css('padding', `${props.Padding.Top}px ${props.Padding.Right}px ${props.Padding.Bottom}px ${props.Padding.Left}px`);";
+
+        public const string PADDING = @"
+                $(`#cont_${elementId}.Eb-ctrlContainer`).css('padding', `${props.Padding.Top}px ${props.Padding.Right}px ${props.Padding.Bottom}px ${props.Padding.Left}px`);";
 
         public static string getFunctions()
         {

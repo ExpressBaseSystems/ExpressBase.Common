@@ -8,6 +8,7 @@ using ServiceStack;
 using ExpressBase.Common.Extensions;
 using System.Linq;
 using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace ExpressBase.Common.Objects
 {
@@ -26,6 +27,14 @@ namespace ExpressBase.Common.Objects
     [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
     public class EbControlContainer : EbControlUI
     {
+
+        [OnDeserialized]
+        public void OnDeserializedMethod(StreamingContext context)
+        {
+            if (this.Padding == null)
+                this.Padding = new UISides();
+        }
+
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
         public virtual List<EbControl> Controls { get; set; }
@@ -41,13 +50,15 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
         public virtual bool IsSpecialContainer { get; set; }
+        
 
-
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        [PropertyEditor(PropertyEditorType.Expandable)]
         [PropertyGroup("Appearance")]
-        [DefaultPropValue("3")]
         [UIproperty]
-        public virtual int Padding { get; set; }
+        [OnChangeUIFunction("Common.PADDING")]
+        [DefaultPropValue(8, 8, 8, 8)]
+        public virtual UISides Padding { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
         [PropertyGroup("Data")]
@@ -260,7 +271,7 @@ namespace ExpressBase.Common.Objects
         private static string GetOpFnJs(string opFnName, string JSfn, string TypeName)
         {
             return string.Concat(@"
-                                    this.", opFnName, " = function(p1) { ", JSfn, "};");//.RemoveCR();
+                                    this.", opFnName, " = function(p1, p2) { ", JSfn, "};");//.RemoveCR();
         }
 
         public static void SetContextId(EbControlContainer FormObj, string contextId)

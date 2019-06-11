@@ -10,6 +10,12 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         int UserId { get; set; }
     }
 
+    public interface IEbTenentRequest
+    {
+        string SolnId { get; set; }
+        int UserId { get; set; }
+    }
+
     [DataContract]
     public abstract class EbServiceStackAuthRequest
     {

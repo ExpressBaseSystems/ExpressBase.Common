@@ -6,9 +6,11 @@ CREATE TABLE public.eb_audit_lines
 (
     id serial,
     masterid integer,
-    fieldname text COLLATE pg_catalog."default",
-    oldvalue text COLLATE pg_catalog."default",
-    newvalue text COLLATE pg_catalog."default",
+    fieldname text, 
+    oldvalue text,
+    newvalue text,
+	tablename text,
+    idrelation text,
 	CONSTRAINT eb_audit_lines_pkey PRIMARY KEY (id)
 )
 WITH (

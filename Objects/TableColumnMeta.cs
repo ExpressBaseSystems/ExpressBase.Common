@@ -49,6 +49,8 @@ namespace ExpressBase.Common
     {        
         public string RowId { get; set; }
 
+        public int LocId { get; set; }
+
         public bool IsUpdate { get; set; }
 
         public bool IsDelete { get; set; }
@@ -170,6 +172,8 @@ namespace ExpressBase.Common
         public List<ColumnSchema> Columns { set; get; }
 
         public bool IsGridTable { get; set; }
+
+        public string Title { get; set; }
 
         public TableSchema()
         {

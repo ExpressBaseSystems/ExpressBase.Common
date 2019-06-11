@@ -19,17 +19,19 @@ namespace ExpressBase.Objects
         [EbRequired]
         [Unique]
         [regexCheck]
-        [PropertyGroup("Behavior")]
+        [PropertyGroup("Identity")]
         [InputMask("[a-z][a-z0-9]*(_[a-z0-9]+)*")]
+        [PropertyPriority(100)]
         public virtual string Name { get; set; }
 
         public EbObject() { }
 
         public virtual string RefId { get; set; }
 
-        [Description("Identity")]
+        [PropertyGroup("Identity")]
         [EbRequired]
         [Unique]
+        [PropertyPriority(99)]
         public virtual string DisplayName { get; set; }
 
         public virtual string Description { get; set; }

@@ -46,7 +46,8 @@ namespace ExpressBase.Common
     public enum ConPreferences
     {
         PRIMARY = 1,
-        FALLBACK = 2
+        FALLBACK = 2,
+        OTHER = 3 
     }
 
     public enum EbConnectionTypes
@@ -184,7 +185,30 @@ namespace ExpressBase.Common
         SHOW_VIEW,
         SHUTDOWN,
         SUPER, TRIGGER,
-        UPDATE
+        UPDATE,
+        CREATE_ROLE,
+        DROP_ROLE,
+    }
+
+    public enum MySqlSysRolesv1
+    {
+        XA_RECOVER_ADMIN,
+        SYSTEM_VARIABLES_ADMIN,
+        SET_USER_ID,
+        SESSION_VARIABLES_ADMIN,
+        SERVICE_CONNECTION_ADMIN,
+        ROLE_ADMIN,
+        RESOURCE_GROUP_USER,
+        RESOURCE_GROUP_ADMIN,
+        REPLICATION_SLAVE_ADMIN,
+        PERSIST_RO_VARIABLES_ADMIN,
+        GROUP_REPLICATION_ADMIN,
+        ENCRYPTION_KEY_ADMIN,
+        CONNECTION_ADMIN,
+        BINLOG_ENCRYPTION_ADMIN,
+        BINLOG_ADMIN,
+        BACKUP_ADMIN,
+        APPLICATION_PASSWORD_ADMIN
     }
 
     public enum SurveyQTypes
@@ -229,7 +253,9 @@ namespace ExpressBase.Common
     {
         _SELECT_ = 0,
         View_Mode = 1,
-        New_Mode = 2
+        New_Mode = 2,
+        View_Mode_Partial = 11,
+        New_Mode_Partial = 12
     }
 
     public enum RedisOperations

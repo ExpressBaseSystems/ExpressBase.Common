@@ -12,6 +12,7 @@ using ServiceStack.Logging;
 using ServiceStack.Redis;
 using System;
 using System.Collections.Generic;
+using static ExpressBase.Common.MySqlDB;
 
 namespace ExpressBase.Common.Data
 {
@@ -95,10 +96,11 @@ namespace ExpressBase.Common.Data
 
             if (string.IsNullOrEmpty(this.SolutionId))
                 throw new Exception("Fatal Error :: Solution Id is null or Empty!");
-
+            
             this.Redis = c.Resolve<IRedisClientsManager>().GetClient() as RedisClient;
 
-            InitDatabases();
+           //if(SolutionId != CoreConstants.EXPRESSBASE) 
+                InitDatabases();
         }
 
         // TO CREATE NEW SOLUTION DB IN DATA CENTER
@@ -129,7 +131,7 @@ namespace ExpressBase.Common.Data
             {
                 string _userName = Connections.DataDbConfig.UserName;
                 string _passWord = Connections.DataDbConfig.Password;
-                
+
                 // DATA DB 
                 if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
                     DataDB = new PGSQLDatabase(Connections.DataDbConfig);
@@ -171,7 +173,7 @@ namespace ExpressBase.Common.Data
                 //OBJECTS DB
                 if (Connections.ObjectsDbConfig == null)
                 {
-                    Connections.DataDbConfig.UserName =_userName;
+                    Connections.DataDbConfig.UserName = _userName;
                     Connections.DataDbConfig.Password = _passWord;
                     Connections.ObjectsDbConfig = Connections.DataDbConfig;
                 }
@@ -225,7 +227,12 @@ namespace ExpressBase.Common.Data
                 {
                     Connections.DataDbConfig.UserName = _userName;
                     Connections.DataDbConfig.Password = _passWord;
-                    Connections.FilesDbConfig.Integrations.Add(Connections.DataDbConfig);
+                    if(Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
+                        FilesDB.Add(new PGSQLFileDatabase(Connections.DataDbConfig));
+                    else if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
+                        FilesDB.Add(new OracleFilesDB(Connections.DataDbConfig));
+                    else if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
+                        FilesDB.Add(new MySQLFilesDB(Connections.DataDbConfig));
                     FilesDB.DefaultConId = Connections.DataDbConfig.Id;
                 }
                 else
@@ -238,8 +245,8 @@ namespace ExpressBase.Common.Data
                             FilesDB.Add(new PGSQLFileDatabase(Connections.FilesDbConfig.Integrations[i] as PostgresConfig));
                         else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.ORACLE)
                             FilesDB.Add(new OracleFilesDB(Connections.FilesDbConfig.Integrations[i] as OracleConfig));
-                        //else if (Connections.FilesDbConfig[i].Type == EbIntegrations.MYSQL)
-                        //    FilesDB.Add(new MySQLFilesDB(Connections.FilesDbConfig[i] as MySqlConfig));
+                        else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.MYSQL)
+                            FilesDB.Add(new MySQLFilesDB(Connections.FilesDbConfig.Integrations[i] as MySqlConfig));
                         if (Connections.FilesDbConfig.DefaultConId == Connections.FilesDbConfig.Integrations[i].Id)
                             IsDefaultConIdCorrect = true;
                     }
@@ -248,6 +255,8 @@ namespace ExpressBase.Common.Data
                     else
                         throw new Exception("DefaultConId doesn't found in the files-config list..!!");
                 }
+                Console.WriteLine("Files DB Collection Count(Init DB) : " + FilesDB.Count);
+
                 //EmailConfigs
                 if (Connections.EmailConfigs != null)
                 {
