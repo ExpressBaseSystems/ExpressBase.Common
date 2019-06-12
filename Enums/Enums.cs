@@ -249,6 +249,14 @@ namespace ExpressBase.Common
         Preview_Mode = 5
     }
 
+    public enum WebFormAfterSaveModes
+    {
+        View_Mode = 0,
+        New_Mode = 1,
+        Edit_Mode = 2,
+        Close_Mode = 3
+    }
+
     public enum WebFormDVModes
     {
         _SELECT_ = 0,
