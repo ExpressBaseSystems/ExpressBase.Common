@@ -1,16 +1,16 @@
-﻿CREATE PROCEDURE eb_authenticate_unified(IN uname text,
-    IN pwd text,
-    IN social text,
-    IN wc text,
-    IN ipaddress text,
-    out tmp_userid integer,
-    out tmp_email text,
-    out tmp_fullname text,
-    out tmp_roles_a TEXT,
-	out tmp_rolename_a TEXT,
-	out tmp_permissions TEXT,
-	out tmp_preferencesjson text,
-	out tmp_constraintstatus TEXT
+﻿CREATE PROCEDURE eb_authenticate_unified(IN uname TEXT,
+    IN pwd TEXT,
+    IN social TEXT,
+    IN wc TEXT,
+    IN ipaddress TEXT,
+    OUT tmp_userid INTEGER,
+    OUT tmp_email TEXT,
+    OUT tmp_fullname TEXT,
+    OUT tmp_roles_a TEXT,
+    OUT tmp_rolename_a TEXT,
+    OUT tmp_permissions TEXT,
+    OUT tmp_preferencesjson TEXT,
+    OUT tmp_constraintstatus TEXT
     )
 BEGIN
 DECLARE userid INTEGER;
@@ -22,11 +22,11 @@ DECLARE permissions TEXT;
 DECLARE preferencesjson TEXT;
 DECLARE constraintstatus TEXT;
 
-If uname ='' then set uname=null; end if;
-If pwd ='' then set pwd=null; end if;
-If social ='' then set social=null; end if;
-If wc ='' then set wc=null; end if;
-If ipaddress ='' then set ipaddress=null; end if;
+IF uname = '' THEN SET uname = NULL; END IF;
+IF pwd = '' THEN SET pwd = NULL; END IF;
+IF social = '' THEN SET social = NULL; END IF;
+IF wc = '' THEN SET wc = NULL; END IF;
+IF ipaddress = '' THEN SET ipaddress = NULL; END IF;
 
 -- NORMAL
 	IF uname IS NOT NULL AND pwd IS NOT NULL AND social IS NULL THEN
@@ -47,15 +47,15 @@ If ipaddress ='' then set ipaddress=null; end if;
     END IF;
 
 	IF userid > 0 THEN
-    call eb_getroles(userid, wc,@roless,@role_names);
+    CALL eb_getroles(userid, wc,@roless,@role_names);
         SELECT @roless, @role_names INTO roles_a, rolename_a;
 
-        call eb_getpermissions(roles_a,@out_permission);
-		select @out_permission into permissions;
-		SELECT eb_getconstraintstatus(userid, ipaddress)  INTO constraintstatus;
+        CALL eb_getpermissions(roles_a,@out_permission);
+		SELECT @out_permission INTO permissions;
+		SELECT eb_getconstraintstatus(userid, ipaddress) INTO constraintstatus;
   
   SELECT userid, email, fullname, roles_a, rolename_a, permissions, preferencesjson, constraintstatus 
-         into tmp_userid, tmp_email, tmp_fullname, tmp_roles_a, tmp_rolename_a, tmp_permissions, tmp_preferencesjson, tmp_constraintstatus;
+         INTO tmp_userid, tmp_email, tmp_fullname, tmp_roles_a, tmp_rolename_a, tmp_permissions, tmp_preferencesjson, tmp_constraintstatus;
    	
     END IF;
 END

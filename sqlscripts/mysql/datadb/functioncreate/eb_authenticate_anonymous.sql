@@ -1,25 +1,25 @@
-﻿CREATE PROCEDURE eb_authenticate_anonymous(IN in_socialid text,
-    IN in_fullname text ,
-    IN in_emailid text ,
-    IN in_phone text ,
-    IN in_user_ip text,
-    IN in_user_browser text ,
-    IN in_city text ,
-    IN in_region text,
-    IN in_country text,
-    IN in_latitude text,
-    IN in_longitude text,
-    IN in_timezone text ,
-    IN in_iplocationjson text,
-    IN in_appid integer,
-    IN in_wc text,
-    out out_userid integer,
-    out out_email text,
-    out out_fullname text,
-    out out_roles_a text,
-    out out_rolename_a text,
-    out out_permissions text,
-    out out_preferencesjson text)
+﻿CREATE PROCEDURE eb_authenticate_anonymous(IN in_socialid TEXT,
+    IN in_fullname TEXT,
+    IN in_emailid TEXT,
+    IN in_phone TEXT,
+    IN in_user_ip TEXT,
+    IN in_user_browser TEXT,
+    IN in_city TEXT,
+    IN in_region TEXT,
+    IN in_country TEXT,
+    IN in_latitude TEXT,
+    IN in_longitude TEXT,
+    IN in_timezone TEXT ,
+    IN in_iplocationjson TEXT,
+    IN in_appid INTEGER,
+    IN in_wc TEXT,
+    OUT out_userid INTEGER,
+    OUT out_email TEXT,
+    OUT out_fullname TEXT,
+    OUT out_roles_a TEXT,
+    OUT out_rolename_a TEXT,
+    OUT out_permissions TEXT,
+    OUT out_preferencesjson TEXT)
 BEGIN
 DECLARE temp_userid INTEGER;
 DECLARE temp_email TEXT;
@@ -30,21 +30,21 @@ DECLARE temp_permissions TEXT;
 DECLARE is_anon_auth_req BOOL;
 DECLARE temp_preferencesjson TEXT;
 
-If in_socialid ='' then set in_socialid=null; end if;
-If in_fullname ='' then set in_fullname=null; end if; 
-If in_emailid ='' then set in_emailid=null; end if; 
-If in_phone ='' then set in_phone=null; end if; 
-If in_user_ip ='' then set in_user_ip=null; end if; 
-If in_user_browser ='' then set in_user_browser=null; end if; 
-If in_city ='' then set in_city=null; end if; 
-If in_region ='' then set in_region=null; end if; 
-If in_country ='' then set in_country=null; end if; 
-If in_latitude ='' then set in_latitude=null; end if; 
-If in_longitude ='' then set in_longitude=null; end if; 
-If in_timezone ='' then set in_timezone=null; end if; 
-If in_iplocationjson ='' then set in_iplocationjson=null; end if; 
-If in_appid ='' then set in_appid=null; end if; 
-If in_wc ='' then set in_wc=null; end if; 
+IF in_socialid = '' THEN SET in_socialid = NULL; END IF;
+IF in_fullname = '' THEN SET in_fullname = NULL; END IF;
+IF in_emailid = '' THEN SET in_emailid = NULL; END IF;
+IF in_phone = '' THEN SET in_phone = NULL; END IF; 
+IF in_user_ip = '' THEN SET in_user_ip = NULL; END IF;
+IF in_user_browser = '' THEN SET in_user_browser = NULL; END IF;
+IF in_city = '' THEN SET in_city = NULL; END IF;
+IF in_region = '' THEN SET in_region = NULL; END IF; 
+IF in_country = '' THEN SET in_country = NULL; END IF;
+IF in_latitude = '' THEN SET in_latitude = NULL; END IF;
+IF in_longitude = '' THEN SET in_longitude = NULL; END IF;
+IF in_timezone = '' THEN SET in_timezone = NULL; END IF;
+IF in_iplocationjson = '' THEN SET in_iplocationjson = NULL; END IF; 
+IF in_appid = '' THEN SET in_appid = NULL; END IF;
+IF in_wc = '' THEN SET in_wc = NULL; END IF;
     
 SET is_anon_auth_req = FALSE;
 
@@ -58,8 +58,8 @@ IF in_socialid IS NOT NULL THEN
             
 		IF temp_userid IS NULL THEN
         	INSERT INTO eb_usersanonymous (socialid, fullname, email, phoneno, firstvisit, lastvisit, appid, ipaddress, browser, city, region, country, latitude, longitude, timezone, iplocationjson) 
-			VALUES (in_socialid, in_fullname, in_emailid, in_phone, NOW(), NOW(), in_appid, in_user_ip, in_user_browser, in_city, in_region, in_country, in_latitude, in_longitude, in_timezone, in_iplocationjson);
-			select last_insert_id() INTO temp_userid;
+				VALUES (in_socialid, in_fullname, in_emailid, in_phone, NOW(), NOW(), in_appid, in_user_ip, in_user_browser, in_city, in_region, in_country, in_latitude, in_longitude, in_timezone, in_iplocationjson);
+			SELECT LAST_INSERT_ID() INTO temp_userid;
 		ELSE
 			UPDATE eb_usersanonymous SET lastvisit = NOW(), totalvisits = totalvisits + 1, ipaddress = in_user_ip, browser = in_user_browser, city = in_city, region = in_region, country = in_country, latitude = in_latitude, longitude = in_longitude, timezone = in_timezone, iplocationjson = in_iplocationjson WHERE id = temp_userid;
 		END IF;       
@@ -75,7 +75,7 @@ ELSE
         IF temp_userid IS NULL THEN
         	INSERT INTO eb_usersanonymous (email, phoneno, fullname, firstvisit, lastvisit, appid, ipaddress, browser, city, region, country, latitude, longitude, timezone, iplocationjson) 
 			VALUES (in_emailid, in_phone, in_fullname, NOW(), NOW(), in_appid, in_user_ip, in_user_browser, in_city, in_region, in_country, in_latitude, in_longitude, in_timezone, in_iplocationjson);
-			select last_insert_id() INTO temp_userid;
+			SELECT LAST_INSERT_ID() INTO temp_userid;
         ELSE
         	IF temp_email IS NULL THEN
             	UPDATE eb_usersanonymous SET email = in_emailid, lastvisit = NOW(), totalvisits = totalvisits + 1, ipaddress = in_user_ip, browser = in_user_browser, city = in_city, region = in_region, country = in_country, latitude = in_latitude, longitude = in_longitude, timezone = in_timezone, iplocationjson = in_iplocationjson WHERE phoneno = in_phone;
