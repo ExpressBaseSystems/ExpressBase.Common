@@ -466,7 +466,7 @@ namespace ExpressBase.Common {
         ///DECLARE fullname TEXT;
         ///DECLARE roles_a TEXT;
         ///DECLARE rolename_a TEXT;
-        ///DECLARE permiss [rest of string was truncated]&quot;;.
+        ///DECLARE permis [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_authenticate_unified2 {
             get {
@@ -850,8 +850,7 @@ namespace ExpressBase.Common {
         ///declare a integer;
         ///set rid = role_id;
         ///
-        ///call eb_create_or_update_role(applicationid, role_name, description, is_anonym, createdby, permission, role_id,@out_rid);
-        ///  [rest of string was truncated]&quot;;.
+        ///call eb_create_or_update_role(applicationid, role_name, description, is_anonym, createdby, permission, role_id,@out_rid);        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_rbac_roles2 {
             get {
@@ -1287,8 +1286,7 @@ namespace ExpressBase.Common {
         ///    IN statusid integer,
         ///    IN hide text,
         ///    IN anonymoususerid integer,
-        ///    IN preference text,
-        ///    OUT out [rest of string was truncated]&quot;;.
+        ///    IN preferen [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_createormodifyuserandroles2 {
             get {
@@ -1433,13 +1431,14 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_currval(seq text, out curval int)
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_currval(seq text)
         ///BEGIN
         ///
         ///DECLARE _curval int;
-        ///
         ///SELECT max(`value`) FROM tmp_currval WHERE name = seq INTO _curval;
-        ///SELECT _curval INTO curval;
+        ///IF _curval IS NULL THEN SET _curval=0; END IF; 
+        ///
+        ///SELECT _curval;
         ///
         ///END.
         /// </summary>
@@ -1797,7 +1796,7 @@ namespace ExpressBase.Common {
         ///DROP TEMPORARY TABLE IF EXISTS tags_tbl;
         ///CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value text);
         ///	CALL STR_TO_TBL(tags);  -- fill to temp_array_table
-        ///	CREATE TEMPORARY TABLE IF NOT EXISTS tags_tbl SELECT `value` FROM temp_array_tabl [rest of string was truncated]&quot;;.
+        ///	CREATE TEMPORARY TABLE IF NOT EXISTS tags_tbl SELECT `value` FROM temp_array_tab [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_get_tagged_object2 {
             get {
@@ -1927,7 +1926,7 @@ namespace ExpressBase.Common {
         ///	SELECT GROUP_CONCAT(concat( _per.permissionname,&apos;:&apos;, _loc.locationid) separator &apos;,&apos;) FROM eb_role2permission _per, eb_role2location _loc
         ///		WHERE _per.role_id = _loc.roleid AND _per.role_id = FIND_IN_SET(role_id,roles) AND _per.eb_del=&apos;F&apos; AND _loc.eb_del=&apos;F&apos;);
         ///create temporary table permissions_tmp(value text);
-        ///insert into permis [rest of string was truncated]&quot;;.
+        ///insert into permi [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_getpermissions2 {
             get {
@@ -2017,7 +2016,7 @@ namespace ExpressBase.Common {
         ///    
         ///	   SELECT 	
         ///		GROUP_CONCAT(UROLES.role_id) as roles,
-        ///		group_concat(CASE WHEN UROLES.role_name is NU [rest of string was truncated]&quot;;.
+        ///		group_concat(CASE WHEN UROLES.role_name is  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_getroles2 {
             get {
@@ -2102,64 +2101,6 @@ namespace ExpressBase.Common {
         public static string eb_google_map2 {
             get {
                 return ResourceManager.GetString("eb_google_map2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_image_migration_counter
-        ///
-        ///-- DROP TABLE public.eb_image_migration_counter;
-        ///
-        ///CREATE TABLE public.eb_image_migration_counter
-        ///(
-        ///    id integer NOT NULL,
-        ///    ftp_get integer DEFAULT 0,
-        ///    customer_id integer NOT NULL,
-        ///    cldnry_large integer DEFAULT 0,
-        ///    cldnry_small integer DEFAULT 0,
-        ///    upld integer DEFAULT 0,
-        ///    is_exist integer DEFAULT 0,
-        ///    file_upld integer DEFAULT 0,
-        ///    img_org integer DEFAULT 0,
-        ///    filename text COLLATE &quot;default&quot;.pg_catalog DEFAULT &apos;Dummy&apos;::tex [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_image_migration_counter {
-            get {
-                return ResourceManager.GetString("eb_image_migration_counter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Need Updation.
-        /// </summary>
-        public static string eb_image_migration_counter1 {
-            get {
-                return ResourceManager.GetString("eb_image_migration_counter1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_image_migration_counter
-        ///(
-        ///    id integer auto_increment,
-        ///    ftp_get integer DEFAULT 0,
-        ///    customer_id integer NOT NULL,
-        ///    cldnry_large integer DEFAULT 0,
-        ///    cldnry_small integer DEFAULT 0,
-        ///    upld integer DEFAULT 0,
-        ///    is_exist integer DEFAULT 0,
-        ///    file_upld integer DEFAULT 0,
-        ///    img_org integer DEFAULT 0,
-        ///    filename varchar(50) DEFAULT &quot;Dummy&quot;,
-        ///    fileref_id integer,
-        ///    CONSTRAINT eb_image_migration_counter_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///CREATE INDEX eb_image_migrat [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_image_migration_counter2 {
-            get {
-                return ResourceManager.GetString("eb_image_migration_counter2", resourceCulture);
             }
         }
         
@@ -2852,7 +2793,7 @@ namespace ExpressBase.Common {
         ///SET
         ///	eos.status = status, eos.uid = commit_uid, eos.ts = NOW(), eos.changelog = obj_changelog
         ///WHERE
-        ///	eos.id = inserted_obj_ve [rest of string was truncated]&quot;;.
+        ///	eos.id = inserted_obj_v [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_change_status2 {
             get {
@@ -3437,8 +3378,7 @@ namespace ExpressBase.Common {
         ///out lastversion_statusval integer,
         ///out lastversioncommit_byname text,
         ///out lastversioncommit_byid integer,
-        ///out liveversionrefidval text,
-        ///out liveversionn [rest of string was truncated]&quot;;.
+        ///out liveversionrefidval text, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_update_dashboard2 {
             get {
@@ -3677,7 +3617,7 @@ namespace ExpressBase.Common {
         ///BEGIN
         ///
         ///CREATE TEMPORARY TABLE IF NOT EXISTS tmp_currval(name text, value integer);
-        ///INSERT INTO tmp_currval(name, value) VALUES(seq_name, SELECT last_insert_id()));
+        ///INSERT INTO tmp_currval(name, value) VALUES(seq_name,(SELECT LAST_INSERT_ID()));
         ///
         ///END.
         /// </summary>
@@ -5080,7 +5020,7 @@ namespace ExpressBase.Common {
         ///         END IF;
         ///         -- Do Inserts into temp table here with str going into the row
         ///         
-        ///         INSERT INTO temp_array_table(value) values (TRIM((SELECT split_str(fullstr,&apos;,&apos;, [rest of string was truncated]&quot;;.
+        ///         INSERT INTO temp_array_table(value) values (TRIM((SELECT split_str(fullstr,&apos;,&apos; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string str_to_tbl_util {
             get {
