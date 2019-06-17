@@ -621,7 +621,8 @@ SELECT id, applicationname,app_icon
 				AND EO2A.eb_del = 'F'
                 AND EOS.status = 3 
                 AND COALESCE( EO.eb_del, 'F') = 'F'
-				AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );"; } }
+				AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );
+                SELECT object_id FROM eb_objects_favourites WHERE userid=:user_id AND eb_del='F'"; } }
 
         public string EB_SIDEBARDEV_REQUEST
         {
