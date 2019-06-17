@@ -180,7 +180,7 @@ namespace ExpressBase.Common.Connections
         {
             int nid = 0;
             string query = string.Empty;
-            string json = JsonConvert.SerializeObject(this);
+            string json = EbSerializers.Json_Serialize(this);// JsonConvert.SerializeObject(this);
             DbParameter[] parameters = {
                                         infra.DataDB.GetNewParameter("solution_id", EbDbTypes.String, Sol_Id),
                                         infra.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(this.NickName))?this.NickName:string.Empty),

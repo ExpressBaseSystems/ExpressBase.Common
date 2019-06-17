@@ -126,6 +126,9 @@ namespace ExpressBase.Common
         string EB_SMSSERVICE_POST { get; }
         string EB_FILECATEGORYCHANGE { get; }
 
+        //....api query...
+         string EB_API_SQL_FUNC_HEADER { get; }
+
     }
 }
 
