@@ -1,6 +1,4 @@
-﻿
-
-using ExpressBase.Common.Connections;
+﻿using ExpressBase.Common.Connections;
 using ExpressBase.Common.Data;
 using ExpressBase.Common.Enums;
 using ExpressBase.Common.Structures;
@@ -1302,7 +1300,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
         {
             get
             {
-                return @"call string_to_rows(@ids);
+                return @"CALL string_to_rows(@ids);
                         SELECT 
                             EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
                             EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.refid,
@@ -1314,7 +1312,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                         ON 
 	                        EOV.commit_uid=EU.id
                         WHERE
-                            EO.id = ANY(SELECT CONVERT(`value`, unsigned int) from temp_array_table1) AND
+                            EO.id = ANY(SELECT CONVERT(`value`, unsigned int) FROM temp_array_table1) AND
                             EO.id = EOV.eb_objects_id AND COALESCE(EOV.working_mode, 'F') <> 'T'
                         ORDER BY
                             EO.obj_name; ";
@@ -1530,15 +1528,26 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"
-CALL string_to_rows(@ids);
-UPDATE 
-	eb_files_ref FR
-SET
-	tags = json_set(cast(tags as json),
-		'$.Category',@categry
-		(SELECT CAST(CONCAT('[""',@categry,'""]')AS json)))
-WHERE
-    FR.id = (SELECT CAST(`value` AS unsigned int) FROM temp_array_table1);";
+                        CALL string_to_rows(@ids);
+                        UPDATE 
+	                        eb_files_ref FR
+                        SET
+	                        tags = JSON_SET(CAST(tags AS JSON),
+		                            '$.Category',@categry
+		                            (SELECT CAST(CONCAT('[""',@categry,'""]')AS JSON)))
+                        WHERE
+                            FR.id = (SELECT CAST(`value` AS UNSIGNED INT) FROM temp_array_table1);";
+            }
+        }
+
+        //....api query...
+        public string EB_API_SQL_FUNC_HEADER
+        {
+            get
+            {
+                return @"CREATE OR REPLACE FUNCTION {0}(insert_json json,update_json json)
+                            RETURNS void
+                            LANGUAGE {1} AS $BODY$";
             }
         }
     }

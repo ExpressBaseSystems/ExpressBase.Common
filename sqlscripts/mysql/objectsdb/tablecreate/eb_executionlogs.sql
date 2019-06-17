@@ -1,7 +1,7 @@
 CREATE TABLE eb_executionlogs
 (
   id integer NOT NULL auto_increment,
-  rows varchar(200),
+  `rows` varchar(200),
   exec_time integer,
   created_by integer,
   created_at timestamp,
