@@ -7,6 +7,7 @@ namespace ExpressBase.Common.Constants
     public static class CoreConstants
     {
         public const string SOLUTION_ID = "TenantAccountId";
+        public const string USER_ID = "UserId";
         public const string EXPRESSBASE = "expressbase";
 
         public const string SOLUTION_CONNECTION_REDIS_KEY = "EbSolutionConnections_{0}";
