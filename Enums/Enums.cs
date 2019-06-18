@@ -193,8 +193,10 @@ namespace ExpressBase.Common
     public enum MySqlSysRolesv1
     {
         XA_RECOVER_ADMIN,
+        TABLE_ENCRYPTION_ADMIN,
         SYSTEM_VARIABLES_ADMIN,
         SET_USER_ID,
+        SYSTEM_USER,
         SESSION_VARIABLES_ADMIN,
         SERVICE_CONNECTION_ADMIN,
         ROLE_ADMIN,
