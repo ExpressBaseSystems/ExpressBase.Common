@@ -46,8 +46,6 @@ namespace ExpressBase.Common.Objects
 
         public override string Label { get; set; }
 
-        public override string OnChange { get; set; }
-
         public override bool Required { get; set; }
 
         public override string ToolTipText { get; set; }

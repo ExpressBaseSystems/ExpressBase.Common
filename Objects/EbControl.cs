@@ -23,10 +23,12 @@ namespace ExpressBase.Common.Objects
         [OnDeserialized]
         public void OnDeserialized(StreamingContext context)
         {
-            if (this._OnChange == null && !string.IsNullOrEmpty(OnChange))
-                this._OnChange = new EbScript { Code = OnChange.FromBase64(), Lang = ScriptingLanguage.JS };
-            else if (this._OnChange == null)
+            if (this.OnChangeFn == null)
+                this.OnChangeFn = new EbScript();
+            if (this._OnChange == null)
                 this._OnChange = new EbScript();
+            if (string.IsNullOrEmpty(this.OnChangeFn.Code) && !string.IsNullOrEmpty(_OnChange.Code))
+                this.OnChangeFn = _OnChange;
         }
 
         [HideInPropertyGrid]
@@ -72,12 +74,12 @@ namespace ExpressBase.Common.Objects
         [OnChangeUIFunction("Common.LABEL")]
         [PropertyEditor(PropertyEditorType.MultiLanguageKeySelector)]
         public virtual string Label { get; set; }
-        
+
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.Collection)]
         [Alias("Validators")]
         public virtual List<EbValidator> Validators { get; set; }
-        
+
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
         [Alias("Visible Expression")]
@@ -153,7 +155,7 @@ namespace ExpressBase.Common.Objects
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual bool IsSysControl { get { return false; } }//is placeholder control
-        
+
         protected string RequiredString
         {
             get { return (this.Required ? "$('#{0}').focusout(function() { isRequired(this); }); $('#{0}Lbl').html( $('#{0}Lbl').text() + '<sup style=\"color: red\">*</sup>') ".Replace("{0}", this.Name) : string.Empty); }
@@ -208,19 +210,13 @@ else
         public virtual int TabIndex { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyGroup("Events")]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
         [Alias("OnChangeFeb")]
-        public virtual EbScript _OnChange { get; set; }
+        [HideInPropertyGrid]
+        public virtual EbScript _OnChange { get; set; }// ===========================================temporary
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyGroup("Events")]
-        [PropertyEditor(PropertyEditorType.JS)]
-        [Alias("OnChange old")]
-        public virtual string OnChange { get; set; }
-
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyGroup("Behavior")]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
         [Alias("OnChange")]
         public virtual EbScript OnChangeFn { get; set; }
@@ -380,5 +376,5 @@ else
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string FailureMSG { get; set; }
-    }    
+    }
 }
