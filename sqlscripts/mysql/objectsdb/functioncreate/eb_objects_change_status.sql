@@ -2,6 +2,8 @@
     status INTEGER,
     commit_uid INTEGER,
     obj_changelog TEXT) RETURNS int(11)
+	READS SQL DATA
+    DETERMINISTIC
 BEGIN
 DECLARE inserted_obj_ver_id INTEGER;
 
