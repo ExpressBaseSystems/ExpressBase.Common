@@ -10,12 +10,10 @@ namespace ExpressBase.Common
         Web = 1
     }
 
-    public enum EbTiers
+    public enum PricingTiers
     {
-        Free,
-        Professional,
-        Enterprise,
-        Unlimited
+        FREE = 0,
+        STANDARD = 1
     }
 
     public enum DatabaseVendors // Used to cast to EbIntegrations. Dont change order n name
@@ -47,7 +45,7 @@ namespace ExpressBase.Common
     {
         PRIMARY = 1,
         FALLBACK = 2,
-        OTHER = 3 
+        OTHER = 3
     }
 
     public enum EbConnectionTypes
