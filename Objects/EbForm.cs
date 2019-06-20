@@ -54,6 +54,9 @@ namespace ExpressBase.Common.Objects
 
         public override bool Unique { get; set; }
 
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        [PropertyGroup("Behavior")]
         public override List<EbValidator> Validators { get; set; }
 
         //UI Properties

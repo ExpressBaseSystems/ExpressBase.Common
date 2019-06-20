@@ -109,6 +109,7 @@ namespace ExpressBase.Common.Objects
 
             this.JsonToJsObjectFuncs = @"
 function Proc(jsonObj, rootContainerObj) {
+    jsonObj = new EbObjects['Eb' + jsonObj.ObjType](jsonObj.EbSid, jsonObj);
     $.extend(rootContainerObj, jsonObj);
     rootContainerObj.Controls = new EbControlCollection(jsonObj.Controls);
     ProcRecur(jsonObj.Controls, rootContainerObj.Controls);

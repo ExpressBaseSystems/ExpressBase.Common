@@ -375,6 +375,7 @@ else
         public virtual EbScript Script { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [Alias("Failure message")]
         public virtual string FailureMSG { get; set; }
     }
 }
