@@ -2,10 +2,13 @@
 using ExpressBase.Security;
 using ServiceStack.Auth;
 using ServiceStack.Redis;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ExpressBase.Common.ServiceStack.Auth
 {
-    public class MyRedisAuthRepository: RedisAuthRepository
+    public class MyRedisAuthRepository : RedisAuthRepository
     {
         public MyRedisAuthRepository(IRedisClientsManager f2)
             : base(f2) { }
@@ -38,7 +41,7 @@ namespace ExpressBase.Common.ServiceStack.Auth
         {
             using (var redis = this.factory2.GetClient())
             {
-                var x= redis.Get<IUserAuth>(userAuthId);
+                var x = redis.Get<IUserAuth>(userAuthId);
                 return x;
             }
         }
@@ -51,6 +54,36 @@ namespace ExpressBase.Common.ServiceStack.Auth
         }
 
         public void Clear() { factory.Clear(); }
+
+        public override void LoadUserAuth(IAuthSession session, IAuthTokens tokens)
+        {
+            //if (session == null)
+            //    throw new ArgumentNullException(nameof(session));
+
+            //var userAuth = GetUserAuth(session, tokens);
+            //LoadUserAuth(session, userAuth);
+        }
+
+        //private void LoadUserAuth(IAuthSession session, IUserAuth userAuth)
+        //{
+        //    session.PopulateSession(userAuth,
+        //        GetUserAuthDetails(session.UserAuthId).ConvertAll(x => (IAuthTokens)x));
+        //}
+
+        //public List<IUserAuthDetails> GetUserAuthDetails(string userAuthId)
+        //{
+        //    return base.GetUserAuthDetails("6");
+        //    if (userAuthId == null)
+        //        throw new ArgumentNullException(nameof(userAuthId));
+
+        //    using (var redis = factory.GetClient())
+        //    {
+        //        var idx = IndexUserAuthAndProviderIdsSet(userAuthId);
+        //        var authProiverIds = redis.GetAllItemsFromSet(idx);
+        //        return null;
+        //        // return redis.As<TUserAuthDetails>().GetByIds(authProiverIds).OrderBy(x => x.ModifiedDate).Cast<IUserAuthDetails>().ToList();
+        //    }
+        //}
     }
 }
 

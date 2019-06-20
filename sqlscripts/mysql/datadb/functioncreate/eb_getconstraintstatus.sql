@@ -1,4 +1,6 @@
 CREATE FUNCTION eb_getconstraintstatus(in_userid INTEGER, in_ip TEXT) RETURNS int(11)
+    READS SQL DATA
+    DETERMINISTIC
 BEGIN
 DECLARE ipfound BOOL;
 DECLARE countdtc INTEGER;
