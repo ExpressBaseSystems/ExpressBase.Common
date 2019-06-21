@@ -98,6 +98,10 @@ namespace ExpressBase.Common.Objects
         [HideInPropertyGrid]
         public virtual List<string> DependedValExp { get; set; }
 
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [HideInPropertyGrid]
+        public virtual string __path { get; set; }
+
         //to store front end data value of the control  
         public object ValueFE { get; set; }
 
