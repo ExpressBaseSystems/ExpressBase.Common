@@ -81,16 +81,21 @@ namespace ExpressBase.Common.Data
         {
             try
             {
-                Config = config;
-                Client = new SmtpClient();
-                Client.Host = Config.Host;
-                Client.Port = Config.Port;
-                Client.Credentials = new NetworkCredential { UserName = Config.EmailAddress, Password = Config.Password };
-                Client.EnableSsl = Config.EnableSsl;
+                if (config != null)
+                {
+                    Config = config;
+                    Client = new SmtpClient();
+                    Client.Host = Config.Host;
+                    Client.Port = Config.Port;
+                    Client.Credentials = new NetworkCredential { UserName = Config.EmailAddress, Password = Config.Password };
+                    Client.EnableSsl = Config.EnableSsl;
+                }
+                else
+                    Console.WriteLine("         ERROR: EbSmtp Config Error........config is null");
             }
             catch (Exception e)
             {
-                Console.WriteLine("         ERROR: EbSmtp Config Error" + e.Message + e.StackTrace);
+                Console.WriteLine("         ERROR: EbSmtp Config Error - " + e.Message + e.StackTrace);
                 Console.WriteLine(Config.Host + "  " + Config.Port + "  " + Config.EmailAddress);
             }
 
