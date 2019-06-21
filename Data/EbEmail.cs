@@ -83,7 +83,7 @@ namespace ExpressBase.Common.Data
             {
                 if (config != null)
                 {
-                    Console.WriteLine("          EbSmtp Config host,port,address - " + Config.Host + "  " + Config.Port + "  " + Config.EmailAddress);
+                    Console.WriteLine("EbSmtp Config host,port,address - " + config.Host + "  " + config.Port + "  " + config.EmailAddress);
                     Config = config;
                     Client = new SmtpClient();
                     Client.Host = Config.Host;
@@ -92,7 +92,7 @@ namespace ExpressBase.Common.Data
                     Client.EnableSsl = Config.EnableSsl;
                 }
                 else
-                    Console.WriteLine("         ERROR: EbSmtp Config Error........config is null");
+                    Console.WriteLine("ERROR: EbSmtp Config Error........config is null");
             }
             catch (Exception e)
             {
