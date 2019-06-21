@@ -83,6 +83,7 @@ namespace ExpressBase.Common.Data
             {
                 if (config != null)
                 {
+                    Console.WriteLine("          EbSmtp Config host,port,address - " + Config.Host + "  " + Config.Port + "  " + Config.EmailAddress);
                     Config = config;
                     Client = new SmtpClient();
                     Client.Host = Config.Host;
@@ -95,7 +96,7 @@ namespace ExpressBase.Common.Data
             }
             catch (Exception e)
             {
-                Console.WriteLine("         ERROR: EbSmtp Config Error - " + e.Message + e.StackTrace);
+                Console.WriteLine("         ERROR: EbSmtp Config Error2 - " + e.Message + e.StackTrace);
                 Console.WriteLine(Config.Host + "  " + Config.Port + "  " + Config.EmailAddress);
             }
 
