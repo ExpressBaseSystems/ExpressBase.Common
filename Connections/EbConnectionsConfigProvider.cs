@@ -18,60 +18,66 @@ namespace ExpressBase.Common.Connections
         {
             get
             {
-                if (_infraConnections == null)
+                try
                 {
-                    _infraConnections = new EbConnectionsConfig
+                    if (_infraConnections == null)
                     {
-                        DataDbConfig = new PostgresConfig
+                        _infraConnections = new EbConnectionsConfig
                         {
-                            //  DatabaseVendor = DatabaseVendors.PGSQL,
-                            Server = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_SERVER),
-                            Port = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_PORT)),
-                            DatabaseName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DBNAME),
-                            UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_USER),
-                            Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_PASSWORD),
-                            Timeout = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_TIMEOUT)),
-                            IsSSL = true,
-                            IsDefault = true,
-                            Id = 0
-                        },
-                        LogsDbConnection = new PostgresConfig
-                        {
-                            //DatabaseVendor = DatabaseVendors.PGSQL,
-                            Server = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_SERVER),
-                            Port = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_PORT)),
-                            DatabaseName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DBNAME),
-                            UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_USER),
-                            Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_PASSWORD),
-                            Timeout = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_TIMEOUT)),
-                            IsSSL = true,
-                            IsDefault = true
-                        },
-                        EmailConfigs = new EmailConfigCollection
-                        {
-                            Primary = new EbSmtpConfig
+                            DataDbConfig = new PostgresConfig
                             {
-                                EmailAddress = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_EMAIL_ADDRESS),
-                                Host = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_EMAIL_HOST),
-                                Password =  Environment.GetEnvironmentVariable(EnvironmentConstants.EB_EMAIL_PASSWORD),
-                                Port = Convert.ToInt32(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_EMAIL_PORT)),
-                                ProviderName = SmtpProviders.Gmail,
-                                Id = 1,
-                                NickName = "EbTest",
+                                //  DatabaseVendor = DatabaseVendors.PGSQL,
+                                Server = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_SERVER),
+                                Port = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_PORT)),
+                                DatabaseName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DBNAME),
+                                UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_USER),
+                                Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_PASSWORD),
+                                Timeout = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_TIMEOUT)),
+                                IsSSL = true,
                                 IsDefault = true,
-                                EnableSsl = true,
-                            }
-                        },
-                        //FilesDbConnection = new Connections.EbFilesDbConnection
-                        //{
-                        //    FilesDbVendor = FilesDbVendors.MongoDB,
-                        //    FilesDB_url = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_FILES_DB_URL),
-                        //    IsDefault = true
-                        //}
-                        //ADD EMAIL & SMS etc
-                    };
+                                Id = 0
+                            },
+                            LogsDbConnection = new PostgresConfig
+                            {
+                                //DatabaseVendor = DatabaseVendors.PGSQL,
+                                Server = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_SERVER),
+                                Port = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_PORT)),
+                                DatabaseName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DBNAME),
+                                UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_USER),
+                                Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_PASSWORD),
+                                Timeout = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_TIMEOUT)),
+                                IsSSL = true,
+                                IsDefault = true
+                            },
+                            EmailConfigs = new EmailConfigCollection
+                            {
+                                Primary = new EbSmtpConfig
+                                {
+                                    EmailAddress = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_EMAIL_ADDRESS),
+                                    Host = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_EMAIL_HOST),
+                                    Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_EMAIL_PASSWORD),
+                                    Port = Convert.ToInt32(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_EMAIL_PORT)),
+                                    ProviderName = SmtpProviders.Gmail,
+                                    Id = 1,
+                                    NickName = "EbTest",
+                                    IsDefault = true,
+                                    EnableSsl = true,
+                                }
+                            },
+                            //FilesDbConnection = new Connections.EbFilesDbConnection
+                            //{
+                            //    FilesDbVendor = FilesDbVendors.MongoDB,
+                            //    FilesDB_url = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_FILES_DB_URL),
+                            //    IsDefault = true
+                            //}
+                            //ADD EMAIL & SMS etc
+                        };
+                    }
                 }
-
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message + e.StackTrace);
+                }
                 return _infraConnections;
             }
         }

@@ -35,6 +35,7 @@ namespace ExpressBase.Common.Stripe
         public string PlanId { get; set; }
 
         public int? Quantity { get; set; }
+        
     }
 
     public class Eb_StripeInvoice
@@ -51,10 +52,6 @@ namespace ExpressBase.Common.Stripe
 
         public int Total { get; set; }
 
-        public int? PercentOff { get; set; }
-
-        public string CouponId { get; set; }
-
         public string Type { get; set; }
 
         public string Description { get; set; }
@@ -62,6 +59,12 @@ namespace ExpressBase.Common.Stripe
         public string Currency { get; set; }
 
         public int? Quantity { get; set; }
+
+        public string Url { get; set; }
+
+        public string InvNumber { get; set; }
+
+        public bool Status { get; set; }
 
         public DateTime PeriodStart { get; set; }
 
@@ -90,4 +93,6 @@ namespace ExpressBase.Common.Stripe
     {
         public List<Eb_StripePlans> Plans { get; set; }
     }
+
+   
 }

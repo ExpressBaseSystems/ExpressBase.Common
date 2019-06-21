@@ -81,16 +81,23 @@ namespace ExpressBase.Common.Data
         {
             try
             {
-                Config = config;
-                Client = new SmtpClient();
-                Client.Host = Config.Host;
-                Client.Port = Config.Port;
-                Client.Credentials = new NetworkCredential { UserName = Config.EmailAddress, Password = Config.Password };
-                Client.EnableSsl = Config.EnableSsl;
+                if (config != null)
+                {
+                    Console.WriteLine("EbSmtp Config host,port,address - " + config.Host + "  " + config.Port + "  " + config.EmailAddress);
+                    Config = config;
+                    Client = new SmtpClient();
+                    Client.Host = Config.Host;
+                    Client.Port = Config.Port;
+                    Client.Credentials = new NetworkCredential { UserName = Config.EmailAddress, Password = Config.Password };
+                    Client.EnableSsl = Config.EnableSsl;
+                }
+                else
+                    Console.WriteLine("ERROR: EbSmtp Config Error........config is null");
             }
             catch (Exception e)
             {
-                Console.WriteLine("ERROR: EbSmtp Config Error");
+                Console.WriteLine("         ERROR: EbSmtp Config Error2 - " + e.Message + e.StackTrace);
+                Console.WriteLine(Config.Host + "  " + Config.Port + "  " + Config.EmailAddress);
             }
 
         }
@@ -103,7 +110,7 @@ namespace ExpressBase.Common.Data
 
         public bool Send(string to, string subject, string message, string[] cc, string[] bcc, byte[] attachment, string attachmentname)
         {
-           
+
             bool sentStatus;
             try
             {
@@ -116,14 +123,14 @@ namespace ExpressBase.Common.Data
                 };
                 if (attachment != null)
                     mm.Attachments.Add(new Attachment(new MemoryStream(attachment), attachmentname + ".pdf"));
-                if (cc!=null)
-                    if(cc.Length > 0)
-                    foreach (string item in cc)
-                        if (item != "") mm.CC.Add(item);
+                if (cc != null)
+                    if (cc.Length > 0)
+                        foreach (string item in cc)
+                            if (item != "") mm.CC.Add(item);
                 if (bcc != null)
                     if (bcc.Length > 0)
-                    foreach (string item in bcc)
-                        if (item != "") mm.Bcc.Add(item);
+                        foreach (string item in bcc)
+                            if (item != "") mm.Bcc.Add(item);
                 Client.Send(mm);
                 sentStatus = true;
                 Console.WriteLine("Smtp Send success" + to);
