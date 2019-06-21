@@ -13,6 +13,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     public interface IEbTenentRequest
     {
         string SolnId { get; set; }
+
         int UserId { get; set; }
     }
 

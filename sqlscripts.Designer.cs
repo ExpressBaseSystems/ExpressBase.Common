@@ -213,9 +213,11 @@ namespace ExpressBase.Common {
         ///(
         ///    id serial,
         ///    masterid integer,
-        ///    fieldname text COLLATE pg_catalog.&quot;default&quot;,
-        ///    oldvalue text COLLATE pg_catalog.&quot;default&quot;,
-        ///    newvalue text COLLATE pg_catalog.&quot;default&quot;,
+        ///    fieldname text, 
+        ///    oldvalue text,
+        ///    newvalue text,
+        ///	tablename text,
+        ///    idrelation text,
         ///	CONSTRAINT eb_audit_lines_pkey PRIMARY KEY (id)
         ///)
         ///WITH (
@@ -228,7 +230,9 @@ namespace ExpressBase.Common {
         ///	
         ///-- Index: eb_audit_lines_id_idx
         ///
-        ///-- DRO [rest of string was truncated]&quot;;.
+        ///-- DROP INDEX public.eb_audit_lines_id_idx;
+        ///
+        ///CREAT [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_audit_lines {
             get {
@@ -376,25 +380,25 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_authenticate_anonymous(IN in_socialid text,
-        ///    IN in_fullname text ,
-        ///    IN in_emailid text ,
-        ///    IN in_phone text ,
-        ///    IN in_user_ip text,
-        ///    IN in_user_browser text ,
-        ///    IN in_city text ,
-        ///    IN in_region text,
-        ///    IN in_country text,
-        ///    IN in_latitude text,
-        ///    IN in_longitude text,
-        ///    IN in_timezone text ,
-        ///    IN in_iplocationjson text,
-        ///    IN in_appid integer,
-        ///    IN in_wc text,
-        ///    out out_userid integer,
-        ///    out out_email text,
-        ///    out out_fullname text,
-        ///   [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_authenticate_anonymous(IN in_socialid TEXT,
+        ///    IN in_fullname TEXT,
+        ///    IN in_emailid TEXT,
+        ///    IN in_phone TEXT,
+        ///    IN in_user_ip TEXT,
+        ///    IN in_user_browser TEXT,
+        ///    IN in_city TEXT,
+        ///    IN in_region TEXT,
+        ///    IN in_country TEXT,
+        ///    IN in_latitude TEXT,
+        ///    IN in_longitude TEXT,
+        ///    IN in_timezone TEXT ,
+        ///    IN in_iplocationjson TEXT,
+        ///    IN in_appid INTEGER,
+        ///    IN in_wc TEXT,
+        ///    OUT out_userid INTEGER,
+        ///    OUT out_email TEXT,
+        ///    OUT out_fullname TEXT,
+        ///    OUT [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_authenticate_anonymous2 {
             get {
@@ -446,19 +450,19 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_authenticate_unified(IN uname text,
-        ///    IN pwd text,
-        ///    IN social text,
-        ///    IN wc text,
-        ///    IN ipaddress text,
-        ///    out tmp_userid integer,
-        ///    out tmp_email text,
-        ///    out tmp_fullname text,
-        ///    out tmp_roles_a TEXT,
-        ///	out tmp_rolename_a TEXT,
-        ///	out tmp_permissions TEXT,
-        ///	out tmp_preferencesjson text,
-        ///	out tmp_constraintstatus TEXT
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_authenticate_unified(IN uname TEXT,
+        ///    IN pwd TEXT,
+        ///    IN social TEXT,
+        ///    IN wc TEXT,
+        ///    IN ipaddress TEXT,
+        ///    OUT tmp_userid INTEGER,
+        ///    OUT tmp_email TEXT,
+        ///    OUT tmp_fullname TEXT,
+        ///    OUT tmp_roles_a TEXT,
+        ///    OUT tmp_rolename_a TEXT,
+        ///    OUT tmp_permissions TEXT,
+        ///    OUT tmp_preferencesjson TEXT,
+        ///    OUT tmp_constraintstatus TEXT
         ///    )
         ///BEGIN
         ///DECLARE userid INTEGER;
@@ -466,7 +470,7 @@ namespace ExpressBase.Common {
         ///DECLARE fullname TEXT;
         ///DECLARE roles_a TEXT;
         ///DECLARE rolename_a TEXT;
-        ///DECLARE permis [rest of string was truncated]&quot;;.
+        ///DE [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_authenticate_unified2 {
             get {
@@ -512,7 +516,15 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_botdetails(in solutionid integer)
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_botdetails(IN solutionid INTEGER,
+        ///OUT botname TEXT, 
+        ///OUT returnurl TEXT, 
+        ///OUT returnbotid TEXT, 
+        ///OUT createdby TEXT, 
+        ///OUT createdat TIMESTAMP, 
+        ///OUT modifiedby TEXT, 
+        ///OUT modifiedat TIMESTAMP, 
+        ///OUT returnwelcome TEXT)
         ///BEGIN
         ///SELECT 
         ///		name, 
@@ -523,10 +535,7 @@ namespace ExpressBase.Common {
         ///		(SELECT firstname FROM eb_users WHERE id = eb_bots.modified_by) AS modified_by, 
         ///		modified_at,welcome_msg 
         ///	FROM 
-        ///		eb_bots 
-        ///	WHERE 
-        ///		solution_id = solutionid;
-        ///END.
+        ///		 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_botdetails2 {
             get {
@@ -834,23 +843,23 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_rbac_roles(in role_id integer,
-        ///    in applicationid integer,
-        ///    in createdby integer,
-        ///    in role_name text,
-        ///    in description text,
-        ///    in is_anonym text,
-        ///    in users text,
-        ///    in dependants text,
-        ///    in permission text,
-        ///    in locations text,
-        ///    out out_r integer)
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_rbac_roles(IN role_id INTEGER,
+        ///    IN applicationid INTEGER,
+        ///    IN createdby INTEGER,
+        ///    IN role_name TEXT,
+        ///    IN description TEXT,
+        ///    IN is_anonym TEXT,
+        ///    IN users TEXT,
+        ///    IN dependants TEXT,
+        ///    IN permission TEXT,
+        ///    IN locations TEXT,
+        ///    OUT out_r INTEGER)
         ///BEGIN
         ///DECLARE rid INTEGER;
-        ///declare a integer;
-        ///set rid = role_id;
+        ///DECLARE a INTEGER;
+        ///SET rid = role_id;
         ///
-        ///call eb_create_or_update_role(applicationid, role_name, description, is_anonym, createdby, permission, role_id,@out_rid);        /// [rest of string was truncated]&quot;;.
+        ///CALL eb_create_or_update_role(applicationid, role_name, description, is_anonym, createdby, permission, role_id,@out_rid);        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_rbac_roles2 {
             get {
@@ -913,23 +922,23 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_role(in applicationid integer,
-        ///    in role_name text,
-        ///    in description text,
-        ///    in is_anonym text,
-        ///    in createdby integer,
-        ///    in permissions_str text,
-        ///    in role_id integer,
-        ///    out out_rid integer)
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_role(IN applicationid INTEGER,
+        ///    IN role_name TEXT,
+        ///    IN description TEXT,
+        ///    IN is_anonym TEXT,
+        ///    IN createdby INTEGER,
+        ///    IN permissions_str TEXT,
+        ///    IN role_id INTEGER,
+        ///    OUT out_rid INTEGER)
         ///BEGIN
         ///DECLARE rid INTEGER; 
         ///DECLARE errornum INTEGER;
         ///-- DECLARE CONTINUE HANDLER FOR SQLSTATE &apos;23505&apos; select 0; 
         ///
-        ///if role_id=0 then set role_id=null; end if;
+        ///IF role_id = 0 THEN SET role_id = NULL; END IF;
         ///
         ///DROP TEMPORARY TABLE IF EXISTS eb_create_or_update_role_tmp;
-        ///DROP TEMPORARY TABLE IF EXISTS t [rest of string was truncated]&quot;;.
+        ///DROP TEMPORARY TABLE IF EXIS [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_role2 {
             get {
@@ -986,21 +995,20 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_role2loc(in rid integer,
-        ///in createdby integer,
-        ///in locations_str text
-        ///-- ,out r3 integer
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_role2loc(IN rid INTEGER,
+        ///IN createdby INTEGER,
+        ///IN locations_str TEXT
         ///)
         ///BEGIN
-        ///declare a integer;
+        ///DECLARE a INTEGER;
         ///DROP TEMPORARY TABLE IF EXISTS temp_array_table;
         ///DROP TEMPORARY TABLE IF EXISTS location_tmp;
         ///
-        ///CREATE TEMPORARY TABLE temp_array_table(value integer);
+        ///CREATE TEMPORARY TABLE temp_array_table(value INTEGER);
         ///	CALL STR_TO_TBL(locations_str);  
         ///	CREATE TEMPORARY TABLE IF NOT EXISTS location_tmp SELECT `value` FROM temp_array_table;
         ///
-        ///UPDATE eb_role2location er2l SET er2l.eb_del = &apos;T&apos;, er2l.eb_revokedat  [rest of string was truncated]&quot;;.
+        ///UPDATE eb_role2location er2l SET er2l.eb_del = &apos;T&apos;, er2l.eb_revokedat = NOW(), er2l.eb_rev [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_role2loc2 {
             get {
@@ -1060,21 +1068,20 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_role2role(in rid integer,
-        ///in createdby integer,
-        ///in dependantroles_str text
-        ///-- ,out r2 integer
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_role2role(IN rid INTEGER,
+        ///IN createdby INTEGER,
+        ///IN dependantroles_str TEXT
         ///)
         ///BEGIN
-        ///declare a integer;
+        ///DECLARE a INTEGER;
         ///DROP TEMPORARY TABLE IF EXISTS temp_array_table;
         ///DROP TEMPORARY TABLE IF EXISTS dependantroles_tmp;
         ///
-        ///CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value integer);
-        ///        
+        ///CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value INTEGER);      
         ///CALL STR_TO_TBL(dependantroles_str);  -- fill to temp_array_table
         ///CREATE TEMPORARY TABLE IF NOT EXISTS dependantroles_tmp SELECT `value` FROM temp_array_table;
-        /// [rest of string was truncated]&quot;;.
+        ///    
+        /// UPDATE eb_role2ro [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_role2role2 {
             get {
@@ -1133,20 +1140,21 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_role2user(in rid integer,
-        ///    in createdby integer,
-        ///    in users_str text
-        ///   -- ,out r1 integer
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_create_or_update_role2user(IN rid INTEGER,
+        ///    IN createdby INTEGER,
+        ///    IN users_str TEXT   
         ///    )
         ///BEGIN
-        ///declare a integer;
+        ///DECLARE a INTEGER;
         ///DROP TEMPORARY TABLE IF EXISTS temp_array_table;
         ///DROP TEMPORARY TABLE IF EXISTS usersid_tmp;
         ///
-        ///CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value integer);
+        ///CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value INTEGER);
         ///	CALL STR_TO_TBL(users_str);  -- fill to temp_array_table
         ///	CREATE TEMPORARY TABLE IF NOT EXISTS usersid_tmp SELECT `value` FROM temp_array_table;
-        ///UPDATE eb_role2user er2u        /// [rest of string was truncated]&quot;;.
+        ///UPDATE eb_role2user er2u
+        ///    SET 
+        ///        e [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_role2user2 {
             get {
@@ -1197,21 +1205,22 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE FUNCTION eb_createbot(solid text,
-        ///    name text,
-        ///    fullname text,
-        ///    url text,
-        ///    welcome_msg text,
-        ///    uid integer,
-        ///    botid integer) RETURNS text CHARSET latin1
+        ///   Looks up a localized string similar to CREATE FUNCTION eb_createbot(solid TEXT,
+        ///    name TEXT,
+        ///    fullname TEXT,
+        ///    url TEXT,
+        ///    welcome_msg TEXT,
+        ///    uid INTEGER,
+        ///    botid INTEGER) RETURNS text CHARSET latin1
         ///BEGIN
-        ///DECLARE _botid text;
-        ///DECLARE insertedbotid text;
-        ///DECLARE returnid integer;
-        ///DECLARE appid integer;
+        ///DECLARE _botid TEXT;
+        ///DECLARE insertedbotid TEXT;
+        ///DECLARE returnid INTEGER;
+        ///DECLARE appid INTEGER;
         ///
         ///IF (botid &gt; 0) THEN
-        ///   	UPDATE eb_bots EB SET EB.name=name, EB.fullname = fullname, EB.url=url, EB.welcome_msg=welcome_msg, EB.modified_by=uid, EB.modified_at=NOW(), EB.botid=(select @botid:=EB.botid),EB.app_id=(select [rest of string was truncated]&quot;;.
+        ///   	UPDATE eb_bots EB 
+        ///		SET EB.name = name, EB.fullname = fullname, EB.url = url, EB.welcome_msg = welcome_msg, EB.modified_by = uid, EB.modified_at = NOW(), EB.botid = (SELECT @botid:=EB.botid),E [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_createbot2 {
             get {
@@ -1266,26 +1275,26 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_createormodifyuserandroles(IN userid integer,
-        ///    IN id integer,
-        ///    IN fullname text,
-        ///    IN nickname text,
-        ///    IN email text,
-        ///    IN pwd text,
-        ///    IN dob date,
-        ///    IN sex text,
-        ///    IN alternateemail text,
-        ///    IN phprimary text,
-        ///    IN phsecondary text,
-        ///    IN phlandphone text,
-        ///    IN extension text,
-        ///    IN fbid text,
-        ///    IN fbname text,
-        ///    IN roles text,
-        ///    IN `groups` text,
-        ///    IN statusid integer,
-        ///    IN hide text,
-        ///    IN anonymoususerid integer,
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_createormodifyuserandroles(IN userid INTEGER,
+        ///    IN id INTEGER,
+        ///    IN fullname TEXT,
+        ///    IN nickname TEXT,
+        ///    IN email TEXT,
+        ///    IN pwd TEXT,
+        ///    IN dob DATE,
+        ///    IN sex TEXT,
+        ///    IN alternateemail TEXT,
+        ///    IN phprimary TEXT,
+        ///    IN phsecondary TEXT,
+        ///    IN phlandphone TEXT,
+        ///    IN extension TEXT,
+        ///    IN fbid TEXT,
+        ///    IN fbname TEXT,
+        ///    IN roles TEXT,
+        ///    IN `groups` TEXT,
+        ///    IN statusid INTEGER,
+        ///    IN hide TEXT,
+        ///    IN anonymoususerid INTEGER,
         ///    IN preferen [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_createormodifyuserandroles2 {
@@ -1348,26 +1357,26 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_createormodifyusergroup(IN userid integer,
-        ///    IN id integer,
-        ///    IN name text,
-        ///    IN description text,
-        ///    IN users text,
-        ///    IN ipconstrnw text,
-        ///    IN ipconstrold text,
-        ///    IN dtconstrnw text,
-        ///    IN dtconstrold text,
-        ///    OUT out_gid integer)
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_createormodifyusergroup(IN userid INTEGER,
+        ///    IN id INTEGER,
+        ///    IN name TEXT,
+        ///    IN description TEXT,
+        ///    IN users TEXT,
+        ///    IN ipconstrnw TEXT,
+        ///    IN ipconstrold TEXT,
+        ///    IN dtconstrnw TEXT,
+        ///    IN dtconstrold TEXT,
+        ///    OUT out_gid INTEGER)
         ///BEGIN
-        ///DECLARE gid integer;
-        ///declare nwip text;
-        ///declare nwdesc text;
-        ///declare nwtitle text;
-        ///declare nwdesc1 text;
-        ///declare nwtype int;
-        ///declare nwstart datetime default now();
-        ///declare nwend datetime default now();
-        ///declare nwdays in [rest of string was truncated]&quot;;.
+        ///DECLARE gid INTEGER;
+        ///DECLARE nwip TEXT;
+        ///DECLARE nwdesc TEXT;
+        ///DECLARE nwtitle TEXT;
+        ///DECLARE nwdesc1 TEXT;
+        ///DECLARE nwtype INTEGER;
+        ///DECLARE nwstart DATETIME DEFAULT NOW();
+        ///DECLARE nwend DATETIME DEFAULT NOW();
+        ///DECLARE nwday [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_createormodifyusergroup2 {
             get {
@@ -1431,15 +1440,15 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_currval(seq text)
+        ///   Looks up a localized string similar to CREATE FUNCTION eb_currval(seq TEXT) RETURNS int(11)
         ///BEGIN
         ///
-        ///DECLARE _curval int;
-        ///SELECT max(`value`) FROM tmp_currval WHERE name = seq INTO _curval;
+        ///DECLARE _curval INTEGER;
+        ///
+        ///SELECT MAX(`value`) FROM tmp_currval WHERE name = seq INTO _curval;
         ///IF _curval IS NULL THEN SET _curval=0; END IF; 
         ///
-        ///SELECT _curval;
-        ///
+        ///RETURN _curval;
         ///END.
         /// </summary>
         public static string eb_currval2 {
@@ -1782,21 +1791,21 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_get_tagged_object(in_tags text)
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_get_tagged_object(in_tags TEXT)
         ///BEGIN
-        ///declare tags text;
+        ///DECLARE tags TEXT;
         ///
         ///SELECT 
-        ///			group_concat(EO.obj_tags) into tags
+        ///			GROUP_CONCAT(EO.obj_tags) INTO tags
         ///                    FROM 
-        ///	                    eb_objects EO;
-        ///                 
+        ///	                    eb_objects EO;            
         /// 
         ///DROP TEMPORARY TABLE IF EXISTS temp_array_table;
         ///DROP TEMPORARY TABLE IF EXISTS tags_tbl;
-        ///CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value text);
+        ///CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value TEXT);
         ///	CALL STR_TO_TBL(tags);  -- fill to temp_array_table
-        ///	CREATE TEMPORARY TABLE IF NOT EXISTS tags_tbl SELECT `value` FROM temp_array_tab [rest of string was truncated]&quot;;.
+        ///	CREATE TEMPORARY TABLE IF NOT EXISTS tags_tbl SELECT `value` FROM temp_array_table;
+        ///   [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_get_tagged_object2 {
             get {
@@ -1847,24 +1856,24 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE FUNCTION eb_getconstraintstatus(in_userid integer,in_ip text) RETURNS int(11)
+        ///   Looks up a localized string similar to CREATE FUNCTION eb_getconstraintstatus(in_userid INTEGER, in_ip TEXT) RETURNS int(11)
         ///BEGIN
         ///DECLARE ipfound BOOL;
         ///DECLARE countdtc INTEGER;
         ///DECLARE dtemp INTEGER;
         ///DECLARE ttemp INTEGER;
-        ///declare arrip1 text;
-        ///declare c integer;
+        ///DECLARE arrip1 TEXT;
+        ///DECLARE c INTEGER;
         ///
         ///-- IP CONSTRAINT
         ///DROP TEMPORARY TABLE IF EXISTS arrip;
-        ///	CREATE TEMPORARY TABLE IF NOT EXISTS arrip(id int auto_increment primary key, value integer);
+        ///	CREATE TEMPORARY TABLE IF NOT EXISTS arrip(id INTEGER AUTO_INCREMENT PRIMARY KEY, value INTEGER);
         ///    
         ///	IF in_ip IS NOT NULL THEN
         ///    
-        /// insert into arrip(value)
+        /// INSERT INTO arrip(value)
         ///		SELECT ip  FROM eb_constraints_ip 
-        ///		WHERE usergroup_i [rest of string was truncated]&quot;;.
+        ///		WHERE usergr [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_getconstraintstatus2 {
             get {
@@ -1917,16 +1926,21 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_getpermissions(IN roles text,
-        ///out out_permission text)
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_getpermissions(IN roles TEXT,
+        ///OUT out_permission TEXT)
         ///BEGIN
-        ///declare _permission text;
-        ///drop temporary table if exists permissions_tmp;
-        ///set _permission=(
-        ///	SELECT GROUP_CONCAT(concat( _per.permissionname,&apos;:&apos;, _loc.locationid) separator &apos;,&apos;) FROM eb_role2permission _per, eb_role2location _loc
-        ///		WHERE _per.role_id = _loc.roleid AND _per.role_id = FIND_IN_SET(role_id,roles) AND _per.eb_del=&apos;F&apos; AND _loc.eb_del=&apos;F&apos;);
-        ///create temporary table permissions_tmp(value text);
-        ///insert into permi [rest of string was truncated]&quot;;.
+        ///DECLARE _permission TEXT;
+        ///
+        ///DROP TEMPORARY TABLE IF EXISTS temp_array_table;
+        ///DROP TEMPORARY TABLE IF EXISTS roles_tmp;
+        ///
+        ///CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value INTEGER);
+        ///        
+        ///CALL STR_TO_TBL(roles);  -- fill to temp_array_table
+        ///CREATE TEMPORARY TABLE IF NOT EXISTS roles_tmp SELECT `value` FROM temp_array_table;
+        ///
+        ///SET _permission=(
+        ///	SELECT GROUP_CONCAT(CONCAT( _per.permissionname,&apos;:&apos;, _loc.loc [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_getpermissions2 {
             get {
@@ -1994,29 +2008,29 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_getroles(IN userid integer,
-        ///    IN wc text,
-        ///    out roless text,
-        ///     out role_names text
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_getroles(IN userid INTEGER,
+        ///    IN wc TEXT,
+        ///    OUT roless TEXT,
+        ///    OUT role_names TEXT
         ///    )
         ///BEGIN
-        ///DECLARE app_type varchar(20);
+        ///DECLARE app_type VARCHAR(20);
         ///IF wc = &apos;tc&apos; OR wc = &apos;dc&apos; THEN
-        ///    set app_type=&apos;1, 2, 3&apos;;
-        ///    END IF;
-        ///    IF wc = &apos;uc&apos; THEN
-        ///    set app_type=&apos;1&apos;;
-        ///    END IF;
-        ///	IF wc = &apos;mc&apos; THEN
-        ///   set app_type=&apos;2&apos;;
-        ///    END IF;
-        ///    IF wc = &apos;bc&apos; THEN
-        ///   set app_type=&apos;3&apos;;
-        ///    END IF;
+        ///    SET app_type = &apos;1, 2, 3&apos;;
+        ///END IF;
+        ///IF wc = &apos;uc&apos; THEN
+        ///    SET app_type = &apos;1&apos;;
+        ///END IF;
+        ///IF wc = &apos;mc&apos; THEN
+        ///   SET app_type = &apos;2&apos;;
+        ///END IF;
+        ///IF wc = &apos;bc&apos; THEN
+        ///   SET app_type = &apos;3&apos;;
+        ///END IF;
         ///    
-        ///	   SELECT 	
-        ///		GROUP_CONCAT(UROLES.role_id) as roles,
-        ///		group_concat(CASE WHEN UROLES.role_name is  [rest of string was truncated]&quot;;.
+        ///SELECT 	
+        ///		GROUP_CONCAT(UROLES.role_id) AS roles,
+        ///		GROUP_CONCAT(CASE WHEN UROLES.role_name IS NULL THEN &apos;SYS&apos; ELSE U [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_getroles2 {
             get {
@@ -2512,20 +2526,20 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_object_create_major_version(in id text,
-        ///    in obj_type integer,
-        ///    in commit_uid integer,
-        ///    in src_pid text,
-        ///    in cur_pid text,
-        ///    in relations text,
-        ///    out committed_refidunique text)
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_object_create_major_version(IN id TEXT,
+        ///    IN obj_type INTEGER,
+        ///    IN commit_uid INTEGER,
+        ///    IN src_pid TEXT,
+        ///    IN cur_pid TEXT,
+        ///    IN relations TEXT,
+        ///    OUT committed_refidunique TEXT)
         ///BEGIN
-        ///DECLARE refidunique text;
-        ///DECLARE inserted_obj_ver_id integer;
-        ///DECLARE objid integer;
-        ///DECLARE temp_committed_refidunique text;
-        ///DECLARE major integer;
-        ///DECLARE version_number text;
+        ///DECLARE refidunique TEXT;
+        ///DECLARE inserted_obj_ver_id INTEGER;
+        ///DECLARE objid INTEGER;
+        ///DECLARE temp_committed_refidunique TEXT;
+        ///DECLARE major INTEGER;
+        ///DECLARE version_number TEXT;
         ///
         ///DROP TEMPORARY TABLE IF EXISTS temp_array_table;
         ///DROP TEMPORARY TABLE IF EXISTS relationsv;
@@ -2584,22 +2598,22 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_object_create_minor_version(in id text,
-        ///    in obj_type integer,
-        ///    in commit_uid integer,
-        ///    in src_pid text,
-        ///    in cur_pid text,
-        ///    in relations text,
-        ///    out committed_refidunique text)
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_object_create_minor_version(IN id TEXT,
+        ///    IN obj_type INTEGER,
+        ///    IN commit_uid INTEGER,
+        ///    IN src_pid TEXT,
+        ///    IN cur_pid TEXT,
+        ///    IN relations TEXT,
+        ///    OUT committed_refidunique TEXT)
         ///BEGIN
-        ///DECLARE refidunique text;
-        ///DECLARE inserted_objid integer;
-        ///DECLARE inserted_obj_ver_id integer;
-        ///DECLARE objid integer;
-        ///DECLARE temp_committed_refidunique text; 
-        ///DECLARE minor integer;
-        ///DECLARE major integer;
-        ///DECLARE version_number text;
+        ///DECLARE refidunique TEXT;
+        ///DECLARE inserted_objid INTEGER;
+        ///DECLARE inserted_obj_ver_id INTEGER;
+        ///DECLARE objid INTEGER;
+        ///DECLARE temp_committed_refidunique TEXT; 
+        ///DECLARE minor INTEGER;
+        ///DECLARE major INTEGER;
+        ///DECLARE version_number TEXT;
         ///
         ///DROP TEMPORARY TABLE IF EXISTS relations [rest of string was truncated]&quot;;.
         /// </summary>
@@ -2657,22 +2671,22 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_object_create_patch_version(in id text,
-        ///    in obj_type integer,
-        ///    in commit_uid integer,
-        ///    in src_pid text,
-        ///    in cur_pid text,
-        ///    in relations text,
-        ///    out committed_refidunique text)
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_object_create_patch_version(IN id TEXT,
+        ///    IN obj_type INTEGER,
+        ///    IN commit_uid INTEGER,
+        ///    IN src_pid TEXT,
+        ///    IN cur_pid TEXT,
+        ///    IN relations TEXT,
+        ///    out committed_refidunique TEXT)
         ///BEGIN
-        ///DECLARE refidunique text;
-        ///DECLARE inserted_obj_ver_id integer;
-        ///DECLARE objid integer;
-        ///DECLARE temp_committed_refidunique text;
-        ///DECLARE major integer;
-        ///DECLARE minor integer;
-        ///DECLARE patch integer;
-        ///DECLARE version_number text;
+        ///DECLARE refidunique TEXT;
+        ///DECLARE inserted_obj_ver_id INTEGER;
+        ///DECLARE objid INTEGER;
+        ///DECLARE temp_committed_refidunique TEXT;
+        ///DECLARE major INTEGER;
+        ///DECLARE minor INTEGER;
+        ///DECLARE patch INTEGER;
+        ///DECLARE version_number TEXT;
         ///
         ///DROP TEMPORARY TABLE IF EXISTS temp_array_table;
         /// [rest of string was truncated]&quot;;.
@@ -2771,12 +2785,12 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE FUNCTION eb_objects_change_status(id text,
-        ///    status integer,
-        ///    commit_uid integer,
-        ///    obj_changelog text) RETURNS int(11)
+        ///   Looks up a localized string similar to CREATE FUNCTION eb_objects_change_status(id TEXT,
+        ///    status INTEGER,
+        ///    commit_uid INTEGER,
+        ///    obj_changelog TEXT) RETURNS int(11)
         ///BEGIN
-        ///DECLARE inserted_obj_ver_id integer;
+        ///DECLARE inserted_obj_ver_id INTEGER;
         ///
         ///INSERT INTO
         ///	eb_objects_status(eb_obj_ver_id)
@@ -2786,7 +2800,7 @@ namespace ExpressBase.Common {
         ///	eb_objects_ver eov
         ///WHERE
         ///	eov.refid=id;
-        ///select last_insert_id() INTO inserted_obj_ver_id;
+        ///SELECT LAST_INSERT_ID() INTO inserted_obj_ver_id;
         ///
         ///UPDATE
         ///	eb_objects_status eos
@@ -2856,25 +2870,25 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_commit(in id text,
-        ///    in obj_name text,
-        ///    in obj_desc text,
-        ///    in obj_type integer,
-        ///    in obj_json json,
-        ///    in obj_changelog text,
-        ///    in commit_uid integer,
-        ///    in relations text,
-        ///    in tags text,
-        ///    in app_id text,
-        ///    in disp_name text,
-        ///    out out_committed_refidunique text)
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_commit(IN id TEXT,
+        ///    IN obj_name TEXT,
+        ///    IN obj_desc TEXT,
+        ///    IN obj_type INTEGER,
+        ///    IN obj_json JSON,
+        ///    IN obj_changelog TEXT,
+        ///    IN commit_uid INTEGER,
+        ///    IN relations TEXT,
+        ///    IN tags TEXT,
+        ///    IN app_id TEXT,
+        ///    IN disp_name TEXT,
+        ///    OUT out_committed_refidunique TEXT)
         ///BEGIN
-        ///DECLARE refidunique text;
-        ///DECLARE inserted_obj_ver_id integer;
-        ///DECLARE objid integer;
-        ///DECLARE committed_refidunique text;
-        ///DECLARE major integer;
-        ///DECLARE minor integer;
+        ///DECLARE refidunique TEXT;
+        ///DECLARE inserted_obj_ver_id INTEGER;
+        ///DECLARE objid INTEGER;
+        ///DECLARE committed_refidunique TEXT;
+        ///DECLARE major INTEGER;
+        ///DECLARE minor INTEGER;
         ///DEC [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_commit2 {
@@ -2931,25 +2945,25 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_create_new_object(in obj_name text,
-        ///    in obj_desc text,
-        ///    in obj_type integer,
-        ///    in obj_cur_status integer,
-        ///    in obj_json json,
-        ///    in commit_uid integer,
-        ///    in src_pid text,
-        ///    in cur_pid text,
-        ///    in relations text,
-        ///    in issave text,
-        ///    in tags text,
-        ///    in app_id text,
-        ///    in s_obj_id text,
-        ///    in s_ver_id text,
-        ///    in disp_name text,
-        ///    out out_refid_of_commit_version text)
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_create_new_object(IN obj_name TEXT,
+        ///    IN obj_desc TEXT,
+        ///    IN obj_type INTEGER,
+        ///    IN obj_cur_status INTEGER,
+        ///    IN obj_json JSON,
+        ///    IN commit_uid INTEGER,
+        ///    IN src_pid TEXT,
+        ///    IN cur_pid TEXT,
+        ///    IN relations TEXT,
+        ///    IN issave TEXT,
+        ///    IN tags TEXT,
+        ///    IN app_id TEXT,
+        ///    IN s_obj_id TEXT,
+        ///    IN s_ver_id TEXT,
+        ///    IN disp_name TEXT,
+        ///    OUT out_refid_of_commit_version TEXT)
         ///BEGIN
-        ///DECLARE refidunique text;
-        ///DECLARE inserted_objid integer;
+        ///DECLARE refidunique TEXT;
+        ///DECLARE inserted_objid INTEGER;
         ///DECLAR [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_create_new_object2 {
@@ -2986,31 +3000,75 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_exploreobject(in id integer,
-        ///out idval integer,
-        ///out nameval text,
-        ///out typeval integer,
-        ///out statusval integer,
-        ///out descriptionval text,
-        ///out changelogval text,
-        ///out commitatval text, 
-        ///out commitbyval text,
-        ///out refidval text, 
-        ///out	ver_numval text,
-        ///out work_modeval char,
-        ///out workingcopiesval text,
-        ///out json_wcval json,
-        ///out json_lcval json,
-        ///out major_verval integer,
-        ///out minor_verval integer,
-        ///out patch_verval integer,
-        ///out	tagsval text,
-        ///out app_idval text,
-        ///out lastvers [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_exploreobject(IN id INTEGER,
+        ///OUT idval INTEGER,
+        ///OUT nameval TEXT,
+        ///OUT typeval INTEGER,
+        ///OUT statusval INTEGER,
+        ///OUT descriptionval TEXT,
+        ///OUT changelogval TEXT,
+        ///OUT commitatval TEXT, 
+        ///OUT commitbyval TEXT,
+        ///OUT refidval TEXT, 
+        ///OUT ver_numval TEXT,
+        ///OUT work_modeval char,
+        ///OUT workingcopiesval TEXT,
+        ///OUT json_wcval JSON,
+        ///OUT json_lcval JSON,
+        ///OUT major_verval INTEGER,
+        ///OUT minor_verval INTEGER,
+        ///OUT patch_verval INTEGER,
+        ///OUT tagsval TEXT,
+        ///OUT app_idval TEXT,
+        ///OUT lastvers [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_exploreobject2 {
             get {
                 return ResourceManager.GetString("eb_objects_exploreobject2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_objects_favourites
+        ///
+        ///-- DROP TABLE public.eb_objects_favourites;
+        ///
+        ///CREATE TABLE public.eb_objects_favourites
+        ///(
+        ///    id serial,
+        ///    userid integer,
+        ///    object_id integer,
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;
+        ///)
+        ///WITH (
+        ///    OIDS = FALSE
+        ///)
+        ///TABLESPACE pg_default;
+        ///
+        ///ALTER TABLE public.eb_objects_favourites
+        ///    OWNER to postgres;.
+        /// </summary>
+        public static string eb_objects_favourites {
+            get {
+                return ResourceManager.GetString("eb_objects_favourites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_objects_favourites.
+        /// </summary>
+        public static string eb_objects_favourites1 {
+            get {
+                return ResourceManager.GetString("eb_objects_favourites1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_objects_favourites.
+        /// </summary>
+        public static string eb_objects_favourites2 {
+            get {
+                return ResourceManager.GetString("eb_objects_favourites2", resourceCulture);
             }
         }
         
@@ -3052,24 +3110,24 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_getversiontoopen(in _id integer,
-        /// out out_idv integer, 
-        /// out out_namev text, 
-        /// out out_typev integer, 
-        /// out out_status integer, 
-        /// out out_description text, 
-        /// out out_changelog text, 
-        /// out out_commitat text, 
-        /// out out_commitby text, 
-        /// out out_refidv text, 
-        /// out out_ver_num text, 
-        /// out out_work_mode character, 
-        /// out out_workingcopies text, 
-        /// out out_json_wc json, 
-        /// out out_json_lc json, 
-        /// out out_major_ver integer, 
-        /// out out_minor_ver integer, 
-        /// out out_patch_ver i [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_getversiontoopen(IN _id INTEGER,
+        /// OUT out_idv INTEGER, 
+        /// OUT out_namev TEXT, 
+        /// OUT out_typev INTEGER, 
+        /// OUT out_status INTEGER, 
+        /// OUT out_description TEXT, 
+        /// OUT out_changelog TEXT, 
+        /// OUT out_commitat TEXT, 
+        /// OUT out_commitby TEXT, 
+        /// OUT out_refidv TEXT, 
+        /// OUT out_ver_num TEXT, 
+        /// OUT out_work_mode CHARACTER, 
+        /// OUT out_workingcopies TEXT, 
+        /// OUT out_json_wc JSON, 
+        /// OUT out_json_lc JSON, 
+        /// OUT out_major_ver INTEGER, 
+        /// OUT out_minor_ver INTEGER, 
+        /// OUT out_patch_ver I [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_getversiontoopen2 {
             get {
@@ -3211,20 +3269,20 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_save(in id text,
-        ///    in obj_name text,
-        ///    in obj_desc text,
-        ///    in obj_type integer,
-        ///    in obj_json json,
-        ///    in commit_uid integer,
-        ///    in relations text,
-        ///    in tags text,
-        ///    in app_id text,
-        ///    in disp_name text,
-        ///    out out_refidv text)
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_save(IN id TEXT,
+        ///    IN obj_name TEXT,
+        ///    IN obj_desc TEXT,
+        ///    IN obj_type INTEGER,
+        ///    IN obj_json JSON,
+        ///    IN commit_uid INTEGER,
+        ///    IN relations TEXT,
+        ///    IN tags TEXT,
+        ///    IN app_id TEXT,
+        ///    IN disp_name TEXT,
+        ///    OUT out_refidv TEXT)
         ///BEGIN
-        ///DECLARE refidunique text;
-        ///DECLARE objid integer;
+        ///DECLARE refidunique TEXT;
+        ///DECLARE objid INTEGER;
         ///
         ///DROP TEMPORARY TABLE IF EXISTS temp_array_table;
         ///DROP TEMPORARY TABLE IF EXISTS relationsv;
@@ -3361,24 +3419,24 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_update_Dashboard(in refid text,
-        ///out namev text,
-        ///out status integer,
-        ///out ver_num text,
-        ///out work_mode character,
-        ///out workingcopies text,
-        ///out major_ver integer,
-        ///out minor_ver integer,
-        ///out patch_ver integer,
-        ///out tags text, 
-        ///out app_id text,
-        ///out lastversionrefidval text,
-        ///out lastversionnumberval text,
-        ///out lastversioncommit_tsval text,
-        ///out lastversion_statusval integer,
-        ///out lastversioncommit_byname text,
-        ///out lastversioncommit_byid integer,
-        ///out liveversionrefidval text, [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_objects_update_Dashboard(IN refid TEXT,
+        ///OUT namev TEXT,
+        ///OUT status INTEGER,
+        ///OUT ver_num TEXT,
+        ///OUT work_mode CHARACTER,
+        ///OUT workingcopies TEXT,
+        ///OUT major_ver INTEGER,
+        ///OUT minor_ver INTEGER,
+        ///OUT patch_ver INTEGER,
+        ///OUT tags TEXT, 
+        ///OUT app_id TEXT,
+        ///OUT lastversionrefidval TEXT,
+        ///OUT lastversionnumberval TEXT,
+        ///OUT lastversioncommit_tsval TEXT,
+        ///OUT lastversion_statusval INTEGER,
+        ///OUT lastversioncommit_byname TEXT,
+        ///OUT lastversioncommit_byid INTEGER,
+        ///OUT liveversionrefidval TEXT, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_update_dashboard2 {
             get {
@@ -3613,12 +3671,13 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_persist_currval(seq_name text)
+        ///   Looks up a localized string similar to CREATE FUNCTION eb_persist_currval(seq_name TEXT) RETURNS int(11)
         ///BEGIN
         ///
-        ///CREATE TEMPORARY TABLE IF NOT EXISTS tmp_currval(name text, value integer);
+        ///CREATE TEMPORARY TABLE IF NOT EXISTS tmp_currval(name TEXT, value INTEGER);
         ///INSERT INTO tmp_currval(name, value) VALUES(seq_name,(SELECT LAST_INSERT_ID()));
         ///
+        ///RETURN 1;
         ///END.
         /// </summary>
         public static string eb_persist_currval {
@@ -3735,18 +3794,18 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE eb_revokedbaccess2user(in username text,
-        ///    in dbname text,
-        ///    out out_b boolean)
+        ///   Looks up a localized string similar to CREATE PROCEDURE eb_revokedbaccess2user(IN username TEXT,
+        ///    IN dbname TEXT,
+        ///    OUT out_b BOOLEAN)
         ///BEGIN
-        ///DECLARE dbs text;
-        ///declare done boolean;
-        ///declare s text;
-        ///declare s1 varchar(200);
-        ///declare cur1 cursor for select SCHEMA_NAME from INFORMATION_SCHEMA.SCHEMATA;
+        ///DECLARE dbs TEXT;
+        ///DECLARE done BOOLEAN;
+        ///DECLARE s TEXT;
+        ///DECLARE s1 VARCHAR(200);
+        ///DECLARE cur1 CURSOR FOR SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA;
         ///DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;   
-        ///open cur1;
-        ///read_loop: loop
+        ///OPEN cur1;
+        ///read_loop: LOOP
         ///      FETCH cur1 INTO dbs;
         ///     
         ///      IF done THEN
@@ -4981,13 +5040,13 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE STR_TO_TBL_GRP(fullstr text)
+        ///   Looks up a localized string similar to CREATE PROCEDURE STR_TO_TBL_GRP(fullstr TEXT)
         ///BEGIN
-        ///DECLARE a INT Default 0 ;
-        ///      DECLARE str VARCHAR(255);
-        ///       
-        ///	  TRUNCATE TABLE temp_array_table;
-        ///      set @delim=&apos;$$&apos;;
+        ///DECLARE a INT DEFAULT 0 ;
+        ///DECLARE str VARCHAR(255);
+        ///
+        ///TRUNCATE TABLE temp_array_table;
+        ///      SET @delim=&apos;$$&apos;;
         ///      simple_loop: LOOP
         ///         SET a=a+1;
         ///         SET str := (SELECT split_str(fullstr,@delim,a));
@@ -4996,7 +5055,7 @@ namespace ExpressBase.Common {
         ///         END IF;
         ///         -- Do Inserts into temp table here with str going into the row
         ///         
-        ///         INSERT INTO temp_array_table(value) values (TRIM((SELEC [rest of string was truncated]&quot;;.
+        ///         INSERT INTO temp_array_table(value) VALUES (TRIM((SELECT split_str(full [rest of string was truncated]&quot;;.
         /// </summary>
         public static string str_to_tbl_grp_util {
             get {
@@ -5005,13 +5064,13 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE STR_TO_TBL(fullstr text)
+        ///   Looks up a localized string similar to CREATE PROCEDURE STR_TO_TBL(fullstr TEXT)
         ///BEGIN
-        ///DECLARE a INT Default 0 ;
-        ///      DECLARE str VARCHAR(255);
-        ///       
-        ///	  TRUNCATE TABLE temp_array_table;
-        ///      
+        ///DECLARE a INT DEFAULT 0 ;
+        ///DECLARE str VARCHAR(255);
+        ///
+        ///TRUNCATE TABLE temp_array_table;
+        ///   
         ///      simple_loop: LOOP
         ///         SET a=a+1;
         ///         SET str := (SELECT split_str(fullstr,&apos;,&apos;,a));
@@ -5020,7 +5079,8 @@ namespace ExpressBase.Common {
         ///         END IF;
         ///         -- Do Inserts into temp table here with str going into the row
         ///         
-        ///         INSERT INTO temp_array_table(value) values (TRIM((SELECT split_str(fullstr,&apos;,&apos; [rest of string was truncated]&quot;;.
+        ///         INSERT INTO temp_array_table(value) values (TRIM((SELECT split_str(fullstr,&apos;,&apos;,a))));
+        ///   END LOO [rest of string was truncated]&quot;;.
         /// </summary>
         public static string str_to_tbl_util {
             get {
@@ -5029,12 +5089,12 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE string_to_rows(fullstr text)
+        ///   Looks up a localized string similar to CREATE PROCEDURE string_to_rows(fullstr TEXT)
         ///BEGIN
-        ///DECLARE a INT Default 0 ;
-        ///      DECLARE str VARCHAR(255);
-        ///      DROP TEMPORARY TABLE IF EXISTS temp_array_table1;
-        ///        CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table1(value text);
+        ///DECLARE a INT DEFAULT 0 ;
+        ///DECLARE str VARCHAR(255);
+        ///	DROP TEMPORARY TABLE IF EXISTS temp_array_table1;
+        ///    CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table1(value TEXT);
         ///	
         ///      simple_loop: LOOP
         ///         SET a=a+1;
@@ -5042,9 +5102,8 @@ namespace ExpressBase.Common {
         ///         IF str=&apos;&apos; THEN
         ///            LEAVE simple_loop;
         ///         END IF;
-        ///         -- Do Inserts into temp table here with str going into the row
-        ///         
-        /// [rest of string was truncated]&quot;;.
+        ///         -- Do Inserts into temp table here with str going into the row         
+        ///         INSERT I [rest of string was truncated]&quot;;.
         /// </summary>
         public static string string_to_rows_util {
             get {

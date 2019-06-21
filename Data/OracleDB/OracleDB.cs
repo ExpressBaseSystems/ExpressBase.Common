@@ -1405,6 +1405,17 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                             FR.id = ANY(string_to_array(:ids,',')::int[]);";
             }
         }
+
+        //....api query...
+        public string EB_API_SQL_FUNC_HEADER
+        {
+            get
+            {
+                return @"CREATE OR REPLACE FUNCTION {0}(insert_json jsonb,update_json jsonb)
+                            RETURNS void
+                            LANGUAGE {1} AS $BODY$";
+            }
+        }
     }
 
     public class OracleFilesDB : OracleDB, INoSQLDatabase

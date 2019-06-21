@@ -65,10 +65,7 @@ namespace ExpressBase.Common.Objects
         [HelpText("Name Of database-table Which you want to store Data collected using this Form")]
         [InputMask("[a-z][a-z0-9]*(_[a-z0-9]+)*")]
         public virtual string TableName { get; set; }
-
-        [JsonIgnore]
-        public override string OnChange { get; set; }
-
+        
         [JsonIgnore]
         public override bool Required { get; set; }
 

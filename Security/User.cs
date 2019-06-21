@@ -38,16 +38,16 @@ namespace ExpressBase.Security
         [DataMember(Order = 6)]
         public string AuthId { get; set; }
 
-		[DataMember(Order = 7)]
-		public Preferences Preference { get; set; }
+        [DataMember(Order = 7)]
+        public Preferences Preference { get; set; }
 
         [DataMember(Order = 8)]
         public override string Email { get; set; }
 
         [DataMember(Order = 9)]
         public override string FullName { get; set; }
-		
-		private List<string> _ebObjectIds = null;
+
+        private List<string> _ebObjectIds = null;
         public List<string> EbObjectIds
         {
             get
@@ -74,54 +74,55 @@ namespace ExpressBase.Security
                 }
             }
         }
-        
-		private List<int> _locationIds = null;
-		public List<int> LocationIds
-		{
-			get
-			{
-				if (_locationIds == null)
-				{
-					_locationIds = new List<int>();
+
+        private List<int> _locationIds = null;
+
+        public List<int> LocationIds
+        {
+            get
+            {
+                if (_locationIds == null)
+                {
+                    _locationIds = new List<int>();
                     if (this.Roles.Contains(SystemRoles.SolutionOwner.ToString()))
-						this._locationIds.Add(-1);
-					else
-						foreach (string p in this.Permissions)
-							if (p.Contains(":"))
-							{
-								int lid = Convert.ToInt32(p.Split(":")[1].Trim());
-								if(lid == -1)
-								{
-									this._locationIds.Clear();
-									this._locationIds.Add(lid);
-									return _locationIds;
-								}
-								if (!this._locationIds.Contains(lid))
-									this._locationIds.Add(lid);
-							}
+                        this._locationIds.Add(-1);
+                    else
+                        foreach (string p in this.Permissions)
+                            if (p.Contains(":"))
+                            {
+                                int lid = Convert.ToInt32(p.Split(":")[1].Trim());
+                                if (lid == -1)
+                                {
+                                    this._locationIds.Clear();
+                                    this._locationIds.Add(lid);
+                                    return _locationIds;
+                                }
+                                if (!this._locationIds.Contains(lid))
+                                    this._locationIds.Add(lid);
+                            }
 
-				}
+                }
                 return _locationIds;
-			}
-		}
+            }
+        }
 
-		public List<int> GetLocationsByObject(string RefId)
-		{
+        public List<int> GetLocationsByObject(string RefId)
+        {
             //Sample refid - Only for reference
             //sourc == dest == type == dest objid == dest verid == source objid == source verid
             //ebdbllz23nkqd620180220120030-ebdbllz23nkqd620180220120030-0-2257-2976-2257-2976
             if (this.Roles.Contains(SystemRoles.SolutionOwner.ToString()))
-				return new List<int> { -1 };
-			List<int> _locs = new List<int>();	
-            
-			int _objid = Convert.ToInt32(RefId.Split("-")[3].Trim());
-            Console.WriteLine("=========ObjectId:"+_objid +"============Locations: ");
+                return new List<int> { -1 };
+            List<int> _locs = new List<int>();
+
+            int _objid = Convert.ToInt32(RefId.Split("-")[3].Trim());
+            Console.WriteLine("=========ObjectId:" + _objid + "============Locations: ");
 
             foreach (string p in this.Permissions)
-			{
-				if (p.Contains(":") && _objid == Convert.ToInt32(p.Split("-")[2]))
-				{
-					int lid = Convert.ToInt32(p.Split(":")[1].Trim());
+            {
+                if (p.Contains(":") && _objid == Convert.ToInt32(p.Split("-")[2]))
+                {
+                    int lid = Convert.ToInt32(p.Split(":")[1].Trim());
                     if (lid == -1)
                         return new List<int> { -1 };
                     else if (!_locs.Contains(lid))
@@ -130,11 +131,11 @@ namespace ExpressBase.Security
                         Console.WriteLine(lid + "====");
                     }
                 }
-			}
-			return _locs;
-		}
+            }
+            return _locs;
+        }
 
-		public User() { }
+        public User() { }
 
         /// <summary>
         /// 
@@ -214,53 +215,54 @@ namespace ExpressBase.Security
             return _user;
         }
 
-		public static User GetDetailsTenant(IDatabase df, string uname, string pass)
-		{
-			try
-			{
-				string Qry = "SELECT * FROM eb_authenticate_tenants(in_uname := @uname, in_pwd := @pass);";
-				var ds = df.DoQuery(Qry, new DbParameter[] { df.GetNewParameter("uname", EbDbTypes.String, uname), df.GetNewParameter("pass", EbDbTypes.String, pass) });
-
-				User _user = null;
-				if (ds.Rows.Count > 0)
-				{
-					int userid = Convert.ToInt32(ds.Rows[0][0]);
-					if (userid > 0)
-					{
-						//roles
-						string[] role_ids = ds.Rows[0][3].ToString().Split(',');
-						List<string> rolesname = new List<string>();
-						foreach (string roleid in role_ids)
-						{
-							if(!roleid.IsNullOrEmpty())
-								rolesname.Add(Enum.GetName(typeof(SystemRoles), Convert.ToInt32(roleid)) ?? "NULL");
-						}
-
-						_user = new User
-						{
-							UserId = userid,
-							Email = ds.Rows[0][1].ToString(),
-							FullName = ds.Rows[0][2].ToString(),
-							Roles = rolesname,
-							Permissions = ds.Rows[0][4].ToString().IsNullOrEmpty()? new List<string>(): ds.Rows[0][4].ToString().Split(',').ToList(),
-							Preference = !string.IsNullOrEmpty(ds.Rows[0][5].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][5].ToString()): new Preferences { Locale = "en-US", TimeZone = "(UTC) Coordinated Universal Time" }
-						};
-					}
-				}
-				return _user;
-			}
-			catch (Exception e)
-			{
-				return new User();
-			}
-		}
-
-		public static User GetDetailsNormal(IDatabase df, string uname, string pwd, string context, string social,string ipaddress)
+        public static User GetDetailsTenant(IDatabase df, string uname, string pass)
         {
-            try {
-                if(df.Vendor == DatabaseVendors.MYSQL)
+            try
+            {
+                string Qry = "SELECT * FROM eb_authenticate_tenants(in_uname := @uname, in_pwd := @pass);";
+                var ds = df.DoQuery(Qry, new DbParameter[] { df.GetNewParameter("uname", EbDbTypes.String, uname), df.GetNewParameter("pass", EbDbTypes.String, pass) });
+
+                User _user = null;
+                if (ds.Rows.Count > 0)
                 {
-                    var ds = df.DoProcedure(df.EB_AUTHETICATE_USER_NORMAL, 
+                    int userid = Convert.ToInt32(ds.Rows[0][0]);
+                    if (userid > 0)
+                    {
+                        //roles
+                        string[] role_ids = ds.Rows[0][3].ToString().Split(',');
+                        List<string> rolesname = new List<string>();
+                        foreach (string roleid in role_ids)
+                        {
+                            if (!roleid.IsNullOrEmpty())
+                                rolesname.Add(Enum.GetName(typeof(SystemRoles), Convert.ToInt32(roleid)) ?? "NULL");
+                        }
+
+                        _user = new User
+                        {
+                            UserId = userid,
+                            Email = ds.Rows[0][1].ToString(),
+                            FullName = ds.Rows[0][2].ToString(),
+                            Roles = rolesname,
+                            Permissions = ds.Rows[0][4].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][4].ToString().Split(',').ToList(),
+                            Preference = !string.IsNullOrEmpty(ds.Rows[0][5].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][5].ToString()) : new Preferences { Locale = "en-US", TimeZone = "(UTC) Coordinated Universal Time" }
+                        };
+                    }
+                }
+                return _user;
+            }
+            catch (Exception e)
+            {
+                return new User();
+            }
+        }
+
+        public static User GetDetailsNormal(IDatabase df, string uname, string pwd, string context, string social, string ipaddress)
+        {
+            try
+            {
+                if (df.Vendor == DatabaseVendors.MYSQL)
+                {
+                    var ds = df.DoProcedure(df.EB_AUTHETICATE_USER_NORMAL,
                             new DbParameter[] { df.GetNewParameter("uname", EbDbTypes.String, uname),
                                 df.GetNewParameter("pwd", EbDbTypes.String, pwd),
                                 df.GetNewParameter("social", EbDbTypes.String, social),
@@ -285,11 +287,11 @@ namespace ExpressBase.Security
                 }
                 //return null;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return new User();
             }
-           
+
         }
 
         public static User GetDetailsSocial(IDatabase df, string socialId, string context)
@@ -308,69 +310,69 @@ namespace ExpressBase.Security
         {
             List<DbParameter> paramlist = new List<DbParameter>();
             string parameters = "";
-			if (!string.IsNullOrEmpty(socialId))
+            if (!string.IsNullOrEmpty(socialId))
             {
                 parameters += "in_socialid => :socialId, ";
                 paramlist.Add(df.GetNewParameter("socialId", EbDbTypes.String, socialId));
-            }             
+            }
             if (!string.IsNullOrEmpty(emailId))
             {
                 parameters += "in_emailid => :emailId, ";
                 paramlist.Add(df.GetNewParameter("emailId", EbDbTypes.String, emailId));
-            }     
+            }
             if (!string.IsNullOrEmpty(phone))
             {
                 parameters += "in_phone => :phone, ";
                 paramlist.Add(df.GetNewParameter("phone", EbDbTypes.String, phone));
             }
-			if (!string.IsNullOrEmpty(user_ip))
+            if (!string.IsNullOrEmpty(user_ip))
             {
                 parameters += "in_user_ip => :user_ip, ";
                 paramlist.Add(df.GetNewParameter("user_ip", EbDbTypes.String, user_ip));
 
-            }				
-			if (!string.IsNullOrEmpty(user_name))
+            }
+            if (!string.IsNullOrEmpty(user_name))
             {
                 parameters += "in_fullname => :user_name, ";
                 paramlist.Add(df.GetNewParameter("user_name", EbDbTypes.String, user_name));
-            }			
-			if (!string.IsNullOrEmpty(user_browser))
+            }
+            if (!string.IsNullOrEmpty(user_browser))
             {
                 parameters += "in_user_browser => :user_browser, ";
                 paramlist.Add(df.GetNewParameter("user_browser", EbDbTypes.String, user_browser));
             }
-			if (!string.IsNullOrEmpty(city))
+            if (!string.IsNullOrEmpty(city))
             {
                 parameters += "in_city => :city, ";
                 paramlist.Add(df.GetNewParameter("city", EbDbTypes.String, city));
             }
-			if (!string.IsNullOrEmpty(region))
+            if (!string.IsNullOrEmpty(region))
             {
                 parameters += "in_region => :region, ";
                 paramlist.Add(df.GetNewParameter("region", EbDbTypes.String, region));
             }
-			if (!string.IsNullOrEmpty(country))
+            if (!string.IsNullOrEmpty(country))
             {
                 parameters += "in_country => :country, ";
                 paramlist.Add(df.GetNewParameter("country", EbDbTypes.String, country));
-            }		
-			if (!string.IsNullOrEmpty(latitude))
+            }
+            if (!string.IsNullOrEmpty(latitude))
             {
                 parameters += "in_latitude => :latitude, ";
                 paramlist.Add(df.GetNewParameter("latitude", EbDbTypes.String, latitude));
-            }	
-			if (!string.IsNullOrEmpty(longitude))
+            }
+            if (!string.IsNullOrEmpty(longitude))
             {
                 parameters += "in_longitude => :longitude, ";
                 paramlist.Add(df.GetNewParameter("longitude", EbDbTypes.String, longitude));
             }
-			if (!string.IsNullOrEmpty(timezone))
+            if (!string.IsNullOrEmpty(timezone))
             {
                 parameters += "in_timezone => :timezone, ";
                 paramlist.Add(df.GetNewParameter("timezone", EbDbTypes.String, timezone));
 
             }
-			if (!string.IsNullOrEmpty(iplocationjson))
+            if (!string.IsNullOrEmpty(iplocationjson))
             {
                 parameters += "in_iplocationjson => :iplocationjson, ";
                 paramlist.Add(df.GetNewParameter("iplocationjson", EbDbTypes.String, iplocationjson));
@@ -379,7 +381,7 @@ namespace ExpressBase.Security
             paramlist.Add(df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context));
 
 
-			string sql = df.EB_AUTHENTICATE_ANONYMOUS.Replace("@params", (df.Vendor == DatabaseVendors.PGSQL) ? parameters.Replace("=>", ":=") : parameters);
+            string sql = df.EB_AUTHENTICATE_ANONYMOUS.Replace("@params", (df.Vendor == DatabaseVendors.PGSQL) ? parameters.Replace("=>", ":=") : parameters);
 
             var ds = df.DoQuery(sql, paramlist.ToArray());
             return InitUserObject(ds, context);
@@ -390,41 +392,41 @@ namespace ExpressBase.Security
             User _user = null;
             if (ds.Rows.Count > 0)
             {
-				int userid = Convert.ToInt32(ds.Rows[0][0]);
+                int userid = Convert.ToInt32(ds.Rows[0][0]);
                 if (userid > 0)
                 {
-					bool sysRoleExists = false;
+                    bool sysRoleExists = false;
                     string[] rids = ds.Rows[0][3].ToString().Split(',');//role id array
                     List<string> rolesname = ds.Rows[0][4].ToString().Split(',').ToList();
-					if (!rids[0].IsNullOrEmpty())
-					{
-						List<int> rolesid = Array.ConvertAll(rids, int.Parse).ToList();
-						for (var i = 0; i < rolesid.Count; i++)
-						{
-							int id = rolesid[i];
-							if (id < 100 && Enum.GetName(typeof(SystemRoles), id) != null)
-							{
-								rolesname[i] = Enum.GetName(typeof(SystemRoles), id);
-								sysRoleExists = true;
-							}								
-						}
-					}
-					if (context.Equals(RoutingConstants.DC) && !sysRoleExists)
-						return null;
-					//if(Convert.ToInt32(ds.Rows[0][7]) != 100 && !sysRoleExists)//Constraints Status Demo Test
-					//	return null;
-					_user = new User
+                    if (!rids[0].IsNullOrEmpty())
+                    {
+                        List<int> rolesid = Array.ConvertAll(rids, int.Parse).ToList();
+                        for (var i = 0; i < rolesid.Count; i++)
+                        {
+                            int id = rolesid[i];
+                            if (id < 100 && Enum.GetName(typeof(SystemRoles), id) != null)
+                            {
+                                rolesname[i] = Enum.GetName(typeof(SystemRoles), id);
+                                sysRoleExists = true;
+                            }
+                        }
+                    }
+                    if (context.Equals(RoutingConstants.DC) && !sysRoleExists)
+                        return null;
+                    //if(Convert.ToInt32(ds.Rows[0][7]) != 100 && !sysRoleExists)//Constraints Status Demo Test
+                    //	return null;
+                    _user = new User
                     {
                         UserId = userid,
                         Email = ds.Rows[0][1].ToString(),
                         FullName = ds.Rows[0][2].ToString(),
                         Roles = rolesname,
-                        Permissions = ds.Rows[0][5].ToString().IsNullOrEmpty()? new List<string>(): ds.Rows[0][5].ToString().Split(',').ToList(),
-						Preference = !string.IsNullOrEmpty(ds.Rows[0][6].ToString())? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][6].ToString()): new Preferences { Locale= "en-US", TimeZone = "(UTC) Coordinated Universal Time", DefaultLocation = -1 }
-					};                        
-                    if(_user.Preference.DefaultLocation < 1 && _user.LocationIds.Count > 0)
+                        Permissions = ds.Rows[0][5].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][5].ToString().Split(',').ToList(),
+                        Preference = !string.IsNullOrEmpty(ds.Rows[0][6].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][6].ToString()) : new Preferences { Locale = "en-US", TimeZone = "(UTC) Coordinated Universal Time", DefaultLocation = -1 }
+                    };
+                    if (_user.Preference.DefaultLocation < 1 && _user.LocationIds.Count > 0)
                     {
-                        _user.Preference.DefaultLocation = _user.LocationIds[0] == -1 ? 1: _user.LocationIds[0];
+                        _user.Preference.DefaultLocation = _user.LocationIds[0] == -1 ? 1 : _user.LocationIds[0];
                     }
                 }
             }
@@ -432,17 +434,17 @@ namespace ExpressBase.Security
             return _user;
         }
     }
-	public class Preferences
-	{
-		[DataMember(Order = 1)]
-		public string Locale { get; set; }
+    public class Preferences
+    {
+        [DataMember(Order = 1)]
+        public string Locale { get; set; }
 
-		[DataMember(Order = 2)]
-		public string TimeZone { get; set; }
+        [DataMember(Order = 2)]
+        public string TimeZone { get; set; }
 
-		[DataMember(Order = 3)]
-		public int DefaultLocation { get; set; }
-        
+        [DataMember(Order = 3)]
+        public int DefaultLocation { get; set; }
+
         public string GetShortDatePattern()
         {
             return CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern;
@@ -474,11 +476,11 @@ namespace ExpressBase.Security
         public string ShortDate
         {
             get
-            {                
+            {
                 try
                 {
                     //return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-                    return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureInfo.InvariantCulture);                    
+                    return DateTime.UtcNow.ConvertFromUtc(this.TimeZone).ToString(CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureInfo.InvariantCulture);
                 }
                 catch (Exception ex)
                 {

@@ -621,7 +621,8 @@ SELECT id, applicationname,app_icon
 				AND EO2A.eb_del = 'F'
                 AND EOS.status = 3 
                 AND COALESCE( EO.eb_del, 'F') = 'F'
-				AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );"; } }
+				AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );
+                SELECT object_id FROM eb_objects_favourites WHERE userid=:user_id AND eb_del='F'"; } }
 
         public string EB_SIDEBARDEV_REQUEST
         {
@@ -1442,6 +1443,18 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                             FR.id = ANY(string_to_array(:ids,',')::int[]);";
             }
         }
+
+        //....api query...
+        public string EB_API_SQL_FUNC_HEADER
+        {
+            get
+            {
+                return @"CREATE OR REPLACE FUNCTION {0}(insert_json jsonb,update_json jsonb)
+                            RETURNS void
+                            LANGUAGE {1} AS $BODY$";
+            }
+        }
+
     }
 
     public class PGSQLFileDatabase : PGSQLDatabase, INoSQLDatabase

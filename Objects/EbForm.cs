@@ -46,8 +46,6 @@ namespace ExpressBase.Common.Objects
 
         public override string Label { get; set; }
 
-        public override string OnChange { get; set; }
-
         public override bool Required { get; set; }
 
         public override string ToolTipText { get; set; }
@@ -56,6 +54,9 @@ namespace ExpressBase.Common.Objects
 
         public override bool Unique { get; set; }
 
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        [PropertyGroup("Behavior")]
         public override List<EbValidator> Validators { get; set; }
 
         //UI Properties

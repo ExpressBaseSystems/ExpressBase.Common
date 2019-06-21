@@ -1,6 +1,4 @@
-﻿
-
-using ExpressBase.Common.Connections;
+﻿using ExpressBase.Common.Connections;
 using ExpressBase.Common.Data;
 using ExpressBase.Common.Enums;
 using ExpressBase.Common.Structures;
@@ -718,9 +716,14 @@ namespace ExpressBase.Common
                 @in_region, @in_country, @in_latitude, @in_longitude, @in_timezone, @in_iplocationjson, @in_appid, @in_wc, @out_userid, @out_email, @out_fullname, @out_roles_a, @out_rolename_a, @out_permissions, @out_preferencesjson); "; } }
 
         public string EB_SIDEBARUSER_REQUEST { get { return @"
-                SELECT id, applicationname,app_icon
-                FROM eb_applications
-                WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
+                SELECT 
+                    id, applicationname,app_icon
+                FROM 
+                    eb_applications
+                WHERE 
+                    COALESCE(eb_del, 'F') = 'F' 
+                ORDER BY 
+                    applicationname;
                 SELECT
                     EO.id, EO.obj_type, EO.obj_name,
                     EOV.version_num, EOV.refid, EO2A.app_id, EO.obj_desc, EOS.status, EOS.id, display_name
@@ -734,7 +737,13 @@ namespace ExpressBase.Common
                     AND EO2A.eb_del = 'F'
                     AND EOS.status = 3
                     AND COALESCE( EO.eb_del, 'F') = 'F'
-                    AND EOS.id = ANY( SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id );"; } }
+                    AND EOS.id = ANY( SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id );
+                SELECT 
+                    object_id 
+                FROM 
+                    eb_objects_favourites 
+                WHERE 
+                    userid=:user_id AND eb_del='F';"; } }
 
         public string EB_SIDEBARDEV_REQUEST { get { return @"
                  SELECT id, applicationname,app_icon FROM eb_applications
@@ -951,12 +960,12 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"call string_to_rows(@userids);
-                            SELECT id, email FROM eb_users WHERE id = ANY(SELECT CONVERT(`value`, unsigned int) FROM temp_array_table1);
-                         call string_to_rows(@groupids);
+                return @"CALL string_to_rows(@userids);
+                            SELECT id, email FROM eb_users WHERE id = ANY(SELECT CONVERT(`value`, unsigned int) FROM tmp_array_table);
+                         CALL string_to_rows(@groupids);
                              SELECT distinct id, email FROM eb_users WHERE id = ANY(SELECT userid FROM eb_user2usergroup 
                                 WHERE
-                                    groupid = ANY(SELECT CONVERT(`value`, unsigned int) FROM temp_array_table1) );";
+                                    groupid = ANY(SELECT CONVERT(`value`, unsigned int) FROM tmp_array_table) );";
             }
         }
 
@@ -966,8 +975,8 @@ namespace ExpressBase.Common
             {
                 return @"SELECT name,startdate,enddate,status FROM eb_surveys WHERE id = :id;
                          SELECT questions AS q_id FROM eb_surveys WHERE id = :id into @qstns;
-                         call string_to_rows(@qstns);
-                         SELECT * FROM (SELECT CONVERT(`value`,unsigned int) AS q_id FROM temp_array_table1) QUES_IDS, 
+                         CALL string_to_rows(@qstns);
+                         SELECT * FROM (SELECT CONVERT(`value`,unsigned int) AS q_id FROM tmp_array_table) QUES_IDS, 
 								(SELECT Q.id, Q.query, Q.q_type FROM eb_survey_queries Q) QUES_ANS,
 								(SELECT C.choice,C.score,C.id, C.q_id FROM eb_query_choices C WHERE eb_del = 'F' ) QUES_QRY
 								WHERE QUES_IDS.q_id = QUES_ANS.id
@@ -1302,7 +1311,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
         {
             get
             {
-                return @"call string_to_rows(@ids);
+                return @"CALL string_to_rows(@ids);
                         SELECT 
                             EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
                             EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.refid,
@@ -1314,7 +1323,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                         ON 
 	                        EOV.commit_uid=EU.id
                         WHERE
-                            EO.id = ANY(SELECT CONVERT(`value`, unsigned int) from temp_array_table1) AND
+                            EO.id = ANY(SELECT CONVERT(`value`, unsigned int) FROM tmp_array_table) AND
                             EO.id = EOV.eb_objects_id AND COALESCE(EOV.working_mode, 'F') <> 'T'
                         ORDER BY
                             EO.obj_name; ";
@@ -1530,15 +1539,26 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"
-CALL string_to_rows(@ids);
-UPDATE 
-	eb_files_ref FR
-SET
-	tags = json_set(cast(tags as json),
-		'$.Category',@categry
-		(SELECT CAST(CONCAT('[""',@categry,'""]')AS json)))
-WHERE
-    FR.id = (SELECT CAST(`value` AS unsigned int) FROM temp_array_table1);";
+                        CALL string_to_rows(@ids);
+                        UPDATE 
+	                        eb_files_ref FR
+                        SET
+	                        tags = JSON_SET(CAST(tags AS JSON),
+		                            '$.Category',@categry
+		                            (SELECT CAST(CONCAT('[""',@categry,'""]')AS JSON)))
+                        WHERE
+                            FR.id = (SELECT CAST(`value` AS UNSIGNED INT) FROM tmp_array_table);";
+            }
+        }
+
+        //....api query...
+        public string EB_API_SQL_FUNC_HEADER
+        {
+            get
+            {
+                return @"CREATE OR REPLACE FUNCTION {0}(insert_json json,update_json json)
+                            RETURNS void
+                            LANGUAGE {1} AS $BODY$";
             }
         }
     }
