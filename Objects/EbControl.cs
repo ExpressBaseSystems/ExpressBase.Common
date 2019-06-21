@@ -18,7 +18,11 @@ namespace ExpressBase.Common.Objects
 {
     public class EbControl : EbObject
     {
-        public EbControl() { this.Validators = new List<EbValidator>(); }
+        public EbControl()
+        {
+            this.Validators = new List<EbValidator>();
+            this.DependedValExp = new List<string>();
+        }
 
         [OnDeserialized]
         public void OnDeserialized(StreamingContext context)
@@ -89,6 +93,10 @@ namespace ExpressBase.Common.Objects
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
         [Alias("Value Expression")]
         public virtual EbScript ValueExpr { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [HideInPropertyGrid]
+        public virtual List<string> DependedValExp { get; set; }
 
         //to store front end data value of the control  
         public object ValueFE { get; set; }
@@ -375,6 +383,7 @@ else
         public virtual EbScript Script { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [Alias("Failure message")]
         public virtual string FailureMSG { get; set; }
     }
 }
