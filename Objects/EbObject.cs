@@ -22,6 +22,7 @@ namespace ExpressBase.Objects
         [PropertyGroup("Identity")]
         [InputMask("[a-z][a-z0-9]*(_[a-z0-9]+)*")]
         [PropertyPriority(100)]
+        [HideForUser]
         public virtual string Name { get; set; }
 
         public EbObject() { }
@@ -31,6 +32,7 @@ namespace ExpressBase.Objects
         [PropertyGroup("Identity")]
         [EbRequired]
         [Unique]
+        [HideForUser]
         [PropertyPriority(99)]
         public virtual string DisplayName { get; set; }
 
