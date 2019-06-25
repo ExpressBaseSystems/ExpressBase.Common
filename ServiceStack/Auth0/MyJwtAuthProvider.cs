@@ -79,9 +79,9 @@ namespace ExpressBase.Common.ServiceStack.Auth
 
             var csession = session as CustomUserSession;
 
-            string[] tempa = session.UserAuthId.Split(CharConstants.COLON);
-            jwtPayload[TokenConstants.EMAIL] = tempa[1];
-            jwtPayload[TokenConstants.CID] = tempa[0];
+            //string[] tempa = session.UserAuthId.Split(CharConstants.COLON);
+            jwtPayload[TokenConstants.EMAIL] = csession.Email;
+            jwtPayload[TokenConstants.CID] = csession.CId;
             jwtPayload[TokenConstants.UID] = csession.Uid.ToString();
             jwtPayload[RoutingConstants.WC] = csession.WhichConsole;
 

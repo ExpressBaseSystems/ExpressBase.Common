@@ -42,7 +42,7 @@ namespace ExpressBase.Common.ServiceClients
         //    {
         //        Console.WriteLine("Exception: " + e.Message.ToString());
         //    }
-            
+
         //}
 
         public void AddAuthentication(IRequest req)

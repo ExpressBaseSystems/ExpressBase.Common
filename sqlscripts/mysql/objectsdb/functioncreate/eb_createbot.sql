@@ -5,6 +5,8 @@
     welcome_msg TEXT,
     uid INTEGER,
     botid INTEGER) RETURNS text CHARSET latin1
+	READS SQL DATA
+    DETERMINISTIC
 BEGIN
 DECLARE _botid TEXT;
 DECLARE insertedbotid TEXT;

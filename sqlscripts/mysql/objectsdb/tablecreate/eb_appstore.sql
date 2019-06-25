@@ -1,7 +1,7 @@
 CREATE TABLE eb_appstore
 (
   id integer NOT NULL auto_increment,
-  app_name varchar(100)
+  app_name varchar(100),
   status integer,
   user_tenant_acc_id text,
   cost integer,

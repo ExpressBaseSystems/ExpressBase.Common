@@ -1,6 +1,4 @@
-﻿
-
-using ExpressBase.Common.Connections;
+﻿using ExpressBase.Common.Connections;
 using ExpressBase.Common.Data;
 using ExpressBase.Common.Enums;
 using ExpressBase.Common.Structures;
@@ -718,9 +716,14 @@ namespace ExpressBase.Common
                 @in_region, @in_country, @in_latitude, @in_longitude, @in_timezone, @in_iplocationjson, @in_appid, @in_wc, @out_userid, @out_email, @out_fullname, @out_roles_a, @out_rolename_a, @out_permissions, @out_preferencesjson); "; } }
 
         public string EB_SIDEBARUSER_REQUEST { get { return @"
-                SELECT id, applicationname,app_icon
-                FROM eb_applications
-                WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
+                SELECT 
+                    id, applicationname,app_icon
+                FROM 
+                    eb_applications
+                WHERE 
+                    COALESCE(eb_del, 'F') = 'F' 
+                ORDER BY 
+                    applicationname;
                 SELECT
                     EO.id, EO.obj_type, EO.obj_name,
                     EOV.version_num, EOV.refid, EO2A.app_id, EO.obj_desc, EOS.status, EOS.id, display_name
@@ -734,7 +737,13 @@ namespace ExpressBase.Common
                     AND EO2A.eb_del = 'F'
                     AND EOS.status = 3
                     AND COALESCE( EO.eb_del, 'F') = 'F'
-                    AND EOS.id = ANY( SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id );"; } }
+                    AND EOS.id = ANY( SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id );
+                SELECT 
+                    object_id 
+                FROM 
+                    eb_objects_favourites 
+                WHERE 
+                    userid=:user_id AND eb_del='F';"; } }
 
         public string EB_SIDEBARDEV_REQUEST { get { return @"
                  SELECT id, applicationname,app_icon FROM eb_applications
@@ -778,7 +787,7 @@ namespace ExpressBase.Common
                     @"SELECT R.id,R.role_name,R.description,A.applicationname,
                         (SELECT COUNT(role1_id) FROM eb_role2role WHERE role1_id = R.id AND eb_del = 'F') AS subrole_count,
                         (SELECT COUNT(user_id) FROM eb_role2user WHERE role_id = R.id AND eb_del = 'F') AS user_count,
-                        (SELECT COUNT(distinct permissionname) FROM eb_role2permission RP, eb_objects2application OA WHERE role_id = R.id 
+                        (SELECT COUNT(DISTINCT permissionname) FROM eb_role2permission RP, eb_objects2application OA WHERE role_id = R.id 
                             AND app_id = A.id AND RP.obj_id = OA.obj_id AND RP.eb_del = 'F' AND OA.eb_del = 'F') AS permission_count
                         FROM eb_roles R, eb_applications A
                         WHERE R.applicationid = A.id AND A.eb_del = 'F';";
@@ -897,25 +906,25 @@ namespace ExpressBase.Common
                                     information_schema.table_constraints TC,
                                     information_schema.key_column_usage KCU
                                 WHERE
-                                    TC.constraint_name=KCU.constraint_name AND
+                                    TC.constraint_name = KCU.constraint_name AND
                                     (TC.constraint_type = 'PRIMARY KEY' OR TC.constraint_type = 'FOREIGN KEY') 
                                 ) CCols
                              ON 
-                                CCols.table_name=TCols.table_name AND
-                                CCols.column_name=TCols.column_name) ACols
+                                CCols.table_name = TCols.table_name AND
+                                CCols.column_name = TCols.column_name) ACols
                     LEFT JOIN
                             (SELECT
-                                tc.constraint_name, tc.table_name, kcu.column_name, 
-                                kcu.REFERENCED_TABLE_NAME AS foreign_table_name,
-                                kcu.REFERENCED_COLUMN_NAME AS foreign_column_name 
+                                TC.constraint_name, TC.table_name, KCU.column_name, 
+                                KCU.REFERENCED_TABLE_NAME AS foreign_table_name,
+                                KCU.REFERENCED_COLUMN_NAME AS foreign_column_name 
                             FROM 
-                                information_schema.table_constraints AS tc 
+                                information_schema.table_constraints AS TC 
                             JOIN 
-                                information_schema.key_column_usage AS kcu
+                                information_schema.key_column_usage AS KCU
                             ON 
-                                tc.constraint_name = kcu.constraint_name
+                                TC.constraint_name = KCU.constraint_name
                             WHERE 
-                                tc.constraint_type = 'FOREIGN KEY' ) BCols
+                                TC.constraint_type = 'FOREIGN KEY' ) BCols
                      ON
                             ACols.table_name=BCols.table_name AND  ACols.column_name=BCols.column_name
                     ORDER BY
@@ -927,7 +936,7 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"SELECT created_at FROM eb_executionlogs WHERE refid = :refid AND cast(created_at as date) = current_date;";
+                return @"SELECT created_at FROM eb_executionlogs WHERE refid = :refid AND CAST(created_at AS date) = current_date;";
             }
         }
 
@@ -951,12 +960,12 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"call string_to_rows(@userids);
-                            SELECT id, email FROM eb_users WHERE id = ANY(SELECT CONVERT(`value`, unsigned int) FROM temp_array_table1);
-                         call string_to_rows(@groupids);
+                return @"CALL string_to_rows(@userids);
+                            SELECT id, email FROM eb_users WHERE id = ANY(SELECT CONVERT(`value`, unsigned int) FROM tmp_array_table);
+                         CALL string_to_rows(@groupids);
                              SELECT distinct id, email FROM eb_users WHERE id = ANY(SELECT userid FROM eb_user2usergroup 
                                 WHERE
-                                    groupid = ANY(SELECT CONVERT(`value`, unsigned int) FROM temp_array_table1) );";
+                                    groupid = ANY(SELECT CONVERT(`value`, unsigned int) FROM tmp_array_table) );";
             }
         }
 
@@ -966,8 +975,8 @@ namespace ExpressBase.Common
             {
                 return @"SELECT name,startdate,enddate,status FROM eb_surveys WHERE id = :id;
                          SELECT questions AS q_id FROM eb_surveys WHERE id = :id into @qstns;
-                         call string_to_rows(@qstns);
-                         SELECT * FROM (SELECT CONVERT(`value`,unsigned int) AS q_id FROM temp_array_table1) QUES_IDS, 
+                         CALL string_to_rows(@qstns);
+                         SELECT * FROM (SELECT CONVERT(`value`,unsigned int) AS q_id FROM tmp_array_table) QUES_IDS, 
 								(SELECT Q.id, Q.query, Q.q_type FROM eb_survey_queries Q) QUES_ANS,
 								(SELECT C.choice,C.score,C.id, C.q_id FROM eb_query_choices C WHERE eb_del = 'F' ) QUES_QRY
 								WHERE QUES_IDS.q_id = QUES_ANS.id
@@ -997,7 +1006,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"
-INSERT INTO 
+                        INSERT INTO 
                             eb_audit_master(formid, dataid, actiontype, eb_createdby, eb_createdat) 
                         VALUES 
                             (:formid, :dataid, :actiontype, :eb_createdby, UTC_TIMESTAMP());
@@ -1010,7 +1019,7 @@ INSERT INTO
             get
             {
                 return @"
-INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:name, :start, :end, :status, :questions);
+                        INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:name, :start, :end, :status, :questions);
                         SELECT LAST_INSERT_ID();";
             }
         }
@@ -1055,7 +1064,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                         c.constraint_name AS constraint_name,
                         c.constraint_type AS constraint_type,
                         c.table_name AS tabless,
-                        group_concat(col.column_name) as columns                   
+                        GROUP_CONCAT(col.column_name) AS columns                   
                     FROM 
                         information_schema.table_constraints c              
                     JOIN 
@@ -1099,7 +1108,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                             EOV.refid = @refid AND EOS.eb_obj_ver_id = EOV.id AND EO.id = EOV.eb_objects_id
                             AND COALESCE( EO.eb_del, 'F') = 'F'
                         ORDER BY
-                        EOS.id DESC
+                            EOS.id DESC
                         LIMIT 1;
                 ";
             }
@@ -1109,15 +1118,15 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"SELECT
-                        EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status, EO.obj_desc,
-                        EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.obj_json, EOV.refid
-                    FROM
-                        eb_objects EO, eb_objects_ver EOV
-                    WHERE
-                        EO.id = EOV.eb_objects_id AND EOV.refid = @refid
-                        AND COALESCE( EO.eb_del, 'F') = 'F'
-                    ORDER BY
-                        EO.obj_type;
+                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status, EO.obj_desc,
+                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.obj_json, EOV.refid
+                        FROM
+                            eb_objects EO, eb_objects_ver EOV
+                        WHERE
+                            EO.id = EOV.eb_objects_id AND EOV.refid = @refid
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                        ORDER BY
+                            EO.obj_type;
                 ";
             }
         }
@@ -1212,9 +1221,9 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                         FROM
                             eb_objects_status EOS, eb_objects_ver EOV, eb_users EU
                         WHERE
-                            eb_obj_ver_id = EOV.id AND EOV.refid = @refid AND EOV.commit_uid=EU.id
+                            eb_obj_ver_id = EOV.id AND EOV.refid = @refid AND EOV.commit_uid = EU.id
                         ORDER BY
-                        EOS.id DESC; ";
+                            EOS.id DESC; ";
             }
         }
         public string EB_LIVE_VERSION_OF_OBJS
@@ -1229,7 +1238,8 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                         WHERE
                             EO.id = @id AND EOV.eb_objects_id = EO.id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id
                             AND COALESCE( EO.eb_del, 'F') = 'F'
-                        ORDER BY EOV.eb_objects_id	LIMIT 1; ";
+                        ORDER BY 
+                            EOV.eb_objects_id LIMIT 1; ";
             }
         }
         public string EB_GET_ALL_TAGS
@@ -1237,8 +1247,8 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"SET @ab='';
-                                    SELECT DISTINCT trim(',' from group_concat(obj_tags)) FROM eb_objects WHERE COALESCE(eb_del, 'F') = 'F' INTO @ab;
-                                        call string_to_rows(@ab);
+                                    SELECT DISTINCT TRIM(',' FROM GROUP_CONCAT(obj_tags)) FROM eb_objects WHERE COALESCE(eb_del, 'F') = 'F' INTO @ab;
+                                        CALL string_to_rows(@ab);
 
                 ";
             }
@@ -1294,7 +1304,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
         {
             get
             {
-                return @"SELECT EXISTS (SELECT 1 FROM   information_schema.tables WHERE  table_schema = 'test_eb' AND table_name like @tbl);";
+                return @"SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name like @tbl);";
             }
         }
 
@@ -1302,7 +1312,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
         {
             get
             {
-                return @"call string_to_rows(@ids);
+                return @"CALL string_to_rows(@ids);
                         SELECT 
                             EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
                             EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.refid,
@@ -1314,7 +1324,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                         ON 
 	                        EOV.commit_uid=EU.id
                         WHERE
-                            EO.id = ANY(SELECT CONVERT(`value`, unsigned int) from temp_array_table1) AND
+                            EO.id = ANY(SELECT CONVERT(`value`, unsigned int) FROM tmp_array_table) AND
                             EO.id = EOV.eb_objects_id AND COALESCE(EOV.working_mode, 'F') <> 'T'
                         ORDER BY
                             EO.obj_name; ";
@@ -1530,15 +1540,26 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"
-CALL string_to_rows(@ids);
-UPDATE 
-	eb_files_ref FR
-SET
-	tags = json_set(cast(tags as json),
-		'$.Category',@categry
-		(SELECT CAST(CONCAT('[""',@categry,'""]')AS json)))
-WHERE
-    FR.id = (SELECT CAST(`value` AS unsigned int) FROM temp_array_table1);";
+                        CALL string_to_rows(@ids);
+                        UPDATE 
+	                        eb_files_ref FR
+                        SET
+	                        tags = JSON_SET(CAST(tags AS JSON),
+		                            '$.Category',@categry
+		                            (SELECT CAST(CONCAT('[""',@categry,'""]')AS JSON)))
+                        WHERE
+                            FR.id = (SELECT CAST(`value` AS UNSIGNED INT) FROM tmp_array_table);";
+            }
+        }
+
+        //....api query...
+        public string EB_API_SQL_FUNC_HEADER
+        {
+            get
+            {
+                return @"CREATE OR REPLACE FUNCTION {0}(insert_json json,update_json json)
+                            RETURNS void
+                            LANGUAGE {1} AS $BODY$";
             }
         }
     }
