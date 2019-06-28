@@ -65,10 +65,27 @@ namespace ExpressBase.Common
             });
         }
 
-        //public static string Json_Serialize(object obj, JsonSerializerSettings settings)
-        //{
-        //	return JsonConvert.SerializeObject(obj, settings);
-        //}
+        public static string Json_Serialize4AppWraper(AppWrapper obj)
+        {
+            try
+            {
+                List<EbObject> RootObjects = obj.ObjCollection;
+
+                for (int i = 0; i < RootObjects.Count; i++)
+                {
+                    string jsonS = Json_Serialize(RootObjects[i]);
+
+                    obj.ObjCollection[i] = Json_Deserialize(jsonS);
+                }
+
+                return JsonConvert.SerializeObject(obj, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message + e.StackTrace);
+                return "";
+            }
+        }
 
         public static T Json_Deserialize<T>(string json)
         {
