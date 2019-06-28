@@ -855,7 +855,7 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        public string EB_GETCHART2DETAILS
+        public string EB_GET_CHART_2_DETAILS
         {
             get
             {
@@ -863,7 +863,7 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        public string EB_GETPROFILERS
+        public string EB_GET_PROFILERS
         {
             get
             {
@@ -938,6 +938,42 @@ INSERT INTO
             {
                 return @"
 INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:name, :start, :end, :status, :questions) RETURNING id;";
+            }
+        }
+
+        public string EB_PROFILER_QUERY_COLUMN
+        {
+            get
+            {
+                return @"SELECT id, rows, exec_time, created_by, created_at FROM eb_executionlogs WHERE refid = :refid; ";
+            }
+        }
+
+        public string EB_PROFILER_QUERY_DATA
+        {
+            get
+            {
+                return @"SELECT COUNT(id) FROM eb_executionlogs WHERE refid = :refid; 
+                SELECT EL.id, EL.rows, EL.exec_time, EU.fullname, EL.created_at FROM eb_executionlogs EL, eb_users EU
+                WHERE refid = :refid AND EL.created_by = EU.id
+                LIMIT :limit OFFSET :offset;";
+            }
+        }
+
+        public string EB_GET_CHART_DETAILS
+        {
+            get
+            {
+                return @"SELECT rows, exec_time FROM eb_executionlogs WHERE refid = :refid AND EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date);";
+            }
+        }
+
+        public string EB_INSERT_EXECUTION_LOGS
+        {
+            get
+            {
+                return @"INSERT INTO eb_executionlogs(rows, exec_time, created_by, created_at, params, refid) 
+                                VALUES(:rows, :exec_time, :created_by, :created_at, :params, :refid);";
             }
         }
 
@@ -1174,7 +1210,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string Eb_ALLOBJNVER
+        public string EB_ALLOBJNVER
         {
             get
             {
@@ -1210,7 +1246,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             {
                 return @"UPDATE eb_location_config SET keys = :keys ,isrequired = :isrequired , keytype = :type WHERE id = :keyid;";
             }
-        }
+        }               
 
         //.....OBJECT FUNCTION CALLS
         public string EB_CREATE_NEW_OBJECT
