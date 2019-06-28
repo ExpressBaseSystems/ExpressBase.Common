@@ -93,8 +93,8 @@ namespace ExpressBase.Common
 
         string EB_GET_BOT_FORM { get; }
         string IS_TABLE_EXIST { get; }
-        string EB_CREATEAPPLICATION { get; }
         string EB_CREATEAPPLICATION_DEV { get; }
+        string EB_EDITAPPLICATION_DEV { get; }
 
         string EB_CREATELOCATIONCONFIG1Q { get; }
         string EB_CREATELOCATIONCONFIG2Q { get; }

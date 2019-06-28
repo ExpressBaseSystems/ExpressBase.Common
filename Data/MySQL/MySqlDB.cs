@@ -856,21 +856,28 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_CREATEAPPLICATION
-        {
-            get
-            {
-                return @"INSERT INTO eb_applications (applicationname,application_type,description,app_icon) VALUES (:applicationname, :apptype, :description, :appicon);
-                           SELECT LAST_INSERT_ID(); ";
-            }
-        }
-
         public string EB_CREATEAPPLICATION_DEV
         {
             get
             {
                 return @"INSERT INTO eb_applications (applicationname,application_type,description,app_icon) VALUES (@applicationname, @apptype, @description, @appicon); 
                         SELECT LAST_INSERT_ID();";
+            }
+        }
+
+        public string EB_EDITAPPLICATION_DEV
+        {
+            get
+            {
+                return @"UPDATE 
+                            eb_applications 
+                        SET 
+                            applicationname = :applicationname,
+                            application_type = :apptype,
+                            description = :description,
+                            app_icon = :appicon
+                        WHERE
+                            id = :appid";
             }
         }
 
