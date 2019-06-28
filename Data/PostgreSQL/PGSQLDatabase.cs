@@ -799,7 +799,7 @@ SELECT ACols.*, BCols.foreign_table_name, BCols.foreign_column_name
             }
         }
 
-        public string EB_GETCHART2DETAILS
+        public string EB_GET_CHART_2_DETAILS
         {
             get
             {
@@ -808,7 +808,7 @@ SELECT created_at FROM eb_executionlogs WHERE refid = :refid AND created_at::TIM
             }
         }
 
-        public string EB_GETPROFILERS
+        public string EB_GET_PROFILERS
         {
             get
             {
@@ -890,6 +890,42 @@ INSERT INTO
             {
                 return @"
 INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:name, :start, :end, :status, :questions) RETURNING id;";
+            }
+        }
+
+        public string EB_PROFILER_QUERY_COLUMN
+        {
+            get
+            {
+                return @"SELECT id, rows, exec_time, created_by, created_at FROM eb_executionlogs WHERE refid = :refid; ";
+            }
+        }
+
+        public string EB_PROFILER_QUERY_DATA
+        {
+            get
+            {
+                return @"SELECT COUNT(id) FROM eb_executionlogs WHERE refid = :refid; 
+                SELECT EL.id, EL.rows, EL.exec_time, EU.fullname, EL.created_at FROM eb_executionlogs EL, eb_users EU
+                WHERE refid = :refid AND EL.created_by = EU.id
+                LIMIT :limit OFFSET :offset; ";
+            }
+        }
+
+        public string EB_GET_CHART_DETAILS
+        {
+            get
+            {
+                return @"SELECT rows, exec_time FROM eb_executionlogs WHERE refid = :refid AND EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date);";
+            }
+        }
+
+        public string EB_INSERT_EXECUTION_LOGS
+        {
+            get
+            {
+                return @"INSERT INTO eb_executionlogs(rows, exec_time, created_by, created_at, params, refid) 
+                                VALUES(:rows, :exec_time, :created_by, :created_at, :params, :refid);";
             }
         }
 
@@ -1187,7 +1223,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
             }
         }
 
-        public string Eb_ALLOBJNVER
+        public string EB_ALLOBJNVER
         {
             get
             {
@@ -1221,9 +1257,9 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
         {
             get
             {
-                return @"UPDATE eb_location_config SET keys = :keys ,isrequired = :isrequired , keytype = :type WHERE id = :keyid;";
+                return @"UPDATE eb_location_config SET keys = :keys ,isrequired = :isrequired , keytype = :type WHERE id = :keyid; ";
             }
-        }
+        }       
 
         //.....OBJECTS FUNCTION CALL......
         public string EB_CREATE_NEW_OBJECT

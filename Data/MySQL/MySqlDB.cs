@@ -289,11 +289,15 @@ namespace ExpressBase.Common
                 query = query.Replace(":", "@");
             }
             EbDataSet ds = new EbDataSet();
+            var dtStart = DateTime.Now;
+            Console.WriteLine(string.Format("DoQueries Start Time : {0}", dtStart));
+            
             query = query.Trim();
             string[] qry_ary = query.Split(";");
             using (var con = GetNewConnection() as MySqlConnection)
             {
                 con.Open();
+                ds.RowNumbers = "";
                 try
                 {
                     for (int i = 0; i < qry_ary.Length && qry_ary[i] != string.Empty && qry_ary[i] != " "; i++)
@@ -310,6 +314,7 @@ namespace ExpressBase.Common
                                 this.AddColumns(dt, schema);
                                 PrepareDataTable(reader, dt);
                                 ds.Tables.Add(dt);
+                                ds.RowNumbers += dt.Rows.Count.ToString() + ",";
                             }
                             cmd.Parameters.Clear();
                         }
@@ -319,6 +324,15 @@ namespace ExpressBase.Common
                 {
                     throw e;
                 }
+              
+                var dtEnd = DateTime.Now;
+                Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
+
+                var ts = (dtEnd - dtStart).TotalMilliseconds;
+                Console.WriteLine(string.Format("DoQueries Execution Time : {0}", ts));
+                ds.RowNumbers = ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 1);/*(ds.RowNumbers.Length>3)?ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 3): ds.RowNumbers*/
+                ds.StartTime = dtStart;
+                ds.EndTime = dtEnd;
                 con.Close();
             }
             return ds;
@@ -932,7 +946,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_GETCHART2DETAILS
+        public string EB_GET_CHART_2_DETAILS
         {
             get
             {
@@ -940,7 +954,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_GETPROFILERS
+        public string EB_GET_PROFILERS
         {
             get
             {
@@ -948,10 +962,10 @@ namespace ExpressBase.Common
                              SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid = :refid);
                              SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid = :refid AND EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date));
                              SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid = :refid AND EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date));
-                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid= :refid and created_at::date = current_date);
-                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid= :refid and created_at::date = current_date);
+                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid= :refid and CONVERT(created_at, DATE) = current_date);
+                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid= :refid and CONVERT(created_at, DATE) = current_date);
                              SELECT COUNT(*) FROM eb_executionlogs WHERE refid = :refid;
-                             SELECT COUNT(*) FROM eb_executionlogs WHERE cast(created_at as date) = current_date AND refid = :refid;
+                             SELECT COUNT(*) FROM eb_executionlogs WHERE CONVERT(created_at, date) = current_date AND refid = :refid;
                              SELECT COUNT(*) FROM eb_executionlogs WHERE EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date) and refid = :refid;";
             }
         }
@@ -1021,6 +1035,42 @@ namespace ExpressBase.Common
                 return @"
                         INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:name, :start, :end, :status, :questions);
                         SELECT LAST_INSERT_ID();";
+            }
+        }
+
+        public string EB_PROFILER_QUERY_COLUMN
+        {
+            get
+            {
+                return @"SELECT id, `rows`, exec_time, created_by, created_at FROM eb_executionlogs WHERE refid = :refid; ";
+            }
+        }
+
+        public string EB_PROFILER_QUERY_DATA
+        {
+            get
+            {
+                return @"SELECT COUNT(id) FROM eb_executionlogs WHERE refid = :refid; 
+                SELECT EL.id, EL.`rows`, EL.exec_time, EU.fullname, EL.created_at FROM eb_executionlogs EL, eb_users EU
+                WHERE refid = :refid AND EL.created_by = EU.id
+                LIMIT :limit OFFSET :offset;";
+            }
+        }
+
+        public string EB_GET_CHART_DETAILS
+        {
+            get
+            {
+                return @"SELECT `rows`, exec_time FROM eb_executionlogs WHERE refid = :refid AND EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date);";
+            }
+        }
+
+        public string EB_INSERT_EXECUTION_LOGS
+        {
+            get
+            {
+                return @"INSERT INTO eb_executionlogs(`rows`, exec_time, created_by, created_at, params, refid) 
+                                VALUES(:rows, :exec_time, :created_by, :created_at, :params, :refid);";
             }
         }
 
@@ -1308,7 +1358,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string Eb_ALLOBJNVER
+        public string EB_ALLOBJNVER
         {
             get
             {
@@ -1346,7 +1396,7 @@ namespace ExpressBase.Common
             {
                 return @"UPDATE eb_location_config SET `keys` = :keys ,isrequired = :isrequired , keytype = :type WHERE id = :keyid;";
             }
-        }
+        }               
 
         //.....OBJECTS FUNCTION CALL......
 
