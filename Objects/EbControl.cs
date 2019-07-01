@@ -362,6 +362,7 @@ else
     [UsedWithTopObjectParent(typeof(EbObject))]
     public class EbValidator
     {
+        [Alias("Validator")]
         public EbValidator() { }
 
         [HideInPropertyGrid]
