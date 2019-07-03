@@ -55,6 +55,8 @@ namespace ExpressBase.Common.LocationNSolution
 
         public PricingTiers PricingTier { get; set; }
 
+        public bool IsVersioningEnabled { get; set; }
+
         public Dictionary<int,string> Users { get; set; }
     }
 
