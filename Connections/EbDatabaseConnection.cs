@@ -276,7 +276,7 @@ namespace ExpressBase.Common.Connections
                                 eb_del = 'T' 
                             WHERE 
                                 id = @id;";
-                int ds = infra.DataDB.DoNonQuery(query, parameters);
+            int ds = infra.DataDB.DoNonQuery(query, parameters);
             return ds;
         }
     }
@@ -383,6 +383,13 @@ namespace ExpressBase.Common.Connections
         public string ApiSecret { get; set; }
 
         public override EbIntegrations Type { get { return EbIntegrations.Cloudinary; } }
+    }
+
+    public class EbGoogleMapConfig : EbIntegrationConf
+    {
+        public string ApiKey { get; set; }
+
+        public override EbIntegrations Type { get { return EbIntegrations.GoogleMap; } }
     }
 
     public class EbIntegration
