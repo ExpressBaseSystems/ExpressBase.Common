@@ -14,5 +14,10 @@ namespace ExpressBase.Common.Structures
         public string IsVerified { get; set; }
         public string Pauto { get; set; }
         public bool UniqueEmail { get; set; }
+        public string FbId { get; set; }
+        public string GithubId { get; set; }
+        public string TwitterId { get; set; }
+        public string GoogleId { get; set; }
+        public string LinkedId { get; set; }
     }
 }
