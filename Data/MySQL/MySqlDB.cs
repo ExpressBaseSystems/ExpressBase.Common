@@ -294,9 +294,14 @@ namespace ExpressBase.Common
             
             query = query.Trim();
             string[] qry_ary = query.Split(";");
+
             using (var con = GetNewConnection() as MySqlConnection)
             {
                 con.Open();
+
+                var dtExeTime = DateTime.Now;
+                Console.WriteLine(string.Format("DoQueries Execution Time : {0}", dtExeTime));
+
                 ds.RowNumbers = "";
                 try
                 {
