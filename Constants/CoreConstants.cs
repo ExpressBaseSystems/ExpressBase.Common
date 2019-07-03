@@ -15,7 +15,10 @@ namespace ExpressBase.Common.Constants
 
         public const string STAGING = "Staging";
         public const string PRODUCTION = "Production";
-        public const string DEVELOPMENT = "Development";  
+        public const string DEVELOPMENT = "Development";
 
+        //tenant type
+        public const string DEVELOPER = "developer";
+        public const string BUSINESS = "business";
     }
 }
