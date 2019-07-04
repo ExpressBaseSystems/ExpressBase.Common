@@ -155,8 +155,8 @@ namespace ExpressBase.Common
             }
             catch(Exception ex)
             {
-                Console.WriteLine(string.Format("Exception in GetNewParameter \n parametername = {0}\n type = {1} \n value = {2}", parametername, type.ToString(), value.ToString()));
-                throw new FormatException(ex.Message);
+                Console.WriteLine(string.Format("Exception in GetNewParameter : Message = {0}\n parametername = {1}\n type = {2} \n value = {3}", ex.Message, parametername, type.ToString(), value.ToString()));
+                throw new Exception(ex.Message);
             }
         }
 
