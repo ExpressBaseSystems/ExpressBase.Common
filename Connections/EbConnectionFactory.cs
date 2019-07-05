@@ -12,6 +12,7 @@ using ServiceStack.Logging;
 using ServiceStack.Redis;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using static ExpressBase.Common.MySqlDB;
 
 namespace ExpressBase.Common.Data
@@ -132,6 +133,11 @@ namespace ExpressBase.Common.Data
 
         private void InitDatabases()
         {
+            Console.WriteLine("Initialising Connections");
+
+            Stopwatch watch = Stopwatch.StartNew();
+            // the code that you want to measure comes here
+            
             if (this.Connections != null)
             {
                 string _userName = Connections.DataDbConfig.UserName;
@@ -296,6 +302,9 @@ namespace ExpressBase.Common.Data
             }
             else
                 throw new Exception("Fatal Error :: Solution Id is null or Empty!");
+
+            watch.Stop();
+            Console.WriteLine(string.Format("Connections Initialised in {0} MilliSeconds", watch.ElapsedMilliseconds));
         }
     }
 }
