@@ -68,8 +68,7 @@ namespace ExpressBase.Common
         string EB_UNIQUEEMAILCHECK { get; }
 
         string EB_GETTABLESCHEMA { get; }
-        string EB_GETCHART2DETAILS { get; }
-        string EB_GETPROFILERS { get; }
+        string EB_GET_CHART_2_DETAILS { get; }        
         string EB_GETUSEREMAILS { get; }
         string EB_GETPARTICULARSSURVEY { get; }
         string EB_SURVEYMASTER { get; }
@@ -77,6 +76,12 @@ namespace ExpressBase.Common
         string EB_CURRENT_TIMESTAMP { get; }
         string EB_UPDATEAUDITTRAIL { get; }
         string EB_SAVESURVEY { get; }
+
+        string EB_PROFILER_QUERY_COLUMN { get; }
+        string EB_PROFILER_QUERY_DATA { get; }
+        string EB_GET_PROFILERS { get; }
+        string EB_GET_CHART_DETAILS { get; }
+        string EB_INSERT_EXECUTION_LOGS { get; }
 
         //........objects db query.....
         string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ { get; }
@@ -93,16 +98,17 @@ namespace ExpressBase.Common
 
         string EB_GET_BOT_FORM { get; }
         string IS_TABLE_EXIST { get; }
-        string EB_CREATEAPPLICATION { get; }
         string EB_CREATEAPPLICATION_DEV { get; }
+        string EB_EDITAPPLICATION_DEV { get; }
 
         string EB_CREATELOCATIONCONFIG1Q { get; }
         string EB_CREATELOCATIONCONFIG2Q { get; }
         string EB_GET_MLSEARCHRESULT { get; }
         string EB_MLADDKEY { get; }
         string EB_SAVELOCATION { get; }
-        string Eb_ALLOBJNVER { get; }
-                
+        string EB_ALLOBJNVER { get; }               
+        
+
         //....obj function call....
         string EB_CREATE_NEW_OBJECT { get; }
         string EB_SAVE_OBJECT { get; }

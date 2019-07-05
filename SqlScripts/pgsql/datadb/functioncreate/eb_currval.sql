@@ -1,20 +1,28 @@
+-- FUNCTION: public.eb_currval(text)
+
+-- DROP FUNCTION public.eb_currval(text);
+
 CREATE OR REPLACE FUNCTION public.eb_currval(
-	text)
+	seq text)
     RETURNS integer
     LANGUAGE 'plpgsql'
-    COST 100.0
 
-AS $function$
-
-DECLARE seq ALIAS FOR $1;
-DECLARE result integer;
+    COST 100
+    VOLATILE 
+AS $BODY$
+DECLARE curval integer; exce text;
 BEGIN
-result := 0;
-EXECUTE 'SELECT currval(''' || seq || ''')' INTO result;
-RETURN result;
+SELECT currval(seq) into curval;
+RETURN curval;
 EXCEPTION WHEN OTHERS THEN
---do nothing
-RETURN result;
+	IF SQLSTATE = '55000' THEN
+    	RETURN 0;      
+    ELSE
+    	RAISE EXCEPTION '%', SQLERRM;
+    END IF;
 END;
 
-$function$;
+$BODY$;
+
+ALTER FUNCTION public.eb_currval(text)
+    OWNER TO postgres;

@@ -31,6 +31,8 @@ namespace ExpressBase.Common.Objects
                 this.OnChangeFn = new EbScript();
             if (this._OnChange == null)
                 this._OnChange = new EbScript();
+            if (this.DefaultValueExpression == null)
+                this.DefaultValueExpression = new EbScript();
             if (string.IsNullOrEmpty(this.OnChangeFn.Code) && !string.IsNullOrEmpty(_OnChange.Code))
                 this.OnChangeFn = _OnChange;
         }
@@ -81,8 +83,11 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.Collection)]
-        [Alias("Validators")]
         public virtual List<EbValidator> Validators { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
+        public virtual EbScript DefaultValueExpression { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
@@ -97,6 +102,10 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
         public virtual List<string> DependedValExp { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [HideInPropertyGrid]
+        public virtual string __path { get; set; }
 
         //to store front end data value of the control  
         public object ValueFE { get; set; }
@@ -358,6 +367,7 @@ else
     [UsedWithTopObjectParent(typeof(EbObject))]
     public class EbValidator
     {
+        [Alias("Validator")]
         public EbValidator() { }
 
         [HideInPropertyGrid]

@@ -72,7 +72,8 @@ namespace ExpressBase.Common
         ExpertTexting = 6,
         MongoDB = 7,
         SMTP = 8,
-        Cloudinary = 9
+        Cloudinary = 9,
+        GoogleMap = 10
     }
 
     public enum SmtpProviders
@@ -88,7 +89,8 @@ namespace ExpressBase.Common
         EbLOGS = 4,
         SMTP = 5,
         SMS = 6,
-        Cloudinary = 7
+        Cloudinary = 7,
+        MAPS = 8
     }
 
     public enum StudioFormTypes

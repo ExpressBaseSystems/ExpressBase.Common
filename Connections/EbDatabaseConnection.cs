@@ -259,6 +259,26 @@ namespace ExpressBase.Common.Connections
             Console.ForegroundColor = ConsoleColor.White;
             return Convert.ToInt32(iCount.Rows[0][0]);
         }
+
+        public int PersistConfDeleteIntegration(string Sol_Id, EbConnectionFactory infra, int UserId)
+        {
+            DbParameter[] parameters = {
+                                        infra.DataDB.GetNewParameter("uid", EbDbTypes.Int32, UserId ),
+                                        infra.DataDB.GetNewParameter("id", EbDbTypes.Int32, this.Id)
+                                     };
+
+            string query = @"
+                            UPDATE 
+                                eb_integration_configs 
+                            SET 
+                                modified_at = NOW(), 
+                                modified_by = @uid, 
+                                eb_del = 'T' 
+                            WHERE 
+                                id = @id;";
+            int ds = infra.DataDB.DoNonQuery(query, parameters);
+            return ds;
+        }
     }
 
     public class EbDbConfig : EbIntegrationConf
@@ -365,6 +385,13 @@ namespace ExpressBase.Common.Connections
         public override EbIntegrations Type { get { return EbIntegrations.Cloudinary; } }
     }
 
+    public class EbGoogleMapConfig : EbIntegrationConf
+    {
+        public string ApiKey { get; set; }
+
+        public override EbIntegrations Type { get { return EbIntegrations.GoogleMap; } }
+    }
+
     public class EbIntegration
     {
         public int Id { get; set; }
@@ -414,6 +441,18 @@ namespace ExpressBase.Common.Connections
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write("- " + this.Id);
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public int PersistDeleteIntegration(string Sol_Id, EbConnectionFactory infra, int UserId)
+        {
+            string query = @"UPDATE eb_integrations SET eb_del = 'T', modified_at = NOW(), modified_by = @uid WHERE id = @id;";
+
+            DbParameter[] parameters = {
+                                                infra.DataDB.GetNewParameter("uid", EbDbTypes.Int32, UserId),
+                                                infra.DataDB.GetNewParameter("id", EbDbTypes.Int32, this.Id)
+                                           };
+            int ds = infra.DataDB.DoNonQuery(query, parameters);
+            return ds;
         }
 
     }

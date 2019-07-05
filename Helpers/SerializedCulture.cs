@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExpressBase.Objects;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -30,5 +31,26 @@ namespace ExpressBase.Common.Helpers
             this.DateTimeFormatInfo.PopulateIntoCultureInfo(c);
             return c;
         }
+    }
+}
+
+
+namespace ExpressBase.Common {
+
+    public class AppWrapper
+    {
+        public int Id { set; get; }
+
+        public string Name { set; get; }
+
+        public int AppType { set; get; }
+
+        public string Icon { set; get; }
+
+        public string Description { set; get; }
+
+        public object AppSettings { set; get; }
+
+        public List<EbObject> ObjCollection { get; set; }
     }
 }
