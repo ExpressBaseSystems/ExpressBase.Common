@@ -9,6 +9,7 @@ using ExpressBase.Common.Extensions;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
+using ExpressBase.Objects;
 
 namespace ExpressBase.Common.Objects
 {
@@ -83,6 +84,9 @@ namespace ExpressBase.Common.Objects
 
         [JsonIgnore]
         public override List<EbValidator> Validators { get; set; }
+
+        [JsonIgnore]
+        public override EbScript DefaultValueExpression { get; set; }
 
         //methods
         public virtual string GetHtml(bool isRootObj)

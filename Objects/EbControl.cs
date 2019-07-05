@@ -31,6 +31,8 @@ namespace ExpressBase.Common.Objects
                 this.OnChangeFn = new EbScript();
             if (this._OnChange == null)
                 this._OnChange = new EbScript();
+            if (this.DefaultValueExpression == null)
+                this.DefaultValueExpression = new EbScript();
             if (string.IsNullOrEmpty(this.OnChangeFn.Code) && !string.IsNullOrEmpty(_OnChange.Code))
                 this.OnChangeFn = _OnChange;
         }
@@ -82,6 +84,10 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.Collection)]
         public virtual List<EbValidator> Validators { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
+        public virtual EbScript DefaultValueExpression { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]

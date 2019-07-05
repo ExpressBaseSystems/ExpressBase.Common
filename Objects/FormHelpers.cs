@@ -9,6 +9,11 @@ namespace ExpressBase.Objects
 {
     public class EbScript
     {
+        public EbScript()
+        {
+            Code = Code ?? string.Empty;
+        }
+
         [JsonConverter(typeof(Base64Converter))]
         public string Code { get; set; }
 
