@@ -89,7 +89,8 @@ namespace ExpressBase.Common
         EbLOGS = 4,
         SMTP = 5,
         SMS = 6,
-        Cloudinary = 7
+        Cloudinary = 7,
+        MAPS = 8
     }
 
     public enum StudioFormTypes
