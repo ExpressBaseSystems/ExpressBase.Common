@@ -77,6 +77,8 @@ namespace ExpressBase.Common.Data
         public SmsConfigCollection SMSConfigs { get; set; }
 
         public CloudinaryConfigCollection CloudinaryConfigs { get; set; }
+
+        public MapConfigCollection MapConfigs { get; set; }
     }
 
 
@@ -110,6 +112,17 @@ namespace ExpressBase.Common.Data
     public class CloudinaryConfigCollection : List<EbCloudinaryConfig>
     {
 
+    }
+    public class MapConfigCollection
+    {
+        public List<EbMapConfig> Integrations { get; set; }
+
+        public int DefaultConId { get; set; }
+
+        public MapConfigCollection()
+        {
+            this.Integrations = new List<EbMapConfig>();
+        }
     }
 
 }

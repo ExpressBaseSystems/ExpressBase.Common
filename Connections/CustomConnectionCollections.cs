@@ -111,4 +111,28 @@ namespace ExpressBase.Common.Connections
         }
 
     }
+
+    public class EbMapConCollection : List<EbMaps>
+    {
+        public int DefaultConId { get; set; }
+        private EbMaps _defaultmap = null;
+        public EbMaps DefaultMapApi {
+             get
+            {
+                if (_defaultmap == null)
+                {
+                    foreach (EbMaps item in this)
+                    {
+                        if (item.ConId == DefaultConId)
+                            _defaultmap = item;
+                    }
+                }
+                return _defaultmap;
+            }
+        }
+        public string GetDefaultApikey()
+        {
+            return DefaultMapApi.Apikey;
+        }
+    }
 }

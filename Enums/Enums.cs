@@ -52,14 +52,13 @@ namespace ExpressBase.Common
     {
         EbOBJECTS = 1,
         EbDATA = 2,
-        EbDATA_RO = 3,
         EbFILES = 4,
         EbLOGS = 5,
         SMTP = 6,
         SMS = 7,
         Slack = 8,
         Cloudinary = 9,
-        FTP = 10
+        MAPS =11
     }
 
     public enum EbIntegrations
@@ -81,16 +80,26 @@ namespace ExpressBase.Common
         Gmail = 1
     }
 
-    public enum EbConnections
+    //public enum EbConnections
+    //{
+    //    EbOBJECTS = 1,
+    //    EbDATA = 2,
+    //    EbFILES = 3,
+    //    EbLOGS = 4,
+    //    SMTP = 5,
+    //    SMS = 6,
+    //    Cloudinary = 7,
+    //    MAPS = 8
+    //}
+
+    public enum MapVendors
     {
-        EbOBJECTS = 1,
-        EbDATA = 2,
-        EbFILES = 3,
-        EbLOGS = 4,
-        SMTP = 5,
-        SMS = 6,
-        Cloudinary = 7,
-        MAPS = 8
+        GOOGLEMAP
+    }
+
+    public enum MapType
+    {
+        COMMON
     }
 
     public enum StudioFormTypes

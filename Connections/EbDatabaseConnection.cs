@@ -384,11 +384,16 @@ namespace ExpressBase.Common.Connections
 
         public override EbIntegrations Type { get { return EbIntegrations.Cloudinary; } }
     }
-
-    public class EbGoogleMapConfig : EbIntegrationConf
+    public class EbMapConfig : EbIntegrationConf
     {
         public string ApiKey { get; set; }
 
+        public  MapVendors Vendor { get; set; }
+
+        public  MapType MapType { get; set; }
+    }
+    public class EbGoogleMapConfig : EbMapConfig
+    {
         public override EbIntegrations Type { get { return EbIntegrations.GoogleMap; } }
     }
 
@@ -398,7 +403,7 @@ namespace ExpressBase.Common.Connections
 
         public int ConfigId { get; set; }
 
-        public EbConnections Type { get; set; }
+        public EbConnectionTypes Type { get; set; }
 
         public ConPreferences Preference { get; set; }
 

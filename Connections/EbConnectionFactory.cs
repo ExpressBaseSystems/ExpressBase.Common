@@ -40,6 +40,9 @@ namespace ExpressBase.Common.Data
 
         public List<IImageManipulate> ImageManipulate { get; private set; }
 
+
+        public EbMapConCollection MapConnection { get; private set; }
+
         public IFTP FTP { get; private set; }
 
         private RedisClient Redis { get; set; }
@@ -96,11 +99,11 @@ namespace ExpressBase.Common.Data
 
             if (string.IsNullOrEmpty(this.SolutionId))
                 throw new Exception("Fatal Error :: Solution Id is null or Empty!");
-            
+
             this.Redis = c.Resolve<IRedisClientsManager>().GetClient() as RedisClient;
 
-           //if(SolutionId != CoreConstants.EXPRESSBASE) 
-                InitDatabases();
+            //if(SolutionId != CoreConstants.EXPRESSBASE) 
+            InitDatabases();
         }
 
         // TO CREATE NEW SOLUTION DB IN DATA CENTER
@@ -120,9 +123,11 @@ namespace ExpressBase.Common.Data
             this.FilesDB = null;
             this.LogsDB = null;
             this.SMSConnection = null;
-            this.SolutionId = null;
+            this.EmailConnection = null;
             this.ImageManipulate = null;
+            this.MapConnection = null;
             this._connections = null;
+            this.SolutionId = null;
         }
 
         private void InitDatabases()
@@ -227,7 +232,7 @@ namespace ExpressBase.Common.Data
                 {
                     Connections.DataDbConfig.UserName = _userName;
                     Connections.DataDbConfig.Password = _passWord;
-                    if(Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
+                    if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
                         FilesDB.Add(new PGSQLFileDatabase(Connections.DataDbConfig));
                     else if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
                         FilesDB.Add(new OracleFilesDB(Connections.DataDbConfig));
@@ -273,6 +278,17 @@ namespace ExpressBase.Common.Data
                         ImageManipulate = new List<IImageManipulate>();
                     for (int i = 0; i < Connections.CloudinaryConfigs.Count; i++)
                         ImageManipulate.Add(new EbCloudinary(Connections.CloudinaryConfigs[i]));
+                }
+
+                if (Connections.MapConfigs != null && Connections.MapConfigs.Integrations.Count > 0)
+                {
+                    MapConnection = new EbMapConCollection();
+                    for (int i = 0; i < Connections.MapConfigs.Integrations.Count; i++)
+                    {
+                        if (Connections.MapConfigs.Integrations[i].Type == EbIntegrations.GoogleMap)
+                            MapConnection.Add(new EbGoogleMap(Connections.MapConfigs.Integrations[i]));                           
+                    }
+                    MapConnection.DefaultConId = Connections.MapConfigs.DefaultConId;
                 }
                 //if (Connections.FTPConnection != null)
                 //    FTP = new EbFTP(Connections.FTPConnection);
