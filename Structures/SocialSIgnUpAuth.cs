@@ -8,7 +8,7 @@ namespace ExpressBase.Common.Structures
     {
         public string Email { get; set; }
         public string Fullname { get; set; }
-        public string Fbid { get; set; }
+        public string Social_id { get; set; }
         public string AuthProvider { get; set; }
         public string Country { get; set; }
         public string IsVerified { get; set; }
