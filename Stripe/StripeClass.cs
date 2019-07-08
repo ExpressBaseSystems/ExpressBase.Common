@@ -94,5 +94,19 @@ namespace ExpressBase.Common.Stripe
         public List<Eb_StripePlans> Plans { get; set; }
     }
 
+    public class Eb_StripeCards
+    {
+        public string Last4 { get; set; }
+
+        public long ExpMonth { get; set; }
+        
+        public long ExpYear { get; set; }
+    }
+
+    public class Eb_StripeCardsList
+    {
+        public List<Eb_StripeCards> Card { get; set; }
+    }
+
    
 }
