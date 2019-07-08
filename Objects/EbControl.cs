@@ -59,44 +59,54 @@ namespace ExpressBase.Common.Objects
 
         [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [HelpText("Set true if want unique value for this control on every form save.")]
         public virtual bool Unique { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [OnChangeUIFunction("Common.HELP_TEXT")]
+        [PropertyGroup("Identity")]
         [UIproperty]
+        [HelpText("Desciption about the field to show under the control.")]
         public virtual string HelpText { get; set; }
-
 
         [JsonIgnore]
         public virtual string UIchangeFns { get; set; }
 
         public virtual EbDbTypes EbDbType { get { return EbDbTypes.Decimal; } set { } }
 
-        [Description("Labels")]
-        [PropertyGroup("Behavior")]
+        [PropertyGroup("Identity")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [UIproperty]
         [Unique]
         [OnChangeUIFunction("Common.LABEL")]
         [PropertyEditor(PropertyEditorType.MultiLanguageKeySelector)]
+        [HelpText("Label for the control to identify it's purpose.")]
         public virtual string Label { get; set; }
 
+        [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.Collection)]
+        [HelpText("List of validators to consider before form save.")]
         public virtual List<EbValidator> Validators { get; set; }
 
+        [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
+        [HelpText("Define default value of the control.")]
         public virtual EbScript DefaultValueExpression { get; set; }
 
+        [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
         [Alias("Visible Expression")]
+        [HelpText("Define conditions to decide visibility of the control.")]
         public virtual EbScript VisibleExpr { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
         [Alias("Value Expression")]
+        [PropertyGroup("Behavior")]
+        [HelpText("Define how value of this field should be calculated.")]
         public virtual EbScript ValueExpr { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
@@ -122,40 +132,29 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string BareControlHtml { get; set; }
 
+        [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [HelpText("Set true if you want to disable this control on form.")]
         public virtual bool IsDisable { get; set; }
 
         [EnableInBuilder(BuilderType.BotForm)]
-        public virtual bool IsReadOnly { get; set; }
-
-        [EnableInBuilder(BuilderType.BotForm)]
+        [HelpText("Set true if you want to keep previous value in the control on subsequent form entry.")]
+        [Alias("Maintain Previous Value ")]
         public virtual bool IsMaintainValue { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [HelpText("Help text which shows when mouse hover the control")]
+        [PropertyGroup("Identity")]
         public virtual string ToolTipText { get; set; }
-
-        [ProtoBuf.ProtoMember(13)]
-        [Browsable(false)]
-        public virtual int CellPositionRow { get; set; }
-
-        [ProtoBuf.ProtoMember(14)]
-        [Browsable(false)]
-        public virtual int CellPositionColumn { get; set; }
-
-        [ProtoBuf.ProtoMember(15)]
-        [Browsable(false)]
-        public virtual int Left { get; set; }
-
-        [ProtoBuf.ProtoMember(16)]
-        [Browsable(false)]
-        public virtual int Top { get; set; }
 
         [ProtoBuf.ProtoMember(17)]
         [PropertyGroup("Layout")]
+        [HelpText("Set height for the control.")]
         public virtual int Height { get; set; }
 
         [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [HelpText("Set true if you want to make sure this field is not empty when form save.")]
         public virtual bool Required { get; set; }
 
         [JsonIgnore]
@@ -163,41 +162,25 @@ namespace ExpressBase.Common.Objects
 
         public virtual bool isFullViewContol { get; set; }
 
-        public virtual bool isSelfCollection { get; set; }
-
         [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [HelpText("Set true if you dont want to save value from this field.")]
         public virtual bool DoNotPersist { get; set; }
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual bool IsSysControl { get { return false; } }//is placeholder control
 
-        protected string RequiredString
-        {
-            get { return (this.Required ? "$('#{0}').focusout(function() { isRequired(this); }); $('#{0}Lbl').html( $('#{0}Lbl').text() + '<sup style=\"color: red\">*</sup>') ".Replace("{0}", this.Name) : string.Empty); }
-        }
+        [EnableInBuilder(BuilderType.BotForm)]
+        [PropertyGroup("Events")]
+        [HelpText("Set true if you want to make this control read only.")]
+        public virtual bool IsReadOnly { get; set; }//------------------------------
 
-        protected string UniqueString
-        {
-            get { return (this.Unique ? "$('#{0}').focusout(function() { isUnique(this); });".Replace("{0}", this.Name) : string.Empty); }
-        }
-
-        public static string AttachedLblAddingJS = @"
-$('<div id=\'{0}AttaLbl\' class=\'attachedlabel atchdLblL\'>$</div>').insertBefore($('#{0}').parent()); $('#{0}').addClass('numinputL')
-$('#{0}AttaLbl').css({'padding':   ( $('#{0}').parent().height()/5 + 1) + 'px' });
-$('#{0}AttaLbl').css({'font-size': ($('#{0}').css('font-size')) });
-if( $('#{0}').css('font-size').replace('px','') < 10 )
-    $('#{0}AttaLbl').css({'height':   ( $('#{0}').parent().height() - ( 10.5 - $('#{0}').css('font-size').replace('px','')) ) + 'px' }); 
-else
-    $('#{0}AttaLbl').css({'height':   ( $('#{0}').parent().height()) + 'px' }); 
-";
-
-        [ProtoBuf.ProtoMember(21)]
         [PropertyGroup("Behavior")]
-        public virtual bool ReadOnly { get; set; }
+        [HelpText("Set true if you want to make this control read only.")]
+        public virtual bool ReadOnly { get; set; }//------------------------------
 
-        protected string ReadOnlyString
+        protected string ReadOnlyString//------------------------------
         {
             get { return (this.ReadOnly ? "background-color: #f0f0f0; border: solid 1px #bbb;' readonly" : "'"); }
         }
@@ -205,30 +188,25 @@ else
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyGroup("Behavior")]
         [PropertyPriority(99)]
+        [HelpText("Set true if you want to hide the control.")]
         public virtual bool Hidden { get; set; }
-
-        [ProtoBuf.ProtoMember(23)]
-        public virtual bool SkipPersist { get; set; }
-
-        [ProtoBuf.ProtoMember(24)]
+        
+        public virtual bool SkipPersist { get; set; }//------------------------------
+        
         public virtual string RequiredExpression { get; set; }
-
-        [ProtoBuf.ProtoMember(25)]
+        
         public virtual string UniqueExpression { get; set; }
 
-        [ProtoBuf.ProtoMember(26)]
         public virtual string ReadOnlyExpression { get; set; }
-
-        [ProtoBuf.ProtoMember(27)]
-        public virtual string VisibleExpression { get; set; }
-
-        [ProtoBuf.ProtoMember(28)]
+        
         [PropertyGroup("Accessibility")]
+        [HelpText("Set tab index for the control.")]
         public virtual int TabIndex { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
         [Alias("OnChangeFeb")]
+        [PropertyGroup("Events")]
         [HideInPropertyGrid]
         public virtual EbScript _OnChange { get; set; }// ===========================================temporary
 
@@ -236,9 +214,12 @@ else
         [PropertyGroup("Events")]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
         [Alias("OnChange")]
+        [HelpText("Define onChange function.")]
         public virtual EbScript OnChangeFn { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [HelpText("Set default value for the control.")]
+        [PropertyGroup("Behavior")]
         public virtual string DefaultValue { get; set; }
 
         public virtual string GetToolHtml() { return @"<div eb-type='@toolName' class='tool'>@toolName</div>".Replace("@toolName", this.GetType().Name.Substring(2)); }
