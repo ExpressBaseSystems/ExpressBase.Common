@@ -4280,28 +4280,32 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_objects
+        ///   Looks up a localized string similar to -- Table: public.eb_schedules
         ///
-        ///-- DROP TABLE public.eb_objects;
+        ///-- DROP TABLE public.eb_schedules;
         ///
         ///CREATE TABLE public.eb_schedules
         ///(
         ///    id serial,
-        ///    obj_name text COLLATE pg_catalog.&quot;default&quot;,
-        ///    obj_type integer,
-        ///    obj_cur_status integer,
-        ///    obj_desc text COLLATE pg_catalog.&quot;default&quot;,
-        ///    applicationid integer,
-        ///    obj_tags text COLLATE pg_catalog.&quot;default&quot;,
-        ///    owner_uid integer,
-        ///    owner_ts timestamp without time zone,
-        ///	display_name text COLLATE pg_catalog.&quot;default&quot;,
-        ///    is_logenabled char(1) DEFAULT &apos;F&apos;,
-        ///    eb_d [rest of string was truncated]&quot;;.
+        ///    task json,
+        ///    created_by integer,
+        ///    created_at timestamp without time zone,
+        ///    eb_del &quot;char&quot;,
+        ///    jobkey text COLLATE pg_catalog.&quot;default&quot;,
+        ///    triggerkey text COLLATE pg_catalog.&quot;default&quot;,
+        ///    status numeric,
+        ///    obj_id numeric,
+        ///    name text COLLATE pg_catalog.&quot;default&quot;,
+        ///	CONSTRAINT eb_schedules_pkey PRIMARY KEY (id)
+        ///)
+        ///WITH (
+        ///    OIDS = FALSE
+        ///)
+        ///TABLESPACE pg_def [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string eb_schedules {
+        public static string eb_schedules_old {
             get {
-                return ResourceManager.GetString("eb_schedules", resourceCulture);
+                return ResourceManager.GetString("eb_schedules_old", resourceCulture);
             }
         }
         

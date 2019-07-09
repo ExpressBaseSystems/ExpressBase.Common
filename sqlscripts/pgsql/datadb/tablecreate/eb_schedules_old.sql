@@ -2,7 +2,7 @@
 
 -- DROP TABLE public.eb_schedules;
 
-CREATE TABLE public.eb_schedules_old
+CREATE TABLE public.eb_schedules
 (
     id serial,
     task json,
