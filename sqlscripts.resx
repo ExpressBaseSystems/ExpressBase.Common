@@ -514,9 +514,6 @@
   <data name="eb_files_bytea2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\mysql\filesdb\tablecreate\eb_files_bytea.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="eb_revokedbaccess2user" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\pgsql\datadb\functioncreate\eb_revokedbaccess2user.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
   <data name="eb_revokedbaccess2user1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\oracle\datadb\functioncreate\eb_revokedbaccess2user.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
@@ -585,9 +582,6 @@
   </data>
   <data name="eb_createbot2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\mysql\objectsdb\functioncreate\eb_createbot.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="eb_executionlogs" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\pgsql\objectsdb\tablecreate\eb_executionlogs.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="eb_executionlogs1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\oracle\objectsdb\tablecreate\eb_executionlogs.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
@@ -703,9 +697,6 @@
   <data name="eb_update_rel2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\mysql\objectsdb\functioncreate\eb_update_rel.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="eb_currval" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\pgsql\datadb\functioncreate\eb_currval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
   <data name="eb_currval1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\oracle\datadb\functioncreate\eb_currval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
@@ -766,7 +757,16 @@
   <data name="str_to_tbl_util2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\mysql\objectsdb\functioncreate\str_to_tbl_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="eb_schedules_old" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sqlscripts\pgsql\datadb\tablecreate\eb_schedules_old.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="eb_currval_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\functioncreate\eb_currval_new.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_executionlogs_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\objectsdb\tablecreate\eb_executionlogs_new.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="eb_revokedbaccess2user_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\functioncreate\eb_revokedbaccess2user_new.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_schedules_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_schedules_new.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>

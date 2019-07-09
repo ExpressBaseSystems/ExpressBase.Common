@@ -1408,9 +1408,9 @@ namespace ExpressBase.Common {
         ///
         ///ALTER FUNCTION public.eb_currva [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string eb_currval {
+        public static string eb_currval_new {
             get {
-                return ResourceManager.GetString("eb_currval", resourceCulture);
+                return ResourceManager.GetString("eb_currval_new", resourceCulture);
             }
         }
         
@@ -1486,9 +1486,9 @@ namespace ExpressBase.Common {
         ///
         ///ALTER TABLE  [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string eb_executionlogs {
+        public static string eb_executionlogs_new {
             get {
-                return ResourceManager.GetString("eb_executionlogs", resourceCulture);
+                return ResourceManager.GetString("eb_executionlogs_new", resourceCulture);
             }
         }
         
@@ -3828,9 +3828,9 @@ namespace ExpressBase.Common {
         ///  	END LOOP;
         ///    EXECUT [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string eb_revokedbaccess2user {
+        public static string eb_revokedbaccess2user_new {
             get {
-                return ResourceManager.GetString("eb_revokedbaccess2user", resourceCulture);
+                return ResourceManager.GetString("eb_revokedbaccess2user_new", resourceCulture);
             }
         }
         
@@ -4303,9 +4303,9 @@ namespace ExpressBase.Common {
         ///)
         ///TABLESPACE pg_def [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string eb_schedules_old {
+        public static string eb_schedules_new {
             get {
-                return ResourceManager.GetString("eb_schedules_old", resourceCulture);
+                return ResourceManager.GetString("eb_schedules_new", resourceCulture);
             }
         }
         
