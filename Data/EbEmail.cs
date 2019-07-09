@@ -137,7 +137,7 @@ namespace ExpressBase.Common.Data
             }
             catch (Exception e)
             {
-                Console.WriteLine("Smtp Send Exception" + e.Message);
+                Console.WriteLine("Smtp Send Exception" + e.Message + e.StackTrace);
                 sentStatus = false;
             }
             return sentStatus;
