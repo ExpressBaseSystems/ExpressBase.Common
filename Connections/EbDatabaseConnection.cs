@@ -236,30 +236,7 @@ namespace ExpressBase.Common.Connections
             }
             return nid;
         }
-        public int PersistConfForHelper(string Sol_Id, EbConnectionFactory infra, int UserId, DateTime dt)
-        {
-            string query = @"INSERT INTO eb_integration_configs (solution_id, nickname, type, con_obj, created_by, created_at, eb_del) 
-                               VALUES (@solution_id, @nick_name, @type, @con_obj, @uid, @dt , 'F') RETURNING id;";
-
-            //if (con.Id>0)
-            //    query += @"UPDATE eb_integration_configs SET eb_del = 'T', modified_at = NOW(), modified_by = @uid WHERE id = @id;";
-
-            DbParameter[] parameters = {
-                                                infra.DataDB.GetNewParameter("solution_id", EbDbTypes.String, Sol_Id),
-                                                infra.DataDB.GetNewParameter("nick_name", EbDbTypes.String, !(string.IsNullOrEmpty(this.NickName))?this.NickName:string.Empty),
-                                                infra.DataDB.GetNewParameter("type", EbDbTypes.String, this.Type.ToString()),
-                                                infra.DataDB.GetNewParameter("con_obj", EbDbTypes.Json,EbSerializers.Json_Serialize(this) ),
-                                                infra.DataDB.GetNewParameter("uid", EbDbTypes.Int32, UserId ),
-                                                infra.DataDB.GetNewParameter("id", EbDbTypes.Int32, this.Id),
-                                                infra.DataDB.GetNewParameter("@dt", EbDbTypes.DateTime,dt )
-                                           };
-            EbDataTable iCount = infra.DataDB.DoQuery(query, parameters);
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("- " + this.Id);
-            Console.ForegroundColor = ConsoleColor.White;
-            return Convert.ToInt32(iCount.Rows[0][0]);
-        }
-
+    
         public int PersistConfDeleteIntegration(string Sol_Id, EbConnectionFactory infra, int UserId)
         {
             DbParameter[] parameters = {
@@ -428,26 +405,7 @@ namespace ExpressBase.Common.Connections
             nid = Convert.ToInt32(ds.Tables[0].Rows[0][0]);
             return nid;
         }
-        public void PersistIntegrationForHelper(string Sol_Id, EbConnectionFactory infra, int UserId, DateTime dt)
-        {
-            string query = @"INSERT INTO eb_integrations (solution_id, type, preference, eb_integration_conf_id, created_at, created_by, eb_del) 
-                               VALUES (@solution_id, @type, @preference, @conf_id, @dt, @uid, 'F') RETURNING id;";
-
-            DbParameter[] parameters = {
-                                                infra.DataDB.GetNewParameter("solution_id", EbDbTypes.String, Sol_Id),
-                                                infra.DataDB.GetNewParameter("type", EbDbTypes.String, this.Type.ToString()),
-                                                infra.DataDB.GetNewParameter("preference", EbDbTypes.Int32,Preference),
-                                                infra.DataDB.GetNewParameter("conf_id", EbDbTypes.Int32, this.ConfigId),
-                                                infra.DataDB.GetNewParameter("uid", EbDbTypes.Int32, UserId),
-                                                infra.DataDB.GetNewParameter("id", EbDbTypes.Int32, this.Id),
-                                                infra.DataDB.GetNewParameter("dt", EbDbTypes.DateTime, dt)
-                                           };
-            var iCount = infra.DataDB.DoQuery(query, parameters);
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write("- " + this.Id);
-            Console.ForegroundColor = ConsoleColor.White;
-        }
-
+       
         public int PersistDeleteIntegration(string Sol_Id, EbConnectionFactory infra, int UserId)
         {
             string query = @"UPDATE eb_integrations SET eb_del = 'T', modified_at = NOW(), modified_by = @uid WHERE id = @id;";
