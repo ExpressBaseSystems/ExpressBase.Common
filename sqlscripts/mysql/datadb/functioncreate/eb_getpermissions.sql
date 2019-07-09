@@ -1,6 +1,10 @@
-﻿CREATE PROCEDURE eb_getpermissions(IN roles TEXT,
-OUT out_permission TEXT)
+﻿DROP PROCEDURE IF EXISTS eb_getpermissions;
+
+CREATE PROCEDURE eb_getpermissions(
+	IN roles TEXT,
+	OUT out_permission TEXT)
 BEGIN
+
 DECLARE _permission TEXT;
 
 DROP TEMPORARY TABLE IF EXISTS temp_array_table;
@@ -16,4 +20,5 @@ SET _permission=(
 		WHERE _per.role_id = _loc.roleid AND _per.role_id = ANY(SELECT `value` FROM roles_tmp) AND _per.eb_del='F' AND _loc.eb_del='F');
 
 SELECT _permission INTO out_permission;
+
 END

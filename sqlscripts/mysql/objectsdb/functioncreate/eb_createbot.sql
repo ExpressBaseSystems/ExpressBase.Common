@@ -1,10 +1,12 @@
-﻿CREATE FUNCTION eb_createbot(solid TEXT,
+﻿DROP FUNCTION IF EXISTS eb_createbot;
+
+CREATE FUNCTION eb_createbot(solid TEXT,
     name TEXT,
     fullname TEXT,
     url TEXT,
     welcome_msg TEXT,
     uid INTEGER,
-    botid INTEGER) RETURNS text CHARSET latin1
+    botid INTEGER) RETURNS text 
 	READS SQL DATA
     DETERMINISTIC
 BEGIN
@@ -29,5 +31,7 @@ ELSE
 	UPDATE eb_bots EB SET EB.botid = _botid WHERE EB.id=returnid ;
     SELECT _botid INTO insertedbotid; 
 END IF;
+
 RETURN insertedbotid;
-END
+
+END 

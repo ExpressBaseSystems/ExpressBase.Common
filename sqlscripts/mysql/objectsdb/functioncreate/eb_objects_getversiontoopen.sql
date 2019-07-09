@@ -1,4 +1,6 @@
-﻿CREATE PROCEDURE eb_objects_getversiontoopen(IN _id INTEGER,
+﻿DROP PROCEDURE IF EXISTS eb_objects_getversiontoopen;
+
+CREATE PROCEDURE eb_objects_getversiontoopen(IN _id INTEGER,
  OUT out_idv INTEGER, 
  OUT out_namev TEXT, 
  OUT out_typev INTEGER, 
@@ -113,14 +115,15 @@ ELSEIF no_of_workcopies = 0 THEN
  
  -- multiple workingcopies
 ELSE
-SELECT 
+
+	SELECT 
 			EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc,
 			EOV.obj_json, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.version_num, EOV.working_mode, 
 			EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags, EO.display_name, COALESCE(EO.is_logenabled,'F')
 	 INTO	idv, namev, typev, status, description, json_lc, changelog, commitat, refidv, ver_num, work_mode,
 			commitby, major_ver, minor_ver, patch_ver, tags, dispnamev, is_log
 	FROM 
-			 eb_objects EO, eb_objects_ver EOV
+			eb_objects EO, eb_objects_ver EOV
 	LEFT JOIN
 		eb_users EU
 	ON 
@@ -146,4 +149,5 @@ SELECT
     out_idv , out_namev , out_typev , out_status , out_description , out_changelog , out_commitat , out_commitby , out_refidv , 
     out_ver_num , out_work_mode , out_workingcopies , out_json_wc , out_json_lc , out_major_ver , out_minor_ver , out_patch_ver , 
     out_tags ,out_app_id , out_dispnamev , out_is_log; 
-END
+
+END 

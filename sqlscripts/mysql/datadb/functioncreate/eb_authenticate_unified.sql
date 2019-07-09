@@ -1,4 +1,6 @@
-﻿CREATE PROCEDURE eb_authenticate_unified(IN uname TEXT,
+﻿DROP PROCEDURE IF EXISTS eb_authenticate_unified;
+
+CREATE PROCEDURE eb_authenticate_unified(IN uname TEXT,
     IN pwd TEXT,
     IN social TEXT,
     IN wc TEXT,
@@ -58,4 +60,4 @@ IF ipaddress = '' THEN SET ipaddress = NULL; END IF;
          INTO tmp_userid, tmp_email, tmp_fullname, tmp_roles_a, tmp_rolename_a, tmp_permissions, tmp_preferencesjson, tmp_constraintstatus;
    	
     END IF;
-END
+END 

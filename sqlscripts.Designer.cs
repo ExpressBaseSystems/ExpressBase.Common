@@ -180,7 +180,7 @@ namespace ExpressBase.Common {
         ///   Looks up a localized string similar to CREATE TABLE eb_appstore
         ///(
         ///  id integer NOT NULL auto_increment,
-        ///  app_name varchar(100)
+        ///  app_name varchar(100),
         ///  status integer,
         ///  user_tenant_acc_id text,
         ///  cost integer,
@@ -1008,7 +1008,7 @@ namespace ExpressBase.Common {
         ///	CALL STR_TO_TBL(locations_str);  
         ///	CREATE TEMPORARY TABLE IF NOT EXISTS location_tmp SELECT `value` FROM temp_array_table;
         ///
-        ///UPDATE eb_role2location er2l SET er2l.eb_del = &apos;T&apos;, er2l.eb_revokedat = NOW(), er2l.eb_rev [rest of string was truncated]&quot;;.
+        ///UPDATE eb_role2location er2l SET er2l.eb_del = &apos;T&apos;, er2l.eb_revokedat = NOW(), er2l.eb_revok [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_role2loc2 {
             get {
@@ -1081,7 +1081,7 @@ namespace ExpressBase.Common {
         ///CALL STR_TO_TBL(dependantroles_str);  -- fill to temp_array_table
         ///CREATE TEMPORARY TABLE IF NOT EXISTS dependantroles_tmp SELECT `value` FROM temp_array_table;
         ///    
-        /// UPDATE eb_role2ro [rest of string was truncated]&quot;;.
+        /// UPDATE eb_role2role [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_role2role2 {
             get {
@@ -1212,6 +1212,8 @@ namespace ExpressBase.Common {
         ///    welcome_msg TEXT,
         ///    uid INTEGER,
         ///    botid INTEGER) RETURNS text CHARSET latin1
+        ///	READS SQL DATA
+        ///    DETERMINISTIC
         ///BEGIN
         ///DECLARE _botid TEXT;
         ///DECLARE insertedbotid TEXT;
@@ -1220,7 +1222,7 @@ namespace ExpressBase.Common {
         ///
         ///IF (botid &gt; 0) THEN
         ///   	UPDATE eb_bots EB 
-        ///		SET EB.name = name, EB.fullname = fullname, EB.url = url, EB.welcome_msg = welcome_msg, EB.modified_by = uid, EB.modified_at = NOW(), EB.botid = (SELECT @botid:=EB.botid),E [rest of string was truncated]&quot;;.
+        ///		SET EB.name = name, EB.fullname = fullname, EB.url = url, EB.welcome_msg = welcome_msg, EB.modified_by = uid, EB.modified_at = NOW(), EB. [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_createbot2 {
             get {
@@ -1441,8 +1443,9 @@ namespace ExpressBase.Common {
         
         /// <summary>
         ///   Looks up a localized string similar to CREATE FUNCTION eb_currval(seq TEXT) RETURNS int(11)
+        ///    READS SQL DATA
+        ///    DETERMINISTIC
         ///BEGIN
-        ///
         ///DECLARE _curval INTEGER;
         ///
         ///SELECT MAX(`value`) FROM tmp_currval WHERE name = seq INTO _curval;
@@ -1497,7 +1500,7 @@ namespace ExpressBase.Common {
         ///   Looks up a localized string similar to CREATE TABLE eb_executionlogs
         ///(
         ///  id integer NOT NULL auto_increment,
-        ///  rows varchar(200),
+        ///  `rows` varchar(200),
         ///  exec_time integer,
         ///  created_by integer,
         ///  created_at timestamp,
@@ -1857,6 +1860,8 @@ namespace ExpressBase.Common {
         
         /// <summary>
         ///   Looks up a localized string similar to CREATE FUNCTION eb_getconstraintstatus(in_userid INTEGER, in_ip TEXT) RETURNS int(11)
+        ///    READS SQL DATA
+        ///    DETERMINISTIC
         ///BEGIN
         ///DECLARE ipfound BOOL;
         ///DECLARE countdtc INTEGER;
@@ -1872,8 +1877,7 @@ namespace ExpressBase.Common {
         ///	IF in_ip IS NOT NULL THEN
         ///    
         /// INSERT INTO arrip(value)
-        ///		SELECT ip  FROM eb_constraints_ip 
-        ///		WHERE usergr [rest of string was truncated]&quot;;.
+        ///		SELECT ip  FROM eb_constraint [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_getconstraintstatus2 {
             get {
@@ -1940,7 +1944,7 @@ namespace ExpressBase.Common {
         ///CREATE TEMPORARY TABLE IF NOT EXISTS roles_tmp SELECT `value` FROM temp_array_table;
         ///
         ///SET _permission=(
-        ///	SELECT GROUP_CONCAT(CONCAT( _per.permissionname,&apos;:&apos;, _loc.loc [rest of string was truncated]&quot;;.
+        ///	SELECT GROUP_CONCAT(CONCAT( _per.permissionname,&apos;:&apos;, _loc.locationid) S [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_getpermissions2 {
             get {
@@ -2615,7 +2619,7 @@ namespace ExpressBase.Common {
         ///DECLARE major INTEGER;
         ///DECLARE version_number TEXT;
         ///
-        ///DROP TEMPORARY TABLE IF EXISTS relations [rest of string was truncated]&quot;;.
+        ///DROP TEMPORARY TABLE IF EXISTS relationsv [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_object_create_minor_version2 {
             get {
@@ -2689,7 +2693,7 @@ namespace ExpressBase.Common {
         ///DECLARE version_number TEXT;
         ///
         ///DROP TEMPORARY TABLE IF EXISTS temp_array_table;
-        /// [rest of string was truncated]&quot;;.
+        ///D [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_object_create_patch_version2 {
             get {
@@ -2789,6 +2793,8 @@ namespace ExpressBase.Common {
         ///    status INTEGER,
         ///    commit_uid INTEGER,
         ///    obj_changelog TEXT) RETURNS int(11)
+        ///	READS SQL DATA
+        ///    DETERMINISTIC
         ///BEGIN
         ///DECLARE inserted_obj_ver_id INTEGER;
         ///
@@ -2807,7 +2813,7 @@ namespace ExpressBase.Common {
         ///SET
         ///	eos.status = status, eos.uid = commit_uid, eos.ts = NOW(), eos.changelog = obj_changelog
         ///WHERE
-        ///	eos.id = inserted_obj_v [rest of string was truncated]&quot;;.
+        ///	eos.id = in [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_change_status2 {
             get {
@@ -2889,7 +2895,7 @@ namespace ExpressBase.Common {
         ///DECLARE committed_refidunique TEXT;
         ///DECLARE major INTEGER;
         ///DECLARE minor INTEGER;
-        ///DEC [rest of string was truncated]&quot;;.
+        ///DECL [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_commit2 {
             get {
@@ -2964,7 +2970,7 @@ namespace ExpressBase.Common {
         ///BEGIN
         ///DECLARE refidunique TEXT;
         ///DECLARE inserted_objid INTEGER;
-        ///DECLAR [rest of string was truncated]&quot;;.
+        ///DECLARE [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_create_new_object2 {
             get {
@@ -3064,7 +3070,15 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- eb_objects_favourites.
+        ///   Looks up a localized string similar to CREATE TABLE eb_objects_favourites
+        ///(
+        ///    id integer auto_increment,
+        ///    userid integer,
+        ///    object_id integer,
+        ///    eb_del char DEFAULT &apos;F&apos;,
+        ///    CONSTRAINT eb_objects_favourites_pkey PRIMARY KEY (id)
+        ///);
+        ///.
         /// </summary>
         public static string eb_objects_favourites2 {
             get {
@@ -3436,7 +3450,8 @@ namespace ExpressBase.Common {
         ///OUT lastversion_statusval INTEGER,
         ///OUT lastversioncommit_byname TEXT,
         ///OUT lastversioncommit_byid INTEGER,
-        ///OUT liveversionrefidval TEXT, [rest of string was truncated]&quot;;.
+        ///OUT liveversionrefidval TEXT,
+        ///OUT liveversionn [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_update_dashboard2 {
             get {
@@ -3671,7 +3686,27 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -- For MySQL.
+        /// </summary>
+        public static string eb_persist_currval {
+            get {
+                return ResourceManager.GetString("eb_persist_currval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- For MySQL.
+        /// </summary>
+        public static string eb_persist_currval1 {
+            get {
+                return ResourceManager.GetString("eb_persist_currval1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CREATE FUNCTION eb_persist_currval(seq_name TEXT) RETURNS int(11)
+        ///	READS SQL DATA
+        ///    DETERMINISTIC
         ///BEGIN
         ///
         ///CREATE TEMPORARY TABLE IF NOT EXISTS tmp_currval(name TEXT, value INTEGER);
@@ -3680,9 +3715,9 @@ namespace ExpressBase.Common {
         ///RETURN 1;
         ///END.
         /// </summary>
-        public static string eb_persist_currval {
+        public static string eb_persist_currval2 {
             get {
-                return ResourceManager.GetString("eb_persist_currval", resourceCulture);
+                return ResourceManager.GetString("eb_persist_currval2", resourceCulture);
             }
         }
         
@@ -5023,9 +5058,29 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -- For MySQL.
+        /// </summary>
+        public static string split_str_util {
+            get {
+                return ResourceManager.GetString("split_str_util", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- For MySQL.
+        /// </summary>
+        public static string split_str_util1 {
+            get {
+                return ResourceManager.GetString("split_str_util1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CREATE FUNCTION SPLIT_STR(x VARCHAR(255),
         ///	  delim VARCHAR(12),
         ///	  pos INT) RETURNS varchar(255) CHARSET latin1
+        ///	READS SQL DATA
+        ///    DETERMINISTIC
         ///BEGIN
         ///RETURN REPLACE(SUBSTRING(SUBSTRING_INDEX(x, delim, pos),
         ///		   LENGTH(SUBSTRING_INDEX(x, delim, pos -1)) + 1),
@@ -5033,9 +5088,27 @@ namespace ExpressBase.Common {
         ///RETURN 1;
         ///END.
         /// </summary>
-        public static string split_str_util {
+        public static string split_str_util2 {
             get {
-                return ResourceManager.GetString("split_str_util", resourceCulture);
+                return ResourceManager.GetString("split_str_util2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- For MySQL.
+        /// </summary>
+        public static string str_to_tbl_grp_util {
+            get {
+                return ResourceManager.GetString("str_to_tbl_grp_util", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- For MySQL.
+        /// </summary>
+        public static string str_to_tbl_grp_util1 {
+            get {
+                return ResourceManager.GetString("str_to_tbl_grp_util1", resourceCulture);
             }
         }
         
@@ -5055,11 +5128,29 @@ namespace ExpressBase.Common {
         ///         END IF;
         ///         -- Do Inserts into temp table here with str going into the row
         ///         
-        ///         INSERT INTO temp_array_table(value) VALUES (TRIM((SELECT split_str(full [rest of string was truncated]&quot;;.
+        ///         INSERT INTO temp_array_table(value) VALUES (TRIM((SELECT split_str(fullstr,&apos;$$&apos;,a)))); [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string str_to_tbl_grp_util {
+        public static string str_to_tbl_grp_util2 {
             get {
-                return ResourceManager.GetString("str_to_tbl_grp_util", resourceCulture);
+                return ResourceManager.GetString("str_to_tbl_grp_util2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- For MySQL.
+        /// </summary>
+        public static string str_to_tbl_util {
+            get {
+                return ResourceManager.GetString("str_to_tbl_util", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- For MySQL.
+        /// </summary>
+        public static string str_to_tbl_util1 {
+            get {
+                return ResourceManager.GetString("str_to_tbl_util1", resourceCulture);
             }
         }
         
@@ -5080,11 +5171,29 @@ namespace ExpressBase.Common {
         ///         -- Do Inserts into temp table here with str going into the row
         ///         
         ///         INSERT INTO temp_array_table(value) values (TRIM((SELECT split_str(fullstr,&apos;,&apos;,a))));
-        ///   END LOO [rest of string was truncated]&quot;;.
+        ///   END LOOP  [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string str_to_tbl_util {
+        public static string str_to_tbl_util2 {
             get {
-                return ResourceManager.GetString("str_to_tbl_util", resourceCulture);
+                return ResourceManager.GetString("str_to_tbl_util2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- For MySQL.
+        /// </summary>
+        public static string string_to_rows_util {
+            get {
+                return ResourceManager.GetString("string_to_rows_util", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- For MySQL.
+        /// </summary>
+        public static string string_to_rows_util1 {
+            get {
+                return ResourceManager.GetString("string_to_rows_util1", resourceCulture);
             }
         }
         
@@ -5093,21 +5202,23 @@ namespace ExpressBase.Common {
         ///BEGIN
         ///DECLARE a INT DEFAULT 0 ;
         ///DECLARE str VARCHAR(255);
-        ///	DROP TEMPORARY TABLE IF EXISTS temp_array_table1;
-        ///    CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table1(value TEXT);
-        ///	
+        ///
+        ///DROP TEMPORARY TABLE IF EXISTS tmp_array_table;
+        ///CREATE TEMPORARY TABLE IF NOT EXISTS tmp_array_table(value TEXT);
+        ///    
+        ///IF fullstr IS NULL THEN SET fullstr = &apos;&apos;; END IF;
+        ///
         ///      simple_loop: LOOP
         ///         SET a=a+1;
         ///         SET str := (SELECT split_str(fullstr,&apos;,&apos;,a));
         ///         IF str=&apos;&apos; THEN
         ///            LEAVE simple_loop;
         ///         END IF;
-        ///         -- Do Inserts into temp table here with str going into the row         
-        ///         INSERT I [rest of string was truncated]&quot;;.
+        ///         -- Do Inserts into temp table here with str going into th [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string string_to_rows_util {
+        public static string string_to_rows_util2 {
             get {
-                return ResourceManager.GetString("string_to_rows_util", resourceCulture);
+                return ResourceManager.GetString("string_to_rows_util2", resourceCulture);
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿CREATE PROCEDURE eb_create_or_update_role(IN applicationid INTEGER,
+﻿DROP PROCEDURE IF EXISTS eb_create_or_update_role;
+
+CREATE PROCEDURE eb_create_or_update_role(IN applicationid INTEGER,
     IN role_name TEXT,
     IN description TEXT,
     IN is_anonym TEXT,
@@ -18,8 +20,8 @@ DROP TEMPORARY TABLE IF EXISTS temp_array_table;
 DROP TEMPORARY TABLE IF EXISTS permissions_tmp;
  
 CREATE TEMPORARY TABLE temp_array_table(value TEXT);
-	CALL STR_TO_TBL(permissions_str);  
-	CREATE TEMPORARY TABLE IF NOT EXISTS permissions_tmp SELECT `value` FROM temp_array_table;
+CALL STR_TO_TBL(permissions_str);  
+CREATE TEMPORARY TABLE IF NOT EXISTS permissions_tmp SELECT `value` FROM temp_array_table;
 
 SET errornum = 0;
 
@@ -29,18 +31,25 @@ IF role_id IS NULL THEN
     ELSE
         UPDATE eb_roles er SET er.role_name = role_name, er.applicationid = applicationid, er.description = description, er.is_anonymous = is_anonym WHERE er.id = role_id;
       SET rid = role_id;
-    END IF;
+END IF;
 
-    UPDATE eb_role2permission er2p
-    SET 
+UPDATE 
+		eb_role2permission er2p
+	SET 
         er2p.eb_del = 'T',er2p.revokedat = NOW(),er2p.revokedby = createdby 
     WHERE 
         er2p.role_id = role_id AND er2p.eb_del = 'F' AND er2p.permissionname IN(
-         SELECT * FROM(SELECT er2p1.permissionname FROM eb_role2permission er2p1 WHERE er2p1.role_id = role_id AND er2p1.eb_del = 'F' and  er2p1.permissionname
-        NOT IN (SELECT `value` FROM  permissions_tmp))AS a);
+			SELECT * FROM(
+				SELECT 
+					er2p1.permissionname 
+						FROM 
+							eb_role2permission er2p1 
+						WHERE er2p1.role_id = role_id AND er2p1.eb_del = 'F' AND  er2p1.permissionname NOT IN (
+							SELECT `value` FROM  permissions_tmp
+			))AS a);
             
-INSERT INTO eb_role2permission 
-        (permissionname, role_id, createdby, createdat, op_id, obj_id) 
+INSERT INTO 
+	eb_role2permission(permissionname, role_id, createdby, createdat, op_id, obj_id) 
     SELECT 
          `value`, rid, createdby, NOW(), 
         CAST( SPLIT_STR(`value`,'-',4) AS UNSIGNED INT),
@@ -50,4 +59,4 @@ INSERT INTO eb_role2permission
         
 SELECT rid INTO out_rid;
 -- EXCEPTION WHEN unique_violation THEN errornum := 23505;
-END
+END 
