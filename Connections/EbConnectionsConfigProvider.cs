@@ -37,7 +37,7 @@ namespace ExpressBase.Common.Connections
                                 IsDefault = true,
                                 Id = 0
                             },
-                            LogsDbConnection = new PostgresConfig
+                            LogsDbConfig = new PostgresConfig
                             {
                                 //DatabaseVendor = DatabaseVendors.PGSQL,
                                 Server = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_SERVER),
@@ -100,7 +100,7 @@ namespace ExpressBase.Common.Connections
                     IsSSL = true,
                     IsDefault = true
                 },
-                LogsDbConnection = new PostgresConfig //ALWAYS IN INFRA
+                LogsDbConfig = new PostgresConfig //ALWAYS IN INFRA
                 {
                     //DatabaseVendor = DatabaseVendors.PGSQL,
                     Server = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_SERVER),
@@ -143,7 +143,7 @@ namespace ExpressBase.Common.Connections
                             IsSSL = true,
                             IsDefault = true
                         },
-                        LogsDbConnection = new PostgresConfig //ALWAYS IN INFRA
+                        LogsDbConfig = new PostgresConfig //ALWAYS IN INFRA
                         {
                             //DatabaseVendor = DatabaseVendors.PGSQL,
                             Server = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_SERVER),

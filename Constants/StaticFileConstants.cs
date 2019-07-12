@@ -124,5 +124,7 @@ namespace ExpressBase.Common.Constants
 
         //Tags
         public const string TAGS = "Tags";
+
+        public const string CONTEXT_DEFAULT = "default";
     }
 }
