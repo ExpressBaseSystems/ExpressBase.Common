@@ -142,6 +142,23 @@ namespace ExpressBase.Common
         Terminate
     }
 
+    public enum EbConstraintTypes
+    {
+        UserGroup_Ip = 1,
+        UserGroup_Date = 2,
+        UserGroup_Time = 3,
+        UserGroup_Days = 4,
+        User_Location = 5,
+        User_DeviceId = 6
+    }
+
+    public enum EbConstraintOperators
+    {
+        EqualTo = 1,
+        GreaterThan = 2,
+        LessThan = 3
+    }
+
     public enum OracleSysRoles
     {
         CONNECT,
