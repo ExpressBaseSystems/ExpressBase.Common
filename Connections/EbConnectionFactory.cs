@@ -226,7 +226,7 @@ namespace ExpressBase.Common.Data
                     ObjectsDBRW = ObjectsDB;
 
                 // LOGS DB
-                LogsDB = new PGSQLDatabase(EbConnectionsConfigProvider.InfraConnections.LogsDbConnection);
+                LogsDB = new PGSQLDatabase(EbConnectionsConfigProvider.InfraConnections.LogsDbConfig);
 
 
                 //Files DB
