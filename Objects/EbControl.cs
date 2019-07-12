@@ -146,8 +146,7 @@ namespace ExpressBase.Common.Objects
         [HelpText("Help text which shows when mouse hover the control")]
         [PropertyGroup("Identity")]
         public virtual string ToolTipText { get; set; }
-
-        [ProtoBuf.ProtoMember(17)]
+        
         [PropertyGroup("Layout")]
         [HelpText("Set height for the control.")]
         public virtual int Height { get; set; }
