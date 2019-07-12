@@ -63,7 +63,7 @@ namespace ExpressBase.Common.Data
 
                 if (_connections == null && !string.IsNullOrEmpty(this.SolutionId))
                 {
-                    if (this.SolutionId == CoreConstants.EXPRESSBASE)
+                    if (this.SolutionId == CoreConstants.EXPRESSBASE || this.SolutionId == CoreConstants.ADMIN)
                         _connections = EbConnectionsConfigProvider.InfraConnections;
                     else
                         _connections = this.Redis.Get<EbConnectionsConfig>(string.Format(CoreConstants.SOLUTION_INTEGRATION_REDIS_KEY, this.SolutionId));

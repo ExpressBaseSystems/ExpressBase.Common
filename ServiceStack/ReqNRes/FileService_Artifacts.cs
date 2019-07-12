@@ -431,8 +431,17 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     [DataContract]
     public class DownloadLogoExtRequest : EbServiceStackNoAuthRequest, IReturn<DownloadFileResponse>
     {
-        [DataMember(Order = 2)]
+        [DataMember(Order = 1)]
         public string SolnId { get; set; }
+
+        [DataMember(Order = 2)]
+        public ImageMeta ImageInfo { get; set; }
+    }
+
+    public class DownloadWikiImgRequest : EbServiceStackNoAuthRequest, IReturn<DownloadFileResponse>
+    {
+        [DataMember(Order = 1)]
+        public string RefId { get; set; }
 
         [DataMember(Order = 2)]
         public ImageMeta ImageInfo { get; set; }
