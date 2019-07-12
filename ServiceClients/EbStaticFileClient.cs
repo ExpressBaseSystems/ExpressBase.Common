@@ -14,11 +14,11 @@ namespace ExpressBase.Common.ServiceClients
     {
         public EbStaticFileClient()
         {
-            this.BaseUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_STATICFILESERVER_INT_URL);
-            this.RefreshTokenUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_GET_ACCESS_TOKEN_URL);
+            //this.BaseUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_STATICFILESERVER_INT_URL);
+            //this.RefreshTokenUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_GET_ACCESS_TOKEN_URL);
 
-            //this.BaseUri = "http://localhost:41800";
-            //this.RefreshTokenUri = "http://localhost:41600/access-token";
+            this.BaseUri = "http://localhost:41800";
+            this.RefreshTokenUri = "http://localhost:41600/access-token";
         }
 
         //public EbStaticFileClient(Container c)
