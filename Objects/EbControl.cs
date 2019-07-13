@@ -168,7 +168,7 @@ namespace ExpressBase.Common.Objects
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        public virtual bool IsSysControl { get { return false; } }//is placeholder control
+        public virtual bool IsSysControl { get; set; }//is placeholder control
 
         [EnableInBuilder(BuilderType.BotForm)]
         [PropertyGroup("Events")]
