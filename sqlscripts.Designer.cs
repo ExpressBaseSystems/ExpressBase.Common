@@ -2495,6 +2495,42 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to --
+        ///-- PostgreSQL database dump
+        ///--
+        ///
+        ///SET statement_timeout = 0;
+        ///SET lock_timeout = 0;
+        ///SET client_encoding = &apos;UTF8&apos;;
+        ///SET standard_conforming_strings = on;
+        ///SET check_function_bodies = false;
+        ///SET client_min_messages = warning;
+        ///
+        ///
+        ///
+        ///SET default_tablespace = &apos;&apos;;
+        ///
+        ///SET default_with_oids = false;
+        ///
+        ///
+        ///---
+        ///--- drop tables
+        ///---
+        ///
+        ///
+        ///DROP TABLE IF EXISTS customer_customer_demo;
+        ///DROP TABLE IF EXISTS customer_demographics;
+        ///DROP TABLE IF EXISTS employee_territories;
+        ///DROP TABLE IF EXISTS order_details;
+        ///DRO [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_northwind_script {
+            get {
+                return ResourceManager.GetString("eb_northwind_script", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to -- FUNCTION: public.eb_object_create_major_version(text, integer, integer, text, text, text[])
         ///
         ///-- DROP FUNCTION public.eb_object_create_major_version(text, integer, integer, text, text, text[]);
@@ -5035,42 +5071,6 @@ namespace ExpressBase.Common {
         public static string eb_userstatus2 {
             get {
                 return ResourceManager.GetString("eb_userstatus2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to --
-        ///-- PostgreSQL database dump
-        ///--
-        ///
-        ///SET statement_timeout = 0;
-        ///SET lock_timeout = 0;
-        ///SET client_encoding = &apos;UTF8&apos;;
-        ///SET standard_conforming_strings = on;
-        ///SET check_function_bodies = false;
-        ///SET client_min_messages = warning;
-        ///
-        ///
-        ///
-        ///SET default_tablespace = &apos;&apos;;
-        ///
-        ///SET default_with_oids = false;
-        ///
-        ///
-        ///---
-        ///--- drop tables
-        ///---
-        ///
-        ///
-        ///DROP TABLE IF EXISTS customer_customer_demo;
-        ///DROP TABLE IF EXISTS customer_demographics;
-        ///DROP TABLE IF EXISTS employee_territories;
-        ///DROP TABLE IF EXISTS order_details;
-        ///DRO [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string northwind_script {
-            get {
-                return ResourceManager.GetString("northwind_script", resourceCulture);
             }
         }
         
