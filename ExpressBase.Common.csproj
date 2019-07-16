@@ -38,7 +38,7 @@
     <EmbeddedResource Include="sqlscripts\mysql\eb_compilefunctions.sql" />
     <EmbeddedResource Include="sqlscripts\pgsql\eb_compilefunctions.sql" />
     <EmbeddedResource Include="sqlscripts\oracle\eb_compilefunctions.sql" />
-    <EmbeddedResource Include="sqlscripts\pgsql\northwind_script.sql" />
+    <EmbeddedResource Include="sqlscripts\pgsql\eb_northwind_script.sql" />
 
     <EmbeddedResource Include="sqlscripts\mysql\filesdb\functioncreate\**" />
     <EmbeddedResource Include="sqlscripts\mysql\filesdb\tablecreate\**" />
