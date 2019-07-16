@@ -343,6 +343,14 @@ namespace ExpressBase.Common.Connections
         public override EbIntegrations Type { get { return EbIntegrations.GoogleMap; } }
     }
 
+    public class EbSendGridConfig : EbIntegrationConf
+    {
+        public string ApiKey { get; set; }
+
+        public override EbIntegrations Type { get; set; }
+    }
+
+   
     public class EbIntegration
     {
         public int Id { get; set; }

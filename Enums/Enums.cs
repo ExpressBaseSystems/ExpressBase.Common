@@ -72,7 +72,8 @@ namespace ExpressBase.Common
         MongoDB = 7,
         SMTP = 8,
         Cloudinary = 9,
-        GoogleMap = 10
+        GoogleMap = 10,
+        SendGrid = 11
     }
 
     public enum SmtpProviders
@@ -96,11 +97,16 @@ namespace ExpressBase.Common
     {
         GOOGLEMAP
     }
+    public enum SendGridVendors
+    {
+        SENDGRID
+    }
 
     public enum MapType
     {
         COMMON
     }
+   
 
     public enum StudioFormTypes
     {
