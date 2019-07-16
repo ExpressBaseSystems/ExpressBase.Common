@@ -171,7 +171,7 @@ namespace ExpressBase.Common
 
         public List<ColumnSchema> Columns { set; get; }
 
-        public bool IsGridTable { get; set; }
+        public WebFormTableTypes TableType { get; set; }
 
         public string Title { get; set; }
 
@@ -188,5 +188,12 @@ namespace ExpressBase.Common
         public string ColumnName { set; get; }
 
         public int EbDbType { set; get; }
+    }
+
+    public enum WebFormTableTypes
+    {
+        Normal,
+        Grid,
+        Approval
     }
 }

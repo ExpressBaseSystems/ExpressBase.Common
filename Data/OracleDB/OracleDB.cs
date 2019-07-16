@@ -1416,9 +1416,9 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"INSERT INTO
-                            eb_files_ref (userid, filename, filetype, tags, filecategory, uploadts) 
+                            eb_files_ref (userid, filename, filetype, tags, filecategory, uploadts,context) 
                         VALUES 
-                            (@userid, @filename, @filetype, @tags, @filecategory, NOW()) 
+                            (@userid, @filename, @filetype, @tags, @filecategory, NOW(),@context) 
                         RETURNING id";
             }
         }
