@@ -19,7 +19,7 @@ namespace ExpressBase.Common {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class sqlscripts {
@@ -2491,42 +2491,6 @@ namespace ExpressBase.Common {
         public static string eb_locations2 {
             get {
                 return ResourceManager.GetString("eb_locations2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to --
-        ///-- PostgreSQL database dump
-        ///--
-        ///
-        ///SET statement_timeout = 0;
-        ///SET lock_timeout = 0;
-        ///SET client_encoding = &apos;UTF8&apos;;
-        ///SET standard_conforming_strings = on;
-        ///SET check_function_bodies = false;
-        ///SET client_min_messages = warning;
-        ///
-        ///
-        ///
-        ///SET default_tablespace = &apos;&apos;;
-        ///
-        ///SET default_with_oids = false;
-        ///
-        ///
-        ///---
-        ///--- drop tables
-        ///---
-        ///
-        ///
-        ///DROP TABLE IF EXISTS customer_customer_demo;
-        ///DROP TABLE IF EXISTS customer_demographics;
-        ///DROP TABLE IF EXISTS employee_territories;
-        ///DROP TABLE IF EXISTS order_details;
-        ///DRO [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_northwind_script {
-            get {
-                return ResourceManager.GetString("eb_northwind_script", resourceCulture);
             }
         }
         
