@@ -126,5 +126,7 @@ namespace ExpressBase.Common.Constants
         public const string TAGS = "Tags";
 
         public const string CONTEXT_DEFAULT = "default";
+        public const string CONTEXT_LOGO = "solution_logo";
+        public const string CONTEXT_DP = "user_dp";
     }
 }
