@@ -900,14 +900,6 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_UNIQUEEMAILCHECK
-        {
-            get
-            {
-                return @"SELECT id FROM eb_users WHERE LOWER(email) LIKE LOWER(concat('%',:email,'%')) AND eb_del = 'F'";
-            }
-        }
-
         public string EB_GETTABLESCHEMA
         {
             get
