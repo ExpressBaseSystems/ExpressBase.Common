@@ -1,4 +1,6 @@
-﻿CREATE PROCEDURE eb_objects_update_Dashboard(IN refid TEXT,
+﻿DROP PROCEDURE IF EXISTS eb_objects_update_Dashboard;
+
+CREATE PROCEDURE eb_objects_update_Dashboard(IN refid TEXT,
 OUT namev TEXT,
 OUT status INTEGER,
 OUT ver_num TEXT,
@@ -132,4 +134,4 @@ INTO
     liveversioncommit_tsval, liveversion_statusval, liveversioncommit_byname ,liveversioncommit_byid ,
 	owner_uidVal, owner_tsVal, owner_nameVal;
     
-END
+END 

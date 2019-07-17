@@ -255,6 +255,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 10)]
         public int InfraConID { get; set; }
+
+        [DataMember(Order = 11)]
+        public string Context { get; set; }
     }
 
     [DataContract]
@@ -293,6 +296,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 11)]
         public int InfraConID { get; set; }
+
+        [DataMember(Order = 12)]
+        public string Context { get; set; }
     }
 
     [DataContract]
@@ -431,8 +437,17 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     [DataContract]
     public class DownloadLogoExtRequest : EbServiceStackNoAuthRequest, IReturn<DownloadFileResponse>
     {
-        [DataMember(Order = 2)]
+        [DataMember(Order = 1)]
         public string SolnId { get; set; }
+
+        [DataMember(Order = 2)]
+        public ImageMeta ImageInfo { get; set; }
+    }
+
+    public class DownloadWikiImgRequest : EbServiceStackNoAuthRequest, IReturn<DownloadFileResponse>
+    {
+        [DataMember(Order = 1)]
+        public string RefId { get; set; }
 
         [DataMember(Order = 2)]
         public ImageMeta ImageInfo { get; set; }

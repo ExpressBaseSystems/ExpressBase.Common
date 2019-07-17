@@ -1,4 +1,6 @@
-﻿CREATE FUNCTION eb_objects_change_status(id TEXT,
+﻿DROP FUNCTION IF EXISTS eb_objects_change_status;
+
+CREATE FUNCTION eb_objects_change_status(id TEXT,
     status INTEGER,
     commit_uid INTEGER,
     obj_changelog TEXT) RETURNS int(11)
@@ -24,4 +26,5 @@ SET
 WHERE
 	eos.id = inserted_obj_ver_id;
 RETURN 0;
-END
+
+END 

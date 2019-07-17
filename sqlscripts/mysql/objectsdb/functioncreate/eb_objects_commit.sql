@@ -1,4 +1,6 @@
-﻿CREATE PROCEDURE eb_objects_commit(IN id TEXT,
+﻿DROP PROCEDURE IF EXISTS eb_objects_commit;
+
+CREATE PROCEDURE eb_objects_commit(IN id TEXT,
     IN obj_name TEXT,
     IN obj_desc TEXT,
     IN obj_type INTEGER,
@@ -22,15 +24,17 @@ DECLARE version_number TEXT;
 
 DROP TEMPORARY TABLE IF EXISTS temp_array_table;
 DROP TEMPORARY TABLE IF EXISTS relationsv;
+
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value TEXT);
-	CALL STR_TO_TBL(relations);  -- fill to temp_array_table
-	CREATE TEMPORARY TABLE IF NOT EXISTS relationsv SELECT `value` FROM temp_array_table;
+CALL STR_TO_TBL(relations);  -- fill to temp_array_table
+CREATE TEMPORARY TABLE IF NOT EXISTS relationsv SELECT `value` FROM temp_array_table;
     
 DROP TEMPORARY TABLE IF EXISTS apps;
 DROP TEMPORARY TABLE IF EXISTS temp_array_table;
+
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table( value INTEGER);
-	CALL STR_TO_TBL(app_id);  -- fill to temp_array_table
-	CREATE TEMPORARY TABLE IF NOT EXISTS apps SELECT `value` FROM temp_array_table;
+CALL STR_TO_TBL(app_id);  -- fill to temp_array_table
+CREATE TEMPORARY TABLE IF NOT EXISTS apps SELECT `value` FROM temp_array_table;
 
 SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, major, minor, patch 
 	FROM eb_objects_ver WHERE refid = id;
@@ -86,4 +90,5 @@ UPDATE eb_objects2application
         (SELECT app_id FROM eb_objects2application WHERE obj_id = objid AND eb_del='F'))AS appvals;
      
 SELECT committed_refidunique INTO out_committed_refidunique;
-END
+
+END 

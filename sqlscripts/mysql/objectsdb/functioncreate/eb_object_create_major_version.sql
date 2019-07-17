@@ -1,4 +1,6 @@
-﻿CREATE PROCEDURE eb_object_create_major_version(IN id TEXT,
+﻿DROP PROCEDURE IF EXISTS eb_object_create_major_version;
+
+CREATE PROCEDURE eb_object_create_major_version(IN id TEXT,
     IN obj_type INTEGER,
     IN commit_uid INTEGER,
     IN src_pid TEXT,
@@ -62,4 +64,5 @@ INSERT INTO eb_objects_relations
                             WHERE dependant = refidunique )) AS dominantvals;
                             
 SELECT temp_committed_refidunique INTO committed_refidunique;
+
 END

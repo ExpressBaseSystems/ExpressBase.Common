@@ -1,4 +1,6 @@
-﻿CREATE PROCEDURE eb_getroles(IN userid INTEGER,
+﻿DROP PROCEDURE IF EXISTS eb_getroles;
+
+CREATE PROCEDURE eb_getroles(IN userid INTEGER,
     IN wc TEXT,
     OUT roless TEXT,
     OUT role_names TEXT
@@ -48,4 +50,4 @@ SELECT
 		WHERE 
 			role_id < 100 OR 
 			applicationid IS NOT NULL INTO roless,role_names;
-END
+END 

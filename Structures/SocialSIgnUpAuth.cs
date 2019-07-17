@@ -19,5 +19,6 @@ namespace ExpressBase.Common.Structures
         public string TwitterId { get; set; }
         public string GoogleId { get; set; }
         public string LinkedId { get; set; }
-    }
+		public bool Forsignup { get; set; }
+	}
 }

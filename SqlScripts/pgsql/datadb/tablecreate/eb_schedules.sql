@@ -1,28 +1,54 @@
-﻿-- Table: public.eb_schedules
+-- Table: public.eb_objects
 
--- DROP TABLE public.eb_schedules;
+-- DROP TABLE public.eb_objects;
 
 CREATE TABLE public.eb_schedules
 (
     id serial,
-    task json,
-    created_by integer,
-    created_at timestamp without time zone,
-    eb_del "char",
-    jobkey text COLLATE pg_catalog."default",
-    triggerkey text COLLATE pg_catalog."default",
-    status numeric,
-    obj_id numeric,
-    name text COLLATE pg_catalog."default",
-	CONSTRAINT eb_schedules_pkey PRIMARY KEY (id)
+    obj_name text COLLATE pg_catalog."default",
+    obj_type integer,
+    obj_cur_status integer,
+    obj_desc text COLLATE pg_catalog."default",
+    applicationid integer,
+    obj_tags text COLLATE pg_catalog."default",
+    owner_uid integer,
+    owner_ts timestamp without time zone,
+	display_name text COLLATE pg_catalog."default",
+    is_logenabled char(1) DEFAULT 'F',
+    eb_del char(1) DEFAULT 'F',
+    CONSTRAINT eb_objects_pkey PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_schedules
+ALTER TABLE public.eb_objects
     OWNER to postgres;
 
-	
-ALTER SEQUENCE eb_schedules_id_seq INCREMENT 1 RESTART 2 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1;
+-- Index: eb_objects_applicationid_idx
+
+-- DROP INDEX public.eb_objects_applicationid_idx;
+
+CREATE INDEX eb_objects_applicationid_idx
+    ON public.eb_objects USING btree
+    (applicationid)
+    TABLESPACE pg_default;
+
+-- Index: eb_objects_id_idx
+
+-- DROP INDEX public.eb_objects_id_idx;
+
+CREATE UNIQUE INDEX eb_objects_id_idx
+    ON public.eb_objects USING btree
+    (id)
+    TABLESPACE pg_default;
+
+-- Index: eb_objects_type_idx
+
+-- DROP INDEX public.eb_objects_type_idx;
+
+CREATE INDEX eb_objects_type_idx
+    ON public.eb_objects USING btree
+    (obj_type)
+    TABLESPACE pg_default;

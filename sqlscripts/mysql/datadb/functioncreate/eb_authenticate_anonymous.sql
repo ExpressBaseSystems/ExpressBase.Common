@@ -1,4 +1,6 @@
-﻿CREATE PROCEDURE eb_authenticate_anonymous(IN in_socialid TEXT,
+﻿DROP PROCEDURE IF EXISTS eb_authenticate_anonymous;
+
+CREATE PROCEDURE eb_authenticate_anonymous(IN in_socialid TEXT,
     IN in_fullname TEXT,
     IN in_emailid TEXT,
     IN in_phone TEXT,

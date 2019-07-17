@@ -1,5 +1,8 @@
-CREATE PROCEDURE string_to_rows(fullstr TEXT)
+DROP PROCEDURE IF EXISTS string_to_rows;
+
+CREATE PROCEDURE string_to_rows(fullstr LONGTEXT)
 BEGIN
+
 DECLARE a INT DEFAULT 0 ;
 DECLARE str VARCHAR(255);
 
@@ -18,4 +21,5 @@ IF fullstr IS NULL THEN SET fullstr = ''; END IF;
          INSERT INTO tmp_array_table(value) values (TRIM((SELECT split_str(fullstr,',',a))));
    END LOOP simple_loop;
      SELECT DISTINCT value FROM  tmp_array_table;
-END
+
+END 

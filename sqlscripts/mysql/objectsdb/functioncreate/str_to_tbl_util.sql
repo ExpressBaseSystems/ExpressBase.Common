@@ -1,5 +1,8 @@
-CREATE PROCEDURE STR_TO_TBL(fullstr TEXT)
+DROP PROCEDURE IF EXISTS STR_TO_TBL;
+
+CREATE PROCEDURE STR_TO_TBL(fullstr LONGTEXT)
 BEGIN
+
 DECLARE a INT DEFAULT 0 ;
 DECLARE str VARCHAR(255);
 
@@ -16,4 +19,4 @@ TRUNCATE TABLE temp_array_table;
          INSERT INTO temp_array_table(value) values (TRIM((SELECT split_str(fullstr,',',a))));
    END LOOP simple_loop;
      
-END
+END 

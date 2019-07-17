@@ -1,3 +1,5 @@
+DROP PROCEDURE IF EXISTS eb_revokedbaccess2user;
+
 CREATE PROCEDURE eb_revokedbaccess2user(IN username TEXT,
     IN dbname TEXT,
     OUT out_b BOOLEAN)
@@ -27,4 +29,5 @@ read_loop: LOOP
 GRANT ALL PRIVILEGES ON dbname TO username WITH GRANT OPTION;
 FLUSH PRIVILEGES;
    SELECT TRUE INTO out_b;
-END
+
+END 
