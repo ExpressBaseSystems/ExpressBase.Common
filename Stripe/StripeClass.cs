@@ -96,6 +96,8 @@ namespace ExpressBase.Common.Stripe
 
     public class Eb_StripeCards
     {
+        public string CardId { get; set; }
+
         public string Last4 { get; set; }
 
         public long ExpMonth { get; set; }

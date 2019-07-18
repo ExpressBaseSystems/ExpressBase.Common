@@ -65,7 +65,6 @@ namespace ExpressBase.Common
 		string EB_MANAGEUSER_FIRST_QUERY { get; }
         string EB_GETUSERDETAILS { get; }
         string EB_GETDBCLIENTTTABLES { get; }
-        string EB_UNIQUEEMAILCHECK { get; }
 
         string EB_GETTABLESCHEMA { get; }
         string EB_GET_CHART_2_DETAILS { get; }        

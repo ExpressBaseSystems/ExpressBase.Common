@@ -337,6 +337,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 3)]
         public string SolutionId { get; set; }
+
+        [DataMember(Order = 4)]
+        public int UserIntId { get; set; }
     }
 
     public class UploadFileMqResponse
