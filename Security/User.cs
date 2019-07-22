@@ -192,7 +192,7 @@ namespace ExpressBase.Security
         public static User GetInfraVerifiedUser(IDatabase db, string uname, string u_token)
         {
             User _user = null;
-            string sql = "UPDATE eb_tenants SET isverified = TRUE WHERE cname = @cname AND u_token = @u_token;";
+            string sql = "UPDATE eb_tenants SET is_verified = 'T' WHERE cname = @cname AND u_token = @u_token;";
             sql += "SELECT id, firstname,profileimg FROM eb_tenants WHERE cname = @cname AND u_token = @u_token";
 
             DbParameter[] parameters = {

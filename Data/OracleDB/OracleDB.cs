@@ -789,14 +789,6 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        public string EB_UNIQUEEMAILCHECK
-        {
-            get
-            {
-                return @"SELECT id FROM eb_users WHERE LOWER(email) LIKE LOWER('%' || :email || '%') AND eb_del = 'F'";
-            }
-        }
-
         public string EB_GETTABLESCHEMA
         {
             get
@@ -1416,9 +1408,9 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"INSERT INTO
-                            eb_files_ref (userid, filename, filetype, tags, filecategory, uploadts) 
+                            eb_files_ref (userid, filename, filetype, tags, filecategory, uploadts,context) 
                         VALUES 
-                            (@userid, @filename, @filetype, @tags, @filecategory, NOW()) 
+                            (@userid, @filename, @filetype, @tags, @filecategory, NOW(),@context) 
                         RETURNING id";
             }
         }

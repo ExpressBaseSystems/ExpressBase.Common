@@ -70,7 +70,7 @@ namespace ExpressBase.Common.Data
 
         public FilesConfigCollection FilesDbConfig { get; set; }
 
-        public EbDbConfig LogsDbConnection { get; set; }
+        public EbDbConfig LogsDbConfig { get; set; }
 
         public EmailConfigCollection EmailConfigs { get; set; }
 
@@ -80,8 +80,6 @@ namespace ExpressBase.Common.Data
 
         public MapConfigCollection MapConfigs { get; set; }
     }
-
-
 
     public class FilesConfigCollection
     {
@@ -113,6 +111,7 @@ namespace ExpressBase.Common.Data
     {
 
     }
+
     public class MapConfigCollection
     {
         public List<EbMapConfig> Integrations { get; set; }

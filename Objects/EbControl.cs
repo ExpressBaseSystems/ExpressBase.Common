@@ -146,8 +146,7 @@ namespace ExpressBase.Common.Objects
         [HelpText("Help text which shows when mouse hover the control")]
         [PropertyGroup("Identity")]
         public virtual string ToolTipText { get; set; }
-
-        [ProtoBuf.ProtoMember(17)]
+        
         [PropertyGroup("Layout")]
         [HelpText("Set height for the control.")]
         public virtual int Height { get; set; }
@@ -169,7 +168,7 @@ namespace ExpressBase.Common.Objects
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        public virtual bool IsSysControl { get { return false; } }//is placeholder control
+        public virtual bool IsSysControl { get; set; }//is placeholder control
 
         [EnableInBuilder(BuilderType.BotForm)]
         [PropertyGroup("Events")]

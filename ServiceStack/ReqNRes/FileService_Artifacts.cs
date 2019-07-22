@@ -255,6 +255,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 10)]
         public int InfraConID { get; set; }
+
+        [DataMember(Order = 11)]
+        public string Context { get; set; }
     }
 
     [DataContract]
@@ -293,6 +296,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 11)]
         public int InfraConID { get; set; }
+
+        [DataMember(Order = 12)]
+        public string Context { get; set; }
     }
 
     [DataContract]
@@ -331,6 +337,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 3)]
         public string SolutionId { get; set; }
+
+        [DataMember(Order = 4)]
+        public int UserIntId { get; set; }
     }
 
     public class UploadFileMqResponse

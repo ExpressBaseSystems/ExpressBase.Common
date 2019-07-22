@@ -746,15 +746,6 @@ INSERT INTO eb_applications (applicationname,application_type, description,app_i
             }
         }
 
-        public string EB_UNIQUEEMAILCHECK
-        {
-            get
-            {
-                return @"
-SELECT id FROM eb_users WHERE LOWER(email) LIKE LOWER('%' || :email || '%') AND eb_del = 'F'";
-            }
-        }
-
         public string EB_GETTABLESCHEMA
         {
             get
@@ -1461,9 +1452,9 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
             get
             {
                 return @"INSERT INTO
-                            eb_files_ref (userid, filename, filetype, tags, filecategory, uploadts) 
+                            eb_files_ref (userid, filename, filetype, tags, filecategory, uploadts,context) 
                         VALUES 
-                            (@userid, @filename, @filetype, @tags, @filecategory, NOW()) 
+                            (@userid, @filename, @filetype, @tags, @filecategory, NOW(),@context) 
                         RETURNING id";
             }
         }
