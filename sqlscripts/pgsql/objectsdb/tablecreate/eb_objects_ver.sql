@@ -19,6 +19,7 @@ CREATE TABLE public.eb_objects_ver
     status_id integer,
     ver_num text COLLATE pg_catalog."default",
     working_mode "char" NOT NULL DEFAULT 'F'::"char",
+	eb_del "char" NOT NULL DEFAULT 'F'::"char",
     CONSTRAINT eb_objects_ver_pkey PRIMARY KEY (id),
     CONSTRAINT eb_objects_ver_working_mode_check CHECK (working_mode = 'T'::"char" OR working_mode = 'F'::"char")
 )
