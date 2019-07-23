@@ -53,5 +53,13 @@ namespace ExpressBase.Common.Extensions
         {
             return System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(base64EncodedData));
         }
+
+        public static string Truncate(this string str, int length)
+        {
+            if (length == 0 || str.Length < length )
+                return str;
+            else
+                return str.Substring(0, length)+ "...";
+        }
     }
 }
