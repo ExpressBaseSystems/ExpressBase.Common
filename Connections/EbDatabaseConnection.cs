@@ -203,7 +203,7 @@ namespace ExpressBase.Common.Connections
             }
             return nid;
         }
-    
+
         public int PersistConfDeleteIntegration(string Sol_Id, EbConnectionFactory infra, int UserId)
         {
             DbParameter[] parameters = {
@@ -301,7 +301,12 @@ namespace ExpressBase.Common.Connections
         public override EbIntegrations Type { get { return EbIntegrations.MongoDB; } }
     }
 
-    public class EbSmtpConfig : EbIntegrationConf
+    public class EbEmailConfig : EbIntegrationConf
+    {
+        public string EmailAddress { get; set; }
+    }
+
+    public class EbSmtpConfig : EbEmailConfig
     {
         public SmtpProviders ProviderName { get; set; }
 
@@ -309,13 +314,20 @@ namespace ExpressBase.Common.Connections
 
         public int Port { get; set; }
 
-        public string EmailAddress { get; set; }
-
         public string Password { get; set; }
 
         public bool EnableSsl { get; set; }
 
         public override EbIntegrations Type { get { return EbIntegrations.SMTP; } }
+    }
+
+    public class EbSendGridConfig : EbEmailConfig
+    {
+        public string ApiKey { get; set; }
+
+        public string Name { get; set; }
+
+        public override EbIntegrations Type { get; set; }
     }
 
     public class EbCloudinaryConfig : EbIntegrationConf
@@ -333,9 +345,9 @@ namespace ExpressBase.Common.Connections
     {
         public string ApiKey { get; set; }
 
-        public  MapVendors Vendor { get; set; }
+        public MapVendors Vendor { get; set; }
 
-        public  MapType MapType { get; set; }
+        public MapType MapType { get; set; }
     }
 
     public class EbGoogleMapConfig : EbMapConfig
@@ -343,14 +355,7 @@ namespace ExpressBase.Common.Connections
         public override EbIntegrations Type { get { return EbIntegrations.GoogleMap; } }
     }
 
-    public class EbSendGridConfig : EbIntegrationConf
-    {
-        public string ApiKey { get; set; }
 
-        public override EbIntegrations Type { get; set; }
-    }
-
-   
     public class EbIntegration
     {
         public int Id { get; set; }
@@ -382,7 +387,7 @@ namespace ExpressBase.Common.Connections
             nid = Convert.ToInt32(ds.Tables[0].Rows[0][0]);
             return nid;
         }
-       
+
         public int PersistDeleteIntegration(string Sol_Id, EbConnectionFactory infra, int UserId)
         {
             string query = @"UPDATE eb_integrations SET eb_del = 'T', modified_at = NOW(), modified_by = @uid WHERE id = @id;";

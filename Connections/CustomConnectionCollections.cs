@@ -57,19 +57,25 @@ namespace ExpressBase.Common.Connections
             return resp;
         }
     }
-    public class EbMailConCollection : List<EbSmtp>
+    public class EbMailConCollection : List<IEmailConnection>
     {
         public EbMailConCollection(EmailConfigCollection conf)
         {
             if (conf.Primary != null)
-                Primary = new EbSmtp(conf.Primary);
+                if (conf.Primary.Type == EbIntegrations.SMTP)
+                    Primary = new EbSmtp(conf.Primary as EbSmtpConfig);
+                else if (conf.Primary.Type == EbIntegrations.SendGrid)
+                    Primary = new EbSendGridMail(conf.Primary as EbSendGridConfig);
             if (conf.FallBack != null)
-                FallBack = new EbSmtp(conf.FallBack);
+                if (conf.FallBack.Type == EbIntegrations.SMTP)
+                    FallBack = new EbSmtp(conf.FallBack as EbSmtpConfig);
+                else if (conf.FallBack.Type == EbIntegrations.SendGrid)
+                    FallBack = new EbSendGridMail(conf.FallBack as EbSendGridConfig);
         }
 
-        public EbSmtp Primary { get; set; }
+        public IEmailConnection Primary { get; set; }
 
-        public EbSmtp FallBack { get; set; }
+        public IEmailConnection FallBack { get; set; }
 
         public bool Send(string to, string subject, string message, string[] cc, string[] bcc, byte[] attachment, string attachmentname)
         {
@@ -79,13 +85,13 @@ namespace ExpressBase.Common.Connections
                 Console.WriteLine("Inside Mail Sending to " + to);
                 if (Primary != null)
                 {
-                    resp = Primary.Send(to, subject, message, cc, bcc, attachment, attachmentname);
-                    Console.WriteLine("Mail Send With Primary :" + Primary.Config.EmailAddress);
+                    Primary.Send(to, subject, message, cc, bcc, attachment, attachmentname);
+                    Console.WriteLine("Mail Send With Primary :");
 
                 }
                 else if (this.Capacity != 0)
                 {
-                    Console.WriteLine("Mail Send using First Element" + this[0].Config.EmailAddress);
+                    Console.WriteLine("Mail Send using First Element");
                     this[0].Send(to, subject, message, cc, bcc, attachment, attachmentname);
                 }
                 else
@@ -98,8 +104,8 @@ namespace ExpressBase.Common.Connections
                 {
                     if (FallBack != null)
                     {
-                        resp = FallBack.Send(to, subject, message, cc, bcc, attachment, attachmentname);
-                        Console.WriteLine("Mail Send With FallBack : " + FallBack.Config.EmailAddress);
+                        FallBack.Send(to, subject, message, cc, bcc, attachment, attachmentname);
+                        Console.WriteLine("Mail Send With FallBack : ");
                     }
                 }
                 catch (Exception ex)
@@ -116,8 +122,9 @@ namespace ExpressBase.Common.Connections
     {
         public int DefaultConId { get; set; }
         private EbMaps _defaultmap = null;
-        public EbMaps DefaultMapApi {
-             get
+        public EbMaps DefaultMapApi
+        {
+            get
             {
                 if (_defaultmap == null)
                 {

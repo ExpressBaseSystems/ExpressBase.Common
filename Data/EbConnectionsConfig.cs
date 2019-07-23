@@ -95,9 +95,9 @@ namespace ExpressBase.Common.Data
 
     public class EmailConfigCollection
     {
-        public EbSmtpConfig Primary { get; set; }
+        public EbEmailConfig Primary { get; set; }
 
-        public EbSmtpConfig FallBack { get; set; }
+        public EbEmailConfig FallBack { get; set; }
     }
 
     public class SmsConfigCollection
