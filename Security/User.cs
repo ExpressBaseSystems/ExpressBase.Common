@@ -296,14 +296,78 @@ namespace ExpressBase.Security
 
         public static User GetDetailsSocial(IDatabase df, string socialId, string context)
         {
-            var ds = df.DoQuery(df.EB_AUTHENTICATEUSER_SOCIAL, new DbParameter[] { df.GetNewParameter("social", EbDbTypes.String, socialId), df.GetNewParameter("wc", EbDbTypes.String, context) });
-            return InitUserObject(ds, context);
+            try
+               
+            {                
+                if (df.Vendor == DatabaseVendors.MYSQL)
+                {
+                    var dt = df.DoProcedure(df.EB_AUTHENTICATEUSER_SOCIAL,
+                            new DbParameter[] {  df.GetNewParameter("uname", EbDbTypes.String),
+                                df.GetNewParameter("pwd", EbDbTypes.String),
+                                df.GetNewParameter("social", EbDbTypes.String, socialId),
+                                df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),                               
+                                df.GetNewParameter("ipaddress", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_userid", EbDbTypes.Int32),
+                                df.GetNewOutParameter("tmp_email", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_fullname", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_roles_a", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_rolename_a", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_permissions", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_preferencesjson", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_constraintstatus", EbDbTypes.String)
+                                });
+
+                    return InitUserObject(dt, context);
+                }
+                else
+                {
+                    var ds = df.DoQuery(df.EB_AUTHENTICATEUSER_SOCIAL, new DbParameter[] { df.GetNewParameter("social", EbDbTypes.String, socialId), df.GetNewParameter("wc", EbDbTypes.String, context) });
+                    return InitUserObject(ds, context);                   
+                }
+                //return null;
+            }
+            catch (Exception e)
+            {
+                return new User();
+            }            
         }
 
         public static User GetDetailsSSO(IDatabase df, string uname, string context)
         {
-            var ds = df.DoQuery(df.EB_AUTHENTICATEUSER_SSO, new DbParameter[] { df.GetNewParameter("uname", EbDbTypes.String, uname), df.GetNewParameter("wc", EbDbTypes.String, context) });
-            return InitUserObject(ds, context);
+            try
+            {
+                if (df.Vendor == DatabaseVendors.MYSQL)
+                {
+                    var dt = df.DoProcedure(df.EB_AUTHENTICATEUSER_SSO,
+                            new DbParameter[] {
+                                df.GetNewParameter("uname", EbDbTypes.String, uname),
+                                df.GetNewParameter("pwd", EbDbTypes.String),
+                                df.GetNewParameter("social", EbDbTypes.String),
+                                df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),                                
+                                df.GetNewParameter("ipaddress", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_userid", EbDbTypes.Int32),
+                                df.GetNewOutParameter("tmp_email", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_fullname", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_roles_a", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_rolename_a", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_permissions", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_preferencesjson", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_constraintstatus", EbDbTypes.String)
+                                });
+
+                    return InitUserObject(dt, context);
+                }
+                else
+                {
+                    var ds = df.DoQuery(df.EB_AUTHENTICATEUSER_SSO, new DbParameter[] { df.GetNewParameter("uname", EbDbTypes.String, uname), df.GetNewParameter("wc", EbDbTypes.String, context) });
+                    return InitUserObject(ds, context);
+                }
+                //return null;
+            }
+            catch (Exception e)
+            {
+                return new User();
+            }           
         }
 
         public static User GetDetailsAnonymous(IDatabase df, string socialId, string emailId, string phone, int appid, string context, string user_ip, string user_name, string user_browser, string city, string region, string country, string latitude, string longitude, string timezone, string iplocationjson)
