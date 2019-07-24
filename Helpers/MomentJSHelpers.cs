@@ -635,4 +635,8 @@ namespace ExpressBase.Common.Helpers
             return result;
         }
     }
+    public class NameObj
+    {
+        public string Value { get; set; }
+    }
 }

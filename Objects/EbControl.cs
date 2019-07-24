@@ -219,6 +219,7 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HelpText("Set default value for the control.")]
         [PropertyGroup("Behavior")]
+        [PropertyEditor(PropertyEditorType.Label)]
         public virtual string DefaultValue { get; set; }
 
         public virtual string GetToolHtml() { return @"<div eb-type='@toolName' class='tool'>@toolName</div>".Replace("@toolName", this.GetType().Name.Substring(2)); }

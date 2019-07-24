@@ -386,7 +386,7 @@ namespace ExpressBase.Common {
         ///    IN in_appid INTEGER,
         ///    IN in_wc TEXT,
         ///    OUT out_userid INTEGER,
-        ///    O [rest of string was truncated]&quot;;.
+        ///    OUT out_email TEXT, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_authenticate_anonymous2 {
             get {
@@ -1000,7 +1000,7 @@ namespace ExpressBase.Common {
         ///CREATE TEMPORARY TABLE IF NOT EXISTS location_tmp SELECT `value` FROM temp_array_table;
         ///
         ///UPDATE eb_role2location er2l 
-        ///	SE [rest of string was truncated]&quot;;.
+        ///	SET  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_role2loc2 {
             get {
@@ -1073,7 +1073,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value INTEGER);      
         ///CALL STR_TO_TBL(dependantroles_str);  -- fill to temp_array_table
-        ///CREATE TEMPORARY TABLE IF NOT EXISTS dependantroles_tmp SELE [rest of string was truncated]&quot;;.
+        ///CREATE TEMPORARY TABLE IF NOT EXISTS dependantroles_tmp SELECT [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_role2role2 {
             get {
@@ -1215,7 +1215,7 @@ namespace ExpressBase.Common {
         ///
         ///IF (botid &gt; 0) THEN
         ///   	UPDATE eb_bots EB 
-        ///		SET EB.name = name, EB.fullname = fullname, EB.url = url, EB.welcome_msg = welcome_msg, EB.modified_by = uid, [rest of string was truncated]&quot;;.
+        ///		SET EB.name = name, EB.fullname = fullname, EB.url = url, EB.welcome_msg = welcome_msg, EB.modified_by = uid,  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_createbot2 {
             get {
@@ -1435,9 +1435,9 @@ namespace ExpressBase.Common {
         ///            ELSE
         ///              raise_application_error(-20001,&apos;An error was e [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string eb_currval1 {
+        public static string eb_currval_new1 {
             get {
-                return ResourceManager.GetString("eb_currval1", resourceCulture);
+                return ResourceManager.GetString("eb_currval_new1", resourceCulture);
             }
         }
         
@@ -1457,9 +1457,9 @@ namespace ExpressBase.Common {
         ///RETURN _curval;
         ///END .
         /// </summary>
-        public static string eb_currval2 {
+        public static string eb_currval_new2 {
             get {
-                return ResourceManager.GetString("eb_currval2", resourceCulture);
+                return ResourceManager.GetString("eb_currval_new2", resourceCulture);
             }
         }
         
@@ -1495,9 +1495,9 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to -- need updation.
         /// </summary>
-        public static string eb_executionlogs1 {
+        public static string eb_executionlogs_new1 {
             get {
-                return ResourceManager.GetString("eb_executionlogs1", resourceCulture);
+                return ResourceManager.GetString("eb_executionlogs_new1", resourceCulture);
             }
         }
         
@@ -1517,9 +1517,9 @@ namespace ExpressBase.Common {
         ///create index eb_executionlogs_idx on eb_executionlogs(id) using btree;
         ///.
         /// </summary>
-        public static string eb_executionlogs2 {
+        public static string eb_executionlogs_new2 {
             get {
-                return ResourceManager.GetString("eb_executionlogs2", resourceCulture);
+                return ResourceManager.GetString("eb_executionlogs_new2", resourceCulture);
             }
         }
         
@@ -1883,7 +1883,9 @@ namespace ExpressBase.Common {
         ///DROP TEMPORARY TABLE IF EXISTS arrip;
         ///CREATE TEMPORARY TABLE IF NOT EXISTS arrip(id INTEGER AUTO_INCREMENT PRIMARY KEY, value INTEGER);
         ///    
-        ///IF in_ip IS NOT NULL THE [rest of string was truncated]&quot;;.
+        ///IF in_ip IS NOT NULL THEN
+        ///    
+        ///	INSERT IN [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_getconstraintstatus2 {
             get {
@@ -1954,7 +1956,7 @@ namespace ExpressBase.Common {
         ///CREATE TEMPORARY TABLE IF NOT EXISTS roles_tmp SELECT `value` FROM temp_array_table;
         ///
         ///SET _permission=(
-        ///	SELECT G [rest of string was truncated]&quot;;.
+        ///	SELECT GROUP_CONCA [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_getpermissions2 {
             get {
@@ -2667,7 +2669,7 @@ namespace ExpressBase.Common {
         ///DECLARE temp_committed_refidunique TEXT; 
         ///DECLARE minor INTEGER;
         ///DECLARE major INTEGER;
-        ///DECLARE vers [rest of string was truncated]&quot;;.
+        ///DECLARE versi [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_object_create_minor_version2 {
             get {
@@ -2740,7 +2742,7 @@ namespace ExpressBase.Common {
         ///DECLARE major INTEGER;
         ///DECLARE minor INTEGER;
         ///DECLARE patch INTEGER;
-        ///DECLARE version_number [rest of string was truncated]&quot;;.
+        ///DECLARE version_number  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_object_create_patch_version2 {
             get {
@@ -2860,7 +2862,7 @@ namespace ExpressBase.Common {
         ///UPDATE
         ///	eb_objects_status eos
         ///SET
-        ///	eos.status = status, eos.uid = c [rest of string was truncated]&quot;;.
+        ///	eos.status = status, eos.uid = commit_uid, eos.ts = NOW( [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_change_status2 {
             get {
@@ -2942,7 +2944,7 @@ namespace ExpressBase.Common {
         ///DECLARE inserted_obj_ver_id INTEGER;
         ///DECLARE objid INTEGER;
         ///DECLARE committed_refidunique TEXT;
-        ///DECL [rest of string was truncated]&quot;;.
+        ///DECLA [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_commit2 {
             get {
@@ -3017,7 +3019,7 @@ namespace ExpressBase.Common {
         ///    IN disp_name TEXT,
         ///    OUT out_refid_of_commit_version TEXT)
         ///BEGIN
-        ///DECLARE  [rest of string was truncated]&quot;;.
+        ///DECLARE r [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_create_new_object2 {
             get {
@@ -3499,7 +3501,7 @@ namespace ExpressBase.Common {
         ///OUT lastversioncommit_tsval TEXT,
         ///OUT lastversion_statusval INTEGER,
         ///OUT lastversioncommit_byname TEXT,
-        ///OUT lastv [rest of string was truncated]&quot;;.
+        ///OUT lastversioncommit_byid  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_update_dashboard2 {
             get {
@@ -3873,9 +3875,9 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to -- need to update.
         /// </summary>
-        public static string eb_revokedbaccess2user1 {
+        public static string eb_revokedbaccess2user_new1 {
             get {
-                return ResourceManager.GetString("eb_revokedbaccess2user1", resourceCulture);
+                return ResourceManager.GetString("eb_revokedbaccess2user_new1", resourceCulture);
             }
         }
         
@@ -3901,9 +3903,9 @@ namespace ExpressBase.Common {
         ///    END IF;
         ///      [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string eb_revokedbaccess2user2 {
+        public static string eb_revokedbaccess2user_new2 {
             get {
-                return ResourceManager.GetString("eb_revokedbaccess2user2", resourceCulture);
+                return ResourceManager.GetString("eb_revokedbaccess2user_new2", resourceCulture);
             }
         }
         
@@ -4342,6 +4344,42 @@ namespace ExpressBase.Common {
         public static string eb_schedules_new {
             get {
                 return ResourceManager.GetString("eb_schedules_new", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- need updation.
+        /// </summary>
+        public static string eb_schedules_new1 {
+            get {
+                return ResourceManager.GetString("eb_schedules_new1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_schedules
+        ///(
+        ///  id integer NOT NULL auto_increment,
+        ///  task json,
+        ///  created_by integer,
+        ///  created_at timestamp,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
+        ///  jobkey text,
+        ///  triggerkey text,
+        ///  status numeric,
+        ///  obj_id numeric,
+        ///  name text,
+        ///  constraint eb_schedules_pkey primary key(id)
+        ///);
+        ///
+        ///
+        ///CREATE INDEX eb_schedules_idx
+        ///ON eb_schedules(id) 
+        ///USING btree;.
+        /// </summary>
+        public static string eb_schedules_new2 {
+            get {
+                return ResourceManager.GetString("eb_schedules_new2", resourceCulture);
             }
         }
         
@@ -5151,7 +5189,7 @@ namespace ExpressBase.Common {
         ///         END IF;
         ///         -- Do Inserts into temp table here with str going into the row
         ///         
-        ///         INSERT INTO temp_array_ [rest of string was truncated]&quot;;.
+        ///         INSERT INTO temp_array_table(value) VALU [rest of string was truncated]&quot;;.
         /// </summary>
         public static string str_to_tbl_grp_util2 {
             get {
@@ -5196,7 +5234,7 @@ namespace ExpressBase.Common {
         ///         END IF;
         ///         -- Do Inserts into temp table here with str going into the row
         ///         
-        ///         INSERT INTO temp_array_table(value) values (TRIM((S [rest of string was truncated]&quot;;.
+        ///         INSERT INTO temp_array_table(value) values (TRIM((SELEC [rest of string was truncated]&quot;;.
         /// </summary>
         public static string str_to_tbl_util2 {
             get {
@@ -5242,7 +5280,7 @@ namespace ExpressBase.Common {
         ///         IF str=&apos;&apos; THEN
         ///            LEAVE simple_loop;
         ///         END IF;
-        /// [rest of string was truncated]&quot;;.
+        ///         -- Do Inse [rest of string was truncated]&quot;;.
         /// </summary>
         public static string string_to_rows_util2 {
             get {

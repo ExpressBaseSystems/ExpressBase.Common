@@ -145,7 +145,8 @@ namespace ExpressBase.Common
     {
         Active,
         Suspend,
-        Terminate
+        Terminate,
+        Delete
     }
 
     public enum EbConstraintTypes

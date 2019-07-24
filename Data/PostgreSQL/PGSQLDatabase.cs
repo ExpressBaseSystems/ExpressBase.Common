@@ -746,15 +746,6 @@ INSERT INTO eb_applications (applicationname,application_type, description,app_i
             }
         }
 
-        public string EB_UNIQUEEMAILCHECK
-        {
-            get
-            {
-                return @"
-SELECT id FROM eb_users WHERE LOWER(email) LIKE LOWER('%' || :email || '%') AND eb_del = 'F'";
-            }
-        }
-
         public string EB_GETTABLESCHEMA
         {
             get
