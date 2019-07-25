@@ -24,5 +24,3 @@ CREATE INDEX eb_languages_id_idx
     ON public.eb_languages USING btree
     (id)
     TABLESPACE pg_default;
-
-insert into eb_languages (language) values ('English(en-US)');
