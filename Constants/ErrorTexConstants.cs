@@ -6,6 +6,6 @@ namespace ExpressBase.Common.Constants
 {
     public class ErrorTexConstants
     {
-        public const string db_alredyExists = "Database Already exists";
+        public const string DB_ALREADY_EXISTS = "Database Already exists";
     }
 }
