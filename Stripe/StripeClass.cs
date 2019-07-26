@@ -13,6 +13,8 @@ namespace ExpressBase.Common.Stripe
 
         public int? PercentOff { get; set; }
 
+        public StripeCouponDuration Duration { get; set; }
+
         public string Currency { get; set; }
 
         public string CouponId { get; set; }
@@ -69,6 +71,10 @@ namespace ExpressBase.Common.Stripe
         public DateTime PeriodStart { get; set; }
 
         public DateTime PeriodEnd { get; set; }
+
+        public StripeCouponDuration Duration { get; set; }
+
+        public int? PercentOff { get; set; }
     }
 
     public class Eb_StripeInvoiceList
