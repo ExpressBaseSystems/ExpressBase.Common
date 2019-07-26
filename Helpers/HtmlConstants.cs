@@ -9,7 +9,7 @@ namespace ExpressBase.Common
         public const string Label = @"";
         public const string TOOL_HTML = @"
 <div class='tool_item_head' data-toggle='collapse' data-target='#@id@'><i class='fa fa-caret-down'></i> @label@ </div>
-    <div id='@id@' class='tool-sec-cont collapse in'>";
+    <div id='@id@' ebclass='tool-sec-cont' class='tool-sec-cont collapse in'>";
 
         public const string HelpText = @"";
 
