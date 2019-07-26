@@ -138,18 +138,10 @@ function ProcRecur(src_controls, dest_controls) {
         private string GetToolBoxHtml()
         {
             string _ToolsHtml = string.Empty;
-            string _controlsHtml = @"
-<div class='tool_item_head' data-toggle='collapse' data-target='#toolb_basic_ctrls' aria-expanded='false'><i class='fa fa-caret-down'></i> Basic Controls</div>
-    <div id='toolb_basic_ctrls' class='tool-sec-cont collapse in'>";
-            string _containerControlsHtml = @"
-<div class='tool_item_head' data-toggle='collapse' data-target='#toolb_cont_ctrls' aria-expanded='true'><i class='fa fa-caret-down'></i> Layout Controls</div>
-    <div id='toolb_cont_ctrls' class='tool-sec-cont collapse in'>";
-            string _specialContainerControlHtml = @"
-<div class='tool_item_head' data-toggle='collapse' data-target='#toolb_sp_cont_ctrls' aria-expanded='true'><i class='fa fa-caret-down'></i> Advanced Controls</div>
-    <div id='toolb_sp_cont_ctrls' class='tool-sec-cont collapse in'>";
-            string _placeHolderControlsHtml = @"
-<div class='tool_item_head' data-toggle='collapse' data-target='#toolb_ph_cont_ctrls' aria-expanded='true'><i class='fa fa-caret-down'></i> Platform Controls</div>
-    <div id='toolb_ph_cont_ctrls' class='tool-sec-cont collapse in'>";
+            string _controlsHtml = HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_basic_ctrls").Replace("@label@", "Basic Controls");
+            string _containerControlsHtml = HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_cont_ctrls").Replace("@label@", "Layout Controls");
+            string _specialContainerControlHtml = HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_sp_cont_ctrls").Replace("@label@", "Advanced Controls");
+            string _placeHolderControlsHtml = HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_ph_cont_ctrls").Replace("@label@", "Platform Controls");
 
             foreach (Type tool in this.TypeArray)
             {
