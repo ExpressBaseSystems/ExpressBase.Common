@@ -377,4 +377,7 @@ namespace ExpressBase.Common.Objects
         [Alias("Failure message")]
         public virtual string FailureMSG { get; set; }
     }
+
+    public interface IEbPlaceHolderControl { }
+    public interface IEbSpecialContainer { }
 }
