@@ -154,6 +154,35 @@ namespace ExpressBase.Common.Structures
 		}
     }
 
+    public class MapOperations : EbOperations
+    {
+        public readonly EbOperation Customize, DrillDown;
+
+        private MapOperations()
+        {
+            Customize = new EbOperation(OperationConstants.CUSTOMIZE, 0, OperationConstants.XXW);
+            DrillDown = new EbOperation(OperationConstants.DRILLDOWN, 2, OperationConstants.XXW);
+        }
+
+        public static EbOperations Instance
+        {
+            get
+            {
+                return new MapOperations();
+            }
+        }
+
+        public override IEnumerable<EbOperation> Enumerator
+        {
+            get
+            {
+                yield return Customize;
+                yield return DrillDown;
+            }
+        }
+    }
+
+
     public class BFOperations : EbOperations
     {
         public readonly EbOperation Access;
