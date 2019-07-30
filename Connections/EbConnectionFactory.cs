@@ -137,7 +137,7 @@ namespace ExpressBase.Common.Data
 
             Stopwatch watch = Stopwatch.StartNew();
             // the code that you want to measure comes here
-            
+
             if (this.Connections != null)
             {
                 string _userName = Connections.DataDbConfig.UserName;
@@ -292,7 +292,7 @@ namespace ExpressBase.Common.Data
                     for (int i = 0; i < Connections.MapConfigs.Integrations.Count; i++)
                     {
                         if (Connections.MapConfigs.Integrations[i].Type == EbIntegrations.GoogleMap)
-                            MapConnection.Add(new EbGoogleMap(Connections.MapConfigs.Integrations[i]));                           
+                            MapConnection.Add(new EbGoogleMap(Connections.MapConfigs.Integrations[i]));
                     }
                     MapConnection.DefaultConId = Connections.MapConfigs.DefaultConId;
                 }
@@ -301,7 +301,7 @@ namespace ExpressBase.Common.Data
 
             }
             else
-                throw new Exception("Fatal Error :: Solution Id is null or Empty!");
+                throw new Exception("Fatal Error :: Connection is null or Empty! . Solnname = " + SolutionId);
 
             watch.Stop();
             Console.WriteLine(string.Format("Connections Initialised in {0} MilliSeconds", watch.ElapsedMilliseconds));
