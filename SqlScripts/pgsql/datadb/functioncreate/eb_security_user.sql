@@ -1,8 +1,4 @@
--- FUNCTION: public.eb_createormodifyuserandroles(integer, integer, text, text, text, text, date, text, text, text, text, text, text, text, text, text, text, integer, text, integer, text)
-
--- DROP FUNCTION public.eb_createormodifyuserandroles(integer, integer, text, text, text, text, date, text, text, text, text, text, text, text, text, text, text, integer, text, integer, text);
-
-CREATE OR REPLACE FUNCTION public.eb_createormodifyuserandroles(
+CREATE OR REPLACE FUNCTION public.eb_security_user(
 	_userid integer,
 	_id integer,
 	_fullname text,
@@ -23,7 +19,9 @@ CREATE OR REPLACE FUNCTION public.eb_createormodifyuserandroles(
 	_statusid integer,
 	_hide text,
 	_anonymoususerid integer,
-	_preferences text)
+	_preferences text,
+	_constraints_add text,
+	_constraints_del text)
     RETURNS TABLE(uid integer) 
     LANGUAGE 'plpgsql'
 
@@ -32,8 +30,13 @@ CREATE OR REPLACE FUNCTION public.eb_createormodifyuserandroles(
     ROWS 1000
 AS $BODY$
 
-DECLARE uid integer; _roles integer[]; _group integer[];
+DECLARE 
+uid integer;
+_roles integer[];
+_group integer[];
+
 BEGIN
+uid := _id;
 _roles := string_to_array(_roles_temp, ',');
 _group := string_to_array(_group_temp, ',');
 
@@ -44,7 +47,7 @@ IF _id > 1 THEN
 		INSERT INTO eb_userstatus(userid, statusid, createdby, createdat) VALUES (_id, _statusid, _userid, NOW());
 	END IF;
 
-   UPDATE eb_users SET fullname= _fullname, nickname=_nickname, dob=_dob, sex=_sex, alternateemail=_alternateemail, phnoprimary=_phnoprimary, phnosecondary=_phnosecondary, landline=_landline, phextension=_phextension, fbid=_fbid, fbname=_fbname, statusid=_statusid, hide=_hide, preferencesjson=_preferences WHERE id = _id;
+   UPDATE eb_users SET fullname= _fullname, nickname=_nickname, email=_email, dob=_dob, sex=_sex, alternateemail=_alternateemail, phnoprimary=_phnoprimary, phnosecondary=_phnosecondary, landline=_landline, phextension=_phextension, fbid=_fbid, fbname=_fbname, statusid=_statusid, hide=_hide, preferencesjson=_preferences WHERE id = _id;
 			
    INSERT INTO eb_role2user(role_id,user_id,createdby,createdat) SELECT roleid,_id,_userid,NOW() FROM 
    UNNEST(array(SELECT unnest(_roles) except 
@@ -59,7 +62,7 @@ IF _id > 1 THEN
    UPDATE eb_user2usergroup SET eb_del = 'T',revokedby = _userid,revokedat =NOW() WHERE userid = _id AND eb_del = 'F' AND groupid IN(
 		SELECT UNNEST(array(SELECT groupid from eb_user2usergroup WHERE userid = _id AND eb_del = 'F')) except 
 		SELECT UNNEST(_group));
-
+					 
 ELSE
 
    INSERT INTO eb_users (fullname, nickname, email, pwd, dob, sex, alternateemail, phnoprimary, phnosecondary, landline, phextension, fbid, fbname, createdby, createdat, statusid, hide, preferencesjson) 
@@ -78,15 +81,10 @@ ELSE
 	
 	INSERT INTO eb_userstatus(userid, statusid, createdby, createdat) VALUES (uid, _statusid, _userid, NOW());
    
-END IF;
-  IF _userid > 0 THEN
-	RETURN QUERY
-    	SELECT uid;
-  END IF;
+END IF;					  
+PERFORM eb_security_constraints(_userid, uid, _constraints_add, _constraints_del);	
+
+RETURN QUERY SELECT uid;
 END;
 
 $BODY$;
-
-ALTER FUNCTION public.eb_createormodifyuserandroles(integer, integer, text, text, text, text, date, text, text, text, text, text, text, text, text, text, text, integer, text, integer, text)
-    OWNER TO postgres;
-

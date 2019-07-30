@@ -5,12 +5,13 @@
 CREATE TABLE public.eb_audit_master
 (
     id serial,
-    formid text COLLATE pg_catalog."default",
+    formid text,
+    dataid integer,
+    actiontype integer,
+    signin_log_id integer,
     eb_createdby integer,
-    eb_createdat timestamp without time zone,
-	dataid integer,
-	actiontype integer,
-	CONSTRAINT eb_audit_masters_pkey PRIMARY KEY (id)
+    eb_createdat timestamp without time zone,    
+    CONSTRAINT eb_audit_master_pkey PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE
@@ -19,7 +20,7 @@ TABLESPACE pg_default;
 
 ALTER TABLE public.eb_audit_master
     OWNER to postgres;
-	
+
 
 -- Index: eb_audit_master_id_idx
 

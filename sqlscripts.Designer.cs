@@ -269,12 +269,13 @@ namespace ExpressBase.Common {
         ///CREATE TABLE public.eb_audit_master
         ///(
         ///    id serial,
-        ///    formid text COLLATE pg_catalog.&quot;default&quot;,
+        ///    formid text,
+        ///    dataid integer,
+        ///    actiontype integer,
+        ///    signin_log_id integer,
         ///    eb_createdby integer,
-        ///    eb_createdat timestamp without time zone,
-        ///	dataid integer,
-        ///	actiontype integer,
-        ///	CONSTRAINT eb_audit_masters_pkey PRIMARY KEY (id)
+        ///    eb_createdat timestamp without time zone,    
+        ///    CONSTRAINT eb_audit_master_pkey PRIMARY KEY (id)
         ///)
         ///WITH (
         ///    OIDS = FALSE
@@ -283,11 +284,9 @@ namespace ExpressBase.Common {
         ///
         ///ALTER TABLE public.eb_audit_master
         ///    OWNER to postgres;
-        ///	
         ///
-        ///-- Index: eb_audit_master_id_idx
         ///
-        ///-- DROP [rest of string was truncated]&quot;;.
+        ///-- Index: eb_audit_master_id_idx        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_audit_master {
             get {
@@ -307,14 +306,15 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_audit_master
         ///(
-        ///  id integer NOT NULL auto_increment,
-        ///  formid varchar(100),
-        ///  eb_createdby integer,
-        ///  eb_createdat timestamp,
-        ///  dataid integer,
-        ///  actiontype integer,
-        ///  constraint eb_audit_master_pkey primary key(id)
-        ///);
+        ///    id serial,
+        ///    formid text,
+        ///    dataid integer,
+        ///    actiontype integer,
+        ///    signin_log_id integer,
+        ///    eb_createdby integer,
+        ///    eb_createdat timestamp DEFAULT current_timestamp,
+        ///    CONSTRAINT eb_audit_master_pkey PRIMARY KEY (id)
+        ///)
         ///
         ///create index eb_audit_master_idx on eb_audit_master(id) using btree;
         ///
@@ -419,17 +419,18 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_authenticate_unified(text, text, text, text, text)
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_authenticate_unified(text, text, text, text, text, text)
         ///
-        ///-- DROP FUNCTION public.eb_authenticate_unified(text, text, text, text, text);
+        ///-- DROP FUNCTION public.eb_authenticate_unified(text, text, text, text, text, text);
         ///
         ///CREATE OR REPLACE FUNCTION public.eb_authenticate_unified(
         ///	uname text DEFAULT NULL::text,
         ///	password text DEFAULT NULL::text,
         ///	social text DEFAULT NULL::text,
         ///	wc text DEFAULT NULL::text,
-        ///	ipaddress text DEFAULT NULL::text)
-        ///    RETURNS TABLE(userid integer, email text, fullname text, roles_a text, rolename_a text, permissions text, preferencesjs [rest of string was truncated]&quot;;.
+        ///	ipaddress text DEFAULT NULL::text,
+        ///	deviceinfo text DEFAULT NULL::text)
+        ///    RETURNS TABLE(_userid integer, _status_id integer, _email text, _full [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_authenticate_unified1 {
             get {
@@ -654,122 +655,129 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_constraints_datetime
+        ///   Looks up a localized string similar to -- Table: public.eb_constraints_line
         ///
-        ///-- DROP TABLE public.eb_constraints_datetime;
+        ///-- DROP TABLE public.eb_constraints_line;
         ///
-        ///CREATE TABLE public.eb_constraints_datetime
+        ///CREATE TABLE public.eb_constraints_line
         ///(
         ///    id serial,
-        ///    usergroup_id integer,
-        ///    type integer,
-        ///    start_datetime timestamp without time zone,
-        ///    end_datetime timestamp without time zone,
-        ///    days_coded integer,
-        ///    eb_del character(1) COLLATE pg_catalog.&quot;default&quot; DEFAULT &apos;F&apos;::bpchar,
-        ///    eb_created_by integer,
-        ///    eb_created_at timestamp without time zone,
-        ///    eb_revoked_by integer,
-        ///    eb_re [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_constraints_datetime {
-            get {
-                return ResourceManager.GetString("eb_constraints_datetime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- need to update.
-        /// </summary>
-        public static string eb_constraints_datetime1 {
-            get {
-                return ResourceManager.GetString("eb_constraints_datetime1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_constraints_datetime
-        ///(
-        ///  id integer NOT NULL auto_increment,
-        ///  usergroup_id integer,
-        ///  type integer,
-        ///  start_datetime timestamp DEFAULT  CURRENT_TIMESTAMP,
-        ///  end_datetime timestamp DEFAULT  CURRENT_TIMESTAMP,
-        ///  days_coded integer,
-        ///  eb_del char(1) DEFAULT &apos;F&apos;,
-        ///  eb_created_by integer,
-        ///  eb_created_at timestamp DEFAULT  CURRENT_TIMESTAMP,
-        ///  eb_revoked_by integer,
-        ///  eb_revoked_at timestamp DEFAULT  CURRENT_TIMESTAMP,
-        ///  title text,
-        ///  description text,
-        ///  CONSTRAINT eb_constraints_ [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_constraints_datetime2 {
-            get {
-                return ResourceManager.GetString("eb_constraints_datetime2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_constraints_ip
+        ///    master_id integer,
+        ///    c_type integer,
+        ///    c_operation integer,
+        ///    c_value text,
+        ///    CONSTRAINT eb_constraints_line_pkey PRIMARY KEY (id)
+        ///)
+        ///WITH (
+        ///    OIDS = FALSE
+        ///)
+        ///TABLESPACE pg_default;
         ///
-        ///-- DROP TABLE public.eb_constraints_ip;
+        ///ALTER TABLE public.eb_constraints_line
+        ///    OWNER to postgres;
+        ///	
+        ///	
+        ///-- Index: eb_constraints_line_id_idx
         ///
-        ///CREATE TABLE public.eb_constraints_ip
+        ///-- DROP INDEX public.eb_constraints_line_id_idx;
+        ///        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_constraints_line {
+            get {
+                return ResourceManager.GetString("eb_constraints_line", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Need Updation.
+        /// </summary>
+        public static string eb_constraints_line1 {
+            get {
+                return ResourceManager.GetString("eb_constraints_line1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_constraints_line
         ///(
         ///    id serial,
-        ///    usergroup_id integer,
-        ///    ip text COLLATE pg_catalog.&quot;default&quot;,
-        ///    description text COLLATE pg_catalog.&quot;default&quot;,
-        ///    eb_del character(1) COLLATE pg_catalog.&quot;default&quot; DEFAULT &apos;F&apos;::bpchar,
-        ///    eb_created_by integer,
-        ///    eb_created_at timestamp without time zone,
-        ///    eb_revoked_by integer,
-        ///    eb_revoked_at timestamp without time zone,
-        ///    CONSTRAINT eb_constr [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_constraints_ip {
-            get {
-                return ResourceManager.GetString("eb_constraints_ip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- need updation.
-        /// </summary>
-        public static string eb_constraints_ip1 {
-            get {
-                return ResourceManager.GetString("eb_constraints_ip1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_constraints_ip
-        ///(
-        ///  id integer NOT NULL auto_increment,
-        ///  usergroup_id integer,
-        ///  ip varchar(25),
-        ///  description text,
-        ///  eb_del char(1) DEFAULT &apos;F&apos;,
-        ///  eb_created_by integer,
-        ///  eb_created_at timestamp DEFAULT  CURRENT_TIMESTAMP,
-        ///  eb_revoked_by integer,
-        ///  eb_revoked_at timestamp DEFAULT  CURRENT_TIMESTAMP,
-        ///  CONSTRAINT eb_constraints_ip_pkey PRIMARY KEY (id)
+        ///    master_id integer,
+        ///    c_type integer,
+        ///    c_operation integer,
+        ///    c_value text,
+        ///    CONSTRAINT eb_constraints_line_pkey PRIMARY KEY (id)
         ///);
         ///
-        ///CREATE INDEX eb_constraints_ip_idx
-        ///ON eb_constraints_ip(id) 
-        ///USING btree;
-        ///
-        ///
-        ///CREATE INDEX eb_constraints_ip_ip_idx
-        /// [rest of string was truncated]&quot;;.
+        ///CREATE INDEX eb_constraints_line_id_idx
+        ///ON eb_constraints_line(id) 
+        ///USING btree;.
         /// </summary>
-        public static string eb_constraints_ip2 {
+        public static string eb_constraints_line2 {
             get {
-                return ResourceManager.GetString("eb_constraints_ip2", resourceCulture);
+                return ResourceManager.GetString("eb_constraints_line2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_constraints_master
+        ///
+        ///-- DROP TABLE public.eb_constraints_master;
+        ///
+        ///CREATE TABLE public.eb_constraints_master
+        ///(
+        ///    id serial,
+        ///    key_id integer,
+        ///    key_type integer,
+        ///    description text,
+        ///    eb_created_by integer,
+        ///    eb_created_at timestamp without time zone,
+        ///    eb_lastmodified_by integer,
+        ///    eb_lastmodified_at timestamp without time zone,
+        ///    eb_del character(1) DEFAULT &apos;F&apos;,
+        ///    CONSTRAINT eb_constraints_master_pkey PRIMARY KEY (id)
+        ///)
+        ///WITH (
+        ///    OIDS = FALSE
+        ///)
+        ///TA [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_constraints_master {
+            get {
+                return ResourceManager.GetString("eb_constraints_master", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Need Updation.
+        /// </summary>
+        public static string eb_constraints_master1 {
+            get {
+                return ResourceManager.GetString("eb_constraints_master1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_constraints_master
+        ///(
+        ///    id serial,
+        ///    key_id integer,
+        ///    key_type integer,
+        ///    description text,
+        ///    eb_created_by integer,
+        ///    eb_created_at timestamp DEFAULT current_timestamp,
+        ///    eb_lastmodified_by integer,
+        ///    eb_lastmodified_at timestamp DEFAULT current_timestamp,
+        ///    eb_del character(1)  DEFAULT &apos;F&apos;,
+        ///    CONSTRAINT eb_constraints_master_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///CREATE INDEX eb_constraints_master_id_idx
+        ///ON eb_constraints_master(id)
+        ///USING btree;.
+        /// </summary>
+        public static string eb_constraints_master2 {
+            get {
+                return ResourceManager.GetString("eb_constraints_master2", resourceCulture);
             }
         }
         
@@ -1224,162 +1232,6 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to create or replace FUNCTION eb_createormodifyuserandroles(
-        ///	in_userid NUMBER,
-        ///	in_id NUMBER,
-        ///	in_fullname VARCHAR2,
-        ///	in_nickname VARCHAR2,
-        ///	in_email VARCHAR2,
-        ///	in_pwd VARCHAR2,
-        ///	in_dob DATE,
-        ///	in_sex VARCHAR2,
-        ///	in_alternateemail VARCHAR2,
-        ///	in_phnoprimary VARCHAR2,
-        ///	in_phnosecondary VARCHAR2,
-        ///	in_landline VARCHAR2,
-        ///	in_phextension VARCHAR2,
-        ///	in_fbid VARCHAR2,
-        ///	in_fbname VARCHAR2,
-        ///	in_roles_temp VARCHAR2,
-        ///	in_group_temp VARCHAR2,
-        ///    in_statusid NUMBER,
-        ///	in_hide VARCHAR2,
-        ///    in_anonymoususe [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_createormodifyuserandroles {
-            get {
-                return ResourceManager.GetString("eb_createormodifyuserandroles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_createormodifyuserandroles(integer, integer, text, text, text, text, date, text, text, text, text, text, text, text, text, text, text, integer, text, integer, text)
-        ///
-        ///-- DROP FUNCTION public.eb_createormodifyuserandroles(integer, integer, text, text, text, text, date, text, text, text, text, text, text, text, text, text, text, integer, text, integer, text);
-        ///
-        ///CREATE OR REPLACE FUNCTION public.eb_createormodifyuserandroles(
-        ///	_userid integer,
-        ///	_id integer,
-        ///	_fullname text,
-        ///	_nickn [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_createormodifyuserandroles1 {
-            get {
-                return ResourceManager.GetString("eb_createormodifyuserandroles1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DROP PROCEDURE IF EXISTS eb_createormodifyuserandroles;
-        ///
-        ///CREATE PROCEDURE eb_createormodifyuserandroles(IN userid INTEGER,
-        ///    IN id INTEGER,
-        ///    IN fullname TEXT,
-        ///    IN nickname TEXT,
-        ///    IN email TEXT,
-        ///    IN pwd TEXT,
-        ///    IN dob DATE,
-        ///    IN sex TEXT,
-        ///    IN alternateemail TEXT,
-        ///    IN phprimary TEXT,
-        ///    IN phsecondary TEXT,
-        ///    IN phlandphone TEXT,
-        ///    IN extension TEXT,
-        ///    IN fbid TEXT,
-        ///    IN fbname TEXT,
-        ///    IN roles TEXT,
-        ///    IN `groups` TEXT,
-        ///    IN statusid INTEGER,
-        ///    IN h [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_createormodifyuserandroles2 {
-            get {
-                return ResourceManager.GetString("eb_createormodifyuserandroles2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to create or replace FUNCTION eb_createormodifyuserandroles(
-        ///	in_userid NUMBER,
-        ///	in_id NUMBER,
-        ///	in_fullname VARCHAR2,
-        ///	in_nickname VARCHAR2,
-        ///	in_email VARCHAR2,
-        ///	in_pwd VARCHAR2,
-        ///	in_dob DATE,
-        ///	in_sex VARCHAR2,
-        ///	in_alternateemail VARCHAR2,
-        ///	in_phnoprimary VARCHAR2,
-        ///	in_phnosecondary VARCHAR2,
-        ///	in_landline VARCHAR2,
-        ///	in_phextension VARCHAR2,
-        ///	in_fbid VARCHAR2,
-        ///	in_fbname VARCHAR2,
-        ///	in_roles_temp VARCHAR2,
-        ///	in_group_temp VARCHAR2,
-        ///    in_statusid NUMBER,
-        ///	in_hide VARCHAR2,
-        ///    in_anonymoususe [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_createormodifyusergroup {
-            get {
-                return ResourceManager.GetString("eb_createormodifyusergroup", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_createormodifyusergroup(integer, integer, text, text, text, text, text, text, text)
-        ///
-        ///-- DROP FUNCTION public.eb_createormodifyusergroup(integer, integer, text, text, text, text, text, text, text);
-        ///
-        ///CREATE OR REPLACE FUNCTION public.eb_createormodifyusergroup(
-        ///	_userid integer,
-        ///	_id integer,
-        ///	_name text,
-        ///	_description text,
-        ///	_users text,
-        ///	_ipconstr_new text,
-        ///	_ipconstr_old text,
-        ///	_dtconstr_new text,
-        ///	_dtconstr_old text)
-        ///    RETURNS TABLE(gid integer) 
-        ///    LANGUAGE &apos;plpgs [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_createormodifyusergroup1 {
-            get {
-                return ResourceManager.GetString("eb_createormodifyusergroup1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DROP PROCEDURE IF EXISTS eb_createormodifyusergroup;
-        ///
-        ///CREATE PROCEDURE eb_createormodifyusergroup(IN userid INTEGER,
-        ///    IN id INTEGER,
-        ///    IN name TEXT,
-        ///    IN description TEXT,
-        ///    IN users TEXT,
-        ///    IN ipconstrnw TEXT,
-        ///    IN ipconstrold TEXT,
-        ///    IN dtconstrnw TEXT,
-        ///    IN dtconstrold TEXT,
-        ///    OUT out_gid INTEGER)
-        ///BEGIN
-        ///DECLARE gid INTEGER;
-        ///DECLARE nwip TEXT;
-        ///DECLARE nwdesc TEXT;
-        ///DECLARE nwtitle TEXT;
-        ///DECLARE nwdesc1 TEXT;
-        ///DECLARE nwtype INTEGER;
-        ///DECLARE nwstart DATETIME DEFAULT NOW( [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_createormodifyusergroup2 {
-            get {
-                return ResourceManager.GetString("eb_createormodifyusergroup2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to -- FUNCTION: public.eb_currval(text)
         ///
         ///-- DROP FUNCTION public.eb_currval(text);
@@ -1820,76 +1672,6 @@ namespace ExpressBase.Common {
         public static string eb_get_tagged_object2 {
             get {
                 return ResourceManager.GetString("eb_get_tagged_object2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_getconstraintstatus(integer, text)
-        ///
-        ///-- DROP FUNCTION public.eb_getconstraintstatus(integer, text);
-        ///
-        ///CREATE OR REPLACE FUNCTION public.eb_getconstraintstatus(
-        ///	in_userid integer,
-        ///	in_ip text)
-        ///    RETURNS integer
-        ///    LANGUAGE &apos;plpgsql&apos;
-        ///
-        ///    COST 100
-        ///    VOLATILE 
-        ///AS $BODY$
-        ///
-        ///DECLARE 
-        ///arrip TEXT[];
-        ///ipfound BOOL;
-        ///countdtc INTEGER;
-        ///dtemp INTEGER;
-        ///ttemp INTEGER;
-        ///BEGIN
-        ///	--IP CONSTRAINT
-        ///	IF in_ip IS NOT NULL THEN
-        ///		SELECT ARRAY(SELECT ip FROM eb_constraints_ip 
-        ///		WHERE  [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_getconstraintstatus {
-            get {
-                return ResourceManager.GetString("eb_getconstraintstatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- need updation.
-        /// </summary>
-        public static string eb_getconstraintstatus1 {
-            get {
-                return ResourceManager.GetString("eb_getconstraintstatus1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DROP FUNCTION IF EXISTS eb_getconstraintstatus;
-        ///
-        ///CREATE FUNCTION eb_getconstraintstatus(in_userid INTEGER, in_ip TEXT) RETURNS int(11)
-        ///    READS SQL DATA
-        ///    DETERMINISTIC
-        ///BEGIN
-        ///DECLARE ipfound BOOL;
-        ///DECLARE countdtc INTEGER;
-        ///DECLARE dtemp INTEGER;
-        ///DECLARE ttemp INTEGER;
-        ///DECLARE arrip1 TEXT;
-        ///DECLARE c INTEGER;
-        ///
-        ///-- IP CONSTRAINT
-        ///DROP TEMPORARY TABLE IF EXISTS arrip;
-        ///CREATE TEMPORARY TABLE IF NOT EXISTS arrip(id INTEGER AUTO_INCREMENT PRIMARY KEY, value INTEGER);
-        ///    
-        ///IF in_ip IS NOT NULL THEN
-        ///    
-        ///	INSERT IN [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_getconstraintstatus2 {
-            get {
-                return ResourceManager.GetString("eb_getconstraintstatus2", resourceCulture);
             }
         }
         
@@ -2813,23 +2595,21 @@ namespace ExpressBase.Common {
         ///	statusv integer,
         ///	commit_uid integer,
         ///	changelogv text)
-        ///    RETURNS SETOF void 
+        ///    RETURNS integer
         ///    LANGUAGE &apos;plpgsql&apos;
-        ///
         ///   
         ///AS $BODY$
         ///
         ///DECLARE inserted_obj_ver_id integer;
+        ///DECLARE ob_id integer;
+        ///DECLARE ck_status text;
+        ///DECLARE tmp integer;
+        ///
         ///BEGIN 
-        ///  
-        ///INSERT INTO
-        ///	eb_objects_status(eb_obj_ver_id)
+        ///
         ///SELECT
-        ///	id
-        ///FROM
-        ///	eb_objects_ver
-        ///WHERE
-        ///	refid=i [rest of string was truncated]&quot;;.
+        ///		DISTINCT eb_objects_id
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_change_status1 {
             get {
@@ -2838,31 +2618,30 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DROP FUNCTION IF EXISTS eb_objects_change_status;
-        ///
-        ///CREATE FUNCTION eb_objects_change_status(id TEXT,
+        ///   Looks up a localized string similar to CREATE FUNCTION eb_objects_change_status(id TEXT,
         ///    status INTEGER,
         ///    commit_uid INTEGER,
         ///    obj_changelog TEXT) RETURNS int(11)
-        ///	READS SQL DATA
+        ///    READS SQL DATA
         ///    DETERMINISTIC
         ///BEGIN
         ///DECLARE inserted_obj_ver_id INTEGER;
+        ///DECLARE ob_id integer;
+        ///DECLARE ck_status text;
         ///
-        ///INSERT INTO
-        ///	eb_objects_status(eb_obj_ver_id)
         ///SELECT
-        ///	eov.id
-        ///FROM
-        ///	eb_objects_ver eov
-        ///WHERE
-        ///	eov.refid=id;
-        ///SELECT LAST_INSERT_ID() INTO inserted_obj_ver_id;
+        ///		DISTINCT eb_objects_id
+        ///	FROM
+        ///		eb_objects_ver
+        ///	WHERE
+        ///		refid=id INTO ob_id;
         ///
-        ///UPDATE
-        ///	eb_objects_status eos
-        ///SET
-        ///	eos.status = status, eos.uid = commit_uid, eos.ts = NOW( [rest of string was truncated]&quot;;.
+        ///SELECT q.ver_id FROM( 
+        ///SELECT 
+        ///		eos.eb_obj_ver_id as ver_id, eos.status as t_status 
+        ///	FROM 
+        ///    	eb_objects_status eos WHERE eos.id IN (
+        ///				SELECT MAX(eos1.id) AS [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_change_status2 {
             get {
@@ -4380,6 +4159,291 @@ namespace ExpressBase.Common {
         public static string eb_schedules_new2 {
             get {
                 return ResourceManager.GetString("eb_schedules_new2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_security_constraints(integer, integer, text, text)
+        ///
+        ///-- DROP FUNCTION public.eb_security_constraints(integer, integer, text, text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_security_constraints(
+        ///	_userid integer,
+        ///	_keyid integer,
+        ///	_add_data text,
+        ///	_delete_ids text)
+        ///    RETURNS TABLE(add_no integer, del_no integer) 
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///    COST 100
+        ///    VOLATILE 
+        ///    ROWS 1000
+        ///AS $BODY$
+        ///
+        ///DECLARE 
+        ///add_no INTEGER;
+        ///del_no INTEGER;
+        ///add_con TEXT[];
+        ///del_all INTEGER[];
+        ///te [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_security_constraints {
+            get {
+                return ResourceManager.GetString("eb_security_constraints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Need Updation.
+        /// </summary>
+        public static string eb_security_constraints1 {
+            get {
+                return ResourceManager.GetString("eb_security_constraints1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Need Updation.
+        /// </summary>
+        public static string eb_security_constraints2 {
+            get {
+                return ResourceManager.GetString("eb_security_constraints2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE OR REPLACE FUNCTION public.eb_security_user(
+        ///	_userid integer,
+        ///	_id integer,
+        ///	_fullname text,
+        ///	_nickname text,
+        ///	_email text,
+        ///	_pwd text,
+        ///	_dob date,
+        ///	_sex text,
+        ///	_alternateemail text,
+        ///	_phnoprimary text,
+        ///	_phnosecondary text,
+        ///	_landline text,
+        ///	_phextension text,
+        ///	_fbid text,
+        ///	_fbname text,
+        ///	_roles_temp text,
+        ///	_group_temp text,
+        ///	_statusid integer,
+        ///	_hide text,
+        ///	_anonymoususerid integer,
+        ///	_preferences text,
+        ///	_constraints_add text,
+        ///	_constraints_del text)
+        ///    RETURNS TABLE(uid in [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_security_user {
+            get {
+                return ResourceManager.GetString("eb_security_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to create or replace FUNCTION eb_createormodifyuserandroles(
+        ///	in_userid NUMBER,
+        ///	in_id NUMBER,
+        ///	in_fullname VARCHAR2,
+        ///	in_nickname VARCHAR2,
+        ///	in_email VARCHAR2,
+        ///	in_pwd VARCHAR2,
+        ///	in_dob DATE,
+        ///	in_sex VARCHAR2,
+        ///	in_alternateemail VARCHAR2,
+        ///	in_phnoprimary VARCHAR2,
+        ///	in_phnosecondary VARCHAR2,
+        ///	in_landline VARCHAR2,
+        ///	in_phextension VARCHAR2,
+        ///	in_fbid VARCHAR2,
+        ///	in_fbname VARCHAR2,
+        ///	in_roles_temp VARCHAR2,
+        ///	in_group_temp VARCHAR2,
+        ///    in_statusid NUMBER,
+        ///	in_hide VARCHAR2,
+        ///    in_anonymoususe [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_security_user1 {
+            get {
+                return ResourceManager.GetString("eb_security_user1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DROP PROCEDURE IF EXISTS eb_createormodifyuserandroles;
+        ///
+        ///CREATE PROCEDURE eb_createormodifyuserandroles(IN userid INTEGER,
+        ///    IN id INTEGER,
+        ///    IN fullname TEXT,
+        ///    IN nickname TEXT,
+        ///    IN email TEXT,
+        ///    IN pwd TEXT,
+        ///    IN dob DATE,
+        ///    IN sex TEXT,
+        ///    IN alternateemail TEXT,
+        ///    IN phprimary TEXT,
+        ///    IN phsecondary TEXT,
+        ///    IN phlandphone TEXT,
+        ///    IN extension TEXT,
+        ///    IN fbid TEXT,
+        ///    IN fbname TEXT,
+        ///    IN roles TEXT,
+        ///    IN `groups` TEXT,
+        ///    IN statusid INTEGER,
+        ///    IN h [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_security_user2 {
+            get {
+                return ResourceManager.GetString("eb_security_user2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE OR REPLACE FUNCTION public.eb_security_usergroup(
+        ///	_userid integer,
+        ///	_id integer,
+        ///	_name text,
+        ///	_description text,
+        ///	_users text,
+        ///	_constraints_add text,
+        ///	_constraints_del text)
+        ///    RETURNS TABLE(gid integer) 
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///    COST 100
+        ///    VOLATILE 
+        ///    ROWS 1000
+        ///AS $BODY$
+        ///
+        ///DECLARE 
+        ///	gid integer;
+        ///	users INTEGER[];
+        ///BEGIN
+        ///gid:=_id;
+        ///users := string_to_array(_users, &apos;,&apos;)::integer[];
+        ///
+        ///IF _id &gt; 0 THEN
+        ///	UPDATE eb_usergroup SET name=_name, description=_description WHERE id=_ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_security_usergroup {
+            get {
+                return ResourceManager.GetString("eb_security_usergroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to create or replace FUNCTION eb_createormodifyuserandroles(
+        ///	in_userid NUMBER,
+        ///	in_id NUMBER,
+        ///	in_fullname VARCHAR2,
+        ///	in_nickname VARCHAR2,
+        ///	in_email VARCHAR2,
+        ///	in_pwd VARCHAR2,
+        ///	in_dob DATE,
+        ///	in_sex VARCHAR2,
+        ///	in_alternateemail VARCHAR2,
+        ///	in_phnoprimary VARCHAR2,
+        ///	in_phnosecondary VARCHAR2,
+        ///	in_landline VARCHAR2,
+        ///	in_phextension VARCHAR2,
+        ///	in_fbid VARCHAR2,
+        ///	in_fbname VARCHAR2,
+        ///	in_roles_temp VARCHAR2,
+        ///	in_group_temp VARCHAR2,
+        ///    in_statusid NUMBER,
+        ///	in_hide VARCHAR2,
+        ///    in_anonymoususe [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_security_usergroup1 {
+            get {
+                return ResourceManager.GetString("eb_security_usergroup1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DROP PROCEDURE IF EXISTS eb_createormodifyusergroup;
+        ///
+        ///CREATE PROCEDURE eb_createormodifyusergroup(IN userid INTEGER,
+        ///    IN id INTEGER,
+        ///    IN name TEXT,
+        ///    IN description TEXT,
+        ///    IN users TEXT,
+        ///    IN ipconstrnw TEXT,
+        ///    IN ipconstrold TEXT,
+        ///    IN dtconstrnw TEXT,
+        ///    IN dtconstrold TEXT,
+        ///    OUT out_gid INTEGER)
+        ///BEGIN
+        ///DECLARE gid INTEGER;
+        ///DECLARE nwip TEXT;
+        ///DECLARE nwdesc TEXT;
+        ///DECLARE nwtitle TEXT;
+        ///DECLARE nwdesc1 TEXT;
+        ///DECLARE nwtype INTEGER;
+        ///DECLARE nwstart DATETIME DEFAULT NOW( [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_security_usergroup2 {
+            get {
+                return ResourceManager.GetString("eb_security_usergroup2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_signin_log
+        ///
+        ///-- DROP TABLE public.eb_signin_log;
+        ///
+        ///CREATE TABLE public.eb_signin_log
+        ///(
+        ///    id serial,
+        ///    user_id integer,
+        ///    ip_address text COLLATE pg_catalog.&quot;default&quot;,
+        ///    device_info text COLLATE pg_catalog.&quot;default&quot;,
+        ///    is_attempt_failed character(1) COLLATE pg_catalog.&quot;default&quot; DEFAULT &apos;F&apos;::bpchar,	
+        ///    is_force_signout character(1) COLLATE pg_catalog.&quot;default&quot; DEFAULT &apos;F&apos;::bpchar,
+        ///    signin_at timestamp without time zone,
+        ///    signout_at timestamp without time zone,        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_signin_log {
+            get {
+                return ResourceManager.GetString("eb_signin_log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Need Updation.
+        /// </summary>
+        public static string eb_signin_log1 {
+            get {
+                return ResourceManager.GetString("eb_signin_log1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_signin_log
+        ///(
+        ///    id serial,
+        ///    user_id integer,
+        ///    ip_address text,
+        ///    device_info text,
+        ///    is_attempt_failed character(1) DEFAULT &apos;F&apos;,	
+        ///    is_force_signout character(1) DEFAULT &apos;F&apos;,
+        ///    signin_at timestamp DEFAULT current_timestamp,
+        ///    signout_at timestamp DEFAULT current_timestamp,
+        ///    CONSTRAINT eb_signin_log_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///CREATE INDEX eb_signin_log_id_idx
+        ///ON eb_signin_log(id) 
+        ///USING btree;.
+        /// </summary>
+        public static string eb_signin_log2 {
+            get {
+                return ResourceManager.GetString("eb_signin_log2", resourceCulture);
             }
         }
         
