@@ -128,6 +128,21 @@ function ProcRecur(src_controls, dest_controls) {
 };";
             this.TypeRegister = "function ObjectFactory(jsonObj) { ";
 
+            this.ToolsHtml = this.GetToolBoxHtml();
+
+            this.AllMetas += string.Concat("};", this.EbEnums, "};", this.CtrlCounters + "};");
+            this.TypeRegister += " };";
+            this.EbObjectTypes = string.Concat("var EbObjectTypes = ", Get_EbObjTypesStr());
+        }
+
+        private string GetToolBoxHtml()
+        {
+            string _ToolsHtml = string.Empty;
+            string _controlsHtml = HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_basic_ctrls").Replace("@label@", "Basic Controls");
+            string _containerControlsHtml = HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_cont_ctrls").Replace("@label@", "Layout Controls");
+            string _specialContainerControlHtml = HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_sp_cont_ctrls").Replace("@label@", "Advanced Controls");
+            string _placeHolderControlsHtml = HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_ph_cont_ctrls").Replace("@label@", "Platform Controls");
+
             foreach (Type tool in this.TypeArray)
             {
                 if (tool.GetTypeInfo().IsSubclassOf(this.TypeOfTopEbObjectParent) ||
@@ -139,12 +154,25 @@ function ProcRecur(src_controls, dest_controls) {
                         try
                         {
                             TypeInfo _typeInfo = tool.GetTypeInfo();
-                            var _enableInBuider = _typeInfo.GetCustomAttribute<EnableInBuilder>();
+                            EnableInBuilder _enableInBuider = _typeInfo.GetCustomAttribute<EnableInBuilder>();
+
                             if (_enableInBuider != null && _enableInBuider.BuilderTypes.Contains(this.BuilderType))
                             {
                                 object toolObj = Activator.CreateInstance(tool);
+
                                 if ((!_typeInfo.IsDefined(typeof(HideInToolBox))) && toolObj is EbControl)
-                                    ToolsHtml += (toolObj as EbControl).GetToolHtml();
+                                {
+                                    EbControl ControlObj = toolObj as EbControl;
+
+                                    if (toolObj is IEbPlaceHolderControl)
+                                        _placeHolderControlsHtml += ControlObj.GetToolHtml();
+                                    else if (toolObj is IEbSpecialContainer)
+                                        _specialContainerControlHtml += ControlObj.GetToolHtml();
+                                    else if (toolObj is EbControlContainer)
+                                        _containerControlsHtml += ControlObj.GetToolHtml();
+                                    else
+                                        _controlsHtml += ControlObj.GetToolHtml();
+                                }
                                 //ToolBoxHtml += this.GetToolHtml(tool.Name.Substring(2));
                                 this.TypeRegister += string.Format(@"
                                     if (jsonObj['$type'].includes('{0}')) 
@@ -157,14 +185,13 @@ function ProcRecur(src_controls, dest_controls) {
                         catch (Exception ee)
                         {
                             Console.WriteLine("Exception: " + ee.ToString());
+                            throw new Exception(ee.Message);
                         }
                     }
                 }
             }
-
-            this.AllMetas += string.Concat("};", this.EbEnums, "};", this.CtrlCounters + "};");
-            this.TypeRegister += " };";
-            this.EbObjectTypes = string.Concat("var EbObjectTypes = ", Get_EbObjTypesStr());
+            _ToolsHtml = _controlsHtml + "</div>" + _containerControlsHtml + "</div>" + _specialContainerControlHtml + "</div>" + _placeHolderControlsHtml + "</div>";
+            return _ToolsHtml;
         }
 
         private string GetToolHtml(string tool_name)

@@ -58,6 +58,8 @@ namespace ExpressBase.Common.LocationNSolution
         public bool IsVersioningEnabled { get; set; }
 
         public Dictionary<int,string> Users { get; set; }
+
+        public int PlanUserCount { get; set; }
     }
 
     public class EbLocationCustomField
