@@ -166,6 +166,13 @@ namespace ExpressBase.Common
         LessThan = 3
     }
 
+    public enum EbConstraintKeyTypes
+    {
+        User = 1,
+        UserGroup = 2,
+        Role = 3
+    }
+
     public enum OracleSysRoles
     {
         CONNECT,
@@ -192,44 +199,41 @@ namespace ExpressBase.Common
         //CONNECT,
         //RESOURCE,
         //DBA
-        ALTER,
-        ALTER_ROUTINE,
-        CREATE,
-        CREATE_ROUTINE,
-        CREATE_TABLESPACE,
-        CREATE_TEMPORARY_TABLES,
-        CREATE_USER,
-        CREATE_VIEW,
-        DELETE,
-        DROP,
-        EVENT,
-        EXECUTE,
-        FILE,
-        INDEX,
-        INSERT,
-        LOCK_TABLES,
-        PROCESS,
-        REFERENCES,
-        RELOAD,
-        REPLICATION_CLIENT,
-        REPLICATION_SLAVE,
         SELECT,
-        SHOW_DATABASES,
-        SHOW_VIEW,
-        SHUTDOWN,
-        SUPER, TRIGGER,
+        INSERT,
         UPDATE,
-        CREATE_ROLE,
-        DROP_ROLE,
-    }
-
-    public enum MySqlSysRolesv1
-    {
+        DELETE,
+        CREATE,
+        DROP,
+        RELOAD,
+        SHUTDOWN,
+        PROCESS,
+        FILE,
+        REFERENCES,
+        INDEX,
+        ALTER,
+        SHOW___DATABASES,
+        SUPER,
+        CREATE___TEMPORARY___TABLES,
+        LOCK___TABLES,
+        EXECUTE,
+        REPLICATION___SLAVE,
+        REPLICATION___CLIENT,
+        CREATE___VIEW,
+        SHOW___VIEW,
+        CREATE___ROUTINE,
+        ALTER___ROUTINE,
+        CREATE___USER,
+        EVENT,
+        TRIGGER,
+        CREATE___TABLESPACE,
+        CREATE___ROLE,
+        DROP___ROLE,
         XA_RECOVER_ADMIN,
         TABLE_ENCRYPTION_ADMIN,
         SYSTEM_VARIABLES_ADMIN,
-        SET_USER_ID,
         SYSTEM_USER,
+        SET_USER_ID,
         SESSION_VARIABLES_ADMIN,
         SERVICE_CONNECTION_ADMIN,
         ROLE_ADMIN,
@@ -237,12 +241,15 @@ namespace ExpressBase.Common
         RESOURCE_GROUP_ADMIN,
         REPLICATION_SLAVE_ADMIN,
         PERSIST_RO_VARIABLES_ADMIN,
+        INNODB_REDO_LOG_ARCHIVE,
         GROUP_REPLICATION_ADMIN,
         ENCRYPTION_KEY_ADMIN,
         CONNECTION_ADMIN,
+        CLONE_ADMIN,
         BINLOG_ENCRYPTION_ADMIN,
         BINLOG_ADMIN,
         BACKUP_ADMIN,
+        AUDIT_ADMIN,
         APPLICATION_PASSWORD_ADMIN
     }
 

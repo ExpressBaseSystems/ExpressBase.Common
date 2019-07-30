@@ -95,6 +95,7 @@ namespace ExpressBase.Common.Structures
         public const int iBotForm = 18;
         public const int iSmsBuilder = 19;
         public const int iApi = 20;
+        public const int iGoogleMap = 21;
 
         public static readonly EbObjectType Null = new EbObjectType("Null", iNull, ObjectConstants.XXX, false, "fa-exclamation-triangle",null);
         public static readonly EbObjectType WebForm = new EbObjectType(ObjectConstants.WEB_FORM, iWebForm, ObjectConstants.XXW, true, "fa-wpforms","Form");//true
@@ -117,6 +118,7 @@ namespace ExpressBase.Common.Structures
         public static readonly EbObjectType BotForm = new EbObjectType(ObjectConstants.BOT_FORM, iBotForm, ObjectConstants.BXX, true, "fa-wpforms",null);
         public static readonly EbObjectType SmsBuilder = new EbObjectType(ObjectConstants.SMS_BUILDER, iSmsBuilder, ObjectConstants.XXW, false, "fa-commenting-o",null);
         public static readonly EbObjectType Api = new EbObjectType(ObjectConstants.API, iApi, ObjectConstants.XXW, false, "fa-code",null);
+        public static readonly EbObjectType GoogleMap = new EbObjectType(ObjectConstants.GOOGLEMAP, iGoogleMap, ObjectConstants.BMW, true, "fa-map-marker", null);
 
         public static EbObjectType Get(int intcode)
         {
@@ -153,7 +155,8 @@ namespace ExpressBase.Common.Structures
                     ChartVisualization,
                     BotForm,
                     SmsBuilder,
-                    Api
+                    Api,
+                    GoogleMap
                 };
             }
         }

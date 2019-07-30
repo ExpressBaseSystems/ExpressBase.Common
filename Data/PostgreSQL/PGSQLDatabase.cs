@@ -693,8 +693,8 @@ SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id =
             }
         }
 
-        public string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_createormodifyuserandroles(:userid,:id,:fullname,:nickname,:email,:pwd,:dob,:sex,:alternateemail,:phprimary,:phsecondary,:phlandphone,:extension,:fbid,:fbname,:roles,:groups,:statusid,:hide,:anonymoususerid,:preference);"; } }
-        public string EB_SAVEUSERGROUP_QUERY { get { return "SELECT * FROM eb_createormodifyusergroup(:userid,:id,:name,:description,:users,:ipconstrnw,:ipconstrold,:dtconstrnw,:dtconstrold);"; } }
+        public string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_security_user(:userid,:id,:fullname,:nickname,:email,:pwd,:dob,:sex,:alternateemail,:phprimary,:phsecondary,:phlandphone,:extension,:fbid,:fbname,:roles,:groups,:statusid,:hide,:anonymoususerid,:preference,:consadd,:consdel);"; } }
+        public string EB_SAVEUSERGROUP_QUERY { get { return "SELECT * FROM eb_security_usergroup(:userid,:id,:name,:description,:users,:constraints_add,:constraints_del);"; } }
 
         public string EB_MANAGEUSER_FIRST_QUERY
         {
