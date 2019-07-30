@@ -40,19 +40,11 @@ namespace ExpressBase.Common.Stripe
         
     }
 
-    public class Eb_StripeInvoice
+    public class Eb_StripeSubInvoice
     {
-        public string Id { get; set; }
-
-        public string PlanId { get; set; }
-
         public int Amount { get; set; }
 
-        public DateTime Date { get; set; }
-
-        public int SubTotal { get; set; }
-
-        public int Total { get; set; }
+        public string PlanId { get; set; }
 
         public string Type { get; set; }
 
@@ -61,6 +53,19 @@ namespace ExpressBase.Common.Stripe
         public string Currency { get; set; }
 
         public int? Quantity { get; set; }
+
+        public int Total { get; set; }
+    }
+
+    public class Eb_StripeInvoice
+    {
+        public string Id { get; set; }
+
+        public DateTime Date { get; set; }
+
+        public int SubTotal { get; set; }
+
+        public int Total { get; set; }
 
         public string Url { get; set; }
 
@@ -75,6 +80,8 @@ namespace ExpressBase.Common.Stripe
         public StripeCouponDuration Duration { get; set; }
 
         public int? PercentOff { get; set; }
+
+        public List<Eb_StripeSubInvoice> SubList { get; set; }
     }
 
     public class Eb_StripeInvoiceList
