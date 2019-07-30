@@ -491,17 +491,16 @@ namespace ExpressBase.Security
                     Preference = !string.IsNullOrEmpty(ds.Rows[0][7].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][7].ToString()) : new Preferences { Locale = "en-US", TimeZone = "(UTC) Coordinated Universal Time", DefaultLocation = -1 },
                     SignInLogId = Convert.ToInt32(ds.Rows[0][9])
                 };
-                if (_user.Preference.DefaultLocation < 1 && _user.LocationIds.Count > 0)
-                {
-                    _user.Preference.DefaultLocation = _user.LocationIds[0] == -1 ? 1 : _user.LocationIds[0];
-                }
-
-                if (!ds.Rows[0].IsDBNull(8))
+                if (!ds.Rows[0].IsDBNull(8) && !_user.Roles.Contains(SystemRoles.SolutionOwner.ToString()) && !_user.Roles.Contains(SystemRoles.SolutionAdmin.ToString()))
                 {
                     EbConstraints constraints = new EbConstraints(ds.Rows[0][8].ToString());
                     if (!constraints.Validate("<ip>", "<deviceid>", ref _user))
                         _user.UserId = -1;
-                }                    
+                }
+                if (_user.Preference.DefaultLocation < 1 && _user.LocationIds.Count > 0)
+                {
+                    _user.Preference.DefaultLocation = _user.LocationIds[0] == -1 ? 1 : _user.LocationIds[0];
+                }
             }
             return _user;
         }
