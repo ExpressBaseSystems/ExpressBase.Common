@@ -47,6 +47,9 @@ namespace ExpressBase.Security
         [DataMember(Order = 9)]
         public override string FullName { get; set; }
 
+        [DataMember(Order = 10)]
+        public int SignInLogId { get; set; }
+
         private List<string> _ebObjectIds = null;
         public List<string> EbObjectIds
         {
@@ -389,48 +392,53 @@ namespace ExpressBase.Security
 
         private static User InitUserObject(EbDataTable ds, string context)
         {
+            //Columns : _userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id
             User _user = null;
-            if (ds.Rows.Count > 0)
+            int userid = Convert.ToInt32(ds.Rows[0][0]);
+            if (userid > 0)
             {
-                int userid = Convert.ToInt32(ds.Rows[0][0]);
-                if (userid > 0)
+                bool sysRoleExists = false;
+                string[] rids = ds.Rows[0][4].ToString().Split(',');//role id array
+                List<string> rolesname = ds.Rows[0][5].ToString().Split(',').ToList();
+                if (!rids[0].IsNullOrEmpty())
                 {
-                    bool sysRoleExists = false;
-                    string[] rids = ds.Rows[0][3].ToString().Split(',');//role id array
-                    List<string> rolesname = ds.Rows[0][4].ToString().Split(',').ToList();
-                    if (!rids[0].IsNullOrEmpty())
+                    List<int> rolesid = Array.ConvertAll(rids, int.Parse).ToList();
+                    for (var i = 0; i < rolesid.Count; i++)
                     {
-                        List<int> rolesid = Array.ConvertAll(rids, int.Parse).ToList();
-                        for (var i = 0; i < rolesid.Count; i++)
+                        int id = rolesid[i];
+                        if (id < 100 && Enum.GetName(typeof(SystemRoles), id) != null)
                         {
-                            int id = rolesid[i];
-                            if (id < 100 && Enum.GetName(typeof(SystemRoles), id) != null)
-                            {
-                                rolesname[i] = Enum.GetName(typeof(SystemRoles), id);
-                                sysRoleExists = true;
-                            }
+                            rolesname[i] = Enum.GetName(typeof(SystemRoles), id);
+                            sysRoleExists = true;
                         }
                     }
-                    if (context.Equals(RoutingConstants.DC) && !sysRoleExists)
-                        return null;
-                    //if(Convert.ToInt32(ds.Rows[0][7]) != 100 && !sysRoleExists)//Constraints Status Demo Test
-                    //	return null;
-                    _user = new User
-                    {
-                        UserId = userid,
-                        Email = ds.Rows[0][1].ToString(),
-                        FullName = ds.Rows[0][2].ToString(),
-                        Roles = rolesname,
-                        Permissions = ds.Rows[0][5].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][5].ToString().Split(',').ToList(),
-                        Preference = !string.IsNullOrEmpty(ds.Rows[0][6].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][6].ToString()) : new Preferences { Locale = "en-US", TimeZone = "(UTC) Coordinated Universal Time", DefaultLocation = -1 }
-                    };
-                    if (_user.Preference.DefaultLocation < 1 && _user.LocationIds.Count > 0)
-                    {
-                        _user.Preference.DefaultLocation = _user.LocationIds[0] == -1 ? 1 : _user.LocationIds[0];
-                    }
                 }
-            }
+                if (context.Equals(RoutingConstants.DC) && !sysRoleExists)
+                    return null;
+                //if(Convert.ToInt32(ds.Rows[0][7]) != 100 && !sysRoleExists)//Constraints Status Demo Test
+                //	return null;
+                _user = new User
+                {
+                    UserId = userid,
+                    Email = ds.Rows[0][2].ToString(),
+                    FullName = ds.Rows[0][3].ToString(),
+                    Roles = rolesname,
+                    Permissions = ds.Rows[0][6].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][6].ToString().Split(',').ToList(),
+                    Preference = !string.IsNullOrEmpty(ds.Rows[0][7].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][7].ToString()) : new Preferences { Locale = "en-US", TimeZone = "(UTC) Coordinated Universal Time", DefaultLocation = -1 },
+                    SignInLogId = Convert.ToInt32(ds.Rows[0][9])
+                };
+                if (_user.Preference.DefaultLocation < 1 && _user.LocationIds.Count > 0)
+                {
+                    _user.Preference.DefaultLocation = _user.LocationIds[0] == -1 ? 1 : _user.LocationIds[0];
+                }
 
+                if (!ds.Rows[0].IsDBNull(8))
+                {
+                    EbConstraints constraints = new EbConstraints(ds.Rows[0][8].ToString());
+                    if (!constraints.Validate("<ip>", "<deviceid>", ref _user))
+                        _user.UserId = -1;
+                }                    
+            }
             return _user;
         }
     }

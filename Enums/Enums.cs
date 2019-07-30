@@ -166,6 +166,13 @@ namespace ExpressBase.Common
         LessThan = 3
     }
 
+    public enum EbConstraintKeyTypes
+    {
+        User = 1,
+        UserGroup = 2,
+        Role = 3
+    }
+
     public enum OracleSysRoles
     {
         CONNECT,
