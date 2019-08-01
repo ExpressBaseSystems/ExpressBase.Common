@@ -194,7 +194,21 @@ namespace ExpressBase.Security
             foreach (KeyValuePair<EbConstraintTypes, bool> _s in _status)
                 if (!_s.Value)
                     return false;
-            user.Permissions.RemoveAll(p => !_locs.Contains(Convert.ToInt32(p.Split(":")[1].Trim())));
+            if (_locs.Count > 0)
+            {
+                List<string> global = new List<string>();
+                for (int i = 0; i < user.Permissions.Count; i++)
+                {
+                    string[] s = user.Permissions[i].Split(":");
+                    if (s[1].Equals("-1"))
+                        global.Add(s[0]);
+                }
+                user.Permissions.RemoveAll(p => !_locs.Contains(Convert.ToInt32(p.Split(":")[1].Trim())));
+                if (global.Count > 0)
+                    for (int i = 0; i < global.Count; i++)
+                        for (int j = 0; j < _locs.Count; j++)
+                            user.Permissions.Add(global[i] + ":" + _locs[j]);
+            }
             return true;
         }
 
