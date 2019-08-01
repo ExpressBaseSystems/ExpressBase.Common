@@ -31,6 +31,7 @@ namespace ExpressBase.Common
         MSSQL,
         ORACLE,
         MongoDB,
+        GoogleDrive,
         Cloudinary,
         Cloudfront,
     }
@@ -73,7 +74,8 @@ namespace ExpressBase.Common
         SMTP = 8,
         Cloudinary = 9,
         GoogleMap = 10,
-        SendGrid = 11
+        SendGrid = 11,
+        GoogleDrive =12
     }
 
     public enum SmtpProviders
