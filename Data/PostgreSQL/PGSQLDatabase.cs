@@ -385,9 +385,9 @@ namespace ExpressBase.Common
                 return EbDbTypes.String;
             else if (_typ == typeof(bool))
                 return EbDbTypes.Boolean;
-            else if (_typ == typeof(decimal) || _typ == typeof(Double))
+            else if (_typ == typeof(decimal) || _typ == typeof(Double) || _typ == typeof(Single))
                 return EbDbTypes.Decimal;
-            else if (_typ == typeof(int) || _typ == typeof(Int32) || _typ == typeof(Int16) || _typ == typeof(Single))
+            else if (_typ == typeof(int) || _typ == typeof(Int32) || _typ == typeof(Int16) )
                 return EbDbTypes.Int32;
             else if (_typ == typeof(Int16))
                 return EbDbTypes.Int16;
