@@ -133,7 +133,7 @@ CREATE TABLE employee_territories (
 
 CREATE TABLE order_details (
 	id serial,
-    order_id smallint ,
+    orders_id smallint ,
     product_id smallint ,
     unit_price real ,
     quantity smallint ,
