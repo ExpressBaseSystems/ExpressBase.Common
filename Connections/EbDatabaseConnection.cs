@@ -350,6 +350,15 @@ namespace ExpressBase.Common.Connections
         public MapType MapType { get; set; }
     }
 
+    public class EbGoogleDriveConfig : EbIntegrationConf
+    {
+        public string JsonString { get; set; }
+
+        public string AppName { get; set; }
+
+        public override EbIntegrations Type { get { return EbIntegrations.GoogleDrive; } }
+    }
+
     public class EbGoogleMapConfig : EbMapConfig
     {
         public override EbIntegrations Type { get { return EbIntegrations.GoogleMap; } }
