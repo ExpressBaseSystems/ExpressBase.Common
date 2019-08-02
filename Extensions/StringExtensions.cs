@@ -56,7 +56,7 @@ namespace ExpressBase.Common.Extensions
 
         public static string Truncate(this string str, int length)
         {
-            if (length == 0 || str.Length < length )
+            if (length == 0 || str.Length <= length )
                 return str;
             else
                 return str.Substring(0, length)+ "...";
