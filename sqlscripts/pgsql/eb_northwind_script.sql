@@ -41,8 +41,8 @@ DROP TABLE IF EXISTS employees;
 --
 
 CREATE TABLE categories (
-    id serial NOT NULL ,
-    category_name character varying(15) NOT NULL,
+    id serial  ,
+    category_name character varying(15) ,
     description text,
     picture bytea
 );
@@ -53,8 +53,8 @@ CREATE TABLE categories (
 --
 
 CREATE TABLE customer_customer_demo (
-    customer_id bpchar NOT NULL,
-    customer_type_id bpchar NOT NULL
+    customer_id bpchar ,
+    customer_type_id bpchar 
 );
 
 
@@ -63,7 +63,7 @@ CREATE TABLE customer_customer_demo (
 --
 
 CREATE TABLE customer_demographics (
-    customer_type_id bpchar NOT NULL,
+    customer_type_id bpchar,
     customer_desc text
 );
 
@@ -74,8 +74,8 @@ CREATE TABLE customer_demographics (
 
 CREATE TABLE customers (
 	id serial, 
-    customer_id bpchar unique NOT NULL,
-    company_name character varying(40) NOT NULL,
+    customer_id bpchar unique ,
+    company_name character varying(40) ,
     contact_name character varying(30),
     contact_title character varying(30),
     address character varying(60),
@@ -93,9 +93,9 @@ CREATE TABLE customers (
 --
 
 CREATE TABLE employees (
-    id serial NOT NULL,
-    last_name character varying(20) NOT NULL,
-    first_name character varying(10) NOT NULL,
+    id serial ,
+    last_name character varying(20) ,
+    first_name character varying(10) ,
     title character varying(30),
     title_of_courtesy character varying(25),
     birth_date date,
@@ -120,8 +120,8 @@ CREATE TABLE employees (
 
 CREATE TABLE employee_territories (
 	id serial,
-    employee_id smallint NOT NULL,
-    territory_id character varying(20) NOT NULL
+    employee_id smallint,
+    territory_id character varying(20) 
 );
 
 
@@ -133,11 +133,11 @@ CREATE TABLE employee_territories (
 
 CREATE TABLE order_details (
 	id serial,
-    order_id smallint NOT NULL,
-    product_id smallint NOT NULL,
-    unit_price real NOT NULL,
-    quantity smallint NOT NULL,
-    discount real NOT NULL
+    orders_id smallint ,
+    product_id smallint ,
+    unit_price real ,
+    quantity smallint ,
+    discount real 
 );
 
 
@@ -146,7 +146,7 @@ CREATE TABLE order_details (
 --
 
 CREATE TABLE orders (
-    id serial NOT NULL,
+    id serial ,
 	order_id numeric,
     customer_id bpchar,
     employee_id smallint,
@@ -169,8 +169,8 @@ CREATE TABLE orders (
 --
 
 CREATE TABLE products (
-    id serial NOT NULL,
-    product_name character varying(40) NOT NULL,
+    id serial ,
+    product_name character varying(40) ,
     supplier_id smallint,
     category_id smallint,
     quantity_per_unit character varying(20),
@@ -178,7 +178,7 @@ CREATE TABLE products (
     units_in_stock smallint,
     units_on_order smallint,
     reorder_level smallint,
-    discontinued integer NOT NULL
+    discontinued integer 
 );
 
 
@@ -187,8 +187,8 @@ CREATE TABLE products (
 --
 
 CREATE TABLE region (
-    id serial NOT NULL,
-    region_description bpchar NOT NULL
+    id serial ,
+    region_description bpchar 
 );
 
 
@@ -197,8 +197,8 @@ CREATE TABLE region (
 --
 
 CREATE TABLE shippers (
-    id serial NOT NULL,
-    company_name character varying(40) NOT NULL,
+    id serial ,
+    company_name character varying(40) ,
     phone character varying(24)
 );
 
@@ -209,8 +209,8 @@ CREATE TABLE shippers (
 --
 
 CREATE TABLE suppliers (
-    id serial NOT NULL,
-    company_name character varying(40) NOT NULL,
+    id serial ,
+    company_name character varying(40),
     contact_name character varying(30),
     contact_title character varying(30),
     address character varying(60),
@@ -230,9 +230,9 @@ CREATE TABLE suppliers (
 
 CREATE TABLE territories (
 	id serial,
-    territory_id character varying(20) unique NOT NULL,
-    territory_description bpchar NOT NULL,
-    region_id smallint NOT NULL
+    territory_id character varying(20) unique,
+    territory_description bpchar ,
+    region_id smallint
 );
 
 
@@ -241,7 +241,7 @@ CREATE TABLE territories (
 --
 
 CREATE TABLE us_states (
-    id serial NOT NULL,
+    id serial ,
     state_name character varying(100),
     state_abbr character varying(2),
     state_region character varying(50)

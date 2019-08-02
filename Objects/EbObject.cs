@@ -68,7 +68,7 @@ namespace ExpressBase.Objects
 
         public virtual string DiscoverRelatedRefids() { return ""; }
 
-        public virtual void BeforeSave() { }
+        public virtual void BeforeSave(IServiceClient serviceClient, IRedisClient redis) { }
 
     }
 
