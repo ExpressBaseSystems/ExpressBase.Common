@@ -42,6 +42,14 @@ namespace ExpressBase.Common.Objects
         public virtual string EbSid { get; set; }
 
         [HideInPropertyGrid]
+        [JsonIgnore]
+        public virtual string ToolNameAlias { get; set; }
+
+        [HideInPropertyGrid]
+        [JsonIgnore]
+        public virtual string ToolIconHtml { get; set; }
+
+        [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string EbSid_CtxId { get { return (!ContextId.IsNullOrEmpty()) ? string.Concat(ContextId, "_", EbSid) : EbSid; } set { } }
 
@@ -146,7 +154,7 @@ namespace ExpressBase.Common.Objects
         [HelpText("Help text which shows when mouse hover the control")]
         [PropertyGroup("Identity")]
         public virtual string ToolTipText { get; set; }
-        
+
         [PropertyGroup("Layout")]
         [HelpText("Set height for the control.")]
         public virtual int Height { get; set; }
@@ -189,15 +197,15 @@ namespace ExpressBase.Common.Objects
         [PropertyPriority(99)]
         [HelpText("Set true if you want to hide the control.")]
         public virtual bool Hidden { get; set; }
-        
+
         public virtual bool SkipPersist { get; set; }//------------------------------
-        
+
         public virtual string RequiredExpression { get; set; }
-        
+
         public virtual string UniqueExpression { get; set; }
 
         public virtual string ReadOnlyExpression { get; set; }
-        
+
         [PropertyGroup("Accessibility")]
         [HelpText("Set tab index for the control.")]
         public virtual int TabIndex { get; set; }
@@ -222,7 +230,16 @@ namespace ExpressBase.Common.Objects
         [PropertyEditor(PropertyEditorType.Label)]
         public virtual string DefaultValue { get; set; }
 
-        public virtual string GetToolHtml() { return @"<div eb-type='@toolName' class='tool'>@toolName</div>".Replace("@toolName", this.GetType().Name.Substring(2)); }
+        public virtual string GetToolHtml()
+        {
+            return @"
+<div eb-type='@toolName@' class='tool'>
+    <div class='tool-icon-cont'>@toolIconHtml@</div>@toolNameAlias@
+</div>"
+.Replace("@toolName@", this.GetType().Name.Substring(2))
+.Replace("@toolNameAlias@", this.ToolNameAlias.IsNullOrEmpty() ? this.GetType().Name.Substring(2) : this.ToolNameAlias)
+.Replace("@toolIconHtml@", this.ToolIconHtml); 
+        }
 
         [JsonIgnore]
         public virtual string GetValueJSfn { get { return @"return $('#' + this.EbSid_CtxId).val();"; } set { } }
