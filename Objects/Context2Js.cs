@@ -138,10 +138,10 @@ function ProcRecur(src_controls, dest_controls) {
         private string GetToolBoxHtml()
         {
             string _ToolsHtml = string.Empty;
-            string _controlsHtml = HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_basic_ctrls").Replace("@label@", "Basic Controls");
-            string _containerControlsHtml = HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_cont_ctrls").Replace("@label@", "Layout Controls");
-            string _specialContainerControlHtml = HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_sp_cont_ctrls").Replace("@label@", "Advanced Controls");
-            string _placeHolderControlsHtml = HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_ph_cont_ctrls").Replace("@label@", "Platform Controls");
+            string _controlsHtml = string.Empty;
+            string _containerControlsHtml = string.Empty;
+            string _specialContainerControlHtml = string.Empty;
+            string _placeHolderControlsHtml = string.Empty;
 
             foreach (Type tool in this.TypeArray)
             {
@@ -165,11 +165,17 @@ function ProcRecur(src_controls, dest_controls) {
                                     EbControl ControlObj = toolObj as EbControl;
 
                                     if (toolObj is IEbPlaceHolderControl)
+                                    {
                                         _placeHolderControlsHtml += ControlObj.GetToolHtml();
+                                    }
                                     else if (toolObj is IEbSpecialContainer)
+                                    {
                                         _specialContainerControlHtml += ControlObj.GetToolHtml();
+                                    }
                                     else if (toolObj is EbControlContainer)
+                                    {
                                         _containerControlsHtml += ControlObj.GetToolHtml();
+                                    }
                                     else
                                         _controlsHtml += ControlObj.GetToolHtml();
                                 }
@@ -190,7 +196,17 @@ function ProcRecur(src_controls, dest_controls) {
                     }
                 }
             }
-            _ToolsHtml = _controlsHtml + "</div>" + _containerControlsHtml + "</div>" + _specialContainerControlHtml + "</div>" + _placeHolderControlsHtml + "</div>";
+            if (!_controlsHtml.IsEmpty())
+                _ToolsHtml += HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_basic_ctrls").Replace("@label@", "Basic Controls") + _controlsHtml + "</div>";
+            if (!_containerControlsHtml.IsEmpty())
+                _ToolsHtml += HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_cont_ctrls").Replace("@label@", "Layout Controls") + _containerControlsHtml + "</div>";
+            if (!_specialContainerControlHtml.IsEmpty())
+                _ToolsHtml += HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_sp_cont_ctrls").Replace("@label@", "Advanced Controls") + _specialContainerControlHtml + "</div>";
+            if (!_placeHolderControlsHtml.IsEmpty())
+                _ToolsHtml += HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_ph_cont_ctrls").Replace("@label@", "Platform Controls") + _placeHolderControlsHtml + "</div>";
+
+
+            //_ToolsHtml = _controlsHtml + "</div>" + _containerControlsHtml + "</div>" + _specialContainerControlHtml + "</div>" + _placeHolderControlsHtml + "</div>";
             return _ToolsHtml;
         }
 
