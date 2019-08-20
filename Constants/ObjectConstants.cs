@@ -40,5 +40,6 @@ namespace ExpressBase.Common.Constants
         public const string SMS_BUILDER                 = "SmsBuilder";
         public const string API                         = "Api";
         public const string GOOGLEMAP                   = "GoogleMap";
+        public const string DASHBOARD                   = "DashBoard";
 	}
 }
