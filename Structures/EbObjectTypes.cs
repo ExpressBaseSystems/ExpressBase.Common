@@ -105,7 +105,7 @@ namespace ExpressBase.Common.Structures
         public static readonly EbObjectType WebForm = new EbObjectType(ObjectConstants.WEB_FORM, iWebForm, ObjectConstants.XXW, true, "fa-wpforms","Form");//true
         //public static readonly EbObjectType DisplayBlock = new EbObjectType(ObjectConstants.DISPLAY_BLOCK, iDisplayBlock, ObjectConstants.XXX, false);
         public static readonly EbObjectType DataReader = new EbObjectType(ObjectConstants.DATA_READER, iDataReader, ObjectConstants.BMW, false, "fa-database", "Data Reader");
-        public static readonly EbObjectType DataWriter = new EbObjectType(ObjectConstants.DATA_WRITER, iDataWriter, ObjectConstants.BMW, false, "fa-database", "DataWriter");
+        public static readonly EbObjectType DataWriter = new EbObjectType(ObjectConstants.DATA_WRITER, iDataWriter, ObjectConstants.BMW, false, "fa-database", "Data Writer");
         public static readonly EbObjectType Report = new EbObjectType(ObjectConstants.REPORT, iReport, ObjectConstants.XMW, true, "fa-file-pdf-o","PDF Report");
         //public static readonly EbObjectType Table = new EbObjectType(ObjectConstants.TABLE, iTable, ObjectConstants.BMW, false);
         public static readonly EbObjectType SqlFunction = new EbObjectType(ObjectConstants.SQL_FUNCTION, iSqlFunction, ObjectConstants.BMW, false, "fa-code", "Sql Function");
@@ -119,7 +119,7 @@ namespace ExpressBase.Common.Structures
         public static readonly EbObjectType EmailBuilder = new EbObjectType(ObjectConstants.EMAIL_BUILDER, iEmailBuilder, ObjectConstants.XMW, false, "fa-envelope-o", "Email Builder");
         public static readonly EbObjectType TableVisualization = new EbObjectType(ObjectConstants.TABLE_VISUALIZATION, iTableVisualization, ObjectConstants.BMW, true,"fa-table","Table View");
         public static readonly EbObjectType ChartVisualization = new EbObjectType(ObjectConstants.CHART_VISUALIZATION, iChartVisualization, ObjectConstants.BMW, true, "fa-bar-chart","Chart View");
-        public static readonly EbObjectType BotForm = new EbObjectType(ObjectConstants.BOT_FORM, iBotForm, ObjectConstants.BXX, true, "fa-wpforms",null);
+        public static readonly EbObjectType BotForm = new EbObjectType(ObjectConstants.BOT_FORM, iBotForm, ObjectConstants.BXX, true, "fa-wpforms", "Bot Form");
         public static readonly EbObjectType SmsBuilder = new EbObjectType(ObjectConstants.SMS_BUILDER, iSmsBuilder, ObjectConstants.XXW, false, "fa-commenting-o", "Sms Builder");
         public static readonly EbObjectType Api = new EbObjectType(ObjectConstants.API, iApi, ObjectConstants.XXW, false, "fa-code",null);
         public static readonly EbObjectType GoogleMap = new EbObjectType(ObjectConstants.GOOGLEMAP, iGoogleMap, ObjectConstants.BMW, true, "fa-map-marker", "Google MapView");
