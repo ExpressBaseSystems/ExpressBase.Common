@@ -286,7 +286,7 @@ namespace ExpressBase.Common.Objects
 .Replace("@isHidden@", this.Hidden.ToString())
 .Replace("@helpText@", this.HelpText)
 .Replace("@type@", this.ObjType)
-.Replace("@Label@ ", (Label ?? ""))
+.Replace("@Label@", (Label ?? ""))
 .Replace("@req@ ", (Required ? "<sup style='color: red'>*</sup>" : string.Empty));
         }
 
