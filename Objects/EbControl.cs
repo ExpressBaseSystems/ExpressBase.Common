@@ -78,6 +78,7 @@ namespace ExpressBase.Common.Objects
         [JsonIgnore]
         public virtual string UIchangeFns { get; set; }
 
+        [HideInPropertyGrid]
         public virtual EbDbTypes EbDbType { get { return EbDbTypes.Decimal; } set { } }
 
         [PropertyGroup("Identity")]
@@ -222,12 +223,6 @@ namespace ExpressBase.Common.Objects
         [HelpText("Define onChange function.")]
         public virtual EbScript OnChangeFn { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [HelpText("Set default value for the control.")]
-        [PropertyGroup("Behavior")]
-        [PropertyEditor(PropertyEditorType.Label)]
-        public virtual string DefaultValue { get; set; }
-
         public virtual string GetToolHtml()
         {
             return @"
@@ -289,7 +284,7 @@ namespace ExpressBase.Common.Objects
 .Replace("@isHidden@", this.Hidden.ToString())
 .Replace("@helpText@", this.HelpText)
 .Replace("@type@", this.ObjType)
-.Replace("@Label@ ", (Label ?? ""))
+.Replace("@Label@", (Label ?? ""))
 .Replace("@req@ ", (Required ? "<sup style='color: red'>*</sup>" : string.Empty));
         }
 

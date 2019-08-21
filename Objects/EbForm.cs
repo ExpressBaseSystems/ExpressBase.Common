@@ -43,7 +43,6 @@ namespace ExpressBase.Common.Objects
         [DefaultPropValue(8, 8, 8, 8)]
         public new  UISides Padding { get; set; }
 
-        public override string DefaultValue { get; set; }
 
         public override string HelpText { get; set; }
 
@@ -70,7 +69,7 @@ namespace ExpressBase.Common.Objects
         public override string LabelBackColor { get; set; }
         public override UISides Margin { get; set; }
         public override string LabelForeColor { get; set; }
-        public override string FontFamily { get { return "Label"; } set { } }
+        //public override string FontFamily { get { return "Label"; } set { } }
         public override float FontSize { get; set; }
     }
 }
