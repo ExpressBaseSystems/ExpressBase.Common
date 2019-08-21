@@ -83,7 +83,7 @@ namespace ExpressBase.Common.Structures
         //public const int iTable = 4;
         public const int iSqlFunction = 5;
         //public const int iSqlValidator = 6;
-        //public const int iJavascriptFunction = 7;
+        public const int iJavascriptFunction = 7;
         //public const int iJavascriptValidator = 8;
         //public const int iDataVisualization = 11;
         public const int iFilterDialog = 12;
@@ -97,30 +97,37 @@ namespace ExpressBase.Common.Structures
         public const int iApi = 20;
         public const int iGoogleMap = 21;
         public const int iDashBoard = 22;
+        public const int iKanBan = 23;
+        public const int iCalendarView = 24;
+        public const int iCsharpFunction = 25;
 
         public static readonly EbObjectType Null = new EbObjectType("Null", iNull, ObjectConstants.XXX, false, "fa-exclamation-triangle",null);
         public static readonly EbObjectType WebForm = new EbObjectType(ObjectConstants.WEB_FORM, iWebForm, ObjectConstants.XXW, true, "fa-wpforms","Form");//true
         //public static readonly EbObjectType DisplayBlock = new EbObjectType(ObjectConstants.DISPLAY_BLOCK, iDisplayBlock, ObjectConstants.XXX, false);
-        public static readonly EbObjectType DataReader = new EbObjectType(ObjectConstants.DATA_READER, iDataReader, ObjectConstants.BMW, false, "fa-database",null);
-        public static readonly EbObjectType DataWriter = new EbObjectType(ObjectConstants.DATA_WRITER, iDataWriter, ObjectConstants.BMW, false, "fa-database",null);
+        public static readonly EbObjectType DataReader = new EbObjectType(ObjectConstants.DATA_READER, iDataReader, ObjectConstants.BMW, false, "fa-database", "Data Reader");
+        public static readonly EbObjectType DataWriter = new EbObjectType(ObjectConstants.DATA_WRITER, iDataWriter, ObjectConstants.BMW, false, "fa-database", "Data Writer");
         public static readonly EbObjectType Report = new EbObjectType(ObjectConstants.REPORT, iReport, ObjectConstants.XMW, true, "fa-file-pdf-o","PDF Report");
         //public static readonly EbObjectType Table = new EbObjectType(ObjectConstants.TABLE, iTable, ObjectConstants.BMW, false);
-        public static readonly EbObjectType SqlFunction = new EbObjectType(ObjectConstants.SQL_FUNCTION, iSqlFunction, ObjectConstants.BMW, false, "fa-code",null);
+        public static readonly EbObjectType SqlFunction = new EbObjectType(ObjectConstants.SQL_FUNCTION, iSqlFunction, ObjectConstants.BMW, false, "fa-code", "Sql Function");
         //public static readonly EbObjectType SqlValidator = new EbObjectType(ObjectConstants.SQL_VALIDATOR, iSqlValidator, ObjectConstants.BMW, false);
-        //public static readonly EbObjectType JavascriptFunction = new EbObjectType(ObjectConstants.JAVASCRIPT_FUNCTION, iJavascriptFunction, ObjectConstants.BMW, false);
+        public static readonly EbObjectType JavascriptFunction = new EbObjectType(ObjectConstants.JAVASCRIPT_FUNCTION, iJavascriptFunction, ObjectConstants.BMW, false, "fa-file-code-o", "JavaScript Function");
         //public static readonly EbObjectType JavascriptValidator = new EbObjectType(ObjectConstants.JAVASCRIPT_VALIDATOR, iJavascriptValidator, ObjectConstants.BMW, false);
         //public static readonly EbObjectType DataVisualization = new EbObjectType(ObjectConstants.DATA_VISUALIZATION, iDataVisualization, ObjectConstants.BMW, false);
-        public static readonly EbObjectType FilterDialog = new EbObjectType(ObjectConstants.FILTER_DIALOG, iFilterDialog, ObjectConstants.BMW, false, "fa-filter",null);
+        public static readonly EbObjectType FilterDialog = new EbObjectType(ObjectConstants.FILTER_DIALOG, iFilterDialog, ObjectConstants.BMW, false, "fa-filter", "Filter Dialog");
         //public static readonly EbObjectType MobileForm = new EbObjectType(ObjectConstants.MOBILE_FORM, iMobileForm, ObjectConstants.BMW, false);
-        public static readonly EbObjectType UserControl = new EbObjectType(ObjectConstants.USER_CONTROL, iUserControl, ObjectConstants.BMW, false, "fa-puzzle-piece",null);
-        public static readonly EbObjectType EmailBuilder = new EbObjectType(ObjectConstants.EMAIL_BUILDER, iEmailBuilder, ObjectConstants.XMW, false, "fa-envelope-o",null);
+        public static readonly EbObjectType UserControl = new EbObjectType(ObjectConstants.USER_CONTROL, iUserControl, ObjectConstants.BMW, false, "fa-puzzle-piece", "User Control");
+        public static readonly EbObjectType EmailBuilder = new EbObjectType(ObjectConstants.EMAIL_BUILDER, iEmailBuilder, ObjectConstants.XMW, false, "fa-envelope-o", "Email Builder");
         public static readonly EbObjectType TableVisualization = new EbObjectType(ObjectConstants.TABLE_VISUALIZATION, iTableVisualization, ObjectConstants.BMW, true,"fa-table","Table View");
         public static readonly EbObjectType ChartVisualization = new EbObjectType(ObjectConstants.CHART_VISUALIZATION, iChartVisualization, ObjectConstants.BMW, true, "fa-bar-chart","Chart View");
-        public static readonly EbObjectType BotForm = new EbObjectType(ObjectConstants.BOT_FORM, iBotForm, ObjectConstants.BXX, true, "fa-wpforms",null);
-        public static readonly EbObjectType SmsBuilder = new EbObjectType(ObjectConstants.SMS_BUILDER, iSmsBuilder, ObjectConstants.XXW, false, "fa-commenting-o",null);
+        public static readonly EbObjectType BotForm = new EbObjectType(ObjectConstants.BOT_FORM, iBotForm, ObjectConstants.BXX, true, "fa-wpforms", "Bot Form");
+        public static readonly EbObjectType SmsBuilder = new EbObjectType(ObjectConstants.SMS_BUILDER, iSmsBuilder, ObjectConstants.XXW, false, "fa-commenting-o", "Sms Builder");
         public static readonly EbObjectType Api = new EbObjectType(ObjectConstants.API, iApi, ObjectConstants.XXW, false, "fa-code",null);
-        public static readonly EbObjectType GoogleMap = new EbObjectType(ObjectConstants.GOOGLEMAP, iGoogleMap, ObjectConstants.BMW, true, "fa-map-marker", null);
-        public static readonly EbObjectType DashBoard = new EbObjectType(ObjectConstants.DASHBOARD, iDashBoard, ObjectConstants.BMW, true, "fa-map-marker", null);
+        public static readonly EbObjectType GoogleMap = new EbObjectType(ObjectConstants.GOOGLEMAP, iGoogleMap, ObjectConstants.BMW, true, "fa-map-marker", "Google MapView");
+        public static readonly EbObjectType DashBoard = new EbObjectType(ObjectConstants.DASHBOARD, iDashBoard, ObjectConstants.BMW, true, "fa-tachometer", null);
+
+        public static readonly EbObjectType KanBan = new EbObjectType(ObjectConstants.KANBAN, iKanBan, ObjectConstants.XXW, true, "fa-tag", null);
+        public static readonly EbObjectType CalendarView = new EbObjectType(ObjectConstants.CALENDARVIEW, iCalendarView, ObjectConstants.BMW, true, "fa-calendar", "Calendar View");
+        public static readonly EbObjectType CsharpFunction = new EbObjectType(ObjectConstants.CSHARPFUNCTION, iCsharpFunction, ObjectConstants.XXW, true, "fa-hashtag", "C# Function");
 
         public static EbObjectType Get(int intcode)
         {
@@ -146,7 +153,6 @@ namespace ExpressBase.Common.Structures
                     //Table,
                     SqlFunction,
                     //SqlValidator,
-                    //JavascriptFunction,
                     //JavascriptValidator,
                     //DataVisualization,
                     FilterDialog,
@@ -155,11 +161,15 @@ namespace ExpressBase.Common.Structures
                     EmailBuilder,
                     TableVisualization,
                     ChartVisualization,
-                    BotForm,
                     SmsBuilder,
                     Api,
                     GoogleMap,
-                    DashBoard
+                    BotForm,
+                    KanBan,
+                    CalendarView,
+                    DashBoard,
+                    JavascriptFunction,
+                    CsharpFunction
                 };
             }
         }

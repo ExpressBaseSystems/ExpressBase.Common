@@ -182,6 +182,31 @@ namespace ExpressBase.Common.Structures
         }
     }
 
+    public class DashBoardOperations : EbOperations
+    {
+        public readonly EbOperation Customize;
+
+        private DashBoardOperations()
+        {
+            Customize = new EbOperation(OperationConstants.CUSTOMIZE, 0, OperationConstants.XXW);
+        }
+
+        public static EbOperations Instance
+        {
+            get
+            {
+                return new DashBoardOperations();
+            }
+        }
+
+        public override IEnumerable<EbOperation> Enumerator
+        {
+            get
+            {
+                yield return Customize;
+            }
+        }
+    }
 
     public class BFOperations : EbOperations
     {
