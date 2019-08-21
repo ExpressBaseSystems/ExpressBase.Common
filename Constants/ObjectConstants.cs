@@ -41,5 +41,8 @@ namespace ExpressBase.Common.Constants
         public const string API                         = "Api";
         public const string GOOGLEMAP                   = "GoogleMap";
         public const string DASHBOARD                   = "DashBoard";
-	}
+        public const string KANBAN                      = "KanBan";
+        public const string CALENDARVIEW                = "CalendarView";
+        public const string CSHARPFUNCTION              = "CsharpFunction";
+    }
 }
