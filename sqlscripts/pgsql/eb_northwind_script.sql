@@ -3701,3 +3701,8 @@ ALTER SEQUENCE shippers_id_seq RESTART WITH 7;
 ALTER SEQUENCE suppliers_id_seq RESTART WITH 30;
 ALTER SEQUENCE territories_id_seq RESTART WITH 54;
 ALTER SEQUENCE us_states_id_seq RESTART WITH 52;
+
+SELECT (CURRENT_DATE-(select MAX(order_date) FROM orders)) into day_dif;
+UPDATE orders set order_date = order_date   + (select * from day_dif);
+UPDATE orders set required_date = required_date   + (select * from day_dif);
+UPDATE orders set shipped_date = shipped_date   + (select * from day_dif);
