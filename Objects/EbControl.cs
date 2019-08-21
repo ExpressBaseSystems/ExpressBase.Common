@@ -4,15 +4,13 @@ using ServiceStack.Redis;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Reflection;
+using ExpressBase.Security;
 using ExpressBase.Objects;
 using Newtonsoft.Json;
-using ExpressBase.Common.JsonConverters;
 using ExpressBase.Common.Structures;
 using ExpressBase.Common.Extensions;
 using System.Runtime.Serialization;
+using System.Data.Common;
 
 namespace ExpressBase.Common.Objects
 {
@@ -358,6 +356,29 @@ namespace ExpressBase.Common.Objects
         public virtual void SetData(object value) { }
 
         public virtual object GetData() { return null; }
+
+        //tbl -> master table name, ins -> is insert, _col -> cols/colvals, _extqry -> extended query
+        public virtual bool ParameterizeControl(IDatabase DataDB, List<DbParameter> param, string tbl, SingleColumn rField, bool ins, ref int i, ref string _col, ref string _val, ref string _extqry, User usr)
+        {
+            if (rField.Value == null)
+            {
+                var p = DataDB.GetNewParameter(rField.Name + "_" + i, (EbDbTypes)rField.Type);
+                p.Value = DBNull.Value;
+                param.Add(p);
+            }
+            else
+                param.Add(DataDB.GetNewParameter(rField.Name + "_" + i, (EbDbTypes)rField.Type, rField.Value));
+
+            if (ins)
+            {
+                _col += string.Concat(rField.Name, ", ");
+                _val += string.Concat(":", rField.Name, "_", i, ", ");
+            }
+            else
+                _col += string.Concat(rField.Name, "=:", rField.Name, "_", i, ", ");
+            i++;
+            return true;
+        }
     }
 
     [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
