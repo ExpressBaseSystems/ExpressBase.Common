@@ -141,7 +141,8 @@ namespace ExpressBase.Common.Objects
 
         [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [HelpText("Set true if you want to disable this control on form.")]
+        [Alias("Readonly")]
+        [HelpText("Control will be Disabled/Readonly if set to TRUE")]
         public virtual bool IsDisable { get; set; }
 
         [EnableInBuilder(BuilderType.BotForm)]
