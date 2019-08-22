@@ -1,4 +1,5 @@
-﻿using ExpressBase.Common.Structures;
+﻿using ExpressBase.Common.Objects;
+using ExpressBase.Common.Structures;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -38,7 +39,7 @@ namespace ExpressBase.Common
 
         public int Type { get; set; }
 
-        public Object Control { get; set; }
+        public EbControl Control { get; set; }
 
         public bool AutoIncrement { get; set; }
 
@@ -102,7 +103,7 @@ namespace ExpressBase.Common
             throw new KeyNotFoundException();
         }
 
-        public void SetControl(string name, Object control)
+        public void SetControl(string name, EbControl control)
         {
             for (int i = 0; i < this.Columns.Count; i++)
             {
