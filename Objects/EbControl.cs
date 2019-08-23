@@ -352,25 +352,25 @@ namespace ExpressBase.Common.Objects
 
         public virtual object GetData() { return null; }
 
-        //tbl -> master table name, ins -> is insert, _col -> cols/colvals, _extqry -> extended query
-        public virtual bool ParameterizeControl(IDatabase DataDB, List<DbParameter> param, string tbl, SingleColumn rField, bool ins, ref int i, ref string _col, ref string _val, ref string _extqry, User usr)
+        //tbl -> master table name, ins -> is insert, _col -> cols/colvals, _extqry -> extended query, ocF -> old column field
+        public virtual bool ParameterizeControl(IDatabase DataDB, List<DbParameter> param, string tbl, SingleColumn cField, bool ins, ref int i, ref string _col, ref string _val, ref string _extqry, User usr, SingleColumn ocF)
         {
-            if (rField.Value == null)
+            if (cField.Value == null)
             {
-                var p = DataDB.GetNewParameter(rField.Name + "_" + i, (EbDbTypes)rField.Type);
+                var p = DataDB.GetNewParameter(cField.Name + "_" + i, (EbDbTypes)cField.Type);
                 p.Value = DBNull.Value;
                 param.Add(p);
             }
             else
-                param.Add(DataDB.GetNewParameter(rField.Name + "_" + i, (EbDbTypes)rField.Type, rField.Value));
+                param.Add(DataDB.GetNewParameter(cField.Name + "_" + i, (EbDbTypes)cField.Type, cField.Value));
 
             if (ins)
             {
-                _col += string.Concat(rField.Name, ", ");
-                _val += string.Concat(":", rField.Name, "_", i, ", ");
+                _col += string.Concat(cField.Name, ", ");
+                _val += string.Concat(":", cField.Name, "_", i, ", ");
             }
             else
-                _col += string.Concat(rField.Name, "=:", rField.Name, "_", i, ", ");
+                _col += string.Concat(cField.Name, "=:", cField.Name, "_", i, ", ");
             i++;
             return true;
         }
