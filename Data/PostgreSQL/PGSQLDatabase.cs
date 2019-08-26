@@ -339,6 +339,43 @@ namespace ExpressBase.Common
             }
         }
 
+        public Dictionary<int, string> GetDictionary(string query, string vm, string dm)
+        {
+            Dictionary<int, string> _dic = new Dictionary<int, string>();
+            string sql = $"SELECT {vm},{dm} FROM ({query}) as __table;";
+
+            using (var con = GetNewConnection() as NpgsqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(sql, con))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            int _fieldCount = reader.FieldCount;
+                            while (reader.Read())
+                            {
+                                object[] oArray = new object[_fieldCount];
+                                if( !_dic.ContainsKey(Convert.ToInt32(reader[dm])))
+                                    _dic.Add(Convert.ToInt32(reader[dm]), reader[vm].ToString());
+                            }
+                        }
+                    }
+                }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    Console.WriteLine("Postgres Exception: " + npgse.Message);
+                    throw npgse;
+                }
+                catch (SocketException scket)
+                {
+                }
+            }
+
+            return _dic;
+        }
+
         public void BeginTransaction()
         {
             // This is a place where you will use _mySQLDriver to begin transaction
@@ -417,7 +454,7 @@ namespace ExpressBase.Common
 
             typeArray = null;
         }
-
+     
         public bool IsTableExists(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as NpgsqlConnection)
