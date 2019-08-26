@@ -59,7 +59,7 @@ namespace ExpressBase.Common.Objects
         [JsonIgnore]
         public override EbScript ValueExpr { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore] //this prop using in DG -to prevent attribute propagation
         public override bool IsDisable { get; set; }
 
         [JsonIgnore]
