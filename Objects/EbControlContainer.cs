@@ -50,7 +50,7 @@ namespace ExpressBase.Common.Objects
             this.Controls = new List<EbControl>();
         }
 
-        [JsonIgnore]
+        //[JsonIgnore]
         public override bool Hidden { get; set; }
 
         [JsonIgnore]
