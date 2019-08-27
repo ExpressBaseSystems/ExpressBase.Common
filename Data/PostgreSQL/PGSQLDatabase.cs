@@ -984,7 +984,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                     table_schema != 'pg_catalog'
                     AND table_schema != 'information_schema'
                     AND table_type='BASE TABLE'
-                    AND table_name NOT LIKE 'eb_%')Q1
+                    AND table_name NOT LIKE '{0}')Q1
                 LEFT JOIN
                     pg_indexes i
                 ON
@@ -997,7 +997,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                 WHERE
                     table_schema != 'pg_catalog' AND
                     table_schema != 'information_schema' AND 
-                    table_name NOT LIKE 'eb_%'
+                    table_name NOT LIKE '{0}'
                 ORDER BY table_name;
 
                SELECT
@@ -1021,7 +1021,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                JOIN 
                     pg_attribute col ON(col.attrelid = tbl.oid AND col.attnum = u.attnum)
                WHERE
-                    tbl.relname NOT LIKE 'eb_%'
+                    tbl.relname NOT LIKE '{0}'
                GROUP BY 
                     constraint_name, constraint_type, tabless, definition
                ORDER BY 
