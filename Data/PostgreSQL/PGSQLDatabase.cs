@@ -339,7 +339,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public Dictionary<int, string> GetDictionary(string query, string vm, string dm)
+        public Dictionary<int, string> GetDictionary(string query, string dm, string vm)
         {
             Dictionary<int, string> _dic = new Dictionary<int, string>();
             string sql = $"SELECT {vm},{dm} FROM ({query}) as __table;";
@@ -353,12 +353,10 @@ namespace ExpressBase.Common
                     {
                         using (var reader = cmd.ExecuteReader())
                         {
-                            int _fieldCount = reader.FieldCount;
                             while (reader.Read())
                             {
-                                object[] oArray = new object[_fieldCount];
-                                if( !_dic.ContainsKey(Convert.ToInt32(reader[dm])))
-                                    _dic.Add(Convert.ToInt32(reader[dm]), reader[vm].ToString());
+                                if( !_dic.ContainsKey(Convert.ToInt32(reader[vm])))
+                                    _dic.Add(Convert.ToInt32(reader[vm]), reader[dm].ToString());
                             }
                         }
                     }
