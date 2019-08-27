@@ -7,7 +7,7 @@ namespace ExpressBase.Common
     public static class HtmlConstants
     {
         public const string Label = @"";
-        public const string CONT_PROP_BTN = @"<div class='cont-prop-btn'><i class='fa fa-ellipsis-v' aria-hidden='true'></i></div>";
+        public const string CONT_PROP_BTN = @"<div class='cont-prop-btn' ctrl-ebsid='@ebsid@'><i class='fa fa-ellipsis-v' aria-hidden='true'></i></div>";
         public const string TOOL_HTML = @"
 <div class='tool_item_head' data-toggle='collapse' data-target='#@id@'><i class='fa fa-caret-down'></i> @label@ </div>
     <div id='@id@' ebclass='tool-sec-cont' class='tool-sec-cont collapse in'>";

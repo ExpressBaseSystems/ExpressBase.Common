@@ -578,6 +578,10 @@ namespace ExpressBase.Common.Data
             return cols;
         }
 
+        public Dictionary<int, string> GetDictionary(string query, string dm, string vm)
+        {
+            throw new NotImplementedException();
+        }
 
         public void BeginTransaction()
         {

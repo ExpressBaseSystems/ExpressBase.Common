@@ -30,6 +30,7 @@ namespace ExpressBase.Common
         DbDataReader DoQueriesBasic(string query, params DbParameter[] parameters);
         EbDataSet DoQueries(string query, params DbParameter[] parameters);
         int DoNonQuery(string query, params DbParameter[] parameters);
+        Dictionary<int, string> GetDictionary(string query, string dm, string vm);
         void BeginTransaction();
         void RollbackTransaction();
         void CommitTransaction();

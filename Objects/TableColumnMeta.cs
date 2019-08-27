@@ -14,6 +14,10 @@ namespace ExpressBase.Common
         public string Default { get; set; }
 
         public bool Unique { get; set; }
+
+        public EbControl Control { get; set; }
+
+        public string Label { get; set; }
     }
 
     public class AuditTrailEntry
