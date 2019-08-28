@@ -33,7 +33,7 @@ namespace ExpressBase.Common
         MongoDB,
         GoogleDrive,
         Cloudinary,
-        Cloudfront,
+        Cloudfront
     }
 
     public enum SmsVendors
