@@ -356,7 +356,7 @@ namespace ExpressBase.Common.Objects
         //tbl -> master table name, ins -> is insert, _col -> cols/colvals, _extqry -> extended query, ocF -> old column field
         public virtual bool ParameterizeControl(IDatabase DataDB, List<DbParameter> param, string tbl, SingleColumn cField, bool ins, ref int i, ref string _col, ref string _val, ref string _extqry, User usr, SingleColumn ocF)
         {
-            if (cField.Value == null)
+            if (cField.Value == null || (this.EbDbType == EbDbTypes.Decimal && cField.Value == string.Empty))
             {
                 var p = DataDB.GetNewParameter(cField.Name + "_" + i, (EbDbTypes)cField.Type);
                 p.Value = DBNull.Value;
