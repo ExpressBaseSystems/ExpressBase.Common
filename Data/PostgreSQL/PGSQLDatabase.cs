@@ -339,6 +339,41 @@ namespace ExpressBase.Common
             }
         }
 
+        public Dictionary<int, string> GetDictionary(string query, string dm, string vm)
+        {
+            Dictionary<int, string> _dic = new Dictionary<int, string>();
+            string sql = $"SELECT {vm},{dm} FROM ({query}) as __table;";
+
+            using (var con = GetNewConnection() as NpgsqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(sql, con))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                if( !_dic.ContainsKey(Convert.ToInt32(reader[vm])))
+                                    _dic.Add(Convert.ToInt32(reader[vm]), reader[dm].ToString());
+                            }
+                        }
+                    }
+                }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    Console.WriteLine("Postgres Exception: " + npgse.Message);
+                    throw npgse;
+                }
+                catch (SocketException scket)
+                {
+                }
+            }
+
+            return _dic;
+        }
+
         public void BeginTransaction()
         {
             // This is a place where you will use _mySQLDriver to begin transaction
@@ -417,7 +452,7 @@ namespace ExpressBase.Common
 
             typeArray = null;
         }
-
+     
         public bool IsTableExists(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as NpgsqlConnection)
@@ -949,7 +984,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                     table_schema != 'pg_catalog'
                     AND table_schema != 'information_schema'
                     AND table_type='BASE TABLE'
-                    AND table_name NOT LIKE 'eb_%')Q1
+                    AND table_name NOT LIKE '{0}')Q1
                 LEFT JOIN
                     pg_indexes i
                 ON
@@ -962,7 +997,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                 WHERE
                     table_schema != 'pg_catalog' AND
                     table_schema != 'information_schema' AND 
-                    table_name NOT LIKE 'eb_%'
+                    table_name NOT LIKE '{0}'
                 ORDER BY table_name;
 
                SELECT
@@ -986,7 +1021,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                JOIN 
                     pg_attribute col ON(col.attrelid = tbl.oid AND col.attnum = u.attnum)
                WHERE
-                    tbl.relname NOT LIKE 'eb_%'
+                    tbl.relname NOT LIKE '{0}'
                GROUP BY 
                     constraint_name, constraint_type, tabless, definition
                ORDER BY 

@@ -4,15 +4,13 @@ using ServiceStack.Redis;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Reflection;
+using ExpressBase.Security;
 using ExpressBase.Objects;
 using Newtonsoft.Json;
-using ExpressBase.Common.JsonConverters;
 using ExpressBase.Common.Structures;
 using ExpressBase.Common.Extensions;
 using System.Runtime.Serialization;
+using System.Data.Common;
 
 namespace ExpressBase.Common.Objects
 {
@@ -80,6 +78,7 @@ namespace ExpressBase.Common.Objects
         [JsonIgnore]
         public virtual string UIchangeFns { get; set; }
 
+        [HideInPropertyGrid]
         public virtual EbDbTypes EbDbType { get { return EbDbTypes.Decimal; } set { } }
 
         [PropertyGroup("Identity")]
@@ -142,7 +141,8 @@ namespace ExpressBase.Common.Objects
 
         [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [HelpText("Set true if you want to disable this control on form.")]
+        [Alias("Readonly")]
+        [HelpText("Control will be Disabled/Readonly if set to TRUE")]
         public virtual bool IsDisable { get; set; }
 
         [EnableInBuilder(BuilderType.BotForm)]
@@ -224,12 +224,6 @@ namespace ExpressBase.Common.Objects
         [HelpText("Define onChange function.")]
         public virtual EbScript OnChangeFn { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [HelpText("Set default value for the control.")]
-        [PropertyGroup("Behavior")]
-        [PropertyEditor(PropertyEditorType.Label)]
-        public virtual string DefaultValue { get; set; }
-
         public virtual string GetToolHtml()
         {
             return @"
@@ -291,7 +285,7 @@ namespace ExpressBase.Common.Objects
 .Replace("@isHidden@", this.Hidden.ToString())
 .Replace("@helpText@", this.HelpText)
 .Replace("@type@", this.ObjType)
-.Replace("@Label@ ", (Label ?? ""))
+.Replace("@Label@", (Label ?? ""))
 .Replace("@req@ ", (Required ? "<sup style='color: red'>*</sup>" : string.Empty));
         }
 
@@ -358,6 +352,29 @@ namespace ExpressBase.Common.Objects
         public virtual void SetData(object value) { }
 
         public virtual object GetData() { return null; }
+
+        //tbl -> master table name, ins -> is insert, _col -> cols/colvals, _extqry -> extended query, ocF -> old column field
+        public virtual bool ParameterizeControl(IDatabase DataDB, List<DbParameter> param, string tbl, SingleColumn cField, bool ins, ref int i, ref string _col, ref string _val, ref string _extqry, User usr, SingleColumn ocF)
+        {
+            if (cField.Value == null || (this.EbDbType == EbDbTypes.Decimal && cField.Value == string.Empty))
+            {
+                var p = DataDB.GetNewParameter(cField.Name + "_" + i, (EbDbTypes)cField.Type);
+                p.Value = DBNull.Value;
+                param.Add(p);
+            }
+            else
+                param.Add(DataDB.GetNewParameter(cField.Name + "_" + i, (EbDbTypes)cField.Type, cField.Value));
+
+            if (ins)
+            {
+                _col += string.Concat(cField.Name, ", ");
+                _val += string.Concat(":", cField.Name, "_", i, ", ");
+            }
+            else
+                _col += string.Concat(cField.Name, "=:", cField.Name, "_", i, ", ");
+            i++;
+            return true;
+        }
     }
 
     [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]

@@ -35,7 +35,7 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public override string Status { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.Expandable)]
         [PropertyGroup("Appearance")]
         [UIproperty]
@@ -43,7 +43,6 @@ namespace ExpressBase.Common.Objects
         [DefaultPropValue(8, 8, 8, 8)]
         public new  UISides Padding { get; set; }
 
-        public override string DefaultValue { get; set; }
 
         public override string HelpText { get; set; }
 
@@ -70,7 +69,7 @@ namespace ExpressBase.Common.Objects
         public override string LabelBackColor { get; set; }
         public override UISides Margin { get; set; }
         public override string LabelForeColor { get; set; }
-        public override string FontFamily { get { return "Label"; } set { } }
+        //public override string FontFamily { get { return "Label"; } set { } }
         public override float FontSize { get; set; }
     }
 }

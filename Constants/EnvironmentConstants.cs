@@ -90,8 +90,12 @@ namespace ExpressBase.Common
         public const string EB_GITHUB_CLIENT_ID = "EB_GITHUB_CLIENT_ID";
         public const string EB_GITHUB_CLIENT_SECRET = "EB_GITHUB_CLIENT_SECRET";
 
-        //To Remove
-        public const string EB_PAYPAL_USERID = "EB_PAYPAL_USERID";
+		//GOOGLE APP
+		public const string EB_GOOGLE_CLIENT_ID = "EB_GOOGLE_CLIENT_ID";
+		public const string EB_GOOGLE_CLIENT_SECRET = "EB_GOOGLE_CLIENT_SECRET";
+
+		//To Remove
+		public const string EB_PAYPAL_USERID = "EB_PAYPAL_USERID";
         public const string EB_PAYPAL_USERSECRET = "EB_PAYPAL_USERSECRET";
 
         //For AlArz Only

@@ -349,6 +349,12 @@ namespace ExpressBase.Common.Connections
 
         public MapType MapType { get; set; }
     }
+    public class EbDropBoxConfig : EbIntegrationConf
+    {
+        public string AccessToken { get; set; }
+
+        public override EbIntegrations Type { get { return EbIntegrations.DropBox; } }
+    }
 
     public class EbGoogleDriveConfig : EbIntegrationConf
     {

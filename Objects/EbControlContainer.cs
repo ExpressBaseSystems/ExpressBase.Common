@@ -38,6 +38,8 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
+        [PropertyPriority(70)]
+        [PropertyGroup("Behavior")]
         public virtual List<EbControl> Controls { get; set; }
 
         //[HideInPropertyGrid]
@@ -47,6 +49,24 @@ namespace ExpressBase.Common.Objects
         {
             this.Controls = new List<EbControl>();
         }
+
+        //[JsonIgnore]
+        public override bool Hidden { get; set; }
+
+        [JsonIgnore]
+        public override EbScript VisibleExpr { get; set; }
+
+        [JsonIgnore]
+        public override EbScript ValueExpr { get; set; }
+
+        //[JsonIgnore] //this prop using in DG -to prevent attribute propagation
+        public override bool IsDisable { get; set; }
+
+        [JsonIgnore]
+        public override bool DoNotPersist { get; set; }
+
+        //[JsonIgnore]
+        //public override EbScript OnChangeFn { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
@@ -63,6 +83,7 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
         [PropertyGroup("Data")]
+        [PropertyPriority(70)]
         [HelpText("Name Of database-table Which you want to store Data collected using this Form")]
         [InputMask("[a-z][a-z0-9]*(_[a-z0-9]+)*")]
         public virtual string TableName { get; set; }
@@ -76,11 +97,8 @@ namespace ExpressBase.Common.Objects
         [JsonIgnore]
         public override string ToolTipText{ get; set; }
 
-        [JsonIgnore]
-        public override string FontFamily { get; set; }
-
-        [JsonIgnore]
-        public override string DefaultValue { get; set; }
+        //[JsonIgnore]
+        //public override string FontFamily { get; set; }
 
         [JsonIgnore]
         public override List<EbValidator> Validators { get; set; }
