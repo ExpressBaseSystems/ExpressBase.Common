@@ -18,7 +18,7 @@ CREATE OR REPLACE FUNCTION public.eb_authenticate_anonymous(
     LANGUAGE 'plpgsql'
 
     COST 100
-    VOLATILE
+    VOLATILE 
     ROWS 1000
 AS $BODY$
 
