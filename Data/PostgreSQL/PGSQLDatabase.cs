@@ -342,7 +342,7 @@ namespace ExpressBase.Common
         public Dictionary<int, string> GetDictionary(string query, string dm, string vm)
         {
             Dictionary<int, string> _dic = new Dictionary<int, string>();
-            string sql = $"SELECT {vm},{dm} FROM ({query}) as __table;";
+            string sql = $"SELECT {vm},{dm} FROM ({query.Replace(";",string.Empty)}) as __table;";
 
             using (var con = GetNewConnection() as NpgsqlConnection)
             {
