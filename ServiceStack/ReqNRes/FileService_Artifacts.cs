@@ -114,6 +114,50 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
+    public class UploadImageInfraMqRequest : IReturn<EbMqResponse>, IUploadImageRequest
+    {
+        [DataMember(Order = 1)]
+        public int ImageRefId { get; set; }
+
+        [DataMember(Order = 2)]
+        public EbFileCategory FileCategory { get; set; }
+
+        [DataMember(Order = 3)]
+        public byte[] Byte { get; set; }
+
+        [DataMember(Order = 4)]
+        public int ImgManpSerConId { get; set; }
+
+        [DataMember(Order = 5)]
+        public ImageQuality ImgQuality { get; set; }
+
+        [DataMember(Order = 6)]
+        public string RToken { get; set; }
+
+        [DataMember(Order = 7)]
+        public string BToken { get; set; }
+
+        [DataMember(Order = 8)]
+        public string SolnId { get; set; }
+
+        [DataMember(Order = 9)]
+        public int UserId { get; set; }
+
+        [DataMember(Order = 10)]
+        public string UserAuthId { get; set; }
+
+        [DataMember(Order = 11)]
+        public string WhichConsole { get; set; }
+
+        [DataMember(Order = 12)]
+        public string SolutionId { get; set; }
+
+        [DataMember(Order = 13)]
+        public int InfraConID { get; set; }
+
+    }
+
+    [DataContract]
     public class UploadDpRequest : IReturn<EbMqResponse>, IUploadImageRequest
     {
         [DataMember(Order = 1)]
@@ -342,6 +386,22 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         public int UserIntId { get; set; }
     }
 
+    [DataContract]
+    public class UploadImageInfraRequest : EbServiceStackAuthRequest, IReturn<UploadAsyncResponse>
+    {
+        [DataMember(Order = 1)]
+        public ImageMeta ImageInfo { get; set; }
+
+        [DataMember(Order = 2)]
+        public byte[] ImageByte { get; set; }
+
+        [DataMember(Order = 3)]
+        public string SolutionId { get; set; }
+
+        [DataMember(Order = 4)]
+        public int UserIntId { get; set; }
+    }
+
     public class UploadFileMqResponse
     {
         public bool IsUploaded { get; set; }
@@ -448,6 +508,15 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     public class DownloadWikiImgRequest : EbServiceStackNoAuthRequest, IReturn<DownloadFileResponse>
+    {
+        [DataMember(Order = 1)]
+        public string RefId { get; set; }
+
+        [DataMember(Order = 2)]
+        public ImageMeta ImageInfo { get; set; }
+    }
+
+    public class DownloadInfraImgRequest : EbServiceStackNoAuthRequest, IReturn<DownloadFileResponse>
     {
         [DataMember(Order = 1)]
         public string RefId { get; set; }
