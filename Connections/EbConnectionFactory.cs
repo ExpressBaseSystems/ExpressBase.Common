@@ -254,6 +254,8 @@ namespace ExpressBase.Common.Data
                             FilesDB.Add(new MongoDBDatabase(this.SolutionId, Connections.FilesDbConfig.Integrations[i] as EbMongoConfig));
                         else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.DropBox)
                             FilesDB.Add(new DropBox.DropBoxDatabase(Connections.FilesDbConfig.Integrations[i] as EbDropBoxConfig));
+                        else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.AWSS3)
+                            FilesDB.Add(new AWSS3.AWSS3(Connections.FilesDbConfig.Integrations[i] as EbAWSS3Config));
                         else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.PGSQL)
                             FilesDB.Add(new PGSQLFileDatabase(Connections.FilesDbConfig.Integrations[i] as PostgresConfig));
                         else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.ORACLE)

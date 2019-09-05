@@ -51,6 +51,7 @@
     <EmbeddedResource Include="cultures\**" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="3.3.104.20" />
     <PackageReference Include="CloudinaryDotNet" Version="1.2.0" />
     <PackageReference Include="Dropbox.Api" Version="4.9.4" />
     <PackageReference Include="EPPlus.Core" Version="1.5.4" />
