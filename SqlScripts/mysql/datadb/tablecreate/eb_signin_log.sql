@@ -1,6 +1,6 @@
 CREATE TABLE eb_signin_log
 (
-    id serial,
+    id integer auto_increment,
     user_id integer,
     ip_address text,
     device_info text,
