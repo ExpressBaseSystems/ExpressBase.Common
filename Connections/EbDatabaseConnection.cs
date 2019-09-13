@@ -1,4 +1,5 @@
-﻿using ExpressBase.Common.Data;
+﻿using Amazon;
+using ExpressBase.Common.Data;
 using ExpressBase.Common.Structures;
 using MongoDB.Driver;
 using Newtonsoft.Json;
@@ -249,7 +250,7 @@ namespace ExpressBase.Common.Connections
 
         public string ReadOnlyPassword { get; set; }
 
-        public DatabaseVendors DatabaseVendor { get { return (DatabaseVendors)Type; } set { Type = (EbIntegrations)value; } }
+        public DatabaseVendors DatabaseVendor { get { return (DatabaseVendors)this.Type; } set { this.Type =  (EbIntegrations)value; } }
     }
 
     public class PostgresConfig : EbDbConfig
@@ -354,6 +355,19 @@ namespace ExpressBase.Common.Connections
         public string AccessToken { get; set; }
 
         public override EbIntegrations Type { get { return EbIntegrations.DropBox; } }
+    }
+
+    public class EbAWSS3Config : EbIntegrationConf
+    {
+        public string BucketName { get; set; }
+
+        public string BucketRegion { get; set; }
+
+        public string AccessKeyID { get; set; }
+
+        public string SecretAccessKey { get; set; }
+
+        public override EbIntegrations Type { get { return EbIntegrations.AWSS3; } }
     }
 
     public class EbGoogleDriveConfig : EbIntegrationConf
