@@ -52,5 +52,9 @@ namespace ExpressBase.Common {
         public object AppSettings { set; get; }
 
         public List<EbObject> ObjCollection { get; set; }
+
+        public string Title { get; set; }
+
+        public bool IsPublic { get; set; }
     }
 }

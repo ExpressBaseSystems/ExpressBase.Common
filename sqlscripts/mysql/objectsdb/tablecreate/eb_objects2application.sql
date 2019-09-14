@@ -1,7 +1,7 @@
 ﻿CREATE TABLE eb_objects2application
 (
-  app_id int,
   id int NOT NULL auto_increment,
+  app_id int,  
   obj_id int,
   eb_del1 boolean DEFAULT false,
   removed_by int,

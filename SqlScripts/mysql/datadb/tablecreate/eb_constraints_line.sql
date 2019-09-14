@@ -1,6 +1,6 @@
 CREATE TABLE eb_constraints_line
 (
-    id serial,
+    id integer auto_increment,
     master_id integer,
     c_type integer,
     c_operation integer,
