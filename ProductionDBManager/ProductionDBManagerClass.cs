@@ -18,6 +18,8 @@ namespace ExpressBase.Common.ProductionDBManager
 
         public string MD5 { get; set; }
 
+        public bool NewItem { get; set; }
+
     }
     
 
