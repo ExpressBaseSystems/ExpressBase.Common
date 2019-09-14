@@ -306,15 +306,15 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_audit_master
         ///(
-        ///    id serial,
-        ///    formid text,
+        ///    id integer auto_increment,
+        ///    formid varchar(255),
         ///    dataid integer,
         ///    actiontype integer,
         ///    signin_log_id integer,
         ///    eb_createdby integer,
         ///    eb_createdat timestamp DEFAULT current_timestamp,
         ///    CONSTRAINT eb_audit_master_pkey PRIMARY KEY (id)
-        ///)
+        ///);
         ///
         ///create index eb_audit_master_idx on eb_audit_master(id) using btree;
         ///
@@ -449,19 +449,17 @@ namespace ExpressBase.Common {
         ///    IN social TEXT,
         ///    IN wc TEXT,
         ///    IN ipaddress TEXT,
+        ///    IN deviceinfo TEXT,
         ///    OUT tmp_userid INTEGER,
+        ///    OUT tmp_status_id INTEGER,
         ///    OUT tmp_email TEXT,
         ///    OUT tmp_fullname TEXT,
         ///    OUT tmp_roles_a TEXT,
         ///    OUT tmp_rolename_a TEXT,
         ///    OUT tmp_permissions TEXT,
         ///    OUT tmp_preferencesjson TEXT,
-        ///    OUT tmp_constraintstatus TEXT
-        ///    )
-        ///BEGIN
-        ///DECLARE userid INTEGER;
-        ///DECLARE email TEXT;
-        ///DECLARE fullname TEXT; [rest of string was truncated]&quot;;.
+        ///    OUT tmp_constraints_a TEXT,
+        ///    OUT tmp_signin_id INTEG [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_authenticate_unified2 {
             get {
@@ -703,7 +701,7 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_constraints_line
         ///(
-        ///    id serial,
+        ///    id integer auto_increment,
         ///    master_id integer,
         ///    c_type integer,
         ///    c_operation integer,
@@ -762,7 +760,7 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_constraints_master
         ///(
-        ///    id serial,
+        ///    id integer auto_increment,
         ///    key_id integer,
         ///    key_type integer,
         ///    description text,
@@ -3493,8 +3491,8 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_objects2application
         ///(
-        ///  app_id int,
         ///  id int NOT NULL auto_increment,
+        ///  app_id int,  
         ///  obj_id int,
         ///  eb_del1 boolean DEFAULT false,
         ///  removed_by int,
@@ -3509,7 +3507,7 @@ namespace ExpressBase.Common {
         ///  ON eb_objects2application
         ///  (app_id) USING btree;
         ///
-        ///CREATE INDEX eb_objects2application_eb_d [rest of string was truncated]&quot;;.
+        ///CREATE INDEX eb_objects2application_eb [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects2application2 {
             get {
@@ -4206,7 +4204,27 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- Need Updation.
+        ///   Looks up a localized string similar to DROP PROCEDURE IF EXISTS eb_security_constraints;
+        ///
+        ///CREATE PROCEDURE eb_security_constraints(IN _userid integer,
+        ///	IN _keyid integer,
+        ///	IN _add_data text,
+        ///	IN _delete_ids text,
+        ///    OUT out_add_no integer,
+        ///    OUT out_del_no integer)
+        ///BEGIN 
+        ///  
+        ///DECLARE add_no INTEGER;
+        ///DECLARE del_no INTEGER;
+        ///DECLARE add_con TEXT;
+        ///DECLARE temp1 INTEGER;
+        ///DECLARE tmp2 TEXT;
+        ///DECLARE cline TEXT;
+        ///DECLARE cmaster TEXT;
+        ///DECLARE i INTEGER;
+        ///DECLARE j INTEGER;
+        ///DECLARE cmaster_count INTEGER;
+        ///DECLARE cline_count INTEGER;        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_security_constraints2 {
             get {
@@ -4277,27 +4295,29 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DROP PROCEDURE IF EXISTS eb_createormodifyuserandroles;
+        ///   Looks up a localized string similar to DROP PROCEDURE IF EXISTS eb_security_user;
         ///
-        ///CREATE PROCEDURE eb_createormodifyuserandroles(IN userid INTEGER,
-        ///    IN id INTEGER,
-        ///    IN fullname TEXT,
-        ///    IN nickname TEXT,
-        ///    IN email TEXT,
-        ///    IN pwd TEXT,
-        ///    IN dob DATE,
-        ///    IN sex TEXT,
-        ///    IN alternateemail TEXT,
-        ///    IN phprimary TEXT,
-        ///    IN phsecondary TEXT,
-        ///    IN phlandphone TEXT,
-        ///    IN extension TEXT,
-        ///    IN fbid TEXT,
-        ///    IN fbname TEXT,
-        ///    IN roles TEXT,
-        ///    IN `groups` TEXT,
-        ///    IN statusid INTEGER,
-        ///    IN h [rest of string was truncated]&quot;;.
+        ///CREATE PROCEDURE eb_security_user(IN _userid integer,
+        ///	IN _id integer,
+        ///	IN _fullname text,
+        ///	IN _nickname text,
+        ///	IN _email text,
+        ///	IN _pwd text,
+        ///	IN _dob date,
+        ///	IN _sex text,
+        ///	IN _alternateemail text,
+        ///	IN _phprimary text,
+        ///	IN _phsecondary text,
+        ///	IN _phlandphone text,
+        ///	IN _extension text,
+        ///	IN _fbid text,
+        ///	IN _fbname text,
+        ///	IN _roles text,
+        ///	IN _groups text,
+        ///	IN _statusid integer,
+        ///	IN _hide text,
+        ///	IN _anonymoususerid integer,
+        ///	IN _preferences text [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_security_user2 {
             get {
@@ -4368,26 +4388,27 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DROP PROCEDURE IF EXISTS eb_createormodifyusergroup;
+        ///   Looks up a localized string similar to DROP PROCEDURE IF EXISTS eb_security_usergroup;
         ///
-        ///CREATE PROCEDURE eb_createormodifyusergroup(IN userid INTEGER,
-        ///    IN id INTEGER,
-        ///    IN name TEXT,
-        ///    IN description TEXT,
-        ///    IN users TEXT,
-        ///    IN ipconstrnw TEXT,
-        ///    IN ipconstrold TEXT,
-        ///    IN dtconstrnw TEXT,
-        ///    IN dtconstrold TEXT,
-        ///    OUT out_gid INTEGER)
+        ///CREATE PROCEDURE eb_security_usergroup(IN userid integer,
+        ///	IN id integer,
+        ///	IN name text,
+        ///	IN description text,
+        ///	IN users text,
+        ///	IN constraints_add text,
+        ///	IN constraints_del text,
+        ///    OUT out_gid integer)
         ///BEGIN
-        ///DECLARE gid INTEGER;
-        ///DECLARE nwip TEXT;
-        ///DECLARE nwdesc TEXT;
-        ///DECLARE nwtitle TEXT;
-        ///DECLARE nwdesc1 TEXT;
-        ///DECLARE nwtype INTEGER;
-        ///DECLARE nwstart DATETIME DEFAULT NOW( [rest of string was truncated]&quot;;.
+        ///DECLARE gid integer;
+        ///DECLARE _userid integer;
+        ///DECLARE _id integer;
+        ///DECLARE _name text;
+        ///DECLARE _description text;
+        ///DECLARE _users text;
+        ///DECLARE _constraints_add text;
+        ///DECLARE _constraints_del text;
+        ///DECLARE _keyid integer;
+        ///DECLARE _add [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_security_usergroup2 {
             get {
@@ -4429,7 +4450,7 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_signin_log
         ///(
-        ///    id serial,
+        ///    id integer auto_increment,
         ///    user_id integer,
         ///    ip_address text,
         ///    device_info text,
@@ -5217,6 +5238,50 @@ namespace ExpressBase.Common {
         public static string split_str_util2 {
             get {
                 return ResourceManager.GetString("split_str_util2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --For MySQL.
+        /// </summary>
+        public static string str_to_tbl_constraints_util {
+            get {
+                return ResourceManager.GetString("str_to_tbl_constraints_util", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --For MySQL.
+        /// </summary>
+        public static string str_to_tbl_constraints_util1 {
+            get {
+                return ResourceManager.GetString("str_to_tbl_constraints_util1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DROP FUNCTION IF EXISTS STR_TO_TBL_CONSTRAINTS;
+        ///
+        ///CREATE PROCEDURE STR_TO_TBL_CONSTRAINTS(fullstr TEXT, dlim TEXT)
+        ///BEGIN
+        ///DECLARE a INT DEFAULT 0 ;
+        ///DECLARE str VARCHAR(255);
+        ///
+        ///TRUNCATE TABLE temp_array_table;
+        ///      SET @delim=dlim;
+        ///      simple_loop: LOOP
+        ///         SET a=a+1;
+        ///         SET str := (SELECT split_str(fullstr,@delim,a));
+        ///         IF str=&apos;&apos; THEN
+        ///            LEAVE simple_loop;
+        ///         END IF;
+        ///         -- Do Inserts into temp table here with str going into the row
+        ///         
+        ///         I [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string str_to_tbl_constraints_util2 {
+            get {
+                return ResourceManager.GetString("str_to_tbl_constraints_util2", resourceCulture);
             }
         }
         

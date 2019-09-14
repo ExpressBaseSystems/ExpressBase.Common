@@ -271,14 +271,17 @@ namespace ExpressBase.Security
                                 df.GetNewParameter("social", EbDbTypes.String, social),
                                 df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),
                                 df.GetNewParameter("ipaddress", EbDbTypes.String, ipaddress),
+                                df.GetNewParameter("deviceinfo", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_userid", EbDbTypes.Int32),
+                                df.GetNewOutParameter("tmp_status_id", EbDbTypes.Int32),
                                 df.GetNewOutParameter("tmp_email", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_fullname", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_roles_a", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_rolename_a", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_permissions", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_preferencesjson", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_constraintstatus", EbDbTypes.String)
+                                df.GetNewOutParameter("tmp_constraints_a", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_signin_id", EbDbTypes.Int32)
                                 });
 
                     return InitUserObject(ds, context);
@@ -310,14 +313,17 @@ namespace ExpressBase.Security
                                 df.GetNewParameter("social", EbDbTypes.String, socialId),
                                 df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),                               
                                 df.GetNewParameter("ipaddress", EbDbTypes.String),
+                                df.GetNewParameter("deviceinfo", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_userid", EbDbTypes.Int32),
+                                df.GetNewOutParameter("tmp_status_id", EbDbTypes.Int32),
                                 df.GetNewOutParameter("tmp_email", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_fullname", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_roles_a", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_rolename_a", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_permissions", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_preferencesjson", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_constraintstatus", EbDbTypes.String)
+                                df.GetNewOutParameter("tmp_constraints_a", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_signin_id", EbDbTypes.Int32)
                                 });
 
                     return InitUserObject(dt, context);
@@ -348,14 +354,17 @@ namespace ExpressBase.Security
                                 df.GetNewParameter("social", EbDbTypes.String),
                                 df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),                                
                                 df.GetNewParameter("ipaddress", EbDbTypes.String),
+                                df.GetNewParameter("deviceinfo", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_userid", EbDbTypes.Int32),
+                                df.GetNewOutParameter("tmp_status_id", EbDbTypes.Int32),
                                 df.GetNewOutParameter("tmp_email", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_fullname", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_roles_a", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_rolename_a", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_permissions", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_preferencesjson", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_constraintstatus", EbDbTypes.String)
+                                df.GetNewOutParameter("tmp_constraints_a", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_signin_id", EbDbTypes.Int32)
                                 });
 
                     return InitUserObject(dt, context);
@@ -375,83 +384,119 @@ namespace ExpressBase.Security
 
         public static User GetDetailsAnonymous(IDatabase df, string socialId, string emailId, string phone, int appid, string context, string user_ip, string user_name, string user_browser, string city, string region, string country, string latitude, string longitude, string timezone, string iplocationjson)
         {
-            List<DbParameter> paramlist = new List<DbParameter>();
-            string parameters = "";
-            if (!string.IsNullOrEmpty(socialId))
+            if(df.Vendor == DatabaseVendors.MYSQL)
             {
-                parameters += "in_socialid => :socialId, ";
-                paramlist.Add(df.GetNewParameter("socialId", EbDbTypes.String, socialId));
+                var ds = df.DoProcedure(df.EB_AUTHENTICATE_ANONYMOUS,
+                            new DbParameter[] {
+                                df.GetNewParameter("in_socialid", EbDbTypes.String, socialId),
+                                df.GetNewParameter("in_fullname", EbDbTypes.String, user_name),
+                                df.GetNewParameter("in_emailid", EbDbTypes.String, emailId),
+                                df.GetNewParameter("in_phone", EbDbTypes.String, phone),
+                                df.GetNewParameter("in_user_ip", EbDbTypes.String, user_ip),
+                                df.GetNewParameter("in_user_browser", EbDbTypes.String, user_browser),
+                                df.GetNewParameter("in_city", EbDbTypes.String, city),
+                                df.GetNewParameter("in_region", EbDbTypes.String, region),
+                                df.GetNewParameter("in_country", EbDbTypes.String, country),
+                                df.GetNewParameter("in_latitude", EbDbTypes.String, latitude),
+                                df.GetNewParameter("in_longitude", EbDbTypes.String, longitude),
+                                df.GetNewParameter("in_timezone", EbDbTypes.String, timezone),
+                                df.GetNewParameter("in_iplocationjson", EbDbTypes.String, iplocationjson),
+                                df.GetNewParameter("in_appid", EbDbTypes.String, appid),
+                                df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context ),
+                                df.GetNewOutParameter("tmp_userid", EbDbTypes.Int32),
+                                df.GetNewOutParameter("tmp_status_id", EbDbTypes.Int32),
+                                df.GetNewOutParameter("tmp_email", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_fullname", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_roles_a", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_rolename_a", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_permissions", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_preferencesjson", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_constraints_a", EbDbTypes.String),
+                                df.GetNewOutParameter("tmp_signin_id", EbDbTypes.Int32)
+                                });
+                return InitUserObject(ds, context);
             }
-            if (!string.IsNullOrEmpty(emailId))
+            else
             {
-                parameters += "in_emailid => :emailId, ";
-                paramlist.Add(df.GetNewParameter("emailId", EbDbTypes.String, emailId));
-            }
-            if (!string.IsNullOrEmpty(phone))
-            {
-                parameters += "in_phone => :phone, ";
-                paramlist.Add(df.GetNewParameter("phone", EbDbTypes.String, phone));
-            }
-            if (!string.IsNullOrEmpty(user_ip))
-            {
-                parameters += "in_user_ip => :user_ip, ";
-                paramlist.Add(df.GetNewParameter("user_ip", EbDbTypes.String, user_ip));
+                List<DbParameter> paramlist = new List<DbParameter>();
+                string parameters = "";
+                if (!string.IsNullOrEmpty(socialId))
+                {
+                    parameters += "in_socialid => :socialId, ";
+                    paramlist.Add(df.GetNewParameter("socialId", EbDbTypes.String, socialId));
+                }
+                if (!string.IsNullOrEmpty(emailId))
+                {
+                    parameters += "in_emailid => :emailId, ";
+                    paramlist.Add(df.GetNewParameter("emailId", EbDbTypes.String, emailId));
+                }
+                if (!string.IsNullOrEmpty(phone))
+                {
+                    parameters += "in_phone => :phone, ";
+                    paramlist.Add(df.GetNewParameter("phone", EbDbTypes.String, phone));
+                }
+                if (!string.IsNullOrEmpty(user_ip))
+                {
+                    parameters += "in_user_ip => :user_ip, ";
+                    paramlist.Add(df.GetNewParameter("user_ip", EbDbTypes.String, user_ip));
 
-            }
-            if (!string.IsNullOrEmpty(user_name))
-            {
-                parameters += "in_fullname => :user_name, ";
-                paramlist.Add(df.GetNewParameter("user_name", EbDbTypes.String, user_name));
-            }
-            if (!string.IsNullOrEmpty(user_browser))
-            {
-                parameters += "in_user_browser => :user_browser, ";
-                paramlist.Add(df.GetNewParameter("user_browser", EbDbTypes.String, user_browser));
-            }
-            if (!string.IsNullOrEmpty(city))
-            {
-                parameters += "in_city => :city, ";
-                paramlist.Add(df.GetNewParameter("city", EbDbTypes.String, city));
-            }
-            if (!string.IsNullOrEmpty(region))
-            {
-                parameters += "in_region => :region, ";
-                paramlist.Add(df.GetNewParameter("region", EbDbTypes.String, region));
-            }
-            if (!string.IsNullOrEmpty(country))
-            {
-                parameters += "in_country => :country, ";
-                paramlist.Add(df.GetNewParameter("country", EbDbTypes.String, country));
-            }
-            if (!string.IsNullOrEmpty(latitude))
-            {
-                parameters += "in_latitude => :latitude, ";
-                paramlist.Add(df.GetNewParameter("latitude", EbDbTypes.String, latitude));
-            }
-            if (!string.IsNullOrEmpty(longitude))
-            {
-                parameters += "in_longitude => :longitude, ";
-                paramlist.Add(df.GetNewParameter("longitude", EbDbTypes.String, longitude));
-            }
-            if (!string.IsNullOrEmpty(timezone))
-            {
-                parameters += "in_timezone => :timezone, ";
-                paramlist.Add(df.GetNewParameter("timezone", EbDbTypes.String, timezone));
+                }
+                if (!string.IsNullOrEmpty(user_name))
+                {
+                    parameters += "in_fullname => :user_name, ";
+                    paramlist.Add(df.GetNewParameter("user_name", EbDbTypes.String, user_name));
+                }
+                if (!string.IsNullOrEmpty(user_browser))
+                {
+                    parameters += "in_user_browser => :user_browser, ";
+                    paramlist.Add(df.GetNewParameter("user_browser", EbDbTypes.String, user_browser));
+                }
+                if (!string.IsNullOrEmpty(city))
+                {
+                    parameters += "in_city => :city, ";
+                    paramlist.Add(df.GetNewParameter("city", EbDbTypes.String, city));
+                }
+                if (!string.IsNullOrEmpty(region))
+                {
+                    parameters += "in_region => :region, ";
+                    paramlist.Add(df.GetNewParameter("region", EbDbTypes.String, region));
+                }
+                if (!string.IsNullOrEmpty(country))
+                {
+                    parameters += "in_country => :country, ";
+                    paramlist.Add(df.GetNewParameter("country", EbDbTypes.String, country));
+                }
+                if (!string.IsNullOrEmpty(latitude))
+                {
+                    parameters += "in_latitude => :latitude, ";
+                    paramlist.Add(df.GetNewParameter("latitude", EbDbTypes.String, latitude));
+                }
+                if (!string.IsNullOrEmpty(longitude))
+                {
+                    parameters += "in_longitude => :longitude, ";
+                    paramlist.Add(df.GetNewParameter("longitude", EbDbTypes.String, longitude));
+                }
+                if (!string.IsNullOrEmpty(timezone))
+                {
+                    parameters += "in_timezone => :timezone, ";
+                    paramlist.Add(df.GetNewParameter("timezone", EbDbTypes.String, timezone));
 
+                }
+                if (!string.IsNullOrEmpty(iplocationjson))
+                {
+                    parameters += "in_iplocationjson => :iplocationjson, ";
+                    paramlist.Add(df.GetNewParameter("iplocationjson", EbDbTypes.String, iplocationjson));
+                }
+                paramlist.Add(df.GetNewParameter("appid", EbDbTypes.Int32, appid));
+                paramlist.Add(df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context));
+
+                string sql = df.EB_AUTHENTICATE_ANONYMOUS.Replace("@params", (df.Vendor == DatabaseVendors.PGSQL) ? parameters.Replace("=>", ":=") : parameters);
+
+                var ds = df.DoQuery(sql, paramlist.ToArray());
+                return InitUserObject(ds, context);
             }
-            if (!string.IsNullOrEmpty(iplocationjson))
-            {
-                parameters += "in_iplocationjson => :iplocationjson, ";
-                paramlist.Add(df.GetNewParameter("iplocationjson", EbDbTypes.String, iplocationjson));
-            }
-            paramlist.Add(df.GetNewParameter("appid", EbDbTypes.Int32, appid));
-            paramlist.Add(df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context));
-
-
-            string sql = df.EB_AUTHENTICATE_ANONYMOUS.Replace("@params", (df.Vendor == DatabaseVendors.PGSQL) ? parameters.Replace("=>", ":=") : parameters);
-
-            var ds = df.DoQuery(sql, paramlist.ToArray());
-            return InitUserObject(ds, context);
+            
+            
         }
 
         private static User InitUserObject(EbDataTable ds, string context)

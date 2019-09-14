@@ -76,7 +76,8 @@ namespace ExpressBase.Common
         GoogleMap = 10,
         SendGrid = 11,
         GoogleDrive =12,
-        DropBox =13
+        DropBox =13,
+        AWSS3 =14
     }
 
     public enum SmtpProviders

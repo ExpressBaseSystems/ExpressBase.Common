@@ -342,7 +342,7 @@ namespace ExpressBase.Common
         public Dictionary<int, string> GetDictionary(string query, string dm, string vm)
         {
             Dictionary<int, string> _dic = new Dictionary<int, string>();
-            string sql = $"SELECT {vm},{dm} FROM ({query}) as __table;";
+            string sql = $"SELECT {vm},{dm} FROM ({query.Replace(";",string.Empty)}) as __table;";
 
             using (var con = GetNewConnection() as NpgsqlConnection)
             {
@@ -728,7 +728,7 @@ SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id =
             }
         }
 
-        public string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_security_user(:userid,:id,:fullname,:nickname,:email,:pwd,:dob,:sex,:alternateemail,:phprimary,:phsecondary,:phlandphone,:extension,:fbid,:fbname,:roles,:groups,:statusid,:hide,:anonymoususerid,:preference,:consadd,:consdel);"; } }
+        public string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_security_user(:_userid,:_id,:_fullname,:_nickname,:_email,:_pwd,:_dob,:_sex,:_alternateemail,:_phprimary,:_phsecondary,:_phlandphone,:_extension,:_fbid,:_fbname,:_roles,:_groups,:_statusid,:_hide,:_anonymoususerid,:_preferences,:_consadd,:_consdel);"; } }
         public string EB_SAVEUSERGROUP_QUERY { get { return "SELECT * FROM eb_security_usergroup(:userid,:id,:name,:description,:users,:constraints_add,:constraints_del);"; } }
 
         public string EB_MANAGEUSER_FIRST_QUERY

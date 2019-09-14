@@ -66,7 +66,7 @@ namespace ExpressBase.Objects
 
         public virtual void ReplaceRefid(Dictionary<string, string> RefidMap) { }
 
-        public virtual string DiscoverRelatedRefids() { return ""; }
+        public virtual List<string> DiscoverRelatedRefids() { return null; }
 
         public virtual void BeforeSave(IServiceClient serviceClient, IRedisClient redis) { }
 

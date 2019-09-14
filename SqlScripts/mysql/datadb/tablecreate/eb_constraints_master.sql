@@ -1,6 +1,6 @@
 CREATE TABLE eb_constraints_master
 (
-    id serial,
+    id integer auto_increment,
     key_id integer,
     key_type integer,
     description text,

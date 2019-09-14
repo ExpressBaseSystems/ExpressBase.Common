@@ -38,7 +38,7 @@ CREATE TEMPORARY TABLE IF NOT EXISTS apps SELECT `value` FROM temp_array_table;
 
 SELECT eb_objects_id, major_ver_num, minor_ver_num, patch_ver_num into objid, major, minor, patch 
 	FROM eb_objects_ver WHERE refid = id;
-
+	SET SQL_SAFE_UPDATES = 0;
   	UPDATE eb_objects eo
 	SET 
     	eo.obj_name = obj_name, eo.obj_desc = obj_desc, eo.obj_tags = tags, eo.display_name = disp_name
