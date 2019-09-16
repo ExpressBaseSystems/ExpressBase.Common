@@ -87,11 +87,11 @@ namespace ExpressBase.Common
         string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ { get; }
         string EB_PARTICULAR_VERSION_OF_AN_OBJ { get; }
         string EB_LATEST_COMMITTED_VERSION_OF_AN_OBJ { get; }
-        string EB_ALL_LATEST_COMMITTED_VERSION_OF_AN_OBJ { get; }
+        string EB_COMMITTED_VERSIONS_OF_ALL_OBJECTS_OF_A_TYPE { get; }
         string EB_GET_LIVE_OBJ_RELATIONS { get; }
         string EB_GET_TAGGED_OBJECTS { get; }
         string EB_GET_ALL_COMMITTED_VERSION_LIST { get; }
-        string EB_GET_OBJ_LIST_FROM_EBOBJECTS { get; }
+        string EB_GET_OBJECTS_OF_A_TYPE { get; }
         string EB_GET_OBJ_STATUS_HISTORY { get; }
         string EB_LIVE_VERSION_OF_OBJS { get; }
         string EB_GET_ALL_TAGS { get; }

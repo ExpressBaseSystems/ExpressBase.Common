@@ -1030,7 +1030,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                 ";
             }
         }
-        public string EB_ALL_LATEST_COMMITTED_VERSION_OF_AN_OBJ
+        public string EB_COMMITTED_VERSIONS_OF_ALL_OBJECTS_OF_A_TYPE
         {
             get
             {
@@ -1084,11 +1084,11 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                             WHERE
                                 EO.id = EOV.eb_objects_id  AND EO.obj_type=:type AND COALESCE(EOV.working_mode, 'F') <> 'T'
                             ORDER BY
-                                EO.obj_name
+                                EO.obj_name, EOV.id
                 ";
             }
         }
-        public string EB_GET_OBJ_LIST_FROM_EBOBJECTS
+        public string EB_GET_OBJECTS_OF_A_TYPE
         {
             get
             {
