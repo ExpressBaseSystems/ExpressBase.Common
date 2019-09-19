@@ -279,6 +279,13 @@ namespace ExpressBase.Common.Objects.Attributes
         public const string LABEL_COLOR = @"
                 $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-label]').css('color',props.LabelForeColor);";
 
+        public const string BORDER = @"
+                console.log('BORDER.......');
+                if(props.HideBorder)
+                    $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('.gb-border').css('border','none');
+                else
+                    $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('.gb-border').css('border','dashed 1px rgba(0, 0, 0, 0.12)');";
+
         public const string CONTROL_ICON = @"
                 if(props.ShowIcon)
                     $(`#cont_${elementId}.Eb-ctrlContainer .ctrl-cover`).closestInner('.input-group-addon').show();

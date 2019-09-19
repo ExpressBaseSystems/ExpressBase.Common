@@ -78,6 +78,30 @@ namespace ExpressBase.Common.Data
             }
         }
 
+        public EbConnectionFactory(string tenantId, IRedisClient redis, bool IsDataOnly)
+        {
+            if (IsDataOnly)
+            {
+                this.SolutionId = tenantId;
+                if (string.IsNullOrEmpty(this.SolutionId))
+                    throw new Exception("Fatal Error :: Solution Id is null or Empty!");
+
+                this.Redis = redis as RedisClient;
+                if (this.Connections != null)
+                {
+                    string _userName = Connections.DataDbConfig.UserName;
+                    string _passWord = Connections.DataDbConfig.Password;
+
+                    // DATA DB 
+                    if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
+                        DataDB = new PGSQLDatabase(Connections.DataDbConfig);
+                    else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
+                        DataDB = new OracleDB(Connections.DataDbConfig);
+                    else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
+                        DataDB = new MySqlDB(Connections.DataDbConfig);
+                }
+            }
+        }
         // RETURN EITHER INFA FAC OR SOLUTION FAC
         public EbConnectionFactory(string tenantId, IRedisClient redis)
         {
