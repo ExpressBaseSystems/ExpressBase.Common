@@ -280,7 +280,6 @@ namespace ExpressBase.Common.Objects.Attributes
                 $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-label]').css('color',props.LabelForeColor);";
 
         public const string BORDER = @"
-                console.log('BORDER.......');
                 if(props.HideBorder)
                     $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('.gb-border').css('border','none');
                 else
