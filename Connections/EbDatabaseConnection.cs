@@ -380,7 +380,7 @@ namespace ExpressBase.Common.Connections
 
         public string RefreshToken { get; set; }
 
-        public string AppName { get; set; }
+        public string ApplicationName { get; set; }
 
         public override EbIntegrations Type { get { return EbIntegrations.GoogleDrive; } }
     }
