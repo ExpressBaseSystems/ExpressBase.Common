@@ -78,6 +78,30 @@ namespace ExpressBase.Common.Data
             }
         }
 
+        public EbConnectionFactory(string tenantId, IRedisClient redis, bool IsDataOnly)
+        {
+            if (IsDataOnly)
+            {
+                this.SolutionId = tenantId;
+                if (string.IsNullOrEmpty(this.SolutionId))
+                    throw new Exception("Fatal Error :: Solution Id is null or Empty!");
+
+                this.Redis = redis as RedisClient;
+                if (this.Connections != null)
+                {
+                    string _userName = Connections.DataDbConfig.UserName;
+                    string _passWord = Connections.DataDbConfig.Password;
+
+                    // DATA DB 
+                    if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
+                        DataDB = new PGSQLDatabase(Connections.DataDbConfig);
+                    else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
+                        DataDB = new OracleDB(Connections.DataDbConfig);
+                    else if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
+                        DataDB = new MySqlDB(Connections.DataDbConfig);
+                }
+            }
+        }
         // RETURN EITHER INFA FAC OR SOLUTION FAC
         public EbConnectionFactory(string tenantId, IRedisClient redis)
         {
@@ -256,6 +280,8 @@ namespace ExpressBase.Common.Data
                             FilesDB.Add(new DropBox.DropBoxDatabase(Connections.FilesDbConfig.Integrations[i] as EbDropBoxConfig));
                         else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.AWSS3)
                             FilesDB.Add(new AWSS3.AWSS3(Connections.FilesDbConfig.Integrations[i] as EbAWSS3Config));
+                        else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.GoogleDrive)
+                            FilesDB.Add(new GoogleDrive.GoogleDriveDatabase(Connections.FilesDbConfig.Integrations[i] as EbGoogleDriveConfig));
                         else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.PGSQL)
                             FilesDB.Add(new PGSQLFileDatabase(Connections.FilesDbConfig.Integrations[i] as PostgresConfig));
                         else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.ORACLE)
