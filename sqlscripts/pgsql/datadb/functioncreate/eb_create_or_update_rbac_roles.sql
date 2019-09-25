@@ -48,6 +48,4 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_create_or_update_rbac_roles(integer, integer, integer, text, text, text, text, text, text, text)
-    OWNER TO postgres;
 

@@ -1,3 +1,8 @@
+-- FUNCTION: public.eb_authenticate_anonymous(text, text, text, text, text, text, text, text, text, text, text, text, text, integer, text)
+
+-- DROP FUNCTION public.eb_authenticate_anonymous(text, text, text, text, text, text, text, text, text, text, text, text, text, integer, text);
+
+
 CREATE OR REPLACE FUNCTION public.eb_authenticate_anonymous(
 	in_socialid text DEFAULT NULL::text,
 	in_fullname text DEFAULT NULL::text,
@@ -17,9 +22,6 @@ CREATE OR REPLACE FUNCTION public.eb_authenticate_anonymous(
     RETURNS TABLE(out_userid integer, out_status_id integer, out_email text, out_fullname text, out_roles_a text, out_rolename_a text, out_permissions text, out_preferencesjson text, out_constraints_a text, out_signin_id integer) 
     LANGUAGE 'plpgsql'
 
-    COST 100
-    VOLATILE 
-    ROWS 1000
 AS $BODY$
 
 DECLARE out_userid INTEGER;

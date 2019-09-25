@@ -28,8 +28,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_objects_ver
-    OWNER to postgres;
 
 -- Index: eb_objects_ver_eb_objects_id_idx
 

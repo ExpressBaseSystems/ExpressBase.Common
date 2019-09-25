@@ -6,10 +6,9 @@ CREATE OR REPLACE FUNCTION public.eb_revokedbaccess2user(
 	username text,
 	dbname text)
     RETURNS boolean
-    LANGUAGE 'plpgsql'
-    COST 100.0
+    LANGUAGE 'plpgsql'    
 
-AS $function$
+AS $BODY$
 
 DECLARE dbs text;
 BEGIN
@@ -22,9 +21,8 @@ BEGIN
     return true;
 END;
 
-$function$;
+$BODY$;
 
-ALTER FUNCTION public.eb_revokedbaccess2user(text, text)
-    OWNER TO postgres;
+
 
 

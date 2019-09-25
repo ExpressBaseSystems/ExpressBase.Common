@@ -70,5 +70,3 @@ END
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_exploreobject(integer)
-    OWNER TO postgres;

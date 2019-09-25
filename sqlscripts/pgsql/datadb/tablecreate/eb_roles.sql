@@ -5,11 +5,11 @@
 CREATE TABLE public.eb_roles
 (
     id serial,
-    role_name text COLLATE pg_catalog."default" NOT NULL,
+    role_name text NOT NULL,
     eb_del1 boolean,
-    applicationname text COLLATE pg_catalog."default",
+    applicationname text,
     applicationid integer,
-    description text COLLATE pg_catalog."default",
+    description text,
     eb_del "char" NOT NULL DEFAULT 'F'::"char",
     is_anonymous "char" NOT NULL DEFAULT 'F'::"char",
     CONSTRAINT eb_roles_id_pkey PRIMARY KEY (id),
@@ -21,11 +21,8 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_roles
-    OWNER to postgres;
 	
 ALTER SEQUENCE 	eb_roles_id_seq INCREMENT 1 RESTART 101 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1;
-
 	
 
 -- Index: eb_roles_eb_del_idx

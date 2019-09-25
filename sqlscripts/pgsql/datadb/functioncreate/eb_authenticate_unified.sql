@@ -12,9 +12,6 @@ CREATE OR REPLACE FUNCTION public.eb_authenticate_unified(
     RETURNS TABLE(_userid integer, _status_id integer, _email text, _fullname text, _roles_a text, _rolename_a text, _permissions text, _preferencesjson text, _constraints_a text, _signin_id integer) 
     LANGUAGE 'plpgsql'
 
-    COST 100
-    VOLATILE 
-    ROWS 1000
 AS $BODY$
 
 DECLARE _userid INTEGER;
@@ -103,5 +100,3 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_authenticate_unified(text, text, text, text, text, text)
-    OWNER TO postgres;

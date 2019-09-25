@@ -5,17 +5,17 @@
 CREATE TABLE public.eb_bots
 (
     id serial,
-    name text COLLATE pg_catalog."default",
-    url text COLLATE pg_catalog."default",
-    welcome_msg text COLLATE pg_catalog."default",
-    botid text COLLATE pg_catalog."default",
+    name text,
+    url text,
+    welcome_msg text,
+    botid text,
     modified_by integer,
     solution_id integer,
     created_at timestamp without time zone,
     modified_at timestamp without time zone,
     created_by integer,
     app_id integer,
-    fullname text COLLATE pg_catalog."default",
+    fullname text,
     CONSTRAINT eb_bots_pkey PRIMARY KEY (id),
     CONSTRAINT botid_uniquekey UNIQUE (botid)
 )
@@ -24,8 +24,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_bots
-    OWNER to postgres;
 
 -- Index: eb_bots_app_id_idx
 

@@ -5,8 +5,8 @@
 CREATE TABLE public.eb_usergroup
 (
     id serial,
-    name text COLLATE pg_catalog."default",
-    description text COLLATE pg_catalog."default",
+    name text,
+    description text,
     eb_del1 boolean,
     eb_del "char" NOT NULL DEFAULT 'F'::"char",
     CONSTRAINT eb_usergroup_pkey PRIMARY KEY (id),
@@ -17,8 +17,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_usergroup
-    OWNER to postgres;
 
 -- Index: eb_usergroup_eb_del_idx
 

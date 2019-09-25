@@ -13,6 +13,3 @@ WITH (
     OIDS = FALSE
 )
 TABLESPACE pg_default;
-
-ALTER TABLE public.eb_objects_favourites
-    OWNER to postgres;

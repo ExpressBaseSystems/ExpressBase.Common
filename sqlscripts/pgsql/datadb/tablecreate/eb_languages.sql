@@ -5,7 +5,7 @@
 CREATE TABLE public.eb_languages
 (
     id serial,
-    language text COLLATE pg_catalog."default" NOT NULL,
+    language text NOT NULL,
     CONSTRAINT eb_languages_pkey PRIMARY KEY (id)
 )
 WITH (
@@ -13,8 +13,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_languages
-    OWNER to postgres;
 
 -- Index: eb_languages_id_idx
 

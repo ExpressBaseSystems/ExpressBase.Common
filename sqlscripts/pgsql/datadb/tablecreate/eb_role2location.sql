@@ -19,9 +19,7 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_role2location
-    OWNER to postgres;
-	
+
 -- Index: public.eb_role2location_id_idx
 
 -- DROP INDEX public.eb_role2location_id_idx;

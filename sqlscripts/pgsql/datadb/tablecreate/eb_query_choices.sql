@@ -6,7 +6,7 @@ CREATE TABLE public.eb_query_choices
 (
     id serial,
     q_id integer,
-    choice text COLLATE pg_catalog."default",
+    choice text,
     eb_del "char" DEFAULT 'F'::"char",
     score integer,
 	CONSTRAINT eb_query_choices_pkey PRIMARY KEY (id)
@@ -16,8 +16,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_query_choices
-    OWNER to postgres;
 
 -- Index: eb_query_choices_id_idx
 

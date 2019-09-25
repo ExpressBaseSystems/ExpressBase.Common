@@ -7,16 +7,13 @@ CREATE TABLE public.eb_keyvalue
     id serial,
     key_id bigint NOT NULL,
     lang_id integer NOT NULL,
-    value text COLLATE pg_catalog."default" NOT NULL,
+    value text NOT NULL,
     CONSTRAINT eb_keyvalue_pkey PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE
 )
 TABLESPACE pg_default;
-
-ALTER TABLE public.eb_keyvalue
-    OWNER to postgres;
 
 
 -- Index: eb_keyvalue_id_idx

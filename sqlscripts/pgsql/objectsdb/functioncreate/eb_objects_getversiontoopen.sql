@@ -111,5 +111,3 @@ END
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_getversiontoopen(integer)
-    OWNER TO postgres;
