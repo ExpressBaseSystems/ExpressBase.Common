@@ -454,6 +454,11 @@ namespace ExpressBase.Common
             return _dic;
         }
 
+        public List<int> GetAutoResolveValues(string query, string vm, string cond)
+        {
+            throw new NotImplementedException();
+        }
+
         public void BeginTransaction()
         {
             // This is a place where you will use _mySQLDriver to begin transaction
