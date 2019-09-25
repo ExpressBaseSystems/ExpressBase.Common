@@ -372,9 +372,15 @@ namespace ExpressBase.Common.Connections
 
     public class EbGoogleDriveConfig : EbIntegrationConf
     {
-        public string JsonString { get; set; }
+        public string SolutionId { get; set; }
 
-        public string AppName { get; set; }
+        public string ClientID { get; set; }
+
+        public string Clientsecret { get; set; }
+
+        public string RefreshToken { get; set; }
+
+        public string ApplicationName { get; set; }
 
         public override EbIntegrations Type { get { return EbIntegrations.GoogleDrive; } }
     }

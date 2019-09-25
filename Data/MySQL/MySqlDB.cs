@@ -315,9 +315,11 @@ namespace ExpressBase.Common
                             {
                                 EbDataTable dt = new EbDataTable();
                                 DataTable schema = reader.GetSchemaTable();
-
-                                this.AddColumns(dt, schema);
-                                PrepareDataTable(reader, dt);
+                                if (schema != null)
+                                {
+                                    this.AddColumns(dt, schema);
+                                    PrepareDataTable(reader, dt);
+                                }
                                 ds.Tables.Add(dt);
                                 ds.RowNumbers += dt.Rows.Count.ToString() + ",";
                             }
@@ -414,6 +416,47 @@ namespace ExpressBase.Common
 
                 return 0;
             }
+        }
+
+        public Dictionary<int, string> GetDictionary(string query, string dm, string vm)
+        {
+            Dictionary<int, string> _dic = new Dictionary<int, string>();
+            string sql = $"SELECT {vm},{dm} FROM ({query.Replace(";", string.Empty)}) as __table;";
+
+            using (var con = GetNewConnection() as MySqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(sql, con))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                         // int _fieldCount = reader.FieldCount;
+                            while (reader.Read())
+                            {
+                                if (!_dic.ContainsKey(Convert.ToInt32(reader[vm])))
+                                    _dic.Add(Convert.ToInt32(reader[vm]), reader[dm].ToString());
+                            }
+                        }
+                    }
+                }
+                catch (MySqlException myexec)
+                {
+                    Console.WriteLine("Postgres Exception: " + myexec.Message);
+                    throw myexec;
+                }
+                catch (SocketException scket)
+                {
+                }
+            }
+
+            return _dic;
+        }
+
+        public List<int> GetAutoResolveValues(string query, string vm, string cond)
+        {
+            throw new NotImplementedException();
         }
 
         public void BeginTransaction()
@@ -725,22 +768,17 @@ namespace ExpressBase.Common
             return cols;
         }
 
-        public Dictionary<int, string> GetDictionary(string query, string dm, string vm)
-        {
-            throw new NotImplementedException();
-        }
+        
+        public string EB_AUTHETICATE_USER_NORMAL { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);"; } }
 
-        public string EB_AUTHETICATE_USER_NORMAL { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @tmp_userid, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraintstatus);"; } }
+        public string EB_AUTHENTICATEUSER_SOCIAL { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);"; } }
 
-        public string EB_AUTHENTICATEUSER_SOCIAL { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @tmp_userid, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraintstatus);"; } }
-
-        public string EB_AUTHENTICATEUSER_SSO { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @tmp_userid, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraintstatus);"; } }
+        public string EB_AUTHENTICATEUSER_SSO { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);"; } }
 
         public string EB_AUTHENTICATE_ANONYMOUS { get { return @"eb_authenticate_anonymous(@in_socialid, @in_fullname, @in_emailid, @in_phone, @in_user_ip, @in_user_browser,@in_city,
-                @in_region, @in_country, @in_latitude, @in_longitude, @in_timezone, @in_iplocationjson, @in_appid, @in_wc, @out_userid, @out_email, @out_fullname, @out_roles_a, @out_rolename_a, @out_permissions, @out_preferencesjson); "; } }
+                @in_region, @in_country, @in_latitude, @in_longitude, @in_timezone, @in_iplocationjson, @in_appid, @in_wc, @out_userid, @out_status_id, @out_email, @out_fullname, @out_roles_a, @out_rolename_a, @out_permissions, @out_preferencesjson, @out_constraints_a, @out_signin_id); "; } }
 
-        public string EB_SIDEBARUSER_REQUEST { get { return @"
-                SELECT 
+        public string EB_SIDEBARUSER_REQUEST { get { return @"SELECT 
                     id, applicationname,app_icon
                 FROM 
                     eb_applications
@@ -755,7 +793,35 @@ namespace ExpressBase.Common
                     eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A
                 WHERE
                     EOV.eb_objects_id = EO.id
-                    AND EO.id = any (SELECT ':Ids')                  
+                    AND EO.id IN (:Ids)                  
+                    AND EOS.eb_obj_ver_id = EOV.id
+                    AND EO2A.obj_id = EO.id
+                    AND EO2A.eb_del = 'F'
+                    AND EOS.status = 3
+                    AND COALESCE( EO.eb_del, 'F') = 'F'
+                    AND EOS.id = ANY( SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id );
+                SELECT 
+                    object_id 
+                FROM 
+                    eb_objects_favourites 
+                WHERE 
+                    userid=:user_id AND eb_del='F';"; } }
+        // only for mysql
+        public string EB_SIDEBARUSER_REQUEST_SOL_OWNER { get { return @"SELECT 
+                    id, applicationname,app_icon
+                FROM 
+                    eb_applications
+                WHERE 
+                    COALESCE(eb_del, 'F') = 'F' 
+                ORDER BY 
+                    applicationname;
+                SELECT
+                    EO.id, EO.obj_type, EO.obj_name,
+                    EOV.version_num, EOV.refid, EO2A.app_id, EO.obj_desc, EOS.status, EOS.id, display_name
+                FROM
+                    eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A
+                WHERE
+                    EOV.eb_objects_id = EO.id                                      
                     AND EOS.eb_obj_ver_id = EOV.id
                     AND EO2A.obj_id = EO.id
                     AND EO2A.eb_del = 'F'
@@ -844,10 +910,10 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_SAVEUSER_QUERY { get { return @"eb_createormodifyuserandroles(@userid, @id, @fullname, @nickname, @email, @pwd, @dob, @sex, @alternateemail, @phprimary, @phsecondary, @phlandphone, @extension, @fbid,
-                                                            @fbname, @roles, @groups, @statusid, @hide ,@anonymoususerid, @preference, @out_uid);"; } }
+        public string EB_SAVEUSER_QUERY { get { return @"eb_security_user(@_userid, @_id, @_fullname, @_nickname, @_email, @_pwd, @_dob, @_sex, @_alternateemail, @_phprimary, @_phsecondary, @_phlandphone, @_extension, @_fbid,
+                                                            @_fbname, @_roles, @_groups, @_statusid, @_hide ,@_anonymoususerid, @_preferences, @_consadd, @_consdel, @out_uid);"; } }
 
-        public string EB_SAVEUSERGROUP_QUERY { get { return "eb_createormodifyusergroup(@userid, @id, @name, @description, @users, @ipconstrnw, @ipconstrold, @dtconstrnw, @dtconstrold, @out_gid);"; } }
+        public string EB_SAVEUSERGROUP_QUERY { get { return "eb_security_usergroup(@userid, @id, @name, @description, @users, @constraints_add, @constraints_del, @out_gid);"; } }
 
         public string EB_USER_ROLE_PRIVS { get { return "SELECT DISTINCT privilege_type FROM information_schema.USER_PRIVILEGES WHERE grantee = \"'@uname'@'%'\""; } }
 
@@ -1189,7 +1255,7 @@ namespace ExpressBase.Common
                 ";
             }
         }
-        public string EB_ALL_LATEST_COMMITTED_VERSION_OF_AN_OBJ
+        public string EB_COMMITTED_VERSIONS_OF_ALL_OBJECTS_OF_A_TYPE
         {
             get
             {
@@ -1253,10 +1319,10 @@ namespace ExpressBase.Common
                             EO.id = EOV.eb_objects_id  AND EO.obj_type = @type AND COALESCE(EOV.working_mode, 'F') <> 'T'
                             AND COALESCE( EO.eb_del, 'F') = 'F'
                         ORDER BY
-                            EO.obj_name; ";
+                            EO.obj_name, EOV.id; ";
             }
         }
-        public string EB_GET_OBJ_LIST_FROM_EBOBJECTS
+        public string EB_GET_OBJECTS_OF_A_TYPE
         {
             get
             {
@@ -1373,7 +1439,7 @@ namespace ExpressBase.Common
             {
                 return @"CALL string_to_rows(@ids);
                         SELECT 
-                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
+                            EO.id, EO.display_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
                             EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.refid,
                             EU.fullname
                         FROM 

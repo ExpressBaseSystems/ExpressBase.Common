@@ -583,6 +583,11 @@ namespace ExpressBase.Common.Data
             throw new NotImplementedException();
         }
 
+        public List<int> GetAutoResolveValues(string query, string vm, string cond)
+        {
+            throw new NotImplementedException();
+        }
+
         public void BeginTransaction()
         {
             // This is a place where you will use _mySQLDriver to begin transaction
@@ -1030,7 +1035,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                 ";
             }
         }
-        public string EB_ALL_LATEST_COMMITTED_VERSION_OF_AN_OBJ
+        public string EB_COMMITTED_VERSIONS_OF_ALL_OBJECTS_OF_A_TYPE
         {
             get
             {
@@ -1084,11 +1089,11 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                             WHERE
                                 EO.id = EOV.eb_objects_id  AND EO.obj_type=:type AND COALESCE(EOV.working_mode, 'F') <> 'T'
                             ORDER BY
-                                EO.obj_name
+                                EO.obj_name, EOV.id
                 ";
             }
         }
-        public string EB_GET_OBJ_LIST_FROM_EBOBJECTS
+        public string EB_GET_OBJECTS_OF_A_TYPE
         {
             get
             {
@@ -1211,7 +1216,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"SELECT 
-                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
+                            EO.id, EO.display_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
                             EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.refid,
                             EU.fullname
                         FROM 

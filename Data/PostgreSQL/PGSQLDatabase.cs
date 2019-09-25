@@ -374,6 +374,41 @@ namespace ExpressBase.Common
             return _dic;
         }
 
+        public List<int> GetAutoResolveValues(string query, string vm, string cond)
+        {
+            List<int> _list = new List<int>();
+            string sql = $"SELECT {vm} FROM ({query.Replace(";", string.Empty)}) as __table WHERE {cond};";
+
+            using (var con = GetNewConnection() as NpgsqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(sql, con))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                if (!_list.Contains(Convert.ToInt32(reader[vm])))
+                                    _list.Add(Convert.ToInt32(reader[vm]));
+                            }
+                        }
+                    }
+                }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    Console.WriteLine("Postgres Exception: " + npgse.Message);
+                    throw npgse;
+                }
+                catch (SocketException scket)
+                {
+                }
+            }
+
+            return _list;
+        }
+
         public void BeginTransaction()
         {
             // This is a place where you will use _mySQLDriver to begin transaction
@@ -728,7 +763,7 @@ SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id =
             }
         }
 
-        public string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_security_user(:userid,:id,:fullname,:nickname,:email,:pwd,:dob,:sex,:alternateemail,:phprimary,:phsecondary,:phlandphone,:extension,:fbid,:fbname,:roles,:groups,:statusid,:hide,:anonymoususerid,:preference,:consadd,:consdel);"; } }
+        public string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_security_user(:_userid,:_id,:_fullname,:_nickname,:_email,:_pwd,:_dob,:_sex,:_alternateemail,:_phprimary,:_phsecondary,:_phlandphone,:_extension,:_fbid,:_fbname,:_roles,:_groups,:_statusid,:_hide,:_anonymoususerid,:_preferences,:_consadd,:_consdel);"; } }
         public string EB_SAVEUSERGROUP_QUERY { get { return "SELECT * FROM eb_security_usergroup(:userid,:id,:name,:description,:users,:constraints_add,:constraints_del);"; } }
 
         public string EB_MANAGEUSER_FIRST_QUERY
@@ -1080,7 +1115,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                 ";
             }
         }
-        public string EB_ALL_LATEST_COMMITTED_VERSION_OF_AN_OBJ
+        public string EB_COMMITTED_VERSIONS_OF_ALL_OBJECTS_OF_A_TYPE
         {
             get
             {
@@ -1137,11 +1172,11 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                             EO.id = EOV.eb_objects_id  AND EO.obj_type=:type AND COALESCE(EOV.working_mode, 'F') <> 'T'
                             AND COALESCE( EO.eb_del, 'F') = 'F'
                         ORDER BY
-                            EO.obj_name 
+                            EO.obj_name , EOV.id
                 ";
             }
         }
-        public string EB_GET_OBJ_LIST_FROM_EBOBJECTS
+        public string EB_GET_OBJECTS_OF_A_TYPE
         {
             get
             {
@@ -1269,7 +1304,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
             get
             {
                 return @"SELECT 
-                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
+                            EO.id, EO.display_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
                             EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.refid,
                             EU.fullname
                         FROM 
