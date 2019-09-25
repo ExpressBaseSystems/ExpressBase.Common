@@ -31,6 +31,7 @@ namespace ExpressBase.Common
         EbDataSet DoQueries(string query, params DbParameter[] parameters);
         int DoNonQuery(string query, params DbParameter[] parameters);
         Dictionary<int, string> GetDictionary(string query, string dm, string vm);
+        List<int> GetAutoResolveValues(string sql, string name, string cond);
         void BeginTransaction();
         void RollbackTransaction();
         void CommitTransaction();
