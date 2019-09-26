@@ -16,8 +16,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_locations
-    OWNER to postgres;
 
 -- Index: eb_locationsid_idx
 

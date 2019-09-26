@@ -5,7 +5,7 @@
 CREATE TABLE public.eb_survey_queries
 (
     id serial,
-    query text COLLATE pg_catalog."default",
+    query text,
     q_type integer,
 	CONSTRAINT eb_survey_queries_pkey PRIMARY KEY (id)
 )
@@ -13,9 +13,6 @@ WITH (
     OIDS = FALSE
 )
 TABLESPACE pg_default;
-
-ALTER TABLE public.eb_survey_queries
-    OWNER to postgres;
 
 
 -- Index: eb_survey_queries_id_idx

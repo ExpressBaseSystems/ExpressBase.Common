@@ -18,8 +18,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_objects_status
-    OWNER to postgres;
 
 -- Index: eb_objects_status_eb_obj_ver_id_idx
 

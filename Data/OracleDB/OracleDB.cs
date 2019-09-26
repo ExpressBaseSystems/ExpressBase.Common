@@ -583,6 +583,11 @@ namespace ExpressBase.Common.Data
             throw new NotImplementedException();
         }
 
+        public List<int> GetAutoResolveValues(string query, string vm, string cond)
+        {
+            throw new NotImplementedException();
+        }
+
         public void BeginTransaction()
         {
             // This is a place where you will use _mySQLDriver to begin transaction
@@ -1211,7 +1216,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"SELECT 
-                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
+                            EO.id, EO.display_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
                             EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.refid,
                             EU.fullname
                         FROM 

@@ -95,6 +95,4 @@ END
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_update_dashboard(text)
-    OWNER TO postgres;
 

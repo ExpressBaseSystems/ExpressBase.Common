@@ -67,6 +67,18 @@ namespace ExpressBase.Common
             Columns = new List<SingleColumn>();
         }
         
+        public SingleColumn GetColumn(string cname)
+        {
+            for (int i = 0; i < this.Columns.Count; i++)
+            {
+                if (this.Columns[i].Name.Equals(cname))
+                {
+                    return this.Columns[i];
+                }
+            }
+            return null;
+        }
+
         public dynamic this[string name]
         {
             get

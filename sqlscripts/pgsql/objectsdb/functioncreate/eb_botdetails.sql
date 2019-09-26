@@ -30,6 +30,5 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_botdetails(integer)
-    OWNER TO postgres;
+
 

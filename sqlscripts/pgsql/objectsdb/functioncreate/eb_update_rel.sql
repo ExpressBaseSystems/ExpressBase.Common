@@ -35,6 +35,3 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_update_rel(integer, text[])
-    OWNER TO postgres;
-

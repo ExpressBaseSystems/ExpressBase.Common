@@ -16,9 +16,7 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_constraints_line
-    OWNER to postgres;
-	
+
 	
 -- Index: eb_constraints_line_id_idx
 

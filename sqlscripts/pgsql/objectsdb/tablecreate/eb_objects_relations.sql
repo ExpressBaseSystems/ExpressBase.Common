@@ -19,9 +19,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_objects_relations
-    OWNER to postgres;
-
 -- Index: eb_objects_relations_eb_del_idx
 
 -- DROP INDEX public.eb_objects_relations_eb_del_idx;

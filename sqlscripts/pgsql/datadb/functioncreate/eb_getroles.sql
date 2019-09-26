@@ -7,10 +7,7 @@ CREATE OR REPLACE FUNCTION public.eb_getroles(
 	wc text)
     RETURNS TABLE(roles text, role_name text) 
     LANGUAGE 'plpgsql'
-
-    COST 100
-    VOLATILE 
-    ROWS 1000
+    
 AS $BODY$
 
 	DECLARE app_type integer[];
@@ -63,7 +60,4 @@ BEGIN
 END;
 
 $BODY$;
-
-ALTER FUNCTION public.eb_getroles(integer, text)
-    OWNER TO postgres;
 

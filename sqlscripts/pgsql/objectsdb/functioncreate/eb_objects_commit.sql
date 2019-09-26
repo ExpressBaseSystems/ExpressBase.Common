@@ -93,9 +93,6 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text,text)
-    OWNER TO postgres;
-
 
 
 

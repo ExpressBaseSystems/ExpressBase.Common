@@ -18,8 +18,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_objects2application
-    OWNER to postgres;
 
 -- Index: eb_objects2application_app_id_idx
 

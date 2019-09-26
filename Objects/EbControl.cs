@@ -51,9 +51,20 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string EbSid_CtxId { get { return (!ContextId.IsNullOrEmpty()) ? string.Concat(ContextId, "_", EbSid) : EbSid; } set { } }
 
+        private string _ContextId;
+
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        public virtual string ContextId { get; set; }
+        public virtual string ContextId 
+        {
+            get { return _ContextId; }
+
+            set
+            {
+                _ContextId = value;
+                EbSid_CtxId = string.Concat(ContextId, "_", EbSid);
+            }
+        }
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
@@ -232,7 +243,7 @@ namespace ExpressBase.Common.Objects
 </div>"
 .Replace("@toolName@", this.GetType().Name.Substring(2))
 .Replace("@toolNameAlias@", this.ToolNameAlias.IsNullOrEmpty() ? this.GetType().Name.Substring(2) : this.ToolNameAlias)
-.Replace("@toolIconHtml@", this.ToolIconHtml); 
+.Replace("@toolIconHtml@", this.ToolIconHtml);
         }
 
         [JsonIgnore]
