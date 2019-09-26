@@ -6,7 +6,7 @@ using ServiceStack.Stripe.Types;
 
 namespace ExpressBase.Common.ProductionDBManager
 {
-    public class Eb_FileChanges
+    public class Eb_FileDetails
     {
         public string Id { get; set; }
 
