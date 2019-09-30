@@ -21,6 +21,5 @@ BEGIN
 END;
 $BODY$;
 
-ALTER FUNCTION public.eb_get_tagged_object(text)
-    OWNER TO postgres;
+
 

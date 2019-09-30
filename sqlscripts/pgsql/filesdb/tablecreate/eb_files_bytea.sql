@@ -5,7 +5,7 @@
 CREATE TABLE public.eb_files_bytea
 (
     id serial,
-    filename text COLLATE pg_catalog."default",
+    filename text,
     bytea bytea,
     meta json,
     filecategory integer,
@@ -16,8 +16,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_files_bytea
-    OWNER to postgres;
 
 -- Index: eb_files_id_idx
 

@@ -8,7 +8,7 @@ CREATE TABLE public.eb_survey_lines
     masterid integer,
     questionid integer,
     eb_createdate timestamp without time zone,
-    choiceids text COLLATE pg_catalog."default",
+    choiceids text,
     questype integer,
     answer text COLLATE pg_catalog."default",
 	CONSTRAINT eb_survey_lines_pkey PRIMARY KEY (id)
@@ -18,8 +18,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_survey_lines
-    OWNER to postgres;
 
 -- Index: eb_survey_lines_id_idx
 

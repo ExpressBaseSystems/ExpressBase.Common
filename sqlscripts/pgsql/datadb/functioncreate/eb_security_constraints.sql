@@ -9,10 +9,7 @@ CREATE OR REPLACE FUNCTION public.eb_security_constraints(
 	_delete_ids text)
     RETURNS TABLE(add_no integer, del_no integer) 
     LANGUAGE 'plpgsql'
-
-    COST 100
-    VOLATILE 
-    ROWS 1000
+   
 AS $BODY$
 
 DECLARE 
@@ -55,5 +52,3 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_security_constraints(integer, integer, text, text)
-    OWNER TO postgres;

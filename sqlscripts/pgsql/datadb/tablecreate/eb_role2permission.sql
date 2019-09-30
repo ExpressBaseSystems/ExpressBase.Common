@@ -7,9 +7,6 @@ CREATE SEQUENCE public.eb_role2permission_id_seq
     MAXVALUE 9223372036854775807
     CACHE 1;
 
-ALTER SEQUENCE public.eb_role2permission_id_seq
-    OWNER TO postgres;
-
 -- Table: public.eb_role2permission
 
 -- DROP TABLE public.eb_role2permission;
@@ -19,14 +16,14 @@ CREATE TABLE public.eb_role2permission
     id serial,
     role_id integer,
     eb_del1 boolean DEFAULT false,
-    permissionname text COLLATE pg_catalog."default",
+    permissionname text,
     createdby integer,
     createdat timestamp without time zone,
     obj_id integer,
     op_id integer,
     revokedby integer,
     revokedat timestamp without time zone,
-    permissionname_backup text COLLATE pg_catalog."default",
+    permissionname_backup text,
     eb_del "char" NOT NULL DEFAULT 'F'::"char",
     CONSTRAINT eb_role2permission_pkey PRIMARY KEY (id),
     CONSTRAINT eb_role2permission_eb_del_check CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
@@ -35,9 +32,6 @@ WITH (
     OIDS = FALSE
 )
 TABLESPACE pg_default;
-
-ALTER TABLE public.eb_role2permission
-    OWNER to postgres;
 
 -- Index: eb_role2permission_eb_del_idx
 

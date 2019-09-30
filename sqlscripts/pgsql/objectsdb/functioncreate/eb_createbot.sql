@@ -42,6 +42,3 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_createbot(text, text, text, text, text, integer, integer)
-    OWNER TO postgres;
-

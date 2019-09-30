@@ -5,9 +5,9 @@
 CREATE TABLE public.eb_location_config
 (
     id serial,
-    keys text COLLATE pg_catalog."default",
+    keys text,
     isrequired "char" NOT NULL DEFAULT 'F'::"char",
-	keytype text COLLATE pg_catalog."default",
+	keytype text,
     eb_del "char",
     CONSTRAINT eb_locationsconfig_pkey PRIMARY KEY (id)
 )
@@ -16,8 +16,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_location_config
-    OWNER to postgres;
 
 -- Index: eb_locationsconfigid_idx
 

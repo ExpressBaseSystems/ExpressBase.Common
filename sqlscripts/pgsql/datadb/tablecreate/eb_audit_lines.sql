@@ -18,8 +18,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_audit_lines
-    OWNER to postgres;
 	
 -- Index: eb_audit_lines_id_idx
 

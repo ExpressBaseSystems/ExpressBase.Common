@@ -5,7 +5,7 @@
 CREATE TABLE public.eb_surveys
 (
     id serial,
-    name text COLLATE pg_catalog."default",
+    name text,
     startdate timestamp without time zone,
     enddate timestamp without time zone,
     status integer,
@@ -16,9 +16,6 @@ WITH (
     OIDS = FALSE
 )
 TABLESPACE pg_default;
-
-ALTER TABLE public.eb_surveys
-    OWNER to postgres;
 
 
 -- Index: eb_surveys_id_idx

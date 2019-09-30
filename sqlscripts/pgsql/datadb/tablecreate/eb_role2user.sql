@@ -21,8 +21,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_role2user
-    OWNER to postgres;
 
 -- Index: eb_role2user_eb_del_idx
 

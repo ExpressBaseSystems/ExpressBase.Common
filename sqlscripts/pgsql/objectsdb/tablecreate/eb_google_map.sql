@@ -15,8 +15,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_google_map
-    OWNER to postgres;
 
 -- Index: eb_google_map_idx
 

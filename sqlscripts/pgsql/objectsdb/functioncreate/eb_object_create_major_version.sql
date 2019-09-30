@@ -71,6 +71,5 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_object_create_major_version(text, integer, integer, text, text, text)
-    OWNER TO postgres;
+
 

@@ -18,5 +18,3 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_executionlogs
-    OWNER to postgres;

@@ -20,8 +20,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_constraints_master
-    OWNER to postgres;
 	
 -- Index: eb_constraints_master_id_idx
 

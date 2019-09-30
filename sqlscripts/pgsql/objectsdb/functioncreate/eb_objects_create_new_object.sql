@@ -71,5 +71,4 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text, text, text, text)
-    OWNER TO postgres;
+

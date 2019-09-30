@@ -6,11 +6,11 @@ CREATE TABLE public.eb_files_ref
 (
     id serial,
     userid integer NOT NULL,
-	filename text COLLATE pg_catalog."default",
+	filename text,
     --filestore_id text COLLATE pg_catalog."default",
     --length bigint,
-    tags text COLLATE pg_catalog."default",
-    filetype text COLLATE pg_catalog."default",
+    tags text,
+    filetype text,
     uploadts timestamp without time zone,
     eb_del "char" NOT NULL DEFAULT 'F'::"char",
     filecategory integer,
@@ -24,11 +24,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_files_ref
-    OWNER to postgres;
-
-
-
 
 -- Table: public.eb_files_ref_variations
 
@@ -38,7 +33,7 @@ CREATE TABLE public.eb_files_ref_variations
 (
     id serial,
     eb_files_ref_id integer NOT NULL,
-    filestore_sid text COLLATE pg_catalog."default",
+    filestore_sid text,
     length bigint,
     is_image "char",
     imagequality_id integer,
@@ -51,6 +46,5 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_files_ref_variations
-    OWNER to postgres;
+
 
