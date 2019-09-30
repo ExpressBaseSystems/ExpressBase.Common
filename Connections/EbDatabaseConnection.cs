@@ -385,6 +385,15 @@ namespace ExpressBase.Common.Connections
         public override EbIntegrations Type { get { return EbIntegrations.GoogleDrive; } }
     }
 
+    public class EbSlackConfig : EbIntegrationConf
+    {
+        public string OAuthAccessToken { get; set; }
+
+        public string Channel { get; set; }
+
+        public override EbIntegrations Type { get { return EbIntegrations.Slack; } }
+    }
+
     public class EbGoogleMapConfig : EbMapConfig
     {
         public override EbIntegrations Type { get { return EbIntegrations.GoogleMap; } }

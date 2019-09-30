@@ -1,6 +1,7 @@
 ﻿using ExpressBase.Common.Data;
 using ExpressBase.Common.Messaging;
 using ExpressBase.Common.Messaging.ExpertTexting;
+using ExpressBase.Common.Messaging.Slack;
 using ExpressBase.Common.Messaging.Twilio;
 using System;
 using System.Collections.Generic;
@@ -55,6 +56,61 @@ namespace ExpressBase.Common.Connections
                 }
             }
             return resp;
+        }
+    }
+
+    public class ChatConCollection : List<IChatConnection>
+    {
+        public ChatConCollection(ChatConfigCollection conf)
+        {
+            if (conf.Default.Type == EbIntegrations.Slack)
+                Default = new EbSlack(conf.Default as EbSlackConfig);
+            //if (conf.Fallback != null)
+            //{
+            //    if (conf.Fallback.Type == EbIntegrations.Slack)
+            //        FallBack.Add(new Messaging.Slack.Slack(conf.Fallback as EbSlackConfig));
+            //}
+        }
+        public ChatConCollection() { }
+        public IChatConnection Default { get; set; }
+
+        public List<IChatConnection> FallBack { get; set; }
+
+        public void Send(string channel, string Message)
+        {
+            try
+            {
+                Console.WriteLine("Inside Chat Sending to " + channel);
+                if (Default != null)
+                {
+                    Default.Send(channel, Message);
+                    Console.WriteLine("Chat Send With Default :");
+
+                }
+                else if (this.Capacity != 0)
+                {
+                    Console.WriteLine("Chat Send using First Element");
+                    this[0].Send(channel, Message);
+                }
+                else
+                    Console.WriteLine("Chat Connection Empty!");
+
+            }
+            catch (Exception e)
+            {
+                //try
+                //{
+                //    if (FallBack != null)
+                //    {
+                //        FallBack.Send(channel, Message, _infraConId);
+                //        Console.WriteLine("Chat Send With FallBack : ");
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine("Chat Sending Failed: " + ex.StackTrace);
+                //}
+            }
         }
     }
     public class EbMailConCollection : List<IEmailConnection>
@@ -117,7 +173,6 @@ namespace ExpressBase.Common.Connections
         }
 
     }
-
     public class EbMapConCollection : List<EbMaps>
     {
         public int DefaultConId { get; set; }
