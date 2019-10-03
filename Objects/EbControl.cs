@@ -48,6 +48,10 @@ namespace ExpressBase.Common.Objects
         public virtual string ToolIconHtml { get; set; }
 
         [HideInPropertyGrid]
+        [JsonIgnore]
+        public virtual string ToolHelpText { get { return string.Empty; } set { } }
+
+        [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string EbSid_CtxId { get { return (!ContextId.IsNullOrEmpty()) ? string.Concat(ContextId, "_", EbSid) : EbSid; } set { } }
 
@@ -238,12 +242,13 @@ namespace ExpressBase.Common.Objects
         public virtual string GetToolHtml()
         {
             return @"
-<div eb-type='@toolName@' class='tool'>
+<div eb-type='@toolName@' data-toggle='tooltip' title='@ToolHelpText@' class='tool'>
     <div class='tool-icon-cont'>@toolIconHtml@</div>@toolNameAlias@
 </div>"
 .Replace("@toolName@", this.GetType().Name.Substring(2))
 .Replace("@toolNameAlias@", this.ToolNameAlias.IsNullOrEmpty() ? this.GetType().Name.Substring(2) : this.ToolNameAlias)
-.Replace("@toolIconHtml@", this.ToolIconHtml);
+.Replace("@toolIconHtml@", this.ToolIconHtml)
+.Replace("@ToolHelpText@", this.ToolHelpText);
         }
 
         [JsonIgnore]
