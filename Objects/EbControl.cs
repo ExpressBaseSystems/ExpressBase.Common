@@ -154,6 +154,10 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string BareControlHtml { get; set; }
 
+        [HideInPropertyGrid]
+        [EnableInBuilder(BuilderType.BotForm)]
+        public virtual string BareControlHtml4Bot { get; set; }
+
         [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [Alias("Readonly")]
