@@ -150,7 +150,7 @@ namespace ExpressBase.Common.Objects
         public virtual string ObjType { get { return this.GetType().Name.Substring(2, this.GetType().Name.Length - 2); } set { } }
 
         [HideInPropertyGrid]
-        [JsonIgnore]
+        //[JsonIgnore] temp // for gitex bot
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string BareControlHtml { get; set; }
 
