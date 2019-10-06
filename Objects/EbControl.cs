@@ -48,6 +48,10 @@ namespace ExpressBase.Common.Objects
         public virtual string ToolIconHtml { get; set; }
 
         [HideInPropertyGrid]
+        [JsonIgnore]
+        public virtual string ToolHelpText { get { return string.Empty; } set { } }
+
+        [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string EbSid_CtxId { get { return (!ContextId.IsNullOrEmpty()) ? string.Concat(ContextId, "_", EbSid) : EbSid; } set { } }
 
@@ -146,9 +150,13 @@ namespace ExpressBase.Common.Objects
         public virtual string ObjType { get { return this.GetType().Name.Substring(2, this.GetType().Name.Length - 2); } set { } }
 
         [HideInPropertyGrid]
-        [JsonIgnore]
+        [JsonIgnore] //temp // for gitex bot
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string BareControlHtml { get; set; }
+
+        [HideInPropertyGrid]
+        [EnableInBuilder(BuilderType.BotForm)]
+        public virtual string BareControlHtml4Bot { get; set; }
 
         [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
@@ -238,12 +246,13 @@ namespace ExpressBase.Common.Objects
         public virtual string GetToolHtml()
         {
             return @"
-<div eb-type='@toolName@' class='tool'>
+<div eb-type='@toolName@' data-toggle='tooltip' title='@ToolHelpText@' class='tool'>
     <div class='tool-icon-cont'>@toolIconHtml@</div>@toolNameAlias@
 </div>"
 .Replace("@toolName@", this.GetType().Name.Substring(2))
 .Replace("@toolNameAlias@", this.ToolNameAlias.IsNullOrEmpty() ? this.GetType().Name.Substring(2) : this.ToolNameAlias)
-.Replace("@toolIconHtml@", this.ToolIconHtml);
+.Replace("@toolIconHtml@", this.ToolIconHtml)
+.Replace("@ToolHelpText@", this.ToolHelpText);
         }
 
         [JsonIgnore]
