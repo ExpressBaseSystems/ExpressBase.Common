@@ -163,6 +163,19 @@ namespace ExpressBase.Common
         }
     }
 
+    public class WebformDataWrapper
+    {
+        public WebformData FormData { get; set; }
+
+        public int Status { get; set; }
+
+        public string Message { get; set; }
+
+        public string MessageInt { get; set; }
+
+        public string StackTraceInt { get; set; }
+    }
+
     public class WebFormSchema
     {
         public string FormName { set; get; }
