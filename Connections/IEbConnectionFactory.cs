@@ -22,6 +22,8 @@ namespace ExpressBase.Common.Data
 
         FilesCollection FilesDB { get; }
 
+        ChatConCollection ChatConnection { get; }
+
         IDatabase LogsDB { get; }
 
         EbSmsConCollection SMSConnection { get; }

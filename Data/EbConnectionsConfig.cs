@@ -78,6 +78,8 @@ namespace ExpressBase.Common.Data
 
         public CloudinaryConfigCollection CloudinaryConfigs { get; set; }
 
+        public ChatConfigCollection ChatConfigs { get; set; }
+
         public MapConfigCollection MapConfigs { get; set; }
     }
 
@@ -90,6 +92,18 @@ namespace ExpressBase.Common.Data
         public FilesConfigCollection()
         {
             this.Integrations = new List<EbIntegrationConf>();
+        }
+    }
+
+    public class ChatConfigCollection
+    {
+        public EbSlackConfig Default { get; set; }
+
+        public List<EbSlackConfig> Fallback { get; set; }      
+        
+        public ChatConfigCollection()
+        {
+            this.Fallback = new List<EbSlackConfig>();
         }
     }
 
@@ -110,7 +124,7 @@ namespace ExpressBase.Common.Data
     public class CloudinaryConfigCollection : List<EbCloudinaryConfig>
     {
 
-    }
+    }    
 
     public class MapConfigCollection
     {
