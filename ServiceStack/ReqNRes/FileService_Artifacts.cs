@@ -560,4 +560,18 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         public bool Status { set; get; }
 
     }
+
+    public class EbFileMeta
+    {
+        public List<string> Tags { set; get; }
+
+        public List<string> Category { set; get; }
+
+        public EbFileMeta()
+        {
+            this.Tags = new List<string>();
+
+            this.Category = new List<string>();
+        }
+    }
 }
