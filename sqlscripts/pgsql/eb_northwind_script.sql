@@ -45,8 +45,8 @@ CREATE TABLE categories (
     eb_created_at timestamp without time zone,
     eb_lastmodified_by numeric,
     eb_lastmodified_at timestamp without time zone,
-    eb_del character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
-    eb_void character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
+    eb_del character(1),
+    eb_void character(1),
     eb_loc_id integer
 ); 
  
@@ -71,8 +71,8 @@ CREATE TABLE customers (
     eb_created_at timestamp without time zone,
     eb_lastmodified_by numeric,
     eb_lastmodified_at timestamp without time zone,
-    eb_del character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
-    eb_void character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
+    eb_del character(1),
+    eb_void character(1),
     eb_loc_id integer,
     CONSTRAINT customers_customer_id_key UNIQUE (customer_id)
 );
@@ -105,8 +105,8 @@ CREATE TABLE employees (
     eb_created_at timestamp without time zone,
     eb_lastmodified_by numeric,
     eb_lastmodified_at timestamp without time zone,
-    eb_del character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
-    eb_void character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
+    eb_del character(1),
+    eb_void character(1),
     eb_loc_id integer
 );
   
@@ -126,8 +126,8 @@ CREATE TABLE order_details (
     eb_created_at timestamp without time zone,
     eb_lastmodified_by numeric,
     eb_lastmodified_at timestamp without time zone,
-    eb_del character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
-    eb_void character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
+    eb_del character(1),
+    eb_void character(1),
     eb_loc_id integer,
     amount numeric
 );
@@ -159,8 +159,8 @@ CREATE TABLE orders (
     eb_created_at timestamp without time zone,
     eb_lastmodified_by numeric,
     eb_lastmodified_at timestamp without time zone,
-    eb_del character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
-    eb_void character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
+    eb_del character(1),
+    eb_void character(1),
     eb_loc_id integer,
     eb_ver_id numeric,
     order_value numeric
@@ -185,8 +185,8 @@ CREATE TABLE products (
     eb_created_at timestamp without time zone,
     eb_lastmodified_by numeric,
     eb_lastmodified_at timestamp without time zone,
-    eb_del character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
-    eb_void character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
+    eb_del character(1),
+    eb_void character(1),
     eb_loc_id integer,
     eb_ver_id numeric	
 );
@@ -203,8 +203,8 @@ CREATE TABLE shippers (
     eb_created_at timestamp without time zone,
     eb_lastmodified_by numeric,
     eb_lastmodified_at timestamp without time zone,
-    eb_del character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
-    eb_void character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
+    eb_del character(1),
+    eb_void character(1),
     eb_loc_id integer
 );
 
@@ -229,8 +229,8 @@ CREATE TABLE suppliers (
     eb_created_at timestamp without time zone,
     eb_lastmodified_by numeric,
     eb_lastmodified_at timestamp without time zone,
-    eb_del character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
-    eb_void character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
+    eb_del character(1),
+    eb_void character(1),
     eb_loc_id integer
 );
 
@@ -249,8 +249,8 @@ CREATE TABLE suppliers (
     eb_created_at timestamp without time zone,
     eb_lastmodified_by numeric,
     eb_lastmodified_at timestamp without time zone,
-    eb_del character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
-    eb_void character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
+    eb_del character(1),
+    eb_void character(1),
     eb_loc_id integer,
     CONSTRAINT purchases_pkey PRIMARY KEY (id)
 );
@@ -268,8 +268,8 @@ CREATE TABLE purchase_details
     eb_created_at timestamp without time zone,
     eb_lastmodified_by numeric,
     eb_lastmodified_at timestamp without time zone,
-    eb_del character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
-    eb_void character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
+    eb_del character(1),
+    eb_void character(1),
     eb_loc_id integer,
     CONSTRAINT purchase_details_pkey PRIMARY KEY (id)
 );
