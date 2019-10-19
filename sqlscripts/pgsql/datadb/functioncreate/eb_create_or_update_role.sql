@@ -13,8 +13,6 @@ CREATE OR REPLACE FUNCTION public.eb_create_or_update_role(
     RETURNS integer
     LANGUAGE 'plpgsql'
 
-    COST 100
-    VOLATILE 
 AS $BODY$
 
    
@@ -58,6 +56,5 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_create_or_update_role(integer, text, text, text, integer, text[], integer)
-    OWNER TO postgres;
+
 

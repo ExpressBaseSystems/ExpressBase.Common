@@ -6,7 +6,6 @@ CREATE OR REPLACE FUNCTION public.eb_getpermissions(
 	roles integer[])
     RETURNS TABLE(permissions text) 
     LANGUAGE 'plpgsql'
-
     
 AS $BODY$
 
@@ -20,7 +19,6 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_getpermissions(integer[])
-    OWNER TO postgres;
+
 
 

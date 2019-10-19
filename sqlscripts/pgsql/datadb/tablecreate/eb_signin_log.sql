@@ -6,8 +6,8 @@ CREATE TABLE public.eb_signin_log
 (
     id serial,
     user_id integer,
-    ip_address text COLLATE pg_catalog."default",
-    device_info text COLLATE pg_catalog."default",
+    ip_address text,
+    device_info text,
     is_attempt_failed character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,	
     is_force_signout character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
     signin_at timestamp without time zone,
@@ -18,9 +18,6 @@ WITH (
     OIDS = FALSE
 )
 TABLESPACE pg_default;
-
-ALTER TABLE public.eb_signin_log
-    OWNER to postgres;
 
 
 -- Index: eb_signin_log_id_idx

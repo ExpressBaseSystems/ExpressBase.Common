@@ -1,3 +1,8 @@
+-- FUNCTION: public.eb_security_user(integer, integer, text, text, text, text, date, text, text, text, text, text, text, text, text, text, text, integer, text, integer, text, text, text)
+
+-- DROP FUNCTION public.eb_security_user(integer, integer, text, text, text, text, date, text, text, text, text, text, text, text, text, text, text, integer, text, integer, text, text, text);
+
+
 CREATE OR REPLACE FUNCTION public.eb_security_user(
 	_userid integer,
 	_id integer,
@@ -24,10 +29,7 @@ CREATE OR REPLACE FUNCTION public.eb_security_user(
 	_constraints_del text)
     RETURNS TABLE(uid integer) 
     LANGUAGE 'plpgsql'
-
-    COST 100
-    VOLATILE 
-    ROWS 1000
+   
 AS $BODY$
 
 DECLARE 

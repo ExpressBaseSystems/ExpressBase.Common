@@ -59,6 +59,3 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_objects_change_status(text, integer, integer, text)
-    OWNER TO postgres;
-

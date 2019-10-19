@@ -6,10 +6,9 @@ CREATE OR REPLACE FUNCTION public.eb_currval(
 	seq text)
     RETURNS integer
     LANGUAGE 'plpgsql'
-
-    COST 100
-    VOLATILE 
+    
 AS $BODY$
+
 DECLARE curval integer; exce text;
 BEGIN
 SELECT currval(seq) into curval;
@@ -24,5 +23,3 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_currval(text)
-    OWNER TO postgres;

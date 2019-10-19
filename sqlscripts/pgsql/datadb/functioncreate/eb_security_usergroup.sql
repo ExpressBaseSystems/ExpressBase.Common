@@ -1,3 +1,7 @@
+-- FUNCTION: public.eb_security_usergroup(integer, integer, text, text, text, text, text)
+
+-- DROP FUNCTION public.eb_security_usergroup(integer, integer, text, text, text, text, text);
+
 CREATE OR REPLACE FUNCTION public.eb_security_usergroup(
 	_userid integer,
 	_id integer,
@@ -8,10 +12,7 @@ CREATE OR REPLACE FUNCTION public.eb_security_usergroup(
 	_constraints_del text)
     RETURNS TABLE(gid integer) 
     LANGUAGE 'plpgsql'
-
-    COST 100
-    VOLATILE 
-    ROWS 1000
+    
 AS $BODY$
 
 DECLARE 

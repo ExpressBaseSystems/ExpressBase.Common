@@ -59,7 +59,8 @@ namespace ExpressBase.Common
         SMS = 7,
         Slack = 8,
         Cloudinary = 9,
-        MAPS =11
+        MAPS =11,
+        Chat =12
     }
 
     public enum EbIntegrations
@@ -77,7 +78,8 @@ namespace ExpressBase.Common
         SendGrid = 11,
         GoogleDrive =12,
         DropBox =13,
-        AWSS3 =14
+        AWSS3 =14,
+        Slack =15
     }
 
     public enum SmtpProviders

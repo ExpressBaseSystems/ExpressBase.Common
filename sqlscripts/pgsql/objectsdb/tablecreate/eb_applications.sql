@@ -1,5 +1,3 @@
-
-
 -- Table: public.eb_applications
 
 -- DROP TABLE public.eb_applications;
@@ -7,12 +5,12 @@
 CREATE TABLE public.eb_applications
 (
     id serial,
-    applicationname text COLLATE pg_catalog."default",
-    description text COLLATE pg_catalog."default",
-    app_icon text COLLATE pg_catalog."default",
+    applicationname text,
+    description text,
+    app_icon text,
     application_type integer,
     eb_del "char" NOT NULL DEFAULT 'F'::"char",
-	app_settings text COLLATE pg_catalog."default",
+	app_settings text,
     CONSTRAINT eb_applications_pkey PRIMARY KEY (id),
     CONSTRAINT eb_applications_eb_del_check CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
 )
@@ -21,8 +19,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public.eb_applications
-    OWNER to postgres;
 
 -- Index: public.eb_applications_id_idx
 

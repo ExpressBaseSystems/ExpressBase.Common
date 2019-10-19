@@ -4,6 +4,7 @@ using ExpressBase.Common.Data.FTP;
 using ExpressBase.Common.Data.MongoDB;
 using ExpressBase.Common.Integrations;
 using ExpressBase.Common.Messaging;
+using ExpressBase.Common.Messaging.Slack;
 using ExpressBase.Common.Messaging.ExpertTexting;
 using ExpressBase.Common.Messaging.Twilio;
 using Funq;
@@ -41,6 +42,7 @@ namespace ExpressBase.Common.Data
 
         public List<IImageManipulate> ImageManipulate { get; private set; }
 
+        public ChatConCollection ChatConnection { get; private set; }
 
         public EbMapConCollection MapConnection { get; private set; }
 
@@ -159,6 +161,7 @@ namespace ExpressBase.Common.Data
             this.DataDBRO = null;
             this.FilesDB = null;
             this.LogsDB = null;
+            this.ChatConnection = null;
             this.SMSConnection = null;
             this.EmailConnection = null;
             this.ImageManipulate = null;
@@ -321,16 +324,40 @@ namespace ExpressBase.Common.Data
                 }
                 Console.WriteLine("Files DB Collection Count(Init DB) : " + FilesDB.Count);
 
+                ChatConnection = new ChatConCollection();
+                //if (Connections.ChatConfigs == null)
+                //    Connections.ChatConfigs = new ChatConfigCollection();
+                if (Connections.ChatConfigs != null)
+                {
+                    ChatConnection.Default = new EbSlack(Connections.ChatConfigs.Default as EbSlackConfig);
+                    for (int i = 0; i < Connections.ChatConfigs.Fallback.Count; i++)
+                    {
+                        if (Connections.ChatConfigs.Fallback[i].Type == EbIntegrations.Slack)
+                            ChatConnection.Add(new EbSlack(Connections.ChatConfigs.Fallback[i] as EbSlackConfig));
+                        if (Connections.ChatConfigs.Default.Id == Connections.ChatConfigs.Fallback[i].Id)
+                            IsDefaultConIdCorrect = true;
+                    }
+                    if (IsDefaultConIdCorrect)
+                        ChatConnection.Default = new EbSlack(Connections.ChatConfigs.Default as EbSlackConfig);
+                    else
+                        throw new Exception("DefaultConId doesn't found in the files-config list..!!");
+                }
+                Console.WriteLine("Chat connection Collection Count(Init DB) : " + ChatConnection.Count);
+
+
                 //EmailConfigs
                 if (Connections.EmailConfigs != null)
                 {
                     EmailConnection = new EbMailConCollection(Connections.EmailConfigs);
-                }
+                } 
+                //if (Connections.ChatConfigs != null)
+                //{
+                //    ChatConnection = new ChatCollection(Connections.ChatConfigs);
+                //}
                 if (Connections.SMSConfigs != null)
                 {
                     SMSConnection = new EbSmsConCollection(Connections.SMSConfigs);
                 }
-
                 if (Connections.CloudinaryConfigs != null && Connections.CloudinaryConfigs.Count > 0)
                 {
                     if (ImageManipulate == null)

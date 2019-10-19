@@ -8,9 +8,7 @@ CREATE OR REPLACE FUNCTION public.eb_create_or_update_role2role(
 	dependantroles integer[])
     RETURNS integer
     LANGUAGE 'plpgsql'
-
-    COST 100
-    VOLATILE 
+     
 AS $BODY$
 
 BEGIN
@@ -38,6 +36,4 @@ END;
 
 $BODY$;
 
-ALTER FUNCTION public.eb_create_or_update_role2role(integer, integer, integer[])
-    OWNER TO postgres;
 
