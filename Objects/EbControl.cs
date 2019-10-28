@@ -351,7 +351,7 @@ namespace ExpressBase.Common.Objects
             }
             innerHTML = (!ChildObj.isFullViewContol) ? (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>") : innerHTML.Replace("@style@", "style='width:100%;border:none;'");
             ResHTML = @"
-<div class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='TextBox'>
+<div class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='@type@'>
    @LabelHTML@
    @ControlHTML@
 </div>"
