@@ -137,6 +137,10 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
+        public virtual List<string> DependedDG { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [HideInPropertyGrid]
         public virtual string __path { get; set; }
 
         //to store front end data value of the control  
@@ -351,7 +355,7 @@ namespace ExpressBase.Common.Objects
             }
             innerHTML = (!ChildObj.isFullViewContol) ? (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>") : innerHTML.Replace("@style@", "style='width:100%;border:none;'");
             ResHTML = @"
-<div class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='TextBox'>
+<div class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='@type@'>
    @LabelHTML@
    @ControlHTML@
 </div>"
