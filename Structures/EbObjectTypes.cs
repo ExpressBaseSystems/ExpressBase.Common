@@ -126,7 +126,7 @@ namespace ExpressBase.Common.Structures
         public static readonly EbObjectType DashBoard = new EbObjectType(ObjectConstants.DASHBOARD, iDashBoard, ObjectConstants.BMW, true, "fa-tachometer", null);
 
         public static readonly EbObjectType KanBan = new EbObjectType(ObjectConstants.KANBAN, iKanBan, ObjectConstants.XXW, false, "fa-tag", null);
-        public static readonly EbObjectType CalendarView = new EbObjectType(ObjectConstants.CALENDARVIEW, iCalendarView, ObjectConstants.BMW, false, "fa-calendar", "Calendar View");
+        public static readonly EbObjectType CalendarView = new EbObjectType(ObjectConstants.CALENDARVIEW, iCalendarView, ObjectConstants.BMW, true, "fa-calendar", "Calendar View");
         public static readonly EbObjectType CsharpFunction = new EbObjectType(ObjectConstants.CSHARPFUNCTION, iCsharpFunction, ObjectConstants.XXW, false, "fa-hashtag", "C# Function");
 
         public static EbObjectType Get(int intcode)
