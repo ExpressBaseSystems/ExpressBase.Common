@@ -4,9 +4,9 @@ using System.Text;
 
 namespace ExpressBase.Common.Constants
 {
-    public static class SqlScriptArrayConstant
+    public static class SqlFiles
     {
-        public static readonly string[] SQLSCRIPTARRAY = {"eb_compilefunctions.sql",
+        public static readonly string[] SQLSCRIPTS = {"eb_compilefunctions.sql",
                         "eb_extras.sql",
                         "datadb.functioncreate.eb_authenticate_anonymous.sql",
                         "datadb.functioncreate.eb_authenticate_unified.sql",
@@ -62,14 +62,9 @@ namespace ExpressBase.Common.Constants
                         "objectsdb.functioncreate.eb_object_create_major_version.sql",
                         "objectsdb.functioncreate.eb_object_create_minor_version.sql",
                         "objectsdb.functioncreate.eb_object_create_patch_version.sql",
-                        "objectsdb.functioncreate.eb_update_rel.sql",
-                        "objectsdb.functioncreate.split_str_util.sql",
-                        "objectsdb.functioncreate.string_to_rows_util.sql",
-                        "objectsdb.functioncreate.str_to_tbl_grp_util.sql",
-                        "objectsdb.functioncreate.str_to_tbl_constraints_util.sql",
-                        "objectsdb.functioncreate.str_to_tbl_util.sql",
+                        "objectsdb.functioncreate.eb_split_str_util.sql",
+                        "objectsdb.functioncreate.eb_str_to_tbl_util.sql",
                         "objectsdb.tablecreate.eb_applications.sql",
-                        "objectsdb.tablecreate.eb_appstore.sql",
                         "objectsdb.tablecreate.eb_bots.sql",
                         "objectsdb.tablecreate.eb_executionlogs_new.sql",
                         "objectsdb.tablecreate.eb_google_map.sql",
