@@ -2,18 +2,14 @@
 
 -- DROP TABLE public.eb_google_map;
 
-CREATE TABLE public.eb_google_map
+CREATE TABLE eb_google_map
 (
     id serial,
     lattitude text ,
     longitude text,
     name text,
     CONSTRAINT eb_google_map_pkey PRIMARY KEY (id)
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
 
 
 -- Index: eb_google_map_idx
@@ -21,7 +17,5 @@ TABLESPACE pg_default;
 -- DROP INDEX public.eb_google_map_idx;
 
 CREATE INDEX eb_google_map_idx
-    ON public.eb_google_map USING btree
-    (id)
-    TABLESPACE pg_default;
+    ON eb_google_map(id);
 

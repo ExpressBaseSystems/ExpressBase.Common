@@ -3,7 +3,6 @@
   id int NOT NULL auto_increment,
   app_id int,  
   obj_id int,
-  eb_del1 boolean DEFAULT false,
   removed_by int,
   removed_at timestamp,
   eb_del char(1) DEFAULT 'F',

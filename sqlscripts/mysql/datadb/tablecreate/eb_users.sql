@@ -3,7 +3,6 @@
   id integer NOT NULL auto_increment,
   email text,
   pwd text,
-  eb_del1 boolean DEFAULT false,
   firstname varchar(25),
   lastname text,
   middlename text,

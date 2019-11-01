@@ -2,8 +2,7 @@
 (
   id integer NOT NULL auto_increment,
   userid integer,
-  groupid integer,
-  eb_del1 boolean DEFAULT false,
+  groupid integer,  
   createdby integer,
   createdat timestamp DEFAULT CURRENT_TIMESTAMP,
   revokedby integer,

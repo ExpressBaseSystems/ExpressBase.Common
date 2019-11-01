@@ -29,38 +29,40 @@ SET _constraints_add = constraints_add;
 SET _constraints_del = constraints_del;
 
 SET gid =_id;
+
 DROP TEMPORARY TABLE IF EXISTS temp_array_table;
-		DROP TEMPORARY TABLE IF EXISTS temp_users;
-		CREATE TEMPORARY TABLE temp_array_table(value INTEGER);
-	CALL STR_TO_TBL(_users);  
-		CREATE TEMPORARY TABLE IF NOT EXISTS temp_users SELECT `value` FROM temp_array_table;
+DROP TEMPORARY TABLE IF EXISTS temp_users;
+CREATE TEMPORARY TABLE temp_array_table(value INTEGER);
+CALL eb_str_to_tbl_util(_users,',');  
+CREATE TEMPORARY TABLE IF NOT EXISTS temp_users SELECT `value` FROM temp_array_table;
+
 SET SQL_SAFE_UPDATES = 0;
 
 IF _id > 0 THEN
-	UPDATE eb_usergroup SET name=_name, description=_description WHERE id=_id;
+	UPDATE eb_usergroup eu SET eu.name=_name, eu.description=_description WHERE eu.id=_id;
     
 	INSERT INTO eb_user2usergroup(userid,groupid,createdby,createdat) 
 			SELECT 
-					`value`,_id,_userid,NOW() 
+					usr.`value`,_id,_userid,NOW() 
 				FROM 
 					( SELECT `value` FROM temp_users WHERE `value` NOT IN 
-						(SELECT userid from eb_user2usergroup WHERE groupid = _id AND eb_del = 'F')) AS userid;
-	UPDATE 
-			eb_user2usergroup 
-		SET 
-			eb_del = 'T',revokedby = _userid,revokedat =NOW() 
-		WHERE groupid = _id AND eb_del = 'F' AND userid IN(
-		 SELECT * FROM (
-			SELECT userid FROM eb_user2usergroup WHERE groupid = _id AND eb_del = 'F' AND userid NOT IN 
-		(SELECT `value` FROM temp_users))as q1);	
+						(SELECT userid from eb_user2usergroup WHERE groupid = _id AND eb_del = 'F')) AS usr;
+	UPDATE eb_user2usergroup eu2u
+	SET 
+		eu2u.eb_del = 'T',eu2u.revokedby = _userid,eu2u.revokedat =NOW() 
+	WHERE 
+		eu2u.groupid = _id AND eu2u.eb_del = 'F' AND eu2u.userid IN(
+			SELECT * FROM (
+					SELECT userid FROM eb_user2usergroup WHERE groupid = _id AND eb_del = 'F' AND userid NOT IN 
+						(SELECT `value` FROM temp_users))as q1);	
 ELSE
 	INSERT INTO eb_usergroup (name,description,eb_del) VALUES (_name,_description,'F');
     SELECT LAST_INSERT_ID() INTO gid;
 	INSERT INTO eb_user2usergroup(userid,groupid,createdby,createdat) 
 			SELECT `value`, gid,_userid,NOW() 
-			FROM (SELECT `value` FROM temp_users) AS userid;
-            
+			FROM (SELECT `value` FROM temp_users) AS userid;            
 END IF;
+
 SET _keyid = gid;
 SET _add_data = _constraints_add;
 SET _delete_ids	= _constraints_del;		

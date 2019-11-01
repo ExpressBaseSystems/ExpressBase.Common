@@ -2,7 +2,6 @@
 (
   id integer NOT NULL auto_increment,
   role_name varchar(25) NOT NULL,
-  eb_del1 boolean,
   applicationname text,
   applicationid integer,
   description text,

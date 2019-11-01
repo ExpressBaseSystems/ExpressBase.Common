@@ -63,8 +63,12 @@ FROM
 WHERE 
 	eb_objects_id = _id AND working_mode='T';
 
- SELECT GROUP_CONCAT(EA.applicationname,',') INTO app_id FROM eb_objects2application E2O ,eb_applications EA WHERE 
- obj_id = _id AND E2O.eb_del = 'F' AND EA.id = E2O.app_id ;
+ SELECT 
+		GROUP_CONCAT(EA.applicationname,',') INTO app_id 
+	FROM 
+		eb_objects2application E2O ,eb_applications EA 
+	WHERE 
+		obj_id = _id AND E2O.eb_del = 'F' AND EA.id = E2O.app_id ;
  
   -- one working copy	
 IF no_of_workcopies = 1 THEN
@@ -120,18 +124,18 @@ ELSE
 			EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc,
 			EOV.obj_json, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.version_num, EOV.working_mode, 
 			EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags, EO.display_name, COALESCE(EO.is_logenabled,'F')
-	 INTO	idv, namev, typev, status, description, json_lc, changelog, commitat, refidv, ver_num, work_mode,
+			INTO	idv, namev, typev, status, description, json_lc, changelog, commitat, refidv, ver_num, work_mode,
 			commitby, major_ver, minor_ver, patch_ver, tags, dispnamev, is_log
 	FROM 
 			eb_objects EO, eb_objects_ver EOV
 	LEFT JOIN
 		eb_users EU
-	ON 
-		EOV.commit_uid = EU.id
+		ON 
+			EOV.commit_uid = EU.id
 	LEFT JOIN
 		eb_objects_status EOS
-	ON 
-		EOS.eb_obj_ver_id = EOV.id		
+		ON 
+			EOS.eb_obj_ver_id = EOV.id		
 	WHERE 
 		EO.id = _id AND EOV.eb_objects_id = EO.id AND working_mode='T'
 		AND EOV.id = (SELECT MAX(EOV.id) FROM eb_objects_ver EOV WHERE EOV.eb_objects_id = _id AND working_mode='T')
@@ -150,4 +154,4 @@ SELECT
     out_ver_num , out_work_mode , out_workingcopies , out_json_wc , out_json_lc , out_major_ver , out_minor_ver , out_patch_ver , 
     out_tags ,out_app_id , out_dispnamev , out_is_log; 
 
-END 
+END

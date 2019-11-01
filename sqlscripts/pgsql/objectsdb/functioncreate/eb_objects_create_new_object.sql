@@ -27,8 +27,8 @@ DECLARE refidunique text; inserted_objid integer; inserted_obj_ver_id integer; r
 version_number text; relationsv text[]; apps integer[];
 BEGIN   
 
-  select string_to_array(relationsstring,',')::text[] into relationsv;
-  select string_to_array(appsstring,',')::int[] into apps;
+	SELECT string_to_array(relationsstring,',')::text[] into relationsv;
+	SELECT string_to_array(appsstring,',')::int[] into apps;
   
     INSERT INTO eb_objects  
         (obj_name, obj_desc, obj_type, obj_cur_status, obj_tags, owner_uid, owner_ts, display_name, is_logenabled, eb_del)
@@ -53,7 +53,7 @@ BEGIN
 		 refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, inserted_objid, inserted_obj_ver_id, inserted_objid, inserted_obj_ver_id); 
 	ELSE
 		refidunique := CONCAT_WS('-', src_pid, cur_pid, obj_typev, inserted_objid, inserted_obj_ver_id, s_obj_id, s_ver_id); 
-	 END IF;
+	END IF;
 
     refid_of_commit_version:=refidunique;                       
 	UPDATE eb_objects_ver SET refid = refidunique, version_num = version_number WHERE id = inserted_obj_ver_id;

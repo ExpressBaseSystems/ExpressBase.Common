@@ -2,14 +2,10 @@
 
 -- DROP TABLE public.eb_objects_favourites;
 
-CREATE TABLE public.eb_objects_favourites
+CREATE TABLE eb_objects_favourites
 (
     id serial,
     userid integer,
     object_id integer,
-    eb_del "char" DEFAULT 'F'::"char"
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+    eb_del char(1) DEFAULT 'F'
+);

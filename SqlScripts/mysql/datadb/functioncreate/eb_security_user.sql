@@ -30,15 +30,16 @@ DECLARE _keyid integer;
 DECLARE _add_data text;
 DECLARE _delete_ids text;
 SET uid = _id;
-DROP TEMPORARY TABLE IF EXISTS temp_array_table;
-		DROP TEMPORARY TABLE IF EXISTS temp_roles;
-		CREATE TEMPORARY TABLE temp_array_table(value INTEGER);
-		CALL STR_TO_TBL(_roles);  
-		CREATE TEMPORARY TABLE IF NOT EXISTS temp_roles SELECT `value` FROM temp_array_table;
 
-		DROP TEMPORARY TABLE IF EXISTS temp_group;
-		CALL STR_TO_TBL(_groups);  
-		CREATE TEMPORARY TABLE IF NOT EXISTS temp_group SELECT `value` FROM temp_array_table;
+DROP TEMPORARY TABLE IF EXISTS temp_array_table;
+DROP TEMPORARY TABLE IF EXISTS temp_roles;
+CREATE TEMPORARY TABLE temp_array_table(value INTEGER);
+CALL eb_str_to_tbl_util(_roles,',');  
+CREATE TEMPORARY TABLE IF NOT EXISTS temp_roles SELECT `value` FROM temp_array_table;
+
+DROP TEMPORARY TABLE IF EXISTS temp_group;
+CALL eb_str_to_tbl_util(_groups,',');  
+CREATE TEMPORARY TABLE IF NOT EXISTS temp_group SELECT `value` FROM temp_array_table;
 
 IF _id > 1 THEN
 	IF _statusid > 99 THEN
@@ -47,35 +48,37 @@ IF _id > 1 THEN
 		INSERT INTO eb_userstatus(userid, statusid, createdby, createdat) VALUES (_id, _statusid, _userid, NOW());
 	END IF;
 
-   UPDATE eb_users SET fullname= _fullname, nickname=_nickname, email=_email, dob=_dob, sex=_sex, alternateemail=_alternateemail, phnoprimary=_phprimary, phnosecondary=_phsecondary, landline=_phlandphone, phextension=_extension, fbid=_fbid, fbname=_fbname, statusid=_statusid, hide=_hide, preferencesjson=_preferences WHERE id = _id;
+	UPDATE eb_users u 
+	SET 
+		u.fullname= _fullname, u.nickname=_nickname, u.email=_email, u.dob=_dob, u.sex=_sex, u.alternateemail=_alternateemail, u.phnoprimary=_phprimary, u.phnosecondary=_phsecondary, u.landline=_phlandphone, u.phextension=_extension, u.fbid=_fbid, u.fbname=_fbname, u.statusid=_statusid, u.hide=_hide, u.preferencesjson=_preferences 
+	WHERE 
+		u.id = _id;
 			
 	INSERT INTO eb_role2user(role_id,user_id,createdby,createdat) 
 		SELECT 
-				`value`,_id,_userid,NOW() 
+				r.`value`,_id,_userid,NOW() 
 			FROM 
 				((SELECT `value` FROM temp_roles WHERE `value` NOT IN
-					(SELECT role_id from eb_role2user WHERE user_id = _id AND eb_del = 'F'))) AS roleid;
-	UPDATE 
-			eb_role2user 
-		SET 
-			eb_del = 'T',revokedby = _userid,revokedat =NOW() 
-		WHERE 
-			user_id = _id AND eb_del = 'F' AND role_id IN( SELECT * FROM(
-				SELECT role_id FROM eb_role2user WHERE user_id = _id AND eb_del = 'F' AND role_id NOT IN( 
-		SELECT `value` FROM temp_roles))AS q1) ;
+					(SELECT role_id from eb_role2user WHERE user_id = _id AND eb_del = 'F'))) AS r;
+	UPDATE eb_role2user er2u
+	SET 
+		er2u.eb_del = 'T',er2u.revokedby = _userid,er2u.revokedat =NOW() 
+	WHERE 
+		er2u.user_id = _id AND er2u.eb_del = 'F' AND er2u.role_id IN( SELECT * FROM(
+			SELECT role_id FROM eb_role2user WHERE user_id = _id AND eb_del = 'F' AND role_id NOT IN( 
+				SELECT `value` FROM temp_roles))AS q1) ;
 
 	INSERT INTO eb_user2usergroup(userid,groupid,createdby,createdat) 
-			SELECT 
-					_id,`value`,_userid,NOW() 
-				FROM 
-					(SELECT `value` FROM temp_group WHERE `value` NOT IN
-							(SELECT groupid from eb_user2usergroup WHERE userid = _id AND eb_del = 'F')) AS groupid;
-	UPDATE 
-			eb_user2usergroup 
-		SET 
-			eb_del = 'T',revokedby = _userid,revokedat =NOW() 
-		WHERE 
-			userid = _id AND eb_del = 'F' AND groupid IN(SELECT * FROM (
+		SELECT 
+				_id,`value`,_userid,NOW() 
+			FROM 
+				(SELECT `value` FROM temp_group WHERE `value` NOT IN
+						(SELECT groupid from eb_user2usergroup WHERE userid = _id AND eb_del = 'F')) AS groupid;
+	UPDATE	eb_user2usergroup eu2g
+	SET 
+			eu2g.eb_del = 'T',eu2g.revokedby = _userid,eu2g.revokedat =NOW() 
+	WHERE 
+			eu2g.userid = _id AND eu2g.eb_del = 'F' AND eu2g.groupid IN(SELECT * FROM (
 				SELECT groupid from eb_user2usergroup WHERE userid = _id AND eb_del = 'F' AND groupid NOT IN (
 					SELECT `value` FROM temp_group))as q2);
 					 
@@ -102,7 +105,8 @@ ELSE
 	
 	INSERT INTO eb_userstatus(userid, statusid, createdby, createdat) VALUES (uid, _statusid, _userid, NOW());
    
-END IF;		
+END IF;	
+
 SET _keyid = uid;
 SET _add_data = _consadd;
 SET _delete_ids	= _consdel;		  

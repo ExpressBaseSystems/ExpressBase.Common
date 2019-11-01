@@ -3,7 +3,6 @@
   id integer NOT NULL auto_increment,
   role_id integer,
   user_id integer,
-  eb_del1 boolean DEFAULT false,
   createdby integer,
   createdat timestamp DEFAULT CURRENT_TIMESTAMP,
   revokedby integer,

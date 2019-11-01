@@ -2,20 +2,16 @@
 
 -- DROP TABLE public.eb_surveys;
 
-CREATE TABLE public.eb_surveys
+CREATE TABLE eb_surveys
 (
     id serial,
     name text,
     startdate timestamp without time zone,
     enddate timestamp without time zone,
     status integer,
-    questions text COLLATE pg_catalog."default",
-	CONSTRAINT eb_surveys_pkey PRIMARY KEY (id)
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+    questions text,
+    CONSTRAINT eb_surveys_pkey PRIMARY KEY (id)
+);
 
 
 -- Index: eb_surveys_id_idx
@@ -23,6 +19,4 @@ TABLESPACE pg_default;
 -- DROP INDEX public.eb_surveys_id_idx;
 
 CREATE INDEX eb_surveys_id_idx
-    ON public.eb_surveys USING btree
-    (id)
-    TABLESPACE pg_default;
+    ON eb_surveys(id);

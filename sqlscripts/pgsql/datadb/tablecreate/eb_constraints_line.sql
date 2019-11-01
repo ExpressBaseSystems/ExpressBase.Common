@@ -2,7 +2,7 @@
 
 -- DROP TABLE public.eb_constraints_line;
 
-CREATE TABLE public.eb_constraints_line
+CREATE TABLE eb_constraints_line
 (
     id serial,
     master_id integer,
@@ -10,11 +10,7 @@ CREATE TABLE public.eb_constraints_line
     c_operation integer,
     c_value text,
     CONSTRAINT eb_constraints_line_pkey PRIMARY KEY (id)
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
 
 
 	
@@ -23,6 +19,4 @@ TABLESPACE pg_default;
 -- DROP INDEX public.eb_constraints_line_id_idx;
 
 CREATE INDEX eb_constraints_line_id_idx
-    ON public.eb_constraints_line USING btree
-    (id)
-    TABLESPACE pg_default;
+    ON eb_constraints_line(id);

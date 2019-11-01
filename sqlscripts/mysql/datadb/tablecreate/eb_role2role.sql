@@ -2,8 +2,7 @@
 (
   id integer NOT NULL auto_increment,
   role1_id integer,
-  role2_id integer,
-  eb_del1 boolean DEFAULT false,
+  role2_id integer,  
   createdby integer,
   createdat timestamp DEFAULT CURRENT_TIMESTAMP,
   revokedby integer,

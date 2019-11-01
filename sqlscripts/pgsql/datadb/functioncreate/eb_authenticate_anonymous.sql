@@ -42,22 +42,36 @@ is_anon_auth_req := FALSE;
 
 IF in_socialid IS NOT NULL THEN
 
-    SELECT _userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id
-    FROM eb_authenticate_unified(social => in_socialid, wc => in_wc, ipaddress => in_user_ip) 
-    INTO out_userid, out_status_id, out_email, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson, out_constraints_a, out_signin_id;
+    SELECT 
+			_userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id
+		FROM 
+			eb_authenticate_unified(social => in_socialid, wc => in_wc, ipaddress => in_user_ip) 
+		INTO out_userid, out_status_id, out_email, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson, out_constraints_a, out_signin_id;
     
     IF out_userid = 0 THEN
     
-		SELECT A.id, A.email, A.fullname FROM eb_usersanonymous A WHERE A.socialid = in_socialid AND appid = in_appid AND ebuserid = 1
-        INTO out_userid, out_email, out_fullname;
+		SELECT 
+				A.id, A.email, A.fullname 
+			FROM 
+				eb_usersanonymous A 
+			WHERE 
+				A.socialid = in_socialid AND appid = in_appid AND ebuserid = 1
+			INTO out_userid, out_email, out_fullname;
            
-IF out_userid IS NULL THEN
-        INSERT INTO eb_usersanonymous (socialid, fullname, email, firstvisit, lastvisit, appid, ipaddress, browser, city, region, country, latitude, longitude, timezone, iplocationjson)
-VALUES (in_socialid, in_fullname, in_emailid, NOW(), NOW(), in_appid, in_user_ip, in_user_browser, in_city, in_region, in_country, in_latitude, in_longitude, in_timezone, in_iplocationjson)
-RETURNING id INTO out_userid;
-ELSE
-UPDATE eb_usersanonymous SET lastvisit = NOW(), totalvisits = totalvisits + 1, ipaddress = in_user_ip, browser = in_user_browser, city = in_city, region = in_region, country = in_country, latitude = in_latitude, longitude = in_longitude, timezone = in_timezone, iplocationjson = in_iplocationjson WHERE id = out_userid;
-END IF;
+		IF out_userid IS NULL THEN
+
+			INSERT INTO eb_usersanonymous 
+					(socialid, fullname, email, firstvisit, lastvisit, appid, ipaddress, browser, city, region, country, latitude, longitude, timezone, iplocationjson)
+				VALUES 
+					(in_socialid, in_fullname, in_emailid, NOW(), NOW(), in_appid, in_user_ip, in_user_browser, in_city, in_region, in_country, in_latitude, in_longitude, in_timezone, in_iplocationjson)
+			RETURNING id INTO out_userid;
+		ELSE
+			UPDATE eb_usersanonymous 
+			SET 
+				lastvisit = NOW(), totalvisits = totalvisits + 1, ipaddress = in_user_ip, browser = in_user_browser, city = in_city, region = in_region, country = in_country, latitude = in_latitude, longitude = in_longitude, timezone = in_timezone, iplocationjson = in_iplocationjson 
+			WHERE 
+				id = out_userid;
+		END IF;
       
         is_anon_auth_req := TRUE;
        
@@ -65,20 +79,27 @@ END IF;
 
 ELSE
 
-IF in_emailid IS NOT NULL OR in_phone IS NOT NULL THEN
+	IF in_emailid IS NOT NULL OR in_phone IS NOT NULL THEN
    
-    SELECT A.id, A.email, A.fullname FROM eb_usersanonymous A
-        WHERE (A.email = in_emailid OR A.phoneno = in_phone) AND appid = in_appid INTO out_userid, out_email, out_fullname;
+		SELECT 
+				A.id, A.email, A.fullname 
+			FROM 
+				eb_usersanonymous A
+			WHERE 
+				(A.email = in_emailid OR A.phoneno = in_phone) AND appid = in_appid 
+			INTO out_userid, out_email, out_fullname;
        
         IF out_userid IS NULL THEN
-        INSERT INTO eb_usersanonymous (email, phoneno, fullname, firstvisit, lastvisit, appid, ipaddress, browser, city, region, country, latitude, longitude, timezone, iplocationjson)
-VALUES (in_emailid, in_phone, in_fullname, NOW(), NOW(), in_appid, in_user_ip, in_user_browser, in_city, in_region, in_country, in_latitude, in_longitude, in_timezone, in_iplocationjson)
-RETURNING id INTO out_userid;
+			INSERT INTO eb_usersanonymous 
+					(email, phoneno, fullname, firstvisit, lastvisit, appid, ipaddress, browser, city, region, country, latitude, longitude, timezone, iplocationjson)
+				VALUES 
+					(in_emailid, in_phone, in_fullname, NOW(), NOW(), in_appid, in_user_ip, in_user_browser, in_city, in_region, in_country, in_latitude, in_longitude, in_timezone, in_iplocationjson)
+			RETURNING id INTO out_userid;
         ELSE
-        IF out_email IS NULL THEN
-            UPDATE eb_usersanonymous SET email = in_emailid, lastvisit = NOW(), totalvisits = totalvisits + 1, ipaddress = in_user_ip, browser = in_user_browser, city = in_city, region = in_region, country = in_country, latitude = in_latitude, longitude = in_longitude, timezone = in_timezone, iplocationjson = in_iplocationjson WHERE phoneno = in_phone;
+			IF out_email IS NULL THEN
+				UPDATE eb_usersanonymous SET email = in_emailid, lastvisit = NOW(), totalvisits = totalvisits + 1, ipaddress = in_user_ip, browser = in_user_browser, city = in_city, region = in_region, country = in_country, latitude = in_latitude, longitude = in_longitude, timezone = in_timezone, iplocationjson = in_iplocationjson WHERE phoneno = in_phone;
             ELSE
-            UPDATE eb_usersanonymous SET phoneno = in_phone, lastvisit = NOW(), totalvisits = totalvisits + 1, ipaddress = in_user_ip, browser = in_user_browser, city = in_city, region = in_region, country = in_country, latitude = in_latitude, longitude = in_longitude, timezone = in_timezone, iplocationjson = in_iplocationjson WHERE email = in_emailid;
+				UPDATE eb_usersanonymous SET phoneno = in_phone, lastvisit = NOW(), totalvisits = totalvisits + 1, ipaddress = in_user_ip, browser = in_user_browser, city = in_city, region = in_region, country = in_country, latitude = in_latitude, longitude = in_longitude, timezone = in_timezone, iplocationjson = in_iplocationjson WHERE email = in_emailid;
             END IF;
         END IF;
        

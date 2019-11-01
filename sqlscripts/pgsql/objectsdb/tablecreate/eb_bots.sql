@@ -2,7 +2,7 @@
 
 -- DROP TABLE public.eb_bots;
 
-CREATE TABLE public.eb_bots
+CREATE TABLE eb_bots
 (
     id serial,
     name text,
@@ -18,11 +18,7 @@ CREATE TABLE public.eb_bots
     fullname text,
     CONSTRAINT eb_bots_pkey PRIMARY KEY (id),
     CONSTRAINT botid_uniquekey UNIQUE (botid)
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
 
 
 -- Index: eb_bots_app_id_idx
@@ -30,15 +26,11 @@ TABLESPACE pg_default;
 -- DROP INDEX public.eb_bots_app_id_idx;
 
 CREATE INDEX eb_bots_app_id_idx
-    ON public.eb_bots USING btree
-    (app_id)
-    TABLESPACE pg_default;
+    ON eb_bots(app_id);
 
 -- Index: eb_bots_id_idx
 
 -- DROP INDEX public.eb_bots_id_idx;
 
 CREATE INDEX eb_bots_id_idx
-    ON public.eb_bots USING btree
-    (id)
-    TABLESPACE pg_default;
+    ON eb_bots(id);

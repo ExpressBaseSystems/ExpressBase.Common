@@ -21,7 +21,7 @@ DROP TEMPORARY TABLE IF EXISTS temp_array_table;
 DROP TEMPORARY TABLE IF EXISTS relationsv;
 
 CREATE TEMPORARY TABLE IF NOT EXISTS temp_array_table(value TEXT);
-CALL STR_TO_TBL(relations);  -- fill to temp_array_table
+CALL eb_str_to_tbl_util(relations,',');  -- fill to temp_array_table
 CREATE TEMPORARY TABLE IF NOT EXISTS relationsv SELECT `value` FROM temp_array_table;
 
 SELECT 
@@ -43,12 +43,11 @@ SELECT LAST_INSERT_ID() INTO inserted_obj_ver_id;
 
 SET version_number = CONCAT_WS('.', major, minor, patch + 1,'w');
 
-UPDATE 
-		eb_objects_ver eov
-	SET
-		eov.commit_ts = NOW(), eov.Commit_uid = commit_uid, eov.version_num = version_number, eov.working_mode = 'T', eov.patch_ver_num = patch + 1
-	WHERE
-		eov.id = inserted_obj_ver_id;
+UPDATE eb_objects_ver eov
+SET
+	eov.commit_ts = NOW(), eov.Commit_uid = commit_uid, eov.version_num = version_number, eov.working_mode = 'T', eov.patch_ver_num = patch + 1
+WHERE
+	eov.id = inserted_obj_ver_id;
 
 SET refidunique = CONCAT_WS('-', src_pid, cur_pid, obj_type, objid, inserted_obj_ver_id, objid, inserted_obj_ver_id);  
 SET	temp_committed_refidunique = refidunique;
