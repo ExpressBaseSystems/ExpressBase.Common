@@ -403,16 +403,16 @@ namespace ExpressBase.Security
                                 df.GetNewParameter("in_iplocationjson", EbDbTypes.String, iplocationjson),
                                 df.GetNewParameter("in_appid", EbDbTypes.String, appid),
                                 df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context ),
-                                df.GetNewOutParameter("tmp_userid", EbDbTypes.Int32),
-                                df.GetNewOutParameter("tmp_status_id", EbDbTypes.Int32),
-                                df.GetNewOutParameter("tmp_email", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_fullname", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_roles_a", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_rolename_a", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_permissions", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_preferencesjson", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_constraints_a", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_signin_id", EbDbTypes.Int32)
+                                df.GetNewOutParameter("out_userid", EbDbTypes.Int32),
+                                df.GetNewOutParameter("out_status_id", EbDbTypes.Int32),
+                                df.GetNewOutParameter("out_email", EbDbTypes.String),
+                                df.GetNewOutParameter("out_fullname", EbDbTypes.String),
+                                df.GetNewOutParameter("out_roles_a", EbDbTypes.String),
+                                df.GetNewOutParameter("out_rolename_a", EbDbTypes.String),
+                                df.GetNewOutParameter("out_permissions", EbDbTypes.String),
+                                df.GetNewOutParameter("out_preferencesjson", EbDbTypes.String),
+                                df.GetNewOutParameter("out_constraints_a", EbDbTypes.String),
+                                df.GetNewOutParameter("out_signin_id", EbDbTypes.Int32)
                                 });
                 return InitUserObject(ds, context);
             }

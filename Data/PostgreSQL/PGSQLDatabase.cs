@@ -187,7 +187,7 @@ namespace ExpressBase.Common
                         using (var reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
-                                obj = (T)reader.GetValue(0);
+                               obj = (T)reader.GetValue(0);
                         }
                     }
                 }
@@ -523,7 +523,7 @@ namespace ExpressBase.Common
                     con.Open();
                     using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
                     {
-                       res = cmd.ExecuteNonQuery();
+                        res = cmd.ExecuteNonQuery();
                     }
                 }
                 catch (Npgsql.NpgsqlException npgse)
@@ -672,7 +672,9 @@ namespace ExpressBase.Common
         //-----------Sql queries
 
         public string EB_INITROLE2USER { get { return "INSERT INTO eb_role2user(role_id, user_id, createdat) VALUES (@role_id, @user_id, now());"; } }
+
         public string EB_USER_ROLE_PRIVS { get { return "SELECT DISTINCT privilege_type FROM information_schema.role_table_grants WHERE grantee='@uname';"; } }
+
         public string EB_AUTHETICATE_USER_NORMAL { get { return "SELECT * FROM eb_authenticate_unified(uname := @uname, password := @pass, wc := @wc);"; } }
 
         public string EB_AUTHENTICATEUSER_SOCIAL { get { return "SELECT * FROM eb_authenticate_unified(social := @social, wc := @wc);"; } }
@@ -764,6 +766,7 @@ SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id =
         }
 
         public string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_security_user(:_userid,:_id,:_fullname,:_nickname,:_email,:_pwd,:_dob,:_sex,:_alternateemail,:_phprimary,:_phsecondary,:_phlandphone,:_extension,:_fbid,:_fbname,:_roles,:_groups,:_statusid,:_hide,:_anonymoususerid,:_preferences,:_consadd,:_consdel);"; } }
+
         public string EB_SAVEUSERGROUP_QUERY { get { return "SELECT * FROM eb_security_usergroup(:userid,:id,:name,:description,:users,:constraints_add,:constraints_del);"; } }
 
         public string EB_MANAGEUSER_FIRST_QUERY
@@ -1137,6 +1140,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                 ";
             }
         }
+
         public string EB_GET_LIVE_OBJ_RELATIONS
         {
             get
@@ -1154,6 +1158,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                 ";
             }
         }
+
         public string EB_GET_ALL_COMMITTED_VERSION_LIST
         {
             get
@@ -1176,6 +1181,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                 ";
             }
         }
+
         public string EB_GET_OBJECTS_OF_A_TYPE
         {
             get
@@ -1192,6 +1198,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                 ";
             }
         }
+
         public string EB_GET_OBJ_STATUS_HISTORY
         {
             get
@@ -1207,6 +1214,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                 ";
             }
         }
+
         public string EB_LIVE_VERSION_OF_OBJS
         {
             get
@@ -1222,6 +1230,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                         ORDER BY EOV.eb_objects_id	LIMIT 1;";
             }
         }
+
         public string EB_GET_ALL_TAGS
         {
             get
@@ -1335,7 +1344,15 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
             {
                 return @"UPDATE eb_location_config SET keys = :keys ,isrequired = :isrequired , keytype = :type WHERE id = :keyid; ";
             }
-        }       
+        }     
+        
+        public string EB_GET_DISTINCT_VALUES
+        {
+            get
+            {
+                return @"SELECT DISTINCT INITCAP(TRIM(@ColumName)) AS @ColumName FROM @TableName ORDER BY @ColumName;";
+            }
+        }
 
         //.....OBJECTS FUNCTION CALL......
         public string EB_CREATE_NEW_OBJECT
@@ -1356,6 +1373,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                 ";
             }
         }
+
         public string EB_COMMIT_OBJECT
         {
             get
@@ -1365,6 +1383,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                 ";
             }
         }
+
         public string EB_EXPLORE_OBJECT
         {
             get
@@ -1374,6 +1393,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                 ";
             }
         }
+
         public string EB_MAJOR_VERSION_OF_OBJECT
         {
             get
@@ -1383,6 +1403,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                 ";
             }
         }
+
         public string EB_MINOR_VERSION_OF_OBJECT
         {
             get
@@ -1392,6 +1413,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                 ";
             }
         }
+
         public string EB_CHANGE_STATUS_OBJECT
         {
             get
@@ -1401,6 +1423,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                 ";
             }
         }
+
         public string EB_PATCH_VERSION_OF_OBJECT
         {
             get
@@ -1410,6 +1433,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                 ";
             }
         }
+
         public string EB_UPDATE_DASHBOARD
         {
             get
@@ -1419,6 +1443,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                 ";
             }
         }
+
         public string EB_LOCATION_CONFIGURATION
         {
             get
@@ -1540,19 +1565,27 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
             }
         }
 
+       // public string EB_FILECATEGORYCHANGE
+       // {
+       //     get
+       //     {
+       //         return @"UPDATE 
+	      //                  eb_files_ref FR
+       //                 SET
+	      //                  tags = jsonb_set(cast(tags as jsonb),
+							//'{Category}',
+							//(SELECT (cast(tags as jsonb)->'Category')-0 || to_jsonb(:categry::text)),
+       //                     true)
+       //                 WHERE 
+       //                     FR.id = ANY(string_to_array(:ids,',')::int[]);";
+       //     }
+       // }
+
         public string EB_FILECATEGORYCHANGE
         {
             get
             {
-                return @"UPDATE 
-	                        eb_files_ref FR
-                        SET
-	                        tags = jsonb_set(cast(tags as jsonb),
-							'{Category}',
-							(SELECT (cast(tags as jsonb)->'Category')-0 || to_jsonb(:categry::text)),
-                            true)
-                        WHERE 
-                            FR.id = ANY(string_to_array(:ids,',')::int[]);";
+                return @"SELECT id,tags FROM eb_files_ref WHERE id = ANY(string_to_array(:ids,',')::int[]);";
             }
         }
 

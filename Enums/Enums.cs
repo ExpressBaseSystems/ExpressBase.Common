@@ -59,8 +59,8 @@ namespace ExpressBase.Common
         SMS = 7,
         Slack = 8,
         Cloudinary = 9,
-        MAPS =11,
-        Chat =12
+        MAPS = 11,
+        Chat = 12
     }
 
     public enum EbIntegrations
@@ -76,10 +76,10 @@ namespace ExpressBase.Common
         Cloudinary = 9,
         GoogleMap = 10,
         SendGrid = 11,
-        GoogleDrive =12,
-        DropBox =13,
-        AWSS3 =14,
-        Slack =15
+        GoogleDrive = 12,
+        DropBox = 13,
+        AWSS3 = 14,
+        Slack = 15
     }
 
     public enum SmtpProviders
@@ -112,7 +112,7 @@ namespace ExpressBase.Common
     {
         COMMON
     }
-   
+
 
     public enum StudioFormTypes
     {
@@ -277,7 +277,8 @@ namespace ExpressBase.Common
         EmailTask = 1,
         SmsTask = 2,
         ReportTask = 3,
-        MyJob = 4
+        MyJob = 4,
+        SqlTask = 5
     }
 
     public enum ScheduleStatuses

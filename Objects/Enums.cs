@@ -55,7 +55,8 @@ namespace ExpressBase.Common.Objects
         BotForm = 18,
         SmsBuilder = 19,
         ApiBuilder = 20,
-        DashBoard = 21,
+        DashBoard = 22,
+        Calendar = 24,
         All = 100
     }
 

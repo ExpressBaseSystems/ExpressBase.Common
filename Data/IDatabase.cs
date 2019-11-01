@@ -84,6 +84,8 @@ namespace ExpressBase.Common
         string EB_GET_CHART_DETAILS { get; }
         string EB_INSERT_EXECUTION_LOGS { get; }
 
+        string EB_GET_DISTINCT_VALUES { get; }
+
         //........objects db query.....
         string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ { get; }
         string EB_PARTICULAR_VERSION_OF_AN_OBJ { get; }

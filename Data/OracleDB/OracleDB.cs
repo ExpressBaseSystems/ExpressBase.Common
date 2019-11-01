@@ -1247,7 +1247,15 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             {
                 return @"UPDATE eb_location_config SET keys = :keys ,isrequired = :isrequired , keytype = :type WHERE id = :keyid;";
             }
-        }               
+        }
+
+        public string EB_GET_DISTINCT_VALUES
+        {
+            get
+            {
+                return @"SELECT DISTINCT INITCAP(TRIM(:ColumName)) AS :ColumName FROM :TableName ORDER BY :ColumName;";
+            }
+        }
 
         //.....OBJECT FUNCTION CALLS
         public string EB_CREATE_NEW_OBJECT
@@ -1439,15 +1447,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
         {
             get
             {
-                return @"UPDATE 
-	                        eb_files_ref FR
-                        SET
-	                        tags = jsonb_set(cast(tags as jsonb),
-							'{Category}',
-							(SELECT (cast(tags as jsonb)->'Category')-0 || to_jsonb(:categry::text)),
-                            true)
-                        WHERE 
-                            FR.id = ANY(string_to_array(:ids,',')::int[]);";
+                return @"SELECT id,tags FROM eb_files_ref WHERE id = ANY(string_to_array(:ids,',')::int[]);";
             }
         }
 
