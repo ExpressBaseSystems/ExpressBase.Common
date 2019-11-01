@@ -16,6 +16,10 @@ namespace ExpressBase.Common.LocationNSolution
 
         public string Logo { get; set; }
 
+        public string WeekHoliday1 { get; set; }
+
+        public string WeekHoliday2 { get; set; }
+
         public string this[string title]
         {
             get
