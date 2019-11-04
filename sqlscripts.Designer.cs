@@ -3567,6 +3567,71 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_revokedbaccess2user(text, text)
+        ///
+        ///-- DROP FUNCTION public.eb_revokedbaccess2user(text, text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_revokedbaccess2user(
+        ///	username text,
+        ///	dbname text)
+        ///    RETURNS boolean
+        ///    LANGUAGE &apos;plpgsql&apos;    
+        ///
+        ///AS $BODY$
+        ///
+        ///DECLARE dbs text;
+        ///BEGIN
+        ///  
+        ///    FOR dbs IN (SELECT datname FROM pg_database WHERE datistemplate = false)
+        ///    LOOP
+        ///  	  EXECUTE &apos;REVOKE CONNECT ON DATABASE &quot;&apos; || dbs || &apos;&quot; FROM &apos; || username;
+        ///  	END LOOP;
+        ///    EXECUTE &apos;GRANT CONNECT [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_revokedbaccess2user {
+            get {
+                return ResourceManager.GetString("eb_revokedbaccess2user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- need to update.
+        /// </summary>
+        public static string eb_revokedbaccess2user1 {
+            get {
+                return ResourceManager.GetString("eb_revokedbaccess2user1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DROP PROCEDURE IF EXISTS eb_revokedbaccess2user;
+        ///
+        ///CREATE PROCEDURE eb_revokedbaccess2user(IN username TEXT,
+        ///    IN dbname TEXT,
+        ///    OUT out_b BOOLEAN)
+        ///BEGIN
+        ///DECLARE dbs TEXT;
+        ///DECLARE done BOOLEAN;
+        ///DECLARE s TEXT;
+        ///DECLARE s1 VARCHAR(200);
+        ///DECLARE cur1 CURSOR FOR SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA;
+        ///DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;   
+        ///OPEN cur1;
+        ///read_loop: LOOP
+        ///      FETCH cur1 INTO dbs;
+        ///     
+        ///      IF done THEN
+        ///      LEAVE read_loop;
+        ///    END IF;
+        ///      [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_revokedbaccess2user2 {
+            get {
+                return ResourceManager.GetString("eb_revokedbaccess2user2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to -- Table: public.eb_role2location
         ///
         ///-- DROP TABLE public.eb_role2location;
