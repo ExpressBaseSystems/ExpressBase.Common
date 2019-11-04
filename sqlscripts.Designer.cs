@@ -1353,35 +1353,6 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_files_ref
-        ///
-        ///-- DROP TABLE public.eb_files_ref;
-        ///
-        ///CREATE TABLE eb_files_ref
-        ///(
-        ///    id serial,
-        ///    userid integer NOT NULL,
-        ///	filename text,    
-        ///    tags text,
-        ///    filetype text,
-        ///    uploadts timestamp without time zone,
-        ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
-        ///    filecategory integer,
-        ///    context text,   
-        ///    CONSTRAINT eb_files_ref_pkey PRIMARY KEY (id),
-        ///    CONSTRAINT eb_files_ref_eb_del_check CHECK (eb_del = &apos;T&apos;::&quot;char&quot; OR eb_del = &apos;F&apos;::&quot;char&quot;)
-        ///);
-        ///
-        ///
-        ///-- Table: pu [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_files {
-            get {
-                return ResourceManager.GetString("eb_files", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to -- Table: public.eb_files_bytea
         ///
         ///-- DROP TABLE public.eb_files_bytea;
@@ -1466,66 +1437,6 @@ namespace ExpressBase.Common {
         public static string eb_files_bytea2 {
             get {
                 return ResourceManager.GetString("eb_files_bytea2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DECLARE
-        ///	eb_del varchar(10); 
-        ///BEGIN
-        ///	eb_del := &apos;F&apos;;
-        ///	EXECUTE IMMEDIATE &apos;CREATE SEQUENCE eb_files_id_seq START WITH 1&apos;;
-        ///
-        ///	
-        ///	EXECUTE IMMEDIATE &apos;CREATE TABLE eb_files
-        ///	(
-        ///    		id number NOT NULL,
-        ///    		userid number ,
-        ///    		objid varchar2(100),
-        ///    		length number,
-        ///    		tags varchar2(100),
-        ///			bucketname varchar2(30),
-        ///			filetype varchar2(30),
-        ///			uploaddatetime timestamp,
-        ///			eb_del char DEFAULT &apos;&apos;&apos;|| eb_del ||&apos;&apos;&apos;,  
-        ///			fileclass number,
-        ///    		CONSTRAINT eb_files_id_pkey PRIMARY KEY (id)
-        ///	)&apos; [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_files1 {
-            get {
-                return ResourceManager.GetString("eb_files1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_files_ref
-        ///(
-        ///  id integer NOT NULL auto_increment,
-        ///  userid integer NOT NULL,
-        ///  filename varchar(75),
-        ///  tags text,
-        ///  filetype text,
-        ///  uploadts timestamp,
-        ///  eb_del char(1) DEFAULT &apos;F&apos;,
-        ///  filecategory integer,  
-        ///  context text,
-        ///  CONSTRAINT eb_files_ref_pkey PRIMARY KEY (id),
-        ///  CONSTRAINT eb_files_ref_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
-        ///);
-        ///
-        ///
-        ///CREATE INDEX eb_files_ref_idx
-        ///ON eb_files_ref(id) 
-        ///USING btree;
-        ///
-        ///
-        ///CREATE INDEX eb_files_ref_userid_idx
-        ///ON eb_files_ref( [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_files2 {
-            get {
-                return ResourceManager.GetString("eb_files2", resourceCulture);
             }
         }
         
@@ -2163,8 +2074,8 @@ namespace ExpressBase.Common {
         ///   Looks up a localized string similar to CREATE TABLE eb_locations
         ///(
         ///  id integer NOT NULL auto_increment,
-        ///  shortname varchar(20),
-        ///  longname text,
+        ///  shortname varchar(20) DEFAULT &apos;default&apos;,
+        ///  longname varchar(50) DEFAULT &apos;default&apos;,
         ///  image text,
         ///  meta_json text,
         ///  CONSTRAINT eb_locations_pkey PRIMARY KEY (id)
@@ -2454,16 +2365,14 @@ namespace ExpressBase.Common {
         ///    obj_tags text,
         ///    owner_uid integer,
         ///    owner_ts timestamp without time zone,
-        ///    display_name,
+        ///    display_name  text,
         ///    is_logenabled char(1) DEFAULT &apos;F&apos;,
         ///    eb_del char(1) DEFAULT &apos;F&apos;,
         ///    CONSTRAINT eb_objects_pkey PRIMARY KEY (id)
         ///);
         ///
         ///
-        ///-- Index: eb_objects_applicationid_idx
-        ///
-        ///--  [rest of string was truncated]&quot;;.
+        ///-- Index: eb_objects_applicationid_idx        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects {
             get {
