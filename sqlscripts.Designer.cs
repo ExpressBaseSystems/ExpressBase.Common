@@ -1441,6 +1441,136 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_files_ref
+        ///
+        ///-- DROP TABLE public.eb_files_ref;
+        ///
+        ///CREATE TABLE eb_files_ref
+        ///(
+        ///    id serial,
+        ///    userid integer NOT NULL,
+        ///	filename text,    
+        ///    tags text,
+        ///    filetype text,
+        ///    uploadts timestamp without time zone,
+        ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    filecategory integer,
+        ///    context text,   
+        ///    CONSTRAINT eb_files_ref_pkey PRIMARY KEY (id),
+        ///    CONSTRAINT eb_files_ref_eb_del_check CHECK (eb_del = &apos;T&apos;::&quot;char&quot; OR eb_del = &apos;F&apos;::&quot;char&quot;)
+        ///);
+        ///.
+        /// </summary>
+        public static string eb_files_ref {
+            get {
+                return ResourceManager.GetString("eb_files_ref", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_files_ref_variations
+        ///
+        ///-- DROP TABLE public.eb_files_ref_variations;
+        ///
+        ///CREATE TABLE eb_files_ref_variations
+        ///(
+        ///    id serial,
+        ///    eb_files_ref_id integer NOT NULL,
+        ///    filestore_sid text,
+        ///    length bigint,
+        ///    is_image &quot;char&quot;,
+        ///    imagequality_id integer,
+        ///    img_manp_ser_con_id integer,
+        ///    filedb_con_id integer,
+        ///    CONSTRAINT eb_files_ref_variations_pkey PRIMARY KEY (id)
+        ///);.
+        /// </summary>
+        public static string eb_files_ref_variations {
+            get {
+                return ResourceManager.GetString("eb_files_ref_variations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_files_ref_variations.
+        /// </summary>
+        public static string eb_files_ref_variations1 {
+            get {
+                return ResourceManager.GetString("eb_files_ref_variations1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_files_ref_variations
+        ///(
+        ///  id integer NOT NULL auto_increment,
+        ///  eb_files_ref_id integer NOT NULL,
+        ///  filestore_sid varchar(100),
+        ///  length bigint,
+        ///  is_image char,
+        ///  imagequality_id integer,
+        ///  img_manp_ser_con_id integer,
+        ///  filedb_con_id integer,
+        ///  CONSTRAINT eb_files_ref_variations_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///
+        ///CREATE INDEX eb_files_ref_variations_idx
+        ///ON eb_files_ref_variations(id) 
+        ///USING btree;
+        ///
+        ///
+        ///CREATE INDEX eb_files_variations_files_refid_idx
+        ///ON eb_files_ref_variations(eb_f [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_files_ref_variations2 {
+            get {
+                return ResourceManager.GetString("eb_files_ref_variations2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_files_ref.
+        /// </summary>
+        public static string eb_files_ref1 {
+            get {
+                return ResourceManager.GetString("eb_files_ref1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///CREATE TABLE eb_files_ref
+        ///(
+        ///  id integer NOT NULL auto_increment,
+        ///  userid integer NOT NULL,
+        ///  filename varchar(75),
+        ///  tags text,
+        ///  filetype text,
+        ///  uploadts timestamp,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
+        ///  filecategory integer,  
+        ///  context text,
+        ///  CONSTRAINT eb_files_ref_pkey PRIMARY KEY (id),
+        ///  CONSTRAINT eb_files_ref_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
+        ///);
+        ///
+        ///
+        ///CREATE INDEX eb_files_ref_idx
+        ///ON eb_files_ref(id) 
+        ///USING btree;
+        ///
+        ///
+        ///CREATE INDEX eb_files_ref_userid_idx
+        ///ON eb_files_re [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_files_ref2 {
+            get {
+                return ResourceManager.GetString("eb_files_ref2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 
         ///CREATE OR REPLACE FUNCTION eb_get_tagged_object(
         ///tag CLOB
