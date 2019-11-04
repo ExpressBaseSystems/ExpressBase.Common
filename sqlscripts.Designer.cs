@@ -1254,62 +1254,6 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_executionlogs
-        ///
-        ///-- DROP TABLE public.eb_executionlogs;
-        ///
-        ///CREATE TABLE eb_executionlogs
-        ///(
-        ///    id serial,
-        ///    rows text,
-        ///    exec_time integer,
-        ///    created_by integer,
-        ///    created_at timestamp without time zone,
-        ///    refid text,
-        ///    params json,
-        ///	CONSTRAINT eb_executionlogs_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///.
-        /// </summary>
-        public static string eb_executionlogs_new {
-            get {
-                return ResourceManager.GetString("eb_executionlogs_new", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- need updation.
-        /// </summary>
-        public static string eb_executionlogs_new1 {
-            get {
-                return ResourceManager.GetString("eb_executionlogs_new1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_executionlogs
-        ///(
-        ///  id integer NOT NULL auto_increment,
-        ///  `rows` varchar(200),
-        ///  exec_time integer,
-        ///  created_by integer,
-        ///  created_at timestamp,
-        ///  refid text,
-        ///  params json,
-        ///  constraint eb_executionlogs_pkey primary key(id)
-        ///);
-        ///
-        ///create index eb_executionlogs_idx on eb_executionlogs(id) using btree;
-        ///.
-        /// </summary>
-        public static string eb_executionlogs_new2 {
-            get {
-                return ResourceManager.GetString("eb_executionlogs_new2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to BEGIN
         ///	EXECUTE IMMEDIATE &apos;create or replace type authenticate_res_obj as object (
         ///			userid integer, 
