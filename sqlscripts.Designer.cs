@@ -1171,6 +1171,87 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_currval(text)
+        ///
+        ///-- DROP FUNCTION public.eb_currval(text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_currval(
+        ///	seq text)
+        ///    RETURNS integer
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///    
+        ///AS $BODY$
+        ///
+        ///DECLARE curval integer; exce text;
+        ///BEGIN
+        ///SELECT currval(seq) into curval;
+        ///RETURN curval;
+        ///EXCEPTION WHEN OTHERS THEN
+        ///	IF SQLSTATE = &apos;55000&apos; THEN
+        ///    	RETURN 0;      
+        ///    ELSE
+        ///    	RAISE EXCEPTION &apos;%&apos;, SQLERRM;
+        ///    END IF;
+        ///END;
+        ///
+        ///$BODY$;.
+        /// </summary>
+        public static string eb_currval {
+            get {
+                return ResourceManager.GetString("eb_currval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE OR REPLACE FUNCTION eb_currval(seq CLOB)
+        ///    RETURN NUMBER 
+        ///        IS
+        ///    PRAGMA AUTONOMOUS_TRANSACTION;
+        ///    curval NUMBER; 
+        ///BEGIN
+        ///    
+        ///     execute immediate &apos;
+        ///       select &apos; || dbms_assert.sql_object_name(seq) || &apos;.CURRVAL
+        ///         from dual&apos;
+        ///         into curval;    
+        ///    COMMIT; 
+        ///      RETURN curval;
+        ///     EXCEPTION 
+        ///        WHEN OTHERS THEN
+        ///            IF SQLCODE = -8002 THEN
+        ///                RETURN 0;
+        ///            ELSE
+        ///              raise_application_error(-20001,&apos;An error was e [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_currval1 {
+            get {
+                return ResourceManager.GetString("eb_currval1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DROP FUNCTION IF EXISTS eb_currval;
+        ///
+        ///CREATE FUNCTION eb_currval(seq TEXT) RETURNS int(11)
+        ///    READS SQL DATA
+        ///    DETERMINISTIC
+        ///BEGIN
+        ///
+        ///DECLARE _curval INTEGER;
+        ///
+        ///SELECT MAX(`value`) FROM tmp_currval WHERE name = seq INTO _curval;
+        ///IF _curval IS NULL THEN SET _curval=0; END IF; 
+        ///
+        ///RETURN _curval;
+        ///END .
+        /// </summary>
+        public static string eb_currval2 {
+            get {
+                return ResourceManager.GetString("eb_currval2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to -- Table: public.eb_executionlogs
         ///
         ///-- DROP TABLE public.eb_executionlogs;
