@@ -38,7 +38,7 @@ namespace ExpressBase.Common.Constants
                         "datadb.tablecreate.eb_role2role.sql",
                         "datadb.tablecreate.eb_role2user.sql",
                         "datadb.tablecreate.eb_roles.sql",
-                        "datadb.tablecreate.eb_schedules_new.sql",
+                        "datadb.tablecreate.eb_schedules.sql",
                         "datadb.tablecreate.eb_signin_log.sql",
                         "datadb.tablecreate.eb_surveys.sql",
                         "datadb.tablecreate.eb_survey_lines.sql",
