@@ -47,7 +47,7 @@ namespace ExpressBase.Common.Objects
         SqlFunctions = 5,
         FilterDialog = 12,
         WebForm = 0,
-        MobileForm = 13,
+        MobilePage = 13,
         UserControl = 14,
         Report = 3,
         DVBuilder = 11,
