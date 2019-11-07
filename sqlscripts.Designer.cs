@@ -2175,9 +2175,13 @@ namespace ExpressBase.Common {
         ///(
         ///    id serial,
         ///    shortname text DEFAULT &apos;default&apos;,
-        ///    longname text  DEFAULT &apos;default&apos;,
+        ///    longname text DEFAULT &apos;default&apos;,
         ///    image text,
         ///    meta_json text,
+        ///    eb_data_id integer,
+        ///    eb_ver_id integer,
+        ///    week_holiday1 text,
+        ///    week_holiday2 text,
         ///    CONSTRAINT eb_locations_pkey PRIMARY KEY (id)
         ///);
         ///
@@ -2187,8 +2191,7 @@ namespace ExpressBase.Common {
         ///-- DROP INDEX public.eb_locationsid_idx;
         ///
         ///CREATE INDEX eb_locationsid_idx
-        ///    ON eb_locations(id);
-        ///.
+        ///    ON eb_loc [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_locations1 {
             get {
@@ -2199,12 +2202,16 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_locations
         ///(
-        ///  id integer NOT NULL auto_increment,
-        ///  shortname varchar(20) DEFAULT &apos;default&apos;,
-        ///  longname varchar(50) DEFAULT &apos;default&apos;,
-        ///  image text,
-        ///  meta_json text,
-        ///  CONSTRAINT eb_locations_pkey PRIMARY KEY (id)
+        ///   id integer auto_increment,
+        ///    shortname varchar(20) DEFAULT &apos;default&apos;,
+        ///    longname varchar(50) DEFAULT &apos;default&apos;,
+        ///    image text,
+        ///    meta_json text,
+        ///    eb_data_id integer,
+        ///    eb_ver_id integer,
+        ///    week_holiday1 text,
+        ///    week_holiday2 text,
+        ///    CONSTRAINT eb_locations_pkey PRIMARY KEY (id)
         ///);
         ///
         ///
@@ -3497,6 +3504,59 @@ namespace ExpressBase.Common {
         public static string eb_persist_currval2 {
             get {
                 return ResourceManager.GetString("eb_persist_currval2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_public_holidays
+        ///
+        ///-- DROP TABLE public.eb_public_holidays;
+        ///
+        ///CREATE TABLE eb_public_holidays
+        ///(
+        ///    id serial,
+        ///    eb_loc_id integer,
+        ///    holiday_name text,
+        ///    holiday_date timestamp without time zone,
+        ///    CONSTRAINT eb_public_holidays_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///-- Index: eb_public_holidays_idx
+        ///
+        ///-- DROP INDEX public.eb_public_holidays_idx;
+        ///
+        ///CREATE INDEX eb_public_holidays_idx
+        ///    ON eb_public_holidays(id);.
+        /// </summary>
+        public static string eb_public_holidays {
+            get {
+                return ResourceManager.GetString("eb_public_holidays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_public_holidays.
+        /// </summary>
+        public static string eb_public_holidays1 {
+            get {
+                return ResourceManager.GetString("eb_public_holidays1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///CREATE TABLE eb_public_holidays
+        ///(
+        ///    id integer auto_increment,
+        ///    eb_loc_id integer,
+        ///    holiday_name text,
+        ///    holiday_date timestamp,
+        ///    CONSTRAINT eb_public_holidays_pkey PRIMARY KEY (id)
+        ///);.
+        /// </summary>
+        public static string eb_public_holidays2 {
+            get {
+                return ResourceManager.GetString("eb_public_holidays2", resourceCulture);
             }
         }
         
