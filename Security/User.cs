@@ -51,6 +51,8 @@ namespace ExpressBase.Security
         public int SignInLogId { get; set; }
 
         private List<string> _ebObjectIds = null;
+
+        [DataMember(Order = 11)]
         public List<string> EbObjectIds
         {
             get
