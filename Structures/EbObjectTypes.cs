@@ -100,6 +100,7 @@ namespace ExpressBase.Common.Structures
         public const int iKanBan = 23;
         public const int iCalendarView = 24;
         public const int iCsharpFunction = 25;
+        public const int iSqlJob = 26;
 
         public static readonly EbObjectType Null = new EbObjectType("Null", iNull, ObjectConstants.XXX, false, "fa-exclamation-triangle",null);
         public static readonly EbObjectType WebForm = new EbObjectType(ObjectConstants.WEB_FORM, iWebForm, ObjectConstants.XXW, true, "fa-wpforms","Form");//true
@@ -124,6 +125,8 @@ namespace ExpressBase.Common.Structures
         public static readonly EbObjectType Api = new EbObjectType(ObjectConstants.API, iApi, ObjectConstants.XXW, false, "fa-code",null);
         public static readonly EbObjectType GoogleMap = new EbObjectType(ObjectConstants.GOOGLEMAP, iGoogleMap, ObjectConstants.BMW, true, "fa-map-marker", "Google MapView");
         public static readonly EbObjectType DashBoard = new EbObjectType(ObjectConstants.DASHBOARD, iDashBoard, ObjectConstants.BMW, true, "fa-tachometer", null);
+        public static readonly EbObjectType SqlJob = new EbObjectType(ObjectConstants.SQLJOB, iSqlJob, ObjectConstants.XXW, false, "fa-tachometer", "Sql Job");
+
 
         public static readonly EbObjectType KanBan = new EbObjectType(ObjectConstants.KANBAN, iKanBan, ObjectConstants.XXW, false, "fa-tag", null);
         public static readonly EbObjectType CalendarView = new EbObjectType(ObjectConstants.CALENDARVIEW, iCalendarView, ObjectConstants.BMW, true, "fa-calendar", "Calendar View");
@@ -169,7 +172,8 @@ namespace ExpressBase.Common.Structures
                     CalendarView,
                     DashBoard,
                     JavascriptFunction,
-                    CsharpFunction
+                    CsharpFunction,
+                    SqlJob
                 };
             }
         }

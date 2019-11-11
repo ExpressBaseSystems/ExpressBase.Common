@@ -57,6 +57,7 @@ namespace ExpressBase.Common.Objects
         ApiBuilder = 20,
         DashBoard = 22,
         Calendar = 24,
+        SqlJob = 26,
         All = 100
     }
 

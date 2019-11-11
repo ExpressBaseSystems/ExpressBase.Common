@@ -44,5 +44,6 @@ namespace ExpressBase.Common.Constants
         public const string KANBAN                      = "KanBan";
         public const string CALENDARVIEW                = "CalendarView";
         public const string CSHARPFUNCTION              = "CsharpFunction";
+        public const string SQLJOB                      = "SqlJob";
     }
 }
