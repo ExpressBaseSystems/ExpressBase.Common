@@ -79,7 +79,8 @@ namespace ExpressBase.Common
         GoogleDrive = 12,
         DropBox = 13,
         AWSS3 = 14,
-        Slack = 15
+        Slack = 15,
+        Facebook = 16
     }
 
     public enum SmtpProviders
