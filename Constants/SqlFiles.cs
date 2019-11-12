@@ -49,6 +49,7 @@ namespace ExpressBase.Common.Constants
                         "datadb.tablecreate.eb_usergroup.sql",
                         "datadb.tablecreate.eb_users.sql",
                         "datadb.tablecreate.eb_userstatus.sql",
+                        "datadb.tablecreate.eb_public_holidays.sql",
                         "filesdb.tablecreate.eb_files_bytea.sql",
                         "objectsdb.functioncreate.eb_botdetails.sql",
                         "objectsdb.functioncreate.eb_createbot.sql",

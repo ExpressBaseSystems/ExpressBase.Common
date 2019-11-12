@@ -52,6 +52,7 @@ namespace ExpressBase.Security
 
         private List<string> _ebObjectIds = null;
 
+        [DataMember(Order = 11)]
         public List<string> EbObjectIds
         {
             get
