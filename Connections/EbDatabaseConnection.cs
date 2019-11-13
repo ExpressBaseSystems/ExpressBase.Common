@@ -282,6 +282,11 @@ namespace ExpressBase.Common.Connections
         public override EbIntegrations Type { get { return EbIntegrations.Twilio; } }
     }
 
+    public class EbUnifonicConfig : EbSmsConfig
+    {
+        public override EbIntegrations Type { get { return EbIntegrations.Unifonic; } }
+    }
+
     public class EbExpertTextingConfig : EbSmsConfig
     {
         public string ApiKey { get; set; }
@@ -399,8 +404,7 @@ namespace ExpressBase.Common.Connections
         public string AppId { get; set; }
         public string AppVersion { get; set; }
         public override EbIntegrations Type { get { return EbIntegrations.Facebook; } }
-    }
-
+    }  
 
     public class EbGoogleMapConfig : EbMapConfig
     {

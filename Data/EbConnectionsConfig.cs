@@ -81,6 +81,8 @@ namespace ExpressBase.Common.Data
         public ChatConfigCollection ChatConfigs { get; set; }
 
         public MapConfigCollection MapConfigs { get; set; }
+
+        public AuthenticationCollection AUTHENTICATIONConfigs { get; set; }
     }
 
     public class FilesConfigCollection
@@ -93,6 +95,17 @@ namespace ExpressBase.Common.Data
         {
             this.Integrations = new List<EbIntegrationConf>();
         }
+    }
+
+    public class AuthenticationCollection : List<EbfacebbokConfig>
+    {
+        //public List<EbIntegrationConf> Integrations { get; set; }
+        //public int DefaultConId { get; set; }
+
+        //public AuthenticationCollection()
+        //{
+        //    this.Integrations = new List<EbIntegrationConf>();
+        //}
     }
 
     public class ChatConfigCollection
