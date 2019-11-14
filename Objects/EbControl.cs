@@ -266,9 +266,8 @@ namespace ExpressBase.Common.Objects
         public virtual string GetDisplayMemberJSfn { get { return @"return this.getValue();"; } set { } }
 
         [JsonIgnore]
-        public virtual string IsRequiredOKJSfn { get { return @"return !this.isInVisibleInUI ? !isNaNOrEmpty(this.getValue()) : true;"; } set { } }
-
-        [JsonIgnore]
+		public virtual string IsRequiredOKJSfn { get { return @"return !this.isInVisibleInUI ? (!isNaNOrEmpty(this.getValue()) && this.getValue() !== 0): true;"; } set { } }
+		[JsonIgnore]
         public virtual string SetValueJSfn { get { return @"$('#' + this.EbSid_CtxId).val(p1).trigger('change');"; } set { } }
 
         [JsonIgnore]
@@ -276,7 +275,9 @@ namespace ExpressBase.Common.Objects
 
         [JsonIgnore]
         public virtual string IsEmptyJSfn { get { return @" let val = this.getValue(); 
-                                                            return (isNaNOrEmpty(val) || (typeof val === 'number' && val === 0) || val === undefined || val === null);"; } set { } }
+                 return (isNaNOrEmpty(val) || (typeof val === 'number' && val === 0) || val === undefined || val === null);"; }
+				set { }
+		}
 
         [JsonIgnore]
         public virtual string HideJSfn { get { return @"$('#cont_' + this.EbSid_CtxId).hide(300); this.isInVisibleInUI = true;"; } set { } }
