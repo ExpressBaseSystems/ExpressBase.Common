@@ -18,12 +18,16 @@ namespace ExpressBase.Common.Connections
                 Primary = new Messaging.TwilioConnection(conf.Primary as EbTwilioConfig);
             else if (conf.Primary.Type == EbIntegrations.ExpertTexting)
                 Primary = new Messaging.ExpertTextingConnection(conf.Primary as EbExpertTextingConfig);
+            else if (conf.Primary.Type == EbIntegrations.Unifonic)
+                Primary = new Messaging.UnifonicConnection(conf.Primary as EbUnifonicConfig);
             if (conf.FallBack != null)
             {
                 if (conf.FallBack.Type == EbIntegrations.Twilio)
                     FallBack = new Messaging.TwilioConnection(conf.FallBack as EbTwilioConfig);
                 else if (conf.FallBack.Type == EbIntegrations.ExpertTexting)
-                    FallBack = new Messaging.ExpertTextingConnection(conf.FallBack as EbExpertTextingConfig);
+                    FallBack = new Messaging.ExpertTextingConnection(conf.FallBack as EbExpertTextingConfig); 
+                else if (conf.FallBack.Type == EbIntegrations.Unifonic)
+                    FallBack = new Messaging.UnifonicConnection(conf.FallBack as EbUnifonicConfig);
             }
         }
 

@@ -46,7 +46,8 @@ namespace ExpressBase.Common
     {
         PRIMARY = 1,
         FALLBACK = 2,
-        OTHER = 3
+        OTHER = 3,
+        MULTIPLE = 4
     }
 
     public enum EbConnectionTypes
@@ -60,7 +61,8 @@ namespace ExpressBase.Common
         Slack = 8,
         Cloudinary = 9,
         MAPS = 11,
-        Chat = 12
+        Chat = 12,
+        AUTHENTICATION = 13
     }
 
     public enum EbIntegrations
@@ -79,7 +81,9 @@ namespace ExpressBase.Common
         GoogleDrive = 12,
         DropBox = 13,
         AWSS3 = 14,
-        Slack = 15
+        Slack = 15,
+        Facebook = 16,
+        Unifonic = 17
     }
 
     public enum SmtpProviders
