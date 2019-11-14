@@ -2,12 +2,11 @@
 
 -- DROP TABLE public.eb_user2usergroup;
 
-CREATE TABLE public.eb_user2usergroup
+CREATE TABLE eb_user2usergroup
 (
     id serial,
     userid integer,
     groupid integer,
-    eb_del1 boolean DEFAULT false,
     createdby integer,
     createdat timestamp without time zone,
     revokedby integer,
@@ -15,11 +14,7 @@ CREATE TABLE public.eb_user2usergroup
     eb_del "char" NOT NULL DEFAULT 'F'::"char",
     CONSTRAINT eb_user2usergroup_pkey PRIMARY KEY (id),
     CONSTRAINT eb_user2usergroup_eb_del_check CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
 
 
 -- Index: eb_user2usergroup_eb_del_idx
@@ -27,33 +22,25 @@ TABLESPACE pg_default;
 -- DROP INDEX public.eb_user2usergroup_eb_del_idx;
 
 CREATE INDEX eb_user2usergroup_eb_del_idx
-    ON public.eb_user2usergroup USING btree
-    (eb_del)
-    TABLESPACE pg_default;
+    ON eb_user2usergroup(eb_del);
 
 -- Index: eb_user2usergroup_groupid_idx
 
 -- DROP INDEX public.eb_user2usergroup_groupid_idx;
 
 CREATE INDEX eb_user2usergroup_groupid_idx
-    ON public.eb_user2usergroup USING btree
-    (groupid)
-    TABLESPACE pg_default;
+    ON eb_user2usergroup(groupid);
 
 -- Index: eb_user2usergroup_id_idx
 
 -- DROP INDEX public.eb_user2usergroup_id_idx;
 
 CREATE INDEX eb_user2usergroup_id_idx
-    ON public.eb_user2usergroup USING btree
-    (id)
-    TABLESPACE pg_default;
+    ON eb_user2usergroup(id);
 
 -- Index: eb_user2usergroup_userid_idx
 
 -- DROP INDEX public.eb_user2usergroup_userid_idx;
 
 CREATE INDEX eb_user2usergroup_userid_idx
-    ON public.eb_user2usergroup USING btree
-    (userid)
-    TABLESPACE pg_default;
+    ON eb_user2usergroup(userid);

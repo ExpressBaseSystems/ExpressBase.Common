@@ -66,24 +66,24 @@ WHERE
 	EO.id = _id AND EU.id = EO.owner_uid;
 	
 
-	SELECT 
-			EO.obj_name, EOS.status,EOV.version_num, EOV.working_mode,
-		    EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags
-	INTO	namev, status, ver_num, work_mode,
-			 major_ver, minor_ver, patch_ver, tags
-	FROM 
-			 eb_objects EO, eb_objects_ver EOV
-	LEFT JOIN
-		eb_users EU
+SELECT 
+	EO.obj_name, EOS.status,EOV.version_num, EOV.working_mode,
+	EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags
+INTO	
+	namev, status, ver_num, work_mode, major_ver, minor_ver, patch_ver, tags
+FROM 
+	 eb_objects EO, eb_objects_ver EOV
+LEFT JOIN
+	eb_users EU
 	ON 
 		EOV.commit_uid=EU.id
-	LEFT JOIN
-		eb_objects_status EOS
+LEFT JOIN
+	eb_objects_status EOS
 	ON 
 		EOS.eb_obj_ver_id = EOV.id										 
-	WHERE 
-			EOV.refid = _refid AND EOV.eb_objects_id = EO.id
-			AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id);
+WHERE 
+	EOV.refid = _refid AND EOV.eb_objects_id = EO.id
+		AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id);
 			
 RETURN QUERY
 	SELECT namev, status, ver_num,

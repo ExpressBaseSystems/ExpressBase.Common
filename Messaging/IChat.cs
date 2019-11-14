@@ -10,5 +10,8 @@ namespace ExpressBase.Common.Messaging
     {
         int InfraConId { get; set; }
         void Send(string channel, string message);
+        List<string> GetAllUsers();
+
+        List<string> GetAllGroups();
     }   
 }

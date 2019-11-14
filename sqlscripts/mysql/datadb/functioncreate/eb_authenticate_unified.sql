@@ -99,7 +99,7 @@ SET signin_id = 0;
     END IF;
     
 -- SSO
-   IF uname IS NOT NULL AND pwd IS NULL AND social IS NULL THEN
+	IF uname IS NOT NULL AND pwd IS NULL AND social IS NULL THEN
         SELECT 
 				EU.id, EU.email, EU.fullname, EU.preferencesjson
 			FROM 
@@ -110,7 +110,7 @@ SET signin_id = 0;
         IF userid IS NULL THEN	
 			SELECT statusid FROM eb_users WHERE email = uname INTO status_id;
 		END IF;
-    END IF;
+	END IF;
     
  -- SOCIAL
     IF uname IS NULL AND pwd IS NULL AND social IS NOT NULL THEN
@@ -126,17 +126,19 @@ SET signin_id = 0;
 		END IF;
     END IF;
 
-IF userid > 0 THEN
-    CALL eb_getroles(userid, wc,@roless,@role_names);
+	IF userid > 0 THEN
+		CALL eb_getroles(userid, wc,@roless,@role_names);
         SELECT @roless, @role_names INTO roles_a, rolename_a;
-	if roles_a is null then set roles_a = ''; end if;
-       CALL eb_getpermissions(roles_a,@out_permission);
+
+		IF roles_a is null THEN SET roles_a = ''; END IF;
+
+		CALL eb_getpermissions(roles_a,@out_permission);
 		SELECT @out_permission INTO permissions;        
         
-      DROP TEMPORARY TABLE IF EXISTS temp_array_table;
+		DROP TEMPORARY TABLE IF EXISTS temp_array_table;
 		DROP TEMPORARY TABLE IF EXISTS temp_role_ids;
 		CREATE TEMPORARY TABLE temp_array_table(value INTEGER);
-		CALL STR_TO_TBL(roles_a);  
+		CALL eb_str_to_tbl_util(roles_a,',');  
 		CREATE TEMPORARY TABLE IF NOT EXISTS temp_role_ids SELECT `value` FROM temp_array_table;
                
         DROP TEMPORARY TABLE IF EXISTS temp_ug_ids;
@@ -159,17 +161,18 @@ IF userid > 0 THEN
 				(key_type = 3 AND m.key_id IN (SELECT `value` FROM temp_role_ids)) INTO constraints_a; 
 
 		INSERT INTO eb_signin_log(user_id, ip_address, device_info, signin_at)
-		VALUES(userid, ipaddress, deviceinfo, UTC_TIMESTAMP());
+			VALUES(userid, ipaddress, deviceinfo, UTC_TIMESTAMP());
         SELECT LAST_INSERT_ID()  INTO signin_id;
 	
-END IF;
+	END IF;
 													 
-IF userid IS NULL THEN
-	SET userid = 0;
-END IF;
-IF status_id IS NULL THEN
-	SET status_id = 0;
-END IF;
+	IF userid IS NULL THEN
+		SET userid = 0;
+	END IF;
+
+	IF status_id IS NULL THEN
+		SET status_id = 0;
+	END IF;
   
 SELECT userid, status_id, email, fullname, roles_a, rolename_a, permissions, preferencesjson, constraints_a, signin_id
          INTO tmp_userid, tmp_status_id, tmp_email, tmp_fullname, tmp_roles_a, tmp_rolename_a, tmp_permissions, tmp_preferencesjson, tmp_constraints_a, tmp_signin_id;

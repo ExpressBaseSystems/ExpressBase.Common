@@ -65,9 +65,10 @@ SELECT
 FROM
     eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO, eb_users EU
 WHERE
-    EO.id = id AND EOV.eb_objects_id = id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id AND EOV.commit_uid = EU.id;
+    EO.id = id AND EOV.eb_objects_id = id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id AND EOV.commit_uid = EU.id
+ORDER BY EOS.ts DESC LIMIT 1;
     
- -- Latest commited vaersion details
+ -- Latest commited version details
 SELECT
     EOV.version_num, EOV.refid, EOV.commit_ts, EOS.status, EU.firstname,  EOV.commit_uid
     INTO temp_lastversionnumberval, temp_lastversionrefidval, temp_lastversioncommit_tsval, temp_lastversion_statusval, temp_lastversioncommit_byname, temp_lastversioncommit_byid
@@ -99,7 +100,7 @@ SELECT
     temp_lastversioncommit_byname,temp_lastversioncommit_byid, temp_liveversionrefidval, temp_liveversionnumberval, 
     temp_liveversioncommit_tsval, temp_liveversion_statusval, temp_liveversioncommit_byname,temp_liveversioncommit_byid,
 	temp_owner_uidVal, temp_owner_tsVal, temp_owner_nameVal 
-    INTO 
+   INTO 
 	lastversionrefidval, lastversionnumberval, lastversioncommit_tsval, lastversion_statusval, lastversioncommit_byname,lastversioncommit_byid,
 	liveversionrefidval, liveversionnumberval, liveversioncommit_tsval, liveversion_statusval, liveversioncommit_byname,liveversioncommit_byid,
 	owner_uidVal, owner_tsVal, owner_nameVal;

@@ -2,7 +2,7 @@
 
 -- DROP TABLE public.eb_audit_master;
 
-CREATE TABLE public.eb_audit_master
+CREATE TABLE eb_audit_master
 (
     id serial,
     formid text,
@@ -12,11 +12,7 @@ CREATE TABLE public.eb_audit_master
     eb_createdby integer,
     eb_createdat timestamp without time zone,    
     CONSTRAINT eb_audit_master_pkey PRIMARY KEY (id)
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
 
 
 -- Index: eb_audit_master_id_idx
@@ -24,6 +20,4 @@ TABLESPACE pg_default;
 -- DROP INDEX public.eb_audit_master_id_idx;
 
 CREATE INDEX eb_audit_master_id_idx
-    ON public.eb_audit_master USING btree
-    (id)
-    TABLESPACE pg_default;
+    ON eb_audit_master(id);

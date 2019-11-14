@@ -23,12 +23,12 @@ BEGIN
 
     INSERT INTO eb_role2user 
         (user_id, role_id, createdby, createdat) 
-    SELECT 
-        users, $1, $2, NOW() 
-        
-    FROM UNNEST(array(SELECT unnest(ARRAY[$3])
+	SELECT 
+			users, $1, $2, NOW()        
+		FROM 
+			UNNEST(array(SELECT unnest(ARRAY[$3])
         except 
-        SELECT unnest(array(select user_id from eb_role2user WHERE role_id = $1 and eb_del = 'F')))) AS users;
+			SELECT unnest(array(select user_id from eb_role2user WHERE role_id = $1 and eb_del = 'F')))) AS users;
 RETURN 0;
 
 END;

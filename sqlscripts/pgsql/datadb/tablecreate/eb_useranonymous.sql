@@ -2,7 +2,7 @@
 
 -- DROP TABLE public.eb_usersanonymous;
 
-CREATE TABLE public.eb_usersanonymous
+CREATE TABLE eb_usersanonymous
 (
     id serial,
     fullname text,
@@ -28,11 +28,7 @@ CREATE TABLE public.eb_usersanonymous
     timezone text,
     iplocationjson text,
     CONSTRAINT eb_usersprospective_pkey PRIMARY KEY (id)
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
 
 
 -- Index: eb_usersanonymous_email_idx
@@ -40,24 +36,18 @@ TABLESPACE pg_default;
 -- DROP INDEX public.eb_usersanonymous_email_idx;
 
 CREATE INDEX eb_usersanonymous_email_idx
-    ON public.eb_usersanonymous USING btree
-    (email COLLATE pg_catalog."default")
-    TABLESPACE pg_default;
+    ON eb_usersanonymous(email);
 
 -- Index: eb_usersanonymous_id_idx
 
 -- DROP INDEX public.eb_usersanonymous_id_idx;
 
 CREATE INDEX eb_usersanonymous_id_idx
-    ON public.eb_usersanonymous USING btree
-    (id)
-    TABLESPACE pg_default;
+    ON eb_usersanonymous(id);
 
 -- Index: eb_usersanonymous_socialid_idx
 
 -- DROP INDEX public.eb_usersanonymous_socialid_idx;
 
 CREATE INDEX eb_usersanonymous_socialid_idx
-    ON public.eb_usersanonymous USING btree
-    (socialid COLLATE pg_catalog."default")
-    TABLESPACE pg_default;
+    ON eb_usersanonymous(socialid);

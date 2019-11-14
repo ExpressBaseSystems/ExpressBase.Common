@@ -1,8 +1,8 @@
-﻿-- ALTER SEQUENCE executionlogs_id_seq INCREMENT 1 RESTART 2 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1;-- Table: public.eb_executionlogs
+-- Table: public.eb_executionlogs
 
 -- DROP TABLE public.eb_executionlogs;
 
-CREATE TABLE public.eb_executionlogs
+CREATE TABLE eb_executionlogs
 (
     id serial,
     rows text,
@@ -12,9 +12,4 @@ CREATE TABLE public.eb_executionlogs
     refid text,
     params json,
 	CONSTRAINT eb_executionlogs_pkey PRIMARY KEY (id)
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
-
+);

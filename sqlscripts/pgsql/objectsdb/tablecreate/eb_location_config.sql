@@ -2,7 +2,7 @@
 
 -- DROP TABLE public.eb_location_config;
 
-CREATE TABLE public.eb_location_config
+CREATE TABLE eb_location_config
 (
     id serial,
     keys text,
@@ -10,11 +10,7 @@ CREATE TABLE public.eb_location_config
 	keytype text,
     eb_del "char",
     CONSTRAINT eb_locationsconfig_pkey PRIMARY KEY (id)
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
 
 
 -- Index: eb_locationsconfigid_idx
@@ -22,7 +18,5 @@ TABLESPACE pg_default;
 -- DROP INDEX public.eb_locationsconfigid_idx;
 
 CREATE INDEX eb_locationsconfigid_idx
-    ON public.eb_location_config USING btree
-    (id)
-    TABLESPACE pg_default;
+    ON eb_location_config(id);
 

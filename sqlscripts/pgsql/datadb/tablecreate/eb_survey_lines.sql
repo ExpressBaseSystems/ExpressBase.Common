@@ -2,7 +2,7 @@
 
 -- DROP TABLE public.eb_survey_lines;
 
-CREATE TABLE public.eb_survey_lines
+CREATE TABLE eb_survey_lines
 (
     id serial,
     masterid integer,
@@ -10,13 +10,9 @@ CREATE TABLE public.eb_survey_lines
     eb_createdate timestamp without time zone,
     choiceids text,
     questype integer,
-    answer text COLLATE pg_catalog."default",
-	CONSTRAINT eb_survey_lines_pkey PRIMARY KEY (id)
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+    answer text,
+    CONSTRAINT eb_survey_lines_pkey PRIMARY KEY (id)
+);
 
 
 -- Index: eb_survey_lines_id_idx
@@ -24,6 +20,4 @@ TABLESPACE pg_default;
 -- DROP INDEX public.eb_survey_lines_id_idx;
 
 CREATE INDEX eb_survey_lines_id_idx
-    ON public.eb_survey_lines USING btree
-    (id)
-    TABLESPACE pg_default;
+    ON eb_survey_lines(id);

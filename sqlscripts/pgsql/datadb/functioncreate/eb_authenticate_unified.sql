@@ -32,16 +32,28 @@ BEGIN
 	_signin_id := 0;
 	-- NORMAL
 	IF uname IS NOT NULL AND password IS NOT NULL AND social IS NULL THEN
-        SELECT id, email, fullname, preferencesjson FROM eb_users 
-		WHERE email = uname AND pwd = password AND statusid = 0 INTO _userid, _email, _fullname, _preferencesjson;
+        SELECT 
+				id, email, fullname, preferencesjson 
+			FROM 
+				eb_users 
+			WHERE 
+				email = uname AND pwd = password AND statusid = 0 
+			INTO _userid, _email, _fullname, _preferencesjson;
 		IF _userid IS NULL THEN			
-			SELECT id, statusid FROM eb_users WHERE email = uname AND pwd = password INTO _userid, _status_id;
+			SELECT 
+					id, statusid 
+				FROM 
+					eb_users 
+				WHERE 
+					email = uname AND pwd = password 
+				INTO _userid, _status_id;
 			IF _userid IS NULL THEN
 				SELECT eb_users.id FROM eb_users WHERE eb_users.email = uname AND statusid = 0 INTO _userid;
 				IF _userid > 0 THEN
 					INSERT INTO eb_signin_log(user_id, ip_address, device_info, signin_at, is_attempt_failed)
 					VALUES(_userid, ipaddress, deviceinfo, CURRENT_TIMESTAMP AT TIME ZONE 'UTC', 'T');				
 					SELECT MAX(id) FROM eb_signin_log WHERE user_id = _userid AND is_attempt_failed = 'F' INTO _temp1;
+
 					IF _temp1 IS NULL THEN
 						SELECT COUNT(*) FROM eb_signin_log WHERE user_id = _userid AND is_attempt_failed = 'T' INTO _signin_id;
 					ELSE
@@ -78,15 +90,20 @@ BEGIN
 		SELECT ARRAY(SELECT groupid FROM eb_user2usergroup
 		WHERE userid = _userid AND eb_del = 'F') INTO _ug_ids;
 								 
-		SELECT STRING_AGG(m.id || ';' || m.key_id || ';' || m.key_type || ';' || l.id || ';' || l.c_operation || ';' || l.c_type || ';' || l.c_value, '$')
-		FROM eb_constraints_master m, eb_constraints_line l
-		WHERE m.id = l.master_id AND eb_del = 'F' AND
-		((key_type = 1 AND m.key_id = _userid) OR
-		(key_type = 2 AND m.key_id IN (SELECT UNNEST(_ug_ids))) OR
-		(key_type = 3 AND m.key_id IN (SELECT UNNEST(_role_ids)))) INTO _constraints_a; 
+		SELECT 
+				STRING_AGG(m.id || ';' || m.key_id || ';' || m.key_type || ';' || l.id || ';' || l.c_operation || ';' || l.c_type || ';' || l.c_value, '$')
+			FROM 
+				eb_constraints_master m, eb_constraints_line l
+			WHERE 
+				m.id = l.master_id AND eb_del = 'F' AND
+					((key_type = 1 AND m.key_id = _userid) OR
+					(key_type = 2 AND m.key_id IN (SELECT UNNEST(_ug_ids))) OR
+					(key_type = 3 AND m.key_id IN (SELECT UNNEST(_role_ids)))) 
+			INTO _constraints_a; 
 
 		INSERT INTO eb_signin_log(user_id, ip_address, device_info, signin_at)
 		VALUES(_userid, ipaddress, deviceinfo, CURRENT_TIMESTAMP AT TIME ZONE 'UTC') RETURNING id INTO _signin_id;		
+
    	END IF;
 													 
 	IF _userid IS NULL THEN
@@ -95,6 +112,7 @@ BEGIN
 	IF _status_id IS NULL THEN
 		_status_id := 0;
 	END IF;
+
     RETURN QUERY SELECT _userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id;
 END;
 

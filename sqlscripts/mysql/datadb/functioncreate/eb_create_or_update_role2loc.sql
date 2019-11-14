@@ -10,16 +10,16 @@ DROP TEMPORARY TABLE IF EXISTS temp_array_table;
 DROP TEMPORARY TABLE IF EXISTS location_tmp;
 
 CREATE TEMPORARY TABLE temp_array_table(value INTEGER);
-CALL STR_TO_TBL(locations_str);  
+CALL eb_str_to_tbl_util(locations_str,',');  
 CREATE TEMPORARY TABLE IF NOT EXISTS location_tmp SELECT `value` FROM temp_array_table;
 
 UPDATE eb_role2location er2l 
-	SET 
-		er2l.eb_del = 'T', er2l.eb_revokedat = NOW(), er2l.eb_revokedby = createdby 
-	WHERE 
-		er2l.roleid = rid AND er2l.eb_del = 'F' AND er2l.locationid IN(
-			SELECT * FROM (
-				SELECT 
+SET 
+	er2l.eb_del = 'T', er2l.eb_revokedat = NOW(), er2l.eb_revokedby = createdby 
+WHERE 
+	er2l.roleid = rid AND er2l.eb_del = 'F' AND er2l.locationid IN(
+		SELECT * FROM (
+			SELECT 
 					er2l1.locationid 
 				FROM 
 					eb_role2location er2l1 
@@ -42,4 +42,4 @@ INSERT INTO
 				SELECT er2l2.locationid FROM eb_role2location er2l2 WHERE er2l2.roleid = rid AND er2l2.eb_del = 'F' 
 		)) AS a ;
    
-END 
+END

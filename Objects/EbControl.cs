@@ -125,7 +125,7 @@ namespace ExpressBase.Common.Objects
         public virtual EbScript VisibleExpr { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
+        [PropertyEditor(PropertyEditorType.ScriptEditorJS, PropertyEditorType.ScriptEditorSQ)]
         [Alias("Value Expression")]
         [PropertyGroup("Behavior")]
         [HelpText("Define how value of this field should be calculated.")]
@@ -275,6 +275,10 @@ namespace ExpressBase.Common.Objects
         public virtual string SetDisplayMemberJSfn { get { return @"return this.setValue(p1);"; } set { } }
 
         [JsonIgnore]
+        public virtual string IsEmptyJSfn { get { return @" let val = this.getValue(); 
+                                                            return (isNaNOrEmpty(val) || (typeof val === 'number' && val === 0) || val === undefined || val === null);"; } set { } }
+
+        [JsonIgnore]
         public virtual string HideJSfn { get { return @"$('#cont_' + this.EbSid_CtxId).hide(300); this.isInVisibleInUI = true;"; } set { } }
 
         [JsonIgnore]
@@ -420,13 +424,17 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public string EbSid { get; set; }
 
-        [Description("Identity")]
+        [PropertyGroup("Identity")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [EbRequired]
         [Unique]
         [regexCheck]
         [InputMask("[a-z][a-z0-9]*(_[a-z0-9]+)*")]
         public string Name { get; set; }
+
+        //[PropertyGroup("Behavior")]
+        //[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        //public string MaskPattern { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual bool IsDisabled { get; set; }

@@ -3,7 +3,6 @@
   id integer NOT NULL auto_increment,
   applicationname text,
   description text,
-  eb_del1 boolean DEFAULT false,
   application_type_old text,
   app_icon text,
   application_type integer,

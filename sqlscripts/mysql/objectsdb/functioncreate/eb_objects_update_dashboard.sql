@@ -1,6 +1,6 @@
-﻿DROP PROCEDURE IF EXISTS eb_objects_update_Dashboard;
+﻿DROP PROCEDURE IF EXISTS eb_objects_update_dashboard;
 
-CREATE PROCEDURE eb_objects_update_Dashboard(IN refid TEXT,
+CREATE PROCEDURE eb_objects_update_dashboard(IN refid TEXT,
 OUT namev TEXT,
 OUT status INTEGER,
 OUT ver_num TEXT,
@@ -76,6 +76,7 @@ FROM
     eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO, eb_users EU
 WHERE
     EO.id = _id AND EOV.eb_objects_id = _id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id AND EOV.commit_uid = EU.id
+ORDER BY EOS.ts desc limit 1    
 INTO
 	temp_liveversionnumberval, temp_liveversionrefidval, temp_liveversioncommit_tsval, temp_liveversion_statusval,temp_liveversioncommit_byid,temp_liveversioncommit_byname;
 
@@ -134,4 +135,4 @@ INTO
     liveversioncommit_tsval, liveversion_statusval, liveversioncommit_byname ,liveversioncommit_byid ,
 	owner_uidVal, owner_tsVal, owner_nameVal;
     
-END 
+END

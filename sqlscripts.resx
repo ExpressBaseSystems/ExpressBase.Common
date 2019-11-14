@@ -496,15 +496,6 @@
   <data name="eb_files_bytea2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\mysql\filesdb\tablecreate\eb_files_bytea.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="eb_appstore" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\pgsql\objectsdb\tablecreate\eb_appstore.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_appstore1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\oracle\objectsdb\tablecreate\eb_appstore.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_appstore2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\mysql\objectsdb\tablecreate\eb_appstore.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
   <data name="eb_audit_lines" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\pgsql\datadb\tablecreate\eb_audit_lines.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
@@ -540,15 +531,6 @@
   </data>
   <data name="eb_createbot2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\mysql\objectsdb\functioncreate\eb_createbot.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="eb_files" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\pgsql\datadb\tablecreate\eb_files.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_files1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\oracle\datadb\tablecreate\eb_files.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="eb_files2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\mysql\datadb\tablecreate\eb_files.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="eb_keys" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\pgsql\datadb\tablecreate\eb_keys.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
@@ -631,15 +613,6 @@
   <data name="eb_survey_queries2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\mysql\datadb\tablecreate\eb_survey_queries.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="eb_update_rel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\pgsql\objectsdb\functioncreate\eb_update_rel.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_update_rel1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\oracle\objectsdb\functioncreate\eb_update_rel.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_update_rel2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\mysql\objectsdb\functioncreate\eb_update_rel.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
   <data name="eb_objects_favourites" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\pgsql\objectsdb\tablecreate\eb_objects_favourites.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
@@ -657,78 +630,6 @@
   </data>
   <data name="eb_persist_currval2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\mysql\datadb\functioncreate\eb_persist_currval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="split_str_util" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\pgsql\objectsdb\functioncreate\split_str_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="split_str_util1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\oracle\objectsdb\functioncreate\split_str_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="split_str_util2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\mysql\objectsdb\functioncreate\split_str_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="string_to_rows_util" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\pgsql\objectsdb\functioncreate\string_to_rows_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="string_to_rows_util1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\oracle\objectsdb\functioncreate\string_to_rows_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="string_to_rows_util2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\mysql\objectsdb\functioncreate\string_to_rows_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="str_to_tbl_grp_util" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\pgsql\objectsdb\functioncreate\str_to_tbl_grp_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="str_to_tbl_grp_util1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\oracle\objectsdb\functioncreate\str_to_tbl_grp_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="str_to_tbl_grp_util2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\mysql\objectsdb\functioncreate\str_to_tbl_grp_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="str_to_tbl_util" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\pgsql\objectsdb\functioncreate\str_to_tbl_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="str_to_tbl_util1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\oracle\objectsdb\functioncreate\str_to_tbl_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="str_to_tbl_util2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\mysql\objectsdb\functioncreate\str_to_tbl_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_currval_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sqlscripts\pgsql\datadb\functioncreate\eb_currval_new.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_executionlogs_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sqlscripts\pgsql\objectsdb\tablecreate\eb_executionlogs_new.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="eb_revokedbaccess2user_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sqlscripts\pgsql\datadb\functioncreate\eb_revokedbaccess2user_new.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_schedules_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sqlscripts\pgsql\datadb\tablecreate\eb_schedules_new.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="eb_currval_new1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\oracle\datadb\functioncreate\eb_currval_new.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_currval_new2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\mysql\datadb\functioncreate\eb_currval_new.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_executionlogs_new1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\oracle\objectsdb\tablecreate\eb_executionlogs_new.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="eb_executionlogs_new2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\mysql\objectsdb\tablecreate\eb_executionlogs_new.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_revokedbaccess2user_new1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\oracle\datadb\functioncreate\eb_revokedbaccess2user_new.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_revokedbaccess2user_new2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\mysql\datadb\functioncreate\eb_revokedbaccess2user_new.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_schedules_new1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\oracle\datadb\tablecreate\eb_schedules_new.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="eb_schedules_new2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\mysql\datadb\tablecreate\eb_schedules_new.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_constraints_line" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\pgsql\datadb\tablecreate\eb_constraints_line.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
@@ -787,13 +688,85 @@
   <data name="eb_northwind_script" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\pgsql\eb_northwind_script.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="str_to_tbl_constraints_util" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sqlscripts\pgsql\objectsdb\functioncreate\str_to_tbl_constraints_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="eb_split_str_util" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\objectsdb\functioncreate\eb_split_str_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="str_to_tbl_constraints_util1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sqlscripts\oracle\objectsdb\functioncreate\str_to_tbl_constraints_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="eb_split_str_util1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\objectsdb\functioncreate\eb_split_str_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="str_to_tbl_constraints_util2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sqlscripts\mysql\objectsdb\functioncreate\str_to_tbl_constraints_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="eb_split_str_util2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\objectsdb\functioncreate\eb_split_str_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_str_to_tbl_util" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\objectsdb\functioncreate\eb_str_to_tbl_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_str_to_tbl_util1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\objectsdb\functioncreate\eb_str_to_tbl_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_str_to_tbl_util2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\objectsdb\functioncreate\eb_str_to_tbl_util.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_currval" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\functioncreate\eb_currval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_currval1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\datadb\functioncreate\eb_currval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_currval2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\datadb\functioncreate\eb_currval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_executionlogs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\objectsdb\tablecreate\eb_executionlogs.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_executionlogs1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\objectsdb\tablecreate\eb_executionlogs.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_executionlogs2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\objectsdb\tablecreate\eb_executionlogs.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_files_ref" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_files_ref.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_files_ref1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\datadb\tablecreate\eb_files_ref.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_files_ref2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\datadb\tablecreate\eb_files_ref.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_files_ref_variations" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_files_ref_variations.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_files_ref_variations1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\datadb\tablecreate\eb_files_ref_variations.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_files_ref_variations2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\datadb\tablecreate\eb_files_ref_variations.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_revokedbaccess2user" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\functioncreate\eb_revokedbaccess2user.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_revokedbaccess2user1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\datadb\functioncreate\eb_revokedbaccess2user.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_revokedbaccess2user2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\datadb\functioncreate\eb_revokedbaccess2user.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_schedules" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_schedules.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_schedules1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\datadb\tablecreate\eb_schedules.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_schedules2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\datadb\tablecreate\eb_schedules.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_public_holidays" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_public_holidays.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_public_holidays1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\datadb\tablecreate\eb_public_holidays.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_public_holidays2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\datadb\tablecreate\eb_public_holidays.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>

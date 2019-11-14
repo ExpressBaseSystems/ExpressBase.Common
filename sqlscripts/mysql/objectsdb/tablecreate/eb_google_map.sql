@@ -1,6 +1,6 @@
 ﻿CREATE TABLE eb_google_map
 (
-  Id integer NOT NULL auto_increment,
+  id integer NOT NULL auto_increment,
   lattitude text,
   longitude text,
   name text,

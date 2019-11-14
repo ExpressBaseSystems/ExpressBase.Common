@@ -3,7 +3,6 @@
   dominant text,
   dependant text,
   id integer NOT NULL auto_increment,
-  eb_del1 boolean,
   removed_by integer,
   removed_at timestamp,
   eb_del char(1) DEFAULT 'F',

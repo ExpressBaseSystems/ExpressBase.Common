@@ -2,22 +2,18 @@
 
 -- DROP TABLE public.eb_signin_log;
 
-CREATE TABLE public.eb_signin_log
+CREATE TABLE eb_signin_log
 (
     id serial,
     user_id integer,
     ip_address text,
     device_info text,
-    is_attempt_failed character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,	
-    is_force_signout character(1) COLLATE pg_catalog."default" DEFAULT 'F'::bpchar,
+    is_attempt_failed char(1) DEFAULT 'F',	
+    is_force_signout char(1)  DEFAULT 'F',
     signin_at timestamp without time zone,
     signout_at timestamp without time zone,
     CONSTRAINT eb_signin_log_pkey PRIMARY KEY (id)
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
 
 
 -- Index: eb_signin_log_id_idx
@@ -25,6 +21,4 @@ TABLESPACE pg_default;
 -- DROP INDEX public.eb_signin_log_id_idx;
 
 CREATE INDEX eb_signin_log_id_idx
-    ON public.eb_signin_log USING btree
-    (id)
-    TABLESPACE pg_default;
+    ON eb_signin_log(id);

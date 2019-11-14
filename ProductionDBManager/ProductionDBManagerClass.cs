@@ -12,7 +12,9 @@ namespace ExpressBase.Common.ProductionDBManager
 
         public string FileHeader { get; set; }
 
-        public string Type { get; set; }
+        public DBManagerType Type { get; set; }
+
+        public string FileType { get; set; }
 
         public string Vendor { get; set; }
 
@@ -40,19 +42,30 @@ namespace ExpressBase.Common.ProductionDBManager
         public DateTime Last_Modified { get; set; }
     }
 
-    public class Eb_TableFieldsChange
+    public class Eb_TableFieldChanges
     {
-        public string Column_name { get; set; }
-
         public string Data_type { get; set; }
 
-    }
+        public string Column_default { get; set; }
 
+        public string Constraint_type { get; set; }
+
+        public string Constraint_name { get; set; }
+    }
+    
     public class Eb_TableFieldChangesList
     {
         public string Table_name { get; set; }
 
-        public List<Eb_TableFieldsChange> Col { get; set; }
+        public Dictionary<string, List<Eb_TableFieldChanges>> Fields { get; set; }
+
+        public Dictionary<string, string> Indexs { get; set; }
+    }
+
+    public enum DBManagerType
+    {
+        Function,
+        Table
     }
     
 }
