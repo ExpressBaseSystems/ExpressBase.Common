@@ -317,6 +317,8 @@ namespace ExpressBase.Common.Objects
 
         public virtual string GetHtml() { return string.Empty; }
 
+        public virtual string GetHtml4Bot() { return string.Empty; }
+
         public virtual string GetWrapedCtrlHtml4bot()
         {
             return '"' + "<div>no GetWrapedCtrlHtml4bot() defined</div>" + '"';
@@ -331,36 +333,41 @@ namespace ExpressBase.Common.Objects
             ResHTML = string.Empty,
             type = ChildObj.GetType().Name.Substring(2, ChildObj.GetType().Name.Length - 2),
             LabelHTML = @"
-    <div class='msg-cont'>
-      <div class='bot-icon'></div>
-      <div class='msg-cont-bot'>
-         <div ui-label class='msg-wraper-bot'>
-            @Label@
-            <div class='msg-time'>3:44pm</div>
-         </div>
-      </div>
-   </div>",
+						<div class='msg-cont'>
+						  <div class='bot-icon'></div>
+						  <div class='msg-cont-bot'>
+							 <div ui-label class='msg-wraper-bot'>
+								@Label@
+								<div class='msg-time'>3:44pm</div>
+							 </div>
+						  </div>
+					   </div>",
             ControlHTML = @"
-<div class='msg-cont'>
-      <div class='msg-cont-bot'>
-         <div class='msg-wraper-bot' style='@style@ border: none; background-color: transparent; width: 99%; padding-right: 3px;'>
-            @innerHTML@
-         </div>
-      </div>
-   </div>";
+							<div class='msg-cont'>
+									<div class='msg-cont-bot'>
+										<div class='msg-wraper-bot' style='@style@ border: none; background-color: transparent; width: 99%; padding-right: 3px;'>
+										@innerHTML@
+										</div>
+									</div>
+								</div>";
             if (type == "Labels")
             {
                 ControlHTML = string.Empty;
                 LabelHTML = bareHTML;
             }
-            innerHTML = (!ChildObj.isFullViewContol) ? (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>") : innerHTML.Replace("@style@", "style='width:100%;border:none;'");
+			if (type == "Label")
+			{
+				ControlHTML = string.Empty;
+			}
+			innerHTML = (!ChildObj.isFullViewContol) ? (@"<div class='chat-ctrl-cont' 777777777>" + innerHTML + "</div>") : innerHTML.Replace("@style@", "style='width:100%;border:none;'");
             ResHTML = @"
-<div class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='@type@'>
+<div class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='@type@' ebsid='@ebsid@' JKLJKLJKL>
    @LabelHTML@
    @ControlHTML@
 </div>"
 .Replace("@type@", type)
 .Replace("@LabelHTML@", LabelHTML)
+.Replace("@ebsid@", this.EbSid_CtxId)
 .Replace("@ControlHTML@", ControlHTML)
 .Replace("@innerHTML@", innerHTML)
 .Replace("@style@", (ChildObj.isFullViewContol ? "margin-left:12px;" : string.Empty)).RemoveCR();
