@@ -40,6 +40,8 @@ CREATE TABLE eb_users
     hide text,
     eb_del "char" NOT NULL DEFAULT 'F'::"char",
     dprefid integer DEFAULT 0,
+	eb_data_id integer,
+	eb_ver_id integer;
     CONSTRAINT eb_users_pkey PRIMARY KEY (id),
     CONSTRAINT eb_users_eb_del_check CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
 );
