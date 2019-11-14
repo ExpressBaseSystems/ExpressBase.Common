@@ -125,7 +125,7 @@ namespace ExpressBase.Common.Objects
         public virtual EbScript VisibleExpr { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
+        [PropertyEditor(PropertyEditorType.ScriptEditorJS, PropertyEditorType.ScriptEditorSQ)]
         [Alias("Value Expression")]
         [PropertyGroup("Behavior")]
         [HelpText("Define how value of this field should be calculated.")]

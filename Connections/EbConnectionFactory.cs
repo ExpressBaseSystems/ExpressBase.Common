@@ -13,8 +13,6 @@ using ServiceStack.Logging;
 using ServiceStack.Redis;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using static ExpressBase.Common.MySqlDB;
 
 namespace ExpressBase.Common.Data
 {

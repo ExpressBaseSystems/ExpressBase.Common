@@ -205,6 +205,8 @@ namespace ExpressBase.Common
 
         public string Title { get; set; }
 
+        public string ContainerName { get; set; }
+
         public TableSchema()
         {
             Columns = new List<ColumnSchema>();
