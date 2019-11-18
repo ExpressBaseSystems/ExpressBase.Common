@@ -15,7 +15,8 @@ namespace ExpressBase.Objects
     // Base class for all eb Components
     public class EbObject
     {
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.SqlFunctions, BuilderType.UserControl, BuilderType.ApiBuilder, BuilderType.DVBuilder, BuilderType.Calendar)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.SqlFunctions, BuilderType.UserControl, BuilderType.ApiBuilder, BuilderType.DVBuilder, BuilderType.Calendar,BuilderType.MobilePage, BuilderType.SqlJob)]
+
         [EbRequired]
         [Unique]
         [regexCheck]

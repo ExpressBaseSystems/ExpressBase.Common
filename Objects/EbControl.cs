@@ -125,7 +125,7 @@ namespace ExpressBase.Common.Objects
         public virtual EbScript VisibleExpr { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
+        [PropertyEditor(PropertyEditorType.ScriptEditorJS, PropertyEditorType.ScriptEditorSQ)]
         [Alias("Value Expression")]
         [PropertyGroup("Behavior")]
         [HelpText("Define how value of this field should be calculated.")]
@@ -266,9 +266,8 @@ namespace ExpressBase.Common.Objects
         public virtual string GetDisplayMemberJSfn { get { return @"return this.getValue();"; } set { } }
 
         [JsonIgnore]
-        public virtual string IsRequiredOKJSfn { get { return @"return !this.isInVisibleInUI ? !isNaNOrEmpty(this.getValue()) : true;"; } set { } }
-
-        [JsonIgnore]
+		public virtual string IsRequiredOKJSfn { get { return @"return !this.isInVisibleInUI ? (!isNaNOrEmpty(this.getValue()) && this.getValue() !== 0): true;"; } set { } }
+		[JsonIgnore]
         public virtual string SetValueJSfn { get { return @"$('#' + this.EbSid_CtxId).val(p1).trigger('change');"; } set { } }
 
         [JsonIgnore]
@@ -276,7 +275,9 @@ namespace ExpressBase.Common.Objects
 
         [JsonIgnore]
         public virtual string IsEmptyJSfn { get { return @" let val = this.getValue(); 
-                                                            return (isNaNOrEmpty(val) || (typeof val === 'number' && val === 0) || val === undefined || val === null);"; } set { } }
+                 return (isNaNOrEmpty(val) || (typeof val === 'number' && val === 0) || val === undefined || val === null);"; }
+				set { }
+		}
 
         [JsonIgnore]
         public virtual string HideJSfn { get { return @"$('#cont_' + this.EbSid_CtxId).hide(300); this.isInVisibleInUI = true;"; } set { } }
@@ -321,6 +322,8 @@ namespace ExpressBase.Common.Objects
 
         public virtual string GetHtml() { return string.Empty; }
 
+        public virtual string GetHtml4Bot() { return string.Empty; }
+
         public virtual string GetWrapedCtrlHtml4bot()
         {
             return '"' + "<div>no GetWrapedCtrlHtml4bot() defined</div>" + '"';
@@ -335,36 +338,41 @@ namespace ExpressBase.Common.Objects
             ResHTML = string.Empty,
             type = ChildObj.GetType().Name.Substring(2, ChildObj.GetType().Name.Length - 2),
             LabelHTML = @"
-    <div class='msg-cont'>
-      <div class='bot-icon'></div>
-      <div class='msg-cont-bot'>
-         <div ui-label class='msg-wraper-bot'>
-            @Label@
-            <div class='msg-time'>3:44pm</div>
-         </div>
-      </div>
-   </div>",
+						<div class='msg-cont'>
+						  <div class='bot-icon'></div>
+						  <div class='msg-cont-bot'>
+							 <div ui-label class='msg-wraper-bot'>
+								@Label@
+								<div class='msg-time'>3:44pm</div>
+							 </div>
+						  </div>
+					   </div>",
             ControlHTML = @"
-<div class='msg-cont'>
-      <div class='msg-cont-bot'>
-         <div class='msg-wraper-bot' style='@style@ border: none; background-color: transparent; width: 99%; padding-right: 3px;'>
-            @innerHTML@
-         </div>
-      </div>
-   </div>";
+							<div class='msg-cont'>
+									<div class='msg-cont-bot'>
+										<div class='msg-wraper-bot' style='@style@ border: none; background-color: transparent; width: 99%; padding-right: 3px;'>
+										@innerHTML@
+										</div>
+									</div>
+								</div>";
             if (type == "Labels")
             {
                 ControlHTML = string.Empty;
                 LabelHTML = bareHTML;
             }
-            innerHTML = (!ChildObj.isFullViewContol) ? (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>") : innerHTML.Replace("@style@", "style='width:100%;border:none;'");
+			if (type == "Label")
+			{
+				ControlHTML = string.Empty;
+			}
+			innerHTML = (!ChildObj.isFullViewContol) ? (@"<div class='chat-ctrl-cont' 777777777>" + innerHTML + "</div>") : innerHTML.Replace("@style@", "style='width:100%;border:none;'");
             ResHTML = @"
-<div class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='@type@'>
+<div class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='@type@' ebsid='@ebsid@' JKLJKLJKL>
    @LabelHTML@
    @ControlHTML@
 </div>"
 .Replace("@type@", type)
 .Replace("@LabelHTML@", LabelHTML)
+.Replace("@ebsid@", this.EbSid_CtxId)
 .Replace("@ControlHTML@", ControlHTML)
 .Replace("@innerHTML@", innerHTML)
 .Replace("@style@", (ChildObj.isFullViewContol ? "margin-left:12px;" : string.Empty)).RemoveCR();

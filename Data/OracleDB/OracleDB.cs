@@ -109,6 +109,7 @@ namespace ExpressBase.Common.Data
         {
             this.DbConfig = dbconf;
             _cstr = string.Format(CONNECTION_STRING_BARE, this.DbConfig.Server, this.DbConfig.Port, this.DbConfig.UserName, this.DbConfig.Password);
+            DBName = DbConfig.DatabaseName;
         }
         public OracleDB()
         {

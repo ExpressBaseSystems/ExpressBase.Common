@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExpressBase.Common
+namespace ExpressBase.Common.Files
 {
     public class EbFile
     {
