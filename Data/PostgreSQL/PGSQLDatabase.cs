@@ -153,7 +153,7 @@ namespace ExpressBase.Common
 
                 return new NpgsqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = val };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(string.Format("Exception in GetNewParameter : Message = {0}\n parametername = {1}\n type = {2} \n value = {3}", ex.Message, parametername, type.ToString(), value.ToString()));
                 throw new Exception(ex.Message);
@@ -170,43 +170,11 @@ namespace ExpressBase.Common
             return new NpgsqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Direction = ParameterDirection.Output };
         }
 
-        public T DoQuery<T>(string query, params DbParameter[] parameters)
-        {
-            T obj = default(T);
-
-            using (var con = GetNewConnection() as NpgsqlConnection)
-            {
-                try
-                {
-                    con.Open();
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
-                    {
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
-
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                               obj = (T)reader.GetValue(0);
-                        }
-                    }
-                }
-                catch (Npgsql.NpgsqlException npgse)
-                {
-
-                    throw npgse;
-                }
-                catch (SocketException scket) { }
-            }
-
-            return obj;
-        }
-
-        public EbDataTable DoQuery(string query, params DbParameter[] parameters)
+        public EbDataTable DoQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
             EbDataTable dt = new EbDataTable();
 
-            using (var con = GetNewConnection() as NpgsqlConnection)
+            using (var con = dbConnection as NpgsqlConnection)
             {
                 try
                 {
@@ -237,9 +205,9 @@ namespace ExpressBase.Common
             return dt;
         }
 
-        public DbDataReader DoQueriesBasic(string query, params DbParameter[] parameters)
+        public DbDataReader DoQueriesBasic(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
-            var con = GetNewConnection() as NpgsqlConnection;
+            var con = dbConnection as NpgsqlConnection;
             try
             {
                 con.Open();
@@ -262,7 +230,7 @@ namespace ExpressBase.Common
             return null;
         }
 
-        public EbDataSet DoQueries(string query, params DbParameter[] parameters)
+        public EbDataSet DoQueries(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
             var dtStart = DateTime.Now;
             Console.WriteLine(string.Format("DoQueries Start Time : {0}", dtStart));
@@ -270,7 +238,9 @@ namespace ExpressBase.Common
             ds.RowNumbers = "";
             try
             {
-                using (var reader = this.DoQueriesBasic(query, parameters))
+                var con = dbConnection;
+
+                using (var reader = this.DoQueriesBasic(con, query, parameters))
                 {
                     var dtExeTime = DateTime.Now;
                     Console.WriteLine(string.Format("DoQueries Execution Time : {0}", dtExeTime));
@@ -291,6 +261,7 @@ namespace ExpressBase.Common
                     }
                     while (reader.NextResult());
                 }
+
             }
             catch (Npgsql.NpgsqlException npgse)
             {
@@ -302,21 +273,21 @@ namespace ExpressBase.Common
             Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
 
             var ts = (dtEnd - dtStart).TotalMilliseconds;
-            Console.WriteLine(string.Format("DoQueries Execution Time : {0}", ts));            
+            Console.WriteLine(string.Format("DoQueries Execution Time : {0}", ts));
             ds.RowNumbers = ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 1)/*(ds.RowNumbers.Length>3)?ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 3): ds.RowNumbers*/;
             ds.StartTime = dtStart;
             ds.EndTime = dtEnd;
             return ds;
-        }
+        }       
 
-        public EbDataTable DoProcedure(string query, params DbParameter[] parameters)
+        public EbDataTable DoProcedure(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
             return null;
         }
 
-        public int DoNonQuery(string query, params DbParameter[] parameters)
+        public int DoNonQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
-            using (var con = GetNewConnection() as NpgsqlConnection)
+            using (var con = dbConnection as NpgsqlConnection)
             {
                 try
                 {
@@ -339,10 +310,94 @@ namespace ExpressBase.Common
             }
         }
 
+        public T DoQuery<T>(string query, params DbParameter[] parameters)
+        {
+            T obj = default(T);
+
+            using (var con = GetNewConnection() as NpgsqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                                obj = (T)reader.GetValue(0);
+                        }
+                    }
+                }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+
+                    throw npgse;
+                }
+                catch (SocketException scket) { }
+            }
+
+            return obj;
+        }
+
+        public EbDataTable DoQuery(string query, params DbParameter[] parameters)
+        {
+
+            EbDataTable dt = new EbDataTable();
+            try
+            {
+                var con = GetNewConnection() as NpgsqlConnection;
+                dt = DoQuery(con, query, parameters);
+            }
+            catch (Npgsql.NpgsqlException npge)
+            {
+                throw npge;
+            }
+            return dt;
+        }
+        
+        public EbDataSet DoQueries(string query, params DbParameter[] parameters)
+        {
+            EbDataSet ds = new EbDataSet();
+            try
+            {
+                var con = GetNewConnection() as NpgsqlConnection;
+                ds = DoQueries(con, query, parameters);
+
+                return ds;
+            }
+            catch (Npgsql.NpgsqlException npgse)
+            {
+                throw npgse;
+            }
+        }
+
+        public EbDataTable DoProcedure(string query, params DbParameter[] parameters)
+        {
+            return null;
+        }
+
+        public int DoNonQuery(string query, params DbParameter[] parameters)
+        {
+            int val;
+            try
+            {
+                var con = GetNewConnection() as NpgsqlConnection;
+                val = DoNonQuery(con, query, parameters);
+            }
+            catch (Npgsql.NpgsqlException npgse)
+            {
+                throw npgse;
+            }
+            return val;
+        }
+
         public Dictionary<int, string> GetDictionary(string query, string dm, string vm)
         {
             Dictionary<int, string> _dic = new Dictionary<int, string>();
-            string sql = $"SELECT {vm},{dm} FROM ({query.Replace(";",string.Empty)}) as __table;";
+            string sql = $"SELECT {vm},{dm} FROM ({query.Replace(";", string.Empty)}) as __table;";
 
             using (var con = GetNewConnection() as NpgsqlConnection)
             {
@@ -355,7 +410,7 @@ namespace ExpressBase.Common
                         {
                             while (reader.Read())
                             {
-                                if( !_dic.ContainsKey(Convert.ToInt32(reader[vm])))
+                                if (!_dic.ContainsKey(Convert.ToInt32(reader[vm])))
                                     _dic.Add(Convert.ToInt32(reader[vm]), reader[dm].ToString());
                             }
                         }
@@ -457,7 +512,7 @@ namespace ExpressBase.Common
                 return EbDbTypes.Boolean;
             else if (_typ == typeof(decimal) || _typ == typeof(Double) || _typ == typeof(Single))
                 return EbDbTypes.Decimal;
-            else if (_typ == typeof(int) || _typ == typeof(Int32) || _typ == typeof(Int16) )
+            else if (_typ == typeof(int) || _typ == typeof(Int32) || _typ == typeof(Int16))
                 return EbDbTypes.Int32;
             else if (_typ == typeof(Int16))
                 return EbDbTypes.Int16;
@@ -487,7 +542,7 @@ namespace ExpressBase.Common
 
             typeArray = null;
         }
-     
+
         public bool IsTableExists(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as NpgsqlConnection)
@@ -1012,8 +1067,10 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
 
         public string EB_GETDBCLIENTTTABLES
         {
-            get { return @"
-SELECT Q1.table_name, Q1.table_schema, i.indexname FROM 
+            get
+            {
+                return @"
+                SELECT Q1.table_name, Q1.table_schema, i.indexname FROM 
                 (SELECT
                     table_name, table_schema
                 FROM
@@ -1067,7 +1124,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
             }
         }
 
-       //.......OBJECTS QUERIES.....
+        //.......OBJECTS QUERIES.....
         public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
         {
             get
@@ -1264,7 +1321,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
                 return @"INSERT INTO eb_keys (key) VALUES(@KEY) RETURNING id;";
             }
         }
-              
+
         public string EB_GET_TAGGED_OBJECTS
         {
             get
@@ -1344,8 +1401,8 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
             {
                 return @"UPDATE eb_location_config SET keys = :keys ,isrequired = :isrequired , keytype = :type WHERE id = :keyid; ";
             }
-        }     
-        
+        }
+
         public string EB_GET_DISTINCT_VALUES
         {
             get
@@ -1565,21 +1622,21 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
             }
         }
 
-       // public string EB_FILECATEGORYCHANGE
-       // {
-       //     get
-       //     {
-       //         return @"UPDATE 
-	      //                  eb_files_ref FR
-       //                 SET
-	      //                  tags = jsonb_set(cast(tags as jsonb),
-							//'{Category}',
-							//(SELECT (cast(tags as jsonb)->'Category')-0 || to_jsonb(:categry::text)),
-       //                     true)
-       //                 WHERE 
-       //                     FR.id = ANY(string_to_array(:ids,',')::int[]);";
-       //     }
-       // }
+        // public string EB_FILECATEGORYCHANGE
+        // {
+        //     get
+        //     {
+        //         return @"UPDATE 
+        //                  eb_files_ref FR
+        //                 SET
+        //                  tags = jsonb_set(cast(tags as jsonb),
+        //'{Category}',
+        //(SELECT (cast(tags as jsonb)->'Category')-0 || to_jsonb(:categry::text)),
+        //                     true)
+        //                 WHERE 
+        //                     FR.id = ANY(string_to_array(:ids,',')::int[]);";
+        //     }
+        // }
 
         public string EB_FILECATEGORYCHANGE
         {
