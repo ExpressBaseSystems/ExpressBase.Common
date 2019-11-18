@@ -78,7 +78,11 @@ namespace ExpressBase.Common
 
         public object this[string columnname]
         {
-            get { return this[this.Rows.Table.Columns[columnname].ColumnIndex]; }
+            get {if (Rows.Table.Columns[columnname] != null)
+                    return this[this.Rows.Table.Columns[columnname].ColumnIndex];
+                else
+                    return null;
+            }
             set { this[this.Rows.Table.Columns[columnname].ColumnIndex] = value; }
         }
 

@@ -57,7 +57,7 @@ namespace ExpressBase.Security
         {
             get
             {
-                if (_ebObjectIds == null)
+                if (_ebObjectIds == null && wc != "tc")
                 {
                     _ebObjectIds = new List<string>();
                     this.PopulateEbObjectIds();
@@ -305,15 +305,15 @@ namespace ExpressBase.Security
         public static User GetDetailsSocial(IDatabase df, string socialId, string context)
         {
             try
-               
-            {                
+
+            {
                 if (df.Vendor == DatabaseVendors.MYSQL)
                 {
                     var dt = df.DoProcedure(df.EB_AUTHENTICATEUSER_SOCIAL,
                             new DbParameter[] {  df.GetNewParameter("uname", EbDbTypes.String),
                                 df.GetNewParameter("pwd", EbDbTypes.String),
                                 df.GetNewParameter("social", EbDbTypes.String, socialId),
-                                df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),                               
+                                df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),
                                 df.GetNewParameter("ipaddress", EbDbTypes.String),
                                 df.GetNewParameter("deviceinfo", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_userid", EbDbTypes.Int32),
@@ -333,14 +333,14 @@ namespace ExpressBase.Security
                 else
                 {
                     var ds = df.DoQuery(df.EB_AUTHENTICATEUSER_SOCIAL, new DbParameter[] { df.GetNewParameter("social", EbDbTypes.String, socialId), df.GetNewParameter("wc", EbDbTypes.String, context) });
-                    return InitUserObject(ds, context);                   
+                    return InitUserObject(ds, context);
                 }
                 //return null;
             }
             catch (Exception e)
             {
                 return new User();
-            }            
+            }
         }
 
         public static User GetDetailsSSO(IDatabase df, string uname, string context)
@@ -354,7 +354,7 @@ namespace ExpressBase.Security
                                 df.GetNewParameter("uname", EbDbTypes.String, uname),
                                 df.GetNewParameter("pwd", EbDbTypes.String),
                                 df.GetNewParameter("social", EbDbTypes.String),
-                                df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),                                
+                                df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),
                                 df.GetNewParameter("ipaddress", EbDbTypes.String),
                                 df.GetNewParameter("deviceinfo", EbDbTypes.String),
                                 df.GetNewOutParameter("tmp_userid", EbDbTypes.Int32),
@@ -381,12 +381,12 @@ namespace ExpressBase.Security
             catch (Exception e)
             {
                 return new User();
-            }           
+            }
         }
 
         public static User GetDetailsAnonymous(IDatabase df, string socialId, string emailId, string phone, int appid, string context, string user_ip, string user_name, string user_browser, string city, string region, string country, string latitude, string longitude, string timezone, string iplocationjson)
         {
-            if(df.Vendor == DatabaseVendors.MYSQL)
+            if (df.Vendor == DatabaseVendors.MYSQL)
             {
                 var ds = df.DoProcedure(df.EB_AUTHENTICATE_ANONYMOUS,
                             new DbParameter[] {
@@ -497,8 +497,8 @@ namespace ExpressBase.Security
                 var ds = df.DoQuery(sql, paramlist.ToArray());
                 return InitUserObject(ds, context);
             }
-            
-            
+
+
         }
 
         private static User InitUserObject(EbDataTable ds, string context)

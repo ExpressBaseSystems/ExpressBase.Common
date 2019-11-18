@@ -250,7 +250,7 @@ namespace ExpressBase.Common.Connections
 
         public string ReadOnlyPassword { get; set; }
 
-        public DatabaseVendors DatabaseVendor { get { return (DatabaseVendors)this.Type; } set { this.Type =  (EbIntegrations)value; } }
+        public DatabaseVendors DatabaseVendor { get { return (DatabaseVendors)this.Type; } set { this.Type = (EbIntegrations)value; } }
     }
 
     public class PostgresConfig : EbDbConfig
@@ -280,6 +280,11 @@ namespace ExpressBase.Common.Connections
     public class EbTwilioConfig : EbSmsConfig
     {
         public override EbIntegrations Type { get { return EbIntegrations.Twilio; } }
+    }
+
+    public class EbUnifonicConfig : EbSmsConfig
+    {
+        public override EbIntegrations Type { get { return EbIntegrations.Unifonic; } }
     }
 
     public class EbExpertTextingConfig : EbSmsConfig
@@ -393,6 +398,13 @@ namespace ExpressBase.Common.Connections
 
         public override EbIntegrations Type { get { return EbIntegrations.Slack; } }
     }
+
+    public class EbfacebbokConfig : EbIntegrationConf{
+
+        public string AppId { get; set; }
+        public string AppVersion { get; set; }
+        public override EbIntegrations Type { get { return EbIntegrations.Facebook; } }
+    }  
 
     public class EbGoogleMapConfig : EbMapConfig
     {
