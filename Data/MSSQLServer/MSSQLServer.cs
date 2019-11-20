@@ -165,6 +165,31 @@ namespace ExpressBase.Common.Data.MSSQLServer
             return new SqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Direction = ParameterDirection.Output };
         }
 
+        public EbDataTable DoQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        {
+            return null;
+        }
+
+        public EbDataSet DoQueries(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        {
+            return null;
+        }
+
+        public EbDataTable DoProcedure(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        {
+            return null;
+        }
+
+        public DbDataReader DoQueriesBasic(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        {
+            return null;
+        }
+
+        public int DoNonQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        {
+            return 0;
+        }
+
         public T DoQuery<T>(string query, params DbParameter[] parameters)
         {
             T obj = default(T);
