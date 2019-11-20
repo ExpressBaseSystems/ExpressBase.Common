@@ -1350,7 +1350,7 @@ SELECT Q1.table_name, Q1.table_schema, i.indexname FROM
         {
             get
             {
-                return @"SELECT DISTINCT INITCAP(TRIM(@ColumName)) AS @ColumName FROM @TableName ORDER BY @ColumName;";
+                return @"SELECT DISTINCT (TRIM(@ColumName)) AS @ColumName FROM @TableName ORDER BY @ColumName;";
             }
         }
 

@@ -1254,7 +1254,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
         {
             get
             {
-                return @"SELECT DISTINCT INITCAP(TRIM(:ColumName)) AS :ColumName FROM :TableName ORDER BY :ColumName;";
+                return @"SELECT DISTINCT (TRIM(:ColumName)) AS :ColumName FROM :TableName ORDER BY :ColumName;";
             }
         }
 
