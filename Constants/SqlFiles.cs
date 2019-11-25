@@ -45,7 +45,7 @@ namespace ExpressBase.Common.Constants
                         "datadb.tablecreate.eb_survey_master.sql",
                         "datadb.tablecreate.eb_survey_queries.sql",
                         "datadb.tablecreate.eb_user2usergroup.sql",
-                        "datadb.tablecreate.eb_useranonymous.sql",
+                        "datadb.tablecreate.eb_usersanonymous.sql",
                         "datadb.tablecreate.eb_usergroup.sql",
                         "datadb.tablecreate.eb_users.sql",
                         "datadb.tablecreate.eb_userstatus.sql",

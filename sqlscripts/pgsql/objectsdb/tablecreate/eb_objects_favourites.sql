@@ -9,3 +9,10 @@ CREATE TABLE eb_objects_favourites
     object_id integer,
     eb_del char(1) DEFAULT 'F'
 );
+
+-- Index: eb_objects_favourites_id_idx
+
+-- DROP INDEX public.eb_objects_favourites_id_idx;
+
+CREATE INDEX eb_objects_favourites_id_idx
+    ON eb_objects_favourites(id);

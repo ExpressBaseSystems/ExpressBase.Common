@@ -8,7 +8,7 @@ CREATE TABLE eb_schedules
     task json,
     created_by integer,
     created_at timestamp without time zone,
-    eb_del "char",
+    eb_del char(1) default 'F',
     jobkey text,
     triggerkey text,
     status numeric,
@@ -18,10 +18,9 @@ CREATE TABLE eb_schedules
 );
 
 	
-ALTER SEQUENCE eb_schedules_id_seq INCREMENT 1 RESTART 2 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1;
+-- Index: eb_schedules_id_idx
 
+-- DROP INDEX public.eb_schedules_id_idx;
 
-
-
-
-
+CREATE INDEX eb_schedules_id_idx
+    ON eb_schedules(id);

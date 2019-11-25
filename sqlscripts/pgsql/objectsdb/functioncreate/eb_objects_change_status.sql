@@ -10,8 +10,6 @@ CREATE OR REPLACE FUNCTION public.eb_objects_change_status(
     RETURNS integer
     LANGUAGE 'plpgsql'
 
-    COST 100
-    VOLATILE 
 AS $BODY$
 
 DECLARE inserted_obj_ver_id integer;
@@ -60,6 +58,3 @@ BEGIN
 END;
 
 $BODY$;
-
-ALTER FUNCTION public.eb_objects_change_status(text, integer, integer, text)
-    OWNER TO postgres;

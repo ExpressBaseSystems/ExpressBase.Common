@@ -4,19 +4,10 @@ CREATE TABLE eb_survey_master
   surveyid integer,
   userid integer,
   anonid integer,
-  eb_createdate timestamp,
+  eb_createdate datetime,
   constraint eb_survey_master_pkey primary key(id)
 );
 
 
-CREATE INDEX eb_survey_master_idx
-ON eb_survey_master(id) 
-USING btree;
-
-CREATE INDEX eb_survey_master_surveyid_idx
-ON eb_survey_master(surveyid) 
-USING btree;
-
-CREATE INDEX eb_survey_master_userid_idx
-ON eb_survey_master(userid) 
-USING btree;
+CREATE INDEX eb_survey_master_id_idx
+ON eb_survey_master(id);
