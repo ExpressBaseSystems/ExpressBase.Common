@@ -35,6 +35,22 @@ namespace ExpressBase.Common
         public AuditTrailEntry() { }
     }
 
+    public class AuditTrailInsertData
+    {
+        public string RefId { get; set; }
+
+        public int TableRowId { get; set; }
+
+        public int Action { get; set; }
+
+        public List<AuditTrailEntry> Fields { get; set; }
+
+        public AuditTrailInsertData()
+        {
+            this.Fields = new List<AuditTrailEntry>();
+        }
+    }
+
     public class SingleColumn
     {
         public string Name { get; set; }

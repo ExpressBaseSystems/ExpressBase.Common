@@ -128,9 +128,9 @@ namespace ExpressBase.Common
 
         public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type, object value)
         {
-            
+
             if (type == EbDbTypes.Boolean)
-               value = Convert.ToBoolean(value) ? 'T' : 'F';
+                value = Convert.ToBoolean(value) ? 'T' : 'F';
             return new MySqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = value, Direction = ParameterDirection.Input };
         }
 
@@ -145,51 +145,16 @@ namespace ExpressBase.Common
             return new MySqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Direction = ParameterDirection.Output };
         }
 
-        public T DoQuery<T>(string query, params DbParameter[] parameters)
-        {
-            T obj = default(T);
-
-            using (var con = GetNewConnection() as MySqlConnection)
-            {
-                try
-                {
-                    con.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(query, con))
-                    {
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
-
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                                obj = (T)reader.GetValue(0);
-                        }
-                    }
-                }
-                catch (MySqlException myexce)
-                {
-                    Console.WriteLine("MySQL Exception : " + myexce.Message);
-                    throw myexce;
-                }
-                catch (SocketException scket)
-                {                    
-                }
-            }
-
-            return obj;
-        }
-
-        public EbDataTable DoQuery(string query, params DbParameter[] parameters)
+        public EbDataTable DoQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
             if (query.Contains(":"))
             {
                 query = query.Replace(":", "@");
             }
             EbDataTable dt = new EbDataTable();
-
-            using (var con = GetNewConnection() as MySqlConnection)
+            try
             {
-                try
+                using (MySqlConnection con = dbConnection as MySqlConnection)
                 {
                     con.Open();
                     using (MySqlCommand cmd = new MySqlCommand(query, con))
@@ -205,108 +170,39 @@ namespace ExpressBase.Common
                         }
                     }
                 }
-                catch (MySqlException myexce)
-                {
-                    Console.WriteLine("MySQL Exception : " + myexce.Message);
-                    throw myexce;
-                }
-                catch (SocketException scket)
-                {
-                }
+            }
+            catch (MySqlException myexce)
+            {
+                Console.WriteLine("MySQL Exception : " + myexce.Message);
+                throw myexce;
+            }
+            catch (SocketException scket)
+            {
             }
 
             return dt;
         }
 
-        public EbDataTable DoProcedure(string query, params DbParameter[] parameters)
-        {
-            EbDataTable tbl = new EbDataTable();
-            using (var con = GetNewConnection() as MySqlConnection)
-            {
-                int index = query.IndexOf("(");
-                string procedure_name = query.Substring(0, index);
-                try
-                {
-                    con.Open();
-                    using (MySqlCommand cmd = new MySqlCommand())
-                    {
-                        cmd.Connection = con;
-                        cmd.CommandText = procedure_name;
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddRange(parameters);
-                        var reader = cmd.ExecuteNonQuery();
-
-                        tbl.Rows.Add(new EbDataRow());
-                        int i = 0;
-                        foreach (var param in parameters)
-                        {
-                            if (param.Direction == ParameterDirection.Output)
-                            {
-                                tbl.Columns.Add(new EbDataColumn(i++, param.ParameterName, (EbDbTypes)param.DbType));
-                                tbl.Rows[0][param.ParameterName] = cmd.Parameters["@" + param.ParameterName].Value;
-                            }
-                        }
-                        return tbl;
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("MySQL Exception : " + e.Message);
-                    throw e;
-                }
-            }
-            return null;
-        }
-
-        public DbDataReader DoQueriesBasic(string query, params DbParameter[] parameters)
-        {
-            if (query.Contains(":"))
-            {
-                query = query.Replace(":", "@");
-            }
-            var con = GetNewConnection() as MySqlConnection;
-            try
-            {
-                con.Open();
-                using (MySqlCommand cmd = new MySqlCommand(query, con))
-                {
-                    if (parameters != null && parameters.Length > 0)
-                        cmd.Parameters.AddRange(parameters);
-                    cmd.Prepare();
-                    var reader = cmd.ExecuteReader(); 
-                    return reader;
-                }
-            }
-            catch (MySqlException myexce)
-            {
-                throw myexce;
-            }
-            catch (SocketException scket) { }
-
-            return null;
-        }
-
-        public EbDataSet DoQueries(string query, params DbParameter[] parameters)
+        public EbDataSet DoQueries(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
             if (query.Contains(":"))
             {
                 query = query.Replace(":", "@");
             }
             EbDataSet ds = new EbDataSet();
-            if (query=="")
+            if (query == "")
             {
                 return ds;
             }
             var dtStart = DateTime.Now;
             Console.WriteLine(string.Format("DoQueries Start Time : {0}", dtStart));
-            
+
             query = query.Trim();
             string[] qry_ary = query.Split(";");
 
-            using (var con = GetNewConnection() as MySqlConnection)
+            using (MySqlConnection con = dbConnection as MySqlConnection)
             {
                 con.Open();
-
                 var dtExeTime = DateTime.Now;
                 Console.WriteLine(string.Format("DoQueries Execution Time : {0}", dtExeTime));
 
@@ -339,7 +235,7 @@ namespace ExpressBase.Common
                 {
                     throw e;
                 }
-              
+
                 var dtEnd = DateTime.Now;
                 Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
 
@@ -348,64 +244,91 @@ namespace ExpressBase.Common
                 ds.RowNumbers = ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 1);/*(ds.RowNumbers.Length>3)?ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 3): ds.RowNumbers*/
                 ds.StartTime = dtStart;
                 ds.EndTime = dtEnd;
-                con.Close();
             }
             return ds;
         }
 
-        //public EbDataSet DoQueries(string query, params DbParameter[] parameters)
-        //{
-        //    var dtStart = DateTime.Now;
-        //    EbDataSet ds = new EbDataSet();
-
-        //    try
-        //    {
-        //        using (var reader = this.DoQueriesBasic(query, parameters))
-        //        {
-        //            do
-        //            {
-        //                try
-        //                {
-        //                    EbDataTable dt = new EbDataTable();
-        //                    DataTable schema = reader.GetSchemaTable();
-
-        //                    this.AddColumns(dt, schema);
-        //                    PrepareDataTable((MySqlDataReader)reader, dt);
-        //                    ds.Tables.Add(dt);
-
-        //                }
-        //                catch (Exception ee)
-        //                {
-        //                    throw ee;
-        //                }
-        //            }
-        //            while (reader.NextResult());
-        //        }
-        //    }
-        //    catch (MySqlException myexce)
-        //    {
-
-        //        throw myexce;
-        //    }
-        //    catch (SocketException scket) { }
-
-        //    var dtEnd = DateTime.Now;
-        //    var ts = (dtEnd - dtStart).TotalMilliseconds;
-        //    Console.WriteLine(string.Format("-------------------------------------> {0}", ts));
-        //    return ds;
-        //}
-
-        public int DoNonQuery(string query, params DbParameter[] parameters)
+        public EbDataTable DoProcedure(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
-            using (var con = GetNewConnection() as MySqlConnection)
+            EbDataTable tbl = new EbDataTable();
+            int index = query.IndexOf("(");
+            string procedure_name = query.Substring(0, index);
+            try
             {
+                using (MySqlConnection con = dbConnection as MySqlConnection)
+                {
+                    con.Open();
+                    using (MySqlCommand cmd = new MySqlCommand())
+                    {
+                        cmd.Connection = con;
+                        cmd.CommandText = procedure_name;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddRange(parameters);
+                        var reader = cmd.ExecuteNonQuery();
+
+                        tbl.Rows.Add(new EbDataRow());
+                        int i = 0;
+                        foreach (var param in parameters)
+                        {
+                            if (param.Direction == ParameterDirection.Output)
+                            {
+                                tbl.Columns.Add(new EbDataColumn(i++, param.ParameterName, (EbDbTypes)param.DbType));
+                                tbl.Rows[0][param.ParameterName] = cmd.Parameters["@" + param.ParameterName].Value;
+                            }
+                        }
+                        return tbl;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("MySQL Exception : " + e.Message);
+                throw e;
+            }
+
+            return null;
+        }
+
+        public DbDataReader DoQueriesBasic(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        {
+            if (query.Contains(":"))
+            {
+                query = query.Replace(":", "@");
+            }
+            using (MySqlConnection con = dbConnection as MySqlConnection)
+            {
+                con.Open();
+                try
+                {
+                    using (MySqlCommand cmd = new MySqlCommand(query, con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+                        cmd.Prepare();
+                        var reader = cmd.ExecuteReader();
+                        return reader;
+                    }
+                }
+                catch (MySqlException myexce)
+                {
+                    throw myexce;
+                }
+                catch (SocketException scket) { }
+            }
+            return null;
+        }
+
+        public int DoNonQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        {
+            using (MySqlConnection con = dbConnection as MySqlConnection)
+            {
+                con.Open();
                 try
                 {
                     if (query.Contains(":"))
                     {
                         query = query.Replace(":", "@");
                     }
-                    con.Open();
                     using (MySqlCommand cmd = new MySqlCommand(query, con))
                     {
                         if (parameters != null && parameters.Length > 0)
@@ -421,9 +344,108 @@ namespace ExpressBase.Common
                 catch (SocketException scket)
                 {
                 }
-
-                return 0;
             }
+
+            return 0;
+
+        }
+
+        public T DoQuery<T>(string query, params DbParameter[] parameters)
+        {
+            T obj = default(T);
+
+            using (var con = GetNewConnection() as MySqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                                obj = (T)reader.GetValue(0);
+                        }
+                    }
+                }
+                catch (MySqlException myexce)
+                {
+                    Console.WriteLine("MySQL Exception : " + myexce.Message);
+                    throw myexce;
+                }
+                catch (SocketException scket)
+                {
+                }
+            }
+
+            return obj;
+        }
+
+        public EbDataTable DoQuery(string query, params DbParameter[] parameters)
+        {
+            EbDataTable dt = new EbDataTable();
+            try
+            {
+                var con = GetNewConnection() as MySqlConnection;
+                dt = DoQuery(con, query, parameters);
+            }
+            catch (MySqlException myexec)
+            {
+                throw myexec;
+            }
+            return dt;
+        }
+
+        public EbDataTable DoProcedure(string query, params DbParameter[] parameters)
+        {
+            EbDataTable tbl = new EbDataTable();
+            try
+            {
+                MySqlConnection con = GetNewConnection() as MySqlConnection;               
+                tbl = DoProcedure(con, query, parameters);
+            }
+            catch (MySqlException myexec)
+            {
+                throw myexec;
+            }
+            return tbl;
+        }
+
+        public EbDataSet DoQueries(string query, params DbParameter[] parameters)
+        {
+            EbDataSet ds = new EbDataSet();
+            if (query == "")
+            {
+                return ds;
+            }
+            try
+            {
+                MySqlConnection con = GetNewConnection() as MySqlConnection;               
+                ds = DoQueries(con, query, parameters);
+            }
+            catch (MySqlException myexec)
+            {
+                throw myexec;
+            }
+            return ds;
+        }
+               
+        public int DoNonQuery(string query, params DbParameter[] parameters)
+        {
+            int val = 0;
+            try
+            {
+                MySqlConnection con = GetNewConnection() as MySqlConnection;
+                val = DoNonQuery(con, query, parameters);
+            }
+            catch (MySqlException myexec)
+            {
+                throw myexec;
+            }
+            return val;
         }
 
         public Dictionary<int, string> GetDictionary(string query, string dm, string vm)
@@ -555,7 +577,7 @@ namespace ExpressBase.Common
             else if (_typ == typeof(string))
                 return EbDbTypes.String;
             else if (_typ == typeof(bool))
-                return EbDbTypes.Boolean;            
+                return EbDbTypes.Boolean;
             else if (_typ == typeof(decimal) || _typ == typeof(Double))
                 return EbDbTypes.Decimal;
             else if (_typ == typeof(int) || _typ == typeof(Int32) || _typ == typeof(Int16) || _typ == typeof(Single))
@@ -805,7 +827,7 @@ namespace ExpressBase.Common
             return cols;
         }
 
-        
+
         public string EB_AUTHETICATE_USER_NORMAL { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);"; } }
 
         public string EB_AUTHENTICATEUSER_SOCIAL { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);"; } }
@@ -1740,11 +1762,11 @@ namespace ExpressBase.Common
         //        return @"
         //                CALL string_to_rows(@ids);
         //                UPDATE 
-	       //                 eb_files_ref FR
+        //                 eb_files_ref FR
         //                SET
-	       //                 tags = JSON_SET(CAST(tags AS JSON),
-		      //                      '$.Category',@categry
-		      //                      (SELECT CAST(CONCAT('[""',@categry,'""]')AS JSON)))
+        //                 tags = JSON_SET(CAST(tags AS JSON),
+        //                      '$.Category',@categry
+        //                      (SELECT CAST(CONCAT('[""',@categry,'""]')AS JSON)))
         //                WHERE
         //                    FR.id = (SELECT CAST(`value` AS UNSIGNED INT) FROM tmp_array_table);";
         //    }
@@ -1844,7 +1866,7 @@ namespace ExpressBase.Common
                         cmd.Parameters.Add(GetNewParameter("cat", EbDbTypes.Int32, (int)cat));
                         rtn = cmd.ExecuteScalar().ToString();
                     }
-                    
+
                     con.Close();
                 }
             }

@@ -26,10 +26,15 @@ namespace ExpressBase.Common
 
         T DoQuery<T>(string query, params DbParameter[] parameters);
         EbDataTable DoQuery(string query, params DbParameter[] parameters);
-        EbDataTable DoProcedure(string query, params DbParameter[] parameters);
-        DbDataReader DoQueriesBasic(string query, params DbParameter[] parameters);
+        EbDataTable DoProcedure(string query, params DbParameter[] parameters);        
         EbDataSet DoQueries(string query, params DbParameter[] parameters);
         int DoNonQuery(string query, params DbParameter[] parameters);
+        EbDataSet DoQueries(DbConnection dbConnection, string query, params DbParameter[] parameters);
+        EbDataTable DoProcedure(DbConnection dbConnection, string query, params DbParameter[] parameters);
+        EbDataTable DoQuery(DbConnection dbConnection, string query, params DbParameter[] parameters);
+        DbDataReader DoQueriesBasic(DbConnection dbConnection, string query, params DbParameter[] parameters);
+        int DoNonQuery(DbConnection dbConnection, string query, params DbParameter[] parameters);
+       
         Dictionary<int, string> GetDictionary(string query, string dm, string vm);
         List<int> GetAutoResolveValues(string sql, string name, string cond);
         void BeginTransaction();

@@ -80,6 +80,23 @@ namespace ExpressBase.Security
             }
         }
 
+        public List<int> GetDashBoardIds()
+        {
+            List<int> DashBoardIds = new List<int>();
+            foreach (string p in this.Permissions)
+            {
+                if (p.Contains("-"))
+                {
+                    string[] parts = p.Split("-");
+                    if( Convert.ToInt32(parts[1]) == EbObjectTypes.DashBoard.IntCode)
+                    {
+                        DashBoardIds.Add(Convert.ToInt32(parts[2]));
+                    }
+                }
+            }
+            return DashBoardIds;
+        }
+
         private List<int> _locationIds = null;
 
         public List<int> LocationIds
@@ -562,6 +579,9 @@ namespace ExpressBase.Security
 
         [DataMember(Order = 3)]
         public int DefaultLocation { get; set; }
+
+        [DataMember(Order = 4)]
+        public string DefaultDashBoard { get; set; }
 
         public string GetShortDatePattern()
         {
