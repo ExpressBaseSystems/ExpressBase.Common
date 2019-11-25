@@ -1,7 +1,7 @@
 ﻿CREATE TABLE eb_roles
 (
   id integer NOT NULL auto_increment,
-  role_name varchar(25) NOT NULL,
+  role_name varchar(50) NOT NULL,
   applicationname text,
   applicationid integer,
   description text,
@@ -12,16 +12,14 @@
   CONSTRAINT eb_roles_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );
 
-CREATE INDEX eb_roles_idx
-ON eb_roles(id) 
-USING btree;
 
-CREATE INDEX eb_roles_name_idx
-ON eb_roles(role_name) 
-USING btree;
+ALTER TABLE eb_roles auto_increment = 101;
 
-CREATE INDEX eb_roles_appid_idx
-ON eb_roles(applicationid) 
-USING btree;
+CREATE INDEX eb_roles_id_idx
+ON eb_roles(id);
 
-alter table eb_roles auto_increment = 101;
+
+CREATE INDEX eb_roles_eb_del_idx
+ON eb_roles(eb_del);
+
+

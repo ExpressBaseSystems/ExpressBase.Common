@@ -1,6 +1,6 @@
 ﻿CREATE TABLE eb_locations
 (
-   id integer auto_increment,
+	id integer auto_increment,
     shortname varchar(20) DEFAULT 'default',
     longname varchar(50) DEFAULT 'default',
     image text,
@@ -13,7 +13,6 @@
 );
 
 
-create index eb_locations_idx on eb_locations(id) using btree;
+CREATE INDEX eb_locations_id_idx
+    ON eb_locations(id);
 
-
-create index eb_locations_shortname_idx on eb_locations(shortname) using btree;

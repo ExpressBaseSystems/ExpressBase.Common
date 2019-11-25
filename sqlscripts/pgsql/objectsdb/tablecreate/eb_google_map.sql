@@ -16,6 +16,6 @@ CREATE TABLE eb_google_map
 
 -- DROP INDEX public.eb_google_map_idx;
 
-CREATE INDEX eb_google_map_idx
+CREATE INDEX eb_google_map_id_idx
     ON eb_google_map(id);
 

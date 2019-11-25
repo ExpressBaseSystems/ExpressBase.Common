@@ -1,9 +1,9 @@
 ﻿CREATE TABLE eb_users
 (
   id integer NOT NULL auto_increment,
-  email text,
-  pwd text,
-  firstname varchar(25),
+  email varchar(100),
+  pwd varchar(50),
+  firstname text,
   lastname text,
   middlename text,
   dob date,
@@ -13,7 +13,7 @@
   phextension text,
   locale text,
   alternateemail text,
-  dateformat varchar(20) DEFAULT 'DD/MM/YYYY',
+  dateformat varchar(25) DEFAULT 'DD/MM/YYYY',
   timezone varchar(25) DEFAULT 'UTC+05:30',
   numformat varchar(25) DEFAULT '0,000.00',
   timezoneabbre text,
@@ -40,10 +40,18 @@
   CONSTRAINT eb_users_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );
 
-CREATE INDEX eb_users_idx
-ON eb_users(id) 
-USING btree;
+CREATE INDEX eb_users_id_idx
+ON eb_users(id);
 
-CREATE INDEX eb_users_firstname_idx
-ON eb_users(firstname) 
-USING btree;
+CREATE INDEX eb_users_eb_del_idx
+    ON eb_users(eb_del);
+
+CREATE INDEX eb_users_email_idx
+    ON eb_users(email);
+
+CREATE INDEX eb_users_pwd_idx
+    ON eb_users(pwd);
+
+CREATE INDEX eb_users_statusid_idx
+    ON eb_users(statusid);
+
