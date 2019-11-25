@@ -10,3 +10,6 @@ CREATE TABLE eb_signin_log
     signout_at datetime,
     CONSTRAINT eb_signin_log_pkey PRIMARY KEY (id)
 );
+
+CREATE INDEX eb_signin_log_id_idx
+ON eb_signin_log(id);
