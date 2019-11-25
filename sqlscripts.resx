@@ -628,17 +628,11 @@
   <data name="eb_constraints_line1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\oracle\datadb\tablecreate\eb_constraints_line.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="eb_constraints_line2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\mysql\datadb\tablecreate\eb_constraints_line.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
   <data name="eb_constraints_master" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\pgsql\datadb\tablecreate\eb_constraints_master.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_constraints_master1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\oracle\datadb\tablecreate\eb_constraints_master.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_constraints_master2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\mysql\datadb\tablecreate\eb_constraints_master.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_security_constraints" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\pgsql\datadb\functioncreate\eb_security_constraints.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
@@ -672,9 +666,6 @@
   </data>
   <data name="eb_signin_log1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SqlScripts\oracle\datadb\tablecreate\eb_signin_log.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_signin_log2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\mysql\datadb\tablecreate\eb_signin_log.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_northwind_script" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\pgsql\eb_northwind_script.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>

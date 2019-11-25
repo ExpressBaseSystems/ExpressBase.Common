@@ -649,26 +649,6 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_constraints_line
-        ///(
-        ///    id integer auto_increment,
-        ///    master_id integer,
-        ///    c_type integer,
-        ///    c_operation integer,
-        ///    c_value text,
-        ///    CONSTRAINT eb_constraints_line_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///CREATE INDEX eb_constraints_line_id_idx
-        ///ON eb_constraints_line(id);.
-        /// </summary>
-        public static string eb_constraints_line2 {
-            get {
-                return ResourceManager.GetString("eb_constraints_line2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to -- Table: public.eb_constraints_master
         ///
         ///-- DROP TABLE public.eb_constraints_master;
@@ -702,30 +682,6 @@ namespace ExpressBase.Common {
         public static string eb_constraints_master1 {
             get {
                 return ResourceManager.GetString("eb_constraints_master1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_constraints_master
-        ///(
-        ///    id integer auto_increment,
-        ///    key_id integer,
-        ///    key_type integer,
-        ///    description text,
-        ///    eb_created_by integer,
-        ///    eb_created_at datetime,
-        ///    eb_lastmodified_by integer,
-        ///    eb_lastmodified_at datetime,
-        ///    eb_del character(1)  DEFAULT &apos;F&apos;,
-        ///    CONSTRAINT eb_constraints_master_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///CREATE INDEX eb_constraints_master_id_idx
-        ///ON eb_constraints_master(id);.
-        /// </summary>
-        public static string eb_constraints_master2 {
-            get {
-                return ResourceManager.GetString("eb_constraints_master2", resourceCulture);
             }
         }
         
@@ -4462,29 +4418,6 @@ namespace ExpressBase.Common {
         public static string eb_signin_log1 {
             get {
                 return ResourceManager.GetString("eb_signin_log1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_signin_log
-        ///(
-        ///    id integer auto_increment,
-        ///    user_id integer,
-        ///    ip_address text,
-        ///    device_info text,
-        ///    is_attempt_failed char(1) DEFAULT &apos;F&apos;,	
-        ///    is_force_signout char(1) DEFAULT &apos;F&apos;,
-        ///    signin_at datetime,
-        ///    signout_at datetime,
-        ///    CONSTRAINT eb_signin_log_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///CREATE INDEX eb_signin_log_id_idx
-        ///ON eb_signin_log(id);.
-        /// </summary>
-        public static string eb_signin_log2 {
-            get {
-                return ResourceManager.GetString("eb_signin_log2", resourceCulture);
             }
         }
         
