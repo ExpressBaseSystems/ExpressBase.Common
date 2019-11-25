@@ -4422,6 +4422,29 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_signin_log
+        ///(
+        ///    id integer auto_increment,
+        ///    user_id integer,
+        ///    ip_address text,
+        ///    device_info text,
+        ///    is_attempt_failed char(1) DEFAULT &apos;F&apos;,	
+        ///    is_force_signout char(1) DEFAULT &apos;F&apos;,
+        ///    signin_at datetime,
+        ///    signout_at datetime,
+        ///    CONSTRAINT eb_signin_log_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///CREATE INDEX eb_signin_log_id_idx
+        ///ON eb_signin_log(id);.
+        /// </summary>
+        public static string eb_signin_log2 {
+            get {
+                return ResourceManager.GetString("eb_signin_log2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to -- For MySQL.
         /// </summary>
         public static string eb_split_str_util {
