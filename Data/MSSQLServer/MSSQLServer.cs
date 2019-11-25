@@ -167,12 +167,90 @@ namespace ExpressBase.Common.Data.MSSQLServer
 
         public EbDataTable DoQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
-            return null;
+            EbDataTable dt = new EbDataTable();
+
+            using (SqlConnection con = dbConnection as SqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            DataTable schema = reader.GetSchemaTable();
+                            if (schema != null)
+                            {
+                                this.AddColumns(dt, schema);
+                                PrepareDataTable(reader, dt);
+                            }
+                            //ds.Tables.Add(dt);
+                            //ds.RowNumbers += dt.Rows.Count.ToString() + ",";
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("SQL Server Exception: " + e.Message);
+                    throw e;
+                }
+            }
+
+            return dt;
         }
 
         public EbDataSet DoQueries(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
-            return null;
+            var dtStart = DateTime.Now;
+            Console.WriteLine(string.Format("DoQueries Start Time : {0}", dtStart));
+            EbDataSet ds = new EbDataSet();
+            ds.RowNumbers = "";
+            try
+            {
+                DbConnection con = dbConnection;
+                using (var reader = this.DoQueriesBasic(con, query, parameters))
+                {
+                    var dtExeTime = DateTime.Now;
+                    Console.WriteLine(string.Format("DoQueries Execution Time : {0}", dtExeTime));
+                    do
+                    {
+                        try
+                        {
+                            EbDataTable dt = new EbDataTable();
+                            DataTable schema = reader.GetSchemaTable();
+                            if (schema != null)
+                            {
+                                this.AddColumns(dt, schema);
+                                PrepareDataTable((SqlDataReader)reader, dt);
+                            }
+                            ds.Tables.Add(dt);
+                            ds.RowNumbers += dt.Rows.Count.ToString() + ",";
+                        }
+                        catch (Exception ee)
+                        {
+                            throw ee;
+                        }
+                    }
+                    while (reader.NextResult());
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            var dtEnd = DateTime.Now;
+            Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
+
+            var ts = (dtEnd - dtStart).TotalMilliseconds;
+            Console.WriteLine(string.Format("DoQueries Execution Time : {0}", ts));
+            ds.RowNumbers = ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 1)/*(ds.RowNumbers.Length>3)?ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 3): ds.RowNumbers*/;
+            ds.StartTime = dtStart;
+            ds.EndTime = dtEnd;
+            return ds;
         }
 
         public EbDataTable DoProcedure(DbConnection dbConnection, string query, params DbParameter[] parameters)
@@ -182,11 +260,48 @@ namespace ExpressBase.Common.Data.MSSQLServer
 
         public DbDataReader DoQueriesBasic(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
+            var con = dbConnection as SqlConnection;
+            try
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    if (parameters != null && parameters.Length > 0)
+                        cmd.Parameters.AddRange(parameters);
+                    cmd.Prepare();
+                    return cmd.ExecuteReader(CommandBehavior.KeyInfo | CommandBehavior.CloseConnection);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
             return null;
         }
 
         public int DoNonQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
+            using (var con = dbConnection as SqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+
+                        return cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+                //catch (SocketException scket) { }
+            }
+
             return 0;
         }
 
@@ -226,113 +341,35 @@ namespace ExpressBase.Common.Data.MSSQLServer
         {
             EbDataTable dt = new EbDataTable();
 
-            using (var con = GetNewConnection() as SqlConnection)
+            try
             {
-                try
-                {
-                    con.Open();
-                    using (SqlCommand cmd = new SqlCommand(query, con))
-                    {
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
-
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            DataTable schema = reader.GetSchemaTable();
-                            if (schema != null)
-                            {
-                                this.AddColumns(dt, schema);
-                                PrepareDataTable(reader, dt);
-                            }
-                            //ds.Tables.Add(dt);
-                            //ds.RowNumbers += dt.Rows.Count.ToString() + ",";
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("SQL Server Exception: " + e.Message);
-                    throw e;
-                }
-                //catch (SocketException scket){ }
+                SqlConnection con = GetNewConnection() as SqlConnection;
+                dt = DoQuery(con, query, parameters);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("SQL Server Exception: " + e.Message);
+                throw e;
             }
 
             return dt;
         }
 
-        public DbDataReader DoQueriesBasic(string query, params DbParameter[] parameters)
-        {
-            var con = GetNewConnection() as SqlConnection;
-            try
-            {
-                con.Open();
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    if (parameters != null && parameters.Length > 0)
-                        cmd.Parameters.AddRange(parameters);
-                    cmd.Prepare();
-                    return cmd.ExecuteReader(CommandBehavior.KeyInfo | CommandBehavior.CloseConnection);
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            //catch (SocketException scket)
-            //{
-            //}
-
-            return null;
-        }
-
         public EbDataSet DoQueries(string query, params DbParameter[] parameters)
         {
-            var dtStart = DateTime.Now;
-            Console.WriteLine(string.Format("DoQueries Start Time : {0}", dtStart));
             EbDataSet ds = new EbDataSet();
-            ds.RowNumbers = "";
+
             try
             {
-                using (var reader = this.DoQueriesBasic(query, parameters))
-                {
-                    var dtExeTime = DateTime.Now;
-                    Console.WriteLine(string.Format("DoQueries Execution Time : {0}", dtExeTime));
-                    do
-                    {
-                        try
-                        {
-                            EbDataTable dt = new EbDataTable();
-                            DataTable schema = reader.GetSchemaTable();
-                            if (schema != null)
-                            {
-                                this.AddColumns(dt, schema);
-                                PrepareDataTable((SqlDataReader)reader, dt);
-                            }
-                            ds.Tables.Add(dt);
-                            ds.RowNumbers += dt.Rows.Count.ToString() + ",";
-                        }
-                        catch (Exception ee)
-                        {
-                            throw ee;
-                        }
-                    }
-                    while (reader.NextResult());
-                }
+                SqlConnection con = GetNewConnection() as SqlConnection;
+                ds = DoQueries(con, query, parameters);
             }
             catch (Exception e)
             {
+                Console.WriteLine("SQL Server Exception: " + e.Message);
                 throw e;
             }
-            //catch (SocketException scket) { }
 
-            var dtEnd = DateTime.Now;
-            Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
-
-            var ts = (dtEnd - dtStart).TotalMilliseconds;
-            Console.WriteLine(string.Format("DoQueries Execution Time : {0}", ts));
-            ds.RowNumbers = ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 1)/*(ds.RowNumbers.Length>3)?ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 3): ds.RowNumbers*/;
-            ds.StartTime = dtStart;
-            ds.EndTime = dtEnd;
             return ds;
         }
 
@@ -343,27 +380,18 @@ namespace ExpressBase.Common.Data.MSSQLServer
 
         public int DoNonQuery(string query, params DbParameter[] parameters)
         {
-            using (var con = GetNewConnection() as SqlConnection)
+            var con = GetNewConnection() as SqlConnection;
+            int val = 0;
+            try
             {
-                try
-                {
-                    con.Open();
-                    using (SqlCommand cmd = new SqlCommand(query, con))
-                    {
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
-
-                        return cmd.ExecuteNonQuery();
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
-                //catch (SocketException scket) { }
-
-                return 0;
+                val = DoNonQuery(con, query, parameters);
             }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return val;
         }
 
         public Dictionary<int, string> GetDictionary(string query, string dm, string vm)
@@ -780,6 +808,22 @@ namespace ExpressBase.Common.Data.MSSQLServer
 
         public string EB_INSERT_EXECUTION_LOGS
         { get { return @""; } }
+
+        public string EB_GET_MOB_MENU_OBJ_IDS
+        {
+            get
+            {
+                return @"";
+            }
+        }
+
+        public string EB_GET_MOBILE_PAGES
+        {
+            get
+            {
+                return @"";
+            }
+        }
 
         // DBClient
 

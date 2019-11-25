@@ -39,22 +39,22 @@ namespace ExpressBase.Common
         {
             this.InnerDictionary = new Dictionary<EbDbTypes, VendorDbType>();
             this.InnerDictionary.Add(EbDbTypes.AnsiString, new VendorDbType(EbDbTypes.AnsiString, MySqlDbType.Text, "text"));
-            this.InnerDictionary.Add(EbDbTypes.Binary, new VendorDbType(EbDbTypes.Binary, MySqlDbType.Binary, "Binary"));
-            this.InnerDictionary.Add(EbDbTypes.Byte, new VendorDbType(EbDbTypes.Byte, MySqlDbType.Byte, "Byte"));
-            this.InnerDictionary.Add(EbDbTypes.Date, new VendorDbType(EbDbTypes.Date, MySqlDbType.Date, "Date"));
-            this.InnerDictionary.Add(EbDbTypes.DateTime, new VendorDbType(EbDbTypes.DateTime, MySqlDbType.Timestamp, "Timestamp"));
-            this.InnerDictionary.Add(EbDbTypes.Decimal, new VendorDbType(EbDbTypes.Decimal, MySqlDbType.Decimal, "Decimal"));
-            this.InnerDictionary.Add(EbDbTypes.Double, new VendorDbType(EbDbTypes.Double, MySqlDbType.Double, "Double"));
-            this.InnerDictionary.Add(EbDbTypes.Int16, new VendorDbType(EbDbTypes.Int16, MySqlDbType.Int16, "Int16"));
-            this.InnerDictionary.Add(EbDbTypes.Int32, new VendorDbType(EbDbTypes.Int32, MySqlDbType.Decimal, "Int32"));
-            this.InnerDictionary.Add(EbDbTypes.Int64, new VendorDbType(EbDbTypes.Int64, MySqlDbType.Int64, "Int64"));
-            this.InnerDictionary.Add(EbDbTypes.Object, new VendorDbType(EbDbTypes.Object, MySqlDbType.JSON, "Json"));
-            this.InnerDictionary.Add(EbDbTypes.String, new VendorDbType(EbDbTypes.String, MySqlDbType.Text, "Text"));
-            this.InnerDictionary.Add(EbDbTypes.Time, new VendorDbType(EbDbTypes.Time, MySqlDbType.Time, "Time"));
-            this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, MySqlDbType.LongText, "LongText"));
-            this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, MySqlDbType.JSON, "Json"));
-            this.InnerDictionary.Add(EbDbTypes.Bytea, new VendorDbType(EbDbTypes.Bytea, MySqlDbType.Blob, "bytea"));
-            this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, MySqlDbType.VarChar + "(1)", "Varchar"));
+            this.InnerDictionary.Add(EbDbTypes.Binary, new VendorDbType(EbDbTypes.Binary, MySqlDbType.Binary, "binary"));
+            this.InnerDictionary.Add(EbDbTypes.Byte, new VendorDbType(EbDbTypes.Byte, MySqlDbType.VarChar + "(1)", "varchar(1)"));
+            this.InnerDictionary.Add(EbDbTypes.Date, new VendorDbType(EbDbTypes.Date, MySqlDbType.Datetime, "datetime"));
+            this.InnerDictionary.Add(EbDbTypes.DateTime, new VendorDbType(EbDbTypes.DateTime, MySqlDbType.Timestamp, "timestamp"));
+            this.InnerDictionary.Add(EbDbTypes.Decimal, new VendorDbType(EbDbTypes.Decimal, MySqlDbType.Decimal, "decimal"));
+            this.InnerDictionary.Add(EbDbTypes.Double, new VendorDbType(EbDbTypes.Double, MySqlDbType.Double, "double"));
+            this.InnerDictionary.Add(EbDbTypes.Int16, new VendorDbType(EbDbTypes.Int16, MySqlDbType.Int16, "int16"));
+            this.InnerDictionary.Add(EbDbTypes.Int32, new VendorDbType(EbDbTypes.Int32, MySqlDbType.Decimal, "int32"));
+            this.InnerDictionary.Add(EbDbTypes.Int64, new VendorDbType(EbDbTypes.Int64, MySqlDbType.Int64, "int64"));
+            this.InnerDictionary.Add(EbDbTypes.Object, new VendorDbType(EbDbTypes.Object, MySqlDbType.JSON, "json"));
+            this.InnerDictionary.Add(EbDbTypes.String, new VendorDbType(EbDbTypes.String, MySqlDbType.Text, "text"));
+            this.InnerDictionary.Add(EbDbTypes.Time, new VendorDbType(EbDbTypes.Time, MySqlDbType.Time, "time"));
+            this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, MySqlDbType.LongText, "longText"));
+            this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, MySqlDbType.JSON, "json"));
+            this.InnerDictionary.Add(EbDbTypes.Bytea, new VendorDbType(EbDbTypes.Bytea, MySqlDbType.Blob, "blob"));
+            this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, MySqlDbType.VarChar + "(1)", "varchar(1)"));
         }
 
         public static IVendorDbTypes Instance => new MySQLEbDbTypes();
@@ -344,10 +344,10 @@ namespace ExpressBase.Common
                 catch (SocketException scket)
                 {
                 }
+
             }
 
             return 0;
-
         }
 
         public T DoQuery<T>(string query, params DbParameter[] parameters)
@@ -404,7 +404,7 @@ namespace ExpressBase.Common
             EbDataTable tbl = new EbDataTable();
             try
             {
-                MySqlConnection con = GetNewConnection() as MySqlConnection;               
+                MySqlConnection con = GetNewConnection() as MySqlConnection;
                 tbl = DoProcedure(con, query, parameters);
             }
             catch (MySqlException myexec)
@@ -423,7 +423,7 @@ namespace ExpressBase.Common
             }
             try
             {
-                MySqlConnection con = GetNewConnection() as MySqlConnection;               
+                MySqlConnection con = GetNewConnection() as MySqlConnection;
                 ds = DoQueries(con, query, parameters);
             }
             catch (MySqlException myexec)
@@ -432,7 +432,7 @@ namespace ExpressBase.Common
             }
             return ds;
         }
-               
+
         public int DoNonQuery(string query, params DbParameter[] parameters)
         {
             int val = 0;
@@ -1215,6 +1215,22 @@ namespace ExpressBase.Common
             }
         }
 
+        public string EB_GET_MOB_MENU_OBJ_IDS
+        {
+            get
+            {
+                return @"AND FIND_IN_SET(EOA.obj_id, @ids) ";
+            }
+        }
+
+        public string EB_GET_MOBILE_PAGES
+        {
+            get
+            {
+                return @"AND FIND_IN_SET(OD.id, @objids) ";
+            }
+        }
+
         // DBClient
 
         public string EB_GETDBCLIENTTTABLES
@@ -1555,14 +1571,8 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"SELECT DISTINCT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
-                                REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
-                                REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE
-                                (CONCAT(UPPER(SUBSTR(@ColumName,1,1)),LOWER(SUBSTR(@ColumName,2))),' a',' A'),' b',' B'),
-                                    ' c',' C'),' d',' D'),' e',' E'),' f',' F'),' g',' G'),' h',' H'),' i',' I'),' j',' J'),
-                                    ' k',' K'),' l',' L'),' m',' M'),' n',' N'),' o',' O'),' p',' P'),' q',' Q'),' r',' R'),
-                                    ' s',' S'),' t',' T'),' u',' U'),' v',' V'),' w',' W'),' x',' X'),' y',' Y'),' z',' Z') AS @ColumName 
-                        FROM @TableName ORDER BY @ColumName;";
+                return @"SELECT DISTINCT TRIM(@ColumName) AS @ColumName 
+                            FROM @TableName ORDER BY @ColumName;";
             }
         }
 
