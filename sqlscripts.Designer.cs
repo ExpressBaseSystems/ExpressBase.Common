@@ -102,16 +102,16 @@ namespace ExpressBase.Common {
         ///    description text,
         ///    app_icon text,
         ///    application_type integer,
-        ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    eb_del char(1) NOT NULL DEFAULT &apos;F&apos;,
         ///	app_settings text,
         ///    CONSTRAINT eb_applications_pkey PRIMARY KEY (id),
-        ///    CONSTRAINT eb_applications_eb_del_check CHECK (eb_del = &apos;T&apos;::&quot;char&quot; OR eb_del = &apos;F&apos;::&quot;char&quot;)
+        ///    CONSTRAINT eb_applications_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
         ///
         ///-- Index: public.eb_applications_id_idx
         ///
-        ///-- DROP IND [rest of string was truncated]&quot;;.
+        ///-- DROP INDEX public.eb_applicatio [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_applications1 {
             get {
@@ -134,10 +134,12 @@ namespace ExpressBase.Common {
         ///  CONSTRAINT eb_applications_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
-        ///CREATE INDEX eb_applications_eb_del_idx ON eb_applications (eb_del) USING btree;
+        ///CREATE INDEX eb_applications_eb_del_idx 
+        ///ON eb_applications(eb_del);
         ///
         ///
-        ///CREATE INDEX eb_applications_id_idx ON  [rest of string was truncated]&quot;;.
+        ///CREATE INDEX eb_applications_id_idx 
+        ///ON eb_applic [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_applications2 {
             get {
@@ -200,9 +202,9 @@ namespace ExpressBase.Common {
         ///  constraint eb_audit_lines_pkey primary key(id)
         ///);
         ///
-        ///create index eb_audit_lines_idx on eb_audit_lines(id) using btree;
+        ///CREATE INDEX eb_audit_lines_id_idx 
+        ///	ON eb_audit_lines(id);
         ///
-        ///create index eb_audit_lines_masterid_idx on eb_audit_lines(masterid) using btree;
         ///.
         /// </summary>
         public static string eb_audit_lines2 {
@@ -255,19 +257,17 @@ namespace ExpressBase.Common {
         ///   Looks up a localized string similar to CREATE TABLE eb_audit_master
         ///(
         ///    id integer auto_increment,
-        ///    formid varchar(255),
+        ///    formid text,
         ///    dataid integer,
         ///    actiontype integer,
         ///    signin_log_id integer,
         ///    eb_createdby integer,
-        ///    eb_createdat timestamp DEFAULT current_timestamp,
+        ///    eb_createdat datetime,
         ///    CONSTRAINT eb_audit_master_pkey PRIMARY KEY (id)
         ///);
         ///
-        ///create index eb_audit_master_idx on eb_audit_master(id) using btree;
-        ///
-        ///create index eb_audit_master_formid_idx on eb_audit_master(formid) using btree;
-        ///.
+        ///CREATE INDEX eb_audit_master_id_idx 
+        ///	ON eb_audit_master(id);.
         /// </summary>
         public static string eb_audit_master2 {
             get {
@@ -550,8 +550,8 @@ namespace ExpressBase.Common {
         ///  botid varchar(100),
         ///  modified_by integer,
         ///  solution_id integer,
-        ///  created_at timestamp DEFAULT  CURRENT_TIMESTAMP,
-        ///  modified_at timestamp DEFAULT  CURRENT_TIMESTAMP,
+        ///  created_at datetime,
+        ///  modified_at datetime,
         ///  created_by integer,
         ///  app_id integer,
         ///  fullname text,
@@ -561,8 +561,10 @@ namespace ExpressBase.Common {
         ///
         ///
         ///CREATE INDEX eb_bots_app_id_idx
-        ///  ON eb_bots
-        ///  (app_id)USING btr [rest of string was truncated]&quot;;.
+        ///  ON eb_bots(app_id);
+        ///
+        ///CREATE INDEX eb_bots_id_idx
+        ///  ON eb_bots(id);.
         /// </summary>
         public static string eb_bots2 {
             get {
@@ -658,8 +660,7 @@ namespace ExpressBase.Common {
         ///);
         ///
         ///CREATE INDEX eb_constraints_line_id_idx
-        ///ON eb_constraints_line(id) 
-        ///USING btree;.
+        ///ON eb_constraints_line(id);.
         /// </summary>
         public static string eb_constraints_line2 {
             get {
@@ -712,16 +713,15 @@ namespace ExpressBase.Common {
         ///    key_type integer,
         ///    description text,
         ///    eb_created_by integer,
-        ///    eb_created_at timestamp DEFAULT current_timestamp,
+        ///    eb_created_at datetime,
         ///    eb_lastmodified_by integer,
-        ///    eb_lastmodified_at timestamp DEFAULT current_timestamp,
+        ///    eb_lastmodified_at datetime,
         ///    eb_del character(1)  DEFAULT &apos;F&apos;,
         ///    CONSTRAINT eb_constraints_master_pkey PRIMARY KEY (id)
         ///);
         ///
         ///CREATE INDEX eb_constraints_master_id_idx
-        ///ON eb_constraints_master(id)
-        ///USING btree;.
+        ///ON eb_constraints_master(id);.
         /// </summary>
         public static string eb_constraints_master2 {
             get {
@@ -1266,7 +1266,14 @@ namespace ExpressBase.Common {
         ///    refid text,
         ///    params json,
         ///	CONSTRAINT eb_executionlogs_pkey PRIMARY KEY (id)
-        ///);.
+        ///);
+        ///
+        ///-- Index: eb_executionlogs_id_idx
+        ///
+        ///-- DROP INDEX public.eb_executionlogs_id_idx;
+        ///
+        ///CREATE INDEX eb_executionlogs_id_idx
+        ///    ON eb_executionlogs(id);.
         /// </summary>
         public static string eb_executionlogs {
             get {
@@ -1287,16 +1294,19 @@ namespace ExpressBase.Common {
         ///   Looks up a localized string similar to CREATE TABLE eb_executionlogs
         ///(
         ///  id integer NOT NULL auto_increment,
-        ///  `rows` varchar(200),
+        ///  `rows` text,
         ///  exec_time integer,
         ///  created_by integer,
-        ///  created_at timestamp,
+        ///  created_at datetime,
         ///  refid text,
         ///  params json,
         ///  constraint eb_executionlogs_pkey primary key(id)
         ///);
         ///
-        ///create index eb_executionlogs_idx on eb_executionlogs(id) using btree;
+        ///CREATE INDEX eb_executionlogs_id_idx 
+        ///ON eb_executionlogs(id);
+        ///
+        ///
         ///.
         /// </summary>
         public static string eb_executionlogs2 {
@@ -1416,19 +1426,8 @@ namespace ExpressBase.Common {
         ///
         ///
         ///
-        ///create index eb_files_bytea_idx 
-        ///on eb_files_bytea(id) 
-        ///using btree;
-        ///
-        ///
-        ///create index eb_files_bytea_filename_idx 
-        ///on eb_files_bytea(filename) 
-        ///using btree;
-        ///
-        ///
-        ///create index eb_files_bytea_filecategory_idx 
-        ///on eb_files_bytea(filecategory) 
-        ///using btree;.
+        ///CREATE INDEX eb_files_bytea_id_idx
+        ///    ON eb_files_bytea(id);.
         /// </summary>
         public static string eb_files_bytea2 {
             get {
@@ -1449,13 +1448,17 @@ namespace ExpressBase.Common {
         ///    tags text,
         ///    filetype text,
         ///    uploadts timestamp without time zone,
-        ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    eb_del char(1) NOT NULL DEFAULT &apos;F&apos;,
         ///    filecategory integer,
         ///    context text,   
         ///    CONSTRAINT eb_files_ref_pkey PRIMARY KEY (id),
-        ///    CONSTRAINT eb_files_ref_eb_del_check CHECK (eb_del = &apos;T&apos;::&quot;char&quot; OR eb_del = &apos;F&apos;::&quot;char&quot;)
+        ///    CONSTRAINT eb_files_ref_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
-        ///.
+        ///
+        ///
+        ///-- Index: eb_files_ref_id_idx
+        ///
+        ///-- [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files_ref {
             get {
@@ -1474,12 +1477,16 @@ namespace ExpressBase.Common {
         ///    eb_files_ref_id integer NOT NULL,
         ///    filestore_sid text,
         ///    length bigint,
-        ///    is_image &quot;char&quot;,
+        ///    is_image char(1),
         ///    imagequality_id integer,
         ///    img_manp_ser_con_id integer,
         ///    filedb_con_id integer,
         ///    CONSTRAINT eb_files_ref_variations_pkey PRIMARY KEY (id)
-        ///);.
+        ///);
+        ///
+        ///-- Index: eb_files_ref_variations_id_idx
+        ///
+        ///-- DROP INDEX public.eb_files_ref_variations_id_idx [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files_ref_variations {
             get {
@@ -1501,7 +1508,7 @@ namespace ExpressBase.Common {
         ///(
         ///  id integer NOT NULL auto_increment,
         ///  eb_files_ref_id integer NOT NULL,
-        ///  filestore_sid varchar(100),
+        ///  filestore_sid text,
         ///  length bigint,
         ///  is_image char,
         ///  imagequality_id integer,
@@ -1511,13 +1518,14 @@ namespace ExpressBase.Common {
         ///);
         ///
         ///
-        ///CREATE INDEX eb_files_ref_variations_idx
-        ///ON eb_files_ref_variations(id) 
-        ///USING btree;
+        ///CREATE INDEX eb_files_ref_variations_id_idx
+        ///ON eb_files_ref_variations(id);
         ///
         ///
         ///CREATE INDEX eb_files_variations_files_refid_idx
-        ///ON eb_files_ref_variations(eb_f [rest of string was truncated]&quot;;.
+        ///ON eb_files_ref_variations(eb_files_ref_id);
+        ///
+        ///.
         /// </summary>
         public static string eb_files_ref_variations2 {
             get {
@@ -1535,15 +1543,14 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///CREATE TABLE eb_files_ref
+        ///   Looks up a localized string similar to CREATE TABLE eb_files_ref
         ///(
         ///  id integer NOT NULL auto_increment,
         ///  userid integer NOT NULL,
-        ///  filename varchar(75),
+        ///  filename text,
         ///  tags text,
         ///  filetype text,
-        ///  uploadts timestamp,
+        ///  uploadts datetime,
         ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  filecategory integer,  
         ///  context text,
@@ -1552,13 +1559,12 @@ namespace ExpressBase.Common {
         ///);
         ///
         ///
-        ///CREATE INDEX eb_files_ref_idx
-        ///ON eb_files_ref(id) 
-        ///USING btree;
+        ///CREATE INDEX eb_files_ref_id_idx
+        ///ON eb_files_ref(id);
         ///
         ///
         ///CREATE INDEX eb_files_ref_userid_idx
-        ///ON eb_files_re [rest of string was truncated]&quot;;.
+        ///ON eb_files_ref(userid);.
         /// </summary>
         public static string eb_files_ref2 {
             get {
@@ -1846,7 +1852,7 @@ namespace ExpressBase.Common {
         ///
         ///-- DROP INDEX public.eb_google_map_idx;
         ///
-        ///CREATE INDEX eb_google_map_idx
+        ///CREATE INDEX eb_google_map_id_idx
         ///    ON eb_google_map(id);
         ///
         ///.
@@ -1868,8 +1874,7 @@ namespace ExpressBase.Common {
         ///);
         ///
         ///CREATE INDEX eb_google_map_id_idx
-        ///  ON eb_google_map
-        ///  (Id)USING btree;
+        ///    ON eb_google_map(id);
         ///.
         /// </summary>
         public static string eb_google_map2 {
@@ -1916,18 +1921,13 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_keys
         ///(
-        ///  id bigint NOT NULL auto_increment,
-        ///  `key` varchar(75) NOT NULL,
+        ///  id integer NOT NULL auto_increment,
+        ///  `key` text NOT NULL,
         ///  CONSTRAINT eb_keys_pkey PRIMARY KEY (id)
         ///);
         ///
-        ///CREATE INDEX eb_keys_idx
-        ///ON eb_keys(id) 
-        ///USING btree;
-        ///
-        ///CREATE INDEX eb_keys_key1_idx
-        ///ON eb_keys(`key`) 
-        ///USING btree;
+        ///CREATE INDEX eb_keys_id_idx
+        ///ON eb_keys(id);
         ///.
         /// </summary>
         public static string eb_keys2 {
@@ -1976,7 +1976,7 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_keyvalue
         ///(
-        ///  id bigint NOT NULL auto_increment,
+        ///  id integer NOT NULL auto_increment,
         ///  key_id bigint NOT NULL,
         ///  lang_id integer NOT NULL,
         ///  value text NOT NULL,
@@ -1984,15 +1984,10 @@ namespace ExpressBase.Common {
         ///);
         ///
         ///
-        ///CREATE INDEX eb_keyvalue_idx
-        ///ON eb_keyvalue(id) 
-        ///USING btree;
+        ///CREATE INDEX eb_keyvalue_id_idx
+        ///ON eb_keyvalue(id);
         ///
-        ///
-        ///
-        ///CREATE INDEX eb_keyvalue_keyid_idx
-        ///ON eb_keyvalue(key_id) 
-        ///USING btree;.
+        ///.
         /// </summary>
         public static string eb_keyvalue2 {
             get {
@@ -2040,20 +2035,14 @@ namespace ExpressBase.Common {
         ///   Looks up a localized string similar to CREATE TABLE eb_languages
         ///(
         ///  id integer NOT NULL auto_increment,
-        ///  language varchar(25) NOT NULL,
+        ///  language text NOT NULL,
         ///  CONSTRAINT eb_languages_pkey PRIMARY KEY (id)
         ///);
         ///
         ///
-        ///CREATE INDEX eb_languages_idx
-        ///ON eb_languages(id) 
-        ///USING btree;
+        ///CREATE INDEX eb_languages_id_idx
+        ///ON eb_languages(id);
         ///
-        ///
-        ///
-        ///CREATE INDEX eb_languages_lang_idx
-        ///ON eb_languages(language) 
-        ///USING btree;
         ///.
         /// </summary>
         public static string eb_languages2 {
@@ -2097,18 +2086,18 @@ namespace ExpressBase.Common {
         ///(
         ///    id serial,
         ///    keys text,
-        ///    isrequired &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    isrequired char(1) NOT NULL DEFAULT &apos;F&apos;,
         ///	keytype text,
-        ///    eb_del &quot;char&quot;,
+        ///    eb_del char(1) DEFAULT &apos;F&apos;,
         ///    CONSTRAINT eb_locationsconfig_pkey PRIMARY KEY (id)
         ///);
         ///
         ///
-        ///-- Index: eb_locationsconfigid_idx
+        ///-- Index: eb_locationsconfig_id_idx
         ///
-        ///-- DROP INDEX public.eb_locationsconfigid_idx;
+        ///-- DROP INDEX public.eb_locationsconfig_id_idx;
         ///
-        ///CREATE INDEX eb_locationsconfigid_idx
+        ///CREATE INDEX eb_locationsconfig_id_idx
         ///    ON eb_location_config(id);
         ///
         ///.
@@ -2124,15 +2113,17 @@ namespace ExpressBase.Common {
         ///(
         ///  id integer NOT NULL auto_increment,
         ///  `keys` varchar(100),
-        ///  isrequired char,
+        ///  isrequired char(1) DEFAULT &apos;F&apos;,
         ///  keytype text,
-        ///  eb_del char,
+        ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  CONSTRAINT eb_location_config_pkey PRIMARY KEY (id)
         ///);
         ///
         ///
         ///
-        ///create index eb_location_config_idx on eb_location_config(id) using btree;
+        ///CREATE INDEX eb_locationsconfig_id_idx
+        ///    ON eb_location_config(id);
+        ///
         ///.
         /// </summary>
         public static string eb_location_config2 {
@@ -2190,8 +2181,8 @@ namespace ExpressBase.Common {
         ///
         ///-- DROP INDEX public.eb_locationsid_idx;
         ///
-        ///CREATE INDEX eb_locationsid_idx
-        ///    ON eb_loc [rest of string was truncated]&quot;;.
+        ///CREATE INDEX eb_locations_id_idx
+        ///    ON eb_lo [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_locations1 {
             get {
@@ -2202,7 +2193,7 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_locations
         ///(
-        ///   id integer auto_increment,
+        ///	id integer auto_increment,
         ///    shortname varchar(20) DEFAULT &apos;default&apos;,
         ///    longname varchar(50) DEFAULT &apos;default&apos;,
         ///    image text,
@@ -2215,10 +2206,9 @@ namespace ExpressBase.Common {
         ///);
         ///
         ///
-        ///create index eb_locations_idx on eb_locations(id) using btree;
+        ///CREATE INDEX eb_locations_id_idx
+        ///    ON eb_locations(id);
         ///
-        ///
-        ///create index eb_locations_shortname_idx on eb_locations(shortname) using btree;
         ///.
         /// </summary>
         public static string eb_locations2 {
@@ -2493,8 +2483,7 @@ namespace ExpressBase.Common {
         ///    obj_name text,
         ///    obj_type integer,
         ///    obj_cur_status integer,
-        ///    obj_desc text,
-        ///    applicationid integer,
+        ///    obj_desc text,    
         ///    obj_tags text,
         ///    owner_uid integer,
         ///    owner_ts timestamp without time zone,
@@ -2505,7 +2494,9 @@ namespace ExpressBase.Common {
         ///);
         ///
         ///
-        ///-- Index: eb_objects_applicationid_idx        /// [rest of string was truncated]&quot;;.
+        ///-- Index: eb_objects_id_idx
+        ///
+        ///-- DROP INDEX public.eb_objects_ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects {
             get {
@@ -2828,6 +2819,13 @@ namespace ExpressBase.Common {
         ///    object_id integer,
         ///    eb_del char(1) DEFAULT &apos;F&apos;
         ///);
+        ///
+        ///-- Index: eb_objects_favourites_id_idx
+        ///
+        ///-- DROP INDEX public.eb_objects_favourites_id_idx;
+        ///
+        ///CREATE INDEX eb_objects_favourites_id_idx
+        ///    ON eb_objects_favourites(id);
         ///.
         /// </summary>
         public static string eb_objects_favourites {
@@ -2851,9 +2849,13 @@ namespace ExpressBase.Common {
         ///    id integer auto_increment,
         ///    userid integer,
         ///    object_id integer,
-        ///    eb_del char DEFAULT &apos;F&apos;,
+        ///    eb_del char(1) DEFAULT &apos;F&apos;,
         ///    CONSTRAINT eb_objects_favourites_pkey PRIMARY KEY (id)
         ///);
+        ///
+        ///
+        ///CREATE INDEX eb_objects_favourites_id_idx
+        ///    ON eb_objects_favourites(id);
         ///.
         /// </summary>
         public static string eb_objects_favourites2 {
@@ -2963,14 +2965,14 @@ namespace ExpressBase.Common {
         ///    dependant text,
         ///    removed_by integer,
         ///    removed_at timestamp without time zone,
-        ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    eb_del char(1) NOT NULL DEFAULT &apos;F&apos;,
         ///    CONSTRAINT eb_objects_relations_pkey PRIMARY KEY (id),
-        ///    CONSTRAINT eb_objects_relations_eb_del_check CHECK (eb_del = &apos;T&apos;::&quot;char&quot; OR eb_del = &apos;F&apos;::&quot;char&quot;)
+        ///    CONSTRAINT eb_objects_relations_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
         ///-- Index: eb_objects_relations_eb_del_idx
         ///
-        /// [rest of string was truncated]&quot;;.
+        ///-- DROP INDEX public.eb [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_relations1 {
             get {
@@ -2981,22 +2983,22 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_objects_relations
         ///(
-        ///  dominant text,
-        ///  dependant text,
-        ///  id integer NOT NULL auto_increment,
-        ///  removed_by integer,
-        ///  removed_at timestamp,
-        ///  eb_del char(1) DEFAULT &apos;F&apos;,
-        ///  CONSTRAINT eb_objects_relations_pkey PRIMARY KEY (id),
-        ///  CONSTRAINT eb_objects_relations_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
+        ///	id integer NOT NULL auto_increment,
+        ///	dominant text,
+        ///	dependant text,
+        ///	removed_by integer,
+        ///	removed_at datetime,
+        ///	eb_del char(1) DEFAULT &apos;F&apos;,
+        ///	CONSTRAINT eb_objects_relations_pkey PRIMARY KEY (id),
+        ///	CONSTRAINT eb_objects_relations_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
         ///CREATE INDEX eb_objects_relations_eb_del_idx
-        ///  ON eb_objects_relations
-        /// (eb_del)  USING btree;
-        /// 
-        /// CREATE INDEX eb_objects_relations_id_idx
-        ///  ON eb_objects_relations        /// [rest of string was truncated]&quot;;.
+        ///    ON eb_objects_relations(eb_del);
+        ///
+        ///CREATE INDEX eb_objects_relations_id_idx
+        ///    ON eb_objects_relations(id);
+        ///.
         /// </summary>
         public static string eb_objects_relations2 {
             get {
@@ -3151,27 +3153,24 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_objects_status
         ///(
-        ///  id integer NOT NULL auto_increment,
-        ///  refid text,
-        ///  status integer,
-        ///  uid integer,
-        ///  ts timestamp,
-        ///  eb_obj_ver_id integer,
-        ///  changelog text,
-        ///  CONSTRAINT eb_objects_status_pkey PRIMARY KEY (id)
+        ///	id integer NOT NULL auto_increment,
+        ///	refid varchar(200),
+        ///	status integer,
+        ///	uid integer,
+        ///	ts datetime,
+        ///	eb_obj_ver_id integer,
+        ///	changelog text,
+        ///	CONSTRAINT eb_objects_status_pkey PRIMARY KEY (id)
         ///);
         ///
         ///CREATE INDEX eb_objects_status_eb_obj_ver_id_idx
-        ///  ON eb_objects_status
-        ///(eb_obj_ver_id)USING btree;
+        ///    ON eb_objects_status(eb_obj_ver_id);
         ///
         ///CREATE INDEX eb_objects_status_id_idx
-        ///  ON eb_objects_status
-        ///  (id)USING btree;
-        ///  
-        ///  CREATE INDEX eb_objects_status_refid_id_idx
-        ///  ON eb_objects_status
-        ///  ( [rest of string was truncated]&quot;;.
+        ///    ON eb_objects_status(id);
+        ///
+        ///CREATE INDEX eb_objects_status_refid_id_idx
+        ///    ON eb_objects_status(refid);.
         /// </summary>
         public static string eb_objects_status2 {
             get {
@@ -3289,10 +3288,10 @@ namespace ExpressBase.Common {
         ///    major_ver_num integer,
         ///    minor_ver_num integer,
         ///    patch_ver_num integer,
-        ///    working_mode1 boolean DEFAULT false,
         ///    status_id integer,
         ///    ver_num text,
-        ///    working_mode &quot;char&quot; NOT NULL DEFAU [rest of string was truncated]&quot;;.
+        ///    working_mode char(1) NOT NULL DEFAULT &apos;F&apos;,
+        ///	eb_del char(1) NOT NULL DEFAULT [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_ver1 {
             get {
@@ -3307,20 +3306,19 @@ namespace ExpressBase.Common {
         ///  eb_objects_id integer,
         ///  obj_changelog text,
         ///  commit_uid integer,
-        ///  commit_ts timestamp,
+        ///  commit_ts datetime,
         ///  obj_json json,
         ///  refid text,
         ///  version_num text,
         ///  major_ver_num integer,
         ///  minor_ver_num integer,
         ///  patch_ver_num integer,
-        ///  working_mode1 boolean DEFAULT false,
         ///  status_id integer,
         ///  ver_num text,
         ///  working_mode char NOT NULL DEFAULT &apos;F&apos;,
         ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  CONSTRAINT eb_objects_ver_pkey PRIMARY KEY (id),
-        ///  CONSTR [rest of string was truncated]&quot;;.
+        ///  CONSTRAINT eb_objects_ver_working_mode_check CH [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_ver2 {
             get {
@@ -3358,27 +3356,30 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_objects(
-        ///  id int NOT NULL auto_increment,
-        ///  obj_name varchar(255), 
-        ///  obj_type int,
-        ///  obj_cur_status int,
-        ///  obj_desc text,
-        ///  obj_tags text,
-        ///  owner_uid int,
-        ///  owner_ts timestamp,
-        ///  display_name text,
-        ///  is_logenabled char,
-        ///  eb_del char(1) DEFAULT &apos;F&apos;,
-        ///  CONSTRAINT eb_objects_pkey PRIMARY KEY (id),
-        ///  CONSTRAINT uniq_obj_name UNIQUE (obj_name));
+        ///   Looks up a localized string similar to CREATE TABLE eb_objects
+        ///(
+        ///	id int NOT NULL auto_increment,
+        ///	obj_name text, 
+        ///	obj_type int,
+        ///	obj_cur_status int,
+        ///	obj_desc text,
+        ///	obj_tags text,
+        ///	owner_uid int,
+        ///	owner_ts datetime,
+        ///	display_name text,
+        ///	is_logenabled char,
+        ///	eb_del char(1) DEFAULT &apos;F&apos;,
+        ///	CONSTRAINT eb_objects_pkey PRIMARY KEY (id)
+        ///);
         ///  
         ///
-        ///CREATE INDEX eb_objects_id_idx ON eb_objects (id) using btree;
+        ///CREATE UNIQUE INDEX eb_objects_id_idx
+        ///    ON eb_objects(id);
         ///
         ///CREATE INDEX eb_objects_type_idx
-        ///  ON eb_objects
-        ///  (obj_type) [rest of string was truncated]&quot;;.
+        ///    ON eb_objects(obj_type);
+        ///
+        ///.
         /// </summary>
         public static string eb_objects2 {
             get {
@@ -3426,14 +3427,15 @@ namespace ExpressBase.Common {
         ///    obj_id integer,
         ///    removed_by integer,
         ///    removed_at timestamp without time zone,
-        ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
-        ///    CONSTRAINT eb_objects2application_eb_del_check CHECK (eb_del = &apos;T&apos;::&quot;char&quot; OR eb_del = &apos;F&apos;::&quot;char&quot;)
+        ///    eb_del char(1) NOT NULL DEFAULT &apos;F&apos;,
+        ///    CONSTRAINT eb_objects2application_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;),
+        ///	CONSTRAINT eb_objects2application_pkey PRIMARY KEY(id)
         ///);
         ///
         ///
         ///-- Index: eb_objects2application_app_id_idx
         ///
-        ///-- DROP INDEX public.eb_objects2application_app [rest of string was truncated]&quot;;.
+        ///-- DROP INDE [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects2application1 {
             get {
@@ -3444,11 +3446,11 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_objects2application
         ///(
-        ///  id int NOT NULL auto_increment,
-        ///  app_id int,  
-        ///  obj_id int,
-        ///  removed_by int,
-        ///  removed_at timestamp,
+        ///  id integer NOT NULL auto_increment,
+        ///  app_id integer,  
+        ///  obj_id integer,
+        ///  removed_by integer,
+        ///  removed_at datetime,
         ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  CONSTRAINT eb_objects2application_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;),
         ///  CONSTRAINT eb_objects2application_pkey PRIMARY KEY(id)
@@ -3456,11 +3458,10 @@ namespace ExpressBase.Common {
         ///
         ///
         ///CREATE INDEX eb_objects2application_app_id_idx
-        ///  ON eb_objects2application
-        ///  (app_id) USING btree;
+        ///    ON eb_objects2application(app_id);
         ///
         ///CREATE INDEX eb_objects2application_eb_del_idx
-        ///  ON eb_objects2applicat [rest of string was truncated]&quot;;.
+        ///    ON eb_objects2appli [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects2application2 {
             get {
@@ -3525,8 +3526,10 @@ namespace ExpressBase.Common {
         ///
         ///-- DROP INDEX public.eb_public_holidays_idx;
         ///
-        ///CREATE INDEX eb_public_holidays_idx
-        ///    ON eb_public_holidays(id);.
+        ///CREATE INDEX eb_public_holidays_id_idx
+        ///    ON eb_public_holidays(id);
+        ///
+        ///.
         /// </summary>
         public static string eb_public_holidays {
             get {
@@ -3544,15 +3547,17 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///CREATE TABLE eb_public_holidays
+        ///   Looks up a localized string similar to CREATE TABLE eb_public_holidays
         ///(
         ///    id integer auto_increment,
         ///    eb_loc_id integer,
         ///    holiday_name text,
-        ///    holiday_date timestamp,
+        ///    holiday_date datetime,
         ///    CONSTRAINT eb_public_holidays_pkey PRIMARY KEY (id)
-        ///);.
+        ///);
+        ///
+        ///CREATE INDEX eb_public_holidays_id_idx
+        ///ON eb_public_holidays(id);.
         /// </summary>
         public static string eb_public_holidays2 {
             get {
@@ -3570,7 +3575,7 @@ namespace ExpressBase.Common {
         ///    id serial,
         ///    q_id integer,
         ///    choice text,
-        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    eb_del char(1) DEFAULT &apos;F&apos;,
         ///    score integer,
         ///	CONSTRAINT eb_query_choices_pkey PRIMARY KEY (id)
         ///);
@@ -3611,13 +3616,9 @@ namespace ExpressBase.Common {
         ///
         ///
         ///
-        ///CREATE INDEX eb_query_choices_idx
-        ///ON eb_query_choices(id) 
-        ///USING btree;
+        ///CREATE INDEX eb_query_choices_id_idx
+        ///ON eb_query_choices(id);
         ///
-        ///CREATE INDEX eb_query_choices_qid_idx
-        ///ON eb_query_choices(q_id) 
-        ///USING btree;
         ///.
         /// </summary>
         public static string eb_query_choices2 {
@@ -3701,7 +3702,7 @@ namespace ExpressBase.Common {
         ///    id serial,
         ///    roleid integer,
         ///    locationid integer,
-        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    eb_del char(1) DEFAULT &apos;F&apos;,
         ///    eb_createdby integer,
         ///    eb_createdat timestamp without time zone,
         ///    eb_revokedby integer,
@@ -3712,7 +3713,9 @@ namespace ExpressBase.Common {
         ///
         ///-- Index: public.eb_role2location_id_idx
         ///
-        ///-- DROP INDEX public.eb_role2location_id_idx; [rest of string was truncated]&quot;;.
+        ///-- DROP INDEX public.eb_role2location_id_idx;
+        ///
+        ///CRE [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2location {
             get {
@@ -3756,19 +3759,20 @@ namespace ExpressBase.Common {
         ///  locationid integer,
         ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  eb_createdby integer,
-        ///  eb_createdat timestamp DEFAULT CURRENT_TIMESTAMP,
+        ///  eb_createdat datetime,
         ///  eb_revokedby integer,
-        ///  eb_revokedat timestamp DEFAULT CURRENT_TIMESTAMP,
+        ///  eb_revokedat datetime,
         ///  constraint eb_role2location_pkey primary key(id)
         ///);
         ///
-        ///CREATE INDEX eb_role2location_idx
-        ///ON eb_role2location(id) 
-        ///USING btree;
+        ///CREATE INDEX eb_role2location_id_idx
+        ///ON eb_role2location(id);
         ///
         ///CREATE INDEX eb_role2location_roleid_idx
-        ///ON eb_role2location(roleid) 
-        ///USI [rest of string was truncated]&quot;;.
+        ///ON eb_role2location(roleid);
+        ///
+        ///CREATE INDEX eb_role2location_locationid_idx
+        ///ON eb_role2location( [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2location2 {
             get {
@@ -3821,10 +3825,9 @@ namespace ExpressBase.Common {
         ///    op_id integer,
         ///    revokedby integer,
         ///    revokedat timestamp without time zone,
-        ///    permissionname_backup text,
-        ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    eb_del char(1) NOT NULL DEFAULT &apos;F&apos;,
         ///    CONSTRAINT eb_role2permission_pkey PRIMARY KEY (id),
-        ///    CONSTRAI [rest of string was truncated]&quot;;.
+        ///    CONSTRAINT eb_role2permission_eb_del_check CHECK [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2permission1 {
             get {
@@ -3839,18 +3842,21 @@ namespace ExpressBase.Common {
         ///  role_id integer,  
         ///  permissionname text,
         ///  createdby integer,
-        ///  createdat timestamp DEFAULT CURRENT_TIMESTAMP,
+        ///  createdat datetime,
         ///  obj_id integer,
         ///  op_id integer,
         ///  revokedby integer,
-        ///  revokedat timestamp DEFAULT CURRENT_TIMESTAMP,
-        ///  permissionname_backup text,
+        ///  revokedat datetime,
         ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  CONSTRAINT eb_role2permission_pkey PRIMARY KEY (id),
         ///  CONSTRAINT eb_role2permission_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
-        ///CRE [rest of string was truncated]&quot;;.
+        ///CREATE INDEX eb_role2permission_id_idx
+        ///ON eb_role2permission(id);
+        ///
+        ///
+        ///CREATE INDEX eb_ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2permission2 {
             get {
@@ -3900,13 +3906,13 @@ namespace ExpressBase.Common {
         ///    createdat timestamp without time zone,
         ///    revokedby integer,
         ///    revokedat timestamp without time zone,
-        ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    eb_del char(1) NOT NULL DEFAULT &apos;F&apos;,
         ///    CONSTRAINT eb_role2role_id_pkey PRIMARY KEY (id),
-        ///    CONSTRAINT eb_role2role_eb_del_check CHECK (eb_del = &apos;T&apos;::&quot;char&quot; OR eb_del = &apos;F&apos;::&quot;char&quot;)
+        ///    CONSTRAINT eb_role2role_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
         ///
-        ///-- Ind [rest of string was truncated]&quot;;.
+        ///-- Index: eb_role2role_eb_del [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2role1 {
             get {
@@ -3921,19 +3927,21 @@ namespace ExpressBase.Common {
         ///  role1_id integer,
         ///  role2_id integer,  
         ///  createdby integer,
-        ///  createdat timestamp DEFAULT CURRENT_TIMESTAMP,
+        ///  createdat datetime,
         ///  revokedby integer,
-        ///  revokedat timestamp DEFAULT CURRENT_TIMESTAMP,
+        ///  revokedat datetime,
         ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  CONSTRAINT eb_role2role_id_pkey PRIMARY KEY (id),
         ///  CONSTRAINT eb_role2role_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
         ///CREATE INDEX eb_role2role_eb_del_idx 
-        ///ON eb_role2role(eb_del)
-        ///USING btree;
+        ///ON eb_role2role(eb_del);
         ///
-        ///CREATE U [rest of string was truncated]&quot;;.
+        ///CREATE UNIQUE INDEX eb_role2role_id_idx
+        ///ON eb_role2role (id);
+        ///
+        ///CREATE IN [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2role2 {
             get {
@@ -3985,13 +3993,13 @@ namespace ExpressBase.Common {
         ///    createdat timestamp without time zone,
         ///    revokedby integer,
         ///    revokedat timestamp without time zone,
-        ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    eb_del char(1) NOT NULL DEFAULT &apos;F&apos;,
         ///    CONSTRAINT eb_role2user_id_pkey PRIMARY KEY (id),
-        ///    CONSTRAINT eb_role2user_eb_del_check CHECK (eb_del = &apos;T&apos;::&quot;char&quot; OR eb_del = &apos;F&apos;::&quot;char&quot;)
+        ///    CONSTRAINT eb_role2user_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
         ///
-        ///-- Index [rest of string was truncated]&quot;;.
+        ///-- Index: eb_role2user_eb_del_i [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2user1 {
             get {
@@ -4006,19 +4014,21 @@ namespace ExpressBase.Common {
         ///  role_id integer,
         ///  user_id integer,
         ///  createdby integer,
-        ///  createdat timestamp DEFAULT CURRENT_TIMESTAMP,
+        ///  createdat datetime,
         ///  revokedby integer,
-        ///  revokedat timestamp DEFAULT CURRENT_TIMESTAMP,
+        ///  revokedat datetime,
         ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  CONSTRAINT eb_role2user_id_pkey PRIMARY KEY (id),
         ///  CONSTRAINT eb_role2user_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
         ///CREATE INDEX eb_role2user_eb_del_idx
-        ///ON eb_role2user(eb_del)
-        ///USING btree;
+        ///ON eb_role2user(eb_del);
         ///
-        ///CREATE UNIQUE [rest of string was truncated]&quot;;.
+        ///CREATE UNIQUE INDEX eb_role2user_id_idx
+        ///ON eb_role2user(id);
+        ///  
+        ///CREATE INDEX  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2user2 {
             get {
@@ -4065,11 +4075,15 @@ namespace ExpressBase.Common {
         ///    applicationname text,
         ///    applicationid integer,
         ///    description text,
-        ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
-        ///    is_anonymous &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    eb_del char(1) NOT NULL DEFAULT &apos;F&apos;,
+        ///    is_anonymous char(1) NOT NULL DEFAULT &apos;F&apos;,
         ///    CONSTRAINT eb_roles_id_pkey PRIMARY KEY (id),
         ///    CONSTRAINT eb_rolename_unique UNIQUE (role_name),
-        ///    CONSTRAINT eb_roles_eb_del_check CHECK (eb_del = &apos;T&apos;::&quot;char&quot; OR eb_del = &apos;F&apos;::&quot;char&quot;) [rest of string was truncated]&quot;;.
+        ///    CONSTRAINT eb_roles_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
+        ///);
+        ///
+        ///	
+        ///ALTER SEQUENCE 	eb_ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_roles1 {
             get {
@@ -4081,7 +4095,7 @@ namespace ExpressBase.Common {
         ///   Looks up a localized string similar to CREATE TABLE eb_roles
         ///(
         ///  id integer NOT NULL auto_increment,
-        ///  role_name varchar(25) NOT NULL,
+        ///  role_name varchar(50) NOT NULL,
         ///  applicationname text,
         ///  applicationid integer,
         ///  description text,
@@ -4092,12 +4106,14 @@ namespace ExpressBase.Common {
         ///  CONSTRAINT eb_roles_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
-        ///CREATE INDEX eb_roles_idx
-        ///ON eb_roles(id) 
-        ///USING btree;
         ///
-        ///CREATE INDEX eb_roles_name_idx
-        ///ON eb_roles(r [rest of string was truncated]&quot;;.
+        ///ALTER TABLE eb_roles auto_increment = 101;
+        ///
+        ///CREATE INDEX eb_roles_id_idx
+        ///ON eb_roles(id);
+        ///
+        ///
+        ///CREATE [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_roles2 {
             get {
@@ -4116,7 +4132,7 @@ namespace ExpressBase.Common {
         ///    task json,
         ///    created_by integer,
         ///    created_at timestamp without time zone,
-        ///    eb_del &quot;char&quot;,
+        ///    eb_del char(1) default &apos;F&apos;,
         ///    jobkey text,
         ///    triggerkey text,
         ///    status numeric,
@@ -4126,14 +4142,12 @@ namespace ExpressBase.Common {
         ///);
         ///
         ///	
-        ///ALTER SEQUENCE eb_schedules_id_seq INCREMENT 1 RESTART 2 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1;
+        ///-- Index: eb_schedules_id_idx
         ///
+        ///-- DROP INDEX public.eb_schedules_id_idx;
         ///
-        ///
-        ///
-        ///
-        ///
-        ///.
+        ///CREATE INDEX eb_schedules_id_idx
+        ///    ON eb [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_schedules {
             get {
@@ -4156,7 +4170,7 @@ namespace ExpressBase.Common {
         ///  id integer NOT NULL auto_increment,
         ///  task json,
         ///  created_by integer,
-        ///  created_at timestamp,
+        ///  created_at datetime,
         ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  jobkey text,
         ///  triggerkey text,
@@ -4167,9 +4181,8 @@ namespace ExpressBase.Common {
         ///);
         ///
         ///
-        ///CREATE INDEX eb_schedules_idx
-        ///ON eb_schedules(id) 
-        ///USING btree;.
+        ///CREATE INDEX eb_schedules_id_idx
+        ///ON eb_schedules(id);.
         /// </summary>
         public static string eb_schedules2 {
             get {
@@ -4461,14 +4474,13 @@ namespace ExpressBase.Common {
         ///    device_info text,
         ///    is_attempt_failed char(1) DEFAULT &apos;F&apos;,	
         ///    is_force_signout char(1) DEFAULT &apos;F&apos;,
-        ///    signin_at timestamp DEFAULT current_timestamp,
-        ///    signout_at timestamp DEFAULT current_timestamp,
+        ///    signin_at datetime,
+        ///    signout_at datetime,
         ///    CONSTRAINT eb_signin_log_pkey PRIMARY KEY (id)
         ///);
         ///
         ///CREATE INDEX eb_signin_log_id_idx
-        ///ON eb_signin_log(id) 
-        ///USING btree;.
+        ///ON eb_signin_log(id);.
         /// </summary>
         public static string eb_signin_log2 {
             get {
@@ -4607,7 +4619,7 @@ namespace ExpressBase.Common {
         ///  id integer NOT NULL auto_increment,
         ///  masterid integer,
         ///  questionid integer,
-        ///  eb_createdate timestamp,
+        ///  eb_createdate datetime,
         ///  choiceids text,
         ///  questype integer,
         ///  answer text,
@@ -4616,13 +4628,10 @@ namespace ExpressBase.Common {
         ///
         ///
         ///
-        ///CREATE INDEX eb_survey_lines_idx
-        ///ON eb_survey_lines(id) 
-        ///USING btree;
+        ///CREATE INDEX eb_survey_lines_id_idx
+        ///ON eb_survey_lines(id) ;
         ///
-        ///CREATE INDEX eb_survey_lines_questionid_idx
-        ///ON eb_survey_lines(questionid) 
-        ///USING btree;
+        ///
         ///.
         /// </summary>
         public static string eb_survey_lines2 {
@@ -4676,22 +4685,14 @@ namespace ExpressBase.Common {
         ///  surveyid integer,
         ///  userid integer,
         ///  anonid integer,
-        ///  eb_createdate timestamp,
+        ///  eb_createdate datetime,
         ///  constraint eb_survey_master_pkey primary key(id)
         ///);
         ///
         ///
-        ///CREATE INDEX eb_survey_master_idx
-        ///ON eb_survey_master(id) 
-        ///USING btree;
-        ///
-        ///CREATE INDEX eb_survey_master_surveyid_idx
-        ///ON eb_survey_master(surveyid) 
-        ///USING btree;
-        ///
-        ///CREATE INDEX eb_survey_master_userid_idx
-        ///ON eb_survey_master(userid) 
-        ///USING btree;.
+        ///CREATE INDEX eb_survey_master_id_idx
+        ///ON eb_survey_master(id);
+        ///.
         /// </summary>
         public static string eb_survey_master2 {
             get {
@@ -4744,9 +4745,8 @@ namespace ExpressBase.Common {
         ///  constraint eb_survey_queries_pkey primary key(id)
         ///);
         ///
-        ///CREATE INDEX eb_survey_queries_idx
-        ///ON eb_survey_queries(id) 
-        ///USING btree;.
+        ///CREATE INDEX eb_survey_queries_id_idx
+        ///ON eb_survey_queries(id);.
         /// </summary>
         public static string eb_survey_queries2 {
             get {
@@ -4798,16 +4798,15 @@ namespace ExpressBase.Common {
         ///(
         ///  id integer NOT NULL auto_increment,
         ///  name text,
-        ///  startdate timestamp DEFAULT CURRENT_TIMESTAMP,
-        ///  enddate timestamp DEFAULT CURRENT_TIMESTAMP,
+        ///  startdate datetime,
+        ///  enddate datetime,
         ///  status integer,
         ///  questions text,
         ///  constraint eb_surveys_pkey primary key(id)
         ///);
         ///
-        ///CREATE INDEX eb_surveys_idx
-        ///ON eb_surveys(id)
-        ///USING btree;.
+        ///CREATE INDEX eb_surveys_id_idx
+        ///ON eb_surveys(id);.
         /// </summary>
         public static string eb_surveys2 {
             get {
@@ -4859,9 +4858,13 @@ namespace ExpressBase.Common {
         ///    createdat timestamp without time zone,
         ///    revokedby integer,
         ///    revokedat timestamp without time zone,
-        ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    eb_del char(1) NOT NULL DEFAULT &apos;F&apos;,
         ///    CONSTRAINT eb_user2usergroup_pkey PRIMARY KEY (id),
-        ///    CONSTRAINT eb_user2usergroup_eb_del_check CHECK (eb_del = &apos;T&apos;::&quot;char&quot; OR eb_del = &apos;F&apos;::&quot;cha [rest of string was truncated]&quot;;.
+        ///    CONSTRAINT eb_user2usergroup_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
+        ///);
+        ///
+        ///
+        ///-- Index:  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_user2usergroup1 {
             get {
@@ -4876,9 +4879,9 @@ namespace ExpressBase.Common {
         ///  userid integer,
         ///  groupid integer,  
         ///  createdby integer,
-        ///  createdat timestamp DEFAULT CURRENT_TIMESTAMP,
+        ///  createdat datetime,
         ///  revokedby integer,
-        ///  revokedat timestamp DEFAULT CURRENT_TIMESTAMP,
+        ///  revokedat datetime,
         ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  CONSTRAINT eb_user2usergroup_pkey PRIMARY KEY (id),
         ///  CONSTRAINT eb_user2usergroup_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
@@ -4886,99 +4889,14 @@ namespace ExpressBase.Common {
         ///
         ///
         ///CREATE INDEX eb_user2usergroup_eb_del_idx
-        ///ON eb_user2usergroup(eb_del)
-        ///USIN [rest of string was truncated]&quot;;.
+        ///ON eb_user2usergroup(eb_del);
+        ///  
+        ///CREATE INDEX eb_user2usergroup_groupid_idx
+        ///ON eb_use [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_user2usergroup2 {
             get {
                 return ResourceManager.GetString("eb_user2usergroup2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DECLARE
-        ///	default_val number;
-        ///BEGIN
-        ///	
-        ///	default_val  := 1;	
-        ///
-        ///	EXECUTE IMMEDIATE &apos;CREATE SEQUENCE eb_usersanonymous_id_seq START WITH 1&apos;;
-        ///
-        ///	EXECUTE IMMEDIATE &apos;CREATE TABLE eb_usersanonymous
-        ///	(
-        ///			id NUMBER NOT NULL,
-        ///    		fullname VARCHAR2(100),
-        ///    		socialid VARCHAR2(50),
-        ///    		email VARCHAR2(100),
-        ///    		sex VARCHAR2(20),
-        ///    		phoneno VARCHAR2(20),
-        ///    		firstvisit DATE,
-        ///    		lastvisit DATE,
-        ///    		appid NUMBER,
-        ///    		totalvisits NUMBER DEFAULT &apos;&apos;&apos;|| default_val ||&apos;&apos;&apos;,
-        ///    		ebuserid NUM [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_useranonymous {
-            get {
-                return ResourceManager.GetString("eb_useranonymous", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_usersanonymous
-        ///
-        ///-- DROP TABLE public.eb_usersanonymous;
-        ///
-        ///CREATE TABLE eb_usersanonymous
-        ///(
-        ///    id serial,
-        ///    fullname text,
-        ///    socialid text,
-        ///    email text,
-        ///    sex text,
-        ///    phoneno text,
-        ///    firstvisit timestamp(4) without time zone,
-        ///    lastvisit timestamp(4) without time zone,
-        ///    appid integer,
-        ///    totalvisits integer DEFAULT 1,
-        ///    ebuserid integer DEFAULT 1,
-        ///    modifiedby integer,
-        ///    modifiedat timestamp without time zone,
-        ///    remarks text,
-        ///    ipaddress te [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_useranonymous1 {
-            get {
-                return ResourceManager.GetString("eb_useranonymous1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_usersanonymous
-        ///(
-        ///  id integer NOT NULL auto_increment,
-        ///  fullname text,
-        ///  socialid varchar(50),
-        ///  email varchar(50),
-        ///  sex text,
-        ///  phoneno text,
-        ///  firstvisit timestamp DEFAULT CURRENT_TIMESTAMP,
-        ///  lastvisit timestamp DEFAULT CURRENT_TIMESTAMP,
-        ///  appid integer,
-        ///  totalvisits integer DEFAULT 1,
-        ///  ebuserid integer DEFAULT 1,
-        ///  modifiedby integer,
-        ///  modifiedat timestamp DEFAULT CURRENT_TIMESTAMP,
-        ///  remarks text,
-        ///  ipaddress text,
-        ///  browser text,
-        ///  city text,
-        ///  region text,
-        ///   [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_useranonymous2 {
-            get {
-                return ResourceManager.GetString("eb_useranonymous2", resourceCulture);
             }
         }
         
@@ -5019,9 +4937,9 @@ namespace ExpressBase.Common {
         ///    id serial,
         ///    name text,
         ///    description text,
-        ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    eb_del char(1) NOT NULL DEFAULT &apos;F&apos;,
         ///    CONSTRAINT eb_usergroup_pkey PRIMARY KEY (id),
-        ///    CONSTRAINT eb_usergroup_eb_del_check CHECK (eb_del = &apos;T&apos;::&quot;char&quot; OR eb_del = &apos;F&apos;::&quot;char&quot;)
+        ///    CONSTRAINT eb_usergroup_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
         ///
@@ -5030,7 +4948,9 @@ namespace ExpressBase.Common {
         ///-- DROP INDEX public.eb_usergroup_eb_del_idx;
         ///
         ///CREATE INDEX eb_usergroup_eb_del_idx
-        ///    ON eb_usergroup(eb_del); [rest of string was truncated]&quot;;.
+        ///    ON eb_usergroup(eb_del);
+        ///
+        ///-- Index: eb_usergr [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_usergroup1 {
             get {
@@ -5042,20 +4962,18 @@ namespace ExpressBase.Common {
         ///   Looks up a localized string similar to CREATE TABLE eb_usergroup
         ///(
         ///  id integer NOT NULL auto_increment,
-        ///  name varchar(50),
+        ///  name text,
         ///  description text, 
         ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  CONSTRAINT eb_usergroup_pkey PRIMARY KEY (id),
         ///  CONSTRAINT eb_usergroup_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
-        ///CREATE INDEX eb_usergroup_idx
-        ///ON eb_usergroup(id) 
-        ///USING btree;
+        ///CREATE INDEX eb_usergroup_id_idx
+        ///ON eb_usergroup(id);
         ///
-        ///CREATE INDEX eb_usergroup_name_idx
-        ///ON eb_usergroup(name) 
-        ///USING btree;
+        ///CREATE INDEX eb_usergroup_eb_del_idx
+        ///    ON eb_usergroup(eb_del);
         ///
         ///.
         /// </summary>
@@ -5117,10 +5035,11 @@ namespace ExpressBase.Common {
         ///    phextension text,
         ///    locale text,
         ///    alternateemail text,
-        ///    dateformat text DEFAULT &apos;DD/MM/YYYY&apos;::text,
-        ///    timezone text  DEFAULT &apos;UTC+05:30&apos;::text,
-        ///    numformat text  DEFAULT &apos;0,000.00&apos;::text,
-        ///    timezoneabbre t [rest of string was truncated]&quot;;.
+        ///    dateformat text DEFAULT &apos;DD/MM/YYYY&apos;,
+        ///    timezone text  DEFAULT &apos;UTC+05:30&apos;,
+        ///    numformat text  DEFAULT &apos;0,000.00&apos;,
+        ///    timezoneabbre text,
+        ///    timezone [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_users1 {
             get {
@@ -5132,9 +5051,9 @@ namespace ExpressBase.Common {
         ///   Looks up a localized string similar to CREATE TABLE eb_users
         ///(
         ///  id integer NOT NULL auto_increment,
-        ///  email text,
-        ///  pwd text,
-        ///  firstname varchar(25),
+        ///  email varchar(100),
+        ///  pwd varchar(50),
+        ///  firstname text,
         ///  lastname text,
         ///  middlename text,
         ///  dob date,
@@ -5144,17 +5063,108 @@ namespace ExpressBase.Common {
         ///  phextension text,
         ///  locale text,
         ///  alternateemail text,
-        ///  dateformat varchar(20) DEFAULT &apos;DD/MM/YYYY&apos;,
+        ///  dateformat varchar(25) DEFAULT &apos;DD/MM/YYYY&apos;,
         ///  timezone varchar(25) DEFAULT &apos;UTC+05:30&apos;,
         ///  numformat varchar(25) DEFAULT &apos;0,000.00&apos;,
         ///  timezoneabbre text,
         ///  timezonefull text,
         ///  profileimg text,
-        ///  slackjson json [rest of string was truncated]&quot;;.
+        ///  slackj [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_users2 {
             get {
                 return ResourceManager.GetString("eb_users2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_usersanonymous
+        ///
+        ///-- DROP TABLE public.eb_usersanonymous;
+        ///
+        ///CREATE TABLE eb_usersanonymous
+        ///(
+        ///    id serial,
+        ///    fullname text,
+        ///    socialid text,
+        ///    email text,
+        ///    sex text,
+        ///    phoneno text,
+        ///    firstvisit timestamp(4) without time zone,
+        ///    lastvisit timestamp(4) without time zone,
+        ///    appid integer,
+        ///    totalvisits integer DEFAULT 1,
+        ///    ebuserid integer DEFAULT 1,
+        ///    modifiedby integer,
+        ///    modifiedat timestamp without time zone,
+        ///    remarks text,
+        ///    ipaddress te [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_usersanonymous {
+            get {
+                return ResourceManager.GetString("eb_usersanonymous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DECLARE
+        ///	default_val number;
+        ///BEGIN
+        ///	
+        ///	default_val  := 1;	
+        ///
+        ///	EXECUTE IMMEDIATE &apos;CREATE SEQUENCE eb_usersanonymous_id_seq START WITH 1&apos;;
+        ///
+        ///	EXECUTE IMMEDIATE &apos;CREATE TABLE eb_usersanonymous
+        ///	(
+        ///			id NUMBER NOT NULL,
+        ///    		fullname VARCHAR2(100),
+        ///    		socialid VARCHAR2(50),
+        ///    		email VARCHAR2(100),
+        ///    		sex VARCHAR2(20),
+        ///    		phoneno VARCHAR2(20),
+        ///    		firstvisit DATE,
+        ///    		lastvisit DATE,
+        ///    		appid NUMBER,
+        ///    		totalvisits NUMBER DEFAULT &apos;&apos;&apos;|| default_val ||&apos;&apos;&apos;,
+        ///    		ebuserid NUM [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_usersanonymous1 {
+            get {
+                return ResourceManager.GetString("eb_usersanonymous1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_usersanonymous
+        ///(
+        ///  id integer NOT NULL auto_increment,
+        ///  fullname text,
+        ///  socialid varchar(100),
+        ///  email varchar(100),
+        ///  sex text,
+        ///  phoneno text,
+        ///  firstvisit datetime(4),
+        ///  lastvisit datetime(4),
+        ///  appid integer,
+        ///  totalvisits integer DEFAULT 1,
+        ///  ebuserid integer DEFAULT 1,
+        ///  modifiedby integer,
+        ///  modifiedat datetime,
+        ///  remarks text,
+        ///  ipaddress text,
+        ///  browser text,
+        ///  city text,
+        ///  region text,
+        ///  country text,
+        ///  latitude text,
+        ///  longitude text,
+        ///  timezone text,
+        ///  i [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_usersanonymous2 {
+            get {
+                return ResourceManager.GetString("eb_usersanonymous2", resourceCulture);
             }
         }
         
@@ -5218,19 +5228,20 @@ namespace ExpressBase.Common {
         ///(
         ///  id integer NOT NULL auto_increment,
         ///  createdby integer,
-        ///  createdat timestamp,
+        ///  createdat datetime,
         ///  userid integer,
         ///  statusid integer,
         ///  CONSTRAINT eb_userstatus_pkey PRIMARY KEY (id)
         ///);
         ///
-        ///CREATE INDEX eb_userstatus_idx
-        ///ON eb_userstatus(id) 
-        ///USING btree;
+        ///CREATE INDEX eb_userstatus_id_idx
+        ///ON eb_userstatus(id);
         ///
         ///CREATE INDEX eb_userstatus_userid_idx
-        ///ON eb_userstatus(userid) 
-        ///USING btree;
+        ///ON eb_userstatus(userid);
+        ///
+        ///CREATE INDEX eb_userstatus_statusid_idx
+        ///    ON eb_userstatus(statusid);
         ///.
         /// </summary>
         public static string eb_userstatus2 {

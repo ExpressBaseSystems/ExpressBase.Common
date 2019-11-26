@@ -7,8 +7,8 @@
   botid varchar(100),
   modified_by integer,
   solution_id integer,
-  created_at timestamp DEFAULT  CURRENT_TIMESTAMP,
-  modified_at timestamp DEFAULT  CURRENT_TIMESTAMP,
+  created_at datetime,
+  modified_at datetime,
   created_by integer,
   app_id integer,
   fullname text,
@@ -18,9 +18,7 @@
 
 
 CREATE INDEX eb_bots_app_id_idx
-  ON eb_bots
-  (app_id)USING btree;
+  ON eb_bots(app_id);
 
 CREATE INDEX eb_bots_id_idx
-  ON eb_bots
-  (id)USING btree;
+  ON eb_bots(id);

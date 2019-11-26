@@ -21,5 +21,5 @@ CREATE TABLE eb_locations
 
 -- DROP INDEX public.eb_locationsid_idx;
 
-CREATE INDEX eb_locationsid_idx
+CREATE INDEX eb_locations_id_idx
     ON eb_locations(id);

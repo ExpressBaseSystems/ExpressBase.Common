@@ -1,13 +1,16 @@
 CREATE TABLE eb_executionlogs
 (
   id integer NOT NULL auto_increment,
-  `rows` varchar(200),
+  `rows` text,
   exec_time integer,
   created_by integer,
-  created_at timestamp,
+  created_at datetime,
   refid text,
   params json,
   constraint eb_executionlogs_pkey primary key(id)
 );
 
-create index eb_executionlogs_idx on eb_executionlogs(id) using btree;
+CREATE INDEX eb_executionlogs_id_idx 
+ON eb_executionlogs(id);
+
+

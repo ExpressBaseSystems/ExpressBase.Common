@@ -4,27 +4,23 @@
   role_id integer,  
   permissionname text,
   createdby integer,
-  createdat timestamp DEFAULT CURRENT_TIMESTAMP,
+  createdat datetime,
   obj_id integer,
   op_id integer,
   revokedby integer,
-  revokedat timestamp DEFAULT CURRENT_TIMESTAMP,
-  permissionname_backup text,
+  revokedat datetime,
   eb_del char(1) DEFAULT 'F',
   CONSTRAINT eb_role2permission_pkey PRIMARY KEY (id),
   CONSTRAINT eb_role2permission_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );
 
-CREATE INDEX eb_role2permission_idx
-ON eb_role2permission(id) 
-USING btree;
+CREATE INDEX eb_role2permission_id_idx
+ON eb_role2permission(id);
 
 
 CREATE INDEX eb_role2permission_eb_del_idx
-ON eb_role2permission(eb_del) 
-USING btree;
+ON eb_role2permission(eb_del);
 
 
 CREATE INDEX eb_role2permission_role_id_idx
-ON eb_role2permission(role_id)
-USING btree;
+ON eb_role2permission(role_id);

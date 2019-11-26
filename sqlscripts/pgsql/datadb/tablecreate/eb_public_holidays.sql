@@ -15,5 +15,6 @@ CREATE TABLE eb_public_holidays
 
 -- DROP INDEX public.eb_public_holidays_idx;
 
-CREATE INDEX eb_public_holidays_idx
+CREATE INDEX eb_public_holidays_id_idx
     ON eb_public_holidays(id);
+
