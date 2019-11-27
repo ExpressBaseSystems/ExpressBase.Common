@@ -3,7 +3,7 @@ CREATE TABLE eb_survey_lines
   id integer NOT NULL auto_increment,
   masterid integer,
   questionid integer,
-  eb_createdate timestamp,
+  eb_createdate datetime,
   choiceids text,
   questype integer,
   answer text,
@@ -12,10 +12,7 @@ CREATE TABLE eb_survey_lines
 
 
 
-CREATE INDEX eb_survey_lines_idx
-ON eb_survey_lines(id) 
-USING btree;
+CREATE INDEX eb_survey_lines_id_idx
+ON eb_survey_lines(id) ;
 
-CREATE INDEX eb_survey_lines_questionid_idx
-ON eb_survey_lines(questionid) 
-USING btree;
+

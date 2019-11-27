@@ -10,10 +10,6 @@ CREATE TABLE eb_query_choices
 
 
 
-CREATE INDEX eb_query_choices_idx
-ON eb_query_choices(id) 
-USING btree;
+CREATE INDEX eb_query_choices_id_idx
+ON eb_query_choices(id);
 
-CREATE INDEX eb_query_choices_qid_idx
-ON eb_query_choices(q_id) 
-USING btree;

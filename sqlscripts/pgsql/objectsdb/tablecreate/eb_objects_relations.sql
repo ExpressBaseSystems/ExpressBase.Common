@@ -9,9 +9,9 @@ CREATE TABLE eb_objects_relations
     dependant text,
     removed_by integer,
     removed_at timestamp without time zone,
-    eb_del "char" NOT NULL DEFAULT 'F'::"char",
+    eb_del char(1) NOT NULL DEFAULT 'F',
     CONSTRAINT eb_objects_relations_pkey PRIMARY KEY (id),
-    CONSTRAINT eb_objects_relations_eb_del_check CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
+    CONSTRAINT eb_objects_relations_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );
 
 -- Index: eb_objects_relations_eb_del_idx

@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ExpressBase.Common.Extensions
@@ -21,6 +22,25 @@ namespace ExpressBase.Common.Extensions
                 else
                     yield return element;
             }
+        }
+        public static List<Object> PopRange(this List<object> List, int from, int to)
+        {
+            List<object> items = new List<object>();
+
+            try
+            {
+                int range = to - from;
+                for (int i = from; i < range; i++)
+                    items.Add(List[i]);
+
+                List.RemoveRange(from, range);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return items;
         }
 
         public static IEnumerable<EbControl> Get1stLvlControls(this List<EbControl> enumerable)

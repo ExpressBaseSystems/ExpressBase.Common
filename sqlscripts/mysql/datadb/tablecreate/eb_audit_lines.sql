@@ -10,6 +10,6 @@ CREATE TABLE eb_audit_lines
   constraint eb_audit_lines_pkey primary key(id)
 );
 
-create index eb_audit_lines_idx on eb_audit_lines(id) using btree;
+CREATE INDEX eb_audit_lines_id_idx 
+	ON eb_audit_lines(id);
 
-create index eb_audit_lines_masterid_idx on eb_audit_lines(masterid) using btree;

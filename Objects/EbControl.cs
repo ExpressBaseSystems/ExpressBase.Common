@@ -292,13 +292,13 @@ namespace ExpressBase.Common.Objects
         public virtual string DisableJSfn { get { return @"$('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none').find('[ui-inp]').css('background-color', '#f3f3f3');"; } set { } }
 
         [JsonIgnore]
-        public virtual string ResetJSfn { get { return @"$('#' + this.EbSid_CtxId).val('');"; } set { } }
+        public virtual string ResetJSfn { get { return @"this.clear(); this.setValue(p1);"; } set { } }
 
         [JsonIgnore]
         public virtual string RefreshJSfn { get { return @"$('#' + this.EbSid_CtxId).val('');"; } set { } }
 
         [JsonIgnore]
-        public virtual string ClearJSfn { get { return @"$('#' + this.EbSid_CtxId).val('');"; } set { } }
+        public virtual string ClearJSfn { get { return @"this.setValue('');"; } set { } }
 
         [JsonIgnore]
         public virtual string OnChangeBindJSFn { get { return @"$('#' + this.EbSid_CtxId).on('change', p1);"; } set { } }
@@ -311,7 +311,8 @@ namespace ExpressBase.Common.Objects
 .Replace("@name@", this.Name)
 .Replace("@childOf@", this.ChildOf.IsNullOrEmpty() ? string.Empty : "childOf='" + this.ChildOf + "'")
 .Replace("@ebsid@", this.EbSid_CtxId)
-.Replace("@isHidden@", this.Hidden.ToString())
+.Replace("@isHidden@", this.Hidden.ToString().ToLower())
+.Replace("@isReadonly@", this.IsDisable.ToString().ToLower())
 .Replace("@helpText@", this.HelpText)
 .Replace("@type@", this.ObjType)
 .Replace("@Label@", (Label ?? ""))

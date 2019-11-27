@@ -13,10 +13,9 @@ CREATE TABLE eb_role2permission
     op_id integer,
     revokedby integer,
     revokedat timestamp without time zone,
-    permissionname_backup text,
-    eb_del "char" NOT NULL DEFAULT 'F'::"char",
+    eb_del char(1) NOT NULL DEFAULT 'F',
     CONSTRAINT eb_role2permission_pkey PRIMARY KEY (id),
-    CONSTRAINT eb_role2permission_eb_del_check CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
+    CONSTRAINT eb_role2permission_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );
 
 -- Index: eb_role2permission_eb_del_idx
