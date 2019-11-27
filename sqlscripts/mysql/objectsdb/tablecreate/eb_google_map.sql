@@ -8,5 +8,4 @@
 );
 
 CREATE INDEX eb_google_map_id_idx
-  ON eb_google_map
-  (Id)USING btree;
+    ON eb_google_map(id);

@@ -12,9 +12,11 @@
   CONSTRAINT eb_applications_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );
 
-CREATE INDEX eb_applications_eb_del_idx ON eb_applications (eb_del) USING btree;
+CREATE INDEX eb_applications_eb_del_idx 
+ON eb_applications(eb_del);
 
 
-CREATE INDEX eb_applications_id_idx ON eb_applications (id)USING btree;
+CREATE INDEX eb_applications_id_idx 
+ON eb_applications(id);
 
 

@@ -396,11 +396,17 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                         Type itemType = prop.PropertyType.GetTypeInfo().BaseType.GetGenericArguments()[0];
                         meta.options = getOptions(itemType);
                     }
+                    else if (meta.editor == (int)PropertyEditorType.ObjectSelectorCollection)
+                    {
+                        if (prop.IsDefined(typeof(OSE_ObjectTypes)))
+                            meta.options = prop.GetCustomAttribute<OSE_ObjectTypes>().ObjectTypes.Select(a => ((EbObjectType)a).Name).ToArray();
+                    }
                     else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
                     {
                         Type itemType = prop.PropertyType.GetGenericArguments()[0];
                         meta.options = getOptions(itemType);
                     }
+                    
                 }
                 if (attr is ListType)
                 {

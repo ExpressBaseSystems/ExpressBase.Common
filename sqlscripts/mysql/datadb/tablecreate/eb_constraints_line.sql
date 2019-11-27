@@ -9,5 +9,4 @@ CREATE TABLE eb_constraints_line
 );
 
 CREATE INDEX eb_constraints_line_id_idx
-ON eb_constraints_line(id) 
-USING btree;
+ON eb_constraints_line(id);

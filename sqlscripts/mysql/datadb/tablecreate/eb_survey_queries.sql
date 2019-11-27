@@ -6,6 +6,5 @@ CREATE TABLE eb_survey_queries
   constraint eb_survey_queries_pkey primary key(id)
 );
 
-CREATE INDEX eb_survey_queries_idx
-ON eb_survey_queries(id) 
-USING btree;
+CREATE INDEX eb_survey_queries_id_idx
+ON eb_survey_queries(id);

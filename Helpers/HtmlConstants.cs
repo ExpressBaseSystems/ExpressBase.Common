@@ -18,7 +18,7 @@ namespace ExpressBase.Common
         <div id='cont_@ebsid@' ebsid='@ebsid@' name='@name@' class='Eb-ctrlContainer' @childOf@ ctype='@type@' eb-hidden='@isHidden@'>
             <span class='eb-ctrl-label eb-label-editable' ui-label id='@ebsidLbl'>@Label@</span>
             <input id='@ebsid@lbltxtb' class='eb-lbltxtb' type='text'/> @req@ 
-                <div  id='@ebsid@Wraper' class='ctrl-cover'>
+                <div  id='@ebsid@Wraper' class='ctrl-cover' eb-readonly='@isReadonly@'>
                     @barehtml@
                 </div>
             <span class='helpText' ui-helptxt>@helpText@ </span>

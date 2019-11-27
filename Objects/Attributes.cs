@@ -36,6 +36,7 @@ namespace ExpressBase.Common.Objects.Attributes
         CollectionABCpropToggle = 26,// collection editor - toggles a property, disable a prop (A - B - C)(if the property value is true it come)
         CollectionABCFrmSrc = 27,// collection editor
         Mapper = 35,// 
+        ObjectSelectorCollection = 36,// 
         ScriptEditorJS = 64,
         ScriptEditorCS = 128,
         ScriptEditorSQ = 256

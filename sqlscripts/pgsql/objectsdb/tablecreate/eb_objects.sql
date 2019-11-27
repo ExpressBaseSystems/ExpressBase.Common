@@ -8,8 +8,7 @@ CREATE TABLE eb_objects
     obj_name text,
     obj_type integer,
     obj_cur_status integer,
-    obj_desc text,
-    applicationid integer,
+    obj_desc text,    
     obj_tags text,
     owner_uid integer,
     owner_ts timestamp without time zone,
@@ -19,13 +18,6 @@ CREATE TABLE eb_objects
     CONSTRAINT eb_objects_pkey PRIMARY KEY (id)
 );
 
-
--- Index: eb_objects_applicationid_idx
-
--- DROP INDEX public.eb_objects_applicationid_idx;
-
-CREATE INDEX eb_objects_applicationid_idx
-    ON eb_objects(applicationid);
 
 -- Index: eb_objects_id_idx
 

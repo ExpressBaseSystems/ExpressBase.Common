@@ -15,13 +15,12 @@ CREATE TABLE eb_objects_ver
     major_ver_num integer,
     minor_ver_num integer,
     patch_ver_num integer,
-    working_mode1 boolean DEFAULT false,
     status_id integer,
     ver_num text,
-    working_mode "char" NOT NULL DEFAULT 'F'::"char",
-	eb_del "char" NOT NULL DEFAULT 'F'::"char",
+    working_mode char(1) NOT NULL DEFAULT 'F',
+	eb_del char(1) NOT NULL DEFAULT 'F',
     CONSTRAINT eb_objects_ver_pkey PRIMARY KEY (id),
-    CONSTRAINT eb_objects_ver_working_mode_check CHECK (working_mode = 'T'::"char" OR working_mode = 'F'::"char")
+    CONSTRAINT eb_objects_ver_working_mode_check CHECK (working_mode = 'T' OR working_mode = 'F')
 );
 
 
