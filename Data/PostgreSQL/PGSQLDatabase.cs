@@ -849,6 +849,14 @@ SELECT id,fullname,email
             }
         }
 
+        public string EB_GET_MYPROFILE_OBJID
+        {
+            get
+            {
+                return @" AND eov.eb_objects_id = ANY(string_to_array(:ids,',')::int[])";
+            }
+        }
+
         public string EB_CREATEAPPLICATION_DEV
         {
             get

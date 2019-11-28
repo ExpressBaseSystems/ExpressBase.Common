@@ -39,16 +39,16 @@ namespace ExpressBase.Common.Data.MSSQLServer
         {
             this.InnerDictionary = new Dictionary<EbDbTypes, VendorDbType>();
             this.InnerDictionary.Add(EbDbTypes.AnsiString, new VendorDbType(EbDbTypes.AnsiString, SqlDbType.Text, "text"));
-            this.InnerDictionary.Add(EbDbTypes.Binary, new VendorDbType(EbDbTypes.Binary, SqlDbType.Binary, "bytea"));
+            this.InnerDictionary.Add(EbDbTypes.Binary, new VendorDbType(EbDbTypes.Binary, SqlDbType.Binary, "binary"));
             this.InnerDictionary.Add(EbDbTypes.Byte, new VendorDbType(EbDbTypes.Byte, SqlDbType.Char, "char"));
-            this.InnerDictionary.Add(EbDbTypes.Date, new VendorDbType(EbDbTypes.Date, SqlDbType.Date, "timestamp without time zone"));
-            this.InnerDictionary.Add(EbDbTypes.DateTime, new VendorDbType(EbDbTypes.DateTime, SqlDbType.DateTime2, "timestamp with time zone"));
+            this.InnerDictionary.Add(EbDbTypes.Date, new VendorDbType(EbDbTypes.Date, SqlDbType.Date, "datetime"));
+            this.InnerDictionary.Add(EbDbTypes.DateTime, new VendorDbType(EbDbTypes.DateTime, SqlDbType.DateTimeOffset + "(4)", "datetimeoffset(4)"));
             this.InnerDictionary.Add(EbDbTypes.Decimal, new VendorDbType(EbDbTypes.Decimal, SqlDbType.Decimal, "decimal"));
             this.InnerDictionary.Add(EbDbTypes.Double, new VendorDbType(EbDbTypes.Double, SqlDbType.Real, "double precision"));
             this.InnerDictionary.Add(EbDbTypes.Int16, new VendorDbType(EbDbTypes.Int16, SqlDbType.SmallInt, "smallint"));
             this.InnerDictionary.Add(EbDbTypes.Int32, new VendorDbType(EbDbTypes.Int32, SqlDbType.Int, "integer"));
             this.InnerDictionary.Add(EbDbTypes.Int64, new VendorDbType(EbDbTypes.Int64, SqlDbType.BigInt, "bigint"));
-            this.InnerDictionary.Add(EbDbTypes.Object, new VendorDbType(EbDbTypes.Object, SqlDbType.NVarChar, "jsonb"));
+            this.InnerDictionary.Add(EbDbTypes.Object, new VendorDbType(EbDbTypes.Object, SqlDbType.NVarChar, "nvarchar(max)"));
             this.InnerDictionary.Add(EbDbTypes.String, new VendorDbType(EbDbTypes.String, SqlDbType.Text, "text"));
             this.InnerDictionary.Add(EbDbTypes.Time, new VendorDbType(EbDbTypes.Time, SqlDbType.Time, "time"));
             this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, SqlDbType.Float, "numeric"));
@@ -763,6 +763,14 @@ namespace ExpressBase.Common.Data.MSSQLServer
 
         public string EB_GETUSERDETAILS
         { get { return @""; } }
+
+        public string EB_GET_MYPROFILE_OBJID
+        {
+            get
+            {
+                return @"";
+            }
+        }
 
         public string EB_CREATEAPPLICATION_DEV
         { get { return @""; } }

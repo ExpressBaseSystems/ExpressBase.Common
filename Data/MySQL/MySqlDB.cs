@@ -1003,6 +1003,14 @@ namespace ExpressBase.Common
             }
         }
 
+        public string EB_GET_MYPROFILE_OBJID
+        {
+            get
+            {
+                return @" AND FIND_IN_SET(eov.eb_objects_id, :ids)";
+            }
+        }
+
         public string EB_CREATEAPPLICATION_DEV
         {
             get
