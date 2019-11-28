@@ -189,6 +189,11 @@ namespace ExpressBase.Common.Objects.Attributes
         {
             this.DependantProp2 = Dprop2;
         }
+
+        public PropertyEditor(PropertyEditorType type1, int limit) : this(type1)
+        {
+            this.Limit = limit;
+        }
     }
 
     public class PropertyGroup : Attribute
