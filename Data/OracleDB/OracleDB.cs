@@ -842,6 +842,14 @@ namespace ExpressBase.Common.Data
             }
         }
 
+        public string EB_GET_MYPROFILE_OBJID
+        {
+            get
+            {
+                return @"";
+            }
+        }
+
         public string EB_CREATEAPPLICATION_DEV
         {
             get

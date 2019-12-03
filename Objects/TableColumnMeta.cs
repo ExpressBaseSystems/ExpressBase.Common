@@ -169,6 +169,11 @@ namespace ExpressBase.Common
         public Dictionary<string, bool> DisableCancel { get; set; }
 
         public string MasterTable { get; set; }
+
+        public int FormVersionId { get; set; }
+        public bool IsLocked { get; set; }
+        public string DataPushId { get; set; }
+        public int SourceId { get; set; }
         
         public WebformData()
         {
