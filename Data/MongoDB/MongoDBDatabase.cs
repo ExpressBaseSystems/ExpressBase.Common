@@ -14,13 +14,13 @@ namespace ExpressBase.Common.Data.MongoDB
 {
     public class MongoDBDatabase : INoSQLDatabase
     {
-        private MongoClient mongoClient;
-        private IMongoDatabase mongoDatabase;
-        private IGridFSBucket Bucket;
-        private string TenantId { get; set; }
-        private BsonDocument Metadata { get; set; }
-
+        public MongoClient mongoClient;
+        public IMongoDatabase mongoDatabase;
+        public IGridFSBucket Bucket;
+        public string TenantId { get; set; }
+        public BsonDocument Metadata { get; set; }
         public int InfraConId { get; set; }
+
         private const string CONNECTION_STRING_BARE = "mongodb://{0}:{1}@{2}:{3}/admin?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin";
         public MongoDBDatabase(EbMongoConfig dbconf)
         {
@@ -33,6 +33,7 @@ namespace ExpressBase.Common.Data.MongoDB
 
         public MongoDBDatabase(string tenantId, EbMongoConfig dbconf)
         {
+            InfraConId = dbconf.Id;
             this.TenantId = tenantId;
             string _cstr = string.Format(CONNECTION_STRING_BARE, dbconf.UserName, dbconf.Password, dbconf.Host, dbconf.Port);
             mongoClient = new MongoClient(_cstr);

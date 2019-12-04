@@ -282,9 +282,16 @@ namespace ExpressBase.Common
         SmsTask = 2,
         ReportTask = 3,
         MyJob = 4,
-        SqlTask = 5
+        SqlTask = 5,
+        Slack = 6
     }
 
+    public enum DeliveryMechanisms
+    {
+        Email=1,
+        Sms =2,
+        Slack =3
+    }
     public enum ScheduleStatuses
     {
         Unscheduled = 0,
