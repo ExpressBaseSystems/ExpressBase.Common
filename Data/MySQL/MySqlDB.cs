@@ -51,7 +51,7 @@ namespace ExpressBase.Common
             this.InnerDictionary.Add(EbDbTypes.Object, new VendorDbType(EbDbTypes.Object, MySqlDbType.JSON, "json"));
             this.InnerDictionary.Add(EbDbTypes.String, new VendorDbType(EbDbTypes.String, MySqlDbType.Text, "text"));
             this.InnerDictionary.Add(EbDbTypes.Time, new VendorDbType(EbDbTypes.Time, MySqlDbType.Time, "time"));
-            this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, MySqlDbType.LongText, "longText"));
+            this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, MySqlDbType.Decimal, "decimal"));
             this.InnerDictionary.Add(EbDbTypes.Json, new VendorDbType(EbDbTypes.Json, MySqlDbType.JSON, "json"));
             this.InnerDictionary.Add(EbDbTypes.Bytea, new VendorDbType(EbDbTypes.Bytea, MySqlDbType.Blob, "blob"));
             this.InnerDictionary.Add(EbDbTypes.Boolean, new VendorDbType(EbDbTypes.Boolean, MySqlDbType.VarChar + "(1)", "varchar(1)"));
@@ -837,7 +837,11 @@ namespace ExpressBase.Common
         public string EB_AUTHENTICATE_ANONYMOUS { get { return @"eb_authenticate_anonymous(@in_socialid, @in_fullname, @in_emailid, @in_phone, @in_user_ip, @in_user_browser,@in_city,
                 @in_region, @in_country, @in_latitude, @in_longitude, @in_timezone, @in_iplocationjson, @in_appid, @in_wc, @out_userid, @out_status_id, @out_email, @out_fullname, @out_roles_a, @out_rolename_a, @out_permissions, @out_preferencesjson, @out_constraints_a, @out_signin_id); "; } }
 
-        public string EB_SIDEBARUSER_REQUEST { get { return @"SELECT 
+        public string EB_SIDEBARUSER_REQUEST
+        {
+            get
+            {
+                return @"SELECT 
                     id, applicationname,app_icon
                 FROM 
                     eb_applications
@@ -864,44 +868,43 @@ namespace ExpressBase.Common
                 FROM 
                     eb_objects_favourites 
                 WHERE 
-                    userid=:user_id AND eb_del='F';"; } }
+                    userid=:user_id AND eb_del='F';";
+            }
+        }
 
         // only for mysql
-        public string EB_SIDEBARUSER_REQUEST_SOL_OWNER { get { return @"SELECT 
-                    id, applicationname,app_icon
-                FROM 
-                    eb_applications
-                WHERE 
-                    COALESCE(eb_del, 'F') = 'F' 
-                ORDER BY 
-                    applicationname;
-                SELECT
-                    EO.id, EO.obj_type, EO.obj_name,
-                    EOV.version_num, EOV.refid, EO2A.app_id, EO.obj_desc, EOS.status, EOS.id, display_name
-                FROM
-                    eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A
-                WHERE
-                    EOV.eb_objects_id = EO.id                                      
-                    AND EOS.eb_obj_ver_id = EOV.id
-                    AND EO2A.obj_id = EO.id
-                    AND EO2A.eb_del = 'F'
-                    AND EOS.status = 3
-                    AND COALESCE( EO.eb_del, 'F') = 'F'
-                    AND EOS.id = ANY( SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id );
-                SELECT 
-                    object_id 
-                FROM 
-                    eb_objects_favourites 
-                WHERE 
-                    userid=:user_id AND eb_del='F';"; } }
+        public string EB_SIDEBARUSER_REQUEST_SOL_OWNER
+        {
+            get
+            {
+                return @"SELECT id, applicationname,app_icon
+                            FROM eb_applications WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
+                        SELECT
+                            EO.id, EO.obj_type, EO.obj_name, EOV.version_num, EOV.refid, EO2A.app_id, EO.obj_desc, EOS.status, EOS.id, display_name
+                        FROM
+                            eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A
+                        WHERE
+                            EOV.eb_objects_id = EO.id                                      
+                            AND EOS.eb_obj_ver_id = EOV.id
+                            AND EO2A.obj_id = EO.id
+                            AND EO2A.eb_del = 'F'
+                            AND EOS.status = 3
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                            AND EOS.id = ANY( SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id );
+                        SELECT object_id FROM eb_objects_favourites WHERE userid=:user_id AND eb_del='F';";
+            }
+        }
 
-        public string EB_SIDEBARDEV_REQUEST { get { return @"
-                 SELECT id, applicationname,app_icon FROM eb_applications
-                     WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
+        public string EB_SIDEBARDEV_REQUEST
+        {
+            get
+            {
+                return @"SELECT id, applicationname,app_icon FROM eb_applications
+                            WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
                         SELECT
                             EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, COALESCE(EO2A.app_id, 0),display_name
                         FROM
-                        eb_objects EO
+                            eb_objects EO
                         LEFT JOIN
                             eb_objects2application EO2A
                         ON
@@ -919,12 +922,12 @@ namespace ExpressBase.Common
             get
             {
                 return @"SELECT R.id,R.role_name,R.description,A.applicationname,
-                        (SELECT COUNT(role1_id) FROM eb_role2role WHERE role1_id=R.id AND eb_del = 'F') AS subrole_count,
-                        (SELECT COUNT(user_id) FROM eb_role2user WHERE role_id=R.id AND eb_del = 'F') AS user_count,
-                        (SELECT COUNT(distinct permissionname) FROM eb_role2permission RP, eb_objects2application OA WHERE role_id = R.id 
-                        AND app_id = A.id AND RP.obj_id = OA.obj_id AND RP.eb_del = 'F' AND OA.eb_del = 'F') AS permission_count
-                        FROM eb_roles R, eb_applications A
-                        WHERE R.applicationid = A.id AND A.eb_del = 'F' AND R.role_name LIKE '@searchtext';";
+                            (SELECT COUNT(role1_id) FROM eb_role2role WHERE role1_id=R.id AND eb_del = 'F') AS subrole_count,
+                            (SELECT COUNT(user_id) FROM eb_role2user WHERE role_id=R.id AND eb_del = 'F') AS user_count,
+                            (SELECT COUNT(distinct permissionname) FROM eb_role2permission RP, eb_objects2application OA 
+                                    WHERE role_id = R.id AND app_id = A.id AND RP.obj_id = OA.obj_id AND RP.eb_del = 'F' AND OA.eb_del = 'F') AS permission_count
+                            FROM eb_roles R, eb_applications A
+                            WHERE R.applicationid = A.id AND A.eb_del = 'F' AND R.role_name LIKE '%@searchtext%';";
             }
         }
 
@@ -942,7 +945,11 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_GETMANAGEROLESRESPONSE_QUERY { get { return @"
+        public string EB_GETMANAGEROLESRESPONSE_QUERY
+        {
+            get
+            {
+                return @"
                     SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY applicationname;
                     SELECT DISTINCT EO.id, EO.display_name, EO.obj_type, EO2A.app_id
                         FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A
@@ -951,15 +958,23 @@ namespace ExpressBase.Common
                                 AND EO.id = EO2A.obj_id AND EO2A.eb_del = 'F';
                     SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> @id ORDER BY role_name;
                     SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';
-                    SELECT id, longname, shortname FROM eb_locations;"; } }
+                    SELECT id, longname, shortname FROM eb_locations;";
+            }
+        }
 
-        public string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get { return @"
+        public string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED
+        {
+            get
+            {
+                return @"
                                SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = @id;
                                SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = @id AND eb_del = 'F';
                                SELECT A.applicationname, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = @id AND A.eb_del = 'F';
                                SELECT A.id, A.fullname, A.email, B.id FROM eb_users A, eb_role2user B
                                 WHERE A.id = B.user_id AND A.eb_del = 'F' AND B.eb_del = 'F' AND B.role_id = @id;
-                               SELECT locationid FROM eb_role2location WHERE roleid = @id AND eb_del = 'F'; "; } }
+                               SELECT locationid FROM eb_role2location WHERE roleid = @id AND eb_del = 'F'; ";
+            }
+        }
         public string EB_SAVEROLES_QUERY
         {
             get
@@ -1307,8 +1322,7 @@ namespace ExpressBase.Common
                         EOV.commit_uid = EU.id AND
                         EOV.eb_objects_id = (SELECT eb_objects_id FROM eb_objects_ver WHERE refid = @refid)
                     ORDER BY
-                        EOV.id DESC;
-                ";
+                        EOV.id DESC;";
             }
         }
 
@@ -1325,8 +1339,7 @@ namespace ExpressBase.Common
                             AND COALESCE( EO.eb_del, 'F') = 'F'
                         ORDER BY
                             EOS.id DESC
-                        LIMIT 1;
-                ";
+                        LIMIT 1;";
             }
         }
 
@@ -1343,8 +1356,7 @@ namespace ExpressBase.Common
                             EO.id = EOV.eb_objects_id AND EOV.refid = @refid
                             AND COALESCE( EO.eb_del, 'F') = 'F'
                         ORDER BY
-                            EO.obj_type;
-                ";
+                            EO.obj_type; ";
             }
         }
 
@@ -1515,7 +1527,7 @@ namespace ExpressBase.Common
                                 EO.id = EOV.eb_objects_id  AND
                                 EO.id = EOTA.obj_id  AND
                                 EOS.eb_obj_ver_id = EOV.id AND
-                                EO.id = any(SELECT @Ids) AND
+                                FIND_IN_SET(EO.id, @Ids) AND
                                 EOS.status = 3 AND
                                 (
                                 EO.obj_type = 16 OR
