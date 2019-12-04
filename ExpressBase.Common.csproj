@@ -94,5 +94,11 @@
     <Folder Include="sqlscripts\oracle\filesdb\tablecreate\" />
     <Folder Include="sqlscripts\pgsql\filesdb\functioncreate\" />
     <Folder Include="sqlscripts\pgsql\filesdb\tablecreate\" />
+    <Folder Include="sqlscripts\sqlserver\datadb\functioncreate\" />
+    <Folder Include="sqlscripts\sqlserver\datadb\tablecreate\" />
+    <Folder Include="sqlscripts\sqlserver\filesdb\functioncreate\" />
+    <Folder Include="sqlscripts\sqlserver\filesdb\tablecreate\" />
+    <Folder Include="sqlscripts\sqlserver\objectsdb\functioncreate\" />
+    <Folder Include="sqlscripts\sqlserver\objectsdb\tablecreate\" />
   </ItemGroup>
 </Project>

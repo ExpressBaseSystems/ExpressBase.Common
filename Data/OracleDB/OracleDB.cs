@@ -153,6 +153,183 @@ namespace ExpressBase.Common.Data
             return new OracleParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Direction = ParameterDirection.Output };
         }
 
+        public EbDataTable DoQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        {
+            EbDataTable dt = new EbDataTable();
+            List<DbParameter> dbParameter = new List<DbParameter>();
+
+            foreach (var param in parameters)
+            {
+                if (Regex.IsMatch(query, ":" + param.ParameterName))
+                    dbParameter.Add(param);
+            }
+
+            using (var con = dbConnection as OracleConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (OracleCommand cmd = new OracleCommand(query, con))
+                    {
+                        cmd.BindByName = true;
+                        if (Regex.IsMatch(query, @"\:+") && parameters != null && parameters.Length > 0)
+                        {
+                            cmd.Parameters.AddRange(dbParameter.ToArray());
+                        }
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            DataTable schema = reader.GetSchemaTable();
+                            this.AddColumns(dt, schema);
+                            PrepareDataTable(reader, dt);
+                        }
+                    }
+
+                }
+                catch (OracleException orcl)
+                {
+                    Console.WriteLine(orcl.Message);
+                }
+                catch (SocketException scket) { }
+            }
+
+            return dt;
+        }
+
+        public EbDataSet DoQueries(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        {
+            EbDataSet ds = new EbDataSet();
+            List<DbParameter> dbParameter = new List<DbParameter>();
+            //query = Regex.Replace(query, @"\n|\r|\s+", " ");
+            query = query.Trim();
+            string[] sql_arr = query.Split(";");
+            foreach (var param in parameters)
+            {
+                if (Regex.IsMatch(query, ":" + param.ParameterName))
+                    dbParameter.Add(param);
+            }
+
+            using (var con = dbConnection as OracleConnection)
+            {
+                try
+                {
+                    con.Open();
+                    //for (int i = 0; i < sql_arr.Length - 1; i++)
+                    //for (int i = 0; i < sql_arr.Length && sql_arr[i] != ""; i++)
+                    //for (int i = 0; i < sql_arr.Length && sql_arr[i] !=string.Empty && !(Regex.IsMatch(sql_arr[i],@"\t|\n|\r")); i++)
+                    for (int i = 0; i < sql_arr.Length && sql_arr[i] != string.Empty && sql_arr[i] != " "; i++)
+                    {
+                        using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
+                        {
+                            cmd.BindByName = true;
+                            if (Regex.IsMatch(sql_arr[i], @"\:+") && parameters != null && parameters.Length > 0)
+                            {
+                                cmd.Parameters.AddRange(dbParameter.ToArray());
+                            }
+
+                            using (var reader = cmd.ExecuteReader())
+                            {
+                                EbDataTable dt = new EbDataTable();
+                                DataTable schema = reader.GetSchemaTable();
+
+                                this.AddColumns(dt, schema);
+                                PrepareDataTable(reader, dt);
+                                ds.Tables.Add(dt);
+
+                            }
+                            cmd.Parameters.Clear();
+                        }
+                    }
+                }
+
+                catch (Exception orcl)
+                {
+                    Console.WriteLine(orcl.Message);
+                }
+            }
+
+            return ds;
+        }
+
+        public DbDataReader DoQueriesBasic(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        {
+            var con = dbConnection as OracleConnection;
+            try
+            {
+                con.Open();
+                string[] sql_arr = query.Split(";");
+                for (int i = 0; i < sql_arr.Length - 1; i++)
+                {
+                    using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
+                    {
+                        cmd.BindByName = true;
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+
+                        return cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                    }
+                }
+            }
+            catch (OracleException orcl)
+            {
+                Console.WriteLine(orcl.Message);
+            }
+
+            return null;
+        }
+
+        public int DoNonQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        {
+            var return_val = 0;
+            List<DbParameter> dbParameter = new List<DbParameter>();
+            string[] sql_arr = query.Split(";");
+            foreach (var param in parameters)
+            {
+                if (Regex.IsMatch(query, ":" + param.ParameterName))
+                    dbParameter.Add(param);
+            }
+
+            using (var con = dbConnection as OracleConnection)
+            {
+                try
+                {
+                    con.Open();
+                    //for (int i = 0; i < sql_arr.Length - 1; i++)
+                    for (int i = 0; i < sql_arr.Length && sql_arr[i].Trim() != ""; i++)
+                    {
+                        using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
+                        {
+                            cmd.BindByName = true;
+                            if (Regex.IsMatch(sql_arr[i], @"\:+") && parameters != null && parameters.Length > 0)
+                            {
+                                cmd.Parameters.AddRange(dbParameter.ToArray());
+                            }
+
+                            return_val = cmd.ExecuteNonQuery();
+                        }
+                    }
+                    foreach (var param in parameters)
+                    {
+                        if (ParameterDirection.Output == param.Direction)    //for return id
+                        {
+                            return_val = Convert.ToInt32(param.Value.ToString());
+                        }
+                    }
+                }
+                catch (OracleException orcl)
+                {
+                    Console.WriteLine(orcl.Message);
+                }
+
+                return return_val;
+            }
+        }
+
+        public EbDataTable DoProcedure(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        {
+            return null;
+        }
+
         public T DoQuery<T>(string query, params DbParameter[] parameters)
         {
             T obj = default(T);
@@ -195,127 +372,48 @@ namespace ExpressBase.Common.Data
         public EbDataTable DoQuery(string query, params DbParameter[] parameters)
         {
             EbDataTable dt = new EbDataTable();
-            List<DbParameter> dbParameter = new List<DbParameter>();
-
-            foreach (var param in parameters)
-            {
-                if (Regex.IsMatch(query, ":" + param.ParameterName))
-                    dbParameter.Add(param);
-            }
-
-            using (var con = GetNewConnection() as OracleConnection)
-            {
-                try
-                {
-                    con.Open();
-                    using (OracleCommand cmd = new OracleCommand(query, con))
-                    {
-                        cmd.BindByName = true;
-                        if (Regex.IsMatch(query, @"\:+") && parameters != null && parameters.Length > 0)
-                        {
-                            cmd.Parameters.AddRange(dbParameter.ToArray());
-                        }
-
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            DataTable schema = reader.GetSchemaTable();
-                            this.AddColumns(dt, schema);
-                            PrepareDataTable(reader, dt);
-                        }
-                    }
-
-                }
-                catch (OracleException orcl)
-                {
-                    Console.WriteLine(orcl.Message);
-                }
-                catch (SocketException scket) { }
-            }
-
-            return dt;
-        }
-
-        public DbDataReader DoQueriesBasic(string query, params DbParameter[] parameters)
-        {
-            var con = GetNewConnection() as OracleConnection;
             try
             {
-                con.Open();
-                string[] sql_arr = query.Split(";");
-                for (int i = 0; i < sql_arr.Length - 1; i++)
-                {
-                    using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
-                    {
-                        cmd.BindByName = true;
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
-
-                        return cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                    }
-                }
+                var con = GetNewConnection() as OracleConnection;
+                dt = DoQuery(con, query, parameters);
             }
             catch (OracleException orcl)
             {
                 Console.WriteLine(orcl.Message);
             }
+            catch (SocketException scket) { }
 
-            return null;
+            return dt;
         }
 
+        //public DbDataReader DoQueriesBasic(string query, params DbParameter[] parameters)
+        //{
+        //    DbDataReader dbDataReader;
+        //    try
+        //    {
+        //        var con = GetNewConnection() as OracleConnection;
+        //        dbDataReader = DoQueriesBasic(query, con, parameters);
+        //        return dbDataReader;
+        //    }
+        //    catch (OracleException orcl)
+        //    {
+        //        Console.WriteLine(orcl.Message);
+        //    }
+        //    return null;
+        //}
 
         public EbDataSet DoQueries(string query, params DbParameter[] parameters)
         {
             EbDataSet ds = new EbDataSet();
-            List<DbParameter> dbParameter = new List<DbParameter>();
-            //query = Regex.Replace(query, @"\n|\r|\s+", " ");
-            query = query.Trim();
-            string[] sql_arr = query.Split(";");
-            foreach (var param in parameters)
+            try
             {
-                if (Regex.IsMatch(query, ":" + param.ParameterName))
-                    dbParameter.Add(param);
+                var con = GetNewConnection() as OracleConnection;
+                ds = DoQueries(con, query, parameters);
             }
-
-            using (var con = GetNewConnection() as OracleConnection)
+            catch (OracleException orcl)
             {
-                try
-                {
-                    con.Open();
-                    //for (int i = 0; i < sql_arr.Length - 1; i++)
-                    //for (int i = 0; i < sql_arr.Length && sql_arr[i] != ""; i++)
-                    //for (int i = 0; i < sql_arr.Length && sql_arr[i] !=string.Empty && !(Regex.IsMatch(sql_arr[i],@"\t|\n|\r")); i++)
-                    for (int i = 0; i < sql_arr.Length && sql_arr[i] != string.Empty && sql_arr[i] != " "; i++)
-                    {
-                        using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
-                        {
-                            cmd.BindByName = true;
-                            if (Regex.IsMatch(sql_arr[i], @"\:+") && parameters != null && parameters.Length > 0)
-                            {
-                                cmd.Parameters.AddRange(dbParameter.ToArray());
-                            }
-
-
-                            using (var reader = cmd.ExecuteReader())
-                            {
-                                EbDataTable dt = new EbDataTable();
-                                DataTable schema = reader.GetSchemaTable();
-
-                                this.AddColumns(dt, schema);
-                                PrepareDataTable(reader, dt);
-                                ds.Tables.Add(dt);
-
-                            }
-                            cmd.Parameters.Clear();
-                        }
-                    }
-                }
-
-                catch (Exception orcl)
-                {
-                    Console.WriteLine(orcl.Message);
-                }
+                Console.WriteLine(orcl.Message);
             }
-
             return ds;
         }
 
@@ -327,48 +425,17 @@ namespace ExpressBase.Common.Data
         public int DoNonQuery(string query, params DbParameter[] parameters)
         {
             var return_val = 0;
-            List<DbParameter> dbParameter = new List<DbParameter>();
-            string[] sql_arr = query.Split(";");
-            foreach (var param in parameters)
+            try
             {
-                if (Regex.IsMatch(query, ":" + param.ParameterName))
-                    dbParameter.Add(param);
+                var con = GetNewConnection() as OracleConnection;
+                return_val = DoNonQuery(con, query, parameters);
+            }
+            catch (OracleException orcl)
+            {
+                Console.WriteLine(orcl.Message);
             }
 
-            using (var con = GetNewConnection() as OracleConnection)
-            {
-                try
-                {
-                    con.Open();
-                    //for (int i = 0; i < sql_arr.Length - 1; i++)
-                    for (int i = 0; i < sql_arr.Length && sql_arr[i].Trim() != ""; i++)
-                    {
-                        using (OracleCommand cmd = new OracleCommand(sql_arr[i], con))
-                        {
-                            cmd.BindByName = true;
-                            if (Regex.IsMatch(sql_arr[i], @"\:+") && parameters != null && parameters.Length > 0)
-                            {
-                                cmd.Parameters.AddRange(dbParameter.ToArray());
-                            }
-
-                            return_val = cmd.ExecuteNonQuery();
-                        }
-                    }
-                    foreach (var param in parameters)
-                    {
-                        if (ParameterDirection.Output == param.Direction)    //for return id
-                        {
-                            return_val = Convert.ToInt32(param.Value.ToString());
-                        }
-                    }
-                }
-                catch (OracleException orcl)
-                {
-                    Console.WriteLine(orcl.Message);
-                }
-
-                return return_val;
-            }
+            return return_val;
         }
 
         public bool IsTableExists(string query, params DbParameter[] parameters)
@@ -775,6 +842,14 @@ namespace ExpressBase.Common.Data
             }
         }
 
+        public string EB_GET_MYPROFILE_OBJID
+        {
+            get
+            {
+                return @"";
+            }
+        }
+
         public string EB_CREATEAPPLICATION_DEV
         {
             get
@@ -976,6 +1051,22 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             {
                 return @"INSERT INTO eb_executionlogs(rows, exec_time, created_by, created_at, params, refid) 
                                 VALUES(:rows, :exec_time, :created_by, :created_at, :params, :refid);";
+            }
+        }
+
+        public string EB_GET_MOB_MENU_OBJ_IDS
+        {
+            get
+            {
+                return @"";
+            }
+        }
+
+        public string EB_GET_MOBILE_PAGES
+        {
+            get
+            {
+                return @"";
             }
         }
 
@@ -1254,7 +1345,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
         {
             get
             {
-                return @"SELECT DISTINCT INITCAP(TRIM(:ColumName)) AS :ColumName FROM :TableName ORDER BY :ColumName;";
+                return @"SELECT DISTINCT (TRIM(:ColumName)) AS :ColumName FROM :TableName ORDER BY :ColumName;";
             }
         }
 

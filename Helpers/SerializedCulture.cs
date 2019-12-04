@@ -1,4 +1,5 @@
-﻿using ExpressBase.Objects;
+﻿using ExpressBase.Common.Application;
+using ExpressBase.Objects;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -49,7 +50,7 @@ namespace ExpressBase.Common {
 
         public string Description { set; get; }
 
-        public object AppSettings { set; get; }
+        public string AppSettings { set; get; }
 
         public List<EbObject> ObjCollection { get; set; }
 

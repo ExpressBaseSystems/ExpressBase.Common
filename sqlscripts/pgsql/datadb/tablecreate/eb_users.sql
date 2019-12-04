@@ -17,9 +17,9 @@ CREATE TABLE eb_users
     phextension text,
     locale text,
     alternateemail text,
-    dateformat text DEFAULT 'DD/MM/YYYY'::text,
-    timezone text  DEFAULT 'UTC+05:30'::text,
-    numformat text  DEFAULT '0,000.00'::text,
+    dateformat text DEFAULT 'DD/MM/YYYY',
+    timezone text  DEFAULT 'UTC+05:30',
+    numformat text  DEFAULT '0,000.00',
     timezoneabbre text,
     timezonefull text,
     profileimg text,
@@ -38,10 +38,12 @@ CREATE TABLE eb_users
     createdat text,
     statusid integer DEFAULT 0,
     hide text,
-    eb_del "char" NOT NULL DEFAULT 'F'::"char",
+    eb_del char(1) NOT NULL DEFAULT 'F',
     dprefid integer DEFAULT 0,
+	eb_data_id integer,
+	eb_ver_id integer,
     CONSTRAINT eb_users_pkey PRIMARY KEY (id),
-    CONSTRAINT eb_users_eb_del_check CHECK (eb_del = 'T'::"char" OR eb_del = 'F'::"char")
+    CONSTRAINT eb_users_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );
 
 

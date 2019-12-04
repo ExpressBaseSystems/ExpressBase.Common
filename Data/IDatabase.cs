@@ -17,7 +17,7 @@ namespace ExpressBase.Common
         DbConnection GetNewConnection();
         DbConnection GetNewConnection(string dbName);
         DbCommand GetNewCommand(DbConnection con, string sql);
-       // DbCommand GetNewCommand(DbConnection con, string sql, DbTransaction trans);
+        // DbCommand GetNewCommand(DbConnection con, string sql, DbTransaction trans);
         DbParameter GetNewParameter(string parametername, EbDbTypes type, object value);
 
         DbParameter GetNewParameter(string parametername, EbDbTypes type);
@@ -27,9 +27,14 @@ namespace ExpressBase.Common
         T DoQuery<T>(string query, params DbParameter[] parameters);
         EbDataTable DoQuery(string query, params DbParameter[] parameters);
         EbDataTable DoProcedure(string query, params DbParameter[] parameters);
-        DbDataReader DoQueriesBasic(string query, params DbParameter[] parameters);
         EbDataSet DoQueries(string query, params DbParameter[] parameters);
         int DoNonQuery(string query, params DbParameter[] parameters);
+        EbDataSet DoQueries(DbConnection dbConnection, string query, params DbParameter[] parameters);
+        EbDataTable DoProcedure(DbConnection dbConnection, string query, params DbParameter[] parameters);
+        EbDataTable DoQuery(DbConnection dbConnection, string query, params DbParameter[] parameters);
+        DbDataReader DoQueriesBasic(DbConnection dbConnection, string query, params DbParameter[] parameters);
+        int DoNonQuery(DbConnection dbConnection, string query, params DbParameter[] parameters);
+
         Dictionary<int, string> GetDictionary(string query, string dm, string vm);
         List<int> GetAutoResolveValues(string sql, string name, string cond);
         void BeginTransaction();
@@ -64,12 +69,13 @@ namespace ExpressBase.Common
         string EB_SAVEUSERGROUP_QUERY { get; }
         string EB_USER_ROLE_PRIVS { get; }
         string EB_INITROLE2USER { get; }
-		string EB_MANAGEUSER_FIRST_QUERY { get; }
+        string EB_MANAGEUSER_FIRST_QUERY { get; }
         string EB_GETUSERDETAILS { get; }
         string EB_GETDBCLIENTTTABLES { get; }
+        string EB_GET_MYPROFILE_OBJID { get; }
 
         string EB_GETTABLESCHEMA { get; }
-        string EB_GET_CHART_2_DETAILS { get; }        
+        string EB_GET_CHART_2_DETAILS { get; }
         string EB_GETUSEREMAILS { get; }
         string EB_GETPARTICULARSSURVEY { get; }
         string EB_SURVEYMASTER { get; }
@@ -83,8 +89,10 @@ namespace ExpressBase.Common
         string EB_GET_PROFILERS { get; }
         string EB_GET_CHART_DETAILS { get; }
         string EB_INSERT_EXECUTION_LOGS { get; }
-
         string EB_GET_DISTINCT_VALUES { get; }
+
+        string EB_GET_MOB_MENU_OBJ_IDS { get; }
+        string EB_GET_MOBILE_PAGES { get; }
 
         //........objects db query.....
         string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ { get; }
@@ -109,8 +117,8 @@ namespace ExpressBase.Common
         string EB_GET_MLSEARCHRESULT { get; }
         string EB_MLADDKEY { get; }
         string EB_SAVELOCATION { get; }
-        string EB_ALLOBJNVER { get; }               
-        
+        string EB_ALLOBJNVER { get; }
+
 
         //....obj function call....
         string EB_CREATE_NEW_OBJECT { get; }
@@ -122,7 +130,7 @@ namespace ExpressBase.Common
         string EB_CHANGE_STATUS_OBJECT { get; }
         string EB_PATCH_VERSION_OF_OBJECT { get; }
         string EB_UPDATE_DASHBOARD { get; }
-        string EB_LOCATION_CONFIGURATION { get;}
+        string EB_LOCATION_CONFIGURATION { get; }
         string EB_CREATEBOT { get; }
 
         //....files query...
@@ -136,7 +144,7 @@ namespace ExpressBase.Common
         string EB_FILECATEGORYCHANGE { get; }
 
         //....api query...
-         string EB_API_SQL_FUNC_HEADER { get; }
+        string EB_API_SQL_FUNC_HEADER { get; }
 
     }
 }

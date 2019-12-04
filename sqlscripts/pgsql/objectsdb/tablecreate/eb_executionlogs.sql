@@ -13,3 +13,10 @@ CREATE TABLE eb_executionlogs
     params json,
 	CONSTRAINT eb_executionlogs_pkey PRIMARY KEY (id)
 );
+
+-- Index: eb_executionlogs_id_idx
+
+-- DROP INDEX public.eb_executionlogs_id_idx;
+
+CREATE INDEX eb_executionlogs_id_idx
+    ON eb_executionlogs(id);

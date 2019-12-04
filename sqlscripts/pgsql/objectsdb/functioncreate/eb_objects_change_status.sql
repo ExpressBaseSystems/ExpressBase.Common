@@ -35,7 +35,7 @@ BEGIN
 						SELECT eov.id FROM eb_objects_ver eov WHERE coalesce(eov.eb_del,'F')='F' and eov.eb_objects_id = ob_id ) GROUP BY eos1.eb_obj_ver_id )
 				)q WHERE t_status=3 INTO tmp;          
  
-	IF ( statusv::int = 3 AND tmp::int != 0) THEN  RETURN tmp; 
+	IF ( statusv::int = 3 AND tmp::int <> 0) THEN  RETURN tmp; 
 	ELSE
 		INSERT INTO
 			eb_objects_status(eb_obj_ver_id)

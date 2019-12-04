@@ -18,10 +18,34 @@ namespace ExpressBase.Common
         <div id='cont_@ebsid@' ebsid='@ebsid@' name='@name@' class='Eb-ctrlContainer' @childOf@ ctype='@type@' eb-hidden='@isHidden@'>
             <span class='eb-ctrl-label eb-label-editable' ui-label id='@ebsidLbl'>@Label@</span>
             <input id='@ebsid@lbltxtb' class='eb-lbltxtb' type='text'/> @req@ 
-                <div  id='@ebsid@Wraper' class='ctrl-cover'>
+                <div  id='@ebsid@Wraper' class='ctrl-cover' eb-readonly='@isReadonly@'>
                     @barehtml@
                 </div>
             <span class='helpText' ui-helptxt>@helpText@ </span>
         </div>";
-    }
+
+		public const string CONTROL_WRAPER_HTML4BOT = @"
+			<div id='cont_@ebsid@' ebsid='@ebsid@' name='@name@' ctype='@type@' eb-type='@type@' class='Eb-ctrlContainer iw-mTrigger' >
+			   <div class='msg-cont'>
+				  <div class='bot-icon'></div>
+				  <div class='msg-cont-bot'>
+					 <div class='msg-wraper-bot'>
+						@Label@
+						<div class='msg-time'>3:44pm</div>
+					 </div>
+				  </div>
+			   </div>
+			   <div class='msg-cont' >
+				  <div class='msg-cont-bot'>
+					 <div class='msg-wraper-bot' style='border: none; background-color: transparent; width: 99%; padding-right: 3px;'>
+						<div class='chat-ctrl-cont'>
+						   <div class='ctrl-wraper'>
+								@barehtml@
+						   </div>
+						</div>
+					 </div>
+				  </div>
+			   </div>
+			</div>";
+	}
 }

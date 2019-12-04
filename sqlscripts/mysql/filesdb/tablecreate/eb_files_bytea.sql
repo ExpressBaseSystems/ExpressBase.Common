@@ -10,16 +10,5 @@ CREATE TABLE eb_files_bytea
 
 
 
-create index eb_files_bytea_idx 
-on eb_files_bytea(id) 
-using btree;
-
-
-create index eb_files_bytea_filename_idx 
-on eb_files_bytea(filename) 
-using btree;
-
-
-create index eb_files_bytea_filecategory_idx 
-on eb_files_bytea(filecategory) 
-using btree;
+CREATE INDEX eb_files_bytea_id_idx
+    ON eb_files_bytea(id);

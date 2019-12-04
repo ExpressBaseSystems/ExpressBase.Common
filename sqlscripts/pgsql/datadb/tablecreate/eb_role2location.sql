@@ -7,7 +7,7 @@ CREATE TABLE eb_role2location
     id serial,
     roleid integer,
     locationid integer,
-    eb_del "char" DEFAULT 'F'::"char",
+    eb_del char(1) DEFAULT 'F',
     eb_createdby integer,
     eb_createdat timestamp without time zone,
     eb_revokedby integer,

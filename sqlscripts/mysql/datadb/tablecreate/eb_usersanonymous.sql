@@ -2,17 +2,17 @@
 (
   id integer NOT NULL auto_increment,
   fullname text,
-  socialid varchar(50),
-  email varchar(50),
+  socialid varchar(100),
+  email varchar(100),
   sex text,
   phoneno text,
-  firstvisit timestamp DEFAULT CURRENT_TIMESTAMP,
-  lastvisit timestamp DEFAULT CURRENT_TIMESTAMP,
+  firstvisit datetime(4),
+  lastvisit datetime(4),
   appid integer,
   totalvisits integer DEFAULT 1,
   ebuserid integer DEFAULT 1,
   modifiedby integer,
-  modifiedat timestamp DEFAULT CURRENT_TIMESTAMP,
+  modifiedat datetime,
   remarks text,
   ipaddress text,
   browser text,
@@ -27,13 +27,10 @@
 );
 
 CREATE INDEX eb_usersanonymous_email_idx
-ON eb_usersanonymous(email)
-USING btree;
+ON eb_usersanonymous(email);
   
 CREATE INDEX eb_usersanonymous_id_idx
-ON eb_usersanonymous(id)
-USING btree;
+ON eb_usersanonymous(id);
   
 CREATE INDEX eb_usersanonymous_socialid_idx
-ON eb_usersanonymous(socialid)
-USING btree;
+ON eb_usersanonymous(socialid);

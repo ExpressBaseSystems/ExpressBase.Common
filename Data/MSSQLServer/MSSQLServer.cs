@@ -39,16 +39,16 @@ namespace ExpressBase.Common.Data.MSSQLServer
         {
             this.InnerDictionary = new Dictionary<EbDbTypes, VendorDbType>();
             this.InnerDictionary.Add(EbDbTypes.AnsiString, new VendorDbType(EbDbTypes.AnsiString, SqlDbType.Text, "text"));
-            this.InnerDictionary.Add(EbDbTypes.Binary, new VendorDbType(EbDbTypes.Binary, SqlDbType.Binary, "bytea"));
+            this.InnerDictionary.Add(EbDbTypes.Binary, new VendorDbType(EbDbTypes.Binary, SqlDbType.Binary, "binary"));
             this.InnerDictionary.Add(EbDbTypes.Byte, new VendorDbType(EbDbTypes.Byte, SqlDbType.Char, "char"));
-            this.InnerDictionary.Add(EbDbTypes.Date, new VendorDbType(EbDbTypes.Date, SqlDbType.Date, "timestamp without time zone"));
-            this.InnerDictionary.Add(EbDbTypes.DateTime, new VendorDbType(EbDbTypes.DateTime, SqlDbType.DateTime2, "timestamp with time zone"));
+            this.InnerDictionary.Add(EbDbTypes.Date, new VendorDbType(EbDbTypes.Date, SqlDbType.Date, "datetime"));
+            this.InnerDictionary.Add(EbDbTypes.DateTime, new VendorDbType(EbDbTypes.DateTime, SqlDbType.DateTimeOffset + "(4)", "datetimeoffset(4)"));
             this.InnerDictionary.Add(EbDbTypes.Decimal, new VendorDbType(EbDbTypes.Decimal, SqlDbType.Decimal, "decimal"));
             this.InnerDictionary.Add(EbDbTypes.Double, new VendorDbType(EbDbTypes.Double, SqlDbType.Real, "double precision"));
             this.InnerDictionary.Add(EbDbTypes.Int16, new VendorDbType(EbDbTypes.Int16, SqlDbType.SmallInt, "smallint"));
             this.InnerDictionary.Add(EbDbTypes.Int32, new VendorDbType(EbDbTypes.Int32, SqlDbType.Int, "integer"));
             this.InnerDictionary.Add(EbDbTypes.Int64, new VendorDbType(EbDbTypes.Int64, SqlDbType.BigInt, "bigint"));
-            this.InnerDictionary.Add(EbDbTypes.Object, new VendorDbType(EbDbTypes.Object, SqlDbType.NVarChar, "jsonb"));
+            this.InnerDictionary.Add(EbDbTypes.Object, new VendorDbType(EbDbTypes.Object, SqlDbType.NVarChar, "nvarchar(max)"));
             this.InnerDictionary.Add(EbDbTypes.String, new VendorDbType(EbDbTypes.String, SqlDbType.Text, "text"));
             this.InnerDictionary.Add(EbDbTypes.Time, new VendorDbType(EbDbTypes.Time, SqlDbType.Time, "time"));
             this.InnerDictionary.Add(EbDbTypes.VarNumeric, new VendorDbType(EbDbTypes.VarNumeric, SqlDbType.Float, "numeric"));
@@ -165,6 +165,146 @@ namespace ExpressBase.Common.Data.MSSQLServer
             return new SqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Direction = ParameterDirection.Output };
         }
 
+        public EbDataTable DoQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        {
+            EbDataTable dt = new EbDataTable();
+
+            using (SqlConnection con = dbConnection as SqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            DataTable schema = reader.GetSchemaTable();
+                            if (schema != null)
+                            {
+                                this.AddColumns(dt, schema);
+                                PrepareDataTable(reader, dt);
+                            }
+                            //ds.Tables.Add(dt);
+                            //ds.RowNumbers += dt.Rows.Count.ToString() + ",";
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("SQL Server Exception: " + e.Message);
+                    throw e;
+                }
+            }
+
+            return dt;
+        }
+
+        public EbDataSet DoQueries(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        {
+            var dtStart = DateTime.Now;
+            Console.WriteLine(string.Format("DoQueries Start Time : {0}", dtStart));
+            EbDataSet ds = new EbDataSet();
+            ds.RowNumbers = "";
+            try
+            {
+                DbConnection con = dbConnection;
+                using (var reader = this.DoQueriesBasic(con, query, parameters))
+                {
+                    var dtExeTime = DateTime.Now;
+                    Console.WriteLine(string.Format("DoQueries Execution Time : {0}", dtExeTime));
+                    do
+                    {
+                        try
+                        {
+                            EbDataTable dt = new EbDataTable();
+                            DataTable schema = reader.GetSchemaTable();
+                            if (schema != null)
+                            {
+                                this.AddColumns(dt, schema);
+                                PrepareDataTable((SqlDataReader)reader, dt);
+                            }
+                            ds.Tables.Add(dt);
+                            ds.RowNumbers += dt.Rows.Count.ToString() + ",";
+                        }
+                        catch (Exception ee)
+                        {
+                            throw ee;
+                        }
+                    }
+                    while (reader.NextResult());
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            var dtEnd = DateTime.Now;
+            Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
+
+            var ts = (dtEnd - dtStart).TotalMilliseconds;
+            Console.WriteLine(string.Format("DoQueries Execution Time : {0}", ts));
+            ds.RowNumbers = ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 1)/*(ds.RowNumbers.Length>3)?ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 3): ds.RowNumbers*/;
+            ds.StartTime = dtStart;
+            ds.EndTime = dtEnd;
+            return ds;
+        }
+
+        public EbDataTable DoProcedure(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        {
+            return null;
+        }
+
+        public DbDataReader DoQueriesBasic(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        {
+            var con = dbConnection as SqlConnection;
+            try
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    if (parameters != null && parameters.Length > 0)
+                        cmd.Parameters.AddRange(parameters);
+                    cmd.Prepare();
+                    return cmd.ExecuteReader(CommandBehavior.KeyInfo | CommandBehavior.CloseConnection);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return null;
+        }
+
+        public int DoNonQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        {
+            using (var con = dbConnection as SqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+
+                        return cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+                //catch (SocketException scket) { }
+            }
+
+            return 0;
+        }
+
         public T DoQuery<T>(string query, params DbParameter[] parameters)
         {
             T obj = default(T);
@@ -201,113 +341,35 @@ namespace ExpressBase.Common.Data.MSSQLServer
         {
             EbDataTable dt = new EbDataTable();
 
-            using (var con = GetNewConnection() as SqlConnection)
+            try
             {
-                try
-                {
-                    con.Open();
-                    using (SqlCommand cmd = new SqlCommand(query, con))
-                    {
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
-
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            DataTable schema = reader.GetSchemaTable();
-                            if (schema != null)
-                            {
-                                this.AddColumns(dt, schema);
-                                PrepareDataTable(reader, dt);
-                            }
-                            //ds.Tables.Add(dt);
-                            //ds.RowNumbers += dt.Rows.Count.ToString() + ",";
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("SQL Server Exception: " + e.Message);
-                    throw e;
-                }
-                //catch (SocketException scket){ }
+                SqlConnection con = GetNewConnection() as SqlConnection;
+                dt = DoQuery(con, query, parameters);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("SQL Server Exception: " + e.Message);
+                throw e;
             }
 
             return dt;
         }
 
-        public DbDataReader DoQueriesBasic(string query, params DbParameter[] parameters)
-        {
-            var con = GetNewConnection() as SqlConnection;
-            try
-            {
-                con.Open();
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    if (parameters != null && parameters.Length > 0)
-                        cmd.Parameters.AddRange(parameters);
-                    cmd.Prepare();
-                    return cmd.ExecuteReader(CommandBehavior.KeyInfo | CommandBehavior.CloseConnection);
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            //catch (SocketException scket)
-            //{
-            //}
-
-            return null;
-        }
-
         public EbDataSet DoQueries(string query, params DbParameter[] parameters)
         {
-            var dtStart = DateTime.Now;
-            Console.WriteLine(string.Format("DoQueries Start Time : {0}", dtStart));
             EbDataSet ds = new EbDataSet();
-            ds.RowNumbers = "";
+
             try
             {
-                using (var reader = this.DoQueriesBasic(query, parameters))
-                {
-                    var dtExeTime = DateTime.Now;
-                    Console.WriteLine(string.Format("DoQueries Execution Time : {0}", dtExeTime));
-                    do
-                    {
-                        try
-                        {
-                            EbDataTable dt = new EbDataTable();
-                            DataTable schema = reader.GetSchemaTable();
-                            if (schema != null)
-                            {
-                                this.AddColumns(dt, schema);
-                                PrepareDataTable((SqlDataReader)reader, dt);
-                            }
-                            ds.Tables.Add(dt);
-                            ds.RowNumbers += dt.Rows.Count.ToString() + ",";
-                        }
-                        catch (Exception ee)
-                        {
-                            throw ee;
-                        }
-                    }
-                    while (reader.NextResult());
-                }
+                SqlConnection con = GetNewConnection() as SqlConnection;
+                ds = DoQueries(con, query, parameters);
             }
             catch (Exception e)
             {
+                Console.WriteLine("SQL Server Exception: " + e.Message);
                 throw e;
             }
-            //catch (SocketException scket) { }
 
-            var dtEnd = DateTime.Now;
-            Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
-
-            var ts = (dtEnd - dtStart).TotalMilliseconds;
-            Console.WriteLine(string.Format("DoQueries Execution Time : {0}", ts));
-            ds.RowNumbers = ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 1)/*(ds.RowNumbers.Length>3)?ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 3): ds.RowNumbers*/;
-            ds.StartTime = dtStart;
-            ds.EndTime = dtEnd;
             return ds;
         }
 
@@ -318,27 +380,18 @@ namespace ExpressBase.Common.Data.MSSQLServer
 
         public int DoNonQuery(string query, params DbParameter[] parameters)
         {
-            using (var con = GetNewConnection() as SqlConnection)
+            var con = GetNewConnection() as SqlConnection;
+            int val = 0;
+            try
             {
-                try
-                {
-                    con.Open();
-                    using (SqlCommand cmd = new SqlCommand(query, con))
-                    {
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
-
-                        return cmd.ExecuteNonQuery();
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
-                //catch (SocketException scket) { }
-
-                return 0;
+                val = DoNonQuery(con, query, parameters);
             }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return val;
         }
 
         public Dictionary<int, string> GetDictionary(string query, string dm, string vm)
@@ -678,7 +731,27 @@ namespace ExpressBase.Common.Data.MSSQLServer
         // only for mysql
         public string EB_SIDEBARUSER_REQUEST_SOL_OWNER { get { return @""; } }
 
-        public string EB_SIDEBARDEV_REQUEST { get { return @""; } }
+        public string EB_SIDEBARDEV_REQUEST
+        {
+            get
+            {
+                return @"SELECT id, applicationname,app_icon FROM eb_applications
+                            WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
+                        SELECT 
+	                            EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, COALESCE(EO2A.app_id, 0),display_name
+                            FROM 
+	                            eb_objects EO
+                            LEFT JOIN
+	                            eb_objects2application EO2A 
+                            ON
+	                            EO.id = EO2A.obj_id 
+                            WHERE
+	                           COALESCE(EO2A.eb_del, 'F') = 'F' 
+                               AND COALESCE( EO.eb_del, 'F') = 'F'
+                            ORDER BY 
+	                            EO.obj_type;";
+            }
+        }
 
         public string EB_SIDEBARCHECK { get { return @""; } }
 
@@ -698,9 +771,21 @@ namespace ExpressBase.Common.Data.MSSQLServer
 
         public string EB_SAVEUSERGROUP_QUERY { get { return @""; } }
 
-        public string EB_USER_ROLE_PRIVS { get { return @""; } }
+        public string EB_USER_ROLE_PRIVS
+        {
+            get
+            {
+                return @"";
+            }
+        }
 
-        public string EB_INITROLE2USER { get { return @""; } }
+        public string EB_INITROLE2USER
+        {
+            get
+            {
+                return @"INSERT INTO eb_role2user(role_id, user_id, createdat) VALUES (@role_id, @user_id, CURRENT_TIMESTAMP);";
+            }
+        }
 
         public string EB_MANAGEUSER_FIRST_QUERY
         { get { return @""; } }
@@ -710,6 +795,14 @@ namespace ExpressBase.Common.Data.MSSQLServer
 
         public string EB_GETUSERDETAILS
         { get { return @""; } }
+
+        public string EB_GET_MYPROFILE_OBJID
+        {
+            get
+            {
+                return @"";
+            }
+        }
 
         public string EB_CREATEAPPLICATION_DEV
         { get { return @""; } }
@@ -756,6 +849,22 @@ namespace ExpressBase.Common.Data.MSSQLServer
         public string EB_INSERT_EXECUTION_LOGS
         { get { return @""; } }
 
+        public string EB_GET_MOB_MENU_OBJ_IDS
+        {
+            get
+            {
+                return @"";
+            }
+        }
+
+        public string EB_GET_MOBILE_PAGES
+        {
+            get
+            {
+                return @"";
+            }
+        }
+
         // DBClient
 
         public string EB_GETDBCLIENTTTABLES
@@ -764,50 +873,239 @@ namespace ExpressBase.Common.Data.MSSQLServer
         //.......OBJECTS QUERIES.....
 
         public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT
+                        EOV.id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.commit_uid, EU.fullname
+                    FROM
+                        eb_objects_ver EOV, eb_users EU
+                    WHERE
+                        EOV.commit_uid = EU.id AND
+                        EOV.eb_objects_id = (SELECT eb_objects_id FROM eb_objects_ver WHERE refid = @refid)
+                    ORDER BY
+                        EOV.id DESC";
+            }
+        }
+
         public string EB_PARTICULAR_VERSION_OF_AN_OBJ
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT
+                            obj_json, version_num, status, EO.obj_tags, EO.obj_type
+                        FROM
+                            eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
+                        WHERE
+                            EOV.refid = @refid AND EOS.eb_obj_ver_id = EOV.id AND EO.id=EOV.eb_objects_id
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                        ORDER BY
+	                        EOS.id DESC 
+                        OFFSET 0 ROW FETCH NEXT 1 ROW ONLY";
+            }
+        }
+
         public string EB_LATEST_COMMITTED_VERSION_OF_AN_OBJ
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT 
+                        EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status, EO.obj_desc,
+                        EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.obj_json, EOV.refid
+                    FROM 
+                        eb_objects EO, eb_objects_ver EOV
+                    WHERE
+                        EO.id = EOV.eb_objects_id AND EOV.refid = @refid
+                        AND COALESCE( EO.eb_del, 'F') = 'F'
+                    ORDER BY
+                        EO.obj_type";
+            }
+        }
+
         public string EB_COMMITTED_VERSIONS_OF_ALL_OBJECTS_OF_A_TYPE
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT 
+                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
+                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog,EOV.commit_ts, EOV.commit_uid, EOV.refid,
+                            EU.fullname, EO.display_name
+                        FROM 
+                            eb_objects EO, eb_objects_ver EOV
+                        LEFT JOIN
+	                        eb_users EU
+                        ON 
+	                        EOV.commit_uid = EU.id
+                        WHERE
+                            EO.id = EOV.eb_objects_id AND EO.obj_type = @type
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                        ORDER BY
+                            EO.obj_name";
+            }
+        }
+
         public string EB_GET_LIVE_OBJ_RELATIONS
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT 
+	                        EO.obj_name, EOV.refid, EOV.version_num, EO.obj_type,EOS.status
+                        FROM 
+	                        eb_objects EO, eb_objects_ver EOV,eb_objects_status EOS
+                        WHERE 
+	                        EO.id = ANY (SELECT eb_objects_id FROM eb_objects_ver WHERE refid IN(SELECT dependant FROM eb_objects_relations
+                                                  WHERE dominant = @dominant))
+                            AND EOV.refid = ANY(SELECT dependant FROM eb_objects_relations WHERE dominant = @dominant)    
+                            AND EO.id = EOV.eb_objects_id  AND EOS.eb_obj_ver_id = EOV.id AND EOS.status = 3 AND EO.obj_type IN(16 ,17)
+                            AND COALESCE( EO.eb_del, 'F') = 'F' ";
+            }
+        }
+
         public string EB_GET_TAGGED_OBJECTS
-        { get { return @""; } }
+        {
+            get { return @"";
+            }
+        }
+
         public string EB_GET_ALL_COMMITTED_VERSION_LIST
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT 
+                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
+                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.refid,
+                            EU.fullname, EO.display_name
+                        FROM 
+                            eb_objects EO, eb_objects_ver EOV
+                        LEFT JOIN
+	                        eb_users EU
+                        ON 
+	                        EOV.commit_uid = EU.id
+                        WHERE
+                            EO.id = EOV.eb_objects_id  AND EO.obj_type = @type AND COALESCE(EOV.working_mode, 'F') <> 'T'
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                        ORDER BY
+                            EO.obj_name, EOV.id";
+            }
+        }
+
         public string EB_GET_OBJECTS_OF_A_TYPE
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT 
+                    id, obj_name, obj_type, obj_cur_status, obj_desc  
+                FROM 
+                    eb_objects
+                WHERE
+                    obj_type = @type
+                    AND COALESCE( eb_del, 'F') = 'F'
+                ORDER BY
+                    obj_name";
+            }
+        }
+
         public string EB_GET_OBJ_STATUS_HISTORY
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT 
+                            EOS.eb_obj_ver_id, EOS.status, EU.fullname, EOS.ts, EOS.changelog, EOV.commit_uid   
+                        FROM
+                            eb_objects_status EOS, eb_objects_ver EOV, eb_users EU
+                        WHERE
+                            eb_obj_ver_id = EOV.id AND EOV.refid = @refid AND EOV.commit_uid=EU.id
+                        ORDER BY 
+                            EOS.id DESC";
+            }
+        }
+
         public string EB_LIVE_VERSION_OF_OBJS
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT
+                            EO.id, EO.obj_name, EO.obj_type, EO.obj_desc,
+                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.obj_json, EOV.refid, EOS.status
+                        FROM
+                            eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
+                        WHERE
+                            EO.id = @id AND EOV.eb_objects_id = EO.id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                        ORDER BY EOV.eb_objects_id	
+                            OFFSET 0 ROW FETCH NEXT 1 ROW ONLY;";
+            }
+        }
+
         public string EB_GET_ALL_TAGS
-        { get { return @""; } }
+        {
+            get { return @"";
+            }
+        }
 
         public string EB_GET_MLSEARCHRESULT
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT count(*) FROM (SELECT * FROM eb_keys WHERE LOWER(""key"") LIKE LOWER(@KEY)) AS Temp;
+                        SELECT A.id, A.""key"", B.id, B.language, C.id, C.value
+                            FROM (SELECT * FROM eb_keys 
+                                    WHERE LOWER(""key"") LIKE LOWER(@KEY) 
+                                    ORDER BY ""key"" ASC 
+                                        OFFSET @OFFSET ROWS FETCH NEXT @LIMIT ROWS ONLY) A,
+                                eb_languages B, eb_keyvalue C
+                            WHERE A.id=C.key_id AND B.id=C.lang_id  
+                            ORDER BY A.""key"" ASC, B.language ASC;";
+            }
+        }
 
         public string EB_MLADDKEY
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"INSERT INTO eb_keys(""key"") OUTPUT INSERTED.ID VALUES(@KEY);";
+            }
+        }
 
         public string EB_GET_BOT_FORM
-        { get { return @""; } }
+        {
+            get { return @"";
+            }
+        }
         public string IS_TABLE_EXIST
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT 1 FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = @tbl;";
+            }
+        }
 
         public string EB_ALLOBJNVER
         { get { return @""; } }
 
         public string EB_CREATELOCATIONCONFIG1Q
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"INSERT INTO eb_location_config(keys,isrequired,keytype,eb_del) output inserted.id VALUES(@keys,@isrequired,@type,'F')";
+            }
+        }
 
         public string EB_CREATELOCATIONCONFIG2Q
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"UPDATE eb_location_config SET keys = @keys ,isrequired = @isrequired , keytype = @type WHERE id = @keyid;";
+            }
+        }
 
         public string EB_GET_DISTINCT_VALUES
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT DISTINCT TRIM(@ColumName) AS @ColumName FROM @TableName ORDER BY @ColumName;";
+            }
+        }
         //.....OBJECTS FUNCTION CALL......
 
         public string EB_CREATE_NEW_OBJECT
@@ -866,9 +1164,9 @@ namespace ExpressBase.Common.Data.MSSQLServer
         { get { return @""; } }
     }
 
-    public class MySQLFilesDB : MSSQLDatabase, INoSQLDatabase
+    public class MSSQLServerFilesDB : MSSQLDatabase, INoSQLDatabase
     {
-        public MySQLFilesDB(EbDbConfig dbconf) : base(dbconf)
+        public MSSQLServerFilesDB(EbDbConfig dbconf) : base(dbconf)
         {
             InfraConId = dbconf.Id;
         }
@@ -924,7 +1222,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
 
         public string UploadFile(string filename, byte[] bytea, EbFileCategory cat)
         {
-            Console.WriteLine("Before Mysql Upload File");
+            Console.WriteLine("Before MSSQLServer Upload File");
 
             string rtn = null;
             try
@@ -932,7 +1230,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
                 using (SqlConnection con = GetNewConnection() as SqlConnection)
                 {
                     con.Open();
-                    string sql = @"INSERT INTO eb_files_bytea(filename, bytea, filecategory) VALUES(@filename, @bytea, @cat);SELECT last_insert_id();";
+                    string sql = @"INSERT INTO eb_files_bytea(filename, bytea, filecategory) output inserted.id VALUES(@filename, @bytea, @cat);";
 
                     using (SqlCommand cmd = new SqlCommand(sql, con))
                     {
@@ -949,7 +1247,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
             {
                 Console.WriteLine("Exception :  " + e.Message);
             }
-            Console.WriteLine("After Mysql Upload File , fileStore id: " + rtn.ToString());
+            Console.WriteLine("After MSSQLServer Upload File , fileStore id: " + rtn.ToString());
             return rtn.ToString();
         }
     }

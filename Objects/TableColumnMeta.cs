@@ -35,6 +35,22 @@ namespace ExpressBase.Common
         public AuditTrailEntry() { }
     }
 
+    public class AuditTrailInsertData
+    {
+        public string RefId { get; set; }
+
+        public int TableRowId { get; set; }
+
+        public int Action { get; set; }
+
+        public List<AuditTrailEntry> Fields { get; set; }
+
+        public AuditTrailInsertData()
+        {
+            this.Fields = new List<AuditTrailEntry>();
+        }
+    }
+
     public class SingleColumn
     {
         public string Name { get; set; }
@@ -153,6 +169,11 @@ namespace ExpressBase.Common
         public Dictionary<string, bool> DisableCancel { get; set; }
 
         public string MasterTable { get; set; }
+
+        public int FormVersionId { get; set; }
+        public bool IsLocked { get; set; }
+        public string DataPushId { get; set; }
+        public int SourceId { get; set; }
         
         public WebformData()
         {
