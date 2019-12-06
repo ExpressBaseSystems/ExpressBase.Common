@@ -154,23 +154,22 @@ namespace ExpressBase.Common
             EbDataTable dt = new EbDataTable();
             try
             {
-                using (MySqlConnection con = dbConnection as MySqlConnection)
-                {
-                    con.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(query, con))
-                    {
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
+                MySqlConnection con = dbConnection as MySqlConnection;
 
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            DataTable schema = reader.GetSchemaTable();
-                            this.AddColumns(dt, schema);
-                            PrepareDataTable(reader, dt);
-                        }
+                using (MySqlCommand cmd = new MySqlCommand(query, con))
+                {
+                    if (parameters != null && parameters.Length > 0)
+                        cmd.Parameters.AddRange(parameters);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        DataTable schema = reader.GetSchemaTable();
+                        this.AddColumns(dt, schema);
+                        PrepareDataTable(reader, dt);
                     }
                 }
             }
+
             catch (MySqlException myexce)
             {
                 Console.WriteLine("MySQL Exception : " + myexce.Message);
@@ -200,51 +199,50 @@ namespace ExpressBase.Common
             query = query.Trim();
             string[] qry_ary = query.Split(";");
 
-            using (MySqlConnection con = dbConnection as MySqlConnection)
-            {
-                con.Open();
-                var dtExeTime = DateTime.Now;
-                Console.WriteLine(string.Format("DoQueries Execution Time : {0}", dtExeTime));
+            MySqlConnection con = dbConnection as MySqlConnection;
 
-                ds.RowNumbers = "";
-                try
+            var dtExeTime = DateTime.Now;
+            Console.WriteLine(string.Format("DoQueries Execution Time : {0}", dtExeTime));
+
+            ds.RowNumbers = "";
+            try
+            {
+                for (int i = 0; i < qry_ary.Length && qry_ary[i] != string.Empty && qry_ary[i] != " "; i++)
                 {
-                    for (int i = 0; i < qry_ary.Length && qry_ary[i] != string.Empty && qry_ary[i] != " "; i++)
+                    using (MySqlCommand cmd = new MySqlCommand(qry_ary[i], con))
                     {
-                        using (MySqlCommand cmd = new MySqlCommand(qry_ary[i], con))
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            if (parameters != null && parameters.Length > 0)
-                                cmd.Parameters.AddRange(parameters);
-                            using (var reader = cmd.ExecuteReader())
+                            EbDataTable dt = new EbDataTable();
+                            DataTable schema = reader.GetSchemaTable();
+                            if (schema != null)
                             {
-                                EbDataTable dt = new EbDataTable();
-                                DataTable schema = reader.GetSchemaTable();
-                                if (schema != null)
-                                {
-                                    this.AddColumns(dt, schema);
-                                    PrepareDataTable(reader, dt);
-                                }
-                                ds.Tables.Add(dt);
-                                ds.RowNumbers += dt.Rows.Count.ToString() + ",";
+                                this.AddColumns(dt, schema);
+                                PrepareDataTable(reader, dt);
                             }
-                            cmd.Parameters.Clear();
+                            ds.Tables.Add(dt);
+                            ds.RowNumbers += dt.Rows.Count.ToString() + ",";
                         }
+                        cmd.Parameters.Clear();
                     }
                 }
-                catch (Exception e)
-                {
-                    throw e;
-                }
-
-                var dtEnd = DateTime.Now;
-                Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
-
-                var ts = (dtEnd - dtStart).TotalMilliseconds;
-                Console.WriteLine(string.Format("DoQueries Execution Time : {0}", ts));
-                ds.RowNumbers = ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 1);/*(ds.RowNumbers.Length>3)?ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 3): ds.RowNumbers*/
-                ds.StartTime = dtStart;
-                ds.EndTime = dtEnd;
             }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            var dtEnd = DateTime.Now;
+            Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
+
+            var ts = (dtEnd - dtStart).TotalMilliseconds;
+            Console.WriteLine(string.Format("DoQueries Execution Time : {0}", ts));
+            ds.RowNumbers = ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 1);/*(ds.RowNumbers.Length>3)?ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 3): ds.RowNumbers*/
+            ds.StartTime = dtStart;
+            ds.EndTime = dtEnd;
+
             return ds;
         }
 
@@ -255,29 +253,27 @@ namespace ExpressBase.Common
             string procedure_name = query.Substring(0, index);
             try
             {
-                using (MySqlConnection con = dbConnection as MySqlConnection)
-                {
-                    con.Open();
-                    using (MySqlCommand cmd = new MySqlCommand())
-                    {
-                        cmd.Connection = con;
-                        cmd.CommandText = procedure_name;
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddRange(parameters);
-                        var reader = cmd.ExecuteNonQuery();
+                MySqlConnection con = dbConnection as MySqlConnection;
 
-                        tbl.Rows.Add(new EbDataRow());
-                        int i = 0;
-                        foreach (var param in parameters)
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    cmd.Connection = con;
+                    cmd.CommandText = procedure_name;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddRange(parameters);
+                    var reader = cmd.ExecuteNonQuery();
+
+                    tbl.Rows.Add(new EbDataRow());
+                    int i = 0;
+                    foreach (var param in parameters)
+                    {
+                        if (param.Direction == ParameterDirection.Output)
                         {
-                            if (param.Direction == ParameterDirection.Output)
-                            {
-                                tbl.Columns.Add(new EbDataColumn(i++, param.ParameterName, (EbDbTypes)param.DbType));
-                                tbl.Rows[0][param.ParameterName] = cmd.Parameters["@" + param.ParameterName].Value;
-                            }
+                            tbl.Columns.Add(new EbDataColumn(i++, param.ParameterName, (EbDbTypes)param.DbType));
+                            tbl.Rows[0][param.ParameterName] = cmd.Parameters["@" + param.ParameterName].Value;
                         }
-                        return tbl;
                     }
+                    return tbl;
                 }
             }
             catch (Exception e)
@@ -295,56 +291,52 @@ namespace ExpressBase.Common
             {
                 query = query.Replace(":", "@");
             }
-            using (MySqlConnection con = dbConnection as MySqlConnection)
+            MySqlConnection con = dbConnection as MySqlConnection;
+
+            try
             {
-                con.Open();
-                try
+                using (MySqlCommand cmd = new MySqlCommand(query, con))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand(query, con))
-                    {
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
-                        cmd.Prepare();
-                        var reader = cmd.ExecuteReader();
-                        return reader;
-                    }
+                    if (parameters != null && parameters.Length > 0)
+                        cmd.Parameters.AddRange(parameters);
+                    cmd.Prepare();
+                    var reader = cmd.ExecuteReader();
+                    return reader;
                 }
-                catch (MySqlException myexce)
-                {
-                    throw myexce;
-                }
-                catch (SocketException scket) { }
             }
+            catch (MySqlException myexce)
+            {
+                throw myexce;
+            }
+            catch (SocketException scket) { }
+
             return null;
         }
 
         public int DoNonQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
-            using (MySqlConnection con = dbConnection as MySqlConnection)
+
+            MySqlConnection con = dbConnection as MySqlConnection;
+            try
             {
-                con.Open();
-                try
+                if (query.Contains(":"))
                 {
-                    if (query.Contains(":"))
-                    {
-                        query = query.Replace(":", "@");
-                    }
-                    using (MySqlCommand cmd = new MySqlCommand(query, con))
-                    {
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
+                    query = query.Replace(":", "@");
+                }
+                using (MySqlCommand cmd = new MySqlCommand(query, con))
+                {
+                    if (parameters != null && parameters.Length > 0)
+                        cmd.Parameters.AddRange(parameters);
 
-                        return cmd.ExecuteNonQuery();
-                    }
+                    return cmd.ExecuteNonQuery();
                 }
-                catch (MySqlException myexce)
-                {
-                    throw myexce;
-                }
-                catch (SocketException scket)
-                {
-                }
-
+            }
+            catch (MySqlException myexce)
+            {
+                throw myexce;
+            }
+            catch (SocketException scket)
+            {
             }
 
             return 0;
@@ -390,7 +382,9 @@ namespace ExpressBase.Common
             try
             {
                 var con = GetNewConnection() as MySqlConnection;
+                con.Open();
                 dt = DoQuery(con, query, parameters);
+                con.Close();
             }
             catch (MySqlException myexec)
             {
@@ -405,7 +399,9 @@ namespace ExpressBase.Common
             try
             {
                 MySqlConnection con = GetNewConnection() as MySqlConnection;
+                con.Open();
                 tbl = DoProcedure(con, query, parameters);
+                con.Close();
             }
             catch (MySqlException myexec)
             {
@@ -424,7 +420,9 @@ namespace ExpressBase.Common
             try
             {
                 MySqlConnection con = GetNewConnection() as MySqlConnection;
+                con.Open();
                 ds = DoQueries(con, query, parameters);
+                con.Close();
             }
             catch (MySqlException myexec)
             {
@@ -439,7 +437,9 @@ namespace ExpressBase.Common
             try
             {
                 MySqlConnection con = GetNewConnection() as MySqlConnection;
+                con.Open();
                 val = DoNonQuery(con, query, parameters);
+                con.Close();
             }
             catch (MySqlException myexec)
             {
@@ -913,7 +913,9 @@ namespace ExpressBase.Common
                             COALESCE(EO2A.eb_del, 'F') = 'F'
                             AND COALESCE( EO.eb_del, 'F') = 'F'
                         ORDER BY
-                            EO.obj_type;"; } }
+                            EO.obj_type;";
+            }
+        }
 
         public string EB_SIDEBARCHECK { get { return "AND EO.id = any (SELECT ':Ids')"; } }
 
@@ -1251,6 +1253,14 @@ namespace ExpressBase.Common
             get
             {
                 return @"AND FIND_IN_SET(OD.id, @objids) ";
+            }
+        }
+
+        public string EB_GET_USER_DASHBOARD_OBJECTS
+        {
+            get
+            {
+                return @" AND FIND_IN_SET(eov.eb_objects_id, @ids) ";
             }
         }
 
@@ -1670,7 +1680,7 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"eb_objects_update_Dashboard(@refid, @namev, @status, @ver_num, @work_mode, @workingcopies, @major_ver, @minor_ver, @patch_ver, @tags,
+                return @"eb_objects_update_dashboard(@refid, @namev, @status, @ver_num, @work_mode, @workingcopies, @major_ver, @minor_ver, @patch_ver, @tags,
                         @app_id, @lastversionrefidval, @lastversionnumberval, @lastversioncommit_tsval, @lastversion_statusval, @lastversioncommit_byname, 
                         @lastversioncommit_byid, @liveversionrefidval, @liveversionnumberval, @liveversioncommit_tsval, @liveversion_statusval, 
                         @liveversioncommit_byname, @liveversioncommit_byid, @owner_uidval, @owner_tsval, @owner_nameval)";

@@ -90,7 +90,7 @@ namespace ExpressBase.Common
         string EB_GET_CHART_DETAILS { get; }
         string EB_INSERT_EXECUTION_LOGS { get; }
         string EB_GET_DISTINCT_VALUES { get; }
-
+        string EB_GET_USER_DASHBOARD_OBJECTS { get; }
         string EB_GET_MOB_MENU_OBJ_IDS { get; }
         string EB_GET_MOBILE_PAGES { get; }
 
