@@ -1,5 +1,6 @@
 ﻿using ExpressBase.Common.Objects;
 using ExpressBase.Common.Structures;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -59,11 +60,19 @@ namespace ExpressBase.Common
 
         public int Type { get; set; }
 
+        [JsonIgnore]
         public EbControl Control { get; set; }
 
-        public bool AutoIncrement { get; set; }
+        //public Dictionary<int, string[]> D { get; set; }//Display members //original
+        public Dictionary<int, Dictionary<string, string>> D { get; set; }//Display members //duplicate
 
-        public SingleColumn() { }        
+        public List<SingleRow> R { get; set; }//Rows of ps
+
+        public string ObjType { get; set; }//Object type
+
+        public string F { get; set; }//Formatted text for date, time etc
+        
+        public SingleColumn() { }
     }
 
     public class SingleRow
@@ -164,6 +173,9 @@ namespace ExpressBase.Common
 
         public Dictionary<string, SingleTable> ExtendedTables { get; set; }
 
+        [JsonIgnore]
+        public Dictionary<string, SingleTable> PsDm_Tables { get; set; }
+
         public Dictionary<string, bool> DisableDelete { get; set; }
 
         public Dictionary<string, bool> DisableCancel { get; set; }
@@ -179,6 +191,7 @@ namespace ExpressBase.Common
         {
             MultipleTables = new Dictionary<string, SingleTable>();
             ExtendedTables = new Dictionary<string, SingleTable>();
+            PsDm_Tables = new Dictionary<string, SingleTable>();
             DisableDelete = new Dictionary<string, bool>();
             DisableCancel = new Dictionary<string, bool>();
         }
