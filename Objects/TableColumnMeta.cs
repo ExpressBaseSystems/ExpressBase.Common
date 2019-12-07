@@ -77,7 +77,7 @@ namespace ExpressBase.Common
 
     public class SingleRow
     {        
-        public string RowId { get; set; }
+        public int RowId { get; set; }
 
         public int LocId { get; set; }
 
