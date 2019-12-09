@@ -1,6 +1,6 @@
 ﻿CREATE TABLE eb_objects2application
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   app_id integer,  
   obj_id integer,
   removed_by integer,

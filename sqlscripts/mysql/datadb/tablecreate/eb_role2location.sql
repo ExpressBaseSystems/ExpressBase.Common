@@ -1,6 +1,6 @@
 CREATE TABLE eb_role2location
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   roleid integer,
   locationid integer,
   eb_del char(1) DEFAULT 'F',

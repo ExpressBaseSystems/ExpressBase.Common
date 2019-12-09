@@ -1,9 +1,9 @@
 ﻿CREATE TABLE eb_usersanonymous
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   fullname text,
-  socialid varchar(100),
-  email varchar(100),
+  socialid varchar(320),
+  email varchar(320),
   sex text,
   phoneno text,
   firstvisit datetime(4),

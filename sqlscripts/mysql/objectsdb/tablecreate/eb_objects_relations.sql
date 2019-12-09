@@ -1,6 +1,6 @@
 ﻿CREATE TABLE eb_objects_relations
 (
-	id integer NOT NULL auto_increment,
+	id integer auto_increment,
 	dominant text,
 	dependant text,
 	removed_by integer,

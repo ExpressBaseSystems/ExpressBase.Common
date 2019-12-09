@@ -1,6 +1,6 @@
 ﻿CREATE TABLE eb_role2permission
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   role_id integer,  
   permissionname text,
   createdby integer,

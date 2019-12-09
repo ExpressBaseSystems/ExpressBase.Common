@@ -9,9 +9,9 @@ namespace ExpressBase.Common.Messaging
     public interface IChatConnection
     {
         int InfraConId { get; set; }
-        void Send(string channel, string message);
-        List<string> GetAllUsers();
+        void Send(string channel, string Message, byte[] bytea, string AttachmentName);
+        Dictionary<int, string> GetAllUsers();
 
-        List<string> GetAllGroups();
+        Dictionary<int, string> GetAllGroups();
     }   
 }

@@ -1,6 +1,6 @@
 CREATE TABLE eb_audit_lines
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   masterid integer,
   fieldname text,
   oldvalue text,

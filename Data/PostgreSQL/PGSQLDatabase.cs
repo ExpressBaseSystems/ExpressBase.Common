@@ -174,32 +174,30 @@ namespace ExpressBase.Common
         {
             EbDataTable dt = new EbDataTable();
 
-            using (var con = dbConnection as NpgsqlConnection)
+            var con = dbConnection as NpgsqlConnection;
+            try
             {
-                try
+
+                using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
                 {
-                    con.Open();
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
+                    if (parameters != null && parameters.Length > 0)
+                        cmd.Parameters.AddRange(parameters);
+
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
+                        Type[] typeArray = this.AddColumns(dt, reader.GetColumnSchema());
 
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            Type[] typeArray = this.AddColumns(dt, reader.GetColumnSchema());
-
-                            PrepareDataTable(reader, dt, typeArray);
-                        }
+                        PrepareDataTable(reader, dt, typeArray);
                     }
                 }
-                catch (Npgsql.NpgsqlException npgse)
-                {
-                    Console.WriteLine("Postgres Exception: " + npgse.Message);
-                    throw npgse;
-                }
-                catch (SocketException scket)
-                {
-                }
+            }
+            catch (Npgsql.NpgsqlException npgse)
+            {
+                Console.WriteLine("Postgres Exception: " + npgse.Message);
+                throw npgse;
+            }
+            catch (SocketException scket)
+            {
             }
 
             return dt;
@@ -208,16 +206,18 @@ namespace ExpressBase.Common
         public DbDataReader DoQueriesBasic(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
             var con = dbConnection as NpgsqlConnection;
+
             try
             {
-                con.Open();
                 using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
                 {
                     if (parameters != null && parameters.Length > 0)
                         cmd.Parameters.AddRange(parameters);
                     cmd.Prepare();
-                    return cmd.ExecuteReader(CommandBehavior.KeyInfo | CommandBehavior.CloseConnection);
+                    
+                    return cmd.ExecuteReader(CommandBehavior.KeyInfo);
                 }
+
             }
             catch (Npgsql.NpgsqlException npgse)
             {
@@ -235,40 +235,40 @@ namespace ExpressBase.Common
             var dtStart = DateTime.Now;
             Console.WriteLine(string.Format("DoQueries Start Time : {0}", dtStart));
             EbDataSet ds = new EbDataSet();
+            DbDataReader reader = null;
             ds.RowNumbers = "";
             try
             {
                 var con = dbConnection;
-
-                using (var reader = this.DoQueriesBasic(con, query, parameters))
+                reader = this.DoQueriesBasic(con, query, parameters);
+                var dtExeTime = DateTime.Now;
+                Console.WriteLine(string.Format("DoQueries Execution Time : {0}", dtExeTime));
+                do
                 {
-                    var dtExeTime = DateTime.Now;
-                    Console.WriteLine(string.Format("DoQueries Execution Time : {0}", dtExeTime));
-                    do
+                    try
                     {
-                        try
-                        {
-                            EbDataTable dt = new EbDataTable();
-                            Type[] typeArray = this.AddColumns(dt, (reader as NpgsqlDataReader).GetColumnSchema());
-                            PrepareDataTable((reader as NpgsqlDataReader), dt, typeArray);
-                            ds.Tables.Add(dt);
-                            ds.RowNumbers += dt.Rows.Count.ToString() + ",";
-                        }
-                        catch (Exception ee)
-                        {
-                            throw ee;
-                        }
+                        EbDataTable dt = new EbDataTable();
+                        Type[] typeArray = this.AddColumns(dt, (reader as NpgsqlDataReader).GetColumnSchema());
+                        PrepareDataTable((reader as NpgsqlDataReader), dt, typeArray);
+                        ds.Tables.Add(dt);
+                        ds.RowNumbers += dt.Rows.Count.ToString() + ",";
                     }
-                    while (reader.NextResult());
+                    catch (Exception ee)
+                    {
+                        throw ee;
+                    }
                 }
+                while (reader.NextResult());
 
             }
+
             catch (Npgsql.NpgsqlException npgse)
             {
                 throw npgse;
             }
             catch (SocketException scket) { }
 
+            reader.Close();
             var dtEnd = DateTime.Now;
             Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
 
@@ -277,8 +277,9 @@ namespace ExpressBase.Common
             ds.RowNumbers = ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 1)/*(ds.RowNumbers.Length>3)?ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 3): ds.RowNumbers*/;
             ds.StartTime = dtStart;
             ds.EndTime = dtEnd;
+
             return ds;
-        }       
+        }
 
         public EbDataTable DoProcedure(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
@@ -287,27 +288,25 @@ namespace ExpressBase.Common
 
         public int DoNonQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
-            using (var con = dbConnection as NpgsqlConnection)
+            var con = dbConnection as NpgsqlConnection;
+            try
             {
-                try
+                using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
                 {
-                    con.Open();
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
-                    {
-                        if (parameters != null && parameters.Length > 0)
-                            cmd.Parameters.AddRange(parameters);
+                    if (parameters != null && parameters.Length > 0)
+                        cmd.Parameters.AddRange(parameters);
 
-                        return cmd.ExecuteNonQuery();
-                    }
+                    return cmd.ExecuteNonQuery();
                 }
-                catch (Npgsql.NpgsqlException npgse)
-                {
-                    throw npgse;
-                }
-                catch (SocketException scket) { }
-
-                return 0;
             }
+            catch (Npgsql.NpgsqlException npgse)
+            {
+                throw npgse;
+            }
+            catch (SocketException scket) { }
+
+            return 0;
+
         }
 
         public T DoQuery<T>(string query, params DbParameter[] parameters)
@@ -349,7 +348,9 @@ namespace ExpressBase.Common
             try
             {
                 var con = GetNewConnection() as NpgsqlConnection;
+                con.Open();
                 dt = DoQuery(con, query, parameters);
+                con.Close();
             }
             catch (Npgsql.NpgsqlException npge)
             {
@@ -357,14 +358,17 @@ namespace ExpressBase.Common
             }
             return dt;
         }
-        
+
         public EbDataSet DoQueries(string query, params DbParameter[] parameters)
         {
             EbDataSet ds = new EbDataSet();
+
             try
             {
                 var con = GetNewConnection() as NpgsqlConnection;
+                con.Open();
                 ds = DoQueries(con, query, parameters);
+                con.Close();
 
                 return ds;
             }
@@ -385,7 +389,9 @@ namespace ExpressBase.Common
             try
             {
                 var con = GetNewConnection() as NpgsqlConnection;
+                con.Open();
                 val = DoNonQuery(con, query, parameters);
+                con.Close();
             }
             catch (Npgsql.NpgsqlException npgse)
             {
@@ -816,7 +822,7 @@ SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id =
             get
             {
                 return "SELECT eb_create_or_update_rbac_roles(:role_id, :applicationid, :createdby, :role_name, :description, :is_anonym, :users, :dependants, :permission, :locations " +
-");";
+    ");";
             }
         }
 
@@ -1084,6 +1090,14 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"AND OD.id = ANY(string_to_array(:objids, ',')::int[]) ";
+            }
+        }
+
+        public string EB_GET_USER_DASHBOARD_OBJECTS
+        {
+            get
+            {
+                return @"AND eov.eb_objects_id = ANY(string_to_array(:ids,',')::int[])";
             }
         }
 
@@ -1520,7 +1534,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"   
-                    SELECT * FROM eb_objects_update_Dashboard(:refid)
+                    SELECT * FROM eb_objects_update_dashboard(:refid)
                 ";
             }
         }

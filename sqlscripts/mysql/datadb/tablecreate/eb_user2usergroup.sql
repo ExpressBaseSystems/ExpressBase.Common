@@ -1,6 +1,6 @@
 ﻿CREATE TABLE eb_user2usergroup
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   userid integer,
   groupid integer,  
   createdby integer,

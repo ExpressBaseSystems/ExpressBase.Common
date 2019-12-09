@@ -719,19 +719,57 @@ namespace ExpressBase.Common.Data.MSSQLServer
             return cols;
         }
 
-        public string EB_AUTHETICATE_USER_NORMAL { get { return @""; } }
+        public string EB_AUTHETICATE_USER_NORMAL { get { return @"eb_authenticate_unified (@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);"; } }
 
-        public string EB_AUTHENTICATEUSER_SOCIAL { get { return @""; } }
+        public string EB_AUTHENTICATEUSER_SOCIAL { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);"; } }
 
-        public string EB_AUTHENTICATEUSER_SSO { get { return @""; } }
+        public string EB_AUTHENTICATEUSER_SSO { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);"; } }
 
-        public string EB_AUTHENTICATE_ANONYMOUS { get { return @""; } }
+        public string EB_AUTHENTICATE_ANONYMOUS { get { return @"SELECT * FROM eb_authenticate_anonymous(@params in_appid := :appid ,in_wc := :wc);"; } }
 
-        public string EB_SIDEBARUSER_REQUEST { get { return @""; } }
+        public string EB_SIDEBARUSER_REQUEST { get { return @"SELECT id, applicationname,app_icon
+                                                        FROM eb_applications
+                                                        WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
+
+                                                    SELECT
+                                            EO.id, EO.obj_type, EO.obj_name,
+                                            EOV.version_num, EOV.refid, EO2A.app_id, EO.obj_desc, EOS.status, EOS.id, display_name
+                                        FROM
+                                            eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
+                                        WHERE
+                                        EOV.eb_objects_id = EO.id	
+                                        AND EO.id = ANY('{:Ids}')               			    
+				                        AND EOS.eb_obj_ver_id = EOV.id 
+				                        AND EO2A.obj_id = EO.id
+				                        AND EO2A.eb_del = 'F'
+                                        AND EOS.status = 3 
+                                        AND COALESCE( EO.eb_del, 'F') = 'F'
+				                        AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );
+                                        SELECT object_id FROM eb_objects_favourites WHERE userid=:user_id AND eb_del='F'"; } }
         // only for mysql
         public string EB_SIDEBARUSER_REQUEST_SOL_OWNER { get { return @""; } }
 
-        public string EB_SIDEBARDEV_REQUEST { get { return @""; } }
+        public string EB_SIDEBARDEV_REQUEST
+        {
+            get
+            {
+                return @"SELECT id, applicationname,app_icon FROM eb_applications
+                            WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
+                        SELECT 
+	                            EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, COALESCE(EO2A.app_id, 0),display_name
+                            FROM 
+	                            eb_objects EO
+                            LEFT JOIN
+	                            eb_objects2application EO2A 
+                            ON
+	                            EO.id = EO2A.obj_id 
+                            WHERE
+	                           COALESCE(EO2A.eb_del, 'F') = 'F' 
+                               AND COALESCE( EO.eb_del, 'F') = 'F'
+                            ORDER BY 
+	                            EO.obj_type;";
+            }
+        }
 
         public string EB_SIDEBARCHECK { get { return @""; } }
 
@@ -751,9 +789,21 @@ namespace ExpressBase.Common.Data.MSSQLServer
 
         public string EB_SAVEUSERGROUP_QUERY { get { return @""; } }
 
-        public string EB_USER_ROLE_PRIVS { get { return @""; } }
+        public string EB_USER_ROLE_PRIVS
+        {
+            get
+            {
+                return @"";
+            }
+        }
 
-        public string EB_INITROLE2USER { get { return @""; } }
+        public string EB_INITROLE2USER
+        {
+            get
+            {
+                return @"INSERT INTO eb_role2user(role_id, user_id, createdat) VALUES (@role_id, @user_id, CURRENT_TIMESTAMP);";
+            }
+        }
 
         public string EB_MANAGEUSER_FIRST_QUERY
         { get { return @""; } }
@@ -833,6 +883,14 @@ namespace ExpressBase.Common.Data.MSSQLServer
             }
         }
 
+        public string EB_GET_USER_DASHBOARD_OBJECTS
+        {
+            get
+            {
+                return @"";
+            }
+        }
+
         // DBClient
 
         public string EB_GETDBCLIENTTTABLES
@@ -841,50 +899,239 @@ namespace ExpressBase.Common.Data.MSSQLServer
         //.......OBJECTS QUERIES.....
 
         public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT
+                        EOV.id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.commit_uid, EU.fullname
+                    FROM
+                        eb_objects_ver EOV, eb_users EU
+                    WHERE
+                        EOV.commit_uid = EU.id AND
+                        EOV.eb_objects_id = (SELECT eb_objects_id FROM eb_objects_ver WHERE refid = @refid)
+                    ORDER BY
+                        EOV.id DESC";
+            }
+        }
+
         public string EB_PARTICULAR_VERSION_OF_AN_OBJ
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT
+                            obj_json, version_num, status, EO.obj_tags, EO.obj_type
+                        FROM
+                            eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
+                        WHERE
+                            EOV.refid = @refid AND EOS.eb_obj_ver_id = EOV.id AND EO.id=EOV.eb_objects_id
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                        ORDER BY
+	                        EOS.id DESC 
+                        OFFSET 0 ROW FETCH NEXT 1 ROW ONLY";
+            }
+        }
+
         public string EB_LATEST_COMMITTED_VERSION_OF_AN_OBJ
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT 
+                        EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status, EO.obj_desc,
+                        EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.obj_json, EOV.refid
+                    FROM 
+                        eb_objects EO, eb_objects_ver EOV
+                    WHERE
+                        EO.id = EOV.eb_objects_id AND EOV.refid = @refid
+                        AND COALESCE( EO.eb_del, 'F') = 'F'
+                    ORDER BY
+                        EO.obj_type";
+            }
+        }
+
         public string EB_COMMITTED_VERSIONS_OF_ALL_OBJECTS_OF_A_TYPE
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT 
+                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
+                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog,EOV.commit_ts, EOV.commit_uid, EOV.refid,
+                            EU.fullname, EO.display_name
+                        FROM 
+                            eb_objects EO, eb_objects_ver EOV
+                        LEFT JOIN
+	                        eb_users EU
+                        ON 
+	                        EOV.commit_uid = EU.id
+                        WHERE
+                            EO.id = EOV.eb_objects_id AND EO.obj_type = @type
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                        ORDER BY
+                            EO.obj_name";
+            }
+        }
+
         public string EB_GET_LIVE_OBJ_RELATIONS
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT 
+	                        EO.obj_name, EOV.refid, EOV.version_num, EO.obj_type,EOS.status
+                        FROM 
+	                        eb_objects EO, eb_objects_ver EOV,eb_objects_status EOS
+                        WHERE 
+	                        EO.id = ANY (SELECT eb_objects_id FROM eb_objects_ver WHERE refid IN(SELECT dependant FROM eb_objects_relations
+                                                  WHERE dominant = @dominant))
+                            AND EOV.refid = ANY(SELECT dependant FROM eb_objects_relations WHERE dominant = @dominant)    
+                            AND EO.id = EOV.eb_objects_id  AND EOS.eb_obj_ver_id = EOV.id AND EOS.status = 3 AND EO.obj_type IN(16 ,17)
+                            AND COALESCE( EO.eb_del, 'F') = 'F' ";
+            }
+        }
+
         public string EB_GET_TAGGED_OBJECTS
-        { get { return @""; } }
+        {
+            get { return @"";
+            }
+        }
+
         public string EB_GET_ALL_COMMITTED_VERSION_LIST
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT 
+                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
+                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.refid,
+                            EU.fullname, EO.display_name
+                        FROM 
+                            eb_objects EO, eb_objects_ver EOV
+                        LEFT JOIN
+	                        eb_users EU
+                        ON 
+	                        EOV.commit_uid = EU.id
+                        WHERE
+                            EO.id = EOV.eb_objects_id  AND EO.obj_type = @type AND COALESCE(EOV.working_mode, 'F') <> 'T'
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                        ORDER BY
+                            EO.obj_name, EOV.id";
+            }
+        }
+
         public string EB_GET_OBJECTS_OF_A_TYPE
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT 
+                    id, obj_name, obj_type, obj_cur_status, obj_desc  
+                FROM 
+                    eb_objects
+                WHERE
+                    obj_type = @type
+                    AND COALESCE( eb_del, 'F') = 'F'
+                ORDER BY
+                    obj_name";
+            }
+        }
+
         public string EB_GET_OBJ_STATUS_HISTORY
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT 
+                            EOS.eb_obj_ver_id, EOS.status, EU.fullname, EOS.ts, EOS.changelog, EOV.commit_uid   
+                        FROM
+                            eb_objects_status EOS, eb_objects_ver EOV, eb_users EU
+                        WHERE
+                            eb_obj_ver_id = EOV.id AND EOV.refid = @refid AND EOV.commit_uid=EU.id
+                        ORDER BY 
+                            EOS.id DESC";
+            }
+        }
+
         public string EB_LIVE_VERSION_OF_OBJS
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT
+                            EO.id, EO.obj_name, EO.obj_type, EO.obj_desc,
+                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.obj_json, EOV.refid, EOS.status
+                        FROM
+                            eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
+                        WHERE
+                            EO.id = @id AND EOV.eb_objects_id = EO.id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                        ORDER BY EOV.eb_objects_id	
+                            OFFSET 0 ROW FETCH NEXT 1 ROW ONLY;";
+            }
+        }
+
         public string EB_GET_ALL_TAGS
-        { get { return @""; } }
+        {
+            get { return @"";
+            }
+        }
 
         public string EB_GET_MLSEARCHRESULT
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT count(*) FROM (SELECT * FROM eb_keys WHERE LOWER(""key"") LIKE LOWER(@KEY)) AS Temp;
+                        SELECT A.id, A.""key"", B.id, B.language, C.id, C.value
+                            FROM (SELECT * FROM eb_keys 
+                                    WHERE LOWER(""key"") LIKE LOWER(@KEY) 
+                                    ORDER BY ""key"" ASC 
+                                        OFFSET @OFFSET ROWS FETCH NEXT @LIMIT ROWS ONLY) A,
+                                eb_languages B, eb_keyvalue C
+                            WHERE A.id=C.key_id AND B.id=C.lang_id  
+                            ORDER BY A.""key"" ASC, B.language ASC;";
+            }
+        }
 
         public string EB_MLADDKEY
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"INSERT INTO eb_keys(""key"") OUTPUT INSERTED.ID VALUES(@KEY);";
+            }
+        }
 
         public string EB_GET_BOT_FORM
-        { get { return @""; } }
+        {
+            get { return @"";
+            }
+        }
         public string IS_TABLE_EXIST
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT 1 FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = @tbl;";
+            }
+        }
 
         public string EB_ALLOBJNVER
         { get { return @""; } }
 
         public string EB_CREATELOCATIONCONFIG1Q
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"INSERT INTO eb_location_config(keys,isrequired,keytype,eb_del) output inserted.id VALUES(@keys,@isrequired,@type,'F')";
+            }
+        }
 
         public string EB_CREATELOCATIONCONFIG2Q
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"UPDATE eb_location_config SET keys = @keys ,isrequired = @isrequired , keytype = @type WHERE id = @keyid;";
+            }
+        }
 
         public string EB_GET_DISTINCT_VALUES
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT DISTINCT TRIM(@ColumName) AS @ColumName FROM @TableName ORDER BY @ColumName;";
+            }
+        }
         //.....OBJECTS FUNCTION CALL......
 
         public string EB_CREATE_NEW_OBJECT
@@ -943,9 +1190,9 @@ namespace ExpressBase.Common.Data.MSSQLServer
         { get { return @""; } }
     }
 
-    public class MySQLFilesDB : MSSQLDatabase, INoSQLDatabase
+    public class MSSQLServerFilesDB : MSSQLDatabase, INoSQLDatabase
     {
-        public MySQLFilesDB(EbDbConfig dbconf) : base(dbconf)
+        public MSSQLServerFilesDB(EbDbConfig dbconf) : base(dbconf)
         {
             InfraConId = dbconf.Id;
         }
@@ -1001,7 +1248,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
 
         public string UploadFile(string filename, byte[] bytea, EbFileCategory cat)
         {
-            Console.WriteLine("Before Mysql Upload File");
+            Console.WriteLine("Before MSSQLServer Upload File");
 
             string rtn = null;
             try
@@ -1009,7 +1256,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
                 using (SqlConnection con = GetNewConnection() as SqlConnection)
                 {
                     con.Open();
-                    string sql = @"INSERT INTO eb_files_bytea(filename, bytea, filecategory) VALUES(@filename, @bytea, @cat);SELECT last_insert_id();";
+                    string sql = @"INSERT INTO eb_files_bytea(filename, bytea, filecategory) output inserted.id VALUES(@filename, @bytea, @cat);";
 
                     using (SqlCommand cmd = new SqlCommand(sql, con))
                     {
@@ -1026,7 +1273,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
             {
                 Console.WriteLine("Exception :  " + e.Message);
             }
-            Console.WriteLine("After Mysql Upload File , fileStore id: " + rtn.ToString());
+            Console.WriteLine("After MSSQLServer Upload File , fileStore id: " + rtn.ToString());
             return rtn.ToString();
         }
     }

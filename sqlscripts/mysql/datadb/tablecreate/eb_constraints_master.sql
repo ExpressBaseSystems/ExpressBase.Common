@@ -8,7 +8,7 @@ CREATE TABLE eb_constraints_master
     eb_created_at datetime,
     eb_lastmodified_by integer,
     eb_lastmodified_at datetime,
-    eb_del character(1)  DEFAULT 'F',
+    eb_del char(1)  DEFAULT 'F',
     CONSTRAINT eb_constraints_master_pkey PRIMARY KEY (id)
 );
 

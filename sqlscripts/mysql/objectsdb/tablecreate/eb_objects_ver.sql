@@ -1,6 +1,6 @@
 ﻿CREATE TABLE eb_objects_ver
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   eb_objects_id integer,
   obj_changelog text,
   commit_uid integer,
@@ -13,7 +13,7 @@
   patch_ver_num integer,
   status_id integer,
   ver_num text,
-  working_mode char NOT NULL DEFAULT 'F',
+  working_mode char(1) DEFAULT 'F',
   eb_del char(1) DEFAULT 'F',
   CONSTRAINT eb_objects_ver_pkey PRIMARY KEY (id),
   CONSTRAINT eb_objects_ver_working_mode_check CHECK (working_mode = 'T' OR working_mode = 'F')

@@ -1070,6 +1070,14 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
+        public string EB_GET_USER_DASHBOARD_OBJECTS
+        {
+            get
+            {
+                return @"";
+            }
+        }
+
         // DBClient
 
         public string EB_GETDBCLIENTTTABLES

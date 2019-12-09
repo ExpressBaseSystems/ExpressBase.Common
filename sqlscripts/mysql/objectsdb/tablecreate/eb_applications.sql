@@ -1,9 +1,8 @@
 ﻿CREATE TABLE eb_applications
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   applicationname text,
   description text,
-  application_type_old text,
   app_icon text,
   application_type integer,
   eb_del char(1) DEFAULT 'F',

@@ -1,6 +1,6 @@
 CREATE TABLE eb_query_choices
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   q_id integer,
   choice text,
   eb_del char(1) DEFAULT 'F',

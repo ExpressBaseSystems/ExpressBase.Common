@@ -1,6 +1,6 @@
 CREATE TABLE eb_executionlogs
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   `rows` text,
   exec_time integer,
   created_by integer,
