@@ -25,7 +25,7 @@ namespace ExpressBase.Common.Connections
                 if (conf.FallBack.Type == EbIntegrations.Twilio)
                     FallBack = new Messaging.TwilioConnection(conf.FallBack as EbTwilioConfig);
                 else if (conf.FallBack.Type == EbIntegrations.ExpertTexting)
-                    FallBack = new Messaging.ExpertTextingConnection(conf.FallBack as EbExpertTextingConfig); 
+                    FallBack = new Messaging.ExpertTextingConnection(conf.FallBack as EbExpertTextingConfig);
                 else if (conf.FallBack.Type == EbIntegrations.Unifonic)
                     FallBack = new Messaging.UnifonicConnection(conf.FallBack as EbUnifonicConfig);
             }
@@ -80,21 +80,21 @@ namespace ExpressBase.Common.Connections
 
         public List<IChatConnection> FallBack { get; set; }
 
-        public void Send(string channel, string Message)
+        public void Send(string channel, string Message, byte[] bytea, string AttachmentName)
         {
             try
             {
                 Console.WriteLine("Inside Chat Sending to " + channel);
                 if (Default != null)
                 {
-                    Default.Send(channel, Message);
+                    Default.Send(channel, Message, bytea, AttachmentName);
                     Console.WriteLine("Chat Send With Default :");
 
                 }
                 else if (this.Capacity != 0)
                 {
                     Console.WriteLine("Chat Send using First Element");
-                    this[0].Send(channel, Message);
+                    this[0].Send(channel, Message, bytea, AttachmentName);
                 }
                 else
                     Console.WriteLine("Chat Connection Empty!");
@@ -115,6 +115,83 @@ namespace ExpressBase.Common.Connections
                 //    Console.WriteLine("Chat Sending Failed: " + ex.StackTrace);
                 //}
             }
+        }
+
+        public Dictionary<int, string> GetAllUsers()
+        {
+            Dictionary<int, string> res = null;
+            try
+            {
+                Console.WriteLine("Inside Chat Get USER ");
+                if (Default != null)
+                {
+                    res = Default.GetAllUsers();
+                    Console.WriteLine("Chat UserGet With Default :");
+
+                }
+                else if (this.Capacity != 0)
+                {
+                    Console.WriteLine("Chat GetAllUsers with First Element");
+                    res = this[0].GetAllUsers();
+                }
+                else
+                    Console.WriteLine("Chat Connection Empty!");
+
+            }
+            catch (Exception e)
+            {
+                //try
+                //{
+                //    if (FallBack != null)
+                //    {
+                //        FallBack.Send(channel, Message, _infraConId);
+                //        Console.WriteLine("Chat Send With FallBack : ");
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine("Chat Sending Failed: " + ex.StackTrace);
+                //}
+            }
+            return res;
+        }
+        public Dictionary<int, string> GetAllGroup()
+        {
+            Dictionary<int, string> res = null;
+            try
+            {
+                Console.WriteLine("Inside Chat Get Group ");
+                if (Default != null)
+                {
+                    res = Default.GetAllGroups();
+                    Console.WriteLine("Chat UserGroupGet With Default :");
+
+                }
+                else if (this.Capacity != 0)
+                {
+                    Console.WriteLine("Chat GetAllUserGroup with First Element");
+                    res = this[0].GetAllGroups();
+                }
+                else
+                    Console.WriteLine("Chat Connection Empty!");
+
+            }
+            catch (Exception e)
+            {
+                //try
+                //{
+                //    if (FallBack != null)
+                //    {
+                //        FallBack.Send(channel, Message, _infraConId);
+                //        Console.WriteLine("Chat Send With FallBack : ");
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine("Chat Sending Failed: " + ex.StackTrace);
+                //}
+            }
+            return res;
         }
     }
     public class EbMailConCollection : List<IEmailConnection>

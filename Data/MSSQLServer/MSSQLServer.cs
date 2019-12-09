@@ -883,6 +883,14 @@ namespace ExpressBase.Common.Data.MSSQLServer
             }
         }
 
+        public string EB_GET_USER_DASHBOARD_OBJECTS
+        {
+            get
+            {
+                return @"";
+            }
+        }
+
         // DBClient
 
         public string EB_GETDBCLIENTTTABLES

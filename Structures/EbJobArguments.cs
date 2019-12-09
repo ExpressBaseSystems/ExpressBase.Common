@@ -21,5 +21,9 @@ namespace ExpressBase.Common.Structures
 
         public string ToUserGroupIds { get; set; }
 
+        public string Message { get; set; }
+
+        public DeliveryMechanisms DeliveryMechanisms { get; set; }
+
     }
 }
