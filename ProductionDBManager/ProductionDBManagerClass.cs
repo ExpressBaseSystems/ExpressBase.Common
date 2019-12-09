@@ -65,7 +65,8 @@ namespace ExpressBase.Common.ProductionDBManager
     public enum DBManagerType
     {
         Function,
-        Table
+        Table,
+        Procedure
     }
     
 }
