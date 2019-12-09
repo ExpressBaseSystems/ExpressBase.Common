@@ -1,6 +1,6 @@
 CREATE TABLE eb_survey_lines
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   masterid integer,
   questionid integer,
   eb_createdate datetime,

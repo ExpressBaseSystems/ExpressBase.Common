@@ -1,6 +1,6 @@
 CREATE TABLE eb_survey_master
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   surveyid integer,
   userid integer,
   anonid integer,

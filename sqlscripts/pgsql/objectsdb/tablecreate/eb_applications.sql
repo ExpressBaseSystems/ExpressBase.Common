@@ -9,7 +9,7 @@ CREATE TABLE eb_applications
     description text,
     app_icon text,
     application_type integer,
-    eb_del char(1) NOT NULL DEFAULT 'F',
+    eb_del char(1) DEFAULT 'F',
 	app_settings text,
     CONSTRAINT eb_applications_pkey PRIMARY KEY (id),
     CONSTRAINT eb_applications_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')

@@ -1,6 +1,6 @@
 CREATE TABLE eb_languages
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   language text NOT NULL,
   CONSTRAINT eb_languages_pkey PRIMARY KEY (id)
 );

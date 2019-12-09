@@ -1,6 +1,6 @@
 CREATE TABLE eb_survey_queries
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   query text,
   q_type integer,
   constraint eb_survey_queries_pkey primary key(id)

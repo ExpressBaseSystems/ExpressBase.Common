@@ -1,6 +1,6 @@
 ﻿CREATE TABLE eb_usergroup
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   name text,
   description text, 
   eb_del char(1) DEFAULT 'F',

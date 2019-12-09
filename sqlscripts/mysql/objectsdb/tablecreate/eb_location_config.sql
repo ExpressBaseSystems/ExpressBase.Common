@@ -1,7 +1,7 @@
 ﻿CREATE TABLE eb_location_config
 (
-  id integer NOT NULL auto_increment,
-  `keys` varchar(100),
+  id integer auto_increment,
+  `keys` text,
   isrequired char(1) DEFAULT 'F',
   keytype text,
   eb_del char(1) DEFAULT 'F',

@@ -1,6 +1,6 @@
 CREATE TABLE eb_schedules
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   task json,
   created_by integer,
   created_at datetime,

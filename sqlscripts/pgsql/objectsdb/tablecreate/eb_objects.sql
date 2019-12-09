@@ -23,7 +23,7 @@ CREATE TABLE eb_objects
 
 -- DROP INDEX public.eb_objects_id_idx;
 
-CREATE UNIQUE INDEX eb_objects_id_idx
+CREATE INDEX eb_objects_id_idx
     ON eb_objects(id);
 
 -- Index: eb_objects_type_idx

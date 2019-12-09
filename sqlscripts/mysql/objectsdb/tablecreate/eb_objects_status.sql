@@ -1,7 +1,6 @@
 ﻿CREATE TABLE eb_objects_status
 (
-	id integer NOT NULL auto_increment,
-	refid varchar(200),
+	id integer auto_increment,	
 	status integer,
 	uid integer,
 	ts datetime,
@@ -16,5 +15,3 @@ CREATE INDEX eb_objects_status_eb_obj_ver_id_idx
 CREATE INDEX eb_objects_status_id_idx
     ON eb_objects_status(id);
 
-CREATE INDEX eb_objects_status_refid_id_idx
-    ON eb_objects_status(refid);
