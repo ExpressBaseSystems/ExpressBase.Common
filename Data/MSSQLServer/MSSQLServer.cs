@@ -719,15 +719,33 @@ namespace ExpressBase.Common.Data.MSSQLServer
             return cols;
         }
 
-        public string EB_AUTHETICATE_USER_NORMAL { get { return @""; } }
+        public string EB_AUTHETICATE_USER_NORMAL { get { return @"eb_authenticate_unified (@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);"; } }
 
-        public string EB_AUTHENTICATEUSER_SOCIAL { get { return @""; } }
+        public string EB_AUTHENTICATEUSER_SOCIAL { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);"; } }
 
-        public string EB_AUTHENTICATEUSER_SSO { get { return @""; } }
+        public string EB_AUTHENTICATEUSER_SSO { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);"; } }
 
-        public string EB_AUTHENTICATE_ANONYMOUS { get { return @""; } }
+        public string EB_AUTHENTICATE_ANONYMOUS { get { return @"SELECT * FROM eb_authenticate_anonymous(@params in_appid := :appid ,in_wc := :wc);"; } }
 
-        public string EB_SIDEBARUSER_REQUEST { get { return @""; } }
+        public string EB_SIDEBARUSER_REQUEST { get { return @"SELECT id, applicationname,app_icon
+                                                        FROM eb_applications
+                                                        WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
+
+                                                    SELECT
+                                            EO.id, EO.obj_type, EO.obj_name,
+                                            EOV.version_num, EOV.refid, EO2A.app_id, EO.obj_desc, EOS.status, EOS.id, display_name
+                                        FROM
+                                            eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
+                                        WHERE
+                                        EOV.eb_objects_id = EO.id	
+                                        AND EO.id = ANY('{:Ids}')               			    
+				                        AND EOS.eb_obj_ver_id = EOV.id 
+				                        AND EO2A.obj_id = EO.id
+				                        AND EO2A.eb_del = 'F'
+                                        AND EOS.status = 3 
+                                        AND COALESCE( EO.eb_del, 'F') = 'F'
+				                        AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );
+                                        SELECT object_id FROM eb_objects_favourites WHERE userid=:user_id AND eb_del='F'"; } }
         // only for mysql
         public string EB_SIDEBARUSER_REQUEST_SOL_OWNER { get { return @""; } }
 
