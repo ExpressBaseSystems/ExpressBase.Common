@@ -6,7 +6,7 @@ CREATE TABLE eb_location_config
 (
     id serial,
     keys text,
-    isrequired char(1) NOT NULL DEFAULT 'F',
+    isrequired char(1) DEFAULT 'F',
 	keytype text,
     eb_del char(1) DEFAULT 'F',
     CONSTRAINT eb_locationsconfig_pkey PRIMARY KEY (id)

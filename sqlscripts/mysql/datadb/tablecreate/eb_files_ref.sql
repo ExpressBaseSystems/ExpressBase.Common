@@ -1,6 +1,6 @@
 CREATE TABLE eb_files_ref
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   userid integer NOT NULL,
   filename text,
   tags text,

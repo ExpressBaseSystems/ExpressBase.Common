@@ -1,10 +1,10 @@
 CREATE TABLE eb_files_ref_variations
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   eb_files_ref_id integer NOT NULL,
   filestore_sid text,
   length bigint,
-  is_image char,
+  is_image char(1),
   imagequality_id integer,
   img_manp_ser_con_id integer,
   filedb_con_id integer,

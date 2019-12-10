@@ -1,6 +1,6 @@
 ﻿CREATE TABLE eb_objects
 (
-	id int NOT NULL auto_increment,
+	id integer auto_increment,
 	obj_name text, 
 	obj_type int,
 	obj_cur_status int,
@@ -9,13 +9,13 @@
 	owner_uid int,
 	owner_ts datetime,
 	display_name text,
-	is_logenabled char,
+	is_logenabled char(1) DEFAULT 'F',
 	eb_del char(1) DEFAULT 'F',
 	CONSTRAINT eb_objects_pkey PRIMARY KEY (id)
 );
   
 
-CREATE UNIQUE INDEX eb_objects_id_idx
+CREATE INDEX eb_objects_id_idx
     ON eb_objects(id);
 
 CREATE INDEX eb_objects_type_idx

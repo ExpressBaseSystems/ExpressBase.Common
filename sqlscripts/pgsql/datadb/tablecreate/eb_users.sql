@@ -14,14 +14,8 @@ CREATE TABLE eb_users
     phnoprimary text,
     phnosecondary text,
     landline text,
-    phextension text,
-    locale text,
-    alternateemail text,
-    dateformat text DEFAULT 'DD/MM/YYYY',
-    timezone text  DEFAULT 'UTC+05:30',
-    numformat text  DEFAULT '0,000.00',
-    timezoneabbre text,
-    timezonefull text,
+    phextension text,    
+    alternateemail text,	
     profileimg text,
     slackjson json,
     prolink text,
@@ -38,7 +32,7 @@ CREATE TABLE eb_users
     createdat text,
     statusid integer DEFAULT 0,
     hide text,
-    eb_del char(1) NOT NULL DEFAULT 'F',
+    eb_del char(1) DEFAULT 'F',
     dprefid integer DEFAULT 0,
 	eb_data_id integer,
 	eb_ver_id integer,
@@ -65,7 +59,7 @@ CREATE INDEX eb_users_email_idx
 
 -- DROP INDEX public.eb_users_id_idx;
 
-CREATE UNIQUE INDEX eb_users_id_idx
+CREATE INDEX eb_users_id_idx
     ON eb_users(id);
 
 -- Index: eb_users_pwd_idx

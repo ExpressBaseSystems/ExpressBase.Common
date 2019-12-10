@@ -1,8 +1,8 @@
 ﻿CREATE TABLE eb_locations
 (
 	id integer auto_increment,
-    shortname varchar(20) DEFAULT 'default',
-    longname varchar(50) DEFAULT 'default',
+    shortname varchar(25) DEFAULT 'default',
+    longname varchar(200) DEFAULT 'default',
     image text,
     meta_json text,
     eb_data_id integer,

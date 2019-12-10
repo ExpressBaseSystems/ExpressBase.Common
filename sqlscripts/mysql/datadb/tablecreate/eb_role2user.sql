@@ -1,6 +1,6 @@
 ﻿CREATE TABLE eb_role2user
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   role_id integer,
   user_id integer,
   createdby integer,
@@ -15,7 +15,7 @@
 CREATE INDEX eb_role2user_eb_del_idx
 ON eb_role2user(eb_del);
 
-CREATE UNIQUE INDEX eb_role2user_id_idx
+CREATE INDEX eb_role2user_id_idx
 ON eb_role2user(id);
   
 CREATE INDEX eb_role2user_role_id_idx

@@ -10,7 +10,7 @@ CREATE TABLE eb_files_ref
     tags text,
     filetype text,
     uploadts timestamp without time zone,
-    eb_del char(1) NOT NULL DEFAULT 'F',
+    eb_del char(1) DEFAULT 'F',
     filecategory integer,
     context text,   
     CONSTRAINT eb_files_ref_pkey PRIMARY KEY (id),

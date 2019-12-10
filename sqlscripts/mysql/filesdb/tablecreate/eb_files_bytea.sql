@@ -1,7 +1,7 @@
 CREATE TABLE eb_files_bytea
 (
-  id integer NOT NULL auto_increment,
-  filename varchar(75),
+  id integer auto_increment,
+  filename text,
   bytea blob,
   meta json,
   filecategory integer,

@@ -1,6 +1,6 @@
 CREATE TABLE eb_keyvalue
 (
-  id integer NOT NULL auto_increment,
+  id integer auto_increment,
   key_id bigint NOT NULL,
   lang_id integer NOT NULL,
   value text NOT NULL,
