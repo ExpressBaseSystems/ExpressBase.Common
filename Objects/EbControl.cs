@@ -271,8 +271,12 @@ namespace ExpressBase.Common.Objects
 
         [JsonIgnore]
 		public virtual string IsRequiredOKJSfn { get { return @"return !this.isInVisibleInUI ? (!isNaNOrEmpty(this.getValue()) && this.getValue() !== 0): true;"; } set { } }
+
 		[JsonIgnore]
         public virtual string SetValueJSfn { get { return @"$('#' + this.EbSid_CtxId).val(p1).trigger('change');"; } set { } }
+
+		[JsonIgnore]
+        public virtual string JustSetValueJSfn { get { return @"$('#' + this.EbSid_CtxId).val(p1)"; } set { } }
 
         [JsonIgnore]
         public virtual string SetDisplayMemberJSfn { get { return @"return this.setValue(p1);"; } set { } }

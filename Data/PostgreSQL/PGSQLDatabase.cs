@@ -214,7 +214,7 @@ namespace ExpressBase.Common
                     if (parameters != null && parameters.Length > 0)
                         cmd.Parameters.AddRange(parameters);
                     cmd.Prepare();
-                    
+
                     return cmd.ExecuteReader(CommandBehavior.KeyInfo);
                 }
 
@@ -240,26 +240,27 @@ namespace ExpressBase.Common
             try
             {
                 var con = dbConnection;
-                reader = this.DoQueriesBasic(con, query, parameters);
-                var dtExeTime = DateTime.Now;
-                Console.WriteLine(string.Format("DoQueries Execution Time : {0}", dtExeTime));
-                do
+                using (reader = this.DoQueriesBasic(con, query, parameters))
                 {
-                    try
+                    var dtExeTime = DateTime.Now;
+                    Console.WriteLine(string.Format("DoQueries Execution Time : {0}", dtExeTime));
+                    do
                     {
-                        EbDataTable dt = new EbDataTable();
-                        Type[] typeArray = this.AddColumns(dt, (reader as NpgsqlDataReader).GetColumnSchema());
-                        PrepareDataTable((reader as NpgsqlDataReader), dt, typeArray);
-                        ds.Tables.Add(dt);
-                        ds.RowNumbers += dt.Rows.Count.ToString() + ",";
+                        try
+                        {
+                            EbDataTable dt = new EbDataTable();
+                            Type[] typeArray = this.AddColumns(dt, (reader as NpgsqlDataReader).GetColumnSchema());
+                            PrepareDataTable((reader as NpgsqlDataReader), dt, typeArray);
+                            ds.Tables.Add(dt);
+                            ds.RowNumbers += dt.Rows.Count.ToString() + ",";
+                        }
+                        catch (Exception ee)
+                        {
+                            throw ee;
+                        }
                     }
-                    catch (Exception ee)
-                    {
-                        throw ee;
-                    }
+                    while (reader.NextResult());
                 }
-                while (reader.NextResult());
-
             }
 
             catch (Npgsql.NpgsqlException npgse)
@@ -267,8 +268,7 @@ namespace ExpressBase.Common
                 throw npgse;
             }
             catch (SocketException scket) { }
-
-            reader.Close();
+          
             var dtEnd = DateTime.Now;
             Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
 
