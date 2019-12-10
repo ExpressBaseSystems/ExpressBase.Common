@@ -35,6 +35,10 @@ namespace ExpressBase.Common.Objects
                 this.OnChangeFn = _OnChange;
         }
 
+        public virtual bool IsRenderMode { get; set; }
+
+        public virtual bool IsDynamicTabChild { get; set; }
+
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string EbSid { get; set; }
@@ -310,7 +314,7 @@ namespace ExpressBase.Common.Objects
 .Replace("@barehtml@", this.GetBareHtml())
 .Replace("@name@", this.Name)
 .Replace("@childOf@", this.ChildOf.IsNullOrEmpty() ? string.Empty : "childOf='" + this.ChildOf + "'")
-.Replace("@ebsid@", this.EbSid_CtxId)
+.Replace("@ebsid@", this.IsRenderMode && this.IsDynamicTabChild ? "@" + this.Name + "_ebsid@" : this.EbSid_CtxId)
 .Replace("@isHidden@", this.Hidden.ToString().ToLower())
 .Replace("@isReadonly@", this.IsDisable.ToString().ToLower())
 .Replace("@helpText@", this.HelpText)
