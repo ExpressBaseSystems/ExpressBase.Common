@@ -828,14 +828,42 @@ namespace ExpressBase.Common
         }
 
 
-        public string EB_AUTHETICATE_USER_NORMAL { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);"; } }
+        public string EB_AUTHETICATE_USER_NORMAL
+        {
+            get
+            {
+                return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, 
+                            @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);";
+            }
+        }
 
-        public string EB_AUTHENTICATEUSER_SOCIAL { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);"; } }
+        public string EB_AUTHENTICATEUSER_SOCIAL
+        {
+            get
+            {
+                return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, 
+                            @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);";
+            }
+        }
 
-        public string EB_AUTHENTICATEUSER_SSO { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);"; } }
+        public string EB_AUTHENTICATEUSER_SSO
+        {
+            get
+            {
+                return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, 
+                            @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);";
+            }
+        }
 
-        public string EB_AUTHENTICATE_ANONYMOUS { get { return @"eb_authenticate_anonymous(@in_socialid, @in_fullname, @in_emailid, @in_phone, @in_user_ip, @in_user_browser,@in_city,
-                @in_region, @in_country, @in_latitude, @in_longitude, @in_timezone, @in_iplocationjson, @in_appid, @in_wc, @out_userid, @out_status_id, @out_email, @out_fullname, @out_roles_a, @out_rolename_a, @out_permissions, @out_preferencesjson, @out_constraints_a, @out_signin_id); "; } }
+        public string EB_AUTHENTICATE_ANONYMOUS
+        {
+            get
+            {
+                return @"eb_authenticate_anonymous(@in_socialid, @in_fullname, @in_emailid, @in_phone, @in_user_ip, @in_user_browser,@in_city, @in_region, @in_country, 
+                            @in_latitude, @in_longitude, @in_timezone, @in_iplocationjson, @in_appid, @in_wc, @out_userid, @out_status_id, @out_email, @out_fullname, @out_roles_a, 
+                            @out_rolename_a, @out_permissions, @out_preferencesjson, @out_constraints_a, @out_signin_id); ";
+            }
+        }
 
         public string EB_SIDEBARUSER_REQUEST
         {
@@ -929,11 +957,12 @@ namespace ExpressBase.Common
                             (SELECT COUNT(distinct permissionname) FROM eb_role2permission RP, eb_objects2application OA 
                                     WHERE role_id = R.id AND app_id = A.id AND RP.obj_id = OA.obj_id AND RP.eb_del = 'F' AND OA.eb_del = 'F') AS permission_count
                             FROM eb_roles R, eb_applications A
-                            WHERE R.applicationid = A.id AND A.eb_del = 'F' AND R.role_name LIKE '%@searchtext%';";
+                            WHERE R.applicationid = A.id AND A.eb_del = 'F' AND R.role_name LIKE CONCAT('%',@searchtext,'%');";
             }
         }
 
-        public string EB_GETROLESRESPONSE_QUERY_WITHOUT_SEARCHTEXT
+        // Only for Mysql
+        public string EB_GETROLESRESPONSE_QUERY_WITHOUT_SEARCHTEXT 
         {
             get
             {
@@ -951,16 +980,15 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"
-                    SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY applicationname;
-                    SELECT DISTINCT EO.id, EO.display_name, EO.obj_type, EO2A.app_id
-                        FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A
+                return @"SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY applicationname;
+                        SELECT DISTINCT EO.id, EO.display_name, EO.obj_type, EO2A.app_id
+                            FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A
                             WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3
                                 AND EOS.id = ANY(SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id)
                                 AND EO.id = EO2A.obj_id AND EO2A.eb_del = 'F';
-                    SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> @id ORDER BY role_name;
-                    SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';
-                    SELECT id, longname, shortname FROM eb_locations;";
+                        SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> @id ORDER BY role_name;
+                        SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';
+                        SELECT id, longname, shortname FROM eb_locations;";
             }
         }
 
@@ -968,31 +996,55 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"
-                               SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = @id;
-                               SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = @id AND eb_del = 'F';
-                               SELECT A.applicationname, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = @id AND A.eb_del = 'F';
-                               SELECT A.id, A.fullname, A.email, B.id FROM eb_users A, eb_role2user B
-                                WHERE A.id = B.user_id AND A.eb_del = 'F' AND B.eb_del = 'F' AND B.role_id = @id;
-                               SELECT locationid FROM eb_role2location WHERE roleid = @id AND eb_del = 'F'; ";
+                return @"SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = @id;
+                         SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = @id AND eb_del = 'F';
+                         SELECT A.applicationname, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = @id AND A.eb_del = 'F';
+                         SELECT A.id, A.fullname, A.email, B.id FROM eb_users A, eb_role2user B
+                            WHERE A.id = B.user_id AND A.eb_del = 'F' AND B.eb_del = 'F' AND B.role_id = @id;
+                         SELECT locationid FROM eb_role2location WHERE roleid = @id AND eb_del = 'F'; ";
             }
         }
         public string EB_SAVEROLES_QUERY
         {
             get
             {
-                return @"eb_create_or_update_rbac_roles(@role_id, @applicationid, @createdby, @role_name, @description, @is_anonym, @users, @dependants, @permission, @locations, @out_r);";
+                return @"eb_create_or_update_rbac_roles(@role_id, @applicationid, @createdby, @role_name, @description, @is_anonym, @users, @dependants, @permission, 
+                            @locations, @out_r);";
             }
         }
 
-        public string EB_SAVEUSER_QUERY { get { return @"eb_security_user(@_userid, @_id, @_fullname, @_nickname, @_email, @_pwd, @_dob, @_sex, @_alternateemail, @_phprimary, @_phsecondary, @_phlandphone, @_extension, @_fbid,
-                                                            @_fbname, @_roles, @_groups, @_statusid, @_hide ,@_anonymoususerid, @_preferences, @_consadd, @_consdel, @out_uid);"; } }
+        public string EB_SAVEUSER_QUERY
+        {
+            get
+            {
+                return @"eb_security_user(@_userid, @_id, @_fullname, @_nickname, @_email, @_pwd, @_dob, @_sex, @_alternateemail, @_phprimary, @_phsecondary, @_phlandphone, 
+                            @_extension, @_fbid, @_fbname, @_roles, @_groups, @_statusid, @_hide ,@_anonymoususerid, @_preferences, @_consadd, @_consdel, @out_uid);";
+            }
+        }
 
-        public string EB_SAVEUSERGROUP_QUERY { get { return "eb_security_usergroup(@userid, @id, @name, @description, @users, @constraints_add, @constraints_del, @out_gid);"; } }
+        public string EB_SAVEUSERGROUP_QUERY
+        {
+            get
+            {
+                return @"eb_security_usergroup(@userid, @id, @name, @description, @users, @constraints_add, @constraints_del, @out_gid);";
+            }
+        }
 
-        public string EB_USER_ROLE_PRIVS { get { return "SELECT DISTINCT privilege_type FROM information_schema.USER_PRIVILEGES WHERE grantee = \"'@uname'@'%'\""; } }
+        public string EB_USER_ROLE_PRIVS
+        {
+            get
+            {
+                return "SELECT DISTINCT privilege_type FROM information_schema.USER_PRIVILEGES WHERE grantee = \"'@uname'@'%'\"";
+            }
+        }
 
-        public string EB_INITROLE2USER { get { return "INSERT INTO eb_role2user(role_id, user_id, createdat) VALUES (@role_id, @user_id, now());"; } }
+        public string EB_INITROLE2USER
+        {
+            get
+            {
+                return @"INSERT INTO eb_role2user(role_id, user_id, createdat) VALUES (@role_id, @user_id, now());";
+            }
+        }
 
         public string EB_MANAGEUSER_FIRST_QUERY
         {
@@ -1116,14 +1168,14 @@ namespace ExpressBase.Common
             get
             {
                 return @"SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid = :refid);
-                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid = :refid);
-                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid = :refid AND EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date));
-                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid = :refid AND EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date));
-                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid= :refid and CONVERT(created_at, DATE) = current_date);
-                             SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid= :refid and CONVERT(created_at, DATE) = current_date);
-                             SELECT COUNT(*) FROM eb_executionlogs WHERE refid = :refid;
-                             SELECT COUNT(*) FROM eb_executionlogs WHERE CONVERT(created_at, date) = current_date AND refid = :refid;
-                             SELECT COUNT(*) FROM eb_executionlogs WHERE EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date) and refid = :refid;";
+                        SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid = :refid);
+                        SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid = :refid AND EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date));
+                        SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid = :refid AND EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date));
+                        SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid= :refid and CONVERT(created_at, DATE) = current_date);
+                        SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid= :refid and CONVERT(created_at, DATE) = current_date);
+                        SELECT COUNT(*) FROM eb_executionlogs WHERE refid = :refid;
+                        SELECT COUNT(*) FROM eb_executionlogs WHERE CONVERT(created_at, date) = current_date AND refid = :refid;
+                        SELECT COUNT(*) FROM eb_executionlogs WHERE EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date) and refid = :refid;";
             }
         }
 
@@ -1612,7 +1664,7 @@ namespace ExpressBase.Common
         {
             get
             {
-                return "eb_objects_create_new_object(@obj_name, @obj_desc, @obj_type, @obj_cur_status, @obj_json, @commit_uid, @src_pid, @cur_pid, @relations, @issave, @tags, @app_id, @s_obj_id, @s_ver_id, @disp_name, @out_refid_of_commit_version)";
+                return @"eb_objects_create_new_object(@obj_name, @obj_desc, @obj_type, @obj_cur_status, @obj_json, @commit_uid, @src_pid, @cur_pid, @relations, @issave, @tags, @app_id, @s_obj_id, @s_ver_id, @disp_name, @out_refid_of_commit_version)";
             }
         }
 
@@ -1620,7 +1672,7 @@ namespace ExpressBase.Common
         {
             get
             {
-                return "eb_objects_save(@id, @obj_name, @obj_desc, @obj_type, @obj_json, @commit_uid, @relations, @tags, @app_id, @disp_name, @out_refidv)";
+                return @"eb_objects_save(@id, @obj_name, @obj_desc, @obj_type, @obj_json, @commit_uid, @relations, @tags, @app_id, @disp_name, @out_refidv)";
             }
         }
 
@@ -1628,7 +1680,8 @@ namespace ExpressBase.Common
         {
             get
             {
-                return "eb_objects_commit(@id, @obj_name, @obj_desc, @obj_type, @obj_json, @obj_changelog,  @commit_uid, @relations, @tags, @app_id, @disp_name, @out_committed_refidunique)";
+                return @"eb_objects_commit(@id, @obj_name, @obj_desc, @obj_type, @obj_json, @obj_changelog,  @commit_uid, @relations, @tags, @app_id, @disp_name, 
+                            @out_committed_refidunique)";
             }
         }
 
@@ -1649,14 +1702,14 @@ namespace ExpressBase.Common
         {
             get
             {
-                return "eb_object_create_major_version(@id, @obj_type, @commit_uid, @src_pid, @cur_pid, @relations, @committed_refidunique)";
+                return @"eb_object_create_major_version(@id, @obj_type, @commit_uid, @src_pid, @cur_pid, @relations, @committed_refidunique)";
             }
         }
         public string EB_MINOR_VERSION_OF_OBJECT
         {
             get
             {
-                return "eb_object_create_minor_version(@id, @obj_type, @commit_uid, @src_pid, @cur_pid, @relations, @committed_refidunique)";
+                return @"eb_object_create_minor_version(@id, @obj_type, @commit_uid, @src_pid, @cur_pid, @relations, @committed_refidunique)";
             }
         }
 
