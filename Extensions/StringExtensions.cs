@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExpressBase.Common.Structures;
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
@@ -61,5 +62,14 @@ namespace ExpressBase.Common.Extensions
             else
                 return str.Substring(0, length) + "...";
         }
-    }  
+
+        #region RefId related string operations
+
+        public static EbObjectType GetEbObjectType(this string RefId)
+        {
+            return EbObjectTypes.Get(Convert.ToInt32(RefId.Split("-")[2]));
+        }
+        
+        #endregion
+    }
 }
