@@ -31,7 +31,7 @@ namespace ExpressBase.Common.ProductionDBManager
 
         public static readonly DbColumnDefaultMap4IntegrityCollection ColumnDefaultCollection = new DbColumnDefaultMap4IntegrityCollection
             {
-                { "'F'::\"char\"", new DbTypeMap4ColumnDefault { MySQLColumnDefault = "F", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
+                { "F", new DbTypeMap4ColumnDefault { MySQLColumnDefault = "F", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
                 { "nextval", new DbTypeMap4ColumnDefault { MySQLColumnDefault = "", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
                 { "'0,000.00'::text", new DbTypeMap4ColumnDefault { MySQLColumnDefault = "0,000.00", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
                 { "'DD/MM/YYYY'::text", new DbTypeMap4ColumnDefault { MySQLColumnDefault = "DD/MM/YYYY", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
