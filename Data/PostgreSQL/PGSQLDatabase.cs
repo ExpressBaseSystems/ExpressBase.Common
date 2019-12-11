@@ -271,7 +271,6 @@ namespace ExpressBase.Common
           
             var dtEnd = DateTime.Now;
             Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
-
             var ts = (dtEnd - dtStart).TotalMilliseconds;
             Console.WriteLine(string.Format("DoQueries Execution Time : {0}", ts));
             ds.RowNumbers = ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 1)/*(ds.RowNumbers.Length>3)?ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 3): ds.RowNumbers*/;
@@ -810,6 +809,7 @@ SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY appl
 									SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> :id ORDER BY role_name;
 									SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';
 									SELECT id, longname, shortname FROM eb_locations;"; } }
+
         public string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get { return @"
 SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = :id;
 									SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = :id AND eb_del = 'F';
