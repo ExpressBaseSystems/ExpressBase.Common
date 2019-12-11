@@ -173,7 +173,6 @@ namespace ExpressBase.Common.Data.MSSQLServer
             {
                 try
                 {
-                    con.Open();
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         if (parameters != null && parameters.Length > 0)
@@ -263,13 +262,12 @@ namespace ExpressBase.Common.Data.MSSQLServer
             var con = dbConnection as SqlConnection;
             try
             {
-                con.Open();
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     if (parameters != null && parameters.Length > 0)
                         cmd.Parameters.AddRange(parameters);
                     cmd.Prepare();
-                    return cmd.ExecuteReader(CommandBehavior.KeyInfo | CommandBehavior.CloseConnection);
+                    return cmd.ExecuteReader(CommandBehavior.KeyInfo);
                 }
             }
             catch (Exception e)
@@ -286,7 +284,6 @@ namespace ExpressBase.Common.Data.MSSQLServer
             {
                 try
                 {
-                    con.Open();
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         if (parameters != null && parameters.Length > 0)
@@ -344,7 +341,9 @@ namespace ExpressBase.Common.Data.MSSQLServer
             try
             {
                 SqlConnection con = GetNewConnection() as SqlConnection;
+                con.Open();
                 dt = DoQuery(con, query, parameters);
+                con.Close();
             }
             catch (Exception e)
             {
@@ -362,7 +361,9 @@ namespace ExpressBase.Common.Data.MSSQLServer
             try
             {
                 SqlConnection con = GetNewConnection() as SqlConnection;
+                con.Open();
                 ds = DoQueries(con, query, parameters);
+                con.Close();
             }
             catch (Exception e)
             {
@@ -384,7 +385,9 @@ namespace ExpressBase.Common.Data.MSSQLServer
             int val = 0;
             try
             {
+                con.Open();
                 val = DoNonQuery(con, query, parameters);
+                con.Close();
             }
             catch (Exception e)
             {
@@ -719,33 +722,61 @@ namespace ExpressBase.Common.Data.MSSQLServer
             return cols;
         }
 
-        public string EB_AUTHETICATE_USER_NORMAL { get { return @"eb_authenticate_unified (@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);"; } }
+        public string EB_AUTHETICATE_USER_NORMAL
+        {
+            get
+            {
+                return @"eb_authenticate_unified (@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);";
+            }
+        }
 
-        public string EB_AUTHENTICATEUSER_SOCIAL { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);"; } }
+        public string EB_AUTHENTICATEUSER_SOCIAL
+        {
+            get
+            {
+                return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);";
+            }
+        }
 
-        public string EB_AUTHENTICATEUSER_SSO { get { return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);"; } }
+        public string EB_AUTHENTICATEUSER_SSO
+        {
+            get
+            {
+                return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);";
+            }
+        }
 
-        public string EB_AUTHENTICATE_ANONYMOUS { get { return @"SELECT * FROM eb_authenticate_anonymous(@params in_appid := :appid ,in_wc := :wc);"; } }
+        public string EB_AUTHENTICATE_ANONYMOUS
+        {
+            get
+            {
+                return @"SELECT * FROM eb_authenticate_anonymous(@params in_appid := :appid ,in_wc := :wc);";
+            }
+        }
 
-        public string EB_SIDEBARUSER_REQUEST { get { return @"SELECT id, applicationname,app_icon
-                                                        FROM eb_applications
-                                                        WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
-
-                                                    SELECT
-                                            EO.id, EO.obj_type, EO.obj_name,
-                                            EOV.version_num, EOV.refid, EO2A.app_id, EO.obj_desc, EOS.status, EOS.id, display_name
-                                        FROM
-                                            eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
-                                        WHERE
-                                        EOV.eb_objects_id = EO.id	
-                                        AND EO.id = ANY('{:Ids}')               			    
-				                        AND EOS.eb_obj_ver_id = EOV.id 
-				                        AND EO2A.obj_id = EO.id
-				                        AND EO2A.eb_del = 'F'
-                                        AND EOS.status = 3 
-                                        AND COALESCE( EO.eb_del, 'F') = 'F'
-				                        AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );
-                                        SELECT object_id FROM eb_objects_favourites WHERE userid=:user_id AND eb_del='F'"; } }
+        public string EB_SIDEBARUSER_REQUEST
+        {
+            get
+            {
+                return @"SELECT id, applicationname,app_icon
+                            FROM eb_applications
+                            WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
+                        SELECT EO.id, EO.obj_type, EO.obj_name,
+                               EOV.version_num, EOV.refid, EO2A.app_id, EO.obj_desc, EOS.status, EOS.id, display_name
+                            FROM
+                                eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
+                            WHERE
+                            EOV.eb_objects_id = EO.id	
+                            AND EO.id = ANY('{:Ids}')               			    
+				            AND EOS.eb_obj_ver_id = EOV.id 
+				            AND EO2A.obj_id = EO.id
+				            AND EO2A.eb_del = 'F'
+                            AND EOS.status = 3 
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+				            AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );
+                        SELECT object_id FROM eb_objects_favourites WHERE userid = :user_id AND eb_del = 'F'";
+            }
+        }
         // only for mysql
         public string EB_SIDEBARUSER_REQUEST_SOL_OWNER { get { return @""; } }
 
@@ -774,14 +805,47 @@ namespace ExpressBase.Common.Data.MSSQLServer
         public string EB_SIDEBARCHECK { get { return @""; } }
 
         public string EB_GETROLESRESPONSE_QUERY
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT R.id,R.role_name,R.description,A.applicationname,
+									(SELECT COUNT(role1_id) FROM eb_role2role WHERE role1_id=R.id AND eb_del = 'F') AS subrole_count,
+									(SELECT COUNT(user_id) FROM eb_role2user WHERE role_id=R.id AND eb_del = 'F') AS user_count,
+									(SELECT COUNT(distinct permissionname) FROM eb_role2permission RP, eb_objects2application OA WHERE role_id = R.id AND app_id=A.id AND RP.obj_id=OA.obj_id AND RP.eb_del = 'F' AND OA.eb_del = 'F') AS permission_count
+								FROM eb_roles R, eb_applications A
+								WHERE R.applicationid = A.id AND R.role_name like CONCAT('%',@searchtext,'%') AND A.eb_del = 'F';";
+            }
+        }
 
-        public string EB_GETROLESRESPONSE_QUERY_WITHOUT_SEARCHTEXT
-        { get { return @""; } }
+        public string EB_GETMANAGEROLESRESPONSE_QUERY
+        {
+            get
+            {
+                return @"SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY applicationname;
+                        SELECT DISTINCT EO.id, EO.display_name, EO.obj_type, EO2A.app_id
+                                FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
+								WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3 
+									AND EOS.id = ANY(SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id)
+									AND EO.id = EO2A.obj_id AND EO2A.eb_del = 'F';
+						SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> :id ORDER BY role_name;
+						SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';
+						SELECT id, longname, shortname FROM eb_locations;";
+            }
+        }
 
-        public string EB_GETMANAGEROLESRESPONSE_QUERY { get { return @""; } }
+        public string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED
+        {
+            get
+            {
+                return @"SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = :id;
+                        SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = :id AND eb_del = 'F';
+                        SELECT A.applicationname, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = :id AND A.eb_del = 'F';
+                        SELECT A.id, A.fullname, A.email, B.id FROM eb_users A, eb_role2user B
+                            WHERE A.id = B.user_id AND A.eb_del = 'F' AND B.eb_del = 'F' AND B.role_id = :id;
+                        SELECT locationid FROM eb_role2location WHERE roleid = :id AND eb_del='F';";
+            }
+        }
 
-        public string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get { return @""; } }
         public string EB_SAVEROLES_QUERY
         { get { return @""; } }
 
@@ -806,13 +870,27 @@ namespace ExpressBase.Common.Data.MSSQLServer
         }
 
         public string EB_MANAGEUSER_FIRST_QUERY
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT id, role_name, description FROM eb_roles ORDER BY role_name;
+                        SELECT id, name,description FROM eb_usergroup ORDER BY name;
+						SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';";
+            }
+        }
 
         public string EB_GETUSERGROUP_QUERY_WITHOUT_SEARCHTEXT
         { get { return @""; } }
 
         public string EB_GETUSERDETAILS
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT id,fullname,email FROM eb_users 
+                            WHERE LOWER(fullname) LIKE LOWER(CONCAT('%', @searchtext,'%')) AND eb_del = 'F' 
+                            ORDER BY fullname ASC;";
+            }
+        }
 
         public string EB_GET_MYPROFILE_OBJID
         {
@@ -823,19 +901,56 @@ namespace ExpressBase.Common.Data.MSSQLServer
         }
 
         public string EB_CREATEAPPLICATION_DEV
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"INSERT INTO eb_applications (applicationname,application_type, description,app_icon) OUTPUT INSERTED.ID
+                            VALUES (:applicationname,:apptype, :description,:appicon);";
+            }
+        }
 
         public string EB_EDITAPPLICATION_DEV
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"UPDATE 
+                            eb_applications 
+                        SET 
+                            applicationname = :applicationname,
+                            application_type = :apptype,
+                            description = :description,
+                            app_icon = :appicon
+                        WHERE
+                            id = :appid";
+            }
+        }
 
         public string EB_GETTABLESCHEMA
         { get { return @""; } }
 
         public string EB_GET_CHART_2_DETAILS
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT created_at FROM eb_executionlogs WHERE refid = :refid AND CAST(created_at AS date) = CAST(GETDATE() AS DATE);";
+            }
+        }
 
         public string EB_GET_PROFILERS
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid = :refid);
+                        SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid = :refid);
+                        SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid = :refid AND MONTH(created_at) = MONTH(GETDATE()));
+                        SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid = :refid AND MONTH(created_at) = MONTH(GETDATE()));
+                        SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time) FROM eb_executionlogs WHERE refid= :refid and CAST(created_at AS DATE) = CAST(GETDATE() AS DATE));
+                        SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MIN(exec_time) FROM eb_executionlogs WHERE refid= :refid and CAST(created_at AS DATE) = CAST(GETDATE() AS DATE));
+                        SELECT COUNT(*) FROM eb_executionlogs WHERE refid = :refid;
+                        SELECT COUNT(*) FROM eb_executionlogs WHERE CAST(created_at AS DATE) = CAST(GETDATE() AS DATE) AND refid = :refid;
+                        SELECT COUNT(*) FROM eb_executionlogs WHERE MONTH(created_at) = MONTH(GETDATE()) and refid = :refid; ";
+            }
+        }
 
         public string EB_GETUSEREMAILS
         { get { return @""; } }
@@ -844,28 +959,75 @@ namespace ExpressBase.Common.Data.MSSQLServer
         { get { return @""; } }
 
         public string EB_SURVEYMASTER
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"INSERT INTO eb_survey_master(surveyid,userid,anonid,eb_createdate) OUTPUT INSERTED.ID
+                            VALUES(:sid,:uid,:anid,GETDATE())";
+            }
+        }
 
         public string EB_CURRENT_TIMESTAMP
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"GETUTCDATE()";
+            }
+        }
 
         public string EB_UPDATEAUDITTRAIL
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"INSERT INTO eb_audit_master(formid, dataid, actiontype, eb_createdby, eb_createdat) OUTPUT INSERTED.ID
+                            VALUES (:formid, :dataid, :actiontype, :eb_createdby, GETUTCDATE()) ;";
+            }
+        }
 
         public string EB_SAVESURVEY
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"INSERT INTO eb_surveys(name, startdate, enddate, status, questions) OUTPUT INSERTED.ID 
+                            VALUES (:name, :start, :end, :status, :questions);";
+            }
+        }
 
         public string EB_PROFILER_QUERY_COLUMN
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT id, rows, exec_time, created_by, created_at FROM eb_executionlogs WHERE refid = :refid;";
+            }
+        }
 
         public string EB_PROFILER_QUERY_DATA
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT COUNT(id) FROM eb_executionlogs WHERE refid = :refid; 
+                        SELECT EL.id, EL.rows, EL.exec_time, EU.fullname, EL.created_at FROM eb_executionlogs EL, eb_users EU
+                            WHERE refid = :refid AND EL.created_by = EU.id
+                            OFFSET @OFFSET ROWS FETCH NEXT @LIMIT ROWS ONLY;";
+            }
+        }
 
         public string EB_GET_CHART_DETAILS
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"SELECT rows, exec_time FROM eb_executionlogs WHERE refid = :refid AND MONTH(created_at) = MONTH(GETDATE());";
+            }
+        }
 
         public string EB_INSERT_EXECUTION_LOGS
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"INSERT INTO eb_executionlogs(rows, exec_time, created_by, created_at, params, refid) 
+                            VALUES(:rows, :exec_time, :created_by, :created_at, :params, :refid);";
+            }
+        }
 
         public string EB_GET_MOB_MENU_OBJ_IDS
         {
@@ -903,14 +1065,14 @@ namespace ExpressBase.Common.Data.MSSQLServer
             get
             {
                 return @"SELECT
-                        EOV.id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.commit_uid, EU.fullname
-                    FROM
-                        eb_objects_ver EOV, eb_users EU
-                    WHERE
-                        EOV.commit_uid = EU.id AND
-                        EOV.eb_objects_id = (SELECT eb_objects_id FROM eb_objects_ver WHERE refid = @refid)
-                    ORDER BY
-                        EOV.id DESC";
+                            EOV.id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.commit_uid, EU.fullname
+                        FROM
+                            eb_objects_ver EOV, eb_users EU
+                        WHERE
+                            EOV.commit_uid = EU.id 
+                            AND EOV.eb_objects_id = (SELECT eb_objects_id FROM eb_objects_ver WHERE refid = @refid)
+                        ORDER BY
+                            EOV.id DESC";
             }
         }
 
@@ -936,15 +1098,15 @@ namespace ExpressBase.Common.Data.MSSQLServer
             get
             {
                 return @"SELECT 
-                        EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status, EO.obj_desc,
-                        EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.obj_json, EOV.refid
-                    FROM 
-                        eb_objects EO, eb_objects_ver EOV
-                    WHERE
-                        EO.id = EOV.eb_objects_id AND EOV.refid = @refid
-                        AND COALESCE( EO.eb_del, 'F') = 'F'
-                    ORDER BY
-                        EO.obj_type";
+                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status, EO.obj_desc, EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, 
+                            EOV.commit_uid, EOV.obj_json, EOV.refid
+                        FROM 
+                            eb_objects EO, eb_objects_ver EOV
+                        WHERE
+                            EO.id = EOV.eb_objects_id AND EOV.refid = @refid
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                        ORDER BY
+                            EO.obj_type";
             }
         }
 
@@ -989,7 +1151,9 @@ namespace ExpressBase.Common.Data.MSSQLServer
 
         public string EB_GET_TAGGED_OBJECTS
         {
-            get { return @"";
+            get
+            {
+                return @"";
             }
         }
 
@@ -1065,7 +1229,9 @@ namespace ExpressBase.Common.Data.MSSQLServer
 
         public string EB_GET_ALL_TAGS
         {
-            get { return @"";
+            get
+            {
+                return @"";
             }
         }
 
@@ -1095,7 +1261,9 @@ namespace ExpressBase.Common.Data.MSSQLServer
 
         public string EB_GET_BOT_FORM
         {
-            get { return @"";
+            get
+            {
+                return @"";
             }
         }
         public string IS_TABLE_EXIST
@@ -1154,8 +1322,14 @@ namespace ExpressBase.Common.Data.MSSQLServer
         { get { return @""; } }
         public string EB_LOCATION_CONFIGURATION
         { get { return @""; } }
+
         public string EB_SAVELOCATION
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"INSERT INTO eb_locations(longname,shortname,image,meta_json) OUTPUT INSERTED.ID VALUES(:lname,:sname,:img,:meta);";
+            }
+        }
 
         public string EB_CREATEBOT
         { get { return @""; } }
@@ -1163,21 +1337,53 @@ namespace ExpressBase.Common.Data.MSSQLServer
         //....Files query
 
         public string EB_IMGREFUPDATESQL
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"INSERT INTO eb_files_ref_variations (eb_files_ref_id, filestore_sid, length, imagequality_id, is_image, img_manp_ser_con_id, filedb_con_id) OUTPUT INSERTED.ID
+                            VALUES (:refid, :filestoreid, :length, :imagequality_id, :is_image, :imgmanpserid, :filedb_con_id)";
+            }
+        }
 
         public string EB_DPUPDATESQL
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"INSERT INTO eb_files_ref_variations (eb_files_ref_id, filestore_sid, length, imagequality_id, is_image, img_manp_ser_con_id, filedb_con_id) OUTPUT INSERTED.ID
+                         VALUES (:refid, :filestoreid, :length, :imagequality_id, :is_image, :imgmanpserid, :filedb_con_id);
+                        UPDATE eb_users SET dprefid = :refid WHERE id=:userid";
+            }
+        }
 
         public string EB_LOGOUPDATESQL
         { get { return @""; } }
-        public string Eb_MQ_UPLOADFILE
-        { get { return @""; } }
 
+        public string Eb_MQ_UPLOADFILE
+        {
+            get
+            {
+                return @"INSERT INTO eb_files_ref_variations (eb_files_ref_id, filestore_sid, length, is_image, filedb_con_id) OUTPUT INSERTED.ID
+                         VALUES (:refid, :filestoresid, :length, :is_image, :filedb_con_id)";
+            }
+        }
+        
         public string EB_GETFILEREFID
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"INSERT INTO eb_files_ref (userid, filename, filetype, tags, filecategory) OUTPUT INSERTED.ID
+                         VALUES (@userid, @filename, @filetype, @tags, @filecategory)";
+            }
+        }
 
         public string EB_UPLOAD_IDFETCHQUERY
-        { get { return @""; } }
+        {
+            get
+            {
+                return @"INSERT INTO eb_files_ref (userid, filename, filetype, tags, filecategory, uploadts,context) OUTPUT INSERTED.ID
+                        VALUES(@userid, @filename, @filetype, @tags, @filecategory, GETDATE(), @context) ";
+            }
+        }
 
         public string EB_SMSSERVICE_POST
         { get { return @""; } }
