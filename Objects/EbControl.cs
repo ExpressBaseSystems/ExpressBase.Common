@@ -318,7 +318,7 @@ namespace ExpressBase.Common.Objects
 .Replace("@barehtml@", this.GetBareHtml())
 .Replace("@name@", this.Name)
 .Replace("@childOf@", this.ChildOf.IsNullOrEmpty() ? string.Empty : "childOf='" + this.ChildOf + "'")
-.Replace("@ebsid@", this.IsRenderMode && this.IsDynamicTabChild ? "@" + this.Name + "_ebsid@" : this.EbSid_CtxId)
+.Replace("@ebsid@", this.IsRenderMode && this.IsDynamicTabChild ? "@" + this.EbSid_CtxId + "_ebsid@" : this.EbSid_CtxId)
 .Replace("@isHidden@", this.Hidden.ToString().ToLower())
 .Replace("@isReadonly@", this.IsDisable.ToString().ToLower())
 .Replace("@helpText@", this.HelpText)
