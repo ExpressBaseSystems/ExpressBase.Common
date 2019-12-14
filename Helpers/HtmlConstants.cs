@@ -24,7 +24,7 @@ namespace ExpressBase.Common
             <span class='helpText' ui-helptxt>@helpText@ </span>
         </div>";
 
-		public const string CONTROL_WRAPER_HTML4BOT = @"
+        public const string CONTROL_WRAPER_HTML4BOT = @"
 			<div id='cont_@ebsid@' ebsid='@ebsid@' name='@name@' ctype='@type@' eb-type='@type@' class='Eb-ctrlContainer iw-mTrigger' >
 			   <div class='msg-cont'>
 				  <div class='bot-icon'></div>
@@ -47,5 +47,129 @@ namespace ExpressBase.Common
 				  </div>
 			   </div>
 			</div>";
-	}
+    }
+
+    public static class JSFnsConstants
+    {
+
+        public const string PS_SetDisplayMemberJSfn = @"
+let val = $('#' + this.EbSid_CtxId).selectpicker('val');
+val = (val === null) ? '-1' : val.toString();
+return val;";
+
+        public const string EbSimpleSelect_GetValueJSfn = @"
+if(this.RenderAsSimpleSelect){"
+    + EbSimpleSelect_SetValueJSfn +
+@"}
+else{                        
+    if (p1 === '')
+        return;
+    let VMs = this.initializer.Vobj.valueMembers;
+    let DMs = this.initializer.Vobj.displayMembers;
+    let columnVals = this.initializer.columnVals;
+
+    if (VMs.length > 0)// clear if already values there
+        this.initializer.clearValues();
+
+    let valMsArr = p1.split(',');
+
+    for (let i = 0; i < valMsArr.length; i++) {
+        let vm = valMsArr[i];
+        VMs.push(vm);
+        for (let j = 0; j < this.initializer.dmNames.length; j++) {
+            let dmName = this.initializer.dmNames[j];
+            DMs[dmName].push(this.DataVals.D[vm][dmName]);
+        }
+    }
+    
+    if (this.initializer.datatable === null) {//for aftersave actions
+
+
+        for (var i = 0; i < this.DataVals.R.length; i++) {
+            let row = this.DataVals.R[i];
+            $.each(row.Columns, function (k, column) {
+                if (!columnVals[column.Name]) {
+                    console.warn('Found mismatch in Columns from datasource and Colums in object');
+                    return true;
+                }
+                let val = EbConvertValue(column.Value, column.Type);
+                columnVals[column.Name].push(val);
+            }.bind(this));
+
+        }
+    }
+}";
+
+        public const string SS_SetValueJSfn = EbSimpleSelect_JustSetValueJSfn + ".trigger('change');";
+
+        public const string SS_EnableJSfn = @"return $('#' + this.EbSid_CtxId +'Wraper .dropdown-toggle').prop('disabled',false).css('pointer-events', 'inherit').css('background-color', '#fff');";
+
+        public const string SS_DisableJSfn = @"return $('#' + this.EbSid_CtxId +'Wraper .dropdown-toggle').attr('disabled', 'disabled').css('pointer-events', 'none').css('background-color', '#f3f3f3');";
+
+        public const string SS_IsRequiredOKJSfn = @"return !this.isInVisibleInUI ? (!isNaNOrEmpty(this.getValue()) && (this.getValue() !== '-1')) : true;";
+
+        public const string Ctrl_EnableJSfn = @"$('#cont_' + this.EbSid_CtxId + ' *').prop('disabled',false).css('pointer-events', 'inherit').find('[ui-inp]').css('background-color', '#fff');";
+
+        public const string SS_GetDisplayMemberJSfn = @"return $('#' + this.EbSid_CtxId +' :selected').text();";
+
+        public const string Ctrl_DisableJSfn = @"$('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none').find('[ui-inp]').css('background-color', '#f3f3f3');";
+
+        public const string Ctrl_IsRequiredOKJSfn = @"return !this.isInVisibleInUI ? (!isNaNOrEmpty(this.getValue()) && this.getValue() !== 0): true;";
+
+        public const string PS_JustSetValueJSfn = @"this.initializer.justInit = true;" + PS_SetValueJSfn;
+        
+        public const string PS_SetValueJSfn = @"
+                    if(this.RenderAsSimpleSelect){"
+                        + JSFnsConstants.SS_SetValueJSfn +
+                    @"}
+                    else{
+                        this.initializer.setValues(p1, p2);
+                    }
+                ";
+
+        public const string PS_GetDisplayMemberJSfn = @"
+                    if(this.RenderAsSimpleSelect){"
+                        + JSFnsConstants.SS_GetDisplayMemberJSfn +
+                    @"}
+                    else{"
+                        + @" 
+                         return this.initializer.getDisplayMemberModel();
+" +
+                    @"}
+                ";
+
+        public const string PS_EnableJSfn = @"
+if(this.RenderAsSimpleSelect){"
+    + SS_EnableJSfn +
+@"}
+else{"
+    + Ctrl_EnableJSfn +
+@"}";
+
+        public const string EbSimpleSelect_JustSetValueJSfn = @"
+isContained = false;
+$('#' + this.EbSid_CtxId + ' option').each(function () {
+    if ($(this).attr('value') == p1) {
+        isContained = true;
+        return false;
+    }
+});
+
+if(!isContained)
+    return;
+$('#' + this.EbSid_CtxId).selectpicker('val', p1)";
+
+        public const string EbSimpleSelect_SetValueJSfn = @"
+isContained = false;
+$('#' + this.EbSid_CtxId + ' option').each(function () {
+    if ($(this).attr('value') == p1) {
+        isContained = true;
+        return false;
+    }
+});
+
+if(!isContained)
+    return;
+$('#' + this.EbSid_CtxId).selectpicker('val', p1)";
+    }
 }
