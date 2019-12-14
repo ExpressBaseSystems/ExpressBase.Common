@@ -81,7 +81,6 @@ namespace ExpressBase.Common
         string EB_SURVEYMASTER { get; }
 
         string EB_CURRENT_TIMESTAMP { get; }
-        string EB_UPDATEAUDITTRAIL { get; }
         string EB_SAVESURVEY { get; }
 
         string EB_PROFILER_QUERY_COLUMN { get; }

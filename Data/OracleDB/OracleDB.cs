@@ -997,18 +997,6 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        public string EB_UPDATEAUDITTRAIL
-        {
-            get
-            {
-                return @"
-INSERT INTO 
-                            eb_audit_master(formid, dataid, actiontype, eb_createdby, eb_createdat) 
-                        VALUES 
-                            (:formid, :dataid, :actiontype, :eb_createdby, CURRENT_TIMESTAMP AT TIME ZONE 'UTC') RETURNING id;";
-            }
-        }
-
         public string EB_SAVESURVEY
         {
             get

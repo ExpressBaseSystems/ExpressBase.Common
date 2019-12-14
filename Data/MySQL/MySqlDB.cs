@@ -1225,19 +1225,7 @@ namespace ExpressBase.Common
                 return @"UTC_TIMESTAMP()";
             }
         }
-
-        public string EB_UPDATEAUDITTRAIL
-        {
-            get
-            {
-                return @"INSERT INTO 
-                            eb_audit_master(formid, dataid, actiontype, eb_createdby, eb_createdat) 
-                        VALUES 
-                            (:formid, :dataid, :actiontype, :eb_createdby, UTC_TIMESTAMP());
-                        SELECT LAST_INSERT_ID();";
-            }
-        }
-
+        
         public string EB_SAVESURVEY
         {
             get

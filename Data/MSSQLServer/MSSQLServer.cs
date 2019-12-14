@@ -975,15 +975,6 @@ namespace ExpressBase.Common.Data.MSSQLServer
             }
         }
 
-        public string EB_UPDATEAUDITTRAIL
-        {
-            get
-            {
-                return @"INSERT INTO eb_audit_master(formid, dataid, actiontype, eb_createdby, eb_createdat) OUTPUT INSERTED.ID
-                            VALUES (:formid, :dataid, :actiontype, :eb_createdby, GETUTCDATE()) ;";
-            }
-        }
-
         public string EB_SAVESURVEY
         {
             get
