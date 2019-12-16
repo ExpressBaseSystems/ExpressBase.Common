@@ -1549,6 +1549,14 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                             LANGUAGE {1} AS $BODY$";
             }
         }
+
+        public string EB_PARAM_SYMBOL
+        {
+            get
+            {
+                return ":";
+            }
+        }
     }
 
     public class OracleFilesDB : OracleDB, INoSQLDatabase

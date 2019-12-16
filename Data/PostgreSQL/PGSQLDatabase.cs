@@ -1683,6 +1683,13 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
+        public string EB_PARAM_SYMBOL
+        {
+            get
+            {
+                return "@";
+            }
+        }
     }
 
     public class PGSQLFileDatabase : PGSQLDatabase, INoSQLDatabase

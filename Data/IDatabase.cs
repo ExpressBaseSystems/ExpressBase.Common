@@ -54,6 +54,8 @@ namespace ExpressBase.Common
 
         //---------------------sql query
 
+        string EB_PARAM_SYMBOL { get; }
+
         string EB_AUTHETICATE_USER_NORMAL { get; }
         string EB_AUTHENTICATEUSER_SOCIAL { get; }
         string EB_AUTHENTICATEUSER_SSO { get; }
