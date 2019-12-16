@@ -1871,6 +1871,14 @@ namespace ExpressBase.Common
                             LANGUAGE {1} AS $BODY$";
             }
         }
+
+        public string EB_PARAM_SYMBOL
+        {
+            get
+            {
+                return "@";
+            }
+        }
     }
 
     public class MySQLFilesDB : MySqlDB, INoSQLDatabase
