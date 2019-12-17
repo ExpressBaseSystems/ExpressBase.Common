@@ -263,6 +263,14 @@ namespace ExpressBase.Common
         APPLICATION_PASSWORD_ADMIN
     }
 
+    public enum MSSqlSysRoles
+    {
+        CONNECT,
+        DB_DATAREADER,
+        DB_DATAWRITER,
+        DB_DDLADMIN
+    }
+
     public enum SurveyQTypes
     {
         SingleSelect = 1,
