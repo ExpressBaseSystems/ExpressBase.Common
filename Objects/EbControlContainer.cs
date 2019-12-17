@@ -273,6 +273,8 @@ namespace ExpressBase.Common.Objects
                                 opFnsJs += GetOpFnJs("reset", _ctrlObj.ResetJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("refresh", _ctrlObj.RefreshJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("clear", _ctrlObj.ClearJSfn, TypeName);
+                                opFnsJs += GetOpFnJs("addInvalidStyle", _ctrlObj.AddInvalidStyleJSFn, TypeName);
+                                opFnsJs += GetOpFnJs("removeInvalidStyle", _ctrlObj.RemoveInvalidStyleJSFn, TypeName);
                                 opFnsJs += GetOpFnJs("bindOnChange", _ctrlObj.OnChangeBindJSFn, TypeName);
 
 
@@ -296,7 +298,7 @@ namespace ExpressBase.Common.Objects
         private static string GetOpFnJs(string opFnName, string JSfn, string TypeName)
         {
             return string.Concat(@"
-                                    this.", opFnName, " = function(p1, p2) { ", JSfn, "};");//.RemoveCR();
+                                    this.", opFnName, " = function(p1, p2, p3, p4) { ", JSfn, "};");//.RemoveCR();
         }
 
         public static void SetContextId(EbControlContainer FormObj, string contextId)

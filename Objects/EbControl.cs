@@ -311,6 +311,12 @@ namespace ExpressBase.Common.Objects
         [JsonIgnore]
         public virtual string OnChangeBindJSFn { get { return @"$('#' + this.EbSid_CtxId).on('change', p1);"; } set { } }
 
+        [JsonIgnore]
+        public virtual string AddInvalidStyleJSFn { get { return @"EbAddInvalidStyle.bind(this)(p1, p2, p3);"; } set { } }
+
+        [JsonIgnore]
+        public virtual string RemoveInvalidStyleJSFn { get { return @"EbRemoveInvalidStyle.bind(this)(p1, p2);"; } set { } }
+
         //methods        
         protected string ReplacePropsInHTML(string Html)
         {
