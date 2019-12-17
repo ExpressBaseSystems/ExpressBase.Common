@@ -54,6 +54,8 @@ namespace ExpressBase.Common
 
         //---------------------sql query
 
+        string EB_PARAM_SYMBOL { get; }
+
         string EB_AUTHETICATE_USER_NORMAL { get; }
         string EB_AUTHENTICATEUSER_SOCIAL { get; }
         string EB_AUTHENTICATEUSER_SSO { get; }
@@ -81,7 +83,6 @@ namespace ExpressBase.Common
         string EB_SURVEYMASTER { get; }
 
         string EB_CURRENT_TIMESTAMP { get; }
-        string EB_UPDATEAUDITTRAIL { get; }
         string EB_SAVESURVEY { get; }
 
         string EB_PROFILER_QUERY_COLUMN { get; }

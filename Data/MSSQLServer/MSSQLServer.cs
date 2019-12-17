@@ -1035,15 +1035,6 @@ namespace ExpressBase.Common.Data.MSSQLServer
             }
         }
 
-        public string EB_UPDATEAUDITTRAIL
-        {
-            get
-            {
-                return @"INSERT INTO eb_audit_master(formid, dataid, actiontype, eb_createdby, eb_createdat) OUTPUT INSERTED.ID
-                            VALUES (@formid, @dataid, @actiontype, @eb_createdby, GETUTCDATE());";
-            }
-        }
-
         public string EB_SAVESURVEY
         {
             get
@@ -1455,6 +1446,14 @@ namespace ExpressBase.Common.Data.MSSQLServer
         //....api query...
         public string EB_API_SQL_FUNC_HEADER
         { get { return @""; } }
+
+        public string EB_PARAM_SYMBOL
+        {
+            get
+            {
+                return "@";
+            }
+        }
     }
 
     public class MSSQLServerFilesDB : MSSQLDatabase, INoSQLDatabase

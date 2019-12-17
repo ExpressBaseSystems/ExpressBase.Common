@@ -270,7 +270,7 @@ namespace ExpressBase.Common.Objects
         public virtual string GetDisplayMemberJSfn { get { return @"return this.getValue();"; } set { } }
 
         [JsonIgnore]
-		public virtual string IsRequiredOKJSfn { get { return @"return !this.isInVisibleInUI ? (!isNaNOrEmpty(this.getValue()) && this.getValue() !== 0): true;"; } set { } }
+		public virtual string IsRequiredOKJSfn { get { return JSFnsConstants.Ctrl_IsRequiredOKJSfn; } set { } }
 
 		[JsonIgnore]
         public virtual string SetValueJSfn { get { return @"$('#' + this.EbSid_CtxId).val(p1).trigger('change');"; } set { } }
@@ -294,10 +294,10 @@ namespace ExpressBase.Common.Objects
         public virtual string ShowJSfn { get { return @"$('#cont_' + this.EbSid_CtxId).show(300); this.isInVisibleInUI = false;"; } set { } }
 
         [JsonIgnore]
-        public virtual string EnableJSfn { get { return @"$('#cont_' + this.EbSid_CtxId + ' *').prop('disabled',false).css('pointer-events', 'inherit').find('[ui-inp]').css('background-color', '#fff');"; } set { } }
+        public virtual string EnableJSfn { get { return JSFnsConstants.Ctrl_EnableJSfn; } set { } }
 
         [JsonIgnore]
-        public virtual string DisableJSfn { get { return @"$('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none').find('[ui-inp]').css('background-color', '#f3f3f3');"; } set { } }
+        public virtual string DisableJSfn { get { return JSFnsConstants.Ctrl_DisableJSfn; } set { } }
 
         [JsonIgnore]
         public virtual string ResetJSfn { get { return @"this.clear(); this.setValue(p1);"; } set { } }

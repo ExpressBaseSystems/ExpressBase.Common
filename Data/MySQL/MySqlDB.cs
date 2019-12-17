@@ -1225,19 +1225,7 @@ namespace ExpressBase.Common
                 return @"UTC_TIMESTAMP()";
             }
         }
-
-        public string EB_UPDATEAUDITTRAIL
-        {
-            get
-            {
-                return @"INSERT INTO 
-                            eb_audit_master(formid, dataid, actiontype, eb_createdby, eb_createdat) 
-                        VALUES 
-                            (@formid, @dataid, @actiontype, @eb_createdby, UTC_TIMESTAMP());
-                        SELECT LAST_INSERT_ID();";
-            }
-        }
-
+        
         public string EB_SAVESURVEY
         {
             get
@@ -1881,6 +1869,14 @@ namespace ExpressBase.Common
                 return @"CREATE OR REPLACE FUNCTION {0}(insert_json json,update_json json)
                             RETURNS void
                             LANGUAGE {1} AS $BODY$";
+            }
+        }
+
+        public string EB_PARAM_SYMBOL
+        {
+            get
+            {
+                return "@";
             }
         }
     }
