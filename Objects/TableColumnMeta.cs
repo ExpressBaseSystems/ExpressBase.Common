@@ -249,7 +249,7 @@ namespace ExpressBase.Common
 
     public class ColumnSchema
     {
-        public Object Control { get; set; }
+        public EbControl Control { get; set; }
 
         public string ColumnName { set; get; }
 

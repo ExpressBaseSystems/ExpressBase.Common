@@ -270,7 +270,7 @@ namespace ExpressBase.Common.Objects
         public virtual string GetDisplayMemberJSfn { get { return @"return this.getValue();"; } set { } }
 
         [JsonIgnore]
-		public virtual string IsRequiredOKJSfn { get { return @"return !this.isInVisibleInUI ? (!isNaNOrEmpty(this.getValue()) && this.getValue() !== 0): true;"; } set { } }
+		public virtual string IsRequiredOKJSfn { get { return JSFnsConstants.Ctrl_IsRequiredOKJSfn; } set { } }
 
 		[JsonIgnore]
         public virtual string SetValueJSfn { get { return @"$('#' + this.EbSid_CtxId).val(p1).trigger('change');"; } set { } }
@@ -294,10 +294,10 @@ namespace ExpressBase.Common.Objects
         public virtual string ShowJSfn { get { return @"$('#cont_' + this.EbSid_CtxId).show(300); this.isInVisibleInUI = false;"; } set { } }
 
         [JsonIgnore]
-        public virtual string EnableJSfn { get { return @"$('#cont_' + this.EbSid_CtxId + ' *').prop('disabled',false).css('pointer-events', 'inherit').find('[ui-inp]').css('background-color', '#fff');"; } set { } }
+        public virtual string EnableJSfn { get { return JSFnsConstants.Ctrl_EnableJSfn; } set { } }
 
         [JsonIgnore]
-        public virtual string DisableJSfn { get { return @"$('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none').find('[ui-inp]').css('background-color', '#f3f3f3');"; } set { } }
+        public virtual string DisableJSfn { get { return JSFnsConstants.Ctrl_DisableJSfn; } set { } }
 
         [JsonIgnore]
         public virtual string ResetJSfn { get { return @"this.clear(); this.setValue(p1);"; } set { } }
@@ -311,6 +311,12 @@ namespace ExpressBase.Common.Objects
         [JsonIgnore]
         public virtual string OnChangeBindJSFn { get { return @"$('#' + this.EbSid_CtxId).on('change', p1);"; } set { } }
 
+        [JsonIgnore]
+        public virtual string AddInvalidStyleJSFn { get { return @"EbAddInvalidStyle.bind(this)(p1, p2, p3);"; } set { } }
+
+        [JsonIgnore]
+        public virtual string RemoveInvalidStyleJSFn { get { return @"EbRemoveInvalidStyle.bind(this)(p1, p2);"; } set { } }
+
         //methods        
         protected string ReplacePropsInHTML(string Html)
         {
@@ -318,7 +324,7 @@ namespace ExpressBase.Common.Objects
 .Replace("@barehtml@", this.GetBareHtml())
 .Replace("@name@", this.Name)
 .Replace("@childOf@", this.ChildOf.IsNullOrEmpty() ? string.Empty : "childOf='" + this.ChildOf + "'")
-.Replace("@ebsid@", this.IsRenderMode && this.IsDynamicTabChild ? "@" + this.Name + "_ebsid@" : this.EbSid_CtxId)
+.Replace("@ebsid@", this.IsRenderMode && this.IsDynamicTabChild ? "@" + this.EbSid_CtxId + "_ebsid@" : this.EbSid_CtxId)
 .Replace("@isHidden@", this.Hidden.ToString().ToLower())
 .Replace("@isReadonly@", this.IsDisable.ToString().ToLower())
 .Replace("@helpText@", this.HelpText)

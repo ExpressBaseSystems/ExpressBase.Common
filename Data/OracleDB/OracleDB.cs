@@ -997,18 +997,6 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        public string EB_UPDATEAUDITTRAIL
-        {
-            get
-            {
-                return @"
-INSERT INTO 
-                            eb_audit_master(formid, dataid, actiontype, eb_createdby, eb_createdat) 
-                        VALUES 
-                            (:formid, :dataid, :actiontype, :eb_createdby, CURRENT_TIMESTAMP AT TIME ZONE 'UTC') RETURNING id;";
-            }
-        }
-
         public string EB_SAVESURVEY
         {
             get
@@ -1559,6 +1547,14 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                 return @"CREATE OR REPLACE FUNCTION {0}(insert_json jsonb,update_json jsonb)
                             RETURNS void
                             LANGUAGE {1} AS $BODY$";
+            }
+        }
+
+        public string EB_PARAM_SYMBOL
+        {
+            get
+            {
+                return ":";
             }
         }
     }
