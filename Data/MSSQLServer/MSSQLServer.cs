@@ -94,25 +94,18 @@ namespace ExpressBase.Common.Data.MSSQLServer
             }
         }
 
-        //private const string CONNECTION_STRING_BARE_WITHOUT_SSL = "Host={0}; Port={1}; Database={2}; Username={3}; Password={4};  Trust Server Certificate=true; Pooling=true; CommandTimeout={5};";
-        //private const string CONNECTION_STRING_BARE = "Host={0}; Port={1}; Database={2}; Username={3}; Password={4};  Trust Server Certificate=true; Pooling=true; CommandTimeout={5};SSL Mode=Require; Use SSL Stream=true; ";
-        //private const string CONNECTION_STRING_BARE = "Host = {0};Database = {1}; Username = {3}; Password = {4}";
-        private const string CONNECTION_STRING_BARE = "Data Source = {0};Initial Catalog = {1}; User ID = {3}; Password = {4}";
+        private const string CONNECTION_STRING_BARE = "Server = {0}; Database = {1}; User Id = {2}; Password = {3};";
+        //private const string CONNECTION_STRING_BARE = "Data Source = {0};Initial Catalog = {1}; User ID = {2}; Password = {3}; Trusted_Connection=True; Integrated Security=False";
         private string _cstr;
         private EbDbConfig DbConfig { get; set; }
         public override string DBName { get; }
 
+        
         public MSSQLDatabase(EbDbConfig dbconf)
         {
             this.DbConfig = dbconf;
             _cstr = string.Format(CONNECTION_STRING_BARE, this.DbConfig.Server, this.DbConfig.DatabaseName, this.DbConfig.UserName, this.DbConfig.Password);
-            this.DBName = DbConfig.DatabaseName;
-            //this.DbConfig = dbconf;
-            //if (dbconf.IsSSL)
-            //    _cstr = string.Format(CONNECTION_STRING_BARE, this.DbConfig.Server, this.DbConfig.Port, this.DbConfig.DatabaseName, this.DbConfig.UserName, this.DbConfig.Password, this.DbConfig.Timeout);
-            //else
-            //    _cstr = string.Format(CONNECTION_STRING_BARE_WITHOUT_SSL, this.DbConfig.Server, this.DbConfig.Port, this.DbConfig.DatabaseName, this.DbConfig.UserName, this.DbConfig.Password, this.DbConfig.Timeout);
-            //DBName = DbConfig.DatabaseName;
+            DBName = DbConfig.DatabaseName;
         }
 
         public override DbConnection GetNewConnection(string dbName)
@@ -184,13 +177,8 @@ namespace ExpressBase.Common.Data.MSSQLServer
                         using (var reader = cmd.ExecuteReader())
                         {
                             DataTable schema = reader.GetSchemaTable();
-                            if (schema != null)
-                            {
-                                this.AddColumns(dt, schema);
-                                PrepareDataTable(reader, dt);
-                            }
-                            //ds.Tables.Add(dt);
-                            //ds.RowNumbers += dt.Rows.Count.ToString() + ",";
+                            this.AddColumns(dt, schema);
+                            PrepareDataTable(reader, dt);
                         }
                     }
                 }
@@ -857,7 +845,28 @@ namespace ExpressBase.Common.Data.MSSQLServer
         {
             get
             {
-                return @"";
+                return @"SELECT 
+                            [database_role] = UPPER(rp.[name])  COLLATE Latin1_General_CI_AS
+                        FROM
+                            sys.database_role_members drm
+                        JOIN
+                            sys.database_principals rp 
+                        ON
+                            (drm.role_principal_id = rp.principal_id)
+                        JOIN
+                            sys.database_principals mp 
+                        ON
+                            (drm.member_principal_id = mp.principal_id)
+                        WHERE
+                            mp.name = '@uname'
+                        UNION
+                        SELECT 
+                            [database_role] = UPPER(dp.[permission_name] ) COLLATE Latin1_General_CI_AS
+                        FROM  
+                            sys.database_principals p,sys.database_permissions dp  
+                        WHERE
+                            p.principal_id = dp.grantee_principal_id AND p.name = '@uname'
+";
             }
         }
 
