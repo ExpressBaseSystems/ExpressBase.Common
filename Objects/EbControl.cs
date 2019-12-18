@@ -267,6 +267,9 @@ namespace ExpressBase.Common.Objects
         public virtual string GetValueJSfn { get { return @"return $('#' + this.EbSid_CtxId).val();"; } set { } }
 
         [JsonIgnore]
+        public virtual string GetValueFromDOMJSfn { get { return @"return $('#' + this.EbSid_CtxId).val();"; } set { } }
+
+        [JsonIgnore]
         public virtual string GetDisplayMemberJSfn { get { return @"return this.getValue();"; } set { } }
 
         [JsonIgnore]
