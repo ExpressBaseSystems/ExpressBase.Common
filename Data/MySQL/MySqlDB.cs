@@ -77,7 +77,7 @@ namespace ExpressBase.Common
 
     public class MySqlDB : IDatabase
     {
-        public DatabaseVendors Vendor
+        public override DatabaseVendors Vendor
         {
             get
             {
@@ -85,7 +85,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public IVendorDbTypes VendorDbTypes
+        public override IVendorDbTypes VendorDbTypes
         {
             get
             {
@@ -97,7 +97,7 @@ namespace ExpressBase.Common
 
         private string _cstr;
         private EbDbConfig DbConfig { get; set; }
-        public string DBName { get; }
+        public override string DBName { get; }
 
         public MySqlDB()
         {
@@ -111,22 +111,22 @@ namespace ExpressBase.Common
             DBName = DbConfig.DatabaseName;
         }
 
-        public DbConnection GetNewConnection(string dbName)
+        public override DbConnection GetNewConnection(string dbName)
         {
             return new MySqlConnection(string.Format(CONNECTION_STRING_BARE, this.DbConfig.Server, this.DbConfig.Port, dbName, this.DbConfig.UserName, this.DbConfig.Password));
         }
 
-        public DbConnection GetNewConnection()
+        public override DbConnection GetNewConnection()
         {
             return new MySqlConnection(_cstr);
         }
 
-        public System.Data.Common.DbCommand GetNewCommand(DbConnection con, string sql)
+        public override System.Data.Common.DbCommand GetNewCommand(DbConnection con, string sql)
         {
             return new MySqlCommand(sql, (MySqlConnection)con);
         }
 
-        public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type, object value)
+        public override System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type, object value)
         {
 
             if (type == EbDbTypes.Boolean)
@@ -134,18 +134,18 @@ namespace ExpressBase.Common
             return new MySqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = value, Direction = ParameterDirection.Input };
         }
 
-        public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type)
+        public override System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type)
         {
             return new MySqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type));
             //return new MySqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Direction = ParameterDirection.Input };
         }
 
-        public System.Data.Common.DbParameter GetNewOutParameter(string parametername, EbDbTypes type)
+        public override System.Data.Common.DbParameter GetNewOutParameter(string parametername, EbDbTypes type)
         {
             return new MySqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Direction = ParameterDirection.Output };
         }
 
-        public EbDataTable DoQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        public override EbDataTable DoQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
             if (query.Contains(":"))
             {
@@ -182,7 +182,7 @@ namespace ExpressBase.Common
             return dt;
         }
 
-        public EbDataSet DoQueries(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        public override EbDataSet DoQueries(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
             if (query.Contains(":"))
             {
@@ -246,7 +246,7 @@ namespace ExpressBase.Common
             return ds;
         }
 
-        public EbDataTable DoProcedure(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        public override EbDataTable DoProcedure(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
             EbDataTable tbl = new EbDataTable();
             int index = query.IndexOf("(");
@@ -285,7 +285,7 @@ namespace ExpressBase.Common
             return null;
         }
 
-        public DbDataReader DoQueriesBasic(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        protected override DbDataReader DoQueriesBasic(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
             if (query.Contains(":"))
             {
@@ -313,7 +313,7 @@ namespace ExpressBase.Common
             return null;
         }
 
-        public int DoNonQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        public override int DoNonQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
 
             MySqlConnection con = dbConnection as MySqlConnection;
@@ -342,7 +342,7 @@ namespace ExpressBase.Common
             return 0;
         }
 
-        public T DoQuery<T>(string query, params DbParameter[] parameters)
+        public override T DoQuery<T>(string query, params DbParameter[] parameters)
         {
             T obj = default(T);
 
@@ -376,7 +376,7 @@ namespace ExpressBase.Common
             return obj;
         }
 
-        public EbDataTable DoQuery(string query, params DbParameter[] parameters)
+        public override EbDataTable DoQuery(string query, params DbParameter[] parameters)
         {
             EbDataTable dt = new EbDataTable();
             try
@@ -393,7 +393,7 @@ namespace ExpressBase.Common
             return dt;
         }
 
-        public EbDataTable DoProcedure(string query, params DbParameter[] parameters)
+        public override EbDataTable DoProcedure(string query, params DbParameter[] parameters)
         {
             EbDataTable tbl = new EbDataTable();
             try
@@ -410,7 +410,7 @@ namespace ExpressBase.Common
             return tbl;
         }
 
-        public EbDataSet DoQueries(string query, params DbParameter[] parameters)
+        public override EbDataSet DoQueries(string query, params DbParameter[] parameters)
         {
             EbDataSet ds = new EbDataSet();
             if (query == "")
@@ -431,7 +431,7 @@ namespace ExpressBase.Common
             return ds;
         }
 
-        public int DoNonQuery(string query, params DbParameter[] parameters)
+        public override int DoNonQuery(string query, params DbParameter[] parameters)
         {
             int val = 0;
             try
@@ -448,7 +448,7 @@ namespace ExpressBase.Common
             return val;
         }
 
-        public Dictionary<int, string> GetDictionary(string query, string dm, string vm)
+        public override Dictionary<int, string> GetDictionary(string query, string dm, string vm)
         {
             Dictionary<int, string> _dic = new Dictionary<int, string>();
             string sql = $"SELECT {vm},{dm} FROM ({query.Replace(";", string.Empty)}) as __table;";
@@ -483,7 +483,7 @@ namespace ExpressBase.Common
             return _dic;
         }
 
-        public List<int> GetAutoResolveValues(string query, string vm, string cond)
+        public override List<int> GetAutoResolveValues(string query, string vm, string cond)
         {
             List<int> _list = new List<int>();
             string sql = $"SELECT {vm} FROM ({query.Replace(";", string.Empty)}) as __table WHERE {cond};";
@@ -518,22 +518,22 @@ namespace ExpressBase.Common
             return _list;
         }
 
-        public void BeginTransaction()
+        public override void BeginTransaction()
         {
             // This is a place where you will use _mySQLDriver to begin transaction
         }
 
-        public void RollbackTransaction()
+        public override void RollbackTransaction()
         {
             // This is a place where you will use _mySQLDriver to rollback transaction
         }
 
-        public void CommitTransaction()
+        public override void CommitTransaction()
         {
             // This is a place where you will use _mySQLDriver to commit transaction
         }
 
-        public bool IsInTransaction()
+        public override bool IsInTransaction()
         {
             // This is a place where you will use _mySQLDriver to check, whether you are in a transaction
             return false;
@@ -570,7 +570,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public EbDbTypes ConvertToDbType(Type _typ)
+        public override EbDbTypes ConvertToDbType(Type _typ)
         {
             if (_typ == typeof(DateTime))
                 return EbDbTypes.Date;
@@ -624,7 +624,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public bool IsTableExists(string query, params DbParameter[] parameters)
+        public override bool IsTableExists(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as MySqlConnection)
             {
@@ -651,7 +651,7 @@ namespace ExpressBase.Common
             return false;
         }
 
-        public int CreateTable(string query)
+        public override int CreateTable(string query)
         {
             int xx = 0;
             using (var con = GetNewConnection() as MySqlConnection)
@@ -676,7 +676,7 @@ namespace ExpressBase.Common
             return xx;
         }
 
-        public int InsertTable(string query, params DbParameter[] parameters)
+        public override int InsertTable(string query, params DbParameter[] parameters)
         {
             if (query.Contains(":"))
             {
@@ -706,7 +706,7 @@ namespace ExpressBase.Common
             return 0;
         }
 
-        public int UpdateTable(string query, params DbParameter[] parameters)
+        public override int UpdateTable(string query, params DbParameter[] parameters)
         {
             if (query.Contains(":"))
             {
@@ -735,7 +735,7 @@ namespace ExpressBase.Common
             return 0;
         }
 
-        public int AlterTable(string query, params DbParameter[] parameters)
+        public override int AlterTable(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as MySqlConnection)
             {
@@ -760,7 +760,7 @@ namespace ExpressBase.Common
             return 0;
         }
 
-        public int DeleteTable(string query, params DbParameter[] parameters)
+        public override int DeleteTable(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as MySqlConnection)
             {
@@ -785,7 +785,7 @@ namespace ExpressBase.Common
             return 0;
         }
 
-        public ColumnColletion GetColumnSchema(string table)
+        public override ColumnColletion GetColumnSchema(string table)
         {
             ColumnColletion cols = new ColumnColletion();
             var query = "SELECT * FROM @tbl LIMIT 0".Replace("@tbl", table);
@@ -828,7 +828,7 @@ namespace ExpressBase.Common
         }
 
 
-        public string EB_AUTHETICATE_USER_NORMAL
+        public override string EB_AUTHETICATE_USER_NORMAL
         {
             get
             {
@@ -837,7 +837,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_AUTHENTICATEUSER_SOCIAL
+        public override string EB_AUTHENTICATEUSER_SOCIAL
         {
             get
             {
@@ -846,7 +846,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_AUTHENTICATEUSER_SSO
+        public override string EB_AUTHENTICATEUSER_SSO
         {
             get
             {
@@ -855,7 +855,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_AUTHENTICATE_ANONYMOUS
+        public override string EB_AUTHENTICATE_ANONYMOUS
         {
             get
             {
@@ -865,7 +865,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_SIDEBARUSER_REQUEST
+        public override string EB_SIDEBARUSER_REQUEST
         {
             get
             {
@@ -884,7 +884,7 @@ namespace ExpressBase.Common
                     eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A
                 WHERE
                     EOV.eb_objects_id = EO.id
-                    AND EO.id IN (@Ids)                  
+                    AND EO.id IN (:Ids)                  
                     AND EOS.eb_obj_ver_id = EOV.id
                     AND EO2A.obj_id = EO.id
                     AND EO2A.eb_del = 'F'
@@ -923,31 +923,9 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_SIDEBARDEV_REQUEST
-        {
-            get
-            {
-                return @"SELECT id, applicationname,app_icon FROM eb_applications
-                            WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
-                        SELECT
-                            EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, COALESCE(EO2A.app_id, 0),display_name
-                        FROM
-                            eb_objects EO
-                        LEFT JOIN
-                            eb_objects2application EO2A
-                        ON
-                            EO.id = EO2A.obj_id
-                        WHERE
-                            COALESCE(EO2A.eb_del, 'F') = 'F'
-                            AND COALESCE( EO.eb_del, 'F') = 'F'
-                        ORDER BY
-                            EO.obj_type;";
-            }
-        }
+        public override string EB_SIDEBARCHECK { get { return "AND EO.id = any (SELECT '@Ids')"; } }
 
-        public string EB_SIDEBARCHECK { get { return "AND EO.id = any (SELECT '@Ids')"; } }
-
-        public string EB_GETROLESRESPONSE_QUERY
+        public override string EB_GETROLESRESPONSE_QUERY
         {
             get
             {
@@ -976,35 +954,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_GETMANAGEROLESRESPONSE_QUERY
-        {
-            get
-            {
-                return @"SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY applicationname;
-                        SELECT DISTINCT EO.id, EO.display_name, EO.obj_type, EO2A.app_id
-                            FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A
-                            WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3
-                                AND EOS.id = ANY(SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id)
-                                AND EO.id = EO2A.obj_id AND EO2A.eb_del = 'F';
-                        SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> @id ORDER BY role_name;
-                        SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';
-                        SELECT id, longname, shortname FROM eb_locations;";
-            }
-        }
-
-        public string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED
-        {
-            get
-            {
-                return @"SELECT role_name, applicationid, description, is_anonymous FROM eb_roles WHERE id = @id;
-                         SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = @id AND eb_del = 'F';
-                         SELECT A.applicationname, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = @id AND A.eb_del = 'F';
-                         SELECT A.id, A.fullname, A.email, B.id FROM eb_users A, eb_role2user B
-                            WHERE A.id = B.user_id AND A.eb_del = 'F' AND B.eb_del = 'F' AND B.role_id = @id;
-                         SELECT locationid FROM eb_role2location WHERE roleid = @id AND eb_del = 'F'; ";
-            }
-        }
-        public string EB_SAVEROLES_QUERY
+        public override string EB_SAVEROLES_QUERY
         {
             get
             {
@@ -1013,7 +963,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_SAVEUSER_QUERY
+        public override string EB_SAVEUSER_QUERY
         {
             get
             {
@@ -1022,7 +972,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_SAVEUSERGROUP_QUERY
+        public override string EB_SAVEUSERGROUP_QUERY
         {
             get
             {
@@ -1030,29 +980,11 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_USER_ROLE_PRIVS
+        public override string EB_USER_ROLE_PRIVS
         {
             get
             {
                 return "SELECT DISTINCT privilege_type FROM information_schema.USER_PRIVILEGES WHERE grantee = \"'@uname'@'%'\"";
-            }
-        }
-
-        public string EB_INITROLE2USER
-        {
-            get
-            {
-                return @"INSERT INTO eb_role2user(role_id, user_id, createdat) VALUES (@role_id, @user_id, now());";
-            }
-        }
-
-        public string EB_MANAGEUSER_FIRST_QUERY
-        {
-            get
-            {
-                return @"SELECT id, role_name, description FROM eb_roles ORDER BY role_name;
-                         SELECT id, name,description FROM eb_usergroup ORDER BY name;
-                         SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';";
             }
         }
 
@@ -1064,7 +996,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_GETUSERDETAILS
+        public override string EB_GETUSERDETAILS
         {
             get
             {
@@ -1072,7 +1004,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_GET_MYPROFILE_OBJID
+        public override string EB_GET_MYPROFILE_OBJID
         {
             get
             {
@@ -1080,7 +1012,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_CREATEAPPLICATION_DEV
+        public override string EB_CREATEAPPLICATION_DEV
         {
             get
             {
@@ -1088,24 +1020,8 @@ namespace ExpressBase.Common
                         SELECT LAST_INSERT_ID();";
             }
         }
-
-        public string EB_EDITAPPLICATION_DEV
-        {
-            get
-            {
-                return @"UPDATE 
-                            eb_applications 
-                        SET 
-                            applicationname = @applicationname,
-                            application_type = @apptype,
-                            description = @description,
-                            app_icon = @appicon
-                        WHERE
-                            id = @appid";
-            }
-        }
-
-        public string EB_GETTABLESCHEMA
+        
+        public override string EB_GETTABLESCHEMA
         {
             get
             {
@@ -1155,7 +1071,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_GET_CHART_2_DETAILS
+        public override string EB_GET_CHART_2_DETAILS
         {
             get
             {
@@ -1163,7 +1079,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_GET_PROFILERS
+        public override string EB_GET_PROFILERS
         {
             get
             {
@@ -1179,7 +1095,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_GETUSEREMAILS
+        public override string EB_GETUSEREMAILS
         {
             get
             {
@@ -1189,7 +1105,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_GETPARTICULARSSURVEY
+        public override string EB_GETPARTICULARSSURVEY
         {
             get
             {
@@ -1209,7 +1125,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_SURVEYMASTER
+        public override string EB_SURVEYMASTER
         {
             get
             {
@@ -1218,15 +1134,15 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_CURRENT_TIMESTAMP
+        public override string EB_CURRENT_TIMESTAMP
         {
             get
             {
                 return @"UTC_TIMESTAMP()";
             }
         }
-        
-        public string EB_SAVESURVEY
+
+        public override string EB_SAVESURVEY
         {
             get
             {
@@ -1235,7 +1151,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_PROFILER_QUERY_COLUMN
+        public override string EB_PROFILER_QUERY_COLUMN
         {
             get
             {
@@ -1243,7 +1159,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_PROFILER_QUERY_DATA
+        public override string EB_PROFILER_QUERY_DATA
         {
             get
             {
@@ -1258,7 +1174,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_GET_CHART_DETAILS
+        public override string EB_GET_CHART_DETAILS
         {
             get
             {
@@ -1271,7 +1187,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_INSERT_EXECUTION_LOGS
+        public override string EB_INSERT_EXECUTION_LOGS
         {
             get
             {
@@ -1280,7 +1196,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_GET_MOB_MENU_OBJ_IDS
+        public override string EB_GET_MOB_MENU_OBJ_IDS
         {
             get
             {
@@ -1288,7 +1204,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_GET_MOBILE_PAGES
+        public override string EB_GET_MOBILE_PAGES
         {
             get
             {
@@ -1296,7 +1212,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_GET_USER_DASHBOARD_OBJECTS
+        public override string EB_GET_USER_DASHBOARD_OBJECTS
         {
             get
             {
@@ -1306,7 +1222,7 @@ namespace ExpressBase.Common
 
         // DBClient
 
-        public string EB_GETDBCLIENTTTABLES
+        public override string EB_GETDBCLIENTTTABLES
         {
             get
             {
@@ -1360,174 +1276,15 @@ namespace ExpressBase.Common
 
         //.......OBJECTS QUERIES.....
 
-        public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
-        {
-            get
-            {
-                return @"SELECT
-                        EOV.id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.commit_uid, EU.fullname
-                    FROM
-                        eb_objects_ver EOV, eb_users EU
-                    WHERE
-                        EOV.commit_uid = EU.id AND
-                        EOV.eb_objects_id = (SELECT eb_objects_id FROM eb_objects_ver WHERE refid = @refid)
-                    ORDER BY
-                        EOV.id DESC;";
-            }
-        }
-
-        public string EB_PARTICULAR_VERSION_OF_AN_OBJ
-        {
-            get
-            {
-                return @"SELECT
-                            obj_json, version_num, status, EO.obj_tags, EO.obj_type
-                        FROM
-                            eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
-                        WHERE
-                            EOV.refid = @refid AND EOS.eb_obj_ver_id = EOV.id AND EO.id = EOV.eb_objects_id
-                            AND COALESCE( EO.eb_del, 'F') = 'F'
-                        ORDER BY
-                            EOS.id DESC
-                        LIMIT 1;";
-            }
-        }
-
-        public string EB_LATEST_COMMITTED_VERSION_OF_AN_OBJ
-        {
-            get
-            {
-                return @"SELECT
-                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status, EO.obj_desc,
-                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.obj_json, EOV.refid
-                        FROM
-                            eb_objects EO, eb_objects_ver EOV
-                        WHERE
-                            EO.id = EOV.eb_objects_id AND EOV.refid = @refid
-                            AND COALESCE( EO.eb_del, 'F') = 'F'
-                        ORDER BY
-                            EO.obj_type; ";
-            }
-        }
-
-        public string EB_COMMITTED_VERSIONS_OF_ALL_OBJECTS_OF_A_TYPE
-        {
-            get
-            {
-                return @"SELECT
-                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
-                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog,EOV.commit_ts, EOV.commit_uid, EOV.refid,
-                            EU.fullname, EO.display_name
-                        FROM
-                            eb_objects EO, eb_objects_ver EOV
-                        LEFT JOIN
-                            eb_users EU
-                        ON
-                            EOV.commit_uid = EU.id
-                        WHERE
-                            EO.id = EOV.eb_objects_id AND EO.obj_type = @type
-                            AND COALESCE( EO.eb_del, 'F') = 'F'
-                        ORDER BY
-                            EO.obj_name;";
-            }
-        }
-
-        public string EB_GET_LIVE_OBJ_RELATIONS
-        {
-            get
-            {
-                return @"SELECT
-                            EO.obj_name, EOV.refid, EOV.version_num, EO.obj_type,EOS.status
-                        FROM
-                            eb_objects EO, eb_objects_ver EOV,eb_objects_status EOS
-                        WHERE
-                            EO.id = ANY (SELECT eb_objects_id FROM eb_objects_ver WHERE refid IN(SELECT dependant FROM eb_objects_relations
-                                                  WHERE dominant = @dominant))
-                            AND EOV.refid = ANY(SELECT dependant FROM eb_objects_relations WHERE dominant = @dominant)   
-                            AND EO.id = EOV.eb_objects_id  AND EOS.eb_obj_ver_id = EOV.id AND EOS.status = 3 AND EO.obj_type IN(16 ,17)
-                            AND COALESCE( EO.eb_del, 'F') = 'F'; ";
-            }
-        }
-
-        public string EB_GET_TAGGED_OBJECTS
+        public override string EB_GET_TAGGED_OBJECTS
         {
             get
             {
                 return @"eb_get_tagged_object(@tags);";
             }
-        }
+        }     
 
-        public string EB_GET_ALL_COMMITTED_VERSION_LIST
-        {
-            get
-            {
-                return @"SELECT
-                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
-                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.refid,
-                            EU.fullname, EO.display_name
-                        FROM
-                            eb_objects EO, eb_objects_ver EOV
-                        LEFT JOIN
-                            eb_users EU
-                        ON
-                            EOV.commit_uid = EU.id
-                        WHERE
-                            EO.id = EOV.eb_objects_id  AND EO.obj_type = @type AND COALESCE(EOV.working_mode, 'F') <> 'T'
-                            AND COALESCE( EO.eb_del, 'F') = 'F'
-                        ORDER BY
-                            EO.obj_name, EOV.id; ";
-            }
-        }
-
-        public string EB_GET_OBJECTS_OF_A_TYPE
-        {
-            get
-            {
-                return @"SELECT
-                            id, obj_name, obj_type, obj_cur_status, obj_desc 
-                         FROM
-                            eb_objects
-                        WHERE
-                            obj_type = @type
-                            AND COALESCE( eb_del, 'F') = 'F'
-                        ORDER BY
-                            obj_name; ";
-            }
-        }
-
-        public string EB_GET_OBJ_STATUS_HISTORY
-        {
-            get
-            {
-                return @"SELECT
-                            EOS.eb_obj_ver_id, EOS.status, EU.fullname, EOS.ts, EOS.changelog, EOV.commit_uid  
-                        FROM
-                            eb_objects_status EOS, eb_objects_ver EOV, eb_users EU
-                        WHERE
-                            eb_obj_ver_id = EOV.id AND EOV.refid = @refid AND EOV.commit_uid = EU.id
-                        ORDER BY
-                            EOS.id DESC; ";
-            }
-        }
-
-        public string EB_LIVE_VERSION_OF_OBJS
-        {
-            get
-            {
-                return @"SELECT
-                            EO.id, EO.obj_name, EO.obj_type, EO.obj_desc,
-                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.obj_json, EOV.refid, EOS.status
-                        FROM
-                            eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
-                        WHERE
-                            EO.id = @id AND EOV.eb_objects_id = EO.id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id
-                            AND COALESCE( EO.eb_del, 'F') = 'F'
-                        ORDER BY 
-                            EOV.eb_objects_id LIMIT 1; ";
-            }
-        }
-
-        public string EB_GET_ALL_TAGS
+        public override string EB_GET_ALL_TAGS
         {
             get
             {
@@ -1543,7 +1300,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_GET_MLSEARCHRESULT
+        public override string EB_GET_MLSEARCHRESULT
         {
             get
             {
@@ -1556,7 +1313,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_MLADDKEY
+        public override string EB_MLADDKEY
         {
             get
             {
@@ -1565,7 +1322,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_GET_BOT_FORM
+        public override string EB_GET_BOT_FORM
         {
             get
             {
@@ -1590,7 +1347,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string IS_TABLE_EXIST
+        public override string IS_TABLE_EXIST
         {
             get
             {
@@ -1598,7 +1355,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_ALLOBJNVER
+        public override string EB_ALLOBJNVER
         {
             get
             {
@@ -1620,7 +1377,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_CREATELOCATIONCONFIG1Q
+        public override string EB_CREATELOCATIONCONFIG1Q
         {
             get
             {
@@ -1629,7 +1386,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_CREATELOCATIONCONFIG2Q
+        public override string EB_CREATELOCATIONCONFIG2Q
         {
             get
             {
@@ -1637,18 +1394,9 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_GET_DISTINCT_VALUES
-        {
-            get
-            {
-                return @"SELECT DISTINCT TRIM(@ColumName) AS @ColumName 
-                            FROM @TableName ORDER BY @ColumName;";
-            }
-        }
-
         //.....OBJECTS FUNCTION CALL......
 
-        public string EB_CREATE_NEW_OBJECT
+        public override string EB_CREATE_NEW_OBJECT
         {
             get
             {
@@ -1656,7 +1404,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_SAVE_OBJECT
+        public override string EB_SAVE_OBJECT
         {
             get
             {
@@ -1664,7 +1412,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_COMMIT_OBJECT
+        public override string EB_COMMIT_OBJECT
         {
             get
             {
@@ -1673,7 +1421,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_EXPLORE_OBJECT
+        public override string EB_EXPLORE_OBJECT
         {
             get
             {
@@ -1686,14 +1434,14 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_MAJOR_VERSION_OF_OBJECT
+        public override string EB_MAJOR_VERSION_OF_OBJECT
         {
             get
             {
                 return @"eb_object_create_major_version(@id, @obj_type, @commit_uid, @src_pid, @cur_pid, @relations, @committed_refidunique)";
             }
         }
-        public string EB_MINOR_VERSION_OF_OBJECT
+        public override string EB_MINOR_VERSION_OF_OBJECT
         {
             get
             {
@@ -1701,7 +1449,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_CHANGE_STATUS_OBJECT
+        public override string EB_CHANGE_STATUS_OBJECT
         {
             get
             {
@@ -1709,7 +1457,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_PATCH_VERSION_OF_OBJECT
+        public override string EB_PATCH_VERSION_OF_OBJECT
         {
             get
             {
@@ -1717,7 +1465,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_UPDATE_DASHBOARD
+        public override string EB_UPDATE_DASHBOARD
         {
             get
             {
@@ -1726,17 +1474,9 @@ namespace ExpressBase.Common
                         @lastversioncommit_byid, @liveversionrefidval, @liveversionnumberval, @liveversioncommit_tsval, @liveversion_statusval, 
                         @liveversioncommit_byname, @liveversioncommit_byid, @owner_uidval, @owner_tsval, @owner_nameval)";
             }
-        }
+        }               
 
-        public string EB_LOCATION_CONFIGURATION
-        {
-            get
-            {
-                return @"";
-            }
-        }
-
-        public string EB_SAVELOCATION
+        public override string EB_SAVELOCATION
         {
             get
             {
@@ -1745,7 +1485,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_CREATEBOT
+        public override string EB_CREATEBOT
         {
             get
             {
@@ -1755,7 +1495,7 @@ namespace ExpressBase.Common
 
         //....Files query
 
-        public string EB_IMGREFUPDATESQL
+        public override string EB_IMGREFUPDATESQL
         {
             get
             {
@@ -1767,7 +1507,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_DPUPDATESQL
+        public override string EB_DPUPDATESQL
         {
             get
             {
@@ -1780,15 +1520,15 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_LOGOUPDATESQL
-        {
-            get
-            {
-                return @"";
-            }
-        }
+        //public override string EB_LOGOUPDATESQL
+        //{
+        //    get
+        //    {
+        //        return @"";
+        //    }
+        //}
 
-        public string Eb_MQ_UPLOADFILE
+        public override string EB_MQ_UPLOADFILE
         {
             get
             {
@@ -1800,7 +1540,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_GETFILEREFID
+        public override string EB_GETFILEREFID
         {
             get
             {
@@ -1812,7 +1552,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_UPLOAD_IDFETCHQUERY
+        public override string EB_UPLOAD_IDFETCHQUERY
         {
             get
             {
@@ -1822,19 +1562,7 @@ namespace ExpressBase.Common
                             (@userid, @filename, @filetype, @tags, @filecategory, NOW(),@context); 
                         SELECT LAST_INSERT_ID()";
             }
-        }
-
-        public string EB_SMSSERVICE_POST
-        {
-            get
-            {
-                return @"INSERT INTO logs_sms
-                            (uri, send_to, send_from, message_body, status, error_message, user_id, context_id) 
-                        VALUES 
-                            (@uri, @to, @from, @message_body, @status, @error_message, @user_id, @context_id);
-                        SELECT LAST_INSERT_ID()";
-            }
-        }
+        }                
 
         //public string EB_FILECATEGORYCHANGE
         //{
@@ -1853,7 +1581,7 @@ namespace ExpressBase.Common
         //    }
         //}
 
-        public string EB_FILECATEGORYCHANGE
+        public override string EB_FILECATEGORYCHANGE
         {
             get
             {
@@ -1862,7 +1590,7 @@ namespace ExpressBase.Common
         }
 
         //....api query...
-        public string EB_API_SQL_FUNC_HEADER
+        public override string EB_API_SQL_FUNC_HEADER
         {
             get
             {
@@ -1872,13 +1600,6 @@ namespace ExpressBase.Common
             }
         }
 
-        public string EB_PARAM_SYMBOL
-        {
-            get
-            {
-                return "@";
-            }
-        }
     }
 
     public class MySQLFilesDB : MySqlDB, INoSQLDatabase

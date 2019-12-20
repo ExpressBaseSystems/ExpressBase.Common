@@ -260,7 +260,9 @@ namespace ExpressBase.Common.Objects
                                 EbControl _ctrlObj = (ctrlObj as EbControl);
                                 string opFnsJs = string.Empty;
                                 opFnsJs += GetOpFnJs("getValue", _ctrlObj.GetValueJSfn, TypeName);
+                                opFnsJs += GetOpFnJs("getValueFromDOM", _ctrlObj.GetValueFromDOMJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("getDisplayMember", _ctrlObj.GetDisplayMemberJSfn, TypeName);
+                                opFnsJs += GetOpFnJs("getDisplayMemberFromDOM", _ctrlObj.GetDisplayMemberFromDOMJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("isRequiredOK", _ctrlObj.IsRequiredOKJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("isEmpty", _ctrlObj.IsEmptyJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("setValue", _ctrlObj.SetValueJSfn, TypeName);
@@ -273,6 +275,8 @@ namespace ExpressBase.Common.Objects
                                 opFnsJs += GetOpFnJs("reset", _ctrlObj.ResetJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("refresh", _ctrlObj.RefreshJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("clear", _ctrlObj.ClearJSfn, TypeName);
+                                opFnsJs += GetOpFnJs("addInvalidStyle", _ctrlObj.AddInvalidStyleJSFn, TypeName);
+                                opFnsJs += GetOpFnJs("removeInvalidStyle", _ctrlObj.RemoveInvalidStyleJSFn, TypeName);
                                 opFnsJs += GetOpFnJs("bindOnChange", _ctrlObj.OnChangeBindJSFn, TypeName);
 
 
@@ -296,7 +300,7 @@ namespace ExpressBase.Common.Objects
         private static string GetOpFnJs(string opFnName, string JSfn, string TypeName)
         {
             return string.Concat(@"
-                                    this.", opFnName, " = function(p1, p2) { ", JSfn, "};");//.RemoveCR();
+                                    this.", opFnName, " = function(p1, p2, p3, p4) { ", JSfn, "};");//.RemoveCR();
         }
 
         public static void SetContextId(EbControlContainer FormObj, string contextId)

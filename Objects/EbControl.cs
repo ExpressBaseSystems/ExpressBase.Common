@@ -267,6 +267,12 @@ namespace ExpressBase.Common.Objects
         public virtual string GetValueJSfn { get { return @"return $('#' + this.EbSid_CtxId).val();"; } set { } }
 
         [JsonIgnore]
+        public virtual string GetValueFromDOMJSfn { get { return @"return $('#' + this.EbSid_CtxId).val();"; } set { } }
+
+        [JsonIgnore]
+        public virtual string GetDisplayMemberFromDOMJSfn { get { return GetValueFromDOMJSfn; } set { } }
+
+        [JsonIgnore]
         public virtual string GetDisplayMemberJSfn { get { return @"return this.getValue();"; } set { } }
 
         [JsonIgnore]
@@ -310,6 +316,12 @@ namespace ExpressBase.Common.Objects
 
         [JsonIgnore]
         public virtual string OnChangeBindJSFn { get { return @"$('#' + this.EbSid_CtxId).on('change', p1);"; } set { } }
+
+        [JsonIgnore]
+        public virtual string AddInvalidStyleJSFn { get { return @"EbAddInvalidStyle.bind(this)(p1, p2, p3);"; } set { } }
+
+        [JsonIgnore]
+        public virtual string RemoveInvalidStyleJSFn { get { return @"EbRemoveInvalidStyle.bind(this)(p1, p2);"; } set { } }
 
         //methods        
         protected string ReplacePropsInHTML(string Html)

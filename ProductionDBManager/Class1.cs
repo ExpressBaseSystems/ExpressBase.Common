@@ -47,6 +47,9 @@ public class DbColumnDefaultMap4IntegrityCollection : Dictionary<string, DbTypeM
 {
     public string GetColumnDefault(DatabaseVendors vendor, string pgsqlColumnDefault)
     {
+        if (vendor == DatabaseVendors.PGSQL)
+            return this[pgsqlColumnDefault].PgSQLColumnDefault;
+
         if (vendor == DatabaseVendors.MYSQL)
             return this[pgsqlColumnDefault].MySQLColumnDefault;
 
@@ -57,5 +60,13 @@ public class DbColumnDefaultMap4IntegrityCollection : Dictionary<string, DbTypeM
             return this[pgsqlColumnDefault].OracleColumnDefault;
 
         return pgsqlColumnDefault;
+    }
+}
+
+public class MySQLKeywordsConvertCollection : Dictionary<string, string>
+{
+    public string GetColumnName(string ColumnName)
+    {
+        return this[ColumnName];
     }
 }
