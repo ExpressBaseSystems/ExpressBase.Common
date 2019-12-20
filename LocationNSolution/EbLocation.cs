@@ -64,6 +64,11 @@ namespace ExpressBase.Common.LocationNSolution
         public Dictionary<int,string> Users { get; set; }
 
         public int PlanUserCount { get; set; }
+
+        public Eb_Solution()
+        {
+            Locations = new Dictionary<int, EbLocation>();
+        }
     }
 
     public class EbLocationCustomField
