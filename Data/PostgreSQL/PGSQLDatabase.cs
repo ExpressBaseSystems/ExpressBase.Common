@@ -85,7 +85,7 @@ namespace ExpressBase.Common
 
     public class PGSQLDatabase : IDatabase
     {
-        public DatabaseVendors Vendor
+        public override DatabaseVendors Vendor
         {
             get
             {
@@ -93,7 +93,7 @@ namespace ExpressBase.Common
             }
         }
 
-        public IVendorDbTypes VendorDbTypes
+        public override IVendorDbTypes VendorDbTypes
         {
             get
             {
@@ -106,7 +106,7 @@ namespace ExpressBase.Common
         //SSL Mode=Require; Use SSL Stream=true;
         private string _cstr;
         private EbDbConfig DbConfig { get; set; }
-        public string DBName { get; }
+        public override string DBName { get; }
 
         public PGSQLDatabase(EbDbConfig dbconf)
         {
@@ -118,22 +118,22 @@ namespace ExpressBase.Common
             DBName = DbConfig.DatabaseName;
         }
 
-        public DbConnection GetNewConnection(string dbName)
+        public override DbConnection GetNewConnection(string dbName)
         {
             return new NpgsqlConnection(string.Format(CONNECTION_STRING_BARE, this.DbConfig.Server, this.DbConfig.Port, dbName, this.DbConfig.UserName, this.DbConfig.Password, this.DbConfig.Timeout));
         }
 
-        public DbConnection GetNewConnection()
+        public override DbConnection GetNewConnection()
         {
             return new NpgsqlConnection(_cstr);
         }
 
-        public System.Data.Common.DbCommand GetNewCommand(DbConnection con, string sql)
+        public override System.Data.Common.DbCommand GetNewCommand(DbConnection con, string sql)
         {
             return new NpgsqlCommand(sql, (NpgsqlConnection)con);
         }
 
-        public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type, object value)
+        public override System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type, object value)
         {
             try
             {
@@ -160,17 +160,17 @@ namespace ExpressBase.Common
             }
         }
 
-        public System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type)
+        public override System.Data.Common.DbParameter GetNewParameter(string parametername, EbDbTypes type)
         {
             return new NpgsqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type));
         }
 
-        public System.Data.Common.DbParameter GetNewOutParameter(string parametername, EbDbTypes type)
+        public override System.Data.Common.DbParameter GetNewOutParameter(string parametername, EbDbTypes type)
         {
             return new NpgsqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Direction = ParameterDirection.Output };
         }
 
-        public EbDataTable DoQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        public override EbDataTable DoQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
             EbDataTable dt = new EbDataTable();
 
@@ -203,7 +203,7 @@ namespace ExpressBase.Common
             return dt;
         }
 
-        public DbDataReader DoQueriesBasic(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        protected override DbDataReader DoQueriesBasic(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
             var con = dbConnection as NpgsqlConnection;
 
@@ -230,7 +230,7 @@ namespace ExpressBase.Common
             return null;
         }
 
-        public EbDataSet DoQueries(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        public override EbDataSet DoQueries(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
             var dtStart = DateTime.Now;
             Console.WriteLine(string.Format("DoQueries Start Time : {0}", dtStart));
@@ -268,7 +268,7 @@ namespace ExpressBase.Common
                 throw npgse;
             }
             catch (SocketException scket) { }
-          
+
             var dtEnd = DateTime.Now;
             Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
             var ts = (dtEnd - dtStart).TotalMilliseconds;
@@ -280,12 +280,12 @@ namespace ExpressBase.Common
             return ds;
         }
 
-        public EbDataTable DoProcedure(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        public override EbDataTable DoProcedure(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
             return null;
         }
 
-        public int DoNonQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
+        public override int DoNonQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
         {
             var con = dbConnection as NpgsqlConnection;
             try
@@ -308,7 +308,7 @@ namespace ExpressBase.Common
 
         }
 
-        public T DoQuery<T>(string query, params DbParameter[] parameters)
+        public override T DoQuery<T>(string query, params DbParameter[] parameters)
         {
             T obj = default(T);
 
@@ -340,7 +340,7 @@ namespace ExpressBase.Common
             return obj;
         }
 
-        public EbDataTable DoQuery(string query, params DbParameter[] parameters)
+        public override EbDataTable DoQuery(string query, params DbParameter[] parameters)
         {
 
             EbDataTable dt = new EbDataTable();
@@ -358,7 +358,7 @@ namespace ExpressBase.Common
             return dt;
         }
 
-        public EbDataSet DoQueries(string query, params DbParameter[] parameters)
+        public override EbDataSet DoQueries(string query, params DbParameter[] parameters)
         {
             EbDataSet ds = new EbDataSet();
 
@@ -377,12 +377,12 @@ namespace ExpressBase.Common
             }
         }
 
-        public EbDataTable DoProcedure(string query, params DbParameter[] parameters)
+        public override EbDataTable DoProcedure(string query, params DbParameter[] parameters)
         {
             return null;
         }
 
-        public int DoNonQuery(string query, params DbParameter[] parameters)
+        public override int DoNonQuery(string query, params DbParameter[] parameters)
         {
             int val;
             try
@@ -399,7 +399,7 @@ namespace ExpressBase.Common
             return val;
         }
 
-        public Dictionary<int, string> GetDictionary(string query, string dm, string vm)
+        public override Dictionary<int, string> GetDictionary(string query, string dm, string vm)
         {
             Dictionary<int, string> _dic = new Dictionary<int, string>();
             string sql = $"SELECT {vm},{dm} FROM ({query.Replace(";", string.Empty)}) as __table;";
@@ -434,7 +434,7 @@ namespace ExpressBase.Common
             return _dic;
         }
 
-        public List<int> GetAutoResolveValues(string query, string vm, string cond)
+        public override List<int> GetAutoResolveValues(string query, string vm, string cond)
         {
             List<int> _list = new List<int>();
             string sql = $"SELECT {vm} FROM ({query.Replace(";", string.Empty)}) as __table WHERE {cond};";
@@ -469,22 +469,22 @@ namespace ExpressBase.Common
             return _list;
         }
 
-        public void BeginTransaction()
+        public override void BeginTransaction()
         {
             // This is a place where you will use _mySQLDriver to begin transaction
         }
 
-        public void RollbackTransaction()
+        public override void RollbackTransaction()
         {
             // This is a place where you will use _mySQLDriver to rollback transaction
         }
 
-        public void CommitTransaction()
+        public override void CommitTransaction()
         {
             // This is a place where you will use _mySQLDriver to commit transaction
         }
 
-        public bool IsInTransaction()
+        public override bool IsInTransaction()
         {
             // This is a place where you will use _mySQLDriver to check, whether you are in a transaction
             return false;
@@ -507,7 +507,7 @@ namespace ExpressBase.Common
             return typeArray;
         }
 
-        public EbDbTypes ConvertToDbType(Type _typ)
+        public override EbDbTypes ConvertToDbType(Type _typ)
         {
             if (_typ == typeof(DateTime))
                 return EbDbTypes.Date;
@@ -548,7 +548,7 @@ namespace ExpressBase.Common
             typeArray = null;
         }
 
-        public bool IsTableExists(string query, params DbParameter[] parameters)
+        public override bool IsTableExists(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as NpgsqlConnection)
             {
@@ -573,7 +573,7 @@ namespace ExpressBase.Common
             return false;
         }
 
-        public int CreateTable(string query)
+        public override int CreateTable(string query)
         {
             int res = 0;
             using (var con = GetNewConnection() as NpgsqlConnection)
@@ -595,7 +595,7 @@ namespace ExpressBase.Common
             return res;
         }
 
-        public int InsertTable(string query, params DbParameter[] parameters)
+        public override int InsertTable(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as NpgsqlConnection)
             {
@@ -620,7 +620,7 @@ namespace ExpressBase.Common
             return 0;
         }
 
-        public int UpdateTable(string query, params DbParameter[] parameters)
+        public override int UpdateTable(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as NpgsqlConnection)
             {
@@ -645,7 +645,7 @@ namespace ExpressBase.Common
             return 0;
         }
 
-        public int AlterTable(string query, params DbParameter[] parameters)
+        public override int AlterTable(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as NpgsqlConnection)
             {
@@ -670,7 +670,7 @@ namespace ExpressBase.Common
             return 0;
         }
 
-        public int DeleteTable(string query, params DbParameter[] parameters)
+        public override int DeleteTable(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as NpgsqlConnection)
             {
@@ -695,7 +695,7 @@ namespace ExpressBase.Common
             return 0;
         }
 
-        public ColumnColletion GetColumnSchema(string table)
+        public override ColumnColletion GetColumnSchema(string table)
         {
             ColumnColletion cols = new ColumnColletion();
             var query = "SELECT * FROM @tbl LIMIT 0".Replace("@tbl", table);
@@ -731,9 +731,9 @@ namespace ExpressBase.Common
 
         //-----------Sql queries
 
-        public string EB_INITROLE2USER { get { return "INSERT INTO eb_role2user(role_id, user_id, createdat) VALUES (@role_id, @user_id, now());"; } }
+        public override string EB_USER_ROLE_PRIVS { get { return "SELECT DISTINCT privilege_type FROM information_schema.role_table_grants WHERE grantee='@uname';"; } }
 
-        public string EB_USER_ROLE_PRIVS { get { return "SELECT DISTINCT privilege_type FROM information_schema.role_table_grants WHERE grantee='@uname';"; } }
+        public override string EB_AUTHETICATE_USER_NORMAL { get { return "SELECT * FROM eb_authenticate_unified(uname := @uname, password := @pass, wc := @wc);"; } }
 
         public string EB_AUTHETICATE_USER_NORMAL { get { return "SELECT * FROM eb_authenticate_unified(uname := @uname, password := @pass, wc := @wc, ipaddress := @ipaddress, deviceinfo := @deviceinfo);"; } }
 
@@ -741,52 +741,35 @@ namespace ExpressBase.Common
 
         public string EB_AUTHENTICATEUSER_SSO { get { return "SELECT * FROM eb_authenticate_unified(uname := @uname, wc := @wc, ipaddress := @ipaddress, deviceinfo := @deviceinfo);"; } }
 
-        public string EB_AUTHENTICATE_ANONYMOUS { get { return "SELECT * FROM eb_authenticate_anonymous(@params in_appid := :appid ,in_wc := :wc);"; } }
-
-        public string EB_SIDEBARUSER_REQUEST { get { return @"
-SELECT id, applicationname,app_icon
-                FROM eb_applications
-                WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
-
-                SELECT
-                    EO.id, EO.obj_type, EO.obj_name,
-                    EOV.version_num, EOV.refid, EO2A.app_id, EO.obj_desc, EOS.status, EOS.id, display_name
-                FROM
-                    eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
-                WHERE
-                EOV.eb_objects_id = EO.id	
-                AND EO.id = ANY('{:Ids}')               			    
-				AND EOS.eb_obj_ver_id = EOV.id 
-				AND EO2A.obj_id = EO.id
-				AND EO2A.eb_del = 'F'
-                AND EOS.status = 3 
-                AND COALESCE( EO.eb_del, 'F') = 'F'
-				AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );
-                SELECT object_id FROM eb_objects_favourites WHERE userid=:user_id AND eb_del='F'"; } }
-
-        public string EB_SIDEBARDEV_REQUEST
+        public override string EB_SIDEBARUSER_REQUEST
         {
-            get { return @"
-SELECT id, applicationname,app_icon FROM eb_applications
-                WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
-                            SELECT 
-	                            EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, COALESCE(EO2A.app_id, 0),display_name
-                            FROM 
-	                            eb_objects EO
-                            LEFT JOIN
-	                            eb_objects2application EO2A 
-                            ON
-	                            EO.id = EO2A.obj_id 
-                            WHERE
-	                           COALESCE(EO2A.eb_del, 'F') = 'F' 
-                               AND COALESCE( EO.eb_del, 'F') = 'F'
-                            ORDER BY 
-	                            EO.obj_type;"; }
+            get
+            {
+                return @"SELECT id, applicationname,app_icon
+                            FROM eb_applications
+                            WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
+
+                        SELECT
+                            EO.id, EO.obj_type, EO.obj_name,
+                            EOV.version_num, EOV.refid, EO2A.app_id, EO.obj_desc, EOS.status, EOS.id, display_name
+                        FROM
+                            eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
+                        WHERE
+                            EOV.eb_objects_id = EO.id	
+                            AND EO.id = ANY('{:Ids}')               			    
+				            AND EOS.eb_obj_ver_id = EOV.id 
+				            AND EO2A.obj_id = EO.id
+				            AND EO2A.eb_del = 'F'
+                            AND EOS.status = 3 
+                            AND COALESCE( EO.eb_del, 'F') = 'F'
+				            AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );
+                        SELECT object_id FROM eb_objects_favourites WHERE userid=:user_id AND eb_del='F'";
+            }
         }
 
-        public string EB_SIDEBARCHECK { get { return "AND EO.id = ANY('{:Ids}') "; } }
+        public override string EB_SIDEBARCHECK { get { return "AND EO.id = ANY('{:Ids}') "; } }
 
-        public string EB_GETROLESRESPONSE_QUERY
+        public override string EB_GETROLESRESPONSE_QUERY
         {
             get
             {
@@ -799,49 +782,20 @@ SELECT R.id,R.role_name,R.description,A.applicationname,
 								WHERE R.applicationid = A.id AND R.role_name ~* :searchtext AND A.eb_del = 'F';";
             }
         }
-        public string EB_GETMANAGEROLESRESPONSE_QUERY { get { return @"
-SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY applicationname;
-									SELECT DISTINCT EO.id, EO.display_name, EO.obj_type, EO2A.app_id
-										FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
-										WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3 
-										AND EOS.id = ANY(SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id)
-										AND EO.id = EO2A.obj_id AND EO2A.eb_del = 'F';
-									SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> :id ORDER BY role_name;
-									SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';
-									SELECT id, longname, shortname FROM eb_locations;"; } }
 
-        public string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED { get { return @"
-SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = :id;
-									SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = :id AND eb_del = 'F';
-									SELECT A.applicationname, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = :id AND A.eb_del = 'F';
-									SELECT A.id, A.fullname, A.email, B.id FROM eb_users A, eb_role2user B
-										WHERE A.id = B.user_id AND A.eb_del = 'F' AND B.eb_del = 'F' AND B.role_id = :id;
-									SELECT locationid FROM eb_role2location WHERE roleid = :id AND eb_del='F';"; } }
-        public string EB_SAVEROLES_QUERY
+        public override string EB_SAVEROLES_QUERY
         {
             get
             {
-                return "SELECT eb_create_or_update_rbac_roles(:role_id, :applicationid, :createdby, :role_name, :description, :is_anonym, :users, :dependants, :permission, :locations " +
-    ");";
+                return @"SELECT eb_create_or_update_rbac_roles(:role_id, :applicationid, :createdby, :role_name, :description, :is_anonym, :users, :dependants, :permission, :locations);";
             }
         }
 
-        public string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_security_user(:_userid,:_id,:_fullname,:_nickname,:_email,:_pwd,:_dob,:_sex,:_alternateemail,:_phprimary,:_phsecondary,:_phlandphone,:_extension,:_fbid,:_fbname,:_roles,:_groups,:_statusid,:_hide,:_anonymoususerid,:_preferences,:_consadd,:_consdel);"; } }
+        public override string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_security_user(:_userid,:_id,:_fullname,:_nickname,:_email,:_pwd,:_dob,:_sex,:_alternateemail,:_phprimary,:_phsecondary,:_phlandphone,:_extension,:_fbid,:_fbname,:_roles,:_groups,:_statusid,:_hide,:_anonymoususerid,:_preferences,:_consadd,:_consdel);"; } }
 
-        public string EB_SAVEUSERGROUP_QUERY { get { return "SELECT * FROM eb_security_usergroup(:userid,:id,:name,:description,:users,:constraints_add,:constraints_del);"; } }
+        public override string EB_SAVEUSERGROUP_QUERY { get { return "SELECT * FROM eb_security_usergroup(:userid,:id,:name,:description,:users,:constraints_add,:constraints_del);"; } }
 
-        public string EB_MANAGEUSER_FIRST_QUERY
-        {
-            get
-            {
-                return @"
-SELECT id, role_name, description FROM eb_roles ORDER BY role_name;
-                        SELECT id, name,description FROM eb_usergroup ORDER BY name;
-						SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';";
-            }
-        }
-
-        public string EB_GETUSERDETAILS
+        public override string EB_GETUSERDETAILS
         {
             get
             {
@@ -855,7 +809,7 @@ SELECT id,fullname,email
             }
         }
 
-        public string EB_GET_MYPROFILE_OBJID
+        public override string EB_GET_MYPROFILE_OBJID
         {
             get
             {
@@ -863,7 +817,7 @@ SELECT id,fullname,email
             }
         }
 
-        public string EB_CREATEAPPLICATION_DEV
+        public override string EB_CREATEAPPLICATION_DEV
         {
             get
             {
@@ -871,24 +825,8 @@ SELECT id,fullname,email
 INSERT INTO eb_applications (applicationname,application_type, description,app_icon) VALUES (:applicationname,:apptype, :description,:appicon) RETURNING id;";
             }
         }
-
-        public string EB_EDITAPPLICATION_DEV
-        {
-            get
-            {
-                return @"UPDATE 
-                            eb_applications 
-                        SET 
-                            applicationname = :applicationname,
-                            application_type = :apptype,
-                            description = :description,
-                            app_icon = :appicon
-                        WHERE
-                            id = :appid";
-            }
-        }
-
-        public string EB_GETTABLESCHEMA
+        
+        public override string EB_GETTABLESCHEMA
         {
             get
             {
@@ -947,16 +885,16 @@ SELECT ACols.*, BCols.foreign_table_name, BCols.foreign_column_name
             }
         }
 
-        public string EB_GET_CHART_2_DETAILS
+        public override string EB_GET_CHART_2_DETAILS
         {
             get
             {
                 return @"
-SELECT created_at FROM eb_executionlogs WHERE refid = :refid AND created_at::TIMESTAMP::DATE =current_date";
+SELECT created_at FROM eb_executionlogs WHERE refid = :refid AND created_at::TIMESTAMP::DATE = current_date";
             }
         }
 
-        public string EB_GET_PROFILERS
+        public override string EB_GET_PROFILERS
         {
             get
             {
@@ -973,7 +911,7 @@ SELECT id, exec_time FROM eb_executionlogs WHERE exec_time=(SELECT MAX(exec_time
             }
         }
 
-        public string EB_GETUSEREMAILS
+        public override string EB_GETUSEREMAILS
         {
             get
             {
@@ -985,7 +923,7 @@ SELECT id, email FROM eb_users WHERE id = ANY
             }
         }
 
-        public string EB_GETPARTICULARSSURVEY
+        public override string EB_GETPARTICULARSSURVEY
         {
             get
             {
@@ -1000,7 +938,7 @@ SELECT name,startdate,enddate,status FROM eb_surveys WHERE id = :id;
             }
         }
 
-        public string EB_SURVEYMASTER
+        public override string EB_SURVEYMASTER
         {
             get
             {
@@ -1012,7 +950,7 @@ INSERT INTO
             }
         }
 
-        public string EB_CURRENT_TIMESTAMP
+        public override string EB_CURRENT_TIMESTAMP
         {
             get
             {
@@ -1020,7 +958,7 @@ INSERT INTO
             }
         }
 
-        public string EB_SAVESURVEY
+        public override string EB_SAVESURVEY
         {
             get
             {
@@ -1029,7 +967,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_PROFILER_QUERY_COLUMN
+        public override string EB_PROFILER_QUERY_COLUMN
         {
             get
             {
@@ -1037,7 +975,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_PROFILER_QUERY_DATA
+        public override string EB_PROFILER_QUERY_DATA
         {
             get
             {
@@ -1048,24 +986,15 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_GET_CHART_DETAILS
+        public override string EB_GET_CHART_DETAILS
         {
             get
             {
                 return @"SELECT rows, exec_time FROM eb_executionlogs WHERE refid = :refid AND EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date);";
             }
-        }
+        }               
 
-        public string EB_INSERT_EXECUTION_LOGS
-        {
-            get
-            {
-                return @"INSERT INTO eb_executionlogs(rows, exec_time, created_by, created_at, params, refid) 
-                                VALUES(:rows, :exec_time, :created_by, :created_at, :params, :refid);";
-            }
-        }
-
-        public string EB_GET_MOB_MENU_OBJ_IDS
+        public override string EB_GET_MOB_MENU_OBJ_IDS
         {
             get
             {
@@ -1073,7 +1002,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_GET_MOBILE_PAGES
+        public override string EB_GET_MOBILE_PAGES
         {
             get
             {
@@ -1081,7 +1010,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_GET_USER_DASHBOARD_OBJECTS
+        public override string EB_GET_USER_DASHBOARD_OBJECTS
         {
             get
             {
@@ -1091,7 +1020,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
 
         // DBClient
 
-        public string EB_GETDBCLIENTTTABLES
+        public override string EB_GETDBCLIENTTTABLES
         {
             get
             {
@@ -1150,171 +1079,9 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        //.......OBJECTS QUERIES.....
-        public string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
-        {
-            get
-            {
-                return @"SELECT 
-                        EOV.id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.commit_uid, EU.fullname
-                    FROM 
-                        eb_objects_ver EOV, eb_users EU
-                    WHERE
-                        EOV.commit_uid = EU.id AND
-                        EOV.eb_objects_id=(SELECT eb_objects_id FROM eb_objects_ver WHERE refid=:refid)
-                    ORDER BY
-                        EOV.id DESC 
-                ";
-            }
-        }
-        public string EB_PARTICULAR_VERSION_OF_AN_OBJ
-        {
-            get
-            {
-                return @"SELECT
-                            obj_json, version_num, status, EO.obj_tags, EO.obj_type
-                        FROM
-                            eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
-                        WHERE
-                            EOV.refid=:refid AND EOS.eb_obj_ver_id = EOV.id AND EO.id=EOV.eb_objects_id
-                            AND COALESCE( EO.eb_del, 'F') = 'F'
-                        ORDER BY
-	                        EOS.id DESC 
-                        LIMIT 1
-                ";
-            }
-        }
-        public string EB_LATEST_COMMITTED_VERSION_OF_AN_OBJ
-        {
-            get
-            {
-                return @"SELECT 
-                        EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status, EO.obj_desc,
-                        EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.obj_json, EOV.refid
-                    FROM 
-                        eb_objects EO, eb_objects_ver EOV
-                    WHERE
-                        EO.id = EOV.eb_objects_id AND EOV.refid=:refid
-                        AND COALESCE( EO.eb_del, 'F') = 'F'
-                    ORDER BY
-                        EO.obj_type
-                ";
-            }
-        }
-        public string EB_COMMITTED_VERSIONS_OF_ALL_OBJECTS_OF_A_TYPE
-        {
-            get
-            {
-                return @"SELECT 
-                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
-                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog,EOV.commit_ts, EOV.commit_uid, EOV.refid,
-                            EU.fullname, EO.display_name
-                        FROM 
-                            eb_objects EO, eb_objects_ver EOV
-                        LEFT JOIN
-	                        eb_users EU
-                        ON 
-	                        EOV.commit_uid=EU.id
-                        WHERE
-                            EO.id = EOV.eb_objects_id AND EO.obj_type=:type
-                            AND COALESCE( EO.eb_del, 'F') = 'F'
-                        ORDER BY
-                            EO.obj_name
-                ";
-            }
-        }
-
-        public string EB_GET_LIVE_OBJ_RELATIONS
-        {
-            get
-            {
-                return @"SELECT 
-	                        EO.obj_name, EOV.refid, EOV.version_num, EO.obj_type,EOS.status
-                        FROM 
-	                        eb_objects EO, eb_objects_ver EOV,eb_objects_status EOS
-                        WHERE 
-	                        EO.id = ANY (SELECT eb_objects_id FROM eb_objects_ver WHERE refid IN(SELECT dependant FROM eb_objects_relations
-                                                  WHERE dominant=:dominant))
-                            AND EOV.refid =ANY(SELECT dependant FROM eb_objects_relations WHERE dominant=:dominant)    
-                            AND EO.id =EOV.eb_objects_id  AND EOS.eb_obj_ver_id = EOV.id AND EOS.status = 3 AND EO.obj_type IN(16 ,17)
-                            AND COALESCE( EO.eb_del, 'F') = 'F'
-                ";
-            }
-        }
-
-        public string EB_GET_ALL_COMMITTED_VERSION_LIST
-        {
-            get
-            {
-                return @"SELECT 
-                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
-                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.refid,
-                            EU.fullname, EO.display_name
-                        FROM 
-                            eb_objects EO, eb_objects_ver EOV
-                        LEFT JOIN
-	                        eb_users EU
-                        ON 
-	                        EOV.commit_uid=EU.id
-                        WHERE
-                            EO.id = EOV.eb_objects_id  AND EO.obj_type=:type AND COALESCE(EOV.working_mode, 'F') <> 'T'
-                            AND COALESCE( EO.eb_del, 'F') = 'F'
-                        ORDER BY
-                            EO.obj_name , EOV.id
-                ";
-            }
-        }
-
-        public string EB_GET_OBJECTS_OF_A_TYPE
-        {
-            get
-            {
-                return @"SELECT 
-                    id, obj_name, obj_type, obj_cur_status, obj_desc  
-                FROM 
-                    eb_objects
-                WHERE
-                    obj_type=:type
-                    AND COALESCE( eb_del, 'F') = 'F'
-                ORDER BY
-                    obj_name
-                ";
-            }
-        }
-
-        public string EB_GET_OBJ_STATUS_HISTORY
-        {
-            get
-            {
-                return @"SELECT 
-                            EOS.eb_obj_ver_id, EOS.status, EU.fullname, EOS.ts, EOS.changelog, EOV.commit_uid   
-                        FROM
-                            eb_objects_status EOS, eb_objects_ver EOV, eb_users EU
-                        WHERE
-                            eb_obj_ver_id = EOV.id AND EOV.refid = :refid AND EOV.commit_uid=EU.id
-                        ORDER BY 
-                        EOS.id DESC
-                ";
-            }
-        }
-
-        public string EB_LIVE_VERSION_OF_OBJS
-        {
-            get
-            {
-                return @"SELECT
-                            EO.id, EO.obj_name, EO.obj_type, EO.obj_desc,
-                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.obj_json, EOV.refid, EOS.status
-                        FROM
-                            eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
-                        WHERE
-                            EO.id = :id AND EOV.eb_objects_id = EO.id AND EOS.status = 3 AND EOS.eb_obj_ver_id = EOV.id
-                            AND COALESCE( EO.eb_del, 'F') = 'F'
-                        ORDER BY EOV.eb_objects_id	LIMIT 1;";
-            }
-        }
-
-        public string EB_GET_ALL_TAGS
+        //.......OBJECTS QUERIES.....          
+    
+        public override string EB_GET_ALL_TAGS
         {
             get
             {
@@ -1327,7 +1094,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_GET_MLSEARCHRESULT
+        public override string EB_GET_MLSEARCHRESULT
         {
             get
             {
@@ -1340,7 +1107,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_MLADDKEY
+        public override string EB_MLADDKEY
         {
             get
             {
@@ -1348,7 +1115,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_GET_TAGGED_OBJECTS
+        public override string EB_GET_TAGGED_OBJECTS
         {
             get
             {
@@ -1356,7 +1123,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_GET_BOT_FORM
+        public override string EB_GET_BOT_FORM
         {
             get
             {
@@ -1383,7 +1150,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string IS_TABLE_EXIST
+        public override string IS_TABLE_EXIST
         {
             get
             {
@@ -1391,7 +1158,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_ALLOBJNVER
+        public override string EB_ALLOBJNVER
         {
             get
             {
@@ -1413,7 +1180,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_CREATELOCATIONCONFIG1Q
+        public override string EB_CREATELOCATIONCONFIG1Q
         {
             get
             {
@@ -1421,24 +1188,16 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_CREATELOCATIONCONFIG2Q
+        public override string EB_CREATELOCATIONCONFIG2Q
         {
             get
             {
                 return @"UPDATE eb_location_config SET keys = :keys ,isrequired = :isrequired , keytype = :type WHERE id = :keyid; ";
             }
-        }
-
-        public string EB_GET_DISTINCT_VALUES
-        {
-            get
-            {
-                return @"SELECT DISTINCT TRIM(@ColumName) AS @ColumName FROM @TableName ORDER BY @ColumName;";
-            }
-        }
+        }              
 
         //.....OBJECTS FUNCTION CALL......
-        public string EB_CREATE_NEW_OBJECT
+        public override string EB_CREATE_NEW_OBJECT
         {
             get
             {
@@ -1447,7 +1206,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                 ";
             }
         }
-        public string EB_SAVE_OBJECT
+        public override string EB_SAVE_OBJECT
         {
             get
             {
@@ -1457,7 +1216,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_COMMIT_OBJECT
+        public override string EB_COMMIT_OBJECT
         {
             get
             {
@@ -1467,7 +1226,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_EXPLORE_OBJECT
+        public override string EB_EXPLORE_OBJECT
         {
             get
             {
@@ -1477,7 +1236,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_MAJOR_VERSION_OF_OBJECT
+        public override string EB_MAJOR_VERSION_OF_OBJECT
         {
             get
             {
@@ -1487,7 +1246,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_MINOR_VERSION_OF_OBJECT
+        public override string EB_MINOR_VERSION_OF_OBJECT
         {
             get
             {
@@ -1497,7 +1256,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_CHANGE_STATUS_OBJECT
+        public override string EB_CHANGE_STATUS_OBJECT
         {
             get
             {
@@ -1507,7 +1266,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_PATCH_VERSION_OF_OBJECT
+        public override string EB_PATCH_VERSION_OF_OBJECT
         {
             get
             {
@@ -1517,7 +1276,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_UPDATE_DASHBOARD
+        public override string EB_UPDATE_DASHBOARD
         {
             get
             {
@@ -1525,17 +1284,9 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                     SELECT * FROM eb_objects_update_dashboard(:refid)
                 ";
             }
-        }
+        }       
 
-        public string EB_LOCATION_CONFIGURATION
-        {
-            get
-            {
-                return @"";
-            }
-        }
-
-        public string EB_SAVELOCATION
+        public override string EB_SAVELOCATION
         {
             get
             {
@@ -1543,7 +1294,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_CREATEBOT
+        public override string EB_CREATEBOT
         {
             get
             {
@@ -1553,7 +1304,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
 
         //....Files query
 
-        public string EB_IMGREFUPDATESQL
+        public override string EB_IMGREFUPDATESQL
         {
             get
             {
@@ -1564,7 +1315,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_DPUPDATESQL
+        public override string EB_DPUPDATESQL
         {
             get
             {
@@ -1576,19 +1327,19 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_LOGOUPDATESQL
-        {
-            get
-            {
-                return @"INSERT INTO eb_files_ref_variations 
-                            (eb_files_ref_id, filestore_sid, length, imagequality_id, is_image, img_manp_ser_con_id, filedb_con_id)
-                        VALUES 
-                            (:refid, :filestoreid, :length, :imagequality_id, :is_image, :imgmanpserid, :filedb_con_id) RETURNING id;
-                        UPDATE eb_solutions SET logorefid = :refid WHERE isolution_id = :solnid;";
-            }
-        }
+        //public override string EB_LOGOUPDATESQL
+        //{
+        //    get
+        //    {
+        //        return @"INSERT INTO eb_files_ref_variations 
+        //                    (eb_files_ref_id, filestore_sid, length, imagequality_id, is_image, img_manp_ser_con_id, filedb_con_id)
+        //                VALUES 
+        //                    (:refid, :filestoreid, :length, :imagequality_id, :is_image, :imgmanpserid, :filedb_con_id) RETURNING id;
+        //                UPDATE eb_solutions SET logorefid = :refid WHERE isolution_id = :solnid;";
+        //    }
+        //}
 
-        public string Eb_MQ_UPLOADFILE
+        public override string EB_MQ_UPLOADFILE
         {
             get
             {
@@ -1613,7 +1364,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
         //    }
         //}
 
-        public string EB_GETFILEREFID
+        public override string EB_GETFILEREFID
         {
             get
             {
@@ -1625,7 +1376,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-        public string EB_UPLOAD_IDFETCHQUERY
+        public override string EB_UPLOAD_IDFETCHQUERY
         {
             get
             {
@@ -1635,18 +1386,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                             (@userid, @filename, @filetype, @tags, @filecategory, NOW(),@context) 
                         RETURNING id";
             }
-        }
-
-        public string EB_SMSSERVICE_POST
-        {
-            get
-            {
-                return @"INSERT INTO logs_sms
-                            (uri, send_to, send_from, message_body, status, error_message, user_id, context_id) 
-                        VALUES 
-                            (@uri, @to, @from, @message_body, @status, @error_message, @user_id, @context_id) RETURNING id";
-            }
-        }
+        }              
 
         // public string EB_FILECATEGORYCHANGE
         // {
@@ -1664,7 +1404,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
         //     }
         // }
 
-        public string EB_FILECATEGORYCHANGE
+        public override string EB_FILECATEGORYCHANGE
         {
             get
             {
@@ -1673,21 +1413,13 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
         }
 
         //....api query...
-        public string EB_API_SQL_FUNC_HEADER
+        public override string EB_API_SQL_FUNC_HEADER
         {
             get
             {
                 return @"CREATE OR REPLACE FUNCTION {0}(insert_json jsonb,update_json jsonb)
                             RETURNS void
                             LANGUAGE {1} AS $BODY$";
-            }
-        }
-
-        public string EB_PARAM_SYMBOL
-        {
-            get
-            {
-                return "@";
             }
         }
     }

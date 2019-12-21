@@ -31,17 +31,23 @@ namespace ExpressBase.Common.ProductionDBManager
 
         public static readonly DbColumnDefaultMap4IntegrityCollection ColumnDefaultCollection = new DbColumnDefaultMap4IntegrityCollection
             {
-                { "F", new DbTypeMap4ColumnDefault { MySQLColumnDefault = "F", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
-                { "nextval", new DbTypeMap4ColumnDefault { MySQLColumnDefault = "", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
-                { "'0,000.00'::text", new DbTypeMap4ColumnDefault { MySQLColumnDefault = "0,000.00", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
-                { "'DD/MM/YYYY'::text", new DbTypeMap4ColumnDefault { MySQLColumnDefault = "DD/MM/YYYY", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
-                { "'UTC+05:30'::text", new DbTypeMap4ColumnDefault { MySQLColumnDefault = "UTC+05:30", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
-                { "", new DbTypeMap4ColumnDefault { MySQLColumnDefault = "", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
-                { "'F'::bpchar", new DbTypeMap4ColumnDefault { MySQLColumnDefault = "F", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
-                { "false", new DbTypeMap4ColumnDefault { MySQLColumnDefault = "0", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
-                { "0", new DbTypeMap4ColumnDefault { MySQLColumnDefault = "0", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
-                { "'default'::text", new DbTypeMap4ColumnDefault { MySQLColumnDefault = "default", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
-                { "1", new DbTypeMap4ColumnDefault { MySQLColumnDefault = "1", OracleColumnDefault = "", SQLServerColumnDefault = "" } }
+                { "'F'::\"char\"", new DbTypeMap4ColumnDefault { PgSQLColumnDefault = "F",MySQLColumnDefault = "F", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
+                { "nextval", new DbTypeMap4ColumnDefault { PgSQLColumnDefault = "nextval",MySQLColumnDefault = "", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
+                { "'0,000.00'::text", new DbTypeMap4ColumnDefault { PgSQLColumnDefault = "0,000.00", MySQLColumnDefault = "0,000.00", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
+                { "'DD/MM/YYYY'::text", new DbTypeMap4ColumnDefault { PgSQLColumnDefault = "DD/MM/YYYY",MySQLColumnDefault = "DD/MM/YYYY", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
+                { "'UTC+05:30'::text", new DbTypeMap4ColumnDefault { PgSQLColumnDefault = "UTC+05:30",MySQLColumnDefault = "UTC+05:30", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
+                { "", new DbTypeMap4ColumnDefault { PgSQLColumnDefault = "",MySQLColumnDefault = "", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
+                { "'F'::bpchar", new DbTypeMap4ColumnDefault { PgSQLColumnDefault = "F",MySQLColumnDefault = "F", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
+                { "false", new DbTypeMap4ColumnDefault { PgSQLColumnDefault = "false",MySQLColumnDefault = "0", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
+                { "0", new DbTypeMap4ColumnDefault { PgSQLColumnDefault = "0",MySQLColumnDefault = "0", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
+                { "'default'::text", new DbTypeMap4ColumnDefault { PgSQLColumnDefault = "default",MySQLColumnDefault = "default", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
+                { "1", new DbTypeMap4ColumnDefault { PgSQLColumnDefault = "1",MySQLColumnDefault = "1", OracleColumnDefault = "", SQLServerColumnDefault = "" } }
+            };
+
+        public static readonly MySQLKeywordsConvertCollection ColumnName = new MySQLKeywordsConvertCollection
+            {
+                { "key", "`key`"},
+                { "keys", "`keys`"}
             };
     }
 
