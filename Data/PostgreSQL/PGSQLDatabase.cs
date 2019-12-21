@@ -735,11 +735,11 @@ namespace ExpressBase.Common
 
         public string EB_USER_ROLE_PRIVS { get { return "SELECT DISTINCT privilege_type FROM information_schema.role_table_grants WHERE grantee='@uname';"; } }
 
-        public string EB_AUTHETICATE_USER_NORMAL { get { return "SELECT * FROM eb_authenticate_unified(uname := @uname, password := @pass, wc := @wc);"; } }
+        public string EB_AUTHETICATE_USER_NORMAL { get { return "SELECT * FROM eb_authenticate_unified(uname := @uname, password := @pass, wc := @wc, ipaddress := @ipaddress, deviceinfo := @deviceinfo);"; } }
 
-        public string EB_AUTHENTICATEUSER_SOCIAL { get { return "SELECT * FROM eb_authenticate_unified(social := @social, wc := @wc);"; } }
+        public string EB_AUTHENTICATEUSER_SOCIAL { get { return "SELECT * FROM eb_authenticate_unified(social := @social, wc := @wc, ipaddress := @ipaddress, deviceinfo := @deviceinfo);"; } }
 
-        public string EB_AUTHENTICATEUSER_SSO { get { return "SELECT * FROM eb_authenticate_unified(uname := @uname, wc := @wc);"; } }
+        public string EB_AUTHENTICATEUSER_SSO { get { return "SELECT * FROM eb_authenticate_unified(uname := @uname, wc := @wc, ipaddress := @ipaddress, deviceinfo := @deviceinfo);"; } }
 
         public string EB_AUTHENTICATE_ANONYMOUS { get { return "SELECT * FROM eb_authenticate_anonymous(@params in_appid := :appid ,in_wc := :wc);"; } }
 
