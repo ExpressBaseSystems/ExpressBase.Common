@@ -19,6 +19,7 @@ namespace ExpressBase.Common.Constants
         public const string EXP = "exp";
         public const string ISS = "iss";
         public const string AUD = "aud";
+        public const string IP = "ip";
 
 
         public const string SIGNUP_TOK = "signup_tok";

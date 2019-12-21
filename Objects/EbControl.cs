@@ -264,10 +264,13 @@ namespace ExpressBase.Common.Objects
         }
 
         [JsonIgnore]
-        public virtual string GetValueJSfn { get { return @"return $('#' + this.EbSid_CtxId).val();"; } set { } }
+        public virtual string GetValueJSfn { get { return @"return this.DataVals.Value"; } set { } }
 
         [JsonIgnore]
         public virtual string GetValueFromDOMJSfn { get { return @"return $('#' + this.EbSid_CtxId).val();"; } set { } }
+
+        [JsonIgnore]
+        public virtual string GetDisplayMemberFromDOMJSfn { get { return GetValueFromDOMJSfn; } set { } }
 
         [JsonIgnore]
         public virtual string GetDisplayMemberJSfn { get { return @"return this.getValue();"; } set { } }

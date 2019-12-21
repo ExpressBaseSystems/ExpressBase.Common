@@ -66,7 +66,7 @@ namespace ExpressBase.Common
         //public Dictionary<int, string[]> D { get; set; }//Display members //original
         public Dictionary<int, Dictionary<string, string>> D { get; set; }//Display members //duplicate
 
-        public List<SingleRow> R { get; set; }//Rows of ps
+        public Dictionary<string, List<dynamic>> R { get; set; }//Rows of ps
 
         public string ObjType { get; set; }//Object type
 

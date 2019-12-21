@@ -132,7 +132,7 @@ namespace ExpressBase.Security
 	                    WHERE m.id = l.master_id AND key_type = {0} AND m.key_id = :{1} AND eb_del = 'F' ORDER BY m.id;", (int)_keyTyp, _keyIdParam);
         }
 
-        public bool Validate(string ip, string device, ref User user)
+        public bool Validate(string ip, string device, User user)
         {
             Dictionary<EbConstraintTypes, bool> _status = new Dictionary<EbConstraintTypes, bool>();
             List<int> _locs = new List<int>();
@@ -150,7 +150,7 @@ namespace ExpressBase.Security
 
                     if (_c.Value.Type == EbConstraintTypes.UserGroup_Ip || _c.Value.Type == EbConstraintTypes.User_DeviceId)
                     {
-                        if (_c.Value.Value.Equals(ip) || _c.Value.Value.Equals(device))
+                        if ((!string.IsNullOrEmpty(ip) && _c.Value.Value.Equals(ip)) || (!string.IsNullOrEmpty(device) && _c.Value.Value.Equals(device)))
                             _status[_c.Value.Type] = true;
                     }
                     else if (_c.Value.Type == EbConstraintTypes.UserGroup_Days)
