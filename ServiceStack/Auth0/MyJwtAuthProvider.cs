@@ -84,6 +84,7 @@ namespace ExpressBase.Common.ServiceStack.Auth
             jwtPayload[TokenConstants.CID] = csession.CId;
             jwtPayload[TokenConstants.UID] = csession.Uid.ToString();
             jwtPayload[RoutingConstants.WC] = csession.WhichConsole;
+            jwtPayload[TokenConstants.IP] = csession.SourceIp;
 
             return jwtPayload;
         }
