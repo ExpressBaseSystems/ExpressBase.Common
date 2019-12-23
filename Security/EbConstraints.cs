@@ -11,7 +11,12 @@ namespace ExpressBase.Security
     //to support all types of constraints
     public class EbConstraints
     {
-        public EbConstraints() { }
+        public Dictionary<int, EbConstraint> Constraints { get; set; }//key - constraints master table id
+
+        public EbConstraints()
+        {
+            this.Constraints = new Dictionary<int, EbConstraint>();
+        }
 
         public EbConstraints(EbDataTable dt)
         {
@@ -85,9 +90,29 @@ namespace ExpressBase.Security
             }
         }
 
+        public void SetConstraintObject(List<IpConstraint> IpConstr)
+        {
+            for (int i = 0; i < IpConstr.Count; i++)
+            {
+                this.Constraints.Add(i, new EbConstraint()
+                {
+                    KeyType = EbConstraintKeyTypes.UserGroup,
+                    Description = IpConstr[i].Description
+                });
+                this.Constraints[i].Values.Add(0, new EbConstraintOTV
+                {
+                    Operation = EbConstraintOperators.EqualTo,
+                    Type = EbConstraintTypes.UserGroup_Ip,
+                    Value = IpConstr[i].Ip
+                });
+            }
+        }
+
         public string GetDataAsString()
         {
             //Expected format: [{KeyType, Desciption, Constaints[{operation, type, value},{}...]}, {}, {}...]
+            if (this.Constraints.Count == 0)
+                return string.Empty;
             List<string> _conStr = new List<string>();
             foreach (KeyValuePair<int, EbConstraint> cons in this.Constraints)
             {
@@ -100,8 +125,6 @@ namespace ExpressBase.Security
             }
             return _conStr.Join("$$");
         }
-
-        public Dictionary<int, EbConstraint> Constraints { get; set; }//key - constraints master table id
 
         public IEnumerable<KeyValuePair<int, EbConstraint>> UConstraints
         {
@@ -252,5 +275,22 @@ namespace ExpressBase.Security
                 _v = this.Value;
             return _v;
         }
+    }
+
+
+    public class IpConstraint
+    {
+        public string Ip { get; set; }
+        public string Description { get; set; }
+    }
+
+    public class DateTimeConstraint
+    {
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public int Type { get; set; }
+        public string Start { get; set; }
+        public string End { get; set; }
+        public int DaysCoded { get; set; }
     }
 }
