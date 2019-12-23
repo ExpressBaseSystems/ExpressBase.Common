@@ -10,6 +10,7 @@ namespace ExpressBase.Common.Constants
         public const string USER_ID = "UserId";
         public const string EXPRESSBASE = "expressbase";
         public const string ADMIN = "admin";
+        public const string MYACCOUNT = "myaccount";
 
 
         public const string SOLUTION_CONNECTION_REDIS_KEY = "EbSolutionConnections_{0}";
