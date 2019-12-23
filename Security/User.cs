@@ -51,7 +51,7 @@ namespace ExpressBase.Security
         public int SignInLogId { get; set; }
 
         [DataMember(Order = 11)]
-        public string Ip { get; set; }
+        public string SourceIp { get; set; }
         
         private List<string> _ebObjectIds = null;
 
@@ -270,7 +270,7 @@ namespace ExpressBase.Security
                             Roles = rolesname,
                             Permissions = ds.Rows[0][4].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][4].ToString().Split(',').ToList(),
                             Preference = !string.IsNullOrEmpty(ds.Rows[0][5].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][5].ToString()) : new Preferences { Locale = "en-US", TimeZone = "(UTC) Coordinated Universal Time" },
-                            Ip = ipAddress
+                            SourceIp = ipAddress
                         };
                     }
                 }
@@ -570,7 +570,7 @@ namespace ExpressBase.Security
                     Permissions = ds.Rows[0][6].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][6].ToString().Split(',').ToList(),
                     Preference = !string.IsNullOrEmpty(ds.Rows[0][7].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][7].ToString()) : new Preferences { Locale = "en-US", TimeZone = "(UTC) Coordinated Universal Time", DefaultLocation = -1 },
                     SignInLogId = Convert.ToInt32(ds.Rows[0][9]),
-                    Ip = ipAddress
+                    SourceIp = ipAddress
                 };
                 if (!ds.Rows[0].IsDBNull(8) && !_user.Roles.Contains(SystemRoles.SolutionOwner.ToString()) && !_user.Roles.Contains(SystemRoles.SolutionAdmin.ToString()))
                 {
