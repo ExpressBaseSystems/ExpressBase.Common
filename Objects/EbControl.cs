@@ -322,6 +322,9 @@ namespace ExpressBase.Common.Objects
 
         [JsonIgnore]
         public virtual string RemoveInvalidStyleJSFn { get { return @"EbRemoveInvalidStyle.bind(this)(p1, p2);"; } set { } }
+
+        [JsonIgnore]
+        public virtual string GetColumnJSfn { get { return @""; } set { } }
         
         [JsonIgnore]
         public virtual string StyleJSFn { get { return @"EbAddInvalidStyle.bind(this)(p1, p2);"; } set { } }
