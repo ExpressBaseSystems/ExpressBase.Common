@@ -431,10 +431,10 @@ namespace ExpressBase.Common.Objects
             if (ins)
             {
                 _col += string.Concat(cField.Name, ", ");
-                _val += string.Concat(":", cField.Name, "_", i, ", ");
+                _val += string.Concat("@", cField.Name, "_", i, ", ");
             }
             else
-                _col += string.Concat(cField.Name, "=:", cField.Name, "_", i, ", ");
+                _col += string.Concat(cField.Name, "=@", cField.Name, "_", i, ", ");
             i++;
             return true;
         }

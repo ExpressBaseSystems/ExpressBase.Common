@@ -148,11 +148,9 @@ namespace ExpressBase.Security
             }
         }
 
-        public static string GetSelectQuery(EbConstraintKeyTypes _keyTyp, string _keyIdParam = "id")
+        public static string GetSelectQuery(EbConstraintKeyTypes _keyTyp, IDatabase DataDB, string _keyIdParam = "id")
         {
-            return string.Format(@"SELECT m.id, m.key_id, m.key_type, m.description, l.id AS lid, l.c_type, l.c_operation, l.c_value 
-	                    FROM eb_constraints_master m, eb_constraints_line l
-	                    WHERE m.id = l.master_id AND key_type = {0} AND m.key_id = :{1} AND eb_del = 'F' ORDER BY m.id;", (int)_keyTyp, _keyIdParam);
+            return string.Format(DataDB.EB_GET_SELECT_CONSTRAINTS, (int)_keyTyp, _keyIdParam);
         }
 
         public bool Validate(string ip, string device, User user)
