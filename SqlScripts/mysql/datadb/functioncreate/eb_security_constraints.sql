@@ -112,7 +112,7 @@ IF(_add_data <> null or _add_data <> "") THEN
 	SELECT `value` FROM temp_tmp2;
 	SELECT CAST(`value` AS UNSIGNED INTEGER) FROM temp_temp2 WHERE id = 1 INTO @c_op;
 	SELECT CAST(`value` AS UNSIGNED INTEGER) FROM temp_temp2 WHERE id = 2 INTO @c_t;
-	SELECT CAST(`value` AS UNSIGNED INTEGER) FROM temp_temp2 WHERE id = 3 INTO @c_v;
+	SELECT `value` FROM temp_temp2 WHERE id = 3 INTO @c_v;
 	
 	INSERT INTO eb_constraints_line(master_id, c_operation, c_type, c_value)
 	VALUES(temp1, @c_op, @c_t, @c_v);
