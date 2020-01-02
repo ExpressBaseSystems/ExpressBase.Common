@@ -42,7 +42,7 @@ FOREACH cmaster IN ARRAY STRING_TO_ARRAY(_add_data, '$$') LOOP
 		temp2 := STRING_TO_ARRAY(cline, ';');
 		
 		INSERT INTO eb_constraints_line(master_id, c_operation, c_type, c_value)
-			VALUES(temp1, temp2[1]::INTEGER, temp2[2]::INTEGER, temp2[3]::INTEGER);
+			VALUES(temp1, temp2[1]::INTEGER, temp2[2]::INTEGER, temp2[3]::TEXT);
 	
 	END LOOP;
 END LOOP;
