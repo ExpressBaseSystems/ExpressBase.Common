@@ -745,9 +745,9 @@ namespace ExpressBase.Common.Data
 
         public override string EB_INITROLE2USER { get { return "INSERT INTO eb_role2user(role_id, user_id, createdat) VALUES (@role_id, @user_id, SYSDATE);"; } }
         public override string EB_USER_ROLE_PRIVS { get { return @"SELECT granted_role FROM USER_ROLE_PRIVS WHERE USERNAME='@uname'"; } }
-        public override string EB_AUTHETICATE_USER_NORMAL { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, passwrd => :pass,wc => :wc, ipaddress => :ipaddress, deviceinfo => :deviceinfo))"; } }
-        public override string EB_AUTHENTICATEUSER_SOCIAL { get { return "SELECT * FROM table(eb_authenticate_unified(social => :social, wc => :wc, ipaddress => :ipaddress, deviceinfo => :deviceinfo))"; } }
-        public override string EB_AUTHENTICATEUSER_SSO { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, wc => :wc, ipaddress => :ipaddress, deviceinfo => :deviceinfo))"; } }
+        public override string EB_AUTHETICATE_USER_NORMAL { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, passwrd => :pass,wc => :wc))"; } }
+        public override string EB_AUTHENTICATEUSER_SOCIAL { get { return "SELECT * FROM table(eb_authenticate_unified(social => :social, wc => :wc))"; } }
+        public override string EB_AUTHENTICATEUSER_SSO { get { return "SELECT * FROM table(eb_authenticate_unified(uname => :uname, wc => :wc))"; } }
 
         public override string EB_AUTHENTICATE_ANONYMOUS { get { return "SELECT * FROM table(eb_authenticate_anonymous(@params in_appid => :appid ,in_wc => :wc))"; } }
 
@@ -767,7 +767,7 @@ namespace ExpressBase.Common.Data
 				AND EO2A.eb_del = 'F'
                 AND EOS.status = 3 
 				AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );"; } }
-       
+
         public override string EB_SIDEBARCHECK { get { return "AND EO.id = ANY(:Ids) "; } }
 
         public override string EB_GETROLESRESPONSE_QUERY
@@ -1036,6 +1036,32 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             {
                 return @"INSERT INTO eb_executionlogs(rows, exec_time, created_by, created_at, params, refid) 
                                 VALUES(:rows, :exec_time, :created_by, :created_at, :params, :refid);";
+            }
+        }
+
+        public override string EB_GET_SELECT_CONSTRAINTS
+        {
+            get
+            {
+                return @"SELECT m.id, m.key_id, m.key_type, m.description, l.id AS lid, l.c_type, l.c_operation, l.c_value 
+	                    FROM eb_constraints_master m, eb_constraints_line l
+	                    WHERE m.id = l.master_id AND key_type = {0} AND m.key_id = :{1} AND eb_del = 'F' ORDER BY m.id;";
+            }
+        }
+
+        public override string EB_SAVE_LOCATION_2Q
+        {
+            get
+            {
+                return @"UPDATE eb_locations SET longname = :lname, shortname = :sname, image = :img, meta_json = :meta WHERE id = :lid;";
+            }
+        }
+
+        public override string EB_DELETE_LOC
+        {
+            get
+            {
+                return @"UPDATE eb_location_config SET eb_del = 'T' WHERE id = :id;";
             }
         }
 
@@ -1343,6 +1369,161 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
+        public override string EB_ADD_FAVOURITE
+        {
+            get
+            {
+                return @"INSERT INTO 
+                                eb_objects_favourites(userid,object_id)
+                            VALUES(:userid,:objectid)";
+            }
+        }
+
+        public override string EB_REMOVE_FAVOURITE
+        {
+            get
+            {
+                return @"UPDATE 
+                                eb_objects_favourites SET eb_del= 'T' 
+                           WHERE 
+                                userid = :userid 
+                           AND 
+                                object_id = :objectid";
+            }
+        }
+
+        public override string EB_GET_APPLICATIONS
+        {
+            get
+            {
+                return @"SELECT id, applicationname, description, application_type, app_icon, app_settings FROM eb_applications WHERE id = :id AND eb_del = 'F'";
+            }
+        }
+
+        public override string EB_GET_OBJECTS_BY_APP_ID
+        {
+            get
+            {
+                return @"SELECT applicationname,description,app_icon,application_type, app_settings FROM eb_applications WHERE id = :appid AND  eb_del = 'F';
+				                SELECT 
+				                     EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, EO.display_name,EOV.refid,EOV.working_mode
+				                FROM
+				                     eb_objects_ver EOV,eb_objects EO
+				                INNER JOIN
+				                     eb_objects2application EO2A
+				                ON
+				                     EO.id = EO2A.obj_id
+				                WHERE 
+				                    EO2A.app_id = :appid
+								    AND	EO.id = EOV.eb_objects_id
+                                    AND	COALESCE(EO.eb_del, 'F') = 'F'
+                                    AND COALESCE(EO2A.eb_del, 'F') = 'F'
+				                ORDER BY
+				                    EO.obj_type;";
+            }
+        }
+
+        public override string EB_SAVE_APP_SETTINGS
+        {
+            get
+            {
+                return @"UPDATE eb_applications SET app_settings = :newsettings WHERE id = :appid AND application_type = :apptype AND eb_del='F';";
+            }
+        }
+
+        public override string EB_UNIQUE_APPLICATION_NAME_CHECK
+        {
+            get
+            {
+                return @"SELECT id FROM eb_applications WHERE applicationname = :name ;";
+            }
+        }
+
+        public override string EB_DELETE_APP
+        {
+            get
+            {
+                return @"UPDATE eb_applications SET eb_del = 'T' WHERE id = :appid";
+            }
+        }
+
+        public override string EB_UPDATE_APP_SETTINGS
+        {
+            get
+            {
+                return @"UPDATE eb_applications SET app_settings = :settings WHERE id = :appid";
+            }
+        }
+
+        public override string EB_OBJ_ALL_VER_WIHOUT_CIRCULAR_REF
+        {
+            get
+            {
+                return @" SELECT 
+                                EO.id, EO.obj_name, EO.display_name, 
+                                EOV.id, EOV.version_num, EOV.refid
+                            FROM
+                                eb_objects EO, eb_objects_ver EOV
+                            WHERE
+                                EO.id = EOV.eb_objects_id AND
+                                EOV.working_mode = 'F' AND
+                                EO.obj_type = :obj_type 
+                            ORDER BY 
+                                EO.display_name ASC, EOV.version_num DESC;";
+            }
+        }
+
+        public override string EB_OBJ_ALL_VER_WIHOUT_CIRCULAR_REF_REFID
+        {
+            get
+            {
+                return @"SELECT 
+                                EO.id, EO.obj_name, EO.display_name, 
+                                EOV.id, EOV.version_num, EOV.refid
+                            FROM
+                                eb_objects EO, eb_objects_ver EOV
+                            WHERE
+                                EO.id = EOV.eb_objects_id AND
+                                EOV.working_mode = 'F' AND
+                                EO.obj_type = :obj_type AND
+                                EOV.refid != :dominant AND
+                                EOV.refid NOT IN (
+                                    WITH RECURSIVE objects_relations AS (
+	                                SELECT dependant FROM eb_objects_relations WHERE eb_del='F' AND dominant = :dominant
+	                                UNION
+	                                SELECT a.dependant FROM eb_objects_relations a, objects_relations b WHERE a.eb_del='F' AND a.dominant = b.dependant
+                                    )SELECT * FROM objects_relations
+                                )
+                            ORDER BY 
+                                EO.display_name ASC, EOV.version_num DESC;";
+            }
+        }
+
+        public override string EB_UNIQUE_OBJECT_NAME_CHECK
+        {
+            get
+            {
+                return @"SELECT id FROM eb_objects WHERE obj_name = :name ;";
+            }
+        }
+
+        public override string EB_ENABLE_LOG
+        {
+            get
+            {
+                return @"UPDATE eb_objects SET is_logenabled = :log WHERE id = :id";
+            }
+        }
+
+        public override string EB_DELETE_OBJECT
+        {
+            get
+            {
+                return @"UPDATE eb_objects SET eb_del='T' WHERE id = :id;             
+                           UPDATE eb_objects_ver SET eb_del='T' WHERE eb_objects_id = :id;";
+            }
+        }
+
         //.....OBJECT FUNCTION CALLS
         public override string EB_CREATE_NEW_OBJECT
         {
@@ -1422,7 +1603,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                 ";
             }
         }
-        
+
         public override string EB_SAVELOCATION
         {
             get
@@ -1509,13 +1690,92 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                             (@userid, @filename, @filetype, @tags, @filecategory, NOW(),@context) 
                         RETURNING id";
             }
-        }               
+        }
 
         public override string EB_FILECATEGORYCHANGE
         {
             get
             {
                 return @"SELECT id,tags FROM eb_files_ref WHERE id = ANY(string_to_array(:ids,',')::int[]);";
+            }
+        }
+
+        public override string EB_DOWNLOAD_FILE_BY_ID
+        {
+            get
+            {
+                return @"SELECT
+                                B.filestore_sid , B.filedb_con_id
+                            FROM 
+                                eb_files_ref A, eb_files_ref_variations B
+                            WHERE 
+                                A.id=B.eb_files_ref_id AND A.id = :fileref;";
+            }
+        }
+
+        public override string EB_DOWNLOAD_IMAGE_BY_ID
+        {
+            get
+            {
+                return @"SELECT 
+                                B.imagequality_id, B.filestore_sid, B.filedb_con_id
+                            FROM 
+                                eb_files_ref A, eb_files_ref_variations B
+                            WHERE 
+                                A.id=B.eb_files_ref_id AND A.id = :fileref
+                            ORDER BY 
+                                B.imagequality_id;";
+            }
+        }
+
+        public override string EB_DOWNLOAD_DP
+        {
+            get
+            {
+                return @"SELECT 
+                                V.filestore_sid , V.filedb_con_id
+                            FROM 
+                                eb_files_ref_variations V 
+                            INNER JOIN 
+                                eb_users U
+                            ON 
+                                V.eb_files_ref_id = U.dprefid
+                            WHERE 
+                                U.id = @userid";
+            }
+        }
+
+        public override string EB_GET_SELECT_FILE_UPLOADER_CXT
+        {
+            get
+            {
+                return @"SELECT 
+	                            B.id, B.filename, B.tags, B.uploadts,B.filecategory
+                            FROM
+	                            eb_files_ref B
+                            WHERE
+	                            B.context = CONCAT(:context, '_@Name@') AND B.eb_del = 'F';";
+            }
+        }
+
+        public override string EB_GET_SELECT_FILE_UPLOADER_CXT_SEC
+        {
+            get
+            {
+                return @"SELECT 
+	                            B.id, B.filename, B.tags, B.uploadts,B.filecategory
+                            FROM
+	                            eb_files_ref B
+                            WHERE
+	                            (B.context = CONCAT(:context, '_@Name@') OR B.context_sec = :context_sec) AND B.eb_del = 'F';";
+            }
+        }
+
+        public override string EB_GET_LOG_ENABLED
+        {
+            get
+            {
+                return @"SELECT is_logenabled FROM eb_objects WHERE id = (SELECT eb_objects_id FROM eb_objects_ver WHERE refid = :refid)";
             }
         }
 
@@ -1527,6 +1787,28 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                 return @"CREATE OR REPLACE FUNCTION {0}(insert_json jsonb,update_json jsonb)
                             RETURNS void
                             LANGUAGE {1} AS $BODY$";
+            }
+        }
+
+        public override string EB_API_BY_NAME
+        {
+            get
+            {
+                return @"SELECT 
+	                            EOV.obj_json,EOV.version_num,EOS.status,EO.obj_tags, EO.obj_type
+                            FROM
+	                            eb_objects_ver EOV
+                            INNER JOIN
+	                            eb_objects EO ON EOV.eb_objects_id = EO.id
+                            INNER JOIN
+	                            eb_objects_status EOS ON EOS.eb_obj_ver_id = EOV.id
+                            WHERE
+	                            EO.obj_type=20 
+                            AND
+	                            EO.obj_name = :objname
+                            AND 
+	                            EOV.version_num = :version
+                            LIMIT 1;";
             }
         }
 
