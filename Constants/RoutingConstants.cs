@@ -36,6 +36,9 @@ namespace ExpressBase.Common
         public const string TC = "tc";
         public const string UC = "uc";
         public const string DC = "dc";
+        public const string MC = "mc";
+
+        public const string USER_AGENT = "useragent";
 
         public const string MYACCOUNT = "myaccount";
         public const string DASHBOT = "-bot";

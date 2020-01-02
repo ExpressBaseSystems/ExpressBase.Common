@@ -50,9 +50,12 @@ namespace ExpressBase.Security
         [DataMember(Order = 10)]
         public int SignInLogId { get; set; }
 
+        [DataMember(Order = 11)]
+        public string SourceIp { get; set; }
+        
         private List<string> _ebObjectIds = null;
 
-        [DataMember(Order = 11)]
+        [DataMember(Order = 13)]
         public List<string> EbObjectIds
         {
             get
@@ -237,7 +240,7 @@ namespace ExpressBase.Security
             return _user;
         }
 
-        public static User GetDetailsTenant(IDatabase df, string uname, string pass)
+        public static User GetDetailsTenant(IDatabase df, string uname, string pass, string ipAddress)
         {
             try
             {
@@ -266,7 +269,8 @@ namespace ExpressBase.Security
                             FullName = ds.Rows[0][2].ToString(),
                             Roles = rolesname,
                             Permissions = ds.Rows[0][4].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][4].ToString().Split(',').ToList(),
-                            Preference = !string.IsNullOrEmpty(ds.Rows[0][5].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][5].ToString()) : new Preferences { Locale = "en-US", TimeZone = "(UTC) Coordinated Universal Time" }
+                            Preference = !string.IsNullOrEmpty(ds.Rows[0][5].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][5].ToString()) : new Preferences { Locale = "en-US", TimeZone = "(UTC) Coordinated Universal Time" },
+                            SourceIp = ipAddress
                         };
                     }
                 }
@@ -278,81 +282,90 @@ namespace ExpressBase.Security
             }
         }
 
-        public static User GetDetailsNormal(IDatabase df, string uname, string pwd, string context, string social, string ipaddress)
+        public static User GetDetailsNormal(IDatabase df, string uname, string pwd, string context, string ipAddress, string deviceId, string userAgent)
         {
             try
             {
+                string deviceInfo = JsonConvert.SerializeObject(new DeviceInfo { UserAgent = userAgent, WC = context, DeviceId = deviceId });
+                EbDataTable dt;
                 if (df.Vendor == DatabaseVendors.MYSQL)
                 {
-                    var ds = df.DoProcedure(df.EB_AUTHETICATE_USER_NORMAL,
-                            new DbParameter[] { df.GetNewParameter("uname", EbDbTypes.String, uname),
-                                df.GetNewParameter("pwd", EbDbTypes.String, pwd),
-                                df.GetNewParameter("social", EbDbTypes.String, social),
-                                df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),
-                                df.GetNewParameter("ipaddress", EbDbTypes.String, ipaddress),
-                                df.GetNewParameter("deviceinfo", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_userid", EbDbTypes.Int32),
-                                df.GetNewOutParameter("tmp_status_id", EbDbTypes.Int32),
-                                df.GetNewOutParameter("tmp_email", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_fullname", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_roles_a", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_rolename_a", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_permissions", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_preferencesjson", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_constraints_a", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_signin_id", EbDbTypes.Int32)
-                                });
-
-                    return InitUserObject(ds, context);
+                    dt = df.DoProcedure(df.EB_AUTHETICATE_USER_NORMAL,
+                        new DbParameter[] { df.GetNewParameter("uname", EbDbTypes.String, uname),
+                            df.GetNewParameter("pwd", EbDbTypes.String, pwd),
+                            df.GetNewParameter("social", EbDbTypes.String),
+                            df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),
+                            df.GetNewParameter("ipaddress", EbDbTypes.String, ipAddress),
+                            df.GetNewParameter("deviceinfo", EbDbTypes.String, deviceInfo),
+                            df.GetNewOutParameter("tmp_userid", EbDbTypes.Int32),
+                            df.GetNewOutParameter("tmp_status_id", EbDbTypes.Int32),
+                            df.GetNewOutParameter("tmp_email", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_fullname", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_roles_a", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_rolename_a", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_permissions", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_preferencesjson", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_constraints_a", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_signin_id", EbDbTypes.Int32)
+                        });
                 }
                 else
                 {
-                    var ds = df.DoQuery(df.EB_AUTHETICATE_USER_NORMAL, new DbParameter[] { df.GetNewParameter("uname", EbDbTypes.String, uname), df.GetNewParameter("pass", EbDbTypes.String, pwd), df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context) });
-                    return InitUserObject(ds, context);
+                    dt = df.DoQuery(df.EB_AUTHETICATE_USER_NORMAL, new DbParameter[] {
+                        df.GetNewParameter("uname", EbDbTypes.String, uname),
+                        df.GetNewParameter("pass", EbDbTypes.String, pwd),
+                        df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),
+                        df.GetNewParameter("ipaddress", EbDbTypes.String, ipAddress),
+                        df.GetNewParameter("deviceinfo", EbDbTypes.String, deviceInfo)
+                    });                    
                 }
-                //return null;
+                return InitUserObject(dt, context, ipAddress, deviceId);
             }
             catch (Exception e)
             {
+                Console.WriteLine("Exception in GetDetailsNormal: " + e.ToString());
                 return new User();
             }
 
         }
 
-        public static User GetDetailsSocial(IDatabase df, string socialId, string context)
+        public static User GetDetailsSocial(IDatabase df, string socialId, string context, string ipAddress, string deviceId, string userAgent)
         {
             try
-
             {
+                string deviceInfo = JsonConvert.SerializeObject(new DeviceInfo { UserAgent = userAgent, WC = context, DeviceId = deviceId });
+                EbDataTable dt;
                 if (df.Vendor == DatabaseVendors.MYSQL)
                 {
-                    var dt = df.DoProcedure(df.EB_AUTHENTICATEUSER_SOCIAL,
-                            new DbParameter[] {  df.GetNewParameter("uname", EbDbTypes.String),
-                                df.GetNewParameter("pwd", EbDbTypes.String),
-                                df.GetNewParameter("social", EbDbTypes.String, socialId),
-                                df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),
-                                df.GetNewParameter("ipaddress", EbDbTypes.String),
-                                df.GetNewParameter("deviceinfo", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_userid", EbDbTypes.Int32),
-                                df.GetNewOutParameter("tmp_status_id", EbDbTypes.Int32),
-                                df.GetNewOutParameter("tmp_email", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_fullname", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_roles_a", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_rolename_a", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_permissions", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_preferencesjson", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_constraints_a", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_signin_id", EbDbTypes.Int32)
-                                });
-
-                    return InitUserObject(dt, context);
+                    dt = df.DoProcedure(df.EB_AUTHENTICATEUSER_SOCIAL,
+                        new DbParameter[] {  df.GetNewParameter("uname", EbDbTypes.String),
+                            df.GetNewParameter("pwd", EbDbTypes.String),
+                            df.GetNewParameter("social", EbDbTypes.String, socialId),
+                            df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),
+                            df.GetNewParameter("ipaddress", EbDbTypes.String, ipAddress),
+                            df.GetNewParameter("deviceinfo", EbDbTypes.String, deviceInfo),
+                            df.GetNewOutParameter("tmp_userid", EbDbTypes.Int32),
+                            df.GetNewOutParameter("tmp_status_id", EbDbTypes.Int32),
+                            df.GetNewOutParameter("tmp_email", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_fullname", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_roles_a", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_rolename_a", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_permissions", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_preferencesjson", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_constraints_a", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_signin_id", EbDbTypes.Int32)
+                        });
                 }
                 else
                 {
-                    var ds = df.DoQuery(df.EB_AUTHENTICATEUSER_SOCIAL, new DbParameter[] { df.GetNewParameter("social", EbDbTypes.String, socialId), df.GetNewParameter("wc", EbDbTypes.String, context) });
-                    return InitUserObject(ds, context);
+                    dt = df.DoQuery(df.EB_AUTHENTICATEUSER_SOCIAL, new DbParameter[] {
+                        df.GetNewParameter("social", EbDbTypes.String, socialId),
+                        df.GetNewParameter("wc", EbDbTypes.String, context),
+                        df.GetNewParameter("ipaddress", EbDbTypes.String, ipAddress),
+                        df.GetNewParameter("deviceinfo", EbDbTypes.String, deviceInfo)
+                    });                    
                 }
-                //return null;
+                return InitUserObject(dt, context, ipAddress, deviceId);
             }
             catch (Exception e)
             {
@@ -360,80 +373,85 @@ namespace ExpressBase.Security
             }
         }
 
-        public static User GetDetailsSSO(IDatabase df, string uname, string context)
+        public static User GetDetailsSSO(IDatabase df, string uname, string context, string ipAddress, string deviceId, string userAgent)
         {
             try
             {
+                string deviceInfo = JsonConvert.SerializeObject(new DeviceInfo { UserAgent = userAgent, WC = context, DeviceId = deviceId });
+                EbDataTable dt;
                 if (df.Vendor == DatabaseVendors.MYSQL)
                 {
-                    var dt = df.DoProcedure(df.EB_AUTHENTICATEUSER_SSO,
-                            new DbParameter[] {
-                                df.GetNewParameter("uname", EbDbTypes.String, uname),
-                                df.GetNewParameter("pwd", EbDbTypes.String),
-                                df.GetNewParameter("social", EbDbTypes.String),
-                                df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),
-                                df.GetNewParameter("ipaddress", EbDbTypes.String),
-                                df.GetNewParameter("deviceinfo", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_userid", EbDbTypes.Int32),
-                                df.GetNewOutParameter("tmp_status_id", EbDbTypes.Int32),
-                                df.GetNewOutParameter("tmp_email", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_fullname", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_roles_a", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_rolename_a", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_permissions", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_preferencesjson", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_constraints_a", EbDbTypes.String),
-                                df.GetNewOutParameter("tmp_signin_id", EbDbTypes.Int32)
-                                });
-
-                    return InitUserObject(dt, context);
+                    dt = df.DoProcedure(df.EB_AUTHENTICATEUSER_SSO,
+                        new DbParameter[] {
+                            df.GetNewParameter("uname", EbDbTypes.String, uname),
+                            df.GetNewParameter("pwd", EbDbTypes.String),
+                            df.GetNewParameter("social", EbDbTypes.String),
+                            df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),
+                            df.GetNewParameter("ipaddress", EbDbTypes.String, ipAddress),
+                            df.GetNewParameter("deviceinfo", EbDbTypes.String, deviceInfo),
+                            df.GetNewOutParameter("tmp_userid", EbDbTypes.Int32),
+                            df.GetNewOutParameter("tmp_status_id", EbDbTypes.Int32),
+                            df.GetNewOutParameter("tmp_email", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_fullname", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_roles_a", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_rolename_a", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_permissions", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_preferencesjson", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_constraints_a", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_signin_id", EbDbTypes.Int32)
+                        });
                 }
                 else
                 {
-                    var ds = df.DoQuery(df.EB_AUTHENTICATEUSER_SSO, new DbParameter[] { df.GetNewParameter("uname", EbDbTypes.String, uname), df.GetNewParameter("wc", EbDbTypes.String, context) });
-                    return InitUserObject(ds, context);
+                    dt = df.DoQuery(df.EB_AUTHENTICATEUSER_SSO, new DbParameter[] {
+                        df.GetNewParameter("uname", EbDbTypes.String, uname),
+                        df.GetNewParameter("wc", EbDbTypes.String, context),
+                        df.GetNewParameter("ipaddress", EbDbTypes.String, ipAddress),
+                        df.GetNewParameter("deviceinfo", EbDbTypes.String, deviceInfo)
+                    });
                 }
-                //return null;
+                return InitUserObject(dt, context, ipAddress, deviceId);
             }
             catch (Exception e)
             {
+                Console.WriteLine("Exception in GetDetailsSSO: " + e.ToString());
                 return new User();
             }
         }
 
         public static User GetDetailsAnonymous(IDatabase df, string socialId, string emailId, string phone, int appid, string context, string user_ip, string user_name, string user_browser, string city, string region, string country, string latitude, string longitude, string timezone, string iplocationjson)
         {
+            EbDataTable dt;
             if (df.Vendor == DatabaseVendors.MYSQL)
             {
-                var ds = df.DoProcedure(df.EB_AUTHENTICATE_ANONYMOUS,
-                            new DbParameter[] {
-                                df.GetNewParameter("in_socialid", EbDbTypes.String, socialId),
-                                df.GetNewParameter("in_fullname", EbDbTypes.String, user_name),
-                                df.GetNewParameter("in_emailid", EbDbTypes.String, emailId),
-                                df.GetNewParameter("in_phone", EbDbTypes.String, phone),
-                                df.GetNewParameter("in_user_ip", EbDbTypes.String, user_ip),
-                                df.GetNewParameter("in_user_browser", EbDbTypes.String, user_browser),
-                                df.GetNewParameter("in_city", EbDbTypes.String, city),
-                                df.GetNewParameter("in_region", EbDbTypes.String, region),
-                                df.GetNewParameter("in_country", EbDbTypes.String, country),
-                                df.GetNewParameter("in_latitude", EbDbTypes.String, latitude),
-                                df.GetNewParameter("in_longitude", EbDbTypes.String, longitude),
-                                df.GetNewParameter("in_timezone", EbDbTypes.String, timezone),
-                                df.GetNewParameter("in_iplocationjson", EbDbTypes.String, iplocationjson),
-                                df.GetNewParameter("in_appid", EbDbTypes.String, appid),
-                                df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context ),
-                                df.GetNewOutParameter("out_userid", EbDbTypes.Int32),
-                                df.GetNewOutParameter("out_status_id", EbDbTypes.Int32),
-                                df.GetNewOutParameter("out_email", EbDbTypes.String),
-                                df.GetNewOutParameter("out_fullname", EbDbTypes.String),
-                                df.GetNewOutParameter("out_roles_a", EbDbTypes.String),
-                                df.GetNewOutParameter("out_rolename_a", EbDbTypes.String),
-                                df.GetNewOutParameter("out_permissions", EbDbTypes.String),
-                                df.GetNewOutParameter("out_preferencesjson", EbDbTypes.String),
-                                df.GetNewOutParameter("out_constraints_a", EbDbTypes.String),
-                                df.GetNewOutParameter("out_signin_id", EbDbTypes.Int32)
-                                });
-                return InitUserObject(ds, context);
+                dt = df.DoProcedure(df.EB_AUTHENTICATE_ANONYMOUS,
+                    new DbParameter[] {
+                        df.GetNewParameter("in_socialid", EbDbTypes.String, socialId),
+                        df.GetNewParameter("in_fullname", EbDbTypes.String, user_name),
+                        df.GetNewParameter("in_emailid", EbDbTypes.String, emailId),
+                        df.GetNewParameter("in_phone", EbDbTypes.String, phone),
+                        df.GetNewParameter("in_user_ip", EbDbTypes.String, user_ip),
+                        df.GetNewParameter("in_user_browser", EbDbTypes.String, user_browser),
+                        df.GetNewParameter("in_city", EbDbTypes.String, city),
+                        df.GetNewParameter("in_region", EbDbTypes.String, region),
+                        df.GetNewParameter("in_country", EbDbTypes.String, country),
+                        df.GetNewParameter("in_latitude", EbDbTypes.String, latitude),
+                        df.GetNewParameter("in_longitude", EbDbTypes.String, longitude),
+                        df.GetNewParameter("in_timezone", EbDbTypes.String, timezone),
+                        df.GetNewParameter("in_iplocationjson", EbDbTypes.String, iplocationjson),
+                        df.GetNewParameter("in_appid", EbDbTypes.String, appid),
+                        df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context ),
+                        df.GetNewOutParameter("out_userid", EbDbTypes.Int32),
+                        df.GetNewOutParameter("out_status_id", EbDbTypes.Int32),
+                        df.GetNewOutParameter("out_email", EbDbTypes.String),
+                        df.GetNewOutParameter("out_fullname", EbDbTypes.String),
+                        df.GetNewOutParameter("out_roles_a", EbDbTypes.String),
+                        df.GetNewOutParameter("out_rolename_a", EbDbTypes.String),
+                        df.GetNewOutParameter("out_permissions", EbDbTypes.String),
+                        df.GetNewOutParameter("out_preferencesjson", EbDbTypes.String),
+                        df.GetNewOutParameter("out_constraints_a", EbDbTypes.String),
+                        df.GetNewOutParameter("out_signin_id", EbDbTypes.Int32)
+                    });
             }
             else
             {
@@ -511,14 +529,12 @@ namespace ExpressBase.Security
 
                 string sql = df.EB_AUTHENTICATE_ANONYMOUS.Replace("@params", (df.Vendor == DatabaseVendors.PGSQL) ? parameters.Replace("=>", ":=") : parameters);
 
-                var ds = df.DoQuery(sql, paramlist.ToArray());
-                return InitUserObject(ds, context);
+                dt = df.DoQuery(sql, paramlist.ToArray());
             }
-
-
+            return InitUserObject(dt, context, user_ip, string.Empty);
         }
 
-        private static User InitUserObject(EbDataTable ds, string context)
+        private static User InitUserObject(EbDataTable ds, string context, string ipAddress, string deviceId)
         {
             //Columns : _userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id
             User _user = null;
@@ -553,12 +569,13 @@ namespace ExpressBase.Security
                     Roles = rolesname,
                     Permissions = ds.Rows[0][6].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][6].ToString().Split(',').ToList(),
                     Preference = !string.IsNullOrEmpty(ds.Rows[0][7].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][7].ToString()) : new Preferences { Locale = "en-US", TimeZone = "(UTC) Coordinated Universal Time", DefaultLocation = -1 },
-                    SignInLogId = Convert.ToInt32(ds.Rows[0][9])
+                    SignInLogId = Convert.ToInt32(ds.Rows[0][9]),
+                    SourceIp = ipAddress
                 };
                 if (!ds.Rows[0].IsDBNull(8) && !_user.Roles.Contains(SystemRoles.SolutionOwner.ToString()) && !_user.Roles.Contains(SystemRoles.SolutionAdmin.ToString()))
                 {
                     EbConstraints constraints = new EbConstraints(ds.Rows[0][8].ToString());
-                    if (!constraints.Validate("<ip>", "<deviceid>", ref _user))
+                    if (!constraints.Validate(ipAddress, deviceId, _user))
                         _user.UserId = -1;
                 }
                 if (_user.Preference.DefaultLocation < 1 && _user.LocationIds.Count > 0)
@@ -567,6 +584,19 @@ namespace ExpressBase.Security
                 }
             }
             return _user;
+        }
+
+        public void Logout(IDatabase DataDB)
+        {
+            try
+            {
+                string Qry = "UPDATE eb_signin_log SET signout_at = " + DataDB.EB_CURRENT_TIMESTAMP + " WHERE id = :id AND signout_at IS null;";
+                DataDB.DoNonQuery(Qry, new DbParameter[] { DataDB.GetNewParameter("id", EbDbTypes.Int32, this.SignInLogId) });
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Exception in logout : " + ex.Message + "\nSignInLogId : " + this.SignInLogId);
+            }
         }
     }
     public class Preferences
@@ -662,6 +692,18 @@ namespace ExpressBase.Security
         }
         //------------------------------------------------------------------------------------------
 
+    }
+
+    public class DeviceInfo
+    {
+        [DataMember(Order = 1)]
+        public string DeviceId { get; set; }
+
+        [DataMember(Order = 2)]
+        public string UserAgent { get; set; }
+
+        [DataMember(Order = 3)]
+        public string WC { get; set; }
     }
 }
 

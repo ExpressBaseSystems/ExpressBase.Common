@@ -14,11 +14,13 @@ namespace ExpressBase.Common.Constants
         public const string BC = "bc";
         public const string TC = "tc";
         public const string DC = "dc";
+        public const string MC = "mc";
         public const string EMAIL = "email";
         public const string IAT = "iat";
         public const string EXP = "exp";
         public const string ISS = "iss";
         public const string AUD = "aud";
+        public const string IP = "ip";
 
 
         public const string SIGNUP_TOK = "signup_tok";

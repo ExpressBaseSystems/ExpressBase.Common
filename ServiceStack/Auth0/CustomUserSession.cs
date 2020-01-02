@@ -32,7 +32,11 @@ namespace ExpressBase.Common.ServiceStack.Auth
 		[DataMember(Order = 6)]
 		public int Aid { get; set; }
 
-		public override bool IsAuthorized(string provider)
+
+        [DataMember(Order = 7)]
+        public string SourceIp { get; set; }
+
+        public override bool IsAuthorized(string provider)
         {
             return true;
         }

@@ -75,7 +75,7 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
         public virtual bool isTableNameFromParent { get; set; }
-        
+
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.Expandable)]
@@ -91,7 +91,7 @@ namespace ExpressBase.Common.Objects
         [HelpText("Name Of database-table Which you want to store Data collected using this Form")]
         [InputMask("[a-z][a-z0-9]*(_[a-z0-9]+)*")]
         public virtual string TableName { get; set; }
-        
+
         [JsonIgnore]
         public override bool Required { get; set; }
 
@@ -99,7 +99,7 @@ namespace ExpressBase.Common.Objects
         public override bool Unique { get; set; }
 
         [JsonIgnore]
-        public override string ToolTipText{ get; set; }
+        public override string ToolTipText { get; set; }
 
         //[JsonIgnore]
         //public override string FontFamily { get; set; }
@@ -260,7 +260,9 @@ namespace ExpressBase.Common.Objects
                                 EbControl _ctrlObj = (ctrlObj as EbControl);
                                 string opFnsJs = string.Empty;
                                 opFnsJs += GetOpFnJs("getValue", _ctrlObj.GetValueJSfn, TypeName);
+                                opFnsJs += GetOpFnJs("getValueFromDOM", _ctrlObj.GetValueFromDOMJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("getDisplayMember", _ctrlObj.GetDisplayMemberJSfn, TypeName);
+                                opFnsJs += GetOpFnJs("getDisplayMemberFromDOM", _ctrlObj.GetDisplayMemberFromDOMJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("isRequiredOK", _ctrlObj.IsRequiredOKJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("isEmpty", _ctrlObj.IsEmptyJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("setValue", _ctrlObj.SetValueJSfn, TypeName);
@@ -277,6 +279,10 @@ namespace ExpressBase.Common.Objects
                                 opFnsJs += GetOpFnJs("removeInvalidStyle", _ctrlObj.RemoveInvalidStyleJSFn, TypeName);
                                 opFnsJs += GetOpFnJs("bindOnChange", _ctrlObj.OnChangeBindJSFn, TypeName);
 
+                                if (_ctrlObj.ObjType == "DGPowerSelectColumn")
+                                {
+                                    opFnsJs += GetOpFnJs("getColumn", _ctrlObj.GetColumnJSfn, TypeName);
+                                }
 
                                 string fn = string.Concat("function ", TypeName, "(jsonObj){ $.extend(this, jsonObj);", opFnsJs, "}");//.RemoveCR();
 

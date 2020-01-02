@@ -264,7 +264,13 @@ namespace ExpressBase.Common.Objects
         }
 
         [JsonIgnore]
-        public virtual string GetValueJSfn { get { return @"return $('#' + this.EbSid_CtxId).val();"; } set { } }
+        public virtual string GetValueJSfn { get { return @"return this.DataVals.Value"; } set { } }
+
+        [JsonIgnore]
+        public virtual string GetValueFromDOMJSfn { get { return @"return $('#' + this.EbSid_CtxId).val();"; } set { } }
+
+        [JsonIgnore]
+        public virtual string GetDisplayMemberFromDOMJSfn { get { return GetValueFromDOMJSfn; } set { } }
 
         [JsonIgnore]
         public virtual string GetDisplayMemberJSfn { get { return @"return this.getValue();"; } set { } }
@@ -316,6 +322,12 @@ namespace ExpressBase.Common.Objects
 
         [JsonIgnore]
         public virtual string RemoveInvalidStyleJSFn { get { return @"EbRemoveInvalidStyle.bind(this)(p1, p2);"; } set { } }
+
+        [JsonIgnore]
+        public virtual string GetColumnJSfn { get { return @""; } set { } }
+        
+        [JsonIgnore]
+        public virtual string StyleJSFn { get { return @"EbAddInvalidStyle.bind(this)(p1, p2);"; } set { } }
 
         //methods        
         protected string ReplacePropsInHTML(string Html)
@@ -419,10 +431,10 @@ namespace ExpressBase.Common.Objects
             if (ins)
             {
                 _col += string.Concat(cField.Name, ", ");
-                _val += string.Concat(":", cField.Name, "_", i, ", ");
+                _val += string.Concat("@", cField.Name, "_", i, ", ");
             }
             else
-                _col += string.Concat(cField.Name, "=:", cField.Name, "_", i, ", ");
+                _col += string.Concat(cField.Name, "=@", cField.Name, "_", i, ", ");
             i++;
             return true;
         }

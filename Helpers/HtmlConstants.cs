@@ -52,7 +52,7 @@ namespace ExpressBase.Common
     public static class JSFnsConstants
     {
 
-        public const string EbSimpleSelect_GetValueJSfn = @"
+        public const string EbSimpleSelect_GetValueFromDOMJSfn = @"
 let val = $('#' + this.EbSid_CtxId).selectpicker('val');
 val = (val === null) ? '-1' : val.toString();
 return val;";
