@@ -585,6 +585,19 @@ namespace ExpressBase.Security
             }
             return _user;
         }
+
+        public void Logout(IDatabase DataDB)
+        {
+            try
+            {
+                string Qry = "UPDATE eb_signin_log SET signout_at = " + DataDB.EB_CURRENT_TIMESTAMP + " WHERE id = :id AND signout_at IS null;";
+                DataDB.DoNonQuery(Qry, new DbParameter[] { DataDB.GetNewParameter("id", EbDbTypes.Int32, this.SignInLogId) });
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Exception in logout : " + ex.Message + "\nSignInLogId : " + this.SignInLogId);
+            }
+        }
     }
     public class Preferences
     {
