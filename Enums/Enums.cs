@@ -290,7 +290,7 @@ namespace ExpressBase.Common
         SmsTask = 2,
         ReportTask = 3,
         MyJob = 4,
-        SqlTask = 5,
+        SqlJobTask = 5,
         Slack = 6
     }
 
