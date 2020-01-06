@@ -11,6 +11,7 @@ using ExpressBase.Common.Structures;
 using ExpressBase.Common.Extensions;
 using System.Runtime.Serialization;
 using System.Data.Common;
+using ExpressBase.Common.LocationNSolution;
 
 namespace ExpressBase.Common.Objects
 {
@@ -437,6 +438,21 @@ namespace ExpressBase.Common.Objects
                 _col += string.Concat(cField.Name, "=@", cField.Name, "_", i, ", ");
             i++;
             return true;
+        }
+
+        public virtual SingleColumn GetDefaultSingleColumn(User UserObj, Eb_Solution SoluObj)
+        {
+            return new SingleColumn()
+            {
+                Name = this.Name,
+                Type = (int)this.EbDbType,
+                Value = null,
+                Control = this,
+                ObjType = this.ObjType,
+                F = string.Empty,
+                D = new Dictionary<int, Dictionary<string, string>>(),
+                R = new Dictionary<string, List<dynamic>>()
+            };
         }
     }
 
