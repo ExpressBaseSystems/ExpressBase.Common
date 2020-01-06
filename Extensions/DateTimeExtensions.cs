@@ -38,7 +38,7 @@ namespace ExpressBase.Common.Extensions
             }
             catch (Exception ex)
             {
-                Console.WriteLine("From GetTimeSpanDifference - Please set a TimeZone in user preference");
+                //Console.WriteLine("From GetTimeSpanDifference - Please set a TimeZone in user preference");
             }
 
             return new TimeSpan(_hour, _min, 0);
