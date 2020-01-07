@@ -442,16 +442,23 @@ namespace ExpressBase.Common.Objects
 
         public virtual SingleColumn GetDefaultSingleColumn(User UserObj, Eb_Solution SoluObj)
         {
+            dynamic value = null;
+            string formatted = string.Empty;
+
+            if(this.EbDbType == EbDbTypes.Decimal || this.EbDbType == EbDbTypes.Int32)
+            {
+                value = 0;
+                formatted = "0.00";
+            }
+
             return new SingleColumn()
             {
                 Name = this.Name,
                 Type = (int)this.EbDbType,
-                Value = null,
+                Value = value,
                 Control = this,
                 ObjType = this.ObjType,
-                F = string.Empty,
-                D = new Dictionary<int, Dictionary<string, string>>(),
-                R = new Dictionary<string, List<dynamic>>()
+                F = formatted
             };
         }
     }
