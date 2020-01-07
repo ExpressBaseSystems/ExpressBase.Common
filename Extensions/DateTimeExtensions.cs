@@ -24,23 +24,17 @@ namespace ExpressBase.Common.Extensions
         {
             int _hour = 0, _min = 0;
             int op = Negate ? -1 : 1;
-            try
+            if (TimeZoneName != null && TimeZoneName.Length > 10)
             {
-                if (TimeZoneName.Length > 10)
+                if (TimeZoneName.Substring(4, 1).Equals("+"))
                 {
-                    if (TimeZoneName.Substring(4, 1).Equals("+"))
-                    {
-                        op *= -1;
-                    }
-                    _hour = Convert.ToInt32(TimeZoneName.Substring(5, 2)) * op;
-                    _min = Convert.ToInt32(TimeZoneName.Substring(8, 2)) * op;
+                    op *= -1;
                 }
+                int.TryParse(TimeZoneName.Substring(5, 2), out _hour);
+                int.TryParse(TimeZoneName.Substring(8, 2), out _min);
+                _hour *= op;
+                _min *= op;
             }
-            catch (Exception ex)
-            {
-                //Console.WriteLine("From GetTimeSpanDifference - Please set a TimeZone in user preference");
-            }
-
             return new TimeSpan(_hour, _min, 0);
         }
     }
