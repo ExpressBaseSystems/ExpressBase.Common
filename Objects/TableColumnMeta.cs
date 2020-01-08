@@ -173,6 +173,8 @@ namespace ExpressBase.Common
 
         public Dictionary<string, SingleTable> ExtendedTables { get; set; }
 
+        public Dictionary<string, SingleRow> DGsRowDataModel { get; set; }
+
         [JsonIgnore]
         public Dictionary<string, SingleTable> PsDm_Tables { get; set; }
 
@@ -191,6 +193,7 @@ namespace ExpressBase.Common
         {
             MultipleTables = new Dictionary<string, SingleTable>();
             ExtendedTables = new Dictionary<string, SingleTable>();
+            DGsRowDataModel = new Dictionary<string, SingleRow>();
             PsDm_Tables = new Dictionary<string, SingleTable>();
             DisableDelete = new Dictionary<string, bool>();
             DisableCancel = new Dictionary<string, bool>();
