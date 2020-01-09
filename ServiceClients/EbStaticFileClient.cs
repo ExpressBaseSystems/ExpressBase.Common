@@ -17,8 +17,8 @@ namespace ExpressBase.Common.ServiceClients
             this.BaseUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_STATICFILESERVER_INT_URL);
             this.RefreshTokenUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_GET_ACCESS_TOKEN_URL);
 
-            //this.BaseUri = "http://localhost:41800";
-            //this.RefreshTokenUri = "http://localhost:41600/access-token";
+            //this.BaseUri = "https://fs.eb-test.cloud";
+            //this.RefreshTokenUri = "https://ss.eb-test.cloud/access-token";
         }
 
         //public EbStaticFileClient(Container c)

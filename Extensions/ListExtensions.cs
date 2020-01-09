@@ -1,7 +1,10 @@
-﻿using ExpressBase.Common.Objects;
+﻿using ExpressBase.Common.Data;
+using ExpressBase.Common.Objects;
+using ExpressBase.Common.Structures;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 
@@ -87,6 +90,16 @@ namespace ExpressBase.Common.Extensions
                 }
                 list.Add(control);
             }
+        }
+
+        public static List<DbParameter> ParamsToDbParameters(this List<Param> Params, EbConnectionFactory factory)
+        {
+            List<DbParameter> DbParams = new List<DbParameter>();
+            foreach (Param p in Params)
+            {
+                DbParams.Add(factory.ObjectsDB.GetNewParameter("@" + p.Name, (EbDbTypes)Convert.ToInt32(p.Type), p.ValueTo));
+            }
+            return DbParams;
         }
     }
 }
