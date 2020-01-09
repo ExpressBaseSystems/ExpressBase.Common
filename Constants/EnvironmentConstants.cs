@@ -13,6 +13,9 @@ namespace ExpressBase.Common
         public const string EB_INFRASTRUCTURE = "EB_INFRASTRUCTURE";
 
         //API URL
+        public const string EB_AUTH_EXT_URL = "EB_AUTH_EXT_URL";
+        public const string EB_AUTH_INT_URL = "EB_AUTH_INT_URL";
+
         public const string EB_SERVICESTACK_EXT_URL = "EB_SERVICESTACK_EXT_URL";
         public const string EB_SERVICESTACK_INT_URL = "EB_SERVICESTACK_INT_URL";
 
