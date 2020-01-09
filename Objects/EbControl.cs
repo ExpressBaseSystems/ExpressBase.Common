@@ -440,25 +440,39 @@ namespace ExpressBase.Common.Objects
             return true;
         }
 
-        public virtual SingleColumn GetDefaultSingleColumn(User UserObj, Eb_Solution SoluObj)
+        //get data model of the control(formatted) // Value = null => to get default SingleColumn
+        public virtual SingleColumn GetSingleColumn(User UserObj, Eb_Solution SoluObj, object Value)
         {
-            dynamic value = null;
-            string formatted = string.Empty;
+            return EbControl.GetSingleColumn(this, UserObj, SoluObj, Value);
+        }
+        
+        public static SingleColumn GetSingleColumn(EbControl _this, User UserObj, Eb_Solution SoluObj, object Value)
+        {
+            object _formattedData = Value;
+            string _displayMember = Value == null ? string.Empty : Value.ToString();
 
-            if(this.EbDbType == EbDbTypes.Decimal || this.EbDbType == EbDbTypes.Int32)
+            if (_this.EbDbType == EbDbTypes.Decimal || _this.EbDbType == EbDbTypes.Int32)
             {
-                value = 0;
-                formatted = "0.00";
+                if (Value == null)
+                {
+                    _formattedData = 0;
+                    _displayMember = "0.00";
+                }
+                else
+                {
+                    _formattedData = Convert.ToDouble(Value);
+                    _displayMember = string.Format("{0:0.00}", _formattedData);
+                }
             }
 
             return new SingleColumn()
             {
-                Name = this.Name,
-                Type = (int)this.EbDbType,
-                Value = value,
-                Control = this,
-                ObjType = this.ObjType,
-                F = formatted
+                Name = _this.Name,
+                Type = (int)_this.EbDbType,
+                Value = _formattedData,
+                Control = _this,
+                ObjType = _this.ObjType,
+                F = _displayMember
             };
         }
     }

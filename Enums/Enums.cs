@@ -314,7 +314,8 @@ namespace ExpressBase.Common
         New_Mode = 2,
         Edit_Mode = 3,
         Fail_Mode = 4,
-        Preview_Mode = 5
+        Preview_Mode = 5,
+        Prefill_Mode = 6
     }
 
     public enum WebFormAfterSaveModes
