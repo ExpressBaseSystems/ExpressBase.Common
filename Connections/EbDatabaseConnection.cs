@@ -267,6 +267,10 @@ namespace ExpressBase.Common.Connections
     {
         public override EbIntegrations Type { get { return EbIntegrations.MYSQL; } }
     }
+    public class MSSqlConfig : EbDbConfig
+    {
+        public override EbIntegrations Type { get { return EbIntegrations.MSSQL; } }
+    }
 
     public class EbSmsConfig : EbIntegrationConf
     {
