@@ -109,9 +109,23 @@ namespace ExpressBase.Common
                         MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead
                     });
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine("============Json_Deserialize Exception : " + e.Message);
+
+                //if (@"Error converting value 3 to type 'ExpressBase.Common.Objects.UISides'. Path 'Controls.$values[1].Controls.$values[0].Controls.$values[0].Controls.$values[0].Padding', line 1, position 3307."
+                //    == ex.Message) {
+                //    json = json.Replace("\"Padding\":3", "\"Padding\":{\"$type\":\"ExpressBase.Common.Objects.UISides, ExpressBase.Common\",\"Top\":3,\"Right\":3,\"Bottom\":3,\"Left\":3}");
+
+                //    return JsonConvert.DeserializeObject(json,
+                //    new JsonSerializerSettings
+                //    {
+                //        TypeNameHandling = TypeNameHandling.All,
+                //        ObjectCreationHandling = ObjectCreationHandling.Replace,
+                //        MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead
+                //    });
+                //}
+
+                Console.WriteLine("============Json_Deserialize Exception : " + ex.Message);
 
                 return null;
             }
