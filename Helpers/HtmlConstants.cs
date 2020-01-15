@@ -55,6 +55,8 @@ namespace ExpressBase.Common
         public const string EbSimpleSelect_GetValueFromDOMJSfn = @"
 let val = $('#' + this.EbSid_CtxId).selectpicker('val');
 val = (val === null) ? '-1' : val.toString();
+if(ebcontext.renderContext === 'WebForm' && val === '-1')
+    val = null;
 return val;";
 
         public const string PS_SetDisplayMemberJSfn = @"
