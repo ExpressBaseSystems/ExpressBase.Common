@@ -346,6 +346,34 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
+    public class FileUploadRequest : EbServiceStackAuthRequest, IReturn<FileUploadResponse>
+    {
+        [DataMember(Order = 1)]
+        public FileMeta FileDetails { get; set; }
+
+        [DataMember(Order = 2)]
+        public byte[] FileByte { get; set; }
+
+        [DataMember(Order = 3)]
+        public EbFileCategory FileCategory { get; set; }
+
+        public FileUploadRequest()
+        {
+            this.FileDetails = new FileMeta();
+        }
+    }
+
+    [DataContract]
+    public class FileUploadResponse : IEbSSResponse
+    {
+        [DataMember(Order = 1)]
+        public ResponseStatus ResponseStatus { get; set; }
+
+        [DataMember(Order = 2)]
+        public int FileRefId { get; set; }
+    }
+
+    [DataContract]
     public class UploadFileAsyncRequest : EbServiceStackAuthRequest, IReturn<UploadAsyncResponse>
     {
         [DataMember(Order = 1)]
