@@ -81,11 +81,16 @@ namespace ExpressBase.Common
 
         public int LocId { get; set; }
 
+        public string pId { get; set; }//parent row id
+
         public bool IsUpdate { get; set; }
 
         public bool IsDelete { get; set; }
 
         public List<SingleColumn> Columns { get; set; }
+
+        [JsonIgnore]
+        public KeyValuePair<string, SingleTable> LinesTable { get; set; }
 
         public SingleRow()
         {
@@ -163,6 +168,7 @@ namespace ExpressBase.Common
         public string ParentTable { get; set; }
 
         public string ParentRowId { get; set; }
+
     }
 
     public class WebformData 
@@ -243,6 +249,8 @@ namespace ExpressBase.Common
         public string Title { get; set; }
 
         public string ContainerName { get; set; }
+
+        public bool IsDynamic { get; set; }
 
         public TableSchema()
         {
