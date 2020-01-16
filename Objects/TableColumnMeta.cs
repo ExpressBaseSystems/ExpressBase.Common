@@ -243,6 +243,8 @@ namespace ExpressBase.Common
         public string Title { get; set; }
 
         public string ContainerName { get; set; }
+        
+        public bool DescOdr { get; set; }//Descending order
 
         public TableSchema()
         {
