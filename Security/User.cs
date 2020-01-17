@@ -577,7 +577,11 @@ namespace ExpressBase.Security
                     EbConstraints constraints = new EbConstraints(ds.Rows[0][8].ToString());
                     if (!constraints.Validate(ipAddress, deviceId, _user))
                         _user.UserId = -1;
+                    if (constraints.IsIpConstraintPresent())
+                        _user.SourceIp = string.Empty;
                 }
+                else
+                    _user.SourceIp = string.Empty;
                 if (_user.Preference.DefaultLocation < 1 && _user.LocationIds.Count > 0)
                 {
                     _user.Preference.DefaultLocation = _user.LocationIds[0] == -1 ? 1 : _user.LocationIds[0];
