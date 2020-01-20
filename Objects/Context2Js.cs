@@ -142,6 +142,7 @@ function ProcRecur(src_controls, dest_controls) {
             string _containerControlsHtml = string.Empty;
             string _specialContainerControlHtml = string.Empty;
             string _placeHolderControlsHtml = string.Empty;
+            string _componentsHtml = string.Empty;
 
             foreach (Type tool in this.TypeArray)
             {
@@ -171,6 +172,10 @@ function ProcRecur(src_controls, dest_controls) {
                                     else if (toolObj is IEbSpecialContainer)
                                     {
                                         _specialContainerControlHtml += ControlObj.GetToolHtml();
+                                    }
+                                    else if (toolObj is IEbComponent)
+                                    {
+                                        _componentsHtml += ControlObj.GetToolHtml();
                                     }
                                     else if (toolObj is EbControlContainer)
                                     {
@@ -204,6 +209,8 @@ function ProcRecur(src_controls, dest_controls) {
                 _ToolsHtml += HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_sp_cont_ctrls").Replace("@label@", "Advanced Controls") + _specialContainerControlHtml + "</div>";
             if (!_placeHolderControlsHtml.IsEmpty())
                 _ToolsHtml += HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_ph_cont_ctrls").Replace("@label@", "Platform Controls") + _placeHolderControlsHtml + "</div>";
+            if (!_componentsHtml.IsEmpty())
+                _ToolsHtml += HtmlConstants.TOOL_HTML.Replace("@id@", "toolb_ph_cont_ctrls").Replace("@label@", "Components") + _componentsHtml + "</div>";
 
 
             //_ToolsHtml = _controlsHtml + "</div>" + _containerControlsHtml + "</div>" + _specialContainerControlHtml + "</div>" + _placeHolderControlsHtml + "</div>";
