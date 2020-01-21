@@ -277,5 +277,10 @@ namespace ExpressBase.Common.Connections
         {
             return DefaultMapApi.Apikey;
         }
+
+        public EbMaps GetMapByType(MapVendors Vendor)
+        {
+            return this.Find(item => item.Vendor == Vendor);
+        }
     }
 }

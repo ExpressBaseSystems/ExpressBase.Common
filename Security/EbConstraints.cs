@@ -240,6 +240,19 @@ namespace ExpressBase.Security
             return true;
         }
 
+        public bool IsIpConstraintPresent()
+        {
+            foreach (KeyValuePair<int, EbConstraint> _cons in this.Constraints)
+            {
+                foreach (KeyValuePair<int, EbConstraintOTV> _c in _cons.Value.Values)
+                {
+                    if (_c.Value.Type == EbConstraintTypes.UserGroup_Ip)
+                        return true;
+                }
+            }
+            return false;
+        }
+
     }
 
     public class EbConstraint

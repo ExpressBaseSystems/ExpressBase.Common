@@ -126,6 +126,8 @@ if(!isContained)
     return;
 $('#' + this.EbSid_CtxId).selectpicker('val', p1)";
 
+        public const string CB_JustSetValueJSfn = @"$('#' + this.EbSid_CtxId).prop('checked', p1 === true)";
+
         public const string EbSimpleSelect_SetValueJSfn = @"
 isContained = false;
 $('#' + this.EbSid_CtxId + ' option').each(function () {

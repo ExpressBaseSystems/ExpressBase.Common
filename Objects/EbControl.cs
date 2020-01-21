@@ -518,4 +518,5 @@ namespace ExpressBase.Common.Objects
 
     public interface IEbPlaceHolderControl { }
     public interface IEbSpecialContainer { }
+    public interface IEbComponent { }
 }
