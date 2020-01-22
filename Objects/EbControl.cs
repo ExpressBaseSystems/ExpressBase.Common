@@ -41,7 +41,7 @@ namespace ExpressBase.Common.Objects
         public virtual bool IsDynamicTabChild { get; set; }
 
         [HideInPropertyGrid]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.DashBoard)]
         public virtual string EbSid { get; set; }
 
         [HideInPropertyGrid]
@@ -57,7 +57,7 @@ namespace ExpressBase.Common.Objects
         public virtual string ToolHelpText { get { return string.Empty; } set { } }
 
         [HideInPropertyGrid]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.DashBoard)]
         public virtual string EbSid_CtxId { get { return (!ContextId.IsNullOrEmpty()) ? string.Concat(ContextId, "_", EbSid) : EbSid; } set { } }
 
         private string _ContextId;
