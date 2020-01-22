@@ -250,9 +250,9 @@ namespace ExpressBase.Common
 
         public string ContainerName { get; set; }
         
-        public bool DescOdr { get; set; }//Descending order
+        public bool DescOdr { get; set; }//Descending order eb_row_num - datagrid
 
-        public bool IsDynamic { get; set; }
+        public bool IsDynamic { get; set; }//datagird in dynamic tab
 
         public TableSchema()
         {
