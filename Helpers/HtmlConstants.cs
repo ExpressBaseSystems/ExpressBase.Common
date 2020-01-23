@@ -73,7 +73,7 @@ else{
 
         public const string SS_DisableJSfn = @"return $('#' + this.EbSid_CtxId +'Wraper .dropdown-toggle').attr('disabled', 'disabled').css('pointer-events', 'none').css('background-color', '#f3f3f3');";
 
-        public const string SS_IsRequiredOKJSfn = @"return !this.isInVisibleInUI ? (!isNaNOrEmpty(this.getValue()) && (this.getValue() !== '-1')) : true;";
+        public const string SS_IsRequiredOKJSfn = @" let val = this.getValueFromDOM(); return !this.isInVisibleInUI ? (!isNaNOrEmpty(val) && (val !== '-1')) : true;";
 
         public const string Ctrl_EnableJSfn = @"$('#cont_' + this.EbSid_CtxId + ' *').prop('disabled',false).css('pointer-events', 'inherit').find('[ui-inp]').css('background-color', '#fff');";
 
@@ -81,7 +81,7 @@ else{
 
         public const string Ctrl_DisableJSfn = @"$('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none').find('[ui-inp]').css('background-color', '#f3f3f3');";
 
-        public const string Ctrl_IsRequiredOKJSfn = @" let val = this.getValue(); return !this.isInVisibleInUI ? (!isNaNOrEmpty(val) && val !== null && val !== 0): true;";
+        public const string Ctrl_IsRequiredOKJSfn = @" let val = this.getValueFromDOM(); return !this.isInVisibleInUI ? (!isNaNOrEmpty(val) && val !== null && val !== 0): true;";
 
         public const string PS_JustSetValueJSfn = @"this.initializer.justInit = true;" + PS_SetValueJSfn;
 
