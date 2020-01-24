@@ -160,6 +160,10 @@ namespace ExpressBase.Common
             }
         }
 
+        public virtual string EB_LOGIN_ACTIVITY_ALL_USERS { get; }
+
+        public virtual string EB_LOGIN_ACTIVITY_USERS { get; }
+
         public virtual string EB_GET_DISTINCT_VALUES
         {
             get

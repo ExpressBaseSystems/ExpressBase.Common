@@ -986,6 +986,44 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
+        public override string EB_LOGIN_ACTIVITY_ALL_USERS
+        {
+            get
+            {
+                return @"SELECT 
+                                users.fullname, signin.device_info AS usertype, signin.ip_address, signin.signin_at, 
+                                TO_CHAR(signin.signin_at,'HH12:MI:SS') signin_time, signin.signout_at,
+							    TO_CHAR(signin.signout_at,'HH12:MI:SS') signout_time,
+								age(date_trunc('second', signout_at),date_trunc('second', signin_at))::text AS duration										
+						    FROM
+								eb_signin_log signin,
+								eb_users users
+							WHERE 
+								is_attempt_failed = :islg
+								AND	signin.user_id = users.id
+							ORDER BY 
+								signin.signin_at DESC;";
+            }
+        }
+
+        public override string EB_LOGIN_ACTIVITY_USERS
+        {
+            get
+            {
+                return @"SELECT 
+                                signin.ip_address, signin.signin_at, TO_CHAR(signin.signin_at,'HH12:MI:SS') signin_time, signin.signout_at,
+								TO_CHAR(signin.signout_at,'HH12:MI:SS') signout_time, age(date_trunc('second', signout_at),date_trunc('second', signin_at))::text AS duration
+							FROM
+								eb_signin_log signin, eb_users users
+							WHERE 
+								is_attempt_failed = :islg
+								AND signin.user_id = :usrid
+								AND signin.user_id = users.id
+							ORDER BY 
+								signin.signin_at DESC;";
+            }
+        }
+
         public override string EB_GET_CHART_DETAILS
         {
             get

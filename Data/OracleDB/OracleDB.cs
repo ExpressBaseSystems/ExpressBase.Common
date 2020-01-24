@@ -1022,6 +1022,22 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
+        public override string EB_LOGIN_ACTIVITY_ALL_USERS
+        {
+            get
+            {
+                return @"";
+            }
+        }
+
+        public override string EB_LOGIN_ACTIVITY_USERS
+        {
+            get
+            {
+                return @"";
+            }
+        }
+
         public override string EB_GET_CHART_DETAILS
         {
             get
