@@ -31,7 +31,7 @@ namespace ExpressBase.Common.Constants
 		public const string JAVASCRIPT_VALIDATOR		= "JavascriptValidator";
 		public const string DATA_VISUALIZATION			= "DataVisualization";
 		public const string FILTER_DIALOG				= "FilterDialog";
-		public const string MOBILE_FORM					= "MobilePage";
+		public const string MOBILE_PAGE					= "MobilePage";
 		public const string USER_CONTROL				= "UserControl";
 		public const string EMAIL_BUILDER				= "EmailBuilder";
 		public const string TABLE_VISUALIZATION			= "TableVisualization";

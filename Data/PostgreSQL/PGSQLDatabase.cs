@@ -748,26 +748,40 @@ namespace ExpressBase.Common
                 return @"SELECT id, applicationname,app_icon
                             FROM eb_applications
                             WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
-
-                        SELECT
-                            EO.id, EO.obj_type, EO.obj_name,
-                            EOV.version_num, EOV.refid, EO2A.app_id, EO.obj_desc, EOS.status, EOS.id, display_name
-                        FROM
-                            eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
-                        WHERE
-                            EOV.eb_objects_id = EO.id	
-                            AND EO.id = ANY('{:Ids}')               			    
-				            AND EOS.eb_obj_ver_id = EOV.id 
-				            AND EO2A.obj_id = EO.id
-				            AND EO2A.eb_del = 'F'
-                            AND EOS.status = 3 
-                            AND COALESCE( EO.eb_del, 'F') = 'F'
-				            AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );
-                        SELECT object_id FROM eb_objects_favourites WHERE userid=:user_id AND eb_del='F'";
+                            SELECT 
+	                            OD.id as objectid, OD.obj_type,	OD.obj_name, OD.display_name, OD.refid,	EO2A.app_id
+                            FROM (
+		                            SELECT 
+			                            EO.id,EO.obj_type,EO.obj_name,EO.display_name,EOV.refid
+		                            FROM
+			                            eb_objects EO
+		                            LEFT JOIN 
+			                            eb_objects_ver EOV ON (EOV.eb_objects_id = EO.id)
+		                            LEFT JOIN
+			                            eb_objects_status EOS ON (EOS.eb_obj_ver_id = EOV.id)
+		                            WHERE
+			                            COALESCE(EO.eb_del, 'F') = 'F'
+		                            AND
+			                            EO.obj_type != ANY(ARRAY[13])
+		                            AND
+			                            EOS.status = 3
+		                            AND 
+			                            EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id)
+		                            ) OD 
+                            LEFT JOIN 
+	                            eb_objects2application EO2A ON (EO2A.obj_id = OD.id)
+                            LEFT JOIN 
+	                            eb_applications EA ON (EO2A.app_id = EA.id)
+                            WHERE 
+	                            COALESCE(EA.eb_del, 'F') = 'F'
+                            AND OD.id = ANY('{:Ids}') 
+                            AND 
+	                            COALESCE(EO2A.eb_del, 'F') = 'F';
+                            SELECT object_id FROM eb_objects_favourites WHERE userid=:user_id AND eb_del='F'";
             }
         }
 
-        public override string EB_SIDEBARCHECK { get { return "AND EO.id = ANY('{:Ids}') "; } }
+        public override string EB_SIDEBARCHECK { get { return "AND OD.id = ANY('{:Ids}') "; } }
 
         public override string EB_GETROLESRESPONSE_QUERY
         {
