@@ -63,7 +63,7 @@ namespace ExpressBase.Common.Objects
         private string _ContextId;
 
         [HideInPropertyGrid]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.DashBoard)]
         public virtual string ContextId 
         {
             get { return _ContextId; }
