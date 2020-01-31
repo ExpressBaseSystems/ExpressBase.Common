@@ -5,69 +5,69 @@ using ExpressBase.Common.Constants;
 
 namespace ExpressBase.Common.Structures
 {
-	public struct EbOperation
-	{
-		public readonly string Name;
-		public readonly int IntCode;
-		public readonly string BMW;
+    public struct EbOperation
+    {
+        public readonly string Name;
+        public readonly int IntCode;
+        public readonly string BMW;
 
-		public bool IsAvailableInBot { get; private set; }
-		public bool IsAvailableInMobile { get; private set; }
-		public bool IsAvailableInWeb { get; private set; }
+        public bool IsAvailableInBot { get; private set; }
+        public bool IsAvailableInMobile { get; private set; }
+        public bool IsAvailableInWeb { get; private set; }
 
-		internal EbOperation(string name, int code, string bmw)
-		{
-			this.Name = name;
-			this.IntCode = code;
-			this.BMW = bmw;
+        internal EbOperation(string name, int code, string bmw)
+        {
+            this.Name = name;
+            this.IntCode = code;
+            this.BMW = bmw;
 
-			this.IsAvailableInBot = BMW.Contains(OperationConstants.B_IN_BMW);
-			this.IsAvailableInMobile = BMW.Contains(OperationConstants.M_IN_BMW);
-			this.IsAvailableInWeb = BMW.Contains(OperationConstants.W_IN_BMW);
-		}
-		
-		public static explicit operator int(EbOperation o)
-		{
-			return o.IntCode;
-		}
+            this.IsAvailableInBot = BMW.Contains(OperationConstants.B_IN_BMW);
+            this.IsAvailableInMobile = BMW.Contains(OperationConstants.M_IN_BMW);
+            this.IsAvailableInWeb = BMW.Contains(OperationConstants.W_IN_BMW);
+        }
 
-		public static bool operator ==(int i, EbOperation b)
-		{
-			return (i == b.IntCode);
-		}
+        public static explicit operator int(EbOperation o)
+        {
+            return o.IntCode;
+        }
 
-		public static bool operator !=(int i, EbOperation b)
-		{
-			return (i != b.IntCode);
-		}
+        public static bool operator ==(int i, EbOperation b)
+        {
+            return (i == b.IntCode);
+        }
 
-		public override string ToString()
-		{
-			return this.Name;
-		}
-	}
+        public static bool operator !=(int i, EbOperation b)
+        {
+            return (i != b.IntCode);
+        }
 
-	public class EbOperations
-	{
-		public readonly EbOperation Null;
+        public override string ToString()
+        {
+            return this.Name;
+        }
+    }
 
-		public virtual IEnumerable<EbOperation> Enumerator { get; }
+    public class EbOperations
+    {
+        public readonly EbOperation Null;
 
-		protected EbOperations()
-		{
-			Null = new EbOperation("Null", -1, OperationConstants.XXX);
-		}
+        public virtual IEnumerable<EbOperation> Enumerator { get; }
 
-		public EbOperation Get(int intcode)
-		{
-			foreach (EbOperation o in Enumerator)
-			{
-				if (o.IntCode == intcode)
-					return o;
-			}
+        protected EbOperations()
+        {
+            Null = new EbOperation("Null", -1, OperationConstants.XXX);
+        }
 
-			return Null;
-		}
+        public EbOperation Get(int intcode)
+        {
+            foreach (EbOperation o in Enumerator)
+            {
+                if (o.IntCode == intcode)
+                    return o;
+            }
+
+            return Null;
+        }
 
         public EbOperation Get(string name)
         {
@@ -81,77 +81,77 @@ namespace ExpressBase.Common.Structures
         }
     }
 
-	public class TVOperations : EbOperations
-	{
-		public readonly EbOperation Customize, Summarize, Filter, Drilldown, PDFExport, ExcelExport, CSVExport, Print;
+    public class TVOperations : EbOperations
+    {
+        public readonly EbOperation Customize, Summarize, Filter, Drilldown, PDFExport, ExcelExport, CSVExport, Print;
 
-		private TVOperations()
-		{
-			Customize = new EbOperation(OperationConstants.CUSTOMIZE, 0, OperationConstants.XXX);
-			Summarize = new EbOperation(OperationConstants.SUMMARIZE, 1, OperationConstants.XXX);
-			Filter = new EbOperation(OperationConstants.FILTER, 2, OperationConstants.XXX);
-			Drilldown = new EbOperation(OperationConstants.DRILLDOWN, 3, OperationConstants.XXX);
-			PDFExport = new EbOperation(OperationConstants.PDF_EXPORT, 4, OperationConstants.XXX);
-			ExcelExport = new EbOperation(OperationConstants.EXCEL_EXPORT, 5, OperationConstants.XXX);
-			CSVExport = new EbOperation(OperationConstants.CSV_EXPORT, 6, OperationConstants.XXX);
-			Print = new EbOperation(OperationConstants.PRINT, 7, OperationConstants.BMW);
-		}
+        private TVOperations()
+        {
+            Customize = new EbOperation(OperationConstants.CUSTOMIZE, 0, OperationConstants.XXX);
+            Summarize = new EbOperation(OperationConstants.SUMMARIZE, 1, OperationConstants.XXX);
+            Filter = new EbOperation(OperationConstants.FILTER, 2, OperationConstants.XXX);
+            Drilldown = new EbOperation(OperationConstants.DRILLDOWN, 3, OperationConstants.XXX);
+            PDFExport = new EbOperation(OperationConstants.PDF_EXPORT, 4, OperationConstants.XXX);
+            ExcelExport = new EbOperation(OperationConstants.EXCEL_EXPORT, 5, OperationConstants.XXX);
+            CSVExport = new EbOperation(OperationConstants.CSV_EXPORT, 6, OperationConstants.XXX);
+            Print = new EbOperation(OperationConstants.PRINT, 7, OperationConstants.BMW);
+        }
 
-		public static EbOperations Instance
-		{
-			get
-			{
-				return new TVOperations();
-			}
-		}
+        public static EbOperations Instance
+        {
+            get
+            {
+                return new TVOperations();
+            }
+        }
 
-		public override IEnumerable<EbOperation> Enumerator
-		{
-			get
-			{
-				yield return Customize;
-				yield return Summarize;
-				yield return Filter;
-				yield return Drilldown;
-				yield return PDFExport;
-				yield return ExcelExport;
-				yield return CSVExport;
-				yield return Print;
-			}
-		}
-	}
+        public override IEnumerable<EbOperation> Enumerator
+        {
+            get
+            {
+                yield return Customize;
+                yield return Summarize;
+                yield return Filter;
+                yield return Drilldown;
+                yield return PDFExport;
+                yield return ExcelExport;
+                yield return CSVExport;
+                yield return Print;
+            }
+        }
+    }
 
 
-	public class CVOperations : EbOperations
-	{
-		public readonly EbOperation Customize, Print, DrillDown, Export;
+    public class CVOperations : EbOperations
+    {
+        public readonly EbOperation Customize, Print, DrillDown, Export;
 
-		private CVOperations()
-		{
-			Customize = new EbOperation(OperationConstants.CUSTOMIZE, 0, OperationConstants.XXW);
-			Print = new EbOperation(OperationConstants.PRINT, 1, OperationConstants.XMW);
-			DrillDown = new EbOperation(OperationConstants.DRILLDOWN, 2, OperationConstants.XXW);
-			Export = new EbOperation(OperationConstants.EXPORT, 3, OperationConstants.XMW);
-		}
+        private CVOperations()
+        {
+            Customize = new EbOperation(OperationConstants.CUSTOMIZE, 0, OperationConstants.XXW);
+            Print = new EbOperation(OperationConstants.PRINT, 1, OperationConstants.XMW);
+            DrillDown = new EbOperation(OperationConstants.DRILLDOWN, 2, OperationConstants.XXW);
+            Export = new EbOperation(OperationConstants.EXPORT, 3, OperationConstants.XMW);
+        }
 
-		public static EbOperations Instance
-		{
-			get
-			{
-				return new CVOperations();
-			}
-		}
+        public static EbOperations Instance
+        {
+            get
+            {
+                return new CVOperations();
+            }
+        }
 
-		public override IEnumerable<EbOperation> Enumerator
-		{
-			get
-			{
-				yield return Customize;
-				yield return Print;
-				yield return DrillDown;
-				yield return Export;
-			}
-		}
+        public override IEnumerable<EbOperation> Enumerator
+        {
+            get
+            {
+                yield return Customize;
+                yield return Print;
+                yield return DrillDown;
+                yield return Export;
+            }
+        }
     }
 
     public class MapOperations : EbOperations
@@ -276,29 +276,60 @@ namespace ExpressBase.Common.Structures
     }
 
     public class ReportOperations : EbOperations
-	{
-		public readonly EbOperation Print;
+    {
+        public readonly EbOperation Print;
 
-		private ReportOperations()
-		{
-			Print = new EbOperation(OperationConstants.PRINT, 0, OperationConstants.XMW);
-		}
+        private ReportOperations()
+        {
+            Print = new EbOperation(OperationConstants.PRINT, 0, OperationConstants.XMW);
+        }
 
-		public static EbOperations Instance
-		{
-			get
-			{
-				return new ReportOperations();
-			}
-		}
+        public static EbOperations Instance
+        {
+            get
+            {
+                return new ReportOperations();
+            }
+        }
 
-		public override IEnumerable<EbOperation> Enumerator
-		{
-			get
-			{
-				yield return Print;
-			}
-		}
-	}
+        public override IEnumerable<EbOperation> Enumerator
+        {
+            get
+            {
+                yield return Print;
+            }
+        }
+    }
+
+    public class SqlJobOperations : EbOperations
+    {
+        public readonly EbOperation ViewLog;
+        public readonly EbOperation Execute;
+        public readonly EbOperation Retry;
+
+        private SqlJobOperations()
+        {
+            ViewLog = new EbOperation(OperationConstants.VIEWLOG, 0, OperationConstants.XXW);
+            Execute = new EbOperation(OperationConstants.EXECUTE, 1, OperationConstants.XXW);
+            Retry = new EbOperation(OperationConstants.RETRY, 2, OperationConstants.XXW);
+        }
+
+        public static EbOperations Instance
+        {
+            get
+            {
+                return new SqlJobOperations();
+            }
+        }
+        public override IEnumerable<EbOperation> Enumerator
+        {
+            get
+            {
+                yield return ViewLog;
+                yield return Execute;
+                yield return Retry;
+            }
+        }
+    }
 
 }
