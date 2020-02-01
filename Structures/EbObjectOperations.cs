@@ -332,4 +332,41 @@ namespace ExpressBase.Common.Structures
         }
     }
 
+    public class MobilePageOperations : EbOperations
+    {
+        public readonly EbOperation New;
+        public readonly EbOperation View;
+        public readonly EbOperation Edit;
+        public readonly EbOperation Delete;
+        public readonly EbOperation Cancel;
+
+        private MobilePageOperations()
+        {
+            New = new EbOperation(OperationConstants.NEW, 0, OperationConstants.XMX);
+            View = new EbOperation(OperationConstants.VIEW, 1, OperationConstants.XMX);
+            Edit = new EbOperation(OperationConstants.EDIT, 2, OperationConstants.XMX);
+            Delete = new EbOperation(OperationConstants.DELETE, 3, OperationConstants.XMX);
+            Cancel = new EbOperation(OperationConstants.CANCEL, 4, OperationConstants.XMX);
+        }
+
+        public static EbOperations Instance
+        {
+            get
+            {
+                return new MobilePageOperations();
+            }
+        }
+
+        public override IEnumerable<EbOperation> Enumerator
+        {
+            get
+            {
+                yield return New;
+                yield return View;
+                yield return Edit;
+                yield return Delete;
+                yield return Cancel;
+            }
+        }
+    }
 }
