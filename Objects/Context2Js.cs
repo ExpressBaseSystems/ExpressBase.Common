@@ -358,6 +358,8 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     meta.CEOnDeselectFn = "function(Parent){" + (attr as CEOnDeselectFn).JsCode + "}";
                 else if (attr is OnChangeExec)
                     meta.OnChangeExec = "function(pg){" + (attr as OnChangeExec).JsCode + "}";
+                else if (attr is PropDataSourceJsFn)
+                    meta.PropDataSourceJsFn = "function(pg){" + (attr as PropDataSourceJsFn).JsCode + "}";
                 else if (attr is OnChangeUIFunction)
                     meta.UIChangefn = (attr as OnChangeUIFunction).FunctionName;
                 else if (attr is Attributes.EbRequired)
