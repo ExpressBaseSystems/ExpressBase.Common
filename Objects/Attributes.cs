@@ -120,8 +120,7 @@ namespace ExpressBase.Common.Objects.Attributes
     public class HideForUser : Attribute
     {
     }
-
-
+    
     public class OnChangeExec : Attribute
     {
         public string JsCode { get; set; }
@@ -268,6 +267,16 @@ namespace ExpressBase.Common.Objects.Attributes
         public OnChangeUIFunction(string funName)
         {
             FunctionName = funName;
+        }
+    }
+
+    public class PropDataSourceJsFn : Attribute
+    {
+        public string JsCode { get; set; }
+
+        public PropDataSourceJsFn(string jsCode)
+        {
+            JsCode = jsCode;
         }
     }
 
