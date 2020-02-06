@@ -194,6 +194,8 @@ namespace ExpressBase.Common
 
         public Dictionary<string, SingleRow> DGsRowDataModel { get; set; }
 
+        public SingleRow ApprovalRowDataModel { get; set; }
+
         [JsonIgnore]
         public Dictionary<string, SingleTable> PsDm_Tables { get; set; }
 
