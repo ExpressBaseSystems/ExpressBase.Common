@@ -67,7 +67,7 @@ else{
     EBPSSetDisplayMember.bind(this)(p1, p2);
 }";
 
-        public const string SS_SetValueJSfn = EbSimpleSelect_JustSetValueJSfn + ".trigger('change');";
+        public const string SS_SetValueJSfn = EbSimpleSelect_JustSetValueJSfn + " $('#' + this.EbSid_CtxId).trigger('change');";
 
         public const string DG_hiddenColCheckCode = @"
 if(this.Hidden){
@@ -140,7 +140,7 @@ else{"
     $('#' + this.EbSid_CtxId).selectpicker('val', p1)
 }";
 
-        public const string CB_JustSetValueJSfn = @"$('#' + this.EbSid_CtxId).prop('checked', p1 === true)";
+        public const string CB_JustSetValueJSfn = @"$('#' + this.EbSid_CtxId).prop('checked', p1 === true);";
 
         public const string EbSimpleSelect_SetValueJSfn = @"
 isContained = false;
