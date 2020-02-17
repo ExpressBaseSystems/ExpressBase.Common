@@ -76,7 +76,7 @@ if(this.Hidden){
     else
         this.DataVals.Value = p1;
 }
-else";
+else ";
 
         public const string SS_EnableJSfn = @"return $('#' + this.EbSid_CtxId +'Wraper .dropdown-toggle').prop('disabled',false).css('pointer-events', 'inherit').css('background-color', '#fff');";
 

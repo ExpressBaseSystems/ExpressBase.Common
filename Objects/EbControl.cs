@@ -21,6 +21,7 @@ namespace ExpressBase.Common.Objects
         {
             this.Validators = new List<EbValidator>();
             this.DependedValExp = new List<string>();
+            this.ValExpParams = new List<string>();
         }
 
         [OnDeserialized]
@@ -139,6 +140,10 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
         public virtual List<string> DependedValExp { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [HideInPropertyGrid]
+        public virtual List<string> ValExpParams { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
