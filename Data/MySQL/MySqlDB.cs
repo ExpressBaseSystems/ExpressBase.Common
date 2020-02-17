@@ -1206,7 +1206,7 @@ namespace ExpressBase.Common
                             WHERE 
 	                            is_attempt_failed = @islg
 	                            AND signin.user_id = @usrid
-	                            AND signin.user_id = users.id
+	                            AND users.id = @usrid
                             ORDER BY 
 	                            signin.signin_at DESC;";
             }
