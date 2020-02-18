@@ -20,7 +20,7 @@ namespace ExpressBase.Objects
         [EbRequired]
         [Unique]
         [regexCheck]
-        [PropertyGroup("Identity")]
+        [PropertyGroup("Core")]
         [InputMask("[a-z][a-z0-9]*(_[a-z0-9]+)*")]
         [PropertyPriority(100)]
         [HideForUser]
@@ -30,7 +30,7 @@ namespace ExpressBase.Objects
 
         public virtual string RefId { get; set; }
 
-        [PropertyGroup("Identity")]
+        [PropertyGroup("Core")]
         [EbRequired]
         [Unique]
         [HideForUser]
@@ -78,7 +78,7 @@ namespace ExpressBase.Objects
         //[EnableInBuilder(BuilderType.DisplayBlock, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.SqlFunctions, BuilderType.FilterDialog, BuilderType.WebForm, BuilderType.MobileForm, BuilderType.UserControl, BuilderType.Report, BuilderType.DVBuilder, BuilderType.EmailBuilder, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.ApiBuilder)]
         //string RefId { get; set; }
 
-        //[Description("Identity")]
+        //[Description("Core")]
         //[EnableInBuilder(BuilderType.DisplayBlock, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.SqlFunctions, BuilderType.FilterDialog, BuilderType.WebForm, BuilderType.MobileForm, BuilderType.UserControl, BuilderType.Report, BuilderType.DVBuilder, BuilderType.EmailBuilder, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.ApiBuilder)]
         //[EbRequired]
         //[Unique]

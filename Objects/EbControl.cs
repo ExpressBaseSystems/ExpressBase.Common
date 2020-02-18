@@ -84,14 +84,14 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual string ChildOf { get; set; }
 
-        [PropertyGroup("Behavior")]
+        [PropertyGroup("Validations")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HelpText("Set true if want unique value for this control on every form save.")]
         public virtual bool Unique { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [OnChangeUIFunction("Common.HELP_TEXT")]
-        [PropertyGroup("Identity")]
+        [PropertyGroup("Core")]
         [UIproperty]
         [HelpText("Desciption about the field to show under the control.")]
         public virtual string HelpText { get; set; }
@@ -102,16 +102,17 @@ namespace ExpressBase.Common.Objects
         [HideInPropertyGrid]
         public virtual EbDbTypes EbDbType { get { return EbDbTypes.Decimal; } set { } }
 
-        [PropertyGroup("Identity")]
+        [PropertyGroup("Core")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [UIproperty]
         [Unique]
         [OnChangeUIFunction("Common.LABEL")]
+        [PropertyPriority(98)]
         [PropertyEditor(PropertyEditorType.MultiLanguageKeySelector)]
         [HelpText("Label for the control to identify it's purpose.")]
         public virtual string Label { get; set; }
 
-        [PropertyGroup("Behavior")]
+        [PropertyGroup("Validations")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.Collection)]
         [HelpText("List of validators to consider before form save.")]
@@ -185,14 +186,14 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HelpText("Help text which shows when mouse hover the control")]
-        [PropertyGroup("Identity")]
+        [PropertyGroup("Core")]
         public virtual string ToolTipText { get; set; }
 
         [PropertyGroup("Layout")]
         [HelpText("Set height for the control.")]
         public virtual int Height { get; set; }
 
-        [PropertyGroup("Behavior")]
+        [PropertyGroup("Validations")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HelpText("Set true if you want to make sure this field is not empty when form save.")]
         public virtual bool Required { get; set; }
@@ -494,7 +495,7 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public string EbSid { get; set; }
 
-        [PropertyGroup("Identity")]
+        [PropertyGroup("Core")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [EbRequired]
         [Unique]

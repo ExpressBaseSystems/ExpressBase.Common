@@ -34,6 +34,7 @@ namespace ExpressBase.Common.Objects
         [UIproperty]
         [OnChangeUIFunction("Common.MARGIN")]
         [DefaultPropValue(4, 4, 4, 4)]
+        [PropertyPriority(-1)]
         public virtual UISides Margin { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
