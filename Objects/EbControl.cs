@@ -203,7 +203,7 @@ namespace ExpressBase.Common.Objects
 
         public virtual bool isFullViewContol { get; set; }
 
-        [PropertyGroup("Behavior")]
+        [PropertyGroup("Data")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HelpText("Set true if you dont want to save value from this field.")]
         public virtual bool DoNotPersist { get; set; }

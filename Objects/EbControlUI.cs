@@ -19,6 +19,7 @@ namespace ExpressBase.Common.Objects
         [UIproperty]
         [OnChangeUIFunction("Common.FORECOLOR")]
         [Attributes.DefaultPropValue("#333333")]
+        [Alias("Text Color")]
         public virtual string ForeColor { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
@@ -43,6 +44,7 @@ namespace ExpressBase.Common.Objects
         [Attributes.DefaultPropValue("#333333")]
         [UIproperty]
         [OnChangeUIFunction("Common.LABEL_COLOR")]
+        [Alias("Label Color")]
         public virtual string LabelForeColor { get; set; }
 
         //[EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]

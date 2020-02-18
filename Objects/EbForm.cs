@@ -60,7 +60,7 @@ namespace ExpressBase.Common.Objects
 
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyGroup("Behavior")]
+        [PropertyGroup("Validations")]
         public override List<EbValidator> Validators { get; set; }
 
         //UI Properties

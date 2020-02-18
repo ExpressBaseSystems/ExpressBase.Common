@@ -37,6 +37,7 @@ namespace ExpressBase.Objects
         [PropertyPriority(99)]
         public virtual string DisplayName { get; set; }
 
+        [PropertyGroup("Core")]
         public virtual string Description { get; set; }
 
         public virtual string VersionNumber { get; set; }
