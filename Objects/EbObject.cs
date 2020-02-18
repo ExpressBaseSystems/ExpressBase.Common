@@ -1,4 +1,5 @@
-﻿using ExpressBase.Common.Extensions;
+﻿using ExpressBase.Common.Constants;
+using ExpressBase.Common.Extensions;
 using ExpressBase.Common.Objects;
 using ExpressBase.Common.Objects.Attributes;
 using ServiceStack;
@@ -20,7 +21,7 @@ namespace ExpressBase.Objects
         [EbRequired]
         [Unique]
         [regexCheck]
-        [PropertyGroup("Core")]
+        [PropertyGroup(PGConstants.CORE)]
         [InputMask("[a-z][a-z0-9]*(_[a-z0-9]+)*")]
         [PropertyPriority(100)]
         [HideForUser]
@@ -30,14 +31,14 @@ namespace ExpressBase.Objects
 
         public virtual string RefId { get; set; }
 
-        [PropertyGroup("Core")]
+        [PropertyGroup(PGConstants.CORE)]
         [EbRequired]
         [Unique]
         [HideForUser]
         [PropertyPriority(99)]
         public virtual string DisplayName { get; set; }
 
-        [PropertyGroup("Core")]
+        [PropertyGroup(PGConstants.HELP)]
         public virtual string Description { get; set; }
 
         public virtual string VersionNumber { get; set; }

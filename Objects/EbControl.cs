@@ -12,6 +12,7 @@ using ExpressBase.Common.Extensions;
 using System.Runtime.Serialization;
 using System.Data.Common;
 using ExpressBase.Common.LocationNSolution;
+using ExpressBase.Common.Constants;
 
 namespace ExpressBase.Common.Objects
 {
@@ -91,7 +92,7 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [OnChangeUIFunction("Common.HELP_TEXT")]
-        [PropertyGroup("Core")]
+        [PropertyGroup(PGConstants.HELP)]
         [UIproperty]
         [HelpText("Desciption about the field to show under the control.")]
         public virtual string HelpText { get; set; }
@@ -102,7 +103,7 @@ namespace ExpressBase.Common.Objects
         [HideInPropertyGrid]
         public virtual EbDbTypes EbDbType { get { return EbDbTypes.Decimal; } set { } }
 
-        [PropertyGroup("Core")]
+        [PropertyGroup(PGConstants.CORE)]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [UIproperty]
         [Unique]
@@ -118,7 +119,7 @@ namespace ExpressBase.Common.Objects
         [HelpText("List of validators to consider before form save.")]
         public virtual List<EbValidator> Validators { get; set; }
 
-        [PropertyGroup("Behavior")]
+        [PropertyGroup(PGConstants.VALUE)]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
         [HelpText("Define default value of the control.")]
@@ -134,7 +135,7 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS, PropertyEditorType.ScriptEditorSQ)]
         [Alias("Value Expression")]
-        [PropertyGroup("Behavior")]
+        [PropertyGroup(PGConstants.VALUE)]
         [HelpText("Define how value of this field should be calculated.")]
         public virtual EbScript ValueExpr { get; set; }
 
@@ -186,7 +187,7 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HelpText("Help text which shows when mouse hover the control")]
-        [PropertyGroup("Core")]
+        [PropertyGroup(PGConstants.HELP)]
         public virtual string ToolTipText { get; set; }
 
         [PropertyGroup("Layout")]
@@ -203,7 +204,7 @@ namespace ExpressBase.Common.Objects
 
         public virtual bool isFullViewContol { get; set; }
 
-        [PropertyGroup("Data")]
+        [PropertyGroup(PGConstants.DATA)]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HelpText("Set true if you dont want to save value from this field.")]
         public virtual bool DoNotPersist { get; set; }
@@ -495,7 +496,7 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public string EbSid { get; set; }
 
-        [PropertyGroup("Core")]
+        [PropertyGroup(PGConstants.CORE)]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [EbRequired]
         [Unique]

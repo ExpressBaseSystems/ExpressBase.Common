@@ -1,4 +1,5 @@
-﻿using ExpressBase.Common.Objects.Attributes;
+﻿using ExpressBase.Common.Constants;
+using ExpressBase.Common.Objects.Attributes;
 using ExpressBase.Objects;
 using Newtonsoft.Json;
 using System;
@@ -15,11 +16,11 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public override string RefId { get; set; }
 
-        [PropertyGroup("Core")]
+        [PropertyGroup(PGConstants.CORE)]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public override string DisplayName { get; set; }
 
-        [PropertyGroup("Data")]
+        [PropertyGroup(PGConstants.DATA)]
         [EbRequired]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public override string TableName { get; set; }
