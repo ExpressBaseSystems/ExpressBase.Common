@@ -116,11 +116,10 @@ namespace ExpressBase.Common.Objects.Attributes
         public OSE_ObjectTypes(params int[] objectTypes) { this.ObjectTypes = objectTypes; }
     }
 
-
     public class HideForUser : Attribute
     {
     }
-    
+
     public class OnChangeExec : Attribute
     {
         public string JsCode { get; set; }
@@ -236,7 +235,8 @@ namespace ExpressBase.Common.Objects.Attributes
                 if (val4 != null)
                     this.Values.Add(val4);
             }
-            catch (Exception ee) {
+            catch (Exception ee)
+            {
                 ;
             }
         }
@@ -301,7 +301,7 @@ namespace ExpressBase.Common.Objects.Attributes
                     $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('.gb-border').css('border','dashed 1px rgba(0, 0, 0, 0.12)');";
 
         public const string CONTROL_ICON = @"
-                if(props.ShowIcon)
+                if(!props.HideInputIcon)
                     $(`#cont_${elementId}.Eb-ctrlContainer .ctrl-cover`).closestInner('.input-group-addon').show();
                 else
                     $(`#cont_${elementId}.Eb-ctrlContainer .ctrl-cover`).closestInner('.input-group-addon').hide();";

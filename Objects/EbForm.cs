@@ -15,7 +15,7 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public override string RefId { get; set; }
 
-        [PropertyGroup("Identity")]
+        [PropertyGroup("Core")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public override string DisplayName { get; set; }
 
@@ -60,7 +60,7 @@ namespace ExpressBase.Common.Objects
 
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyGroup("Behavior")]
+        [PropertyGroup("Validations")]
         public override List<EbValidator> Validators { get; set; }
 
         //UI Properties

@@ -50,6 +50,10 @@ namespace ExpressBase.Common.Objects
             this.Controls = new List<EbControl>();
         }
 
+        public override string BackColor { get; set; }
+
+        public override string ForeColor { get; set; }
+
         //[JsonIgnore]
         public override bool Hidden { get; set; }
 
