@@ -10,6 +10,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
 using ExpressBase.Objects;
+using ExpressBase.Common.Constants;
 
 namespace ExpressBase.Common.Objects
 {
@@ -50,6 +51,10 @@ namespace ExpressBase.Common.Objects
             this.Controls = new List<EbControl>();
         }
 
+        public override string BackColor { get; set; }
+
+        public override string ForeColor { get; set; }
+
         //[JsonIgnore]
         public override bool Hidden { get; set; }
 
@@ -65,8 +70,7 @@ namespace ExpressBase.Common.Objects
         [JsonIgnore]
         public override bool DoNotPersist { get; set; }
 
-        //[JsonIgnore]
-        //public override EbScript OnChangeFn { get; set; }
+        public override EbScript OnChangeFn { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
@@ -79,14 +83,14 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.Expandable)]
-        [PropertyGroup("Appearance")]
+        [PropertyGroup(PGConstants.APPEARANCE)]
         [UIproperty]
         [OnChangeUIFunction("Common.PADDING")]
         //[DefaultPropValue(4, 4, 4, 4)]
         public virtual UISides Padding { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
-        [PropertyGroup("Data")]
+        [PropertyGroup(PGConstants.DATA)]
         [PropertyPriority(70)]
         [HelpText("Name Of database-table Which you want to store Data collected using this Form")]
         [InputMask("[a-z][a-z0-9]*(_[a-z0-9]+)*")]
