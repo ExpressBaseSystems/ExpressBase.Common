@@ -90,7 +90,7 @@ else ";
 
         public const string Ctrl_DisableJSfn = @"$('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none').find('[ui-inp]').css('background-color', '#f3f3f3');";
 
-        public const string Ctrl_IsRequiredOKJSfn = @" let val = this.getValueFromDOM(); return !this.isInVisibleInUI ? (!isNaNOrEmpty(val) && val !== null && val !== 0): true;";
+        public const string Ctrl_IsRequiredOKJSfn = @"let val = this.getValueFromDOM(); return !this.isInVisibleInUI ? (!isNaNOrEmpty(val) && val !== null && val !== 0): true;";
 
         public const string PS_JustSetValueJSfn = @"
 {
