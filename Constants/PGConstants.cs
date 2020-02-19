@@ -25,5 +25,9 @@ namespace ExpressBase.Common.Constants
         public const string SEARCH= "Search";
 
         public const string EVENTS= "Events";
+
+        public const string DATA_INSERT= "Data Insert";
+
+        public const string DATA_SETTINGS= "Data Settings";
     }
 }
