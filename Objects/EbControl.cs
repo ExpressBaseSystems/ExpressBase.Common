@@ -195,6 +195,7 @@ namespace ExpressBase.Common.Objects
         public virtual int Height { get; set; }
 
         [PropertyGroup("Validations")]
+        [PropertyPriority(10)]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HelpText("Set true if you want to make sure this field is not empty when form save.")]
         public virtual bool Required { get; set; }
@@ -229,7 +230,7 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyGroup("Behavior")]
-        [PropertyPriority(99)]
+        [PropertyPriority(95)]
         [HelpText("Set true if you want to hide the control.")]
         public virtual bool Hidden { get; set; }
 

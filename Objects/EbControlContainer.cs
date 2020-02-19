@@ -83,7 +83,7 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.Expandable)]
-        [PropertyGroup("Appearance")]
+        [PropertyGroup(PGConstants.APPEARANCE)]
         [UIproperty]
         [OnChangeUIFunction("Common.PADDING")]
         //[DefaultPropValue(4, 4, 4, 4)]

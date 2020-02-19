@@ -38,7 +38,7 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.Expandable)]
-        [PropertyGroup("Appearance")]
+        [PropertyGroup(PGConstants.APPEARANCE)]
         [UIproperty]
         [OnChangeUIFunction("Common.ROOT_OBJ_PADDING")]
         [DefaultPropValue(8, 8, 8, 8)]
