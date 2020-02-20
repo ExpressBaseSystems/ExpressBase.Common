@@ -1,4 +1,5 @@
-﻿using ExpressBase.Common.Objects.Attributes;
+﻿using ExpressBase.Common.Constants;
+using ExpressBase.Common.Objects.Attributes;
 using System.ComponentModel;
 
 namespace ExpressBase.Common.Objects
@@ -7,22 +8,23 @@ namespace ExpressBase.Common.Objects
     {
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyGroup("Appearance")]
+        [PropertyGroup(PGConstants.APPEARANCE)]
         [PropertyEditor(PropertyEditorType.Color)]
         [UIproperty]
         [OnChangeUIFunction("Common.BACKCOLOR")]
         public virtual string BackColor { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyGroup("Appearance")]
+        [PropertyGroup(PGConstants.APPEARANCE)]
         [PropertyEditor(PropertyEditorType.Color)]
         [UIproperty]
         [OnChangeUIFunction("Common.FORECOLOR")]
         [Attributes.DefaultPropValue("#333333")]
+        [Alias("Text Color")]
         public virtual string ForeColor { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyGroup("Appearance")]
+        [PropertyGroup(PGConstants.APPEARANCE)]
         [PropertyEditor(PropertyEditorType.Color)]
         [UIproperty]
         [OnChangeUIFunction("Common.LABEL_BACKCOLOR")]
@@ -30,28 +32,30 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.Expandable)]
-        [PropertyGroup("Appearance")]
+        [PropertyGroup(PGConstants.APPEARANCE)]
         [UIproperty]
         [OnChangeUIFunction("Common.MARGIN")]
         [DefaultPropValue(4, 4, 4, 4)]
+        [PropertyPriority(-1)]
         public virtual UISides Margin { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyGroup("Appearance")]
+        [PropertyGroup(PGConstants.APPEARANCE)]
         [PropertyEditor(PropertyEditorType.Color)]
         [Attributes.DefaultPropValue("#333333")]
         [UIproperty]
         [OnChangeUIFunction("Common.LABEL_COLOR")]
+        [Alias("Label Color")]
         public virtual string LabelForeColor { get; set; }
 
         //[EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
-        //[PropertyGroup("Appearance")]
+        //[PropertyGroup(PGConstants.APPEARANCE)]
         //[UIproperty]
         //[PropertyEditor(PropertyEditorType.Label)]
         //public virtual string FontFamily { get; set; }
 
         [EnableInBuilder(BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyGroup("Appearance")]
+        [PropertyGroup(PGConstants.APPEARANCE)]
         [UIproperty]
         public virtual float FontSize { get; set; }
 

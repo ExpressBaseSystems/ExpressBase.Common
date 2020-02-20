@@ -19,6 +19,11 @@ namespace ExpressBase.Common.ServerEvents_Artifacts
         [DataMember(Order = 3)]
         public string ToUserAuthId { get; set; }
 
+        [DataMember(Order = 4)]
+        public string NotificationId { get; set; }
+
+        [DataMember(Order = 5)]
+        public int NotifyUserId { get; set; }
     }
 
     public class NotifyResponse : IEbSSResponse
@@ -63,6 +68,55 @@ namespace ExpressBase.Common.ServerEvents_Artifacts
 
         [DataMember(Order = 1)]
         public object Msg { get; set; }
+    }
+
+    public class NotificationToDBRequest : EbServiceStackAuthRequest, IReturn<NotificationToDBResponse>
+    {
+        public object Notification { get; set; }
+
+        public string NotificationId { get; set; }
+
+        public int NotifyUserId { get; set; }
+    }
+
+    public class NotificationToDBResponse : IEbSSResponse
+    {
+        [DataMember(Order = 1)]
+        public ResponseStatus ResponseStatus { get; set; }
+    }
+
+    [DataContract]
+    public class NotifyUsersRequest : EbServiceStackAuthRequest, IReturn<NotifyResponse>
+    {
+        [DataMember(Order = 0)]
+        public string[] ToChannel { get; set; }
+
+        [DataMember(Order = 1)]
+        public string Selector { get; set; }
+
+        [DataMember(Order = 2)]
+        public object Msg { get; set; }
+
+        [DataMember(Order = 3)]
+        public string ToUserAuthId { get; set; }
+
+        [DataMember(Order = 4)]
+        public string NotificationId { get; set; }
+
+        [DataMember(Order = 5)]
+        public int[] UsersId { get; set; }
+
+    }
+
+    public class NotificationInfo
+    {
+        public string Title { get; set; }
+
+        public string Link { get; set; }
+
+        public string NotificationId { get; set; }
+
+        public string Duration { get; set; }
     }
 }
 

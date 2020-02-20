@@ -1026,6 +1026,14 @@ namespace ExpressBase.Common.Data.MSSQLServer
             }
         }
 
+        public override string EB_GET_MOBILE_PAGES_OBJS
+        {
+            get
+            {
+                return @"";
+            }
+        }
+
         public override string EB_GET_USER_DASHBOARD_OBJECTS
         {
             get

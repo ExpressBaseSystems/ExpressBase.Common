@@ -1032,7 +1032,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
 							WHERE 
 								is_attempt_failed = :islg
 								AND signin.user_id = :usrid
-								AND signin.user_id = users.id
+								AND users.id = :usrid
 							ORDER BY 
 								signin.signin_at DESC;";
             }
@@ -1059,6 +1059,38 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"AND OD.id = ANY(string_to_array(:objids, ',')::int[]) ";
+            }
+        }
+
+        public override string EB_GET_MOBILE_PAGES_OBJS
+        {
+            get
+            {
+                return @"SELECT obj_name,display_name,obj_type,version_num,obj_json,refid FROM (
+				                                SELECT 
+					                                EO.id,EO.obj_name,EO.display_name,EO.obj_type,EOV.version_num, EOV.obj_json,EOV.refid
+				                                FROM
+					                                eb_objects EO
+				                                LEFT JOIN 
+					                                eb_objects_ver EOV ON (EOV.eb_objects_id = EO.id)
+				                                LEFT JOIN
+					                                eb_objects_status EOS ON (EOS.eb_obj_ver_id = EOV.id)
+				                                WHERE
+					                                COALESCE(EO.eb_del, 'F') = 'F'
+				                                AND
+					                                EOS.status = 3
+				                                AND 
+					                                EO.obj_type = ANY(ARRAY[13,3])
+				                                AND 
+					                                EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id)
+				                                ) OD 
+                                LEFT JOIN eb_objects2application EO2A ON (EO2A.obj_id = OD.id)
+                                WHERE 
+	                                EO2A.app_id = @appid 
+                                {0}
+                                AND 
+	                                COALESCE(EO2A.eb_del, 'F') = 'F';
+                                SELECT app_settings FROM eb_applications WHERE id = @appid";
             }
         }
 
