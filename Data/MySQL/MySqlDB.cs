@@ -1250,6 +1250,38 @@ namespace ExpressBase.Common
             }
         }
 
+        public override string EB_GET_MOBILE_PAGES_OBJS
+        {
+            get
+            {
+                return @"SELECT obj_name,display_name,obj_type,version_num,obj_json,refid FROM (
+				                                SELECT 
+					                                EO.id,EO.obj_name,EO.display_name,EO.obj_type,EOV.version_num, EOV.obj_json,EOV.refid
+				                                FROM
+					                                eb_objects EO
+				                                LEFT JOIN 
+					                                eb_objects_ver EOV ON (EOV.eb_objects_id = EO.id)
+				                                LEFT JOIN
+					                                eb_objects_status EOS ON (EOS.eb_obj_ver_id = EOV.id)
+				                                WHERE
+					                                COALESCE(EO.eb_del, 'F') = 'F'
+				                                AND
+					                                EOS.status = 3
+				                                AND 
+					                                FIND_IN_SET(EO.obj_type, '13,3')
+				                                AND 
+					                                EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id)
+				                                ) OD 
+                                LEFT JOIN eb_objects2application EO2A ON (EO2A.obj_id = OD.id)
+                                WHERE 
+	                                EO2A.app_id = @appid 
+                                {0}
+                                AND 
+	                                COALESCE(EO2A.eb_del, 'F') = 'F';
+                                SELECT app_settings FROM eb_applications WHERE id = @appid";
+            }
+        }
+
         public override string EB_GET_USER_DASHBOARD_OBJECTS
         {
             get
