@@ -242,12 +242,12 @@ namespace ExpressBase.Common
 
         public string MasterTable { set; get; }
 
-        public List<Object> ExtendedControls { get; set; }
+        public List<EbControl> ExtendedControls { get; set; }
 
         public WebFormSchema()
         {
             Tables = new List<TableSchema>();
-            ExtendedControls = new List<Object>();
+            ExtendedControls = new List<EbControl>();
         }
     }
 
@@ -288,6 +288,7 @@ namespace ExpressBase.Common
     {
         Normal,
         Grid,
-        Approval
+        Approval,
+        Review
     }
 }
