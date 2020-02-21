@@ -940,4 +940,16 @@
   <data name="eb_files_bytea3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\sqlserver\filesdb\tablecreate\eb_files_bytea.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="eb_notifications" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_notifications.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_notifications1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\datadb\tablecreate\eb_notifications.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_notifications2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\datadb\tablecreate\eb_notifications.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_notifications3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\sqlserver\datadb\tablecreate\eb_notifications.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
 </root>

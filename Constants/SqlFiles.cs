@@ -50,6 +50,7 @@ namespace ExpressBase.Common.Constants
                         "datadb.tablecreate.eb_users.sql",
                         "datadb.tablecreate.eb_userstatus.sql",
                         "datadb.tablecreate.eb_public_holidays.sql",
+                        "datadb.tablecreate.eb_notifications.sql",
                         "filesdb.tablecreate.eb_files_bytea.sql",                       
                         "objectsdb.functioncreate.eb_get_tagged_object.sql",
                         "objectsdb.functioncreate.eb_objects_change_status.sql",

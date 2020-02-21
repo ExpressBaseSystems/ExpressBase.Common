@@ -2650,6 +2650,62 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_notifications
+        ///
+        ///-- DROP TABLE public.eb_notifications;
+        ///
+        ///CREATE TABLE public.eb_notifications
+        ///(
+        ///    id SERIAL,
+        ///    user_id integer,
+        ///    message_seen &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    notification_id text COLLATE pg_catalog.&quot;default&quot;,
+        ///    notification json,
+        ///    created_at timestamp without time zone DEFAULT now(),
+        ///    CONSTRAINT eb_notifications_pkey PRIMARY KEY (id)
+        ///)
+        ///WITH (
+        ///    OIDS = FALSE
+        ///)
+        ///TABLESPACE pg_default;
+        ///
+        ///ALTER TABLE public.eb_notifications
+        ///    OWNER to postgr [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_notifications {
+            get {
+                return ResourceManager.GetString("eb_notifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- oracle.
+        /// </summary>
+        public static string eb_notifications1 {
+            get {
+                return ResourceManager.GetString("eb_notifications1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- mysql.
+        /// </summary>
+        public static string eb_notifications2 {
+            get {
+                return ResourceManager.GetString("eb_notifications2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- sql server.
+        /// </summary>
+        public static string eb_notifications3 {
+            get {
+                return ResourceManager.GetString("eb_notifications3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to -- FUNCTION: public.eb_object_create_major_version(text, integer, integer, text, text, text[])
         ///
         ///-- DROP FUNCTION public.eb_object_create_major_version(text, integer, integer, text, text, text[]);
