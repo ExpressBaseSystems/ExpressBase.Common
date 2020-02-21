@@ -1,5 +1,6 @@
 ﻿using ExpressBase.Common.EbServiceStack.ReqNRes;
 using ServiceStack;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace ExpressBase.Common.ServerEvents_Artifacts
@@ -45,7 +46,7 @@ namespace ExpressBase.Common.ServerEvents_Artifacts
     }
 
     [DataContract]
-    public class NotifySubsribtionRequest : EbServiceStackAuthRequest, IReturn<NotifyResponse>
+    public class NotifySubscriptionRequest : EbServiceStackAuthRequest, IReturn<NotifyResponse>
     {
         [DataMember(Order = 0)]
         public string[] ToChannel { get; set; }
@@ -104,7 +105,7 @@ namespace ExpressBase.Common.ServerEvents_Artifacts
         public string NotificationId { get; set; }
 
         [DataMember(Order = 5)]
-        public int[] UsersId { get; set; }
+        public List<int> UsersId { get; set; }
 
     }
 
