@@ -69,6 +69,7 @@
     <PackageReference Include="protobuf-net" Version="2.3.2" />
     <PackageReference Include="Sendgrid" Version="9.11.0" />
     <PackageReference Include="Stripe.net" Version="27.15.0" />
+    <PackageReference Include="Syncfusion.XlsIO.Net.Core" Version="17.4.0.44" />
     <PackageReference Include="Twilio" Version="5.9.8" />
   </ItemGroup>
 
