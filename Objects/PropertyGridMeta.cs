@@ -35,6 +35,9 @@ namespace ExpressBase.Common.Objects
         public string OnChangeExec { get; set; }
 
         [JsonConverter(typeof(FunctionSerializer))]
+        public string PropDataSourceJsFn { get; set; }
+
+        [JsonConverter(typeof(FunctionSerializer))]
         public string CEOnSelectFn { get; set; }
 
         [JsonConverter(typeof(FunctionSerializer))]

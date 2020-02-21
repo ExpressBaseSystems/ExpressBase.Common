@@ -1,4 +1,5 @@
-﻿using ExpressBase.Common.Objects.Attributes;
+﻿using ExpressBase.Common.Constants;
+using ExpressBase.Common.Objects.Attributes;
 using ExpressBase.Objects;
 using Newtonsoft.Json;
 using System;
@@ -15,11 +16,11 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public override string RefId { get; set; }
 
-        [PropertyGroup("Identity")]
+        [PropertyGroup(PGConstants.CORE)]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public override string DisplayName { get; set; }
 
-        [PropertyGroup("Data")]
+        [PropertyGroup(PGConstants.DATA)]
         [EbRequired]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public override string TableName { get; set; }
@@ -37,7 +38,7 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.Expandable)]
-        [PropertyGroup("Appearance")]
+        [PropertyGroup(PGConstants.APPEARANCE)]
         [UIproperty]
         [OnChangeUIFunction("Common.ROOT_OBJ_PADDING")]
         [DefaultPropValue(8, 8, 8, 8)]
@@ -60,7 +61,7 @@ namespace ExpressBase.Common.Objects
 
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyGroup("Behavior")]
+        [PropertyGroup("Validations")]
         public override List<EbValidator> Validators { get; set; }
 
         //UI Properties

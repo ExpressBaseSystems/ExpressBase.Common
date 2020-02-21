@@ -108,6 +108,19 @@ namespace ExpressBase.Common
             }
             return null;
         }
+        
+        public void SetColumn(string cname, SingleColumn column)
+        {
+            for (int i = 0; i < this.Columns.Count; i++)
+            {
+                if (this.Columns[i].Name.Equals(cname))
+                {
+                    this.Columns[i] = column;
+                    return;
+                }
+            }
+            throw new KeyNotFoundException("KeyNotFoundException : Key = " + cname);
+        }
 
         public dynamic this[string name]
         {
@@ -132,7 +145,7 @@ namespace ExpressBase.Common
                         return;
                     }
                 }
-                throw new KeyNotFoundException { };
+                throw new KeyNotFoundException("KeyNotFoundException : Key = " + name);
             }
         }
 
@@ -146,7 +159,7 @@ namespace ExpressBase.Common
                     return;
                 }
             }
-            throw new KeyNotFoundException();
+            throw new KeyNotFoundException("KeyNotFoundException : Key = " + name);
         }
 
         public void SetControl(string name, EbControl control)
@@ -159,7 +172,7 @@ namespace ExpressBase.Common
                     return;
                 }
             }
-            throw new KeyNotFoundException();
+            throw new KeyNotFoundException("KeyNotFoundException : Key = " + name);
         }
     }
 
@@ -180,6 +193,8 @@ namespace ExpressBase.Common
         public Dictionary<string, SingleTable> ExtendedTables { get; set; }
 
         public Dictionary<string, SingleRow> DGsRowDataModel { get; set; }
+
+        public SingleRow ApprovalRowDataModel { get; set; }
 
         [JsonIgnore]
         public Dictionary<string, SingleTable> PsDm_Tables { get; set; }
@@ -227,12 +242,12 @@ namespace ExpressBase.Common
 
         public string MasterTable { set; get; }
 
-        public List<Object> ExtendedControls { get; set; }
+        public List<EbControl> ExtendedControls { get; set; }
 
         public WebFormSchema()
         {
             Tables = new List<TableSchema>();
-            ExtendedControls = new List<Object>();
+            ExtendedControls = new List<EbControl>();
         }
     }
 
@@ -250,9 +265,9 @@ namespace ExpressBase.Common
 
         public string ContainerName { get; set; }
         
-        public bool DescOdr { get; set; }//Descending order
+        public bool DescOdr { get; set; }//Descending order eb_row_num - datagrid
 
-        public bool IsDynamic { get; set; }
+        public bool IsDynamic { get; set; }//datagird in dynamic tab
 
         public TableSchema()
         {
@@ -273,6 +288,7 @@ namespace ExpressBase.Common
     {
         Normal,
         Grid,
-        Approval
+        Approval,
+        Review
     }
 }

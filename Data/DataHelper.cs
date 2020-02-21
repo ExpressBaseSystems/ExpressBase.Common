@@ -61,7 +61,6 @@ namespace ExpressBase.Common.Data
         public Param() { }
 
         [DataMember(Order = 1)]
-        [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         [DataMember(Order = 2)]

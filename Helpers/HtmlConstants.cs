@@ -67,13 +67,22 @@ else{
     EBPSSetDisplayMember.bind(this)(p1, p2);
 }";
 
-        public const string SS_SetValueJSfn = EbSimpleSelect_JustSetValueJSfn + ".trigger('change');";
+        public const string SS_SetValueJSfn = EbSimpleSelect_JustSetValueJSfn + " $('#' + this.EbSid_CtxId).trigger('change');";
+
+        public const string DG_hiddenColCheckCode = @"
+if(this.Hidden){
+    if(this.__isEditing)
+        this.curRowDataVals.Value = p1;
+    else
+        this.DataVals.Value = p1;
+}
+else ";
 
         public const string SS_EnableJSfn = @"return $('#' + this.EbSid_CtxId +'Wraper .dropdown-toggle').prop('disabled',false).css('pointer-events', 'inherit').css('background-color', '#fff');";
 
         public const string SS_DisableJSfn = @"return $('#' + this.EbSid_CtxId +'Wraper .dropdown-toggle').attr('disabled', 'disabled').css('pointer-events', 'none').css('background-color', '#f3f3f3');";
 
-        public const string SS_IsRequiredOKJSfn = @"return !this.isInVisibleInUI ? (!isNaNOrEmpty(this.getValue()) && (this.getValue() !== '-1')) : true;";
+        public const string SS_IsRequiredOKJSfn = @" let val = this.getValueFromDOM(); return !this.isInVisibleInUI ? (!isNaNOrEmpty(val) && (val !== '-1') && (val !== null)) : true;";
 
         public const string Ctrl_EnableJSfn = @"$('#cont_' + this.EbSid_CtxId + ' *').prop('disabled',false).css('pointer-events', 'inherit').find('[ui-inp]').css('background-color', '#fff');";
 
@@ -81,9 +90,12 @@ else{
 
         public const string Ctrl_DisableJSfn = @"$('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none').find('[ui-inp]').css('background-color', '#f3f3f3');";
 
-        public const string Ctrl_IsRequiredOKJSfn = @" let val = this.getValue(); return !this.isInVisibleInUI ? (!isNaNOrEmpty(val) && val !== null && val !== 0): true;";
+        public const string Ctrl_IsRequiredOKJSfn = @"let val = this.getValueFromDOM(); return !this.isInVisibleInUI ? (!isNaNOrEmpty(val) && val !== null && val !== 0): true;";
 
-        public const string PS_JustSetValueJSfn = @"this.initializer.justInit = true;" + PS_SetValueJSfn;
+        public const string PS_JustSetValueJSfn = @"
+{
+    this.initializer.justInit = true;" + PS_SetValueJSfn +
+"}";
 
         public const string PS_SetValueJSfn = @"
                     if(this.RenderAsSimpleSelect){"
@@ -114,19 +126,21 @@ else{"
 @"}";
 
         public const string EbSimpleSelect_JustSetValueJSfn = @"
-isContained = false;
-$('#' + this.EbSid_CtxId + ' option').each(function () {
-    if ($(this).attr('value') == p1) {
-        isContained = true;
-        return false;
-    }
-});
+{
+    isContained = false;
+    $('#' + this.EbSid_CtxId + ' option').each(function () {
+        if ($(this).attr('value') == p1) {
+            isContained = true;
+            return false;
+        }
+    });
 
-if(!isContained)
-    return;
-$('#' + this.EbSid_CtxId).selectpicker('val', p1)";
+    if(!isContained)
+        return;
+    $('#' + this.EbSid_CtxId).selectpicker('val', p1)
+}";
 
-        public const string CB_JustSetValueJSfn = @"$('#' + this.EbSid_CtxId).prop('checked', p1 === true)";
+        public const string CB_JustSetValueJSfn = @"$('#' + this.EbSid_CtxId).prop('checked', p1 === true);";
 
         public const string EbSimpleSelect_SetValueJSfn = @"
 isContained = false;

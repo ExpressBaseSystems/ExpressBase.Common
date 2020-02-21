@@ -748,26 +748,40 @@ namespace ExpressBase.Common
                 return @"SELECT id, applicationname,app_icon
                             FROM eb_applications
                             WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
-
-                        SELECT
-                            EO.id, EO.obj_type, EO.obj_name,
-                            EOV.version_num, EOV.refid, EO2A.app_id, EO.obj_desc, EOS.status, EOS.id, display_name
-                        FROM
-                            eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
-                        WHERE
-                            EOV.eb_objects_id = EO.id	
-                            AND EO.id = ANY('{:Ids}')               			    
-				            AND EOS.eb_obj_ver_id = EOV.id 
-				            AND EO2A.obj_id = EO.id
-				            AND EO2A.eb_del = 'F'
-                            AND EOS.status = 3 
-                            AND COALESCE( EO.eb_del, 'F') = 'F'
-				            AND EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id );
-                        SELECT object_id FROM eb_objects_favourites WHERE userid=:user_id AND eb_del='F'";
+                            SELECT 
+	                            OD.id as objectid, OD.obj_type,	OD.obj_name, OD.display_name, OD.refid,	EO2A.app_id
+                            FROM (
+		                            SELECT 
+			                            EO.id,EO.obj_type,EO.obj_name,EO.display_name,EOV.refid
+		                            FROM
+			                            eb_objects EO
+		                            LEFT JOIN 
+			                            eb_objects_ver EOV ON (EOV.eb_objects_id = EO.id)
+		                            LEFT JOIN
+			                            eb_objects_status EOS ON (EOS.eb_obj_ver_id = EOV.id)
+		                            WHERE
+			                            COALESCE(EO.eb_del, 'F') = 'F'
+		                            AND
+			                            EO.obj_type != ANY(ARRAY[13])
+		                            AND
+			                            EOS.status = 3
+		                            AND 
+			                            EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id)
+		                            ) OD 
+                            LEFT JOIN 
+	                            eb_objects2application EO2A ON (EO2A.obj_id = OD.id)
+                            LEFT JOIN 
+	                            eb_applications EA ON (EO2A.app_id = EA.id)
+                            WHERE 
+	                            COALESCE(EA.eb_del, 'F') = 'F'
+                            AND OD.id = ANY('{:Ids}') 
+                            AND 
+	                            COALESCE(EO2A.eb_del, 'F') = 'F';
+                            SELECT object_id FROM eb_objects_favourites WHERE userid=:user_id AND eb_del='F'";
             }
         }
 
-        public override string EB_SIDEBARCHECK { get { return "AND EO.id = ANY('{:Ids}') "; } }
+        public override string EB_SIDEBARCHECK { get { return "AND OD.id = ANY('{:Ids}') "; } }
 
         public override string EB_GETROLESRESPONSE_QUERY
         {
@@ -986,6 +1000,44 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
+        public override string EB_LOGIN_ACTIVITY_ALL_USERS
+        {
+            get
+            {
+                return @"SELECT 
+                                users.fullname, signin.device_info AS usertype, signin.ip_address, signin.signin_at, 
+                                TO_CHAR(signin.signin_at,'HH12:MI:SS') signin_time, signin.signout_at,
+							    TO_CHAR(signin.signout_at,'HH12:MI:SS') signout_time,
+								age(date_trunc('second', signout_at),date_trunc('second', signin_at))::text AS duration										
+						    FROM
+								eb_signin_log signin,
+								eb_users users
+							WHERE 
+								is_attempt_failed = :islg
+								AND	signin.user_id = users.id
+							ORDER BY 
+								signin.signin_at DESC;";
+            }
+        }
+
+        public override string EB_LOGIN_ACTIVITY_USERS
+        {
+            get
+            {
+                return @"SELECT 
+                                signin.ip_address, signin.signin_at, TO_CHAR(signin.signin_at,'HH12:MI:SS') signin_time, signin.signout_at,
+								TO_CHAR(signin.signout_at,'HH12:MI:SS') signout_time, age(date_trunc('second', signout_at),date_trunc('second', signin_at))::text AS duration
+							FROM
+								eb_signin_log signin, eb_users users
+							WHERE 
+								is_attempt_failed = :islg
+								AND signin.user_id = :usrid
+								AND users.id = :usrid
+							ORDER BY 
+								signin.signin_at DESC;";
+            }
+        }
+
         public override string EB_GET_CHART_DETAILS
         {
             get
@@ -1007,6 +1059,38 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"AND OD.id = ANY(string_to_array(:objids, ',')::int[]) ";
+            }
+        }
+
+        public override string EB_GET_MOBILE_PAGES_OBJS
+        {
+            get
+            {
+                return @"SELECT obj_name,display_name,obj_type,version_num,obj_json,refid FROM (
+				                                SELECT 
+					                                EO.id,EO.obj_name,EO.display_name,EO.obj_type,EOV.version_num, EOV.obj_json,EOV.refid
+				                                FROM
+					                                eb_objects EO
+				                                LEFT JOIN 
+					                                eb_objects_ver EOV ON (EOV.eb_objects_id = EO.id)
+				                                LEFT JOIN
+					                                eb_objects_status EOS ON (EOS.eb_obj_ver_id = EOV.id)
+				                                WHERE
+					                                COALESCE(EO.eb_del, 'F') = 'F'
+				                                AND
+					                                EOS.status = 3
+				                                AND 
+					                                EO.obj_type = ANY(ARRAY[13,3])
+				                                AND 
+					                                EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id)
+				                                ) OD 
+                                LEFT JOIN eb_objects2application EO2A ON (EO2A.obj_id = OD.id)
+                                WHERE 
+	                                EO2A.app_id = @appid 
+                                {0}
+                                AND 
+	                                COALESCE(EO2A.eb_del, 'F') = 'F';
+                                SELECT app_settings FROM eb_applications WHERE id = @appid";
             }
         }
 

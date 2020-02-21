@@ -986,6 +986,22 @@ namespace ExpressBase.Common.Data.MSSQLServer
             }
         }
 
+        public override string EB_LOGIN_ACTIVITY_ALL_USERS
+        {
+            get
+            {
+                return @"";
+            }
+        }
+
+        public override string EB_LOGIN_ACTIVITY_USERS
+        {
+            get
+            {
+                return @"";
+            }
+        }
+
         public override string EB_GET_CHART_DETAILS
         {
             get
@@ -1003,6 +1019,14 @@ namespace ExpressBase.Common.Data.MSSQLServer
         }
 
         public override string EB_GET_MOBILE_PAGES
+        {
+            get
+            {
+                return @"";
+            }
+        }
+
+        public override string EB_GET_MOBILE_PAGES_OBJS
         {
             get
             {

@@ -1174,6 +1174,44 @@ namespace ExpressBase.Common
             }
         }
 
+        public override string EB_LOGIN_ACTIVITY_ALL_USERS
+        {
+            get
+            {
+                return @"SELECT 
+	                            users.fullname, signin.device_info AS usertype, signin.ip_address, signin.signin_at, 
+	                            cast(date_format(signin.signin_at,'%h:%i:%s') as char(10)) signin_time, signin.signout_at, 
+                                cast(date_format(signin.signout_at,'%h:%i:%s') as char(10)) signout_time,
+	                            cast(SEC_TO_TIME(TIMESTAMPDIFF(second,signin_at, signout_at)) as char(15)) AS duration
+                            FROM
+	                            eb_signin_log signin, eb_users users
+                            WHERE 
+	                            is_attempt_failed = @islg
+	                            AND signin.user_id = users.id
+                            ORDER BY 
+	                            signin.signin_at DESC; ";
+            }
+        }
+
+        public override string EB_LOGIN_ACTIVITY_USERS
+        {
+            get
+            {
+                return @"SELECT
+	                            signin.ip_address, signin.signin_at, cast(date_format(signin.signin_at,'%h:%i:%s') as char(10)) signin_time,
+	                            signin.signout_at, cast(date_format(signin.signout_at,'%h:%i:%s') as char(10)) signout_time,
+	                            cast(SEC_TO_TIME(TIMESTAMPDIFF(second,signin_at, signout_at)) as char(15)) AS duration
+                            FROM
+	                            eb_signin_log signin, eb_users users
+                            WHERE 
+	                            is_attempt_failed = @islg
+	                            AND signin.user_id = @usrid
+	                            AND users.id = @usrid
+                            ORDER BY 
+	                            signin.signin_at DESC;";
+            }
+        }
+
         public override string EB_GET_CHART_DETAILS
         {
             get
@@ -1209,6 +1247,38 @@ namespace ExpressBase.Common
             get
             {
                 return @"AND FIND_IN_SET(OD.id, @objids) ";
+            }
+        }
+
+        public override string EB_GET_MOBILE_PAGES_OBJS
+        {
+            get
+            {
+                return @"SELECT obj_name,display_name,obj_type,version_num,obj_json,refid FROM (
+				                                SELECT 
+					                                EO.id,EO.obj_name,EO.display_name,EO.obj_type,EOV.version_num, EOV.obj_json,EOV.refid
+				                                FROM
+					                                eb_objects EO
+				                                LEFT JOIN 
+					                                eb_objects_ver EOV ON (EOV.eb_objects_id = EO.id)
+				                                LEFT JOIN
+					                                eb_objects_status EOS ON (EOS.eb_obj_ver_id = EOV.id)
+				                                WHERE
+					                                COALESCE(EO.eb_del, 'F') = 'F'
+				                                AND
+					                                EOS.status = 3
+				                                AND 
+					                                FIND_IN_SET(EO.obj_type, '13,3')
+				                                AND 
+					                                EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id)
+				                                ) OD 
+                                LEFT JOIN eb_objects2application EO2A ON (EO2A.obj_id = OD.id)
+                                WHERE 
+	                                EO2A.app_id = @appid 
+                                {0}
+                                AND 
+	                                COALESCE(EO2A.eb_del, 'F') = 'F';
+                                SELECT app_settings FROM eb_applications WHERE id = @appid";
             }
         }
 
