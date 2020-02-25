@@ -45,6 +45,8 @@ namespace ExpressBase.Common.LocationNSolution
     {
         public string SolutionID { get; set; }
 
+        public string ExtSolutionID { get; set; }
+
         public string SolutionName { get; set; }
 
         public int NumberOfUsers { get; set; }
@@ -61,10 +63,9 @@ namespace ExpressBase.Common.LocationNSolution
 
         public bool IsVersioningEnabled { get; set; }
 
-        public Dictionary<int,string> Users { get; set; }
+        public Dictionary<int, string> Users { get; set; }
 
         public int PlanUserCount { get; set; }
-
 
         public SolutionSettings SolutionSettings { get; set; }
 
