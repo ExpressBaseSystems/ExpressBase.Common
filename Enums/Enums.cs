@@ -296,9 +296,9 @@ namespace ExpressBase.Common
 
     public enum DeliveryMechanisms
     {
-        Email=1,
-        Sms =2,
-        Slack =3
+        Email = 1,
+        Sms = 2,
+        Slack = 3
     }
     public enum ScheduleStatuses
     {
@@ -316,6 +316,14 @@ namespace ExpressBase.Common
         Fail_Mode = 4,
         Preview_Mode = 5,
         Prefill_Mode = 6
+    }
+
+
+    public enum WebFormRenderModes
+    {
+        Normal = 1,
+        Partial = 2,
+        Signup = 3
     }
 
     public enum WebFormAfterSaveModes
