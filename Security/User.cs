@@ -33,29 +33,35 @@ namespace ExpressBase.Security
         public override List<string> Roles { get; set; }
 
         [DataMember(Order = 5)]
-        public override List<string> Permissions { get; set; }
+        public List<int> RoleIds { get; set; }
 
         [DataMember(Order = 6)]
-        public string AuthId { get; set; }
+        public List<int> UserGroupIds { get; set; }
 
         [DataMember(Order = 7)]
-        public Preferences Preference { get; set; }
+        public override List<string> Permissions { get; set; }
 
         [DataMember(Order = 8)]
-        public override string Email { get; set; }
+        public string AuthId { get; set; }
 
         [DataMember(Order = 9)]
-        public override string FullName { get; set; }
+        public Preferences Preference { get; set; }
 
         [DataMember(Order = 10)]
-        public int SignInLogId { get; set; }
+        public override string Email { get; set; }
 
         [DataMember(Order = 11)]
+        public override string FullName { get; set; }
+
+        [DataMember(Order = 12)]
+        public int SignInLogId { get; set; }
+
+        [DataMember(Order = 13)]
         public string SourceIp { get; set; }
         
         private List<string> _ebObjectIds = null;
 
-        [DataMember(Order = 13)]
+        [DataMember(Order = 14)]
         public List<string> EbObjectIds
         {
             get
@@ -536,20 +542,22 @@ namespace ExpressBase.Security
 
         private static User InitUserObject(EbDataTable ds, string context, string ipAddress, string deviceId)
         {
-            //Columns : _userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id
+            //Columns : _userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id, _usergroup_a
+            //              0         1         2        3         4           5            6                7               8              9           10
             User _user = null;
             int userid = Convert.ToInt32(ds.Rows[0][0]);
             if (userid > 0)
             {
                 bool sysRoleExists = false;
-                string[] rids = ds.Rows[0][4].ToString().Split(',');//role id array
+                string[] sRoleIds = ds.Rows[0][4].ToString().Split(',');//role id array
+                List<int> iRoleIds = new List<int>();
                 List<string> rolesname = ds.Rows[0][5].ToString().Split(',').ToList();
-                if (!rids[0].IsNullOrEmpty())
+                if (!sRoleIds[0].IsNullOrEmpty())
                 {
-                    List<int> rolesid = Array.ConvertAll(rids, int.Parse).ToList();
-                    for (var i = 0; i < rolesid.Count; i++)
+                    iRoleIds = Array.ConvertAll(sRoleIds, int.Parse).ToList();
+                    for (var i = 0; i < iRoleIds.Count; i++)
                     {
-                        int id = rolesid[i];
+                        int id = iRoleIds[i];
                         if (id < 100 && Enum.GetName(typeof(SystemRoles), id) != null)
                         {
                             rolesname[i] = Enum.GetName(typeof(SystemRoles), id);
@@ -559,18 +567,24 @@ namespace ExpressBase.Security
                 }
                 if (context.Equals(RoutingConstants.DC) && !sysRoleExists)
                     return null;
-                //if(Convert.ToInt32(ds.Rows[0][7]) != 100 && !sysRoleExists)//Constraints Status Demo Test
-                //	return null;
+
+                List<int> userGroupIds = new List<int>();
+                //string sUgIds = ds.Rows[0][10].ToString();
+                //if (!sUgIds.IsNullOrEmpty())
+                //    userGroupIds = Array.ConvertAll(sUgIds.Split(','), int.Parse).ToList();
+
                 _user = new User
                 {
                     UserId = userid,
                     Email = ds.Rows[0][2].ToString(),
                     FullName = ds.Rows[0][3].ToString(),
                     Roles = rolesname,
+                    RoleIds = iRoleIds,
                     Permissions = ds.Rows[0][6].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][6].ToString().Split(',').ToList(),
                     Preference = !string.IsNullOrEmpty(ds.Rows[0][7].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][7].ToString()) : new Preferences { Locale = "en-US", TimeZone = "(UTC) Coordinated Universal Time", DefaultLocation = -1 },
                     SignInLogId = Convert.ToInt32(ds.Rows[0][9]),
-                    SourceIp = ipAddress
+                    SourceIp = ipAddress,
+                    UserGroupIds = userGroupIds
                 };
                 if (!ds.Rows[0].IsDBNull(8) && !_user.Roles.Contains(SystemRoles.SolutionOwner.ToString()) && !_user.Roles.Contains(SystemRoles.SolutionAdmin.ToString()))
                 {
