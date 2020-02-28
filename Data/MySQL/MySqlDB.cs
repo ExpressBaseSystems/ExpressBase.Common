@@ -1290,7 +1290,7 @@ namespace ExpressBase.Common
                                 {0}
                                 AND 
 	                                COALESCE(EO2A.eb_del, 'F') = 'F';
-                                SELECT app_settings FROM eb_applications WHERE id = @appid";
+                                SELECT app_settings FROM eb_applications WHERE id = @appid;";
             }
         }
 
