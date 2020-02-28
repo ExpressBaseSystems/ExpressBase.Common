@@ -1096,15 +1096,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                                 {0}
                                 AND 
 	                                COALESCE(EO2A.eb_del, 'F') = 'F';
-                                SELECT app_settings FROM eb_applications WHERE id = @appid;
-                                SELECT 	* FROM 	eb_my_actions EACT WHERE COALESCE(EACT.is_completed, 'F') = 'F' AND COALESCE(EACT.eb_del, 'F') = 'F'
-                                AND	
-                                (:userid = ANY(string_to_array(EACT.user_ids, ',')::int[])
-	                            OR
-		                            EACT.role_id = ANY(string_to_array(:roleids,',')::int[]) 
-	                            OR 
-		                            EACT.usergroup_id = ANY(string_to_array(:usergroupids,',')::int[])
-	                            );";
+                                SELECT app_settings FROM eb_applications WHERE id = @appid;";
             }
         }
 
