@@ -1099,7 +1099,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                                 SELECT app_settings FROM eb_applications WHERE id = @appid;
                                 SELECT 	* FROM 	eb_my_actions EACT WHERE COALESCE(EACT.is_completed, 'F') = 'F' AND COALESCE(EACT.eb_del, 'F') = 'F'
                                 AND	
-                                (':userid' = ANY(STRING_TO_ARRAY(EACT.user_ids, ','))
+                                (:userid = ANY(string_to_array(EACT.user_ids, ',')::int[])
 	                            OR
 		                            EACT.role_id = ANY(string_to_array(:roleids,',')::int[]) 
 	                            OR 
