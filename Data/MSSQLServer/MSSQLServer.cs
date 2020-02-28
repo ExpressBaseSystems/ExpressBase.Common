@@ -350,7 +350,8 @@ namespace ExpressBase.Common.Data.MSSQLServer
                 }
                 catch (Exception e)
                 {
-
+                    if (con.State != ConnectionState.Closed)
+                        con.Close();
                     throw e;
                 }
                 //catch (SocketException scket) { }
@@ -362,16 +363,17 @@ namespace ExpressBase.Common.Data.MSSQLServer
         public override EbDataTable DoQuery(string query, params DbParameter[] parameters)
         {
             EbDataTable dt = new EbDataTable();
-
+            SqlConnection con = GetNewConnection() as SqlConnection;
             try
-            {
-                SqlConnection con = GetNewConnection() as SqlConnection;
+            {                
                 con.Open();
                 dt = DoQuery(con, query, parameters);
                 con.Close();
             }
             catch (Exception e)
             {
+                if (con.State != ConnectionState.Closed)
+                    con.Close();
                 Console.WriteLine("SQL Server Exception: " + e.Message);
                 throw e;
             }
@@ -382,16 +384,17 @@ namespace ExpressBase.Common.Data.MSSQLServer
         public override EbDataSet DoQueries(string query, params DbParameter[] parameters)
         {
             EbDataSet ds = new EbDataSet();
-
+            SqlConnection con = GetNewConnection() as SqlConnection;
             try
-            {
-                SqlConnection con = GetNewConnection() as SqlConnection;
+            {                
                 con.Open();
                 ds = DoQueries(con, query, parameters);
                 con.Close();
             }
             catch (Exception e)
             {
+                if (con.State != ConnectionState.Closed)
+                    con.Close();
                 Console.WriteLine("SQL Server Exception: " + e.Message);
                 throw e;
             }
@@ -402,15 +405,17 @@ namespace ExpressBase.Common.Data.MSSQLServer
         public override EbDataTable DoProcedure(string query, params DbParameter[] parameters)
         {
             EbDataTable tbl = new EbDataTable();
+            SqlConnection con = GetNewConnection() as SqlConnection;
             try
-            {
-                SqlConnection con = GetNewConnection() as SqlConnection;
+            {               
                 con.Open();
                 tbl = DoProcedure(con, query, parameters);
                 con.Close();
             }
             catch (SqlException myexec)
             {
+                if (con.State != ConnectionState.Closed)
+                    con.Close();
                 throw myexec;
             }
             return tbl;
@@ -428,6 +433,8 @@ namespace ExpressBase.Common.Data.MSSQLServer
             }
             catch (Exception e)
             {
+                if (con.State != ConnectionState.Closed)
+                    con.Close();
                 throw e;
             }
 

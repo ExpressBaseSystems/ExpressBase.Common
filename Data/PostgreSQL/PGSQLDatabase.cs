@@ -331,7 +331,8 @@ namespace ExpressBase.Common
                 }
                 catch (Npgsql.NpgsqlException npgse)
                 {
-
+                    if (con.State != ConnectionState.Closed)
+                        con.Close();
                     throw npgse;
                 }
                 catch (SocketException scket) { }
@@ -344,15 +345,17 @@ namespace ExpressBase.Common
         {
 
             EbDataTable dt = new EbDataTable();
+            var con = GetNewConnection() as NpgsqlConnection;
             try
-            {
-                var con = GetNewConnection() as NpgsqlConnection;
+            {                
                 con.Open();
                 dt = DoQuery(con, query, parameters);
                 con.Close();
             }
             catch (Npgsql.NpgsqlException npge)
             {
+                if (con.State != ConnectionState.Closed)
+                    con.Close();
                 throw npge;
             }
             return dt;
@@ -361,10 +364,9 @@ namespace ExpressBase.Common
         public override EbDataSet DoQueries(string query, params DbParameter[] parameters)
         {
             EbDataSet ds = new EbDataSet();
-
+            var con = GetNewConnection() as NpgsqlConnection;
             try
-            {
-                var con = GetNewConnection() as NpgsqlConnection;
+            {                
                 con.Open();
                 ds = DoQueries(con, query, parameters);
                 con.Close();
@@ -373,6 +375,8 @@ namespace ExpressBase.Common
             }
             catch (Npgsql.NpgsqlException npgse)
             {
+                if (con.State != ConnectionState.Closed)
+                    con.Close();
                 throw npgse;
             }
         }
@@ -385,15 +389,17 @@ namespace ExpressBase.Common
         public override int DoNonQuery(string query, params DbParameter[] parameters)
         {
             int val;
+            NpgsqlConnection con = GetNewConnection() as NpgsqlConnection;
             try
-            {
-                var con = GetNewConnection() as NpgsqlConnection;
+            {                
                 con.Open();
                 val = DoNonQuery(con, query, parameters);
                 con.Close();
             }
             catch (Npgsql.NpgsqlException npgse)
             {
+                if (con.State != ConnectionState.Closed)
+                    con.Close();
                 throw npgse;
             }
             return val;
