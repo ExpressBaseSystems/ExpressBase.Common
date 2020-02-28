@@ -37,6 +37,7 @@ namespace ExpressBase.Common.Objects.Attributes
         CollectionABCFrmSrc = 27,// collection editor
         Mapper = 35,// 
         ObjectSelectorCollection = 36,// 
+        IconPicker = 37,// 
         ScriptEditorJS = 64,
         ScriptEditorCS = 128,
         ScriptEditorSQ = 256
