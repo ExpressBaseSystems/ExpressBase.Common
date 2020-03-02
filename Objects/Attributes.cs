@@ -69,6 +69,16 @@ namespace ExpressBase.Common.Objects.Attributes
         }
     }
 
+    public class ReservedValues : Attribute
+    {
+        public string[] Values{ get; set; }
+
+        public ReservedValues(params string[] values)
+        {
+            Values = values;
+        }
+    }
+
     public class regexCheck : Attribute
     {
         string regex { set; get; }

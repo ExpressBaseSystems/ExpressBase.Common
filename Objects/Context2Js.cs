@@ -340,6 +340,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             {
                 _name = prop.GetCustomAttribute<JsonPropertyAttribute>().PropertyName;
             }
+
             Meta meta = new Meta { name = _name };
             IEnumerable<Attribute> propattrs = prop.GetCustomAttributes();
             foreach (Attribute attr in propattrs)
@@ -374,6 +375,8 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     meta.MetaOnly = true;
                 else if (attr is InputMask)
                     meta.MaskPattern = (attr as InputMask).MaskPattern;
+                if (attr is ReservedValues)
+                    meta.Dprop = String.Join(", ",(attr as ReservedValues).Values);
                 else if (attr is PropertyEditor)
                 {
                     meta.editor = (attr as PropertyEditor).PropertyEditorType;

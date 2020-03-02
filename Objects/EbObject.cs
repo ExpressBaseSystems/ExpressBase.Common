@@ -25,6 +25,7 @@ namespace ExpressBase.Objects
         [InputMask("[a-z][a-z0-9]*(_[a-z0-9]+)*")]
         [PropertyPriority(100)]
         [HideForUser]
+        [ReservedValues("review", "Review")]
         public virtual string Name { get; set; }
 
         public EbObject() { }
