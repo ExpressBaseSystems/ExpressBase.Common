@@ -1100,6 +1100,27 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
+        public override string EB_GET_MYACTIONS
+        {
+            get
+            {
+                return @"SELECT * FROM eb_my_actions EACT 
+                                WHERE
+                                    COALESCE(EACT.is_completed, 'F') = 'F'
+                                AND
+                                    COALESCE(EACT.eb_del, 'F') = 'F'
+                                AND
+                                (:userid = ANY(string_to_array(EACT.user_ids, ',')::int[])
+                                OR
+
+                                    EACT.role_id = ANY(string_to_array(:roleids, ',')::int[])
+                                OR
+
+                                    EACT.usergroup_id = ANY(string_to_array(:usergroupids, ',')::int[])
+                                ); ";
+            }
+        }
+
         public override string EB_GET_USER_DASHBOARD_OBJECTS
         {
             get

@@ -1294,6 +1294,21 @@ namespace ExpressBase.Common
             }
         }
 
+        public override string EB_GET_MYACTIONS
+        {
+            get
+            {
+                return @"SELECT * FROM eb_my_actions EACT 
+	                        WHERE 
+		                        COALESCE(EACT.is_completed, 'F') = 'F' 
+		                        AND COALESCE(EACT.eb_del, 'F') = 'F' 
+                                AND (FIND_IN_SET(@userid,EACT.user_ids)
+			                        OR FIND_IN_SET(EACT.role_id, @roleids)
+			                        OR FIND_IN_SET(EACT.usergroup_id, @usergroupids)
+			                        ); ";
+            }
+        }
+
         public override string EB_GET_USER_DASHBOARD_OBJECTS
         {
             get

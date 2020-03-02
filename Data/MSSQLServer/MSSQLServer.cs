@@ -1041,6 +1041,14 @@ namespace ExpressBase.Common.Data.MSSQLServer
             }
         }
 
+        public override string EB_GET_MYACTIONS
+        {
+            get
+            {
+                return @"";
+            }
+        }
+
         public override string EB_GET_USER_DASHBOARD_OBJECTS
         {
             get
