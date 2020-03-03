@@ -1104,20 +1104,23 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
         {
             get
             {
-                return @"SELECT * FROM eb_my_actions EACT 
-                                WHERE
-                                    COALESCE(EACT.is_completed, 'F') = 'F'
-                                AND
-                                    COALESCE(EACT.eb_del, 'F') = 'F'
-                                AND
-                                (:userid = ANY(string_to_array(EACT.user_ids, ',')::int[])
-                                OR
-
-                                    EACT.role_id = ANY(string_to_array(:roleids, ',')::int[])
-                                OR
-
-                                    EACT.usergroup_id = ANY(string_to_array(:usergroupids, ',')::int[])
-                                ); ";
+                return @"SELECT 
+                            EMA.*,ES.stage_name,ES.stage_unique_id,ESA.action_name,ESA.action_unique_id 
+                        FROM 
+                            eb_my_actions EMA
+                        INNER JOIN 
+                            eb_stages ES ON ES.id = EMA.eb_stages_id
+                        INNER JOIN 
+                            eb_stage_actions ESA ON ES.id = ESA.eb_stages_id
+                        WHERE 
+                            EMA.id = 1 AND COALESCE(ES.eb_del, 'F') = 'F'
+                        AND 
+                            (:userid = ANY(string_to_array(EMA.user_ids, ',')::int[])
+                            OR
+                                EMA.role_id = ANY(string_to_array(:roleids, ',')::int[])
+                            OR
+                                EMA.usergroup_id = ANY(string_to_array(:usergroupids, ',')::int[])
+                            )";
             }
         }
 
