@@ -1113,7 +1113,13 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                         INNER JOIN 
                             eb_stage_actions ESA ON ES.id = ESA.eb_stages_id
                         WHERE 
-                            EMA.id = 1 AND COALESCE(ES.eb_del, 'F') = 'F'
+                            COALESCE(EMA.is_completed, 'F') = 'F'
+                        AND
+                            COALESCE(EMA.eb_del, 'F') = 'F'
+                        AND 
+                            COALESCE(ES.eb_del, 'F') = 'F'
+                        AND
+                            COALESCE(ESA.eb_del, 'F') = 'F'
                         AND 
                             (:userid = ANY(string_to_array(EMA.user_ids, ',')::int[])
                             OR
