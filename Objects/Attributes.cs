@@ -154,6 +154,7 @@ namespace ExpressBase.Common.Objects.Attributes
 
     public class PropertyEditor : Attribute
     {
+        public bool BooleanOption { get; set; }
         public int PropertyEditorType { get; set; }
 
         public string PropertyEditorSource { get; set; }
@@ -177,6 +178,11 @@ namespace ExpressBase.Common.Objects.Attributes
         public PropertyEditor(PropertyEditorType type1, PropertyEditorType type2, PropertyEditorType type3)
         {
             this.PropertyEditorType = (int)type1 + (int)type2 + (int)type3;
+        }
+
+        public PropertyEditor(PropertyEditorType type, bool boolOpt) : this(type)
+        {
+            this.BooleanOption = boolOpt;
         }
 
         public PropertyEditor(PropertyEditorType type, string source) : this(type)

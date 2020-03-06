@@ -376,14 +376,18 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                 else if (attr is InputMask)
                     meta.MaskPattern = (attr as InputMask).MaskPattern;
                 if (attr is ReservedValues)
-                    meta.Dprop = String.Join(", ",(attr as ReservedValues).Values);
+                    meta.Dprop = String.Join(", ", (attr as ReservedValues).Values);
                 else if (attr is PropertyEditor)
                 {
-                    meta.editor = (attr as PropertyEditor).PropertyEditorType;
-                    meta.source = (attr as PropertyEditor).PropertyEditorSource;
-                    meta.Limit = (attr as PropertyEditor).Limit;
-                    meta.Dprop = (attr as PropertyEditor).DependantProp;
-                    meta.Dprop2 = (attr as PropertyEditor).DependantProp2;
+                    PropertyEditor PropertyEditorAttr = (attr as PropertyEditor);
+                    meta.editor = PropertyEditorAttr.PropertyEditorType;
+                    meta.source = PropertyEditorAttr.PropertyEditorSource;
+                    meta.Limit = PropertyEditorAttr.Limit;
+                    meta.Dprop = PropertyEditorAttr.DependantProp;
+                    meta.Dprop2 = PropertyEditorAttr.DependantProp2;
+
+                    if (PropertyEditorAttr.PropertyEditorType == (int)PropertyEditorType.DropDown && PropertyEditorAttr.BooleanOption)
+                        meta.Dprop = PropertyEditorAttr.BooleanOption.ToString();
 
                     if (prop.PropertyType.GetTypeInfo().IsEnum)
                     {
@@ -418,7 +422,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                         Type itemType = prop.PropertyType.GetGenericArguments()[0];
                         meta.options = getOptions(itemType);
                     }
-                    
+
                 }
                 if (attr is ListType)
                 {
