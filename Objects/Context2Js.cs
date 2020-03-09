@@ -503,7 +503,6 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             string s = @"this.{0} = {1};";
             string _c = @"this.Controls = new EbControlCollection(JSON.parse('{0}'));";
             string _name = prop.Name;
-
             if (prop.IsDefined(typeof(JsonPropertyAttribute)))
             {
                 _name = prop.GetCustomAttribute<JsonPropertyAttribute>().PropertyName;
@@ -545,6 +544,12 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                 return string.Format(s, _name, prop.GetValue(obj).ToString().ToLower());
             else if (prop.PropertyType.GetTypeInfo().IsEnum)
             {
+                if (prop.IsDefined(typeof(PropertyEditor)) && prop.GetCustomAttribute<PropertyEditor>().BooleanOption)
+                {
+                    Type[] args = prop.PropertyType.GetGenericArguments();
+                    Type itemType = args[0];
+                    return string.Format(s, _name, "{\"$type\":\"System.Collections.Generic.List`1[[@typeName, @nameSpace]], System.Private.CoreLib\",\"$values\":[]}".Replace("@typeName", itemType.FullName).Replace("@nameSpace", itemType.AssemblyQualifiedName.Split(",")[1]));
+                }
                 return string.Format(s, _name, ((int)prop.GetValue(obj)).ToString());
             }
             else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition().Name == "IDictionary`2")
