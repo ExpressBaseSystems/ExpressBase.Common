@@ -38,6 +38,8 @@ namespace ExpressBase.Common.Objects.Attributes
         Mapper = 35,// 
         ObjectSelectorCollection = 36,// 
         IconPicker = 37,// 
+        ShadowEditor= 38,// 
+        //ColorPicker = 39,// 
         ScriptEditorJS = 64,
         ScriptEditorCS = 128,
         ScriptEditorSQ = 256
