@@ -107,7 +107,8 @@ namespace ExpressBase.Common
             {
                 return @"SELECT id, role_name, description FROM eb_roles ORDER BY role_name;
                         SELECT id, name,description FROM eb_usergroup ORDER BY name;
-						SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';";
+						SELECT id, role1_id, role2_id FROM eb_role2role WHERE COALESCE(eb_del, 'F') = 'F';
+                        SELECT id, name FROM eb_user_types WHERE COALESCE(eb_del, 'F') = 'F';";
             }
         }
         public virtual string EB_GETUSERDETAILS { get; }

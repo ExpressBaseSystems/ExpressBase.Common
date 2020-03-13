@@ -153,10 +153,11 @@ namespace ExpressBase.Common
 
     public enum EbUserStatus
     {
-        Active,
-        Suspend,
-        Terminate,
-        Delete
+        Active = 0,
+        Suspend = 1,
+        Terminate = 2,
+        Delete = 3,
+        Unapproved = 4
     }
 
     public enum EbConstraintTypes

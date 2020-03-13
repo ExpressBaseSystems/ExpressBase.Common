@@ -186,8 +186,6 @@ namespace ExpressBase.Common
 
     public class WebformData 
     {
-        public string Name { set; get; }
-
         public Dictionary<string, SingleTable> MultipleTables { get; set; }
 
         public Dictionary<string, SingleTable> ExtendedTables { get; set; }
