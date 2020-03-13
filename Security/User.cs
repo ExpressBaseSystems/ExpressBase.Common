@@ -569,9 +569,9 @@ namespace ExpressBase.Security
                     return null;
 
                 List<int> userGroupIds = new List<int>();
-                //string sUgIds = ds.Rows[0][10].ToString();
-                //if (!sUgIds.IsNullOrEmpty())
-                //    userGroupIds = Array.ConvertAll(sUgIds.Split(','), int.Parse).ToList();
+                string sUgIds = ds.Rows[0][10].ToString();
+                if (!sUgIds.IsNullOrEmpty())
+                    userGroupIds = Array.ConvertAll(sUgIds.Split(','), int.Parse).ToList();
 
                 _user = new User
                 {
