@@ -175,6 +175,7 @@ namespace ExpressBase.Common
         public virtual string EB_GET_MOB_MENU_OBJ_IDS { get; }
         public virtual string EB_GET_MOBILE_PAGES { get; }
         public virtual string EB_GET_MOBILE_PAGES_OBJS { get; }
+        public virtual string EB_GET_MYACTIONS { get; }
 
         //........objects db query.....
         public virtual string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ

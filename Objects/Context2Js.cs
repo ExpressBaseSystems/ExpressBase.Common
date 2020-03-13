@@ -340,6 +340,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             {
                 _name = prop.GetCustomAttribute<JsonPropertyAttribute>().PropertyName;
             }
+
             Meta meta = new Meta { name = _name };
             IEnumerable<Attribute> propattrs = prop.GetCustomAttributes();
             foreach (Attribute attr in propattrs)
@@ -374,13 +375,19 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     meta.MetaOnly = true;
                 else if (attr is InputMask)
                     meta.MaskPattern = (attr as InputMask).MaskPattern;
+                if (attr is ReservedValues)
+                    meta.Dprop = String.Join(", ", (attr as ReservedValues).Values);
                 else if (attr is PropertyEditor)
                 {
-                    meta.editor = (attr as PropertyEditor).PropertyEditorType;
-                    meta.source = (attr as PropertyEditor).PropertyEditorSource;
-                    meta.Limit = (attr as PropertyEditor).Limit;
-                    meta.Dprop = (attr as PropertyEditor).DependantProp;
-                    meta.Dprop2 = (attr as PropertyEditor).DependantProp2;
+                    PropertyEditor PropertyEditorAttr = (attr as PropertyEditor);
+                    meta.editor = PropertyEditorAttr.PropertyEditorType;
+                    meta.source = PropertyEditorAttr.PropertyEditorSource;
+                    meta.Limit = PropertyEditorAttr.Limit;
+                    meta.Dprop = PropertyEditorAttr.DependantProp;
+                    meta.Dprop2 = PropertyEditorAttr.DependantProp2;
+
+                    if (PropertyEditorAttr.PropertyEditorType == (int)PropertyEditorType.DropDown && PropertyEditorAttr.BooleanOption)
+                        meta.Dprop = PropertyEditorAttr.BooleanOption.ToString();
 
                     if (prop.PropertyType.GetTypeInfo().IsEnum)
                     {
@@ -415,7 +422,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                         Type itemType = prop.PropertyType.GetGenericArguments()[0];
                         meta.options = getOptions(itemType);
                     }
-                    
+
                 }
                 if (attr is ListType)
                 {
@@ -496,7 +503,6 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             string s = @"this.{0} = {1};";
             string _c = @"this.Controls = new EbControlCollection(JSON.parse('{0}'));";
             string _name = prop.Name;
-
             if (prop.IsDefined(typeof(JsonPropertyAttribute)))
             {
                 _name = prop.GetCustomAttribute<JsonPropertyAttribute>().PropertyName;
@@ -538,6 +544,12 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                 return string.Format(s, _name, prop.GetValue(obj).ToString().ToLower());
             else if (prop.PropertyType.GetTypeInfo().IsEnum)
             {
+                if (prop.IsDefined(typeof(PropertyEditor)) && prop.GetCustomAttribute<PropertyEditor>().BooleanOption)
+                {
+                    Type[] args = prop.PropertyType.GetGenericArguments();
+                    Type itemType = args[0];
+                    return string.Format(s, _name, "{\"$type\":\"System.Collections.Generic.List`1[[@typeName, @nameSpace]], System.Private.CoreLib\",\"$values\":[]}".Replace("@typeName", itemType.FullName).Replace("@nameSpace", itemType.AssemblyQualifiedName.Split(",")[1]));
+                }
                 return string.Format(s, _name, ((int)prop.GetValue(obj)).ToString());
             }
             else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition().Name == "IDictionary`2")
