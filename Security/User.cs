@@ -58,10 +58,14 @@ namespace ExpressBase.Security
 
         [DataMember(Order = 13)]
         public string SourceIp { get; set; }
-        
+
+
+        [DataMember(Order =14)]
+        public int UserType { get; set; }
+
         private List<string> _ebObjectIds = null;
 
-        [DataMember(Order = 14)]
+        [DataMember(Order = 15)]
         public List<string> EbObjectIds
         {
             get
@@ -97,7 +101,7 @@ namespace ExpressBase.Security
                 if (p.Contains("-"))
                 {
                     string[] parts = p.Split("-");
-                    if( Convert.ToInt32(parts[1]) == EbObjectTypes.DashBoard.IntCode)
+                    if (Convert.ToInt32(parts[1]) == EbObjectTypes.DashBoard.IntCode)
                     {
                         DashBoardIds.Add(Convert.ToInt32(parts[2]));
                     }
@@ -323,7 +327,7 @@ namespace ExpressBase.Security
                         df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),
                         df.GetNewParameter("ipaddress", EbDbTypes.String, ipAddress),
                         df.GetNewParameter("deviceinfo", EbDbTypes.String, deviceInfo)
-                    });                    
+                    });
                 }
                 return InitUserObject(dt, context, ipAddress, deviceId);
             }
@@ -369,7 +373,7 @@ namespace ExpressBase.Security
                         df.GetNewParameter("wc", EbDbTypes.String, context),
                         df.GetNewParameter("ipaddress", EbDbTypes.String, ipAddress),
                         df.GetNewParameter("deviceinfo", EbDbTypes.String, deviceInfo)
-                    });                    
+                    });
                 }
                 return InitUserObject(dt, context, ipAddress, deviceId);
             }
@@ -542,8 +546,8 @@ namespace ExpressBase.Security
 
         private static User InitUserObject(EbDataTable ds, string context, string ipAddress, string deviceId)
         {
-            //Columns : _userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id, _usergroup_a
-            //              0         1         2        3         4           5            6                7               8              9           10
+            //Columns : _userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id, _usergroup_a, _public_ids, _user_type
+            //              0         1         2        3         4           5            6                7               8              9           10             11           12
             User _user = null;
             int userid = Convert.ToInt32(ds.Rows[0][0]);
             if (userid > 0)
@@ -569,10 +573,18 @@ namespace ExpressBase.Security
                     return null;
 
                 List<int> userGroupIds = new List<int>();
-                string sUgIds = ds.Rows[0][10].ToString();
-                if (!sUgIds.IsNullOrEmpty())
-                    userGroupIds = Array.ConvertAll(sUgIds.Split(','), int.Parse).ToList();
+                //string sUgIds = ds.Rows[0][10].ToString();
+                //if (!sUgIds.IsNullOrEmpty())
+                //    userGroupIds = Array.ConvertAll(sUgIds.Split(','), int.Parse).ToList();
+                List<string> _permissions = ds.Rows[0][6].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][6].ToString().Split(',').ToList();
 
+                foreach (string objid in ds.Rows[0][11].ToString().Split(','))
+                {
+                    if (_permissions == null)
+                        _permissions = new List<string>();
+                    string _permsn =  "000" /*appid*/ + "-" + "00"/*type*/ + "-" + objid.PadLeft(5, '0') + "-" + "00" /*operation*/ + ":-1"; 
+                    _permissions.Add(_permsn);
+                }
                 _user = new User
                 {
                     UserId = userid,
@@ -580,11 +592,12 @@ namespace ExpressBase.Security
                     FullName = ds.Rows[0][3].ToString(),
                     Roles = rolesname,
                     RoleIds = iRoleIds,
-                    Permissions = ds.Rows[0][6].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][6].ToString().Split(',').ToList(),
+                    Permissions = _permissions,
                     Preference = !string.IsNullOrEmpty(ds.Rows[0][7].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][7].ToString()) : new Preferences { Locale = "en-US", TimeZone = "(UTC) Coordinated Universal Time", DefaultLocation = -1 },
                     SignInLogId = Convert.ToInt32(ds.Rows[0][9]),
                     SourceIp = ipAddress,
-                    UserGroupIds = userGroupIds
+                    UserGroupIds = userGroupIds,
+                    UserType = Convert.ToInt32(ds.Rows[0][12])
                 };
                 if (!ds.Rows[0].IsDBNull(8) && !_user.Roles.Contains(SystemRoles.SolutionOwner.ToString()) && !_user.Roles.Contains(SystemRoles.SolutionAdmin.ToString()))
                 {
@@ -611,7 +624,7 @@ namespace ExpressBase.Security
                 string Qry = "UPDATE eb_signin_log SET signout_at = " + DataDB.EB_CURRENT_TIMESTAMP + " WHERE id = :id AND signout_at IS null;";
                 DataDB.DoNonQuery(Qry, new DbParameter[] { DataDB.GetNewParameter("id", EbDbTypes.Int32, this.SignInLogId) });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine("Exception in logout : " + ex.Message + "\nSignInLogId : " + this.SignInLogId);
             }

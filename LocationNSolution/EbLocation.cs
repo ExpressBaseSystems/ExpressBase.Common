@@ -79,8 +79,11 @@ namespace ExpressBase.Common.LocationNSolution
     public class SolutionSettings
     {
         public String SignupFormRefid { get; set; }
+
+        public List<EbProfileUserType>  UserTypeForms { get; set; }
     }
 
+    
     public class EbLocationCustomField
     {
         public string Id { get; set; }
@@ -90,5 +93,14 @@ namespace ExpressBase.Common.LocationNSolution
         public bool IsRequired { get; set; }
 
         public string Type { get; set; }
+    }
+
+    public class EbProfileUserType
+    {
+        public int Id { get; set; }
+
+        public String Name { get; set; }
+
+        public string RefId { get; set; }
     }
 }
