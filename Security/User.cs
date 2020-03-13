@@ -573,9 +573,9 @@ namespace ExpressBase.Security
                     return null;
 
                 List<int> userGroupIds = new List<int>();
-                //string sUgIds = ds.Rows[0][10].ToString();
-                //if (!sUgIds.IsNullOrEmpty())
-                //    userGroupIds = Array.ConvertAll(sUgIds.Split(','), int.Parse).ToList();
+                string sUgIds = ds.Rows[0][10].ToString();
+                if (!sUgIds.IsNullOrEmpty())
+                    userGroupIds = Array.ConvertAll(sUgIds.Split(','), int.Parse).ToList();
                 List<string> _permissions = ds.Rows[0][6].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][6].ToString().Split(',').ToList();
 
                 foreach (string objid in ds.Rows[0][11].ToString().Split(','))
