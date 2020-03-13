@@ -45,6 +45,8 @@ namespace ExpressBase.Common.LocationNSolution
     {
         public string SolutionID { get; set; }
 
+        public string ExtSolutionID { get; set; }
+
         public string SolutionName { get; set; }
 
         public int NumberOfUsers { get; set; }
@@ -61,9 +63,12 @@ namespace ExpressBase.Common.LocationNSolution
 
         public bool IsVersioningEnabled { get; set; }
 
-        public Dictionary<int,string> Users { get; set; }
+        public Dictionary<int, string> Users { get; set; }
 
         public int PlanUserCount { get; set; }
+
+        public SolutionSettings SolutionSettings { get; set; }
+
 
         public Eb_Solution()
         {
@@ -71,6 +76,14 @@ namespace ExpressBase.Common.LocationNSolution
         }
     }
 
+    public class SolutionSettings
+    {
+        public String SignupFormRefid { get; set; }
+
+        public List<EbProfileUserType>  UserTypeForms { get; set; }
+    }
+
+    
     public class EbLocationCustomField
     {
         public string Id { get; set; }
@@ -80,5 +93,14 @@ namespace ExpressBase.Common.LocationNSolution
         public bool IsRequired { get; set; }
 
         public string Type { get; set; }
+    }
+
+    public class EbProfileUserType
+    {
+        public int Id { get; set; }
+
+        public String Name { get; set; }
+
+        public string RefId { get; set; }
     }
 }

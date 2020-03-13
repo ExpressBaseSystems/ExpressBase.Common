@@ -365,6 +365,8 @@ namespace ExpressBase.Common
                 }
                 catch (MySqlException myexce)
                 {
+                    if (con.State != ConnectionState.Closed)
+                        con.Close();
                     Console.WriteLine("MySQL Exception : " + myexce.Message);
                     throw myexce;
                 }
@@ -379,15 +381,19 @@ namespace ExpressBase.Common
         public override EbDataTable DoQuery(string query, params DbParameter[] parameters)
         {
             EbDataTable dt = new EbDataTable();
+            MySqlConnection con = GetNewConnection() as MySqlConnection;
             try
             {
-                var con = GetNewConnection() as MySqlConnection;
+                
                 con.Open();
                 dt = DoQuery(con, query, parameters);
                 con.Close();
             }
             catch (MySqlException myexec)
             {
+                if (con.State != ConnectionState.Closed)
+                    con.Close();
+
                 throw myexec;
             }
             return dt;
@@ -396,15 +402,17 @@ namespace ExpressBase.Common
         public override EbDataTable DoProcedure(string query, params DbParameter[] parameters)
         {
             EbDataTable tbl = new EbDataTable();
+            MySqlConnection con = GetNewConnection() as MySqlConnection;
             try
-            {
-                MySqlConnection con = GetNewConnection() as MySqlConnection;
+            {                
                 con.Open();
                 tbl = DoProcedure(con, query, parameters);
                 con.Close();
             }
             catch (MySqlException myexec)
             {
+                if (con.State != ConnectionState.Closed)
+                    con.Close();
                 throw myexec;
             }
             return tbl;
@@ -417,15 +425,17 @@ namespace ExpressBase.Common
             {
                 return ds;
             }
+            MySqlConnection con = GetNewConnection() as MySqlConnection;
             try
-            {
-                MySqlConnection con = GetNewConnection() as MySqlConnection;
+            {                
                 con.Open();
                 ds = DoQueries(con, query, parameters);
                 con.Close();
             }
             catch (MySqlException myexec)
             {
+                if (con.State != ConnectionState.Closed)
+                    con.Close();
                 throw myexec;
             }
             return ds;
@@ -434,15 +444,17 @@ namespace ExpressBase.Common
         public override int DoNonQuery(string query, params DbParameter[] parameters)
         {
             int val = 0;
+            MySqlConnection con = GetNewConnection() as MySqlConnection;
             try
-            {
-                MySqlConnection con = GetNewConnection() as MySqlConnection;
+            {                
                 con.Open();
                 val = DoNonQuery(con, query, parameters);
                 con.Close();
             }
             catch (MySqlException myexec)
             {
+                if (con.State != ConnectionState.Closed)
+                    con.Close();
                 throw myexec;
             }
             return val;
@@ -1278,7 +1290,22 @@ namespace ExpressBase.Common
                                 {0}
                                 AND 
 	                                COALESCE(EO2A.eb_del, 'F') = 'F';
-                                SELECT app_settings FROM eb_applications WHERE id = @appid";
+                                SELECT app_settings FROM eb_applications WHERE id = @appid;";
+            }
+        }
+
+        public override string EB_GET_MYACTIONS
+        {
+            get
+            {
+                return @"SELECT * FROM eb_my_actions EACT 
+	                        WHERE 
+		                        COALESCE(EACT.is_completed, 'F') = 'F' 
+		                        AND COALESCE(EACT.eb_del, 'F') = 'F' 
+                                AND (FIND_IN_SET(@userid,EACT.user_ids)
+			                        OR FIND_IN_SET(EACT.role_id, @roleids)
+			                        OR FIND_IN_SET(EACT.usergroup_id, @usergroupids)
+			                        ); ";
             }
         }
 

@@ -105,7 +105,7 @@ namespace ExpressBase.Common.ServerEvents_Artifacts
         public string NotificationId { get; set; }
 
         [DataMember(Order = 5)]
-        public List<int> UsersId { get; set; }
+        public Dictionary<int, string> UsersDetails { get; set; }
 
     }
 

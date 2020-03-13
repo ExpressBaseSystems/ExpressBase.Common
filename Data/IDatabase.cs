@@ -107,7 +107,8 @@ namespace ExpressBase.Common
             {
                 return @"SELECT id, role_name, description FROM eb_roles ORDER BY role_name;
                         SELECT id, name,description FROM eb_usergroup ORDER BY name;
-						SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';";
+						SELECT id, role1_id, role2_id FROM eb_role2role WHERE COALESCE(eb_del, 'F') = 'F';
+                        SELECT id, name FROM eb_user_types WHERE COALESCE(eb_del, 'F') = 'F';";
             }
         }
         public virtual string EB_GETUSERDETAILS { get; }
@@ -175,6 +176,7 @@ namespace ExpressBase.Common
         public virtual string EB_GET_MOB_MENU_OBJ_IDS { get; }
         public virtual string EB_GET_MOBILE_PAGES { get; }
         public virtual string EB_GET_MOBILE_PAGES_OBJS { get; }
+        public virtual string EB_GET_MYACTIONS { get; }
 
         //........objects db query.....
         public virtual string EB_FETCH_ALL_VERSIONS_OF_AN_OBJ
@@ -278,7 +280,29 @@ namespace ExpressBase.Common
 	                        EOV.commit_uid = EU.id
                         WHERE
                             EO.id = EOV.eb_objects_id  AND EO.obj_type = @type AND COALESCE(EOV.working_mode, 'F') <> 'T'
-                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                            AND COALESCE( EO.eb_del, 'F') = 'F' 
+                        ORDER BY
+                            EO.obj_name , EOV.id";
+            }
+        }
+        
+        public virtual string EB_GET_ALL_PUBLIC_COMMITTED_VERSION_LIST
+        {
+            get
+            {
+                return @"SELECT 
+                            EO.id, EO.obj_name, EO.obj_type, EO.obj_cur_status,EO.obj_desc,
+                            EOV.id, EOV.eb_objects_id, EOV.version_num, EOV.obj_changelog, EOV.commit_ts, EOV.commit_uid, EOV.refid,
+                            EU.fullname, EO.display_name
+                        FROM 
+                            eb_objects EO, eb_objects_ver EOV
+                        LEFT JOIN
+	                        eb_users EU
+                        ON 
+	                        EOV.commit_uid = EU.id
+                        WHERE
+                            EO.id = EOV.eb_objects_id  AND EO.obj_type = @type AND COALESCE(EOV.working_mode, 'F') <> 'T'
+                            AND COALESCE( EO.eb_del, 'F') = 'F' AND COALESCE( EO.is_public, 'F') = 'T'
                         ORDER BY
                             EO.obj_name , EOV.id";
             }
@@ -494,6 +518,13 @@ namespace ExpressBase.Common
             {
                 return @"UPDATE eb_objects SET eb_del='T' WHERE id = @id;             
                            UPDATE eb_objects_ver SET eb_del='T' WHERE eb_objects_id = @id;";
+            }
+        } 
+        public virtual string EB_CHANGE_OBJECT_ACCESS
+        {
+            get
+            {
+                return @"UPDATE eb_objects SET is_public= @status WHERE id = @id; ";
             }
         }
 

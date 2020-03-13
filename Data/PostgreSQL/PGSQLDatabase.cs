@@ -331,7 +331,8 @@ namespace ExpressBase.Common
                 }
                 catch (Npgsql.NpgsqlException npgse)
                 {
-
+                    if (con.State != ConnectionState.Closed)
+                        con.Close();
                     throw npgse;
                 }
                 catch (SocketException scket) { }
@@ -344,15 +345,17 @@ namespace ExpressBase.Common
         {
 
             EbDataTable dt = new EbDataTable();
+            var con = GetNewConnection() as NpgsqlConnection;
             try
-            {
-                var con = GetNewConnection() as NpgsqlConnection;
+            {                
                 con.Open();
                 dt = DoQuery(con, query, parameters);
                 con.Close();
             }
             catch (Npgsql.NpgsqlException npge)
             {
+                if (con.State != ConnectionState.Closed)
+                    con.Close();
                 throw npge;
             }
             return dt;
@@ -361,10 +364,9 @@ namespace ExpressBase.Common
         public override EbDataSet DoQueries(string query, params DbParameter[] parameters)
         {
             EbDataSet ds = new EbDataSet();
-
+            var con = GetNewConnection() as NpgsqlConnection;
             try
-            {
-                var con = GetNewConnection() as NpgsqlConnection;
+            {                
                 con.Open();
                 ds = DoQueries(con, query, parameters);
                 con.Close();
@@ -373,6 +375,8 @@ namespace ExpressBase.Common
             }
             catch (Npgsql.NpgsqlException npgse)
             {
+                if (con.State != ConnectionState.Closed)
+                    con.Close();
                 throw npgse;
             }
         }
@@ -385,15 +389,17 @@ namespace ExpressBase.Common
         public override int DoNonQuery(string query, params DbParameter[] parameters)
         {
             int val;
+            NpgsqlConnection con = GetNewConnection() as NpgsqlConnection;
             try
-            {
-                var con = GetNewConnection() as NpgsqlConnection;
+            {                
                 con.Open();
                 val = DoNonQuery(con, query, parameters);
                 con.Close();
             }
             catch (Npgsql.NpgsqlException npgse)
             {
+                if (con.State != ConnectionState.Closed)
+                    con.Close();
                 throw npgse;
             }
             return val;
@@ -805,7 +811,7 @@ SELECT R.id,R.role_name,R.description,A.applicationname,
             }
         }
 
-        public override string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_security_user(:_userid,:_id,:_fullname,:_nickname,:_email,:_pwd,:_dob,:_sex,:_alternateemail,:_phprimary,:_phsecondary,:_phlandphone,:_extension,:_fbid,:_fbname,:_roles,:_groups,:_statusid,:_hide,:_anonymoususerid,:_preferences,:_consadd,:_consdel);"; } }
+        public override string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_security_user(:_userid,:_id,:_fullname,:_nickname,:_email,:_pwd,:_dob,:_sex,:_alternateemail,:_phprimary,:_phsecondary,:_phlandphone,:_extension,:_fbid,:_fbname,:_roles,:_groups,:_statusid,:_hide,:_anonymoususerid,:_preferences,:_usertype,:_consadd,:_consdel);"; } }
 
         public override string EB_SAVEUSERGROUP_QUERY { get { return "SELECT * FROM eb_security_usergroup(:userid,:id,:name,:description,:users,:constraints_add,:constraints_del);"; } }
 
@@ -1090,7 +1096,26 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                                 {0}
                                 AND 
 	                                COALESCE(EO2A.eb_del, 'F') = 'F';
-                                SELECT app_settings FROM eb_applications WHERE id = @appid";
+                                SELECT app_settings FROM eb_applications WHERE id = @appid;";
+            }
+        }
+
+        public override string EB_GET_MYACTIONS
+        {
+            get
+            {
+                return @"SELECT * FROM eb_my_actions EACT 
+                            WHERE
+                                COALESCE(EACT.is_completed, 'F') = 'F'
+                            AND
+                                COALESCE(EACT.eb_del, 'F') = 'F'
+                            AND
+                                (:userid = ANY(string_to_array(EACT.user_ids, ',')::int[])
+                            OR
+                                EACT.role_id = ANY(string_to_array(:roleids, ',')::int[])
+                            OR
+                                EACT.usergroup_id = ANY(string_to_array(:usergroupids, ',')::int[])
+                            );";
             }
         }
 
