@@ -175,6 +175,29 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_approval_lines
+        ///(
+        ///    id SERIAL,
+        ///    stage_unique_id text,
+        ///    action_unique_id text ,
+        ///    eb_my_actions_id numeric,
+        ///    comments text,
+        ///    eb_src_id integer,
+        ///    eb_ver_id integer,
+        ///    eb_loc_id integer,
+        ///    eb_created_by integer,
+        ///    eb_created_at timestamp without time zone,
+        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    CONSTRAINT eb_approval_lines_pkey PRIMARY KEY (id)
+        ///);.
+        /// </summary>
+        public static string eb_approval_lines {
+            get {
+                return ResourceManager.GetString("eb_approval_lines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to -- Table: public.eb_audit_lines
         ///
         ///-- DROP TABLE public.eb_audit_lines;
@@ -375,13 +398,12 @@ namespace ExpressBase.Common {
         ///
         ///-- DROP FUNCTION public.eb_authenticate_anonymous(text, text, text, text, text, text, text, text, text, text, text, text, text, integer, text);
         ///
-        ///
         ///CREATE OR REPLACE FUNCTION public.eb_authenticate_anonymous(
         ///	in_socialid text DEFAULT NULL::text,
         ///	in_fullname text DEFAULT NULL::text,
         ///	in_emailid text DEFAULT NULL::text,
         ///	in_phone text DEFAULT NULL::text,
-        ///	in_use [rest of string was truncated]&quot;;.
+        ///	in_user_ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_authenticate_anonymous1 {
             get {
@@ -2613,6 +2635,32 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE eb_my_actions
+        ///(
+        ///    id SERIAL,
+        ///    user_ids text,
+        ///    role_ids text,
+        ///    usergroup_id integer,
+        ///    is_completed char(1),
+        ///    completed_at timestamp without time zone,
+        ///    completed_by integer,
+        ///    eb_stages_id integer,
+        ///    form_ref_id text,
+        ///    form_data_id integer,
+        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    eb_approval_lines_id integer,
+        ///    description text,
+        ///    is_form_data_editable char(1) DEFAULT &apos;F&apos;,
+        ///    from_datetime timestamp without time zone,
+        ///    expiry_datetime timestamp without t [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_my_actions {
+            get {
+                return ResourceManager.GetString("eb_my_actions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to --
         ///-- PostgreSQL database dump
         ///--
@@ -2654,23 +2702,23 @@ namespace ExpressBase.Common {
         ///
         ///-- DROP TABLE public.eb_notifications;
         ///
-        ///CREATE TABLE public.eb_notifications
+        ///CREATE TABLE eb_notifications
         ///(
         ///    id SERIAL,
         ///    user_id integer,
-        ///    message_seen &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
-        ///    notification_id text COLLATE pg_catalog.&quot;default&quot;,
+        ///    message_seen char(1) DEFAULT &apos;F&apos;,
+        ///    notification_id text ,
         ///    notification json,
         ///    created_at timestamp without time zone DEFAULT now(),
         ///    CONSTRAINT eb_notifications_pkey PRIMARY KEY (id)
-        ///)
-        ///WITH (
-        ///    OIDS = FALSE
-        ///)
-        ///TABLESPACE pg_default;
+        ///);
         ///
-        ///ALTER TABLE public.eb_notifications
-        ///    OWNER to postgr [rest of string was truncated]&quot;;.
+        ///-- Index: eb_notificationss_id_idx
+        ///
+        ///-- DROP INDEX public.eb_notificationss_id_idx;
+        ///
+        ///CREATE INDEX eb_notificationss_id_idx
+        ///    ON eb_notifications [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_notifications {
             get {
@@ -2688,7 +2736,16 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- mysql.
+        ///   Looks up a localized string similar to CREATE TABLE eb_notifications
+        ///(
+        ///    id integer auto_increment,
+        ///    user_id integer,
+        ///    message_seen char(1) DEFAULT &apos;F&apos;,
+        ///    notification_id text,
+        ///    notification json,
+        ///    created_at datetime DEFAULT now(),
+        ///    CONSTRAINT eb_notifications_pkey PRIMARY KEY (id)
+        ///);.
         /// </summary>
         public static string eb_notifications2 {
             get {
@@ -3027,14 +3084,13 @@ namespace ExpressBase.Common {
         ///    owner_ts timestamp without time zone,
         ///    display_name  text,
         ///    is_logenabled char(1) DEFAULT &apos;F&apos;,
+        ///	is_public character(1) DEFAULT &apos;F&apos;,
         ///    eb_del char(1) DEFAULT &apos;F&apos;,
         ///    CONSTRAINT eb_objects_pkey PRIMARY KEY (id)
         ///);
         ///
         ///
-        ///-- Index: eb_objects_id_idx
-        ///
-        ///-- DROP INDEX public.eb_objects_ [rest of string was truncated]&quot;;.
+        ///-- Index: eb_objects_id_i [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects {
             get {
@@ -5385,17 +5441,15 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_security_user(integer, integer, text, text, text, text, date, text, text, text, text, text, text, text, text, text, text, integer, text, integer, text, text, text)
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_security_user(integer, integer, text, text, text, text, date, text, text, text, text, text, text, text, text, text, text, integer, text, integer, text, integer, text, text)
         ///
-        ///-- DROP FUNCTION public.eb_security_user(integer, integer, text, text, text, text, date, text, text, text, text, text, text, text, text, text, text, integer, text, integer, text, text, text);
-        ///
+        ///-- DROP FUNCTION public.eb_security_user(integer, integer, text, text, text, text, date, text, text, text, text, text, text, text, text, text, text, integer, text, integer, text, integer, text, text);
         ///
         ///CREATE OR REPLACE FUNCTION public.eb_security_user(
         ///	_userid integer,
         ///	_id integer,
         ///	_fullname text,
-        ///	_nickname text,
-        ///	_ [rest of string was truncated]&quot;;.
+        ///	_ni [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_security_user {
             get {
@@ -5744,6 +5798,41 @@ namespace ExpressBase.Common {
         public static string eb_split_str_util3 {
             get {
                 return ResourceManager.GetString("eb_split_str_util3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_stage_actions
+        ///(
+        ///    id SERIAL,
+        ///    action_unique_id text ,
+        ///    action_name text,
+        ///    eb_stages_id integer,
+        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    CONSTRAINT &quot;eb_stage_actions _pkey&quot; PRIMARY KEY (id)
+        ///);.
+        /// </summary>
+        public static string eb_stage_actions {
+            get {
+                return ResourceManager.GetString("eb_stage_actions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_stages
+        ///(
+        ///    id SERIAL,
+        ///    stage_name text,
+        ///    stage_unique_id text,
+        ///    form_ref_id text,
+        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    CONSTRAINT &quot;eb_stages _pkey&quot; PRIMARY KEY (id)
+        ///);
+        ///.
+        /// </summary>
+        public static string eb_stages {
+            get {
+                return ResourceManager.GetString("eb_stages", resourceCulture);
             }
         }
         
@@ -6141,6 +6230,25 @@ namespace ExpressBase.Common {
         public static string eb_surveys3 {
             get {
                 return ResourceManager.GetString("eb_surveys3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_user_types
+        ///(
+        ///    id SERIAL,
+        ///    name text,
+        ///    eb_created_by integer,
+        ///    eb_created_at timestamp without time zone,
+        ///    eb_lastmodified_by integer,
+        ///    eb_lastmodified_at timestamp without time zone,
+        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    CONSTRAINT eb_user_types_pkey PRIMARY KEY (id)
+        ///);.
+        /// </summary>
+        public static string eb_user_types {
+            get {
+                return ResourceManager.GetString("eb_user_types", resourceCulture);
             }
         }
         

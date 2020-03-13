@@ -36,6 +36,7 @@ CREATE TABLE eb_users
     dprefid integer DEFAULT 0,
 	eb_data_id integer,
 	eb_ver_id integer,
+	eb_user_types_id integer DEFAULT 1,
     CONSTRAINT eb_users_pkey PRIMARY KEY (id),
     CONSTRAINT eb_users_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );

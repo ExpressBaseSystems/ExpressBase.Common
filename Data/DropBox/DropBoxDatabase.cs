@@ -71,7 +71,7 @@ namespace ExpressBase.Common.Data.DropBox
                 {
                     var updated = await Dbx.Files.UploadAsync(
                     path: "/" + filename,
-                    WriteMode.Overwrite.Instance,
+                    //WriteMode.Overwrite.Instance,
                     body: mem);
                    
                     rev = updated.Rev;

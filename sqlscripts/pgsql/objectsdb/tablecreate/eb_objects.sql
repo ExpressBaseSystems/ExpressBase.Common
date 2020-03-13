@@ -14,6 +14,7 @@ CREATE TABLE eb_objects
     owner_ts timestamp without time zone,
     display_name  text,
     is_logenabled char(1) DEFAULT 'F',
+	is_public character(1) DEFAULT 'F',
     eb_del char(1) DEFAULT 'F',
     CONSTRAINT eb_objects_pkey PRIMARY KEY (id)
 );

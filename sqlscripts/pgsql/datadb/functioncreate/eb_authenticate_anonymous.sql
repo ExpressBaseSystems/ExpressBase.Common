@@ -2,7 +2,6 @@
 
 -- DROP FUNCTION public.eb_authenticate_anonymous(text, text, text, text, text, text, text, text, text, text, text, text, text, integer, text);
 
-
 CREATE OR REPLACE FUNCTION public.eb_authenticate_anonymous(
 	in_socialid text DEFAULT NULL::text,
 	in_fullname text DEFAULT NULL::text,
@@ -19,7 +18,7 @@ CREATE OR REPLACE FUNCTION public.eb_authenticate_anonymous(
 	in_iplocationjson text DEFAULT NULL::text,
 	in_appid integer DEFAULT NULL::integer,
 	in_wc text DEFAULT NULL::text)
-    RETURNS TABLE(out_userid integer, out_status_id integer, out_email text, out_fullname text, out_roles_a text, out_rolename_a text, out_permissions text, out_preferencesjson text, out_constraints_a text, out_signin_id integer) 
+    RETURNS TABLE(out_userid integer, out_status_id integer, out_email text, out_fullname text, out_roles_a text, out_rolename_a text, out_permissions text, out_preferencesjson text, out_constraints_a text, out_signin_id integer, out_usergroup_a text, out_public_ids text, out_user_type integer) 
     LANGUAGE 'plpgsql'
 
 AS $BODY$
@@ -35,6 +34,9 @@ DECLARE out_preferencesjson TEXT;
 DECLARE out_constraints_a TEXT;
 DECLARE out_signin_id INTEGER;
 DECLARE is_anon_auth_req BOOL;
+DECLARE out_usergroup_a text;
+DECLARE out_public_ids text;
+DECLARE out_user_type INTEGER;
 
 BEGIN
 
@@ -43,10 +45,10 @@ is_anon_auth_req := FALSE;
 IF in_socialid IS NOT NULL THEN
 
     SELECT 
-			_userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id
+			_userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id, _usergroup_a, _public_ids, _user_type
 		FROM 
 			eb_authenticate_unified(social => in_socialid, wc => in_wc, ipaddress => in_user_ip) 
-		INTO out_userid, out_status_id, out_email, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson, out_constraints_a, out_signin_id;
+		INTO out_userid, out_status_id, out_email, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson, out_constraints_a, out_signin_id, out_usergroup_a, out_public_ids, out_user_type;
     
     IF out_userid = 0 THEN
     
@@ -110,13 +112,13 @@ ELSE
 END IF;
 
 IF is_anon_auth_req THEN
-	SELECT _userid, _email, _status_id, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id
+	SELECT _userid, _email, _status_id, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id, _usergroup_a, _public_ids, _user_type
     FROM eb_authenticate_unified(uname => 'anonymous@anonym.com', password => '294de3557d9d00b3d2d8a1e6aab028cf', wc => in_wc, ipaddress => in_user_ip) 
-    INTO out_userid, out_email, out_status_id, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson, out_constraints_a, out_signin_id;
+    INTO out_userid, out_email, out_status_id, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson, out_constraints_a, out_signin_id, out_usergroup_a, out_public_ids, out_user_type;
 END IF;
 
 RETURN QUERY
-    SELECT out_userid, out_status_id, out_email, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson, out_constraints_a, out_signin_id;
+    SELECT out_userid, out_status_id, out_email, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson, out_constraints_a, out_signin_id, out_usergroup_a, out_public_ids, out_user_type;
 
 END;
 

@@ -4,10 +4,9 @@
 
 CREATE OR REPLACE FUNCTION public.eb_objects_update_dashboard(
 	_refid text)
-    RETURNS TABLE(namev text, status integer, ver_num text, work_mode character, workingcopies text, major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id text, lastversionrefidval text, lastversionnumberval text, lastversioncommit_tsval text, lastversion_statusval integer, lastversioncommit_byname text, lastversioncommit_byid integer, liveversionrefidval text, liveversionnumberval text, liveversioncommit_tsval text, liveversion_statusval integer, liveversioncommit_byname text, liveversioncommit_byid integer, owner_uidval integer, owner_tsval text, owner_nameval text) 
+    RETURNS TABLE(namev text, status integer, ver_num text, work_mode character, workingcopies text, major_ver integer, minor_ver integer, patch_ver integer, tags text, app_id text, lastversionrefidval text, lastversionnumberval text, lastversioncommit_tsval text, lastversion_statusval integer, lastversioncommit_byname text, lastversioncommit_byid integer, liveversionrefidval text, liveversionnumberval text, liveversioncommit_tsval text, liveversion_statusval integer, liveversioncommit_byname text, liveversioncommit_byid integer, owner_uidval integer, owner_tsval text, owner_nameval text, is_public character) 
     LANGUAGE 'plpgsql'
 
-  
 AS $BODY$
 
 DECLARE
@@ -18,7 +17,7 @@ DECLARE
 	lastversionrefidval text; lastversionnumberval text; lastversioncommit_tsval text;
 	lastversion_statusval integer; lastversioncommit_byname text; lastversioncommit_byid integer; liveversionrefidval text;
 	liveversionnumberval text; liveversioncommit_tsval text; liveversion_statusval integer; liveversioncommit_byname text;
-	liveversioncommit_byid integer; owner_uidVal integer; owner_tsVal text; owner_nameVal text;
+	liveversioncommit_byid integer; owner_uidVal integer; owner_tsVal text; owner_nameVal text; is_public character;
  
 BEGIN
 
@@ -66,33 +65,31 @@ WHERE
 	EO.id = _id AND EU.id = EO.owner_uid;
 	
 
-SELECT 
-	EO.obj_name, EOS.status,EOV.version_num, EOV.working_mode,
-	EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags
-INTO	
-	namev, status, ver_num, work_mode, major_ver, minor_ver, patch_ver, tags
-FROM 
-	 eb_objects EO, eb_objects_ver EOV
-LEFT JOIN
-	eb_users EU
+	SELECT 
+			EO.obj_name, EOS.status,EOV.version_num, EOV.working_mode,
+		    EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags ,EO.is_public
+	INTO	namev, status, ver_num, work_mode,
+			 major_ver, minor_ver, patch_ver, tags, is_public
+	FROM 
+			 eb_objects EO, eb_objects_ver EOV
+	LEFT JOIN
+		eb_users EU
 	ON 
 		EOV.commit_uid=EU.id
-LEFT JOIN
-	eb_objects_status EOS
+	LEFT JOIN
+		eb_objects_status EOS
 	ON 
 		EOS.eb_obj_ver_id = EOV.id										 
-WHERE 
-	EOV.refid = _refid AND EOV.eb_objects_id = EO.id
-		AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id);
+	WHERE 
+			EOV.refid = _refid AND EOV.eb_objects_id = EO.id
+			AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id);
 			
 RETURN QUERY
 	SELECT namev, status, ver_num,
 	COALESCE(work_mode,'F'), workingcopies, major_ver, minor_ver, patch_ver, tags, app_id,
 	lastversionrefidval, lastversionnumberval, lastversioncommit_tsval, lastversion_statusval, lastversioncommit_byname,lastversioncommit_byid,
 	liveversionrefidval, liveversionnumberval, liveversioncommit_tsval, liveversion_statusval, liveversioncommit_byname,liveversioncommit_byid,
-	owner_uidVal, owner_tsVal, owner_nameVal;
+	owner_uidVal, owner_tsVal, owner_nameVal, is_public;
 END
 
 $BODY$;
-
-
