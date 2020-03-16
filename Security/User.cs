@@ -316,7 +316,10 @@ namespace ExpressBase.Security
                             df.GetNewOutParameter("tmp_permissions", EbDbTypes.String),
                             df.GetNewOutParameter("tmp_preferencesjson", EbDbTypes.String),
                             df.GetNewOutParameter("tmp_constraints_a", EbDbTypes.String),
-                            df.GetNewOutParameter("tmp_signin_id", EbDbTypes.Int32)
+                            df.GetNewOutParameter("tmp_signin_id", EbDbTypes.Int32),
+                            df.GetNewOutParameter("tmp_usergroup_a", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_public_ids", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_user_type", EbDbTypes.Int32)
                         });
                 }
                 else
@@ -363,7 +366,10 @@ namespace ExpressBase.Security
                             df.GetNewOutParameter("tmp_permissions", EbDbTypes.String),
                             df.GetNewOutParameter("tmp_preferencesjson", EbDbTypes.String),
                             df.GetNewOutParameter("tmp_constraints_a", EbDbTypes.String),
-                            df.GetNewOutParameter("tmp_signin_id", EbDbTypes.Int32)
+                            df.GetNewOutParameter("tmp_signin_id", EbDbTypes.Int32),
+                            df.GetNewOutParameter("tmp_usergroup_a", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_public_ids", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_user_type", EbDbTypes.Int32)
                         });
                 }
                 else
@@ -408,7 +414,10 @@ namespace ExpressBase.Security
                             df.GetNewOutParameter("tmp_permissions", EbDbTypes.String),
                             df.GetNewOutParameter("tmp_preferencesjson", EbDbTypes.String),
                             df.GetNewOutParameter("tmp_constraints_a", EbDbTypes.String),
-                            df.GetNewOutParameter("tmp_signin_id", EbDbTypes.Int32)
+                            df.GetNewOutParameter("tmp_signin_id", EbDbTypes.Int32),
+                            df.GetNewOutParameter("tmp_usergroup_a", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_public_ids", EbDbTypes.String),
+                            df.GetNewOutParameter("tmp_user_type", EbDbTypes.Int32)
                         });
                 }
                 else
@@ -460,7 +469,10 @@ namespace ExpressBase.Security
                         df.GetNewOutParameter("out_permissions", EbDbTypes.String),
                         df.GetNewOutParameter("out_preferencesjson", EbDbTypes.String),
                         df.GetNewOutParameter("out_constraints_a", EbDbTypes.String),
-                        df.GetNewOutParameter("out_signin_id", EbDbTypes.Int32)
+                        df.GetNewOutParameter("out_signin_id", EbDbTypes.Int32),
+                        df.GetNewOutParameter("out_usergroup_a", EbDbTypes.String),
+                        df.GetNewOutParameter("out_public_ids", EbDbTypes.String),
+                        df.GetNewOutParameter("out_user_type", EbDbTypes.Int32)
                     });
             }
             else
