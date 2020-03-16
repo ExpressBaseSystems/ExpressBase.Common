@@ -1,4 +1,4 @@
-CREATE eb_my_actions
+CREATE TABLE eb_my_actions
 (
     id SERIAL,
     user_ids text,
@@ -18,3 +18,5 @@ CREATE eb_my_actions
     expiry_datetime timestamp without time zone,
     CONSTRAINT eb_my_actions_pkey PRIMARY KEY (id)
 );
+
+CREATE INDEX eb_my_actions_id_idx ON eb_my_actions(id);

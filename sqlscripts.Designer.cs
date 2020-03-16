@@ -2661,6 +2661,33 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_my_actions
+        ///(
+        ///    id integer auto_increment,
+        ///    user_ids text,
+        ///    role_ids text,
+        ///    usergroup_id integer,
+        ///    is_completed char(1) DEFAULT &apos;F&apos;,
+        ///    completed_at datetime,
+        ///    completed_by integer,
+        ///    eb_stages_id integer,
+        ///    form_ref_id text,
+        ///    form_data_id integer,
+        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    eb_approval_lines_id integer,
+        ///    description text,
+        ///    is_form_data_editable char(1) DEFAULT &apos;F&apos;,
+        ///    from_datetime datetime,
+        ///    expiry_datetime datetime,
+        ///    CONSTRAI [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_my_actions1 {
+            get {
+                return ResourceManager.GetString("eb_my_actions1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to --
         ///-- PostgreSQL database dump
         ///--
@@ -3635,6 +3662,7 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to DROP PROCEDURE IF EXISTS eb_objects_getversiontoopen;
         ///
+        ///
         ///CREATE PROCEDURE eb_objects_getversiontoopen(IN _id INTEGER,
         /// OUT out_idv INTEGER, 
         /// OUT out_namev TEXT, 
@@ -3650,7 +3678,7 @@ namespace ExpressBase.Common {
         /// OUT out_workingcopies TEXT, 
         /// OUT out_json_wc JSON, 
         /// OUT out_json_lc JSON, 
-        /// OUT out_major_ver INTE [rest of string was truncated]&quot;;.
+        /// OUT out_major_ver IN [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_getversiontoopen2 {
             get {
@@ -4049,6 +4077,7 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to DROP PROCEDURE IF EXISTS eb_objects_update_dashboard;
         ///
+        ///
         ///CREATE PROCEDURE eb_objects_update_dashboard(IN refid TEXT,
         ///OUT namev TEXT,
         ///OUT status INTEGER,
@@ -4065,7 +4094,7 @@ namespace ExpressBase.Common {
         ///OUT lastversioncommit_tsval TEXT,
         ///OUT lastversion_statusval INTEGER,
         ///OUT lastversioncommit_byname TEXT,
-        ///OUT lastv [rest of string was truncated]&quot;;.
+        ///OUT las [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_update_dashboard2 {
             get {
@@ -4252,9 +4281,9 @@ namespace ExpressBase.Common {
         ///	display_name text,
         ///	is_logenabled char(1) DEFAULT &apos;F&apos;,
         ///	eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    	is_public char(1) DEFAULT &apos;F&apos;,
         ///	CONSTRAINT eb_objects_pkey PRIMARY KEY (id)
         ///);
-        ///  
         ///
         ///CREATE INDEX eb_objects_id_idx
         ///    ON eb_objects(id);
@@ -4262,7 +4291,7 @@ namespace ExpressBase.Common {
         ///CREATE INDEX eb_objects_type_idx
         ///    ON eb_objects(obj_type);
         ///
-        ///.
+        ///  .
         /// </summary>
         public static string eb_objects2 {
             get {
@@ -5819,6 +5848,29 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_stage_actions
+        ///(
+        ///    id integer auto_increment,
+        ///    action_unique_id text,
+        ///    action_name text,
+        ///    eb_stages_id integer,
+        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    CONSTRAINT eb_stage_actions_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///CREATE INDEX eb_stage_actions_id_idx
+        ///ON eb_stage_actions(id);
+        ///
+        ///CREATE INDEX eb_stage_actions_eb_del_idx
+        ///ON eb_stage_actions(eb_del);.
+        /// </summary>
+        public static string eb_stage_actions1 {
+            get {
+                return ResourceManager.GetString("eb_stage_actions1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_stages
         ///(
         ///    id SERIAL,
@@ -5833,6 +5885,29 @@ namespace ExpressBase.Common {
         public static string eb_stages {
             get {
                 return ResourceManager.GetString("eb_stages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_stages
+        ///(
+        ///    id integer auto_increment,
+        ///    stage_name text,
+        ///    stage_unique_id text,
+        ///    form_ref_id text,
+        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    CONSTRAINT eb_stages_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///CREATE INDEX eb_stages_id_idx
+        ///ON eb_stages(id);
+        ///
+        ///CREATE INDEX eb_stages_eb_del_idx
+        ///ON eb_stages(eb_del);.
+        /// </summary>
+        public static string eb_stages1 {
+            get {
+                return ResourceManager.GetString("eb_stages1", resourceCulture);
             }
         }
         
@@ -6253,6 +6328,31 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_user_types
+        ///(
+        ///    id integer auto_increment,
+        ///    name text,
+        ///    eb_created_by integer,
+        ///    eb_created_at datetime,
+        ///    eb_lastmodified_by integer,
+        ///    eb_lastmodified_at datetime,
+        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    CONSTRAINT eb_user_types_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///CREATE INDEX eb_user_types_id_idx
+        ///ON eb_user_types(id);
+        ///
+        ///CREATE INDEX eb_user_types_eb_del_idx
+        ///ON eb_user_types(eb_del);.
+        /// </summary>
+        public static string eb_user_types1 {
+            get {
+                return ResourceManager.GetString("eb_user_types1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DECLARE
         ///	eb_del varchar(10);
         ///BEGIN
@@ -6536,31 +6636,27 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_users
         ///(
-        ///  id integer auto_increment,
-        ///  email varchar(320),
-        ///  pwd varchar(75),
-        ///  firstname text,
-        ///  lastname text,
-        ///  middlename text,
-        ///  dob date,
-        ///  phnoprimary text,
-        ///  phnosecondary text,
-        ///  landline text,
-        ///  phextension text,
-        ///  alternateemail text,
-        ///  profileimg text,
-        ///  slackjson json,
-        ///  prolink text,
-        ///  loginattempts integer DEFAULT 1,
-        ///  socialid text,
-        ///  socialname text,
-        ///  fullname text,
-        ///  nickname text,
-        ///  sex text,
-        ///  fbid text,
-        ///  fbname text,
-        ///  preferencesjson text,
-        ///   [rest of string was truncated]&quot;;.
+        ///    id integer auto_increment,
+        ///    email varchar(320),
+        ///    pwd varchar(75),
+        ///    fullname text,
+        ///    nickname text,
+        ///    sex text,
+        ///    dob date,
+        ///    phnoprimary text,
+        ///    phnosecondary text,
+        ///    landline text,
+        ///    phextension text,
+        ///    alternateemail text,
+        ///    slackjson json,
+        ///    prolink text,
+        ///    loginattempts integer DEFAULT 1,    
+        ///    fbid text,
+        ///    fbname text,
+        ///    preferencesjson text,
+        ///    statusid integer DEFAULT 0,
+        ///    hide text,
+        ///    dprefid integer DEFAULT  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_users2 {
             get {
