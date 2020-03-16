@@ -845,7 +845,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, 
-                            @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);";
+                            @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id, @tmp_usergroup_a, @tmp_public_ids, @tmp_user_type);";
             }
         }
 
@@ -854,7 +854,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, 
-                            @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);";
+                            @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id, @tmp_usergroup_a, @tmp_public_ids, @tmp_user_type);";
             }
         }
 
@@ -863,7 +863,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"eb_authenticate_unified(@uname, @pwd, @social, @wc, @ipaddress, @deviceinfo, @tmp_userid, @tmp_status_id, @tmp_email, @tmp_fullname, @tmp_roles_a, 
-                            @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id);";
+                            @tmp_rolename_a, @tmp_permissions, @tmp_preferencesjson, @tmp_constraints_a, @tmp_signin_id, @tmp_usergroup_a, @tmp_public_ids, @tmp_user_type);";
             }
         }
 
@@ -873,7 +873,7 @@ namespace ExpressBase.Common
             {
                 return @"eb_authenticate_anonymous(@in_socialid, @in_fullname, @in_emailid, @in_phone, @in_user_ip, @in_user_browser,@in_city, @in_region, @in_country, 
                             @in_latitude, @in_longitude, @in_timezone, @in_iplocationjson, @in_appid, @in_wc, @out_userid, @out_status_id, @out_email, @out_fullname, @out_roles_a, 
-                            @out_rolename_a, @out_permissions, @out_preferencesjson, @out_constraints_a, @out_signin_id); ";
+                            @out_rolename_a, @out_permissions, @out_preferencesjson, @out_constraints_a, @out_signin_id, @out_usergroup_a, @out_public_ids, @out_user_type); ";
             }
         }
 
@@ -980,7 +980,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"eb_security_user(@_userid, @_id, @_fullname, @_nickname, @_email, @_pwd, @_dob, @_sex, @_alternateemail, @_phprimary, @_phsecondary, @_phlandphone, 
-                            @_extension, @_fbid, @_fbname, @_roles, @_groups, @_statusid, @_hide ,@_anonymoususerid, @_preferences, @_consadd, @_consdel, @out_uid);";
+                            @_extension, @_fbid, @_fbname, @_roles, @_groups, @_statusid, @_hide ,@_anonymoususerid, @_preferences, @_usertype, @_consadd, @_consdel, @out_uid);";
             }
         }
 
@@ -1505,7 +1505,7 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"eb_objects_save(@id, @obj_name, @obj_desc, @obj_type, @obj_json, @commit_uid, @relations, @tags, @app_id, @disp_name, @out_refidv)";
+                return @"eb_objects_save(@id, @obj_name, @obj_desc, @obj_type, @obj_json, @commit_uid, @relations, @tags, @app_id, @disp_name, @out_refidv);";
             }
         }
 
@@ -1514,7 +1514,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"eb_objects_commit(@id, @obj_name, @obj_desc, @obj_type, @obj_json, @obj_changelog,  @commit_uid, @relations, @tags, @app_id, @disp_name, 
-                            @out_committed_refidunique)";
+                            @out_committed_refidunique);";
             }
         }
 
@@ -1527,7 +1527,7 @@ namespace ExpressBase.Common
                                 @tagsval, @app_idval, @lastversionrefidval, @lastversionnumberval, @lastversioncommit_tsval, @lastversion_statusval,
                                 @lastversioncommit_byname, @lastversioncommit_byid, @liveversionrefidval, @liveversionnumberval, @liveversioncommit_tsval,
                                 @liveversion_statusval, @liveversioncommit_byname, @liveversioncommit_byid, @owner_uidVal, @owner_tsVal, @wner_nameVal, @dispnameval,
-                                @is_logv)";
+                                @is_logv, @is_publicv);";
             }
         }
 
@@ -1569,7 +1569,7 @@ namespace ExpressBase.Common
                 return @"eb_objects_update_dashboard(@refid, @namev, @status, @ver_num, @work_mode, @workingcopies, @major_ver, @minor_ver, @patch_ver, @tags,
                         @app_id, @lastversionrefidval, @lastversionnumberval, @lastversioncommit_tsval, @lastversion_statusval, @lastversioncommit_byname, 
                         @lastversioncommit_byid, @liveversionrefidval, @liveversionnumberval, @liveversioncommit_tsval, @liveversion_statusval, 
-                        @liveversioncommit_byname, @liveversioncommit_byid, @owner_uidval, @owner_tsval, @owner_nameval)";
+                        @liveversioncommit_byname, @liveversioncommit_byid, @owner_uidval, @owner_tsval, @owner_nameval, @is_public)";
             }
         }               
 
