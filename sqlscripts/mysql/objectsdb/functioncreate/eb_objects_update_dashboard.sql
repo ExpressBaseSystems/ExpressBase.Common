@@ -1,5 +1,6 @@
 ﻿DROP PROCEDURE IF EXISTS eb_objects_update_dashboard;
 
+
 CREATE PROCEDURE eb_objects_update_dashboard(IN refid TEXT,
 OUT namev TEXT,
 OUT status INTEGER,
@@ -25,7 +26,8 @@ OUT liveversioncommit_byname TEXT,
 OUT liveversioncommit_byid INTEGER, 
 OUT owner_uidval INTEGER, 
 OUT owner_tsval TEXT, 
-OUT owner_nameval TEXT)
+OUT owner_nameval TEXT,
+OUT is_public CHARACTER)
 BEGIN
   
 DECLARE temp_workingcopies TEXT;
@@ -54,6 +56,7 @@ DECLARE	temp_liveversioncommit_byid INTEGER;
 DECLARE temp_owner_uidVal INTEGER;
 DECLARE temp_owner_tsVal TEXT;
 DECLARE temp_owner_nameVal TEXT;
+DECLARE temp_is_public CHARACTER;
 
 SET temp_workingcopies = NULL;
 
@@ -103,10 +106,10 @@ INTO
 	temp_owner_uidVal, temp_owner_tsVal, temp_owner_nameVal;	
 
 SELECT 
-	EO.obj_name, EOS.status,EOV.version_num, EOV.working_mode,
-		    EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags	
+		EO.obj_name, EOS.status,EOV.version_num, EOV.working_mode,
+		EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags, EO.is_public	
 	FROM 
-			 eb_objects EO, eb_objects_ver EOV
+		eb_objects EO, eb_objects_ver EOV
 	LEFT JOIN
 		eb_users EU
 	ON 
@@ -120,19 +123,19 @@ SELECT
 			AND EOS.id = (SELECT MAX(EOS.id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id) 
 	INTO	
 		temp_namev, temp_status, temp_ver_num, temp_work_mode,
-		temp_major_ver, temp_minor_ver, temp_patch_ver, temp_tags;
+		temp_major_ver, temp_minor_ver, temp_patch_ver, temp_tags, temp_is_public;
             
 SELECT temp_namev, temp_status, temp_ver_num,
 	COALESCE(temp_work_mode,'F'), temp_workingcopies, temp_major_ver, temp_minor_ver, temp_patch_ver, temp_tags, temp_app_id,
 	temp_lastversionrefidval, temp_lastversionnumberval, temp_lastversioncommit_tsval, temp_lastversion_statusval, temp_lastversioncommit_byname,temp_lastversioncommit_byid,
 	temp_liveversionrefidval, temp_liveversionnumberval, temp_liveversioncommit_tsval, temp_liveversion_statusval, temp_liveversioncommit_byname,temp_liveversioncommit_byid,
-	temp_owner_uidVal, temp_owner_tsVal, temp_owner_nameVal 
+	temp_owner_uidVal, temp_owner_tsVal, temp_owner_nameVal, temp_is_public
 INTO 
     namev, status, ver_num,
 	work_mode, workingcopies, major_ver, minor_ver, patch_ver, tags, app_id,
 	lastversionrefidval, lastversionnumberval, lastversioncommit_tsval, lastversion_statusval, 
     lastversioncommit_byname, lastversioncommit_byid, liveversionrefidval, liveversionnumberval, 
     liveversioncommit_tsval, liveversion_statusval, liveversioncommit_byname ,liveversioncommit_byid ,
-	owner_uidVal, owner_tsVal, owner_nameVal;
+	owner_uidVal, owner_tsVal, owner_nameVal, is_public;
     
 END

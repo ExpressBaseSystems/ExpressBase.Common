@@ -1,5 +1,6 @@
 ﻿DROP PROCEDURE IF EXISTS eb_objects_getversiontoopen;
 
+
 CREATE PROCEDURE eb_objects_getversiontoopen(IN _id INTEGER,
  OUT out_idv INTEGER, 
  OUT out_namev TEXT, 
@@ -21,7 +22,8 @@ CREATE PROCEDURE eb_objects_getversiontoopen(IN _id INTEGER,
  OUT out_tags TEXT, 
  OUT out_app_id TEXT, 
  OUT out_dispnamev TEXT, 
- OUT out_is_log CHARACTER
+ OUT out_is_log CHARACTER,
+ OUT out_is_public CHARACTER
 )
 BEGIN
 DECLARE workingcopies TEXT;
@@ -50,6 +52,7 @@ DECLARE liveversionnumber TEXT;
 DECLARE liveversionrefid TEXT;
 DECLARE dispnamev TEXT;
 DECLARE is_log CHAR;
+DECLARE is_public CHAR;
 
 SET workingcopies = NULL;
 SET	json_wc = NULL;
@@ -75,9 +78,9 @@ IF no_of_workcopies = 1 THEN
 	SELECT 
 			EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc,
 			EOV.obj_json, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.version_num, EOV.working_mode, 
-			EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags,EO.display_name, EO.is_logenabled
+			EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags,EO.display_name, COALESCE(EO.is_logenabled,'F'), COALESCE(EO.is_public,'F')
 	INTO	idv, namev, typev, status, description, json_wc, changelog, commitat, refidv, ver_num, work_mode, commitby,
-			major_ver, minor_ver, patch_ver, tags, dispnamev , is_log
+			major_ver, minor_ver, patch_ver, tags, dispnamev , is_log, is_public
 	FROM 
 			 eb_objects EO, eb_objects_ver EOV
 	LEFT JOIN
@@ -96,9 +99,9 @@ ELSEIF no_of_workcopies = 0 THEN
         SELECT 
                 EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc, 
                 EOV.obj_json, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.version_num, EOV.working_mode, 
-				EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags, EO.display_name, EO.is_logenabled
+				EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags, EO.display_name, COALESCE(EO.is_logenabled,'F'), COALESCE(EO.is_public,'F')
         INTO	idv, namev, typev, status, description, json_lc, changelog, commitat, refidv, ver_num, work_mode,
-				commitby, major_ver, minor_ver, patch_ver, tags, dispnamev, is_log
+				commitby, major_ver, minor_ver, patch_ver, tags, dispnamev, is_log, is_public
         FROM  
                 eb_objects EO, eb_objects_ver EOV
         LEFT JOIN
@@ -123,9 +126,9 @@ ELSE
 	SELECT 
 			EO.id, EO.obj_name, EO.obj_type, EOS.status, EO.obj_desc,
 			EOV.obj_json, EOV.obj_changelog, EOV.commit_ts, EOV.refid, EOV.version_num, EOV.working_mode, 
-			EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags, EO.display_name, COALESCE(EO.is_logenabled,'F')
+			EU.firstname, EOV.major_ver_num, EOV.minor_ver_num, EOV.patch_ver_num, EO.obj_tags, EO.display_name, COALESCE(EO.is_logenabled,'F'), COALESCE(EO.is_public,'F')
 			INTO	idv, namev, typev, status, description, json_lc, changelog, commitat, refidv, ver_num, work_mode,
-			commitby, major_ver, minor_ver, patch_ver, tags, dispnamev, is_log
+			commitby, major_ver, minor_ver, patch_ver, tags, dispnamev, is_log, is_public
 	FROM 
 			eb_objects EO, eb_objects_ver EOV
 	LEFT JOIN
@@ -148,10 +151,10 @@ END IF;
 
 SELECT
     idv, namev, typev, status, description, changelog, commitat, commitby, refidv, ver_num, COALESCE(work_mode,'F') , workingcopies,
-	json_wc, json_lc, major_ver, minor_ver, patch_ver, tags, app_id, dispnamev, is_log 
+	json_wc, json_lc, major_ver, minor_ver, patch_ver, tags, app_id, dispnamev, is_log, is_public 
     INTO
     out_idv , out_namev , out_typev , out_status , out_description , out_changelog , out_commitat , out_commitby , out_refidv , 
     out_ver_num , out_work_mode , out_workingcopies , out_json_wc , out_json_lc , out_major_ver , out_minor_ver , out_patch_ver , 
-    out_tags ,out_app_id , out_dispnamev , out_is_log; 
+    out_tags ,out_app_id , out_dispnamev , out_is_log, out_is_public; 
 
 END

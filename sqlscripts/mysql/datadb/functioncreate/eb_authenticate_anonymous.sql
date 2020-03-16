@@ -24,7 +24,10 @@ CREATE PROCEDURE eb_authenticate_anonymous(IN in_socialid TEXT,
     OUT out_permissions TEXT,
     OUT out_preferencesjson TEXT,
     OUT out_constraints_a TEXT,
-    OUT out_signin_id INTEGER
+    OUT out_signin_id INTEGER,
+    OUT out_usergroup_a TEXT, 
+    OUT out_public_ids TEXT, 
+    OUT out_user_type INTEGER
     )
 BEGIN
 DECLARE tmp_userid INTEGER;
@@ -38,6 +41,9 @@ DECLARE tmp_preferencesjson TEXT;
 DECLARE tmp_constraints_a TEXT;
 DECLARE tmp_signin_id INTEGER;
 DECLARE is_anon_auth_req BOOL;
+DECLARE tmp_usergroup_a TEXT;
+DECLARE tmp_public_ids TEXT;
+DECLARE tmp_user_type TEXT;
 
 IF in_socialid = '' THEN SET in_socialid = NULL; END IF;
 IF in_fullname = '' THEN SET in_fullname = NULL; END IF;
@@ -58,11 +64,11 @@ IF in_wc = '' THEN SET in_wc = NULL; END IF;
 SET is_anon_auth_req = FALSE;
 
 IF in_socialid IS NOT NULL THEN
-	CALL eb_authenticate_unified('', '', in_socialid, in_wc, in_user_ip, '', @out_userid,@out_status_id,@out_email,@out_fullname,@out_roles_a,@out_rolename_a,@out_permissions,@out_preferencesjson, @out_constraints_a,@out_signin_id); 
+	CALL eb_authenticate_unified('', '', in_socialid, in_wc, in_user_ip, '', @out_userid, @out_status_id, @out_email, @out_fullname, @out_roles_a, @out_rolename_a, @out_permissions, @out_preferencesjson, @out_constraints_a, @out_signin_id, @out_usergroup_a, @out_public_ids, @out_user_type); 
 	SELECT 
-			@out_userid,@out_status_id,@out_email,@out_fullname,@out_roles_a,@out_rolename_a,@out_permissions,@out_preferencesjson,@out_constraints_a,@out_signin_id
+			@out_userid, @out_status_id, @out_email, @out_fullname, @out_roles_a, @out_rolename_a, @out_permissions, @out_preferencesjson, @out_constraints_a, @out_signin_id, @out_usergroup_a, @out_public_ids, @out_user_type
 		INTO 
-			tmp_userid, tmp_status_id, tmp_email, tmp_fullname, tmp_roles_a, tmp_rolename_a, tmp_permissions, tmp_preferencesjson, tmp_constraints_a, tmp_signin_id;
+			tmp_userid, tmp_status_id, tmp_email, tmp_fullname, tmp_roles_a, tmp_rolename_a, tmp_permissions, tmp_preferencesjson, tmp_constraints_a, tmp_signin_id, tmp_usergroup_a, tmp_public_ids, tmp_user_type;
     
     IF tmp_userid IS NULL OR tmp_userid = 0  THEN    
 		SELECT 
@@ -134,15 +140,15 @@ END IF;
 
 IF is_anon_auth_req THEN
 	
-	CALL eb_authenticate_unified('anonymous@anonym.com', '294de3557d9d00b3d2d8a1e6aab028cf', '', in_wc, in_user_ip, '', @out_userid,@out_status_id,@out_email,@out_fullname,@out_roles_a,@out_rolename_a,@out_permissions,@out_preferencesjson, @out_constraints_a,@out_signin_id);
+	CALL eb_authenticate_unified('anonymous@anonym.com', '294de3557d9d00b3d2d8a1e6aab028cf', '', in_wc, in_user_ip, '', @out_userid, @out_status_id, @out_email, @out_fullname, @out_roles_a, @out_rolename_a, @out_permissions, @out_preferencesjson, @out_constraints_a, @out_signin_id, @out_usergroup_a, @out_public_ids, @out_user_type);
     SELECT 
-			@out_userid,@out_status_id,@out_email,@out_fullname,@out_roles_a,@out_rolename_a,@out_permissions,@out_preferencesjson, @out_constraints_a,@out_signin_id  
+			@out_userid, @out_status_id, @out_email, @out_fullname, @out_roles_a, @out_rolename_a, @out_permissions, @out_preferencesjson, @out_constraints_a, @out_signin_id, @out_usergroup_a, @out_public_ids, @out_user_type  
     INTO 
-		tmp_userid ,tmp_status_id, tmp_email, tmp_fullname, tmp_roles_a, tmp_rolename_a, tmp_permissions, tmp_preferencesjson, tmp_constraints_a, tmp_signin_id;
+		tmp_userid ,tmp_status_id, tmp_email, tmp_fullname, tmp_roles_a, tmp_rolename_a, tmp_permissions, tmp_preferencesjson, tmp_constraints_a, tmp_signin_id, tmp_usergroup_a, tmp_public_ids, tmp_user_type;
 END IF;
 
 SELECT 
-		tmp_userid, tmp_status_id, tmp_email, tmp_fullname, tmp_roles_a, tmp_rolename_a, tmp_permissions, tmp_preferencesjson, tmp_constraints_a, tmp_signin_id 
+		tmp_userid, tmp_status_id, tmp_email, tmp_fullname, tmp_roles_a, tmp_rolename_a, tmp_permissions, tmp_preferencesjson, tmp_constraints_a, tmp_signin_id, tmp_usergroup_a, tmp_public_ids, tmp_user_type
 	INTO 
-        out_userid, out_status_id, out_email, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson, out_constraints_a, out_signin_id; 
+        out_userid, out_status_id, out_email, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson, out_constraints_a, out_signin_id, out_usergroup_a, out_public_ids, out_user_type; 
 END

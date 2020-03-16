@@ -11,9 +11,9 @@
 	display_name text,
 	is_logenabled char(1) DEFAULT 'F',
 	eb_del char(1) DEFAULT 'F',
+    	is_public char(1) DEFAULT 'F',
 	CONSTRAINT eb_objects_pkey PRIMARY KEY (id)
 );
-  
 
 CREATE INDEX eb_objects_id_idx
     ON eb_objects(id);
@@ -21,3 +21,4 @@ CREATE INDEX eb_objects_id_idx
 CREATE INDEX eb_objects_type_idx
     ON eb_objects(obj_type);
 
+  

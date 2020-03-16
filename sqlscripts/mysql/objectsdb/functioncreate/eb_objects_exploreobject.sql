@@ -36,7 +36,8 @@ OUT owner_uidVal INTEGER,
 OUT owner_tsVal TEXT,
 OUT owner_nameVal TEXT,
 OUT dispnameval TEXT,
-OUT is_logv TEXT)
+OUT is_logv TEXT,
+OUT is_publicv TEXT)
 BEGIN
 DECLARE	temp_lastversionrefidval TEXT;
 DECLARE temp_lastversionnumberval TEXT;
@@ -56,7 +57,7 @@ DECLARE temp_owner_nameVal TEXT;
 
  CALL eb_objects_getversiontoopen(id,@out_idv , @out_namev , @out_typev , @out_status , @out_description , @out_changelog , @out_commitat , @out_commitby , @out_refidv , 
     @out_ver_num , @out_work_mode , @out_workingcopies , @out_json_wc , @out_json_lc , @out_major_ver , @out_minor_ver , @out_patch_ver , 
-    @out_tags ,@out_app_id , @out_dispnamev , @out_is_log);
+    @out_tags ,@out_app_id , @out_dispnamev , @out_is_log, @out_is_public);
 
 -- Live version details
 SELECT
@@ -90,11 +91,11 @@ WHERE
 
 SELECT @out_idv , @out_namev , @out_typev , @out_status , @out_description , @out_changelog , @out_commitat , @out_commitby , @out_refidv , 
     @out_ver_num , @out_work_mode , @out_workingcopies , @out_json_wc , @out_json_lc , @out_major_ver , @out_minor_ver , @out_patch_ver , 
-    @out_tags ,@out_app_id , @out_dispnamev , @out_is_log
+    @out_tags ,@out_app_id , @out_dispnamev , @out_is_log, @out_is_public
 	INTO
 		idval, nameval, typeval, statusval, descriptionval, changelogval, commitatval, commitbyval, refidval,
 		ver_numval, work_modeval, workingcopiesval, json_wcval, json_lcval, major_verval, 
-        minor_verval, patch_verval, tagsval, app_idval, dispnameval, is_logv;
+        minor_verval, patch_verval, tagsval, app_idval, dispnameval, is_logv, is_publicv;
 SELECT 
 	temp_lastversionrefidval, temp_lastversionnumberval, temp_lastversioncommit_tsval, temp_lastversion_statusval, 
     temp_lastversioncommit_byname,temp_lastversioncommit_byid, temp_liveversionrefidval, temp_liveversionnumberval, 
