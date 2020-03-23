@@ -316,7 +316,8 @@ namespace ExpressBase.Common
         Edit_Mode = 3,
         Fail_Mode = 4,
         Preview_Mode = 5,
-        Prefill_Mode = 6
+        Prefill_Mode = 6,
+        Export_mode = 7
     }
 
 
