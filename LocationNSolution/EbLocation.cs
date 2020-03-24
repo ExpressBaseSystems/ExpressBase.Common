@@ -103,4 +103,11 @@ namespace ExpressBase.Common.LocationNSolution
 
         public string RefId { get; set; }
     }
+
+    public class EbLocationType
+    {
+        public int Id { get; set; }
+
+        public String Type { get; set; }
+    }
 }

@@ -56,7 +56,7 @@ namespace ExpressBase.Common
     {
         public string Name { get; set; }
 
-        public dynamic Value { get; set; }
+        public object Value { get; set; }
 
         public int Type { get; set; }
 

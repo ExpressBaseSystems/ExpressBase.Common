@@ -108,7 +108,6 @@ namespace ExpressBase.Common.Objects
         //[JsonIgnore]
         //public override string FontFamily { get; set; }
 
-        [JsonIgnore]
         public override List<EbValidator> Validators { get; set; }
 
         [JsonIgnore]
