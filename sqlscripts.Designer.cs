@@ -2524,6 +2524,27 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_location_types
+        ///(
+        ///    id SERIAL,
+        ///    type text,
+        ///    eb_created_by integer,
+        ///    eb_created_at timestamp without time zone,
+        ///    eb_lastmodified_by integer,
+        ///    eb_lastmodified_at timestamp without time zone,
+        ///    eb_del character(1) DEFAULT &apos;F&apos;
+        ///);
+        ///
+        ///CREATE INDEX eb_location_types_id_idx ON eb_location_types(id);
+        ///CREATE INDEX eb_location_types_eb_del_idx ON eb_location_types(eb_del);.
+        /// </summary>
+        public static string eb_location_types {
+            get {
+                return ResourceManager.GetString("eb_location_types", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BEGIN
         ///
         ///	EXECUTE IMMEDIATE &apos;CREATE SEQUENCE eb_locations_id_seq START WITH 1&apos;;
@@ -2635,7 +2656,7 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE eb_my_actions
+        ///   Looks up a localized string similar to CREATE TABLE eb_my_actions
         ///(
         ///    id SERIAL,
         ///    user_ids text,
@@ -2652,7 +2673,7 @@ namespace ExpressBase.Common {
         ///    description text,
         ///    is_form_data_editable char(1) DEFAULT &apos;F&apos;,
         ///    from_datetime timestamp without time zone,
-        ///    expiry_datetime timestamp without t [rest of string was truncated]&quot;;.
+        ///    expiry_datetime timestamp wit [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_my_actions {
             get {

@@ -80,6 +80,7 @@ namespace ExpressBase.Common.Constants
                         "objectsdb.tablecreate.eb_objects_favourites.sql",
                         "objectsdb.tablecreate.eb_objects_relations.sql",
                         "objectsdb.tablecreate.eb_objects_status.sql",
-                        "objectsdb.tablecreate.eb_objects_ver.sql" } ;
-    }
+                        "objectsdb.tablecreate.eb_objects_ver.sql",
+                        "objectsdb.tablecreate.eb_location_types.sql" };
+}
 }
