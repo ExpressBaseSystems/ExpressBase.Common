@@ -25,6 +25,13 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyGroup(PGConstants.APPEARANCE)]
+        [PropertyEditor(PropertyEditorType.FontSelector)]
+        [UIproperty]
+        [OnChangeUIFunction("Common.LABEL_STYLE")]
+        public virtual EbFont LabelStyle { get; set; }
+
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        [PropertyGroup(PGConstants.APPEARANCE)]
         [PropertyEditor(PropertyEditorType.Color)]
         [UIproperty]
         [OnChangeUIFunction("Common.LABEL_BACKCOLOR")]
@@ -40,11 +47,12 @@ namespace ExpressBase.Common.Objects
         public virtual UISides Margin { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        [HideInPropertyGrid]
         [PropertyGroup(PGConstants.APPEARANCE)]
         [PropertyEditor(PropertyEditorType.Color)]
-        [Attributes.DefaultPropValue("#333333")]
+        [Attributes.DefaultPropValue("#6b6a6a")]
         [UIproperty]
-        [OnChangeUIFunction("Common.LABEL_COLOR")]
+        //[OnChangeUIFunction("Common.LABEL_COLOR")]
         [Alias("Label Color")]
         public virtual string LabelForeColor { get; set; }
 
