@@ -343,6 +343,11 @@ namespace ExpressBase.Common.Objects.Attributes
         public const string PADDING = @"
                 $(`#cont_${elementId}.Eb-ctrlContainer`).css('padding', `${props.Padding.Top}px ${props.Padding.Right}px ${props.Padding.Bottom}px ${props.Padding.Left}px`);";
 
+        public const string INP_PADDING = @"
+                if(props.Padding) $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-inp]').css('padding', `${props.Padding.Top}px ${props.Padding.Right}px ${props.Padding.Bottom}px ${props.Padding.Left}px`);";
+
+        public const string INP_FONT_STYLE = @"setFontCss(props.FontStyle, $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-inp]'));";
+
         public static string getFunctions()
         {
             string jsonStr = "EbOnChangeUIfns.Common = {";
