@@ -95,7 +95,7 @@ namespace ExpressBase.Common.Structures
         public const int iBotForm = 18;
         public const int iSmsBuilder = 19;
         public const int iApi = 20;
-        public const int iGoogleMap = 21;
+        public const int iMapView = 21;
         public const int iDashBoard = 22;
         public const int iKanBan = 23;
         public const int iCalendarView = 24;
@@ -123,7 +123,7 @@ namespace ExpressBase.Common.Structures
         public static readonly EbObjectType BotForm = new EbObjectType(ObjectConstants.BOT_FORM, iBotForm, ObjectConstants.BXX, true, "fa-wpforms", "Bot Form");
         public static readonly EbObjectType SmsBuilder = new EbObjectType(ObjectConstants.SMS_BUILDER, iSmsBuilder, ObjectConstants.XXW, false, "fa-commenting-o", "Sms Builder");
         public static readonly EbObjectType Api = new EbObjectType(ObjectConstants.API, iApi, ObjectConstants.XXW, false, "fa-code",null);
-        public static readonly EbObjectType GoogleMap = new EbObjectType(ObjectConstants.GOOGLEMAP, iGoogleMap, ObjectConstants.BMW, true, "fa-map-marker", "Google MapView");
+        public static readonly EbObjectType MapView = new EbObjectType(ObjectConstants.MAP_VIEW, iMapView, ObjectConstants.BMW, true, "fa-map-marker", "Map View");
         public static readonly EbObjectType DashBoard = new EbObjectType(ObjectConstants.DASHBOARD, iDashBoard, ObjectConstants.BMW, true, "fa-tachometer", null);
         public static readonly EbObjectType SqlJob = new EbObjectType(ObjectConstants.SQLJOB, iSqlJob, ObjectConstants.XXW, false, "fa-tachometer", "Sql Job");
 
@@ -166,7 +166,7 @@ namespace ExpressBase.Common.Structures
                     ChartVisualization,
                     SmsBuilder,
                     Api,
-                    GoogleMap,
+                    MapView,
                     BotForm,
                     KanBan,
                     CalendarView,

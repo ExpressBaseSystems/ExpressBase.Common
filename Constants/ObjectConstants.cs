@@ -39,7 +39,7 @@ namespace ExpressBase.Common.Constants
 		public const string BOT_FORM					= "BotForm";
         public const string SMS_BUILDER                 = "SmsBuilder";
         public const string API                         = "Api";
-        public const string GOOGLEMAP                   = "GoogleMap";
+        public const string MAP_VIEW                   = "MapView";
         public const string DASHBOARD                   = "DashBoard";
         public const string KANBAN                      = "KanBan";
         public const string CALENDARVIEW                = "CalendarView";
