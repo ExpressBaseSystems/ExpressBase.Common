@@ -308,7 +308,7 @@ namespace ExpressBase.Common.Objects.Attributes
         public const string FORECOLOR = @"
                 $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-inp]').css('color',props.ForeColor);";
 
-        public const string LABEL_STYLE = @"setFontCss(props.LabelStyle, $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-label]'));";
+        public const string LABEL_STYLE = @"setFontCss(props.LabelFontStyle, $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-label]'));";
 
         public const string LABEL = @"
                 $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-label]').text(props.Label);";

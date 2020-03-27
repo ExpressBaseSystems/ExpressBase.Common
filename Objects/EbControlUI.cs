@@ -28,7 +28,7 @@ namespace ExpressBase.Common.Objects
         [PropertyEditor(PropertyEditorType.FontSelector)]
         [UIproperty]
         [OnChangeUIFunction("Common.LABEL_STYLE")]
-        public virtual EbFont LabelStyle { get; set; }
+        public virtual EbFont LabelFontStyle { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyGroup(PGConstants.APPEARANCE)]
