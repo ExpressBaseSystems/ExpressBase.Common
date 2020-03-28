@@ -117,7 +117,7 @@ namespace ExpressBase.Common.Objects
 
         public void SetContextId(string ContextId)
         {
-            this.EbSid_CtxId = ContextId;
+            this.ContextId = ContextId;
             for (int i = 0; i < Controls.Count; i++)
             {
                 EbControl control = Controls[i];
