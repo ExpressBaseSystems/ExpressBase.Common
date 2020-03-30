@@ -308,7 +308,7 @@ namespace ExpressBase.Common.Objects.Attributes
         public const string FORECOLOR = @"
                 $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-inp]').css('color',props.ForeColor);";
 
-        public const string LABEL_STYLE = @"setFontCss(props.LabelStyle, $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-label]'));";
+        public const string LABEL_STYLE = @"setFontCss(props.LabelFontStyle, $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-label]'));";
 
         public const string LABEL = @"
                 $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-label]').text(props.Label);";
@@ -342,6 +342,11 @@ namespace ExpressBase.Common.Objects.Attributes
 
         public const string PADDING = @"
                 $(`#cont_${elementId}.Eb-ctrlContainer`).css('padding', `${props.Padding.Top}px ${props.Padding.Right}px ${props.Padding.Bottom}px ${props.Padding.Left}px`);";
+
+        public const string INP_PADDING = @"
+                if(props.Padding) $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-inp]').css('padding', `${props.Padding.Top}px ${props.Padding.Right}px ${props.Padding.Bottom}px ${props.Padding.Left}px`);";
+
+        public const string INP_FONT_STYLE = @"setFontCss(props.FontStyle, $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-inp]'));";
 
         public static string getFunctions()
         {

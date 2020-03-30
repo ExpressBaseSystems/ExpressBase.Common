@@ -47,6 +47,15 @@ namespace ExpressBase.Common.Objects
         public virtual string EbSid { get; set; }
 
         [HideInPropertyGrid]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.DashBoard)]
+        public virtual string EbSid_CtxId { 
+            get {
+                return (!ContextId.IsNullOrEmpty()) ? string.Concat(ContextId, "_", EbSid) : EbSid;
+            }
+            set { }
+        }
+
+        [HideInPropertyGrid]
         [JsonIgnore]
         public virtual string ToolNameAlias { get; set; }
 
@@ -57,10 +66,6 @@ namespace ExpressBase.Common.Objects
         [HideInPropertyGrid]
         [JsonIgnore]
         public virtual string ToolHelpText { get { return string.Empty; } set { } }
-
-        [HideInPropertyGrid]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.DashBoard)]
-        public virtual string EbSid_CtxId { get { return (!ContextId.IsNullOrEmpty()) ? string.Concat(ContextId, "_", EbSid) : EbSid; } set { } }
 
         private string _ContextId;
 
