@@ -982,4 +982,16 @@
   <data name="eb_location_types" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\pgsql\objectsdb\tablecreate\eb_location_types.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="eb_approval" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_approval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_approval1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\datadb\tablecreate\eb_approval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_approval2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\datadb\tablecreate\eb_approval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_approval3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\sqlserver\datadb\tablecreate\eb_approval.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
 </root>
