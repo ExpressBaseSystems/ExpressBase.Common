@@ -97,7 +97,7 @@ namespace ExpressBase.Common.Extensions
             List<DbParameter> DbParams = new List<DbParameter>();
             foreach (Param p in Params)
             {
-                DbParams.Add(factory.ObjectsDB.GetNewParameter("@" + p.Name, (EbDbTypes)Convert.ToInt32(p.Type), p.ValueTo));
+                DbParams.Add(factory.DataDB.GetNewParameter(p.Name, (EbDbTypes)Convert.ToInt32(p.Type), p.ValueTo));
             }
             return DbParams;
         }
