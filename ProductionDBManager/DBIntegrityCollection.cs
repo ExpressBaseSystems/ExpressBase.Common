@@ -41,7 +41,8 @@ namespace ExpressBase.Common.ProductionDBManager
                 { "false", new DbTypeMap4ColumnDefault { PgSQLColumnDefault = "false",MySQLColumnDefault = "0", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
                 { "0", new DbTypeMap4ColumnDefault { PgSQLColumnDefault = "0",MySQLColumnDefault = "0", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
                 { "'default'::text", new DbTypeMap4ColumnDefault { PgSQLColumnDefault = "default",MySQLColumnDefault = "default", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
-                { "1", new DbTypeMap4ColumnDefault { PgSQLColumnDefault = "1",MySQLColumnDefault = "1", OracleColumnDefault = "", SQLServerColumnDefault = "" } }
+                { "1", new DbTypeMap4ColumnDefault { PgSQLColumnDefault = "1",MySQLColumnDefault = "1", OracleColumnDefault = "", SQLServerColumnDefault = "" } },
+                { "now()", new DbTypeMap4ColumnDefault { PgSQLColumnDefault = "now()",MySQLColumnDefault = "CURRENT_TIMESTAMP", OracleColumnDefault = "", SQLServerColumnDefault = "" } }
             };
 
         public static readonly MySQLKeywordsConvertCollection ColumnName = new MySQLKeywordsConvertCollection
