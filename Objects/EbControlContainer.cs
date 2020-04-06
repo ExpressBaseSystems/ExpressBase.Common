@@ -114,6 +114,19 @@ namespace ExpressBase.Common.Objects
         public override EbScript DefaultValueExpression { get; set; }
 
         //methods
+
+        public void SetContextId(string ContextId)
+        {
+            this.ContextId = ContextId;
+            for (int i = 0; i < Controls.Count; i++)
+            {
+                EbControl control = Controls[i];
+                control.ContextId = ContextId;
+                if (control is EbControlContainer)
+                    (control as EbControlContainer).SetContextId(ContextId);
+
+            }
+        }
         public virtual string GetHtml(bool isRootObj)
         {
             return string.Empty;

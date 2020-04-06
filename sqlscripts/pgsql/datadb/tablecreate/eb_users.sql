@@ -37,11 +37,15 @@ CREATE TABLE eb_users
 	eb_data_id integer,
 	eb_ver_id integer,
 	eb_user_types_id integer DEFAULT 1,
+	eb_created_by integer,
+	eb_created_at timestamp without time zone,
+	eb_lastmodified_by integer,
+	eb_lastmodified_at timestamp without time zone,
     CONSTRAINT eb_users_pkey PRIMARY KEY (id),
     CONSTRAINT eb_users_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );
 
-
+ 
 -- Index: eb_users_eb_del_idx
 
 -- DROP INDEX public.eb_users_eb_del_idx;

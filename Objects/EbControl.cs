@@ -47,6 +47,15 @@ namespace ExpressBase.Common.Objects
         public virtual string EbSid { get; set; }
 
         [HideInPropertyGrid]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.DashBoard)]
+        public virtual string EbSid_CtxId { 
+            get {
+                return (!ContextId.IsNullOrEmpty()) ? string.Concat(ContextId, "_", EbSid) : EbSid;
+            }
+            set { }
+        }
+
+        [HideInPropertyGrid]
         [JsonIgnore]
         public virtual string ToolNameAlias { get; set; }
 
@@ -57,10 +66,6 @@ namespace ExpressBase.Common.Objects
         [HideInPropertyGrid]
         [JsonIgnore]
         public virtual string ToolHelpText { get { return string.Empty; } set { } }
-
-        [HideInPropertyGrid]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.DashBoard)]
-        public virtual string EbSid_CtxId { get { return (!ContextId.IsNullOrEmpty()) ? string.Concat(ContextId, "_", EbSid) : EbSid; } set { } }
 
         private string _ContextId;
 
@@ -202,8 +207,10 @@ namespace ExpressBase.Common.Objects
 
         [JsonIgnore]
         public virtual string DesignHtml4Bot { get; set; }
-
-        public virtual bool isFullViewContol { get; set; }
+        
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        [HideInPropertyGrid]
+        public virtual bool IsFullViewContol { get; set; }
 
         [PropertyGroup(PGConstants.DATA)]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
@@ -358,7 +365,10 @@ namespace ExpressBase.Common.Objects
 
         public virtual string GetHtml() { return string.Empty; }
 
-        public virtual string GetHtml4Bot() { return string.Empty; }
+        public virtual string GetHtml4Bot()
+        {
+            return ReplacePropsInHTML((HtmlConstants.CONTROL_WRAPER_HTML4BOT).Replace("@barehtml@", DesignHtml4Bot));
+        }
 
         public virtual string GetWrapedCtrlHtml4bot()
         {
@@ -367,7 +377,7 @@ namespace ExpressBase.Common.Objects
 
         public virtual VendorDbType GetvDbType(IVendorDbTypes vDbTypes) { return vDbTypes.String; }
 
-        public virtual string GetWrapedCtrlHtml4bot(ref EbControl ChildObj)
+        public virtual string GetWrapedCtrlHtml4bot(ref EbControl ChildObj)// for builder side JS contructor
         {
             string bareHTML = ChildObj.DesignHtml4Bot ?? ChildObj.GetBareHtml(),
             innerHTML = @" <div class='ctrl-wraper' @style@> @barehtml@ </div>".Replace("@barehtml@", bareHTML),
@@ -400,9 +410,9 @@ namespace ExpressBase.Common.Objects
 			{
 				ControlHTML = string.Empty;
 			}
-			innerHTML = (!ChildObj.isFullViewContol) ? (@"<div class='chat-ctrl-cont' 777777777>" + innerHTML + "</div>") : innerHTML.Replace("@style@", "style='width:100%;border:none;'");
+			innerHTML = (!ChildObj.IsFullViewContol) ? (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>") : innerHTML.Replace("@style@", "style='width:100%;border:none;'");
             ResHTML = @"
-<div class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='@type@' ebsid='@ebsid@' JKLJKLJKL>
+<div class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='@type@' ebsid='@ebsid@'>
    @LabelHTML@
    @ControlHTML@
 </div>"
@@ -411,7 +421,7 @@ namespace ExpressBase.Common.Objects
 .Replace("@ebsid@", this.EbSid_CtxId)
 .Replace("@ControlHTML@", ControlHTML)
 .Replace("@innerHTML@", innerHTML)
-.Replace("@style@", (ChildObj.isFullViewContol ? "margin-left:12px;" : string.Empty)).RemoveCR();
+.Replace("@style@", (ChildObj.IsFullViewContol ? "margin-left:12px;" : string.Empty)).RemoveCR();
             return ResHTML;
         }
 

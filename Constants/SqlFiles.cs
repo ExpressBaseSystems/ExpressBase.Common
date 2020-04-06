@@ -56,7 +56,8 @@ namespace ExpressBase.Common.Constants
                         "datadb.tablecreate.eb_approval_lines.sql",
                         "datadb.tablecreate.eb_stage_actions.sql",
                         "datadb.tablecreate.eb_stages.sql",
-                        "filesdb.tablecreate.eb_files_bytea.sql",                       
+                        "datadb.tablecreate.eb_approval.sql",
+                        "filesdb.tablecreate.eb_files_bytea.sql",
                         "objectsdb.functioncreate.eb_get_tagged_object.sql",
                         "objectsdb.functioncreate.eb_objects_change_status.sql",
                         "objectsdb.functioncreate.eb_objects_commit.sql",
@@ -80,6 +81,7 @@ namespace ExpressBase.Common.Constants
                         "objectsdb.tablecreate.eb_objects_favourites.sql",
                         "objectsdb.tablecreate.eb_objects_relations.sql",
                         "objectsdb.tablecreate.eb_objects_status.sql",
-                        "objectsdb.tablecreate.eb_objects_ver.sql" } ;
-    }
+                        "objectsdb.tablecreate.eb_objects_ver.sql",
+                        "objectsdb.tablecreate.eb_location_types.sql" };
+}
 }

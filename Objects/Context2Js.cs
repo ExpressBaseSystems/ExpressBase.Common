@@ -102,6 +102,8 @@ namespace ExpressBase.Common.Objects
 
         private void GenerateJs()
         {
+            //string RootObjName = this.TypeOfTopEbObjectParent.Name;
+            //this.AllMetas = "AllMetasRoot['" + RootObjName  + "'] = {";
             this.AllMetas = "var AllMetas = {";
             this.EbEnums = "var EbEnums = {";
             this.CtrlCounters = "var CtrlCounters = {";
