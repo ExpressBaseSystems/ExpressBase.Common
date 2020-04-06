@@ -34,7 +34,7 @@ namespace ExpressBase.Common
         public abstract EbDataTable DoQuery(DbConnection dbConnection, string query, params DbParameter[] parameters);
         protected abstract DbDataReader DoQueriesBasic(DbConnection dbConnection, string query, params DbParameter[] parameters);
         public abstract int DoNonQuery(DbConnection dbConnection, string query, params DbParameter[] parameters);
-
+        public abstract T ExecuteScalar<T>(string query, params DbParameter[] parameters);
         public abstract Dictionary<int, string> GetDictionary(string query, string dm, string vm);
         public abstract List<int> GetAutoResolveValues(string sql, string name, string cond);
         public abstract void BeginTransaction();
@@ -285,7 +285,7 @@ namespace ExpressBase.Common
                             EO.obj_name , EOV.id";
             }
         }
-        
+
         public virtual string EB_GET_ALL_PUBLIC_COMMITTED_VERSION_LIST
         {
             get
@@ -519,7 +519,7 @@ namespace ExpressBase.Common
                 return @"UPDATE eb_objects SET eb_del='T' WHERE id = @id;             
                            UPDATE eb_objects_ver SET eb_del='T' WHERE eb_objects_id = @id;";
             }
-        } 
+        }
         public virtual string EB_CHANGE_OBJECT_ACCESS
         {
             get
@@ -537,15 +537,15 @@ namespace ExpressBase.Common
         public virtual string EB_MINOR_VERSION_OF_OBJECT { get; }
         public virtual string EB_CHANGE_STATUS_OBJECT { get; }
         public virtual string EB_PATCH_VERSION_OF_OBJECT { get; }
-        public virtual string EB_UPDATE_DASHBOARD { get; }       
+        public virtual string EB_UPDATE_DASHBOARD { get; }
         public virtual string EB_CREATEBOT { get; }
 
         //....files query...
         public virtual string EB_IMGREFUPDATESQL { get; }
-        public virtual string EB_DPUPDATESQL { get; }       
+        public virtual string EB_DPUPDATESQL { get; }
         public virtual string EB_MQ_UPLOADFILE { get; }
         public virtual string EB_GETFILEREFID { get; }
-        public virtual string EB_UPLOAD_IDFETCHQUERY { get; }        
+        public virtual string EB_UPLOAD_IDFETCHQUERY { get; }
         public virtual string EB_FILECATEGORYCHANGE { get; }
         public virtual string EB_DOWNLOAD_FILE_BY_ID
         {

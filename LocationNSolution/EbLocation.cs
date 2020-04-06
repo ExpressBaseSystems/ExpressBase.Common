@@ -8,17 +8,25 @@ namespace ExpressBase.Common.LocationNSolution
     {
         public int LocId { get; set; }
 
+        public int TypeId { get; set; }
+
+        public string TypeName { get; set; }
+
+        public bool IsGroup { get; set; }
+
+        public int ParentId { get; set; }
+
         public string LongName { get; set; }
 
         public string ShortName { get; set; }
-
-        public Dictionary<string, string> Meta { get; set; }
 
         public string Logo { get; set; }
 
         public string WeekHoliday1 { get; set; }
 
         public string WeekHoliday2 { get; set; }
+
+        public Dictionary<string, string> Meta { get; set; }
 
         public string this[string title]
         {
@@ -80,15 +88,17 @@ namespace ExpressBase.Common.LocationNSolution
     {
         public String SignupFormRefid { get; set; }
 
-        public List<EbProfileUserType>  UserTypeForms { get; set; }
+        public List<EbProfileUserType> UserTypeForms { get; set; }
     }
 
-    
+
     public class EbLocationCustomField
     {
         public string Id { get; set; }
 
         public string Name { get; set; }
+
+        public string DisplayName { get; set; }
 
         public bool IsRequired { get; set; }
 
