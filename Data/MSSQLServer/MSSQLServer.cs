@@ -100,7 +100,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
         private EbDbConfig DbConfig { get; set; }
         public override string DBName { get; }
 
-        
+
         public MSSQLDatabase(EbDbConfig dbconf)
         {
             this.DbConfig = dbconf;
@@ -365,7 +365,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
             EbDataTable dt = new EbDataTable();
             SqlConnection con = GetNewConnection() as SqlConnection;
             try
-            {                
+            {
                 con.Open();
                 dt = DoQuery(con, query, parameters);
                 con.Close();
@@ -386,7 +386,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
             EbDataSet ds = new EbDataSet();
             SqlConnection con = GetNewConnection() as SqlConnection;
             try
-            {                
+            {
                 con.Open();
                 ds = DoQueries(con, query, parameters);
                 con.Close();
@@ -407,7 +407,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
             EbDataTable tbl = new EbDataTable();
             SqlConnection con = GetNewConnection() as SqlConnection;
             try
-            {               
+            {
                 con.Open();
                 tbl = DoProcedure(con, query, parameters);
                 con.Close();
@@ -582,6 +582,11 @@ namespace ExpressBase.Common.Data.MSSQLServer
 
                 dt.Rows.Add(dr);
             }
+        }
+
+        public override T ExecuteScalar<T>(string query, params DbParameter[] parameters)
+        {
+            throw new NotImplementedException();
         }
 
         public override bool IsTableExists(string query, params DbParameter[] parameters)
@@ -825,7 +830,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
         }
         // only for mysql
         public string EB_SIDEBARUSER_REQUEST_SOL_OWNER { get { return @""; } }
-        
+
         public override string EB_SIDEBARCHECK { get { return @""; } }
 
         public override string EB_GETROLESRESPONSE_QUERY
@@ -839,7 +844,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
 								FROM eb_roles R, eb_applications A
 								WHERE R.applicationid = A.id AND R.role_name like CONCAT('%',@searchtext,'%') AND A.eb_del = 'F';";
             }
-        }        
+        }
 
         public override string EB_SAVEROLES_QUERY
         { get { return @""; } }
@@ -914,7 +919,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
                             VALUES (@applicationname, @apptype, @description, @appicon);";
             }
         }
-        
+
         public override string EB_GETTABLESCHEMA
         { get { return @""; } }
 
@@ -1015,7 +1020,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
             {
                 return @"SELECT rows, exec_time FROM eb_executionlogs WHERE refid = @refid AND MONTH(created_at) = MONTH(GETDATE());";
             }
-        }        
+        }
 
         public override string EB_GET_MOB_MENU_OBJ_IDS
         {
@@ -1096,15 +1101,15 @@ namespace ExpressBase.Common.Data.MSSQLServer
                         ORDER BY
                             EO.obj_type";
             }
-        }        
-   
+        }
+
         public override string EB_GET_TAGGED_OBJECTS
         {
             get
             {
                 return @"";
             }
-        }     
+        }
 
         public override string EB_LIVE_VERSION_OF_OBJS
         {
@@ -1188,7 +1193,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
                 return @"UPDATE eb_location_config SET keys = @keys ,isrequired = @isrequired , keytype = @type WHERE id = @keyid;";
             }
         }
-        
+
         //.....OBJECTS FUNCTION CALL......
 
         public override string EB_CREATE_NEW_OBJECT
@@ -1209,7 +1214,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
         { get { return @""; } }
         public override string EB_UPDATE_DASHBOARD
         { get { return @""; } }
-       
+
         public override string EB_SAVELOCATION
         {
             get
@@ -1270,7 +1275,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
                 return @"INSERT INTO eb_files_ref (userid, filename, filetype, tags, filecategory, uploadts,context) OUTPUT INSERTED.ID
                         VALUES(@userid, @filename, @filetype, @tags, @filecategory, GETDATE(), @context) ";
             }
-        }       
+        }
 
         public override string EB_FILECATEGORYCHANGE
         { get { return @""; } }
@@ -1278,7 +1283,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
         //....api query...
         public override string EB_API_SQL_FUNC_HEADER
         { get { return @""; } }
-        
+
     }
 
     public class MSSQLServerFilesDB : MSSQLDatabase, INoSQLDatabase

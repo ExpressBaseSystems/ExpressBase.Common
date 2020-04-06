@@ -438,6 +438,12 @@ namespace ExpressBase.Common.Data
             return return_val;
         }
 
+        public override T ExecuteScalar<T>(string query, params DbParameter[] parameters)
+        {
+            throw new NotImplementedException();
+
+        }
+
         public override bool IsTableExists(string query, params DbParameter[] parameters)
         {
             var rslt = false;
