@@ -326,7 +326,8 @@ namespace ExpressBase.Common
         Normal = 1,
         Partial = 2,
         Signup = 3,
-        MyProfile = 4
+        MyProfile = 4,
+        PublicForm = 5
     }
 
     public enum WebFormAfterSaveModes
