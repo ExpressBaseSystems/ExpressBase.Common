@@ -48,6 +48,7 @@ namespace ExpressBase.Common.Objects.Attributes
     }
 
     public class HideInToolBox : Attribute { }
+    public class ShowInToolBox : Attribute { }
 
     public class UsedWithTopObjectParent : Attribute
     {
