@@ -474,12 +474,12 @@ namespace ExpressBase.Common.Objects
                 if (Value == null)
                 {
                     _formattedData = 0;
-                    _displayMember = "0.00";
+                    _displayMember = "0";
                 }
                 else
                 {
                     _formattedData = Convert.ToDouble(Value);
-                    _displayMember = string.Format("{0:0.00}", _formattedData);
+                    _displayMember = Convert.ToString(Value);
                 }
             }
 

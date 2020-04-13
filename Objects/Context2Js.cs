@@ -163,7 +163,8 @@ function ProcRecur(src_controls, dest_controls) {
                             {
                                 object toolObj = Activator.CreateInstance(tool);
 
-                                if ((!_typeInfo.IsDefined(typeof(HideInToolBox))) && toolObj is EbControl)
+                                if (toolObj is EbControl &&
+                                    (!_typeInfo.IsDefined(typeof(HideInToolBox)) || _typeInfo.IsDefined(typeof(ShowInToolBox)))) // ShowInToolBox should override HideInToolBox( in a case where HideInToolBox inherit from parent class)
                                 {
                                     EbControl ControlObj = toolObj as EbControl;
 
