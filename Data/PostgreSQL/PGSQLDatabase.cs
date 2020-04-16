@@ -556,7 +556,8 @@ namespace ExpressBase.Common
 
         public override T ExecuteScalar<T>(string query, params DbParameter[] parameters)
         {
-            T obj = default;
+            T obj = default(T);
+            
             try
             {
                 using (var con = GetNewConnection() as NpgsqlConnection)
