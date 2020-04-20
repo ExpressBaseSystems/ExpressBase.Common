@@ -2622,6 +2622,51 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 
+        ///.
+        /// </summary>
+        public static string eb_location_types1 {
+            get {
+                return ResourceManager.GetString("eb_location_types1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_location_types
+        ///(
+        ///    id integer auto_increment,
+        ///    type text,
+        ///    eb_created_by integer,
+        ///    eb_created_at datetime,
+        ///    eb_lastmodified_by integer,
+        ///    eb_lastmodified_at datetime,
+        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    constraint eb_location_types_pkey primary key(id)
+        ///);
+        ///
+        ///CREATE INDEX eb_location_types_eb_del_idx
+        ///    ON eb_location_types(eb_del);
+        ///
+        ///CREATE INDEX eb_location_types_id_idx
+        ///    ON eb_location_types(id);
+        ///.
+        /// </summary>
+        public static string eb_location_types2 {
+            get {
+                return ResourceManager.GetString("eb_location_types2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string eb_location_types3 {
+            get {
+                return ResourceManager.GetString("eb_location_types3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BEGIN
         ///
         ///	EXECUTE IMMEDIATE &apos;CREATE SEQUENCE eb_locations_id_seq START WITH 1&apos;;
@@ -2650,28 +2695,25 @@ namespace ExpressBase.Common {
         ///   Looks up a localized string similar to -- Table: public.eb_locations
         ///
         ///-- DROP TABLE public.eb_locations;
-        ///
         ///CREATE TABLE eb_locations
         ///(
-        ///    id serial,
-        ///    shortname text DEFAULT &apos;default&apos;,
-        ///    longname text DEFAULT &apos;default&apos;,
+        ///    id SERIAL,
+        ///    shortname text,
+        ///    longname text,
         ///    image text,
         ///    meta_json text,
-        ///    eb_data_id integer,
+        ///    firmcode integer,
         ///    eb_ver_id integer,
+        ///    eb_data_id integer,
         ///    week_holiday1 text,
         ///    week_holiday2 text,
-        ///    CONSTRAINT eb_locations_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///
-        ///-- Index: eb_locationsid_idx
-        ///
-        ///-- DROP INDEX public.eb_locationsid_idx;
-        ///
-        ///CREATE INDEX eb_locations_id_idx
-        ///    ON eb_lo [rest of string was truncated]&quot;;.
+        ///    parent_id numeric,
+        ///    is_group text,
+        ///    eb_location_types_id integer,
+        ///    eb_created_by integer,
+        ///    eb_created_at timestamp without time zone,
+        ///    eb_lastmodified_by integer,
+        ///    eb_l [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_locations1 {
             get {
@@ -2682,23 +2724,25 @@ namespace ExpressBase.Common {
         /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_locations
         ///(
-        ///	id integer auto_increment,
-        ///    shortname varchar(25) DEFAULT &apos;default&apos;,
-        ///    longname varchar(200) DEFAULT &apos;default&apos;,
+        ///    id integer auto_increment,
+        ///    shortname text,
+        ///    longname text,
         ///    image text,
         ///    meta_json text,
-        ///    eb_data_id integer,
+        ///    firmcode integer,
         ///    eb_ver_id integer,
+        ///    eb_data_id integer,
         ///    week_holiday1 text,
         ///    week_holiday2 text,
-        ///    CONSTRAINT eb_locations_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///
-        ///CREATE INDEX eb_locations_id_idx
-        ///    ON eb_locations(id);
-        ///
-        ///.
+        ///    parent_id numeric,
+        ///    is_group text,
+        ///    eb_location_types_id integer,
+        ///    eb_created_by integer,
+        ///    eb_created_at datetime,
+        ///    eb_lastmodified_by integer,
+        ///    eb_lastmodified_at datetime,
+        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    CONSTRAIN [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_locations2 {
             get {

@@ -347,7 +347,7 @@ namespace ExpressBase.Common
             EbDataTable dt = new EbDataTable();
             var con = GetNewConnection() as NpgsqlConnection;
             try
-            {                
+            {
                 con.Open();
                 dt = DoQuery(con, query, parameters);
                 con.Close();
@@ -366,7 +366,7 @@ namespace ExpressBase.Common
             EbDataSet ds = new EbDataSet();
             var con = GetNewConnection() as NpgsqlConnection;
             try
-            {                
+            {
                 con.Open();
                 ds = DoQueries(con, query, parameters);
                 con.Close();
@@ -391,7 +391,7 @@ namespace ExpressBase.Common
             int val;
             NpgsqlConnection con = GetNewConnection() as NpgsqlConnection;
             try
-            {                
+            {
                 con.Open();
                 val = DoNonQuery(con, query, parameters);
                 con.Close();
@@ -552,6 +552,35 @@ namespace ExpressBase.Common
             }
 
             typeArray = null;
+        }
+
+        public override T ExecuteScalar<T>(string query, params DbParameter[] parameters)
+        {
+            T obj = default(T);
+            
+            try
+            {
+                using (var con = GetNewConnection() as NpgsqlConnection)
+                {
+
+                    con.Open();
+                    NpgsqlCommand cmd = new NpgsqlCommand(query, con);
+                    if (parameters != null && parameters.Length > 0)
+                        cmd.Parameters.AddRange(parameters);
+                    object o = cmd.ExecuteScalar();
+                    if (o != null)
+                        obj = (T)o;
+                }
+            }
+            catch (Npgsql.NpgsqlException npgse)
+            {
+                Console.WriteLine("Postgres Exception: " + npgse.Message);
+                throw npgse;
+            }
+            catch (SocketException scket)
+            {
+            }
+            return obj;
         }
 
         public override bool IsTableExists(string query, params DbParameter[] parameters)
@@ -845,7 +874,7 @@ SELECT id,fullname,email
 INSERT INTO eb_applications (applicationname,application_type, description,app_icon) VALUES (:applicationname,:apptype, :description,:appicon) RETURNING id;";
             }
         }
-        
+
         public override string EB_GETTABLESCHEMA
         {
             get
@@ -1050,7 +1079,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             {
                 return @"SELECT rows, exec_time FROM eb_executionlogs WHERE refid = :refid AND EXTRACT(month FROM created_at) = EXTRACT(month FROM current_date);";
             }
-        }               
+        }
 
         public override string EB_GET_MOB_MENU_OBJ_IDS
         {
@@ -1189,7 +1218,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
         }
 
         //.......OBJECTS QUERIES.....          
-    
+
         public override string EB_GET_ALL_TAGS
         {
             get
@@ -1303,7 +1332,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             {
                 return @"UPDATE eb_location_config SET keys = :keys ,isrequired = :isrequired , keytype = :type WHERE id = :keyid; ";
             }
-        }              
+        }
 
         //.....OBJECTS FUNCTION CALL......
         public override string EB_CREATE_NEW_OBJECT
@@ -1393,7 +1422,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                     SELECT * FROM eb_objects_update_dashboard(:refid)
                 ";
             }
-        }       
+        }
 
         public override string EB_SAVELOCATION
         {
@@ -1495,7 +1524,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                             (@userid, @filename, @filetype, @tags, @filecategory, NOW(),@context) 
                         RETURNING id";
             }
-        }              
+        }
 
         // public string EB_FILECATEGORYCHANGE
         // {

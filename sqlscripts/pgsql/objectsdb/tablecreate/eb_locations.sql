@@ -1,21 +1,28 @@
 -- Table: public.eb_locations
 
 -- DROP TABLE public.eb_locations;
-
 CREATE TABLE eb_locations
 (
-    id serial,
-    shortname text DEFAULT 'default',
-    longname text DEFAULT 'default',
+    id SERIAL,
+    shortname text,
+    longname text,
     image text,
     meta_json text,
-    eb_data_id integer,
+    firmcode integer,
     eb_ver_id integer,
+    eb_data_id integer,
     week_holiday1 text,
     week_holiday2 text,
+    parent_id numeric,
+    is_group text,
+    eb_location_types_id integer,
+    eb_created_by integer,
+    eb_created_at timestamp without time zone,
+    eb_lastmodified_by integer,
+    eb_lastmodified_at timestamp without time zone,
+    eb_del character(1) DEFAULT 'F',
     CONSTRAINT eb_locations_pkey PRIMARY KEY (id)
 );
-
 
 -- Index: eb_locationsid_idx
 

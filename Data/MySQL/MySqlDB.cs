@@ -636,6 +636,11 @@ namespace ExpressBase.Common
             }
         }
 
+        public override T ExecuteScalar<T>(string query, params DbParameter[] parameters)
+        {
+            throw new NotImplementedException();
+        }
+
         public override bool IsTableExists(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as MySqlConnection)

@@ -34,7 +34,10 @@ namespace ExpressBase.Common
         public string ColumnName { get; set; }
 
         [ProtoBuf.ProtoMember(3)]
-        public EbDbTypes Type { get; set; }
+        public EbDbTypes Type { get; set; } 
+        
+        [ProtoBuf.ProtoMember(4)]
+        public string TableName { get; set; }
     }
 
     [ProtoBuf.ProtoContract(IgnoreListHandling = true)]

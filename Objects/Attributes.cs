@@ -41,12 +41,14 @@ namespace ExpressBase.Common.Objects.Attributes
         ShadowEditor= 38,// 
         //ColorPicker = 39,// 
         GradientColorPicker = 40,// 
+        String64 = 41,// 
         ScriptEditorJS = 64,
         ScriptEditorCS = 128,
         ScriptEditorSQ = 256
     }
 
     public class HideInToolBox : Attribute { }
+    public class ShowInToolBox : Attribute { }
 
     public class UsedWithTopObjectParent : Attribute
     {
