@@ -1141,7 +1141,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                             AND
                                 (:userid = ANY(string_to_array(EACT.user_ids, ',')::int[])
                             OR
-                                EACT.role_id = ANY(string_to_array(:roleids, ',')::int[])
+                                EACT.role_ids = ANY(string_to_array(:roleids, ',')::text[])
                             OR
                                 EACT.usergroup_id = ANY(string_to_array(:usergroupids, ',')::int[])
                             );";
