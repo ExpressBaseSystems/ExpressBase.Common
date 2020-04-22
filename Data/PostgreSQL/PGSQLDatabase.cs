@@ -1133,18 +1133,20 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
         {
             get
             {
-                return @"SELECT * FROM eb_my_actions EACT 
-                            WHERE
-                                COALESCE(EACT.is_completed, 'F') = 'F'
-                            AND
-                                COALESCE(EACT.eb_del, 'F') = 'F'
-                            AND
-                                (:userid = ANY(string_to_array(EACT.user_ids, ',')::int[])
-                            OR
-                                EACT.role_ids = ANY(string_to_array(:roleids, ',')::text[])
-                            OR
-                                EACT.usergroup_id = ANY(string_to_array(:usergroupids, ',')::int[])
-                            );";
+                return @"SELECT * FROM 
+                            eb_my_actions EACT 
+                        WHERE
+	                        COALESCE(EACT.is_completed, 'F') = 'F'
+                        AND
+	                        COALESCE(EACT.eb_del, 'F') = 'F'
+                        AND
+	                        (
+                                :userid = ANY(string_to_array(EACT.user_ids, ',')::int[])
+	                        OR
+	                            (string_to_array(EACT.role_ids, ',')::int[] && string_to_array(:roleids, ',')::int[])
+	                        OR
+	                            EACT.usergroup_id = ANY(string_to_array(:usergroupids, ',')::int[])
+	                        )";
             }
         }
 
