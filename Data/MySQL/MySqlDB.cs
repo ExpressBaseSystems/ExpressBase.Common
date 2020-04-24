@@ -1308,7 +1308,7 @@ namespace ExpressBase.Common
 		                        COALESCE(EACT.is_completed, 'F') = 'F' 
 		                        AND COALESCE(EACT.eb_del, 'F') = 'F' 
                                 AND (FIND_IN_SET(@userid,EACT.user_ids)
-			                        OR FIND_IN_SET(EACT.role_id, @roleids)
+			                        OR FIND_IN_SET(EACT.role_ids, @roleids)
 			                        OR FIND_IN_SET(EACT.usergroup_id, @usergroupids)
 			                        ); ";
             }

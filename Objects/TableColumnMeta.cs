@@ -66,7 +66,7 @@ namespace ExpressBase.Common
         //public Dictionary<int, string[]> D { get; set; }//Display members //original
         public Dictionary<int, Dictionary<string, string>> D { get; set; }//Display members //duplicate
 
-        public Dictionary<string, List<dynamic>> R { get; set; }//Rows of ps
+        public Dictionary<string, List<object>> R { get; set; }//Rows of ps
 
         public string ObjType { get; set; }//Object type
 
@@ -122,7 +122,7 @@ namespace ExpressBase.Common
             throw new KeyNotFoundException("KeyNotFoundException : Key = " + cname);
         }
 
-        public dynamic this[string name]
+        public object this[string name]
         {
             get
             {

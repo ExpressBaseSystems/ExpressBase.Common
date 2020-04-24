@@ -132,15 +132,9 @@ namespace ExpressBase.Common.Objects
             return string.Empty;
         }
 
-        public static T Localize<T>(T formObj, Dictionary<string, string> Keys)
+        public EbControlContainer Localize(Dictionary<string, string> Keys)
         {
-            EbControlContainer _formObj = formObj as EbControlContainer;// need to change
-
-            List<KeyValuePair<EbControl, string>> MLKeys = new List<KeyValuePair<EbControl, string>>();
-            //{
-            //    { _formObj.Controls[0], "Label" }
-            //}; // hard coding
-            EbControl[] controls = _formObj.Controls.FlattenAllEbControls();
+            EbControl[] controls = this.Controls.FlattenAllEbControls();
 
             foreach (EbControl control in controls)
             {
@@ -148,42 +142,22 @@ namespace ExpressBase.Common.Objects
 
                 foreach (PropertyInfo prop in props)
                 {
-                    if (prop.IsDefined(typeof(PropertyEditor))
-                        && prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == (int)PropertyEditorType.MultiLanguageKeySelector)
+                    if (prop.DeclaringType == typeof(string))
                     {
-                        MLKeys.Insert(0, new KeyValuePair<EbControl, string>(control, prop.Name));
+                        if (prop.IsDefined(typeof(PropertyEditor))
+                            && prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == (int)PropertyEditorType.MultiLanguageKeySelector)
+                        {
+
+                            string oldVal = prop.GetValue(control, null) as string;
+                            string newVal = (Keys.ContainsKey(oldVal)) ? Keys[oldVal] : oldVal;
+
+                            prop.SetValue(control, newVal, null);
+                        }
                     }
                 }
             }
 
-            //Dictionary<string, string> Keys = new Dictionary<string, string>
-            //                                        {
-            //                                            { "Name", "اسم" }
-            //                                        }; // hard coding
-
-            //List<string> templist = new List<string>();
-            //foreach (KeyValuePair<EbControl, string> MLKey in MLKeys)
-            //{
-            //	PropertyInfo propertyInfo = MLKey.Key.GetType().GetProperty(MLKey.Value);
-            //	string oldVal = propertyInfo.GetValue(MLKey.Key, null) as String;
-            //	templist.Add(oldVal);
-            //}
-
-
-            foreach (KeyValuePair<EbControl, string> MLKey in MLKeys)
-            {
-                EbControl Obj = MLKey.Key;
-                string prop = MLKey.Value;
-                string newVal = string.Empty;
-                PropertyInfo propertyInfo = Obj.GetType().GetProperty(prop);
-                string oldVal = propertyInfo.GetValue(Obj, null) as String;
-                if (Keys.ContainsKey(oldVal))
-                    newVal = Keys[oldVal];
-                else
-                    newVal = oldVal;
-                propertyInfo.SetValue(Obj, newVal, null);
-            }
-            return formObj;
+            return this;
         }
 
         //Get all proprty value which 

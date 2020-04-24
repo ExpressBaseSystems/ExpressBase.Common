@@ -1,6 +1,6 @@
--- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text)
+-- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text)
 
--- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text);
+-- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text);
 
 CREATE OR REPLACE FUNCTION public.eb_objects_save(
 	refidv text,

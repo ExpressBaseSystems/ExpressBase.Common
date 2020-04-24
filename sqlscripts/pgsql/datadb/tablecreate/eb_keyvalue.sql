@@ -4,7 +4,7 @@
 
 CREATE TABLE eb_keyvalue
 (
-    id serial,
+    id bigserial,
     key_id bigint NOT NULL,
     lang_id integer NOT NULL,
     value text NOT NULL,

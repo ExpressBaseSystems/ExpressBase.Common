@@ -31,6 +31,8 @@ namespace ExpressBase.Common.ProductionDBManager
     {
         public string Solution { get; set; }
 
+        public string ISolutionId { get; set; }
+
         public string TenantName { get; set; }
 
         public string TenantEmail { get; set; }

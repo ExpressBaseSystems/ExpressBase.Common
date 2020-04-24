@@ -4,7 +4,7 @@
 
 CREATE TABLE eb_keys
 (
-    id serial,
+    id bigserial,
     key text NOT NULL,
     CONSTRAINT eb_keys_pkey PRIMARY KEY (id)
 );
