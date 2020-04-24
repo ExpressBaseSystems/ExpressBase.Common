@@ -25,7 +25,11 @@ namespace ExpressBase.Common.Application
         [DataMember(Order = 4)]
         public string Name { get; set; }
 
-        public EbBotSettings() { }
+
+		[DataMember(Order = 5)]
+		public Dictionary<string, Dictionary<string, string>> CssContent { get; set; }
+
+		public EbBotSettings() {Dictionary<string, Dictionary<string, string>> CssContent = new Dictionary<string, Dictionary<string, string>>();}
     }
 
     public class DataImportMobile
