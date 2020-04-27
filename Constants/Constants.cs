@@ -81,32 +81,5 @@ namespace ExpressBase.Data
 
 
 
-
-		public const string BOT_HEADER = @"color: white;
-										padding: 5px 15px;";
-
-		public const string BOT_APP_NAME = @"font-family: arial;
-												font-size: 20px;";
-
-		public const string BOT_IFRAME_CSS = @"right: 0.8%;
-											bottom: 0.5%;
-											width: 28%;
-											height: 97%;
-											min-width: 300px;
-											box-shadow: 0 12px 40px 0 rgba(0, 0, 0, .175);";
-
-		public const string BOT_CHAT_BUTTON = @"right: 24px;
-												bottom: 15px;
-												color: #fff;
-												padding: 12px;
-												border-radius: 50px;
-												box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.39);";
-
-		public const string BOT_IMAGE_CONT = @"width: 50px;
-												height: 50px;
-												border-radius: 50%;";
-
-		public const string BOT_BUTTON_IMAGE = @"border-radius: 50%;";
-
 	}
 }
