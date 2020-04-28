@@ -376,5 +376,10 @@ namespace ExpressBase.Common
         CONFLICT = 409,
         INTERNAL_SERVER_ERROR = 500
     }
+
+    public enum MyActionTypes
+    {
+        Approval = 1
+    }
 }
 
