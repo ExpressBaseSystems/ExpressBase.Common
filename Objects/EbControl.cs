@@ -42,6 +42,9 @@ namespace ExpressBase.Common.Objects
 
         public virtual bool IsDynamicTabChild { get; set; }
 
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        public virtual bool IsNonDataInputControl { get; set; }
+
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.DashBoard)]
         public virtual string EbSid { get; set; }
