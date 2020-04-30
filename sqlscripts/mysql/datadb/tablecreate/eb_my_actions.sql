@@ -16,6 +16,8 @@ CREATE TABLE eb_my_actions
     is_form_data_editable char(1) DEFAULT 'F',
     from_datetime datetime,
     expiry_datetime datetime,
+	my_action_type text,
+	exec_cxt_id integer,
     CONSTRAINT eb_my_actions_pkey PRIMARY KEY (id)
 );
 
