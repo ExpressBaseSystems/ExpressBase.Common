@@ -118,6 +118,8 @@ namespace ExpressBase.Common.ServerEvents_Artifacts
         public string NotificationId { get; set; }
 
         public string Duration { get; set; }
+
+        public string CreatedDate { get; set; }
     }
 }
 
