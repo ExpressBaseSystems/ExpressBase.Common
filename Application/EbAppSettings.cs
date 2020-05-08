@@ -70,6 +70,8 @@ namespace ExpressBase.Common.Application
 		public bool EmailAuth { get; set; }
 		public bool PhoneAuth { get; set; }
 		public bool UserName { get; set; }
+		public string FbAppID { get; set; }
+		public string FbAppVer { get; set; }
 
 		public AnonymousAuth()
 		{
@@ -77,6 +79,8 @@ namespace ExpressBase.Common.Application
 			EmailAuth = true;
 			PhoneAuth = false;
 			UserName = false;
+			FbAppID = "";
+			FbAppVer = "";
 		}
 	}
 
