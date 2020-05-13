@@ -6,16 +6,33 @@ namespace ExpressBase.Common.Constants
 {
 	public static class BotConstants
 	{
-		public const string BOT_HEADER = @"
+		public const string BOT_HEADER_PART = @"
+align-items: center;
+display: flex;
 color: white;
-padding: 5px 15px;
+padding: 10px 15px;
 background-color: var( --ebbotThemeColor );";
+		public const string BOT_HEADER_ICON_CONT = @"
+width: 35px;
+height: 35px;
+border-radius: 50%;
+display: flex;
+float: left;";
+		public const string BOT_HEADER_IMAGE = @"
+border-radius: 50%;
+height: 100%;
+width: 100%;";
 
 		public const string BOT_APP_NAME = @"
 font-family: arial;
 font-size: 20px;
 display: inline-block;
+margin-left: 10px;
 margin-top: 10px;";
+		public const string BOT_HEADERSUBTEXT = @"
+font-family: arial;
+font-size: 10px;
+display: flex;";
 
 		public const string BOT_IFRAME_CSS = @"
 right: 0.8%;
