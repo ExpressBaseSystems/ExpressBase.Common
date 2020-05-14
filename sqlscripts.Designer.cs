@@ -19,7 +19,7 @@ namespace ExpressBase.Common {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class sqlscripts {
@@ -275,72 +275,6 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_audit_lines
-        ///
-        ///-- DROP TABLE public.eb_audit_lines;
-        ///
-        ///CREATE TABLE eb_audit_lines
-        ///(
-        ///    id serial,
-        ///    masterid integer,
-        ///    fieldname text, 
-        ///    oldvalue text,
-        ///    newvalue text,
-        ///    tablename text,
-        ///    idrelation text,
-        ///    CONSTRAINT eb_audit_lines_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///	
-        ///-- Index: eb_audit_lines_id_idx
-        ///
-        ///-- DROP INDEX public.eb_audit_lines_id_idx;
-        ///
-        ///CREATE INDEX eb_audit_lines_id_idx
-        ///    ON eb_audit_lines(id);
-        ///
-        ///.
-        /// </summary>
-        public static string eb_audit_lines {
-            get {
-                return ResourceManager.GetString("eb_audit_lines", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- need for update.
-        /// </summary>
-        public static string eb_audit_lines1 {
-            get {
-                return ResourceManager.GetString("eb_audit_lines1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_audit_lines
-        ///(
-        ///  id integer auto_increment,
-        ///  masterid integer,
-        ///  fieldname text,
-        ///  oldvalue text,
-        ///  newvalue text,
-        ///  tablename text,
-        ///  idrelation text,
-        ///  constraint eb_audit_lines_pkey primary key(id)
-        ///);
-        ///
-        ///CREATE INDEX eb_audit_lines_id_idx 
-        ///	ON eb_audit_lines(id);
-        ///
-        ///.
-        /// </summary>
-        public static string eb_audit_lines2 {
-            get {
-                return ResourceManager.GetString("eb_audit_lines2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to CREATE SEQUENCE eb_audit_lines_id_seq START WITH 1 INCREMENT BY 1;
         ///
         ///CREATE TABLE eb_audit_lines
@@ -361,68 +295,6 @@ namespace ExpressBase.Common {
         public static string eb_audit_lines3 {
             get {
                 return ResourceManager.GetString("eb_audit_lines3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_audit_master
-        ///
-        ///-- DROP TABLE public.eb_audit_master;
-        ///
-        ///CREATE TABLE eb_audit_master
-        ///(
-        ///    id serial,
-        ///    formid text,
-        ///    dataid integer,
-        ///    actiontype integer,
-        ///    signin_log_id integer,
-        ///    eb_createdby integer,
-        ///    eb_createdat timestamp without time zone,    
-        ///    CONSTRAINT eb_audit_master_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///
-        ///-- Index: eb_audit_master_id_idx
-        ///
-        ///-- DROP INDEX public.eb_audit_master_id_idx;
-        ///
-        ///CREATE INDEX eb_audit_master_id_idx
-        ///    ON eb_audit_master(id);.
-        /// </summary>
-        public static string eb_audit_master {
-            get {
-                return ResourceManager.GetString("eb_audit_master", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- need to update.
-        /// </summary>
-        public static string eb_audit_master1 {
-            get {
-                return ResourceManager.GetString("eb_audit_master1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_audit_master
-        ///(
-        ///    id integer auto_increment,
-        ///    formid text,
-        ///    dataid integer,
-        ///    actiontype integer,
-        ///    signin_log_id integer,
-        ///    eb_createdby integer,
-        ///    eb_createdat datetime,
-        ///    CONSTRAINT eb_audit_master_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///CREATE INDEX eb_audit_master_id_idx 
-        ///	ON eb_audit_master(id);.
-        /// </summary>
-        public static string eb_audit_master2 {
-            get {
-                return ResourceManager.GetString("eb_audit_master2", resourceCulture);
             }
         }
         
@@ -674,45 +546,6 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_constraints_line
-        ///
-        ///-- DROP TABLE public.eb_constraints_line;
-        ///
-        ///CREATE TABLE eb_constraints_line
-        ///(
-        ///    id serial,
-        ///    master_id integer,
-        ///    c_type integer,
-        ///    c_operation integer,
-        ///    c_value text,
-        ///    CONSTRAINT eb_constraints_line_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///
-        ///	
-        ///-- Index: eb_constraints_line_id_idx
-        ///
-        ///-- DROP INDEX public.eb_constraints_line_id_idx;
-        ///
-        ///CREATE INDEX eb_constraints_line_id_idx
-        ///    ON eb_constraints_line(id);.
-        /// </summary>
-        public static string eb_constraints_line {
-            get {
-                return ResourceManager.GetString("eb_constraints_line", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Need Updation.
-        /// </summary>
-        public static string eb_constraints_line1 {
-            get {
-                return ResourceManager.GetString("eb_constraints_line1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_constraints_line
         ///(
         ///    id integer auto_increment,
@@ -749,43 +582,6 @@ namespace ExpressBase.Common {
         public static string eb_constraints_line3 {
             get {
                 return ResourceManager.GetString("eb_constraints_line3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_constraints_master
-        ///
-        ///-- DROP TABLE public.eb_constraints_master;
-        ///
-        ///CREATE TABLE eb_constraints_master
-        ///(
-        ///    id serial,
-        ///    key_id integer,
-        ///    key_type integer,
-        ///    description text,
-        ///    eb_created_by integer,
-        ///    eb_created_at timestamp without time zone,
-        ///    eb_lastmodified_by integer,
-        ///    eb_lastmodified_at timestamp without time zone,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
-        ///    CONSTRAINT eb_constraints_master_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///	
-        ///-- Index: eb_constraints_master_id_id [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_constraints_master {
-            get {
-                return ResourceManager.GetString("eb_constraints_master", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Need Updation.
-        /// </summary>
-        public static string eb_constraints_master1 {
-            get {
-                return ResourceManager.GetString("eb_constraints_master1", resourceCulture);
             }
         }
         
@@ -2421,62 +2217,6 @@ namespace ExpressBase.Common {
         public static string eb_keyvalue3 {
             get {
                 return ResourceManager.GetString("eb_keyvalue3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_languages
-        ///
-        ///-- DROP TABLE public.eb_languages;
-        ///
-        ///CREATE TABLE eb_languages
-        ///(
-        ///    id serial,
-        ///    language text NOT NULL,
-        ///    CONSTRAINT eb_languages_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///
-        ///-- Index: eb_languages_id_idx
-        ///
-        ///-- DROP INDEX public.eb_languages_id_idx;
-        ///
-        ///CREATE INDEX eb_languages_id_idx
-        ///    ON eb_languages(id);
-        ///.
-        /// </summary>
-        public static string eb_languages {
-            get {
-                return ResourceManager.GetString("eb_languages", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- need updation.
-        /// </summary>
-        public static string eb_languages1 {
-            get {
-                return ResourceManager.GetString("eb_languages1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_languages
-        ///(
-        ///  id integer auto_increment,
-        ///  language text NOT NULL,
-        ///  CONSTRAINT eb_languages_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///
-        ///CREATE INDEX eb_languages_id_idx
-        ///ON eb_languages(id);
-        ///
-        ///.
-        /// </summary>
-        public static string eb_languages2 {
-            get {
-                return ResourceManager.GetString("eb_languages2", resourceCulture);
             }
         }
         
@@ -4693,67 +4433,6 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BEGIN
-        ///
-        ///	EXECUTE IMMEDIATE &apos;CREATE SEQUENCE eb_objects_id_seq START WITH 1&apos;;
-        ///
-        ///
-        ///	EXECUTE IMMEDIATE &apos;CREATE TABLE eb_objects
-        ///	(
-        ///		id NUMBER NOT NULL,
-        ///		obj_name VARCHAR(100),
-        ///		obj_type NUMBER,
-        ///		obj_cur_status NUMBER,
-        ///		obj_desc varchar(200),
-        ///		applicationid NUMBER,
-        ///		obj_tags varchar(30),
-        ///		owner_uid NUMBER,
-        ///		owner_ts timestamp,
-        ///		CONSTRAINT test PRIMARY KEY (id)
-        ///	)&apos;;
-        ///
-        ///	EXECUTE IMMEDIATE &apos;CREATE INDEX eb_objects_type_idx ON eb_objects (obj_type)&apos;;
-        ///	EXECUTE IMMEDIATE &apos;CREATE OR REPLACE TR [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_objects1 {
-            get {
-                return ResourceManager.GetString("eb_objects1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_objects
-        ///(
-        ///	id integer auto_increment,
-        ///	obj_name text, 
-        ///	obj_type int,
-        ///	obj_cur_status int,
-        ///	obj_desc text,
-        ///	obj_tags text,
-        ///	owner_uid int,
-        ///	owner_ts datetime,
-        ///	display_name text,
-        ///	is_logenabled char(1) DEFAULT &apos;F&apos;,
-        ///	eb_del char(1) DEFAULT &apos;F&apos;,
-        ///    	is_public char(1) DEFAULT &apos;F&apos;,
-        ///	CONSTRAINT eb_objects_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///CREATE INDEX eb_objects_id_idx
-        ///    ON eb_objects(id);
-        ///
-        ///CREATE INDEX eb_objects_type_idx
-        ///    ON eb_objects(obj_type);
-        ///
-        ///  .
-        /// </summary>
-        public static string eb_objects2 {
-            get {
-                return ResourceManager.GetString("eb_objects2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to DECLARE
         ///	eb_del varchar(10);
         ///BEGIN
@@ -4888,45 +4567,6 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- For MySQL.
-        /// </summary>
-        public static string eb_persist_currval {
-            get {
-                return ResourceManager.GetString("eb_persist_currval", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- For MySQL.
-        /// </summary>
-        public static string eb_persist_currval1 {
-            get {
-                return ResourceManager.GetString("eb_persist_currval1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DROP FUNCTION IF EXISTS eb_persist_currval;
-        ///
-        ///CREATE FUNCTION eb_persist_currval(seq_name TEXT) RETURNS int(11)
-        ///	READS SQL DATA
-        ///    DETERMINISTIC
-        ///BEGIN
-        ///
-        ///CREATE TEMPORARY TABLE IF NOT EXISTS tmp_currval(name TEXT, value INTEGER);
-        ///INSERT INTO tmp_currval(name, value) VALUES(seq_name,(SELECT LAST_INSERT_ID()));
-        ///
-        ///RETURN 1;
-        ///
-        ///END .
-        /// </summary>
-        public static string eb_persist_currval2 {
-            get {
-                return ResourceManager.GetString("eb_persist_currval2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to -- Table: public.eb_public_holidays
         ///
         ///-- DROP TABLE public.eb_public_holidays;
@@ -5001,68 +4641,6 @@ namespace ExpressBase.Common {
         public static string eb_public_holidays3 {
             get {
                 return ResourceManager.GetString("eb_public_holidays3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_query_choices
-        ///
-        ///-- DROP TABLE public.eb_query_choices;
-        ///
-        ///CREATE TABLE eb_query_choices
-        ///(
-        ///    id serial,
-        ///    q_id integer,
-        ///    choice text,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
-        ///    score integer,
-        ///	CONSTRAINT eb_query_choices_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///
-        ///-- Index: eb_query_choices_id_idx
-        ///
-        ///-- DROP INDEX public.eb_query_choices_id_idx;
-        ///
-        ///CREATE INDEX eb_query_choices_id_idx
-        ///    ON eb_query_choices(id);.
-        /// </summary>
-        public static string eb_query_choices {
-            get {
-                return ResourceManager.GetString("eb_query_choices", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- need updation.
-        /// </summary>
-        public static string eb_query_choices1 {
-            get {
-                return ResourceManager.GetString("eb_query_choices1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_query_choices
-        ///(
-        ///  id integer auto_increment,
-        ///  q_id integer,
-        ///  choice text,
-        ///  eb_del char(1) DEFAULT &apos;F&apos;,
-        ///  score integer,
-        ///  constraint eb_query_choices_key  primary key(id)
-        ///);
-        ///
-        ///
-        ///
-        ///CREATE INDEX eb_query_choices_id_idx
-        ///ON eb_query_choices(id);
-        ///
-        ///.
-        /// </summary>
-        public static string eb_query_choices2 {
-            get {
-                return ResourceManager.GetString("eb_query_choices2", resourceCulture);
             }
         }
         
@@ -5764,7 +5342,7 @@ namespace ExpressBase.Common {
         ///-- DROP INDEX public.eb_schedules_id_idx;
         ///
         ///CREATE INDEX eb_schedules_id_idx
-        ///    ON eb [rest of string was truncated]&quot;;.
+        ///     [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_schedules {
             get {
@@ -5833,74 +5411,6 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_security_constraints(integer, integer, text, text)
-        ///
-        ///-- DROP FUNCTION public.eb_security_constraints(integer, integer, text, text);
-        ///
-        ///CREATE OR REPLACE FUNCTION public.eb_security_constraints(
-        ///	_userid integer,
-        ///	_keyid integer,
-        ///	_add_data text,
-        ///	_delete_ids text)
-        ///    RETURNS TABLE(add_no integer, del_no integer) 
-        ///    LANGUAGE &apos;plpgsql&apos;
-        ///   
-        ///AS $BODY$
-        ///
-        ///DECLARE 
-        ///add_no INTEGER;
-        ///del_no INTEGER;
-        ///add_con TEXT[];
-        ///del_all INTEGER[];
-        ///temp1 INTEGER;
-        ///temp2 TEXT[];
-        ///cline TEXT;        /// [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_security_constraints {
-            get {
-                return ResourceManager.GetString("eb_security_constraints", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Need Updation.
-        /// </summary>
-        public static string eb_security_constraints1 {
-            get {
-                return ResourceManager.GetString("eb_security_constraints1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DROP PROCEDURE IF EXISTS eb_security_constraints;
-        ///
-        ///CREATE PROCEDURE eb_security_constraints(IN _userid integer,
-        ///	IN _keyid integer,
-        ///	IN _add_data text,
-        ///	IN _delete_ids text,
-        ///    OUT out_add_no integer,
-        ///    OUT out_del_no integer)
-        ///BEGIN 
-        ///  
-        ///DECLARE add_no INTEGER;
-        ///DECLARE del_no INTEGER;
-        ///DECLARE add_con TEXT;
-        ///DECLARE temp1 INTEGER;
-        ///DECLARE tmp2 TEXT;
-        ///DECLARE cline TEXT;
-        ///DECLARE cmaster TEXT;
-        ///DECLARE i INTEGER;
-        ///DECLARE j INTEGER;
-        ///DECLARE cmaster_count INTEGER;
-        ///DECLARE cline_count INTEGER;        /// [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_security_constraints2 {
-            get {
-                return ResourceManager.GetString("eb_security_constraints2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to CREATE OR ALTER PROCEDURE eb_security_constraints
         ///	@_userid int,
         ///	@_keyid int,
@@ -5920,83 +5430,6 @@ namespace ExpressBase.Common {
         public static string eb_security_constraints3 {
             get {
                 return ResourceManager.GetString("eb_security_constraints3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_security_user(integer, integer, text, text, text, text, date, text, text, text, text, text, text, text, text, text, text, integer, text, integer, text, integer, text, text)
-        ///
-        ///-- DROP FUNCTION public.eb_security_user(integer, integer, text, text, text, text, date, text, text, text, text, text, text, text, text, text, text, integer, text, integer, text, integer, text, text);
-        ///
-        ///CREATE OR REPLACE FUNCTION public.eb_security_user(
-        ///	_userid integer,
-        ///	_id integer,
-        ///	_fullname text,
-        ///	_ni [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_security_user {
-            get {
-                return ResourceManager.GetString("eb_security_user", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to create or replace FUNCTION eb_createormodifyuserandroles(
-        ///	in_userid NUMBER,
-        ///	in_id NUMBER,
-        ///	in_fullname VARCHAR2,
-        ///	in_nickname VARCHAR2,
-        ///	in_email VARCHAR2,
-        ///	in_pwd VARCHAR2,
-        ///	in_dob DATE,
-        ///	in_sex VARCHAR2,
-        ///	in_alternateemail VARCHAR2,
-        ///	in_phnoprimary VARCHAR2,
-        ///	in_phnosecondary VARCHAR2,
-        ///	in_landline VARCHAR2,
-        ///	in_phextension VARCHAR2,
-        ///	in_fbid VARCHAR2,
-        ///	in_fbname VARCHAR2,
-        ///	in_roles_temp VARCHAR2,
-        ///	in_group_temp VARCHAR2,
-        ///    in_statusid NUMBER,
-        ///	in_hide VARCHAR2,
-        ///    in_anonymoususe [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_security_user1 {
-            get {
-                return ResourceManager.GetString("eb_security_user1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DROP PROCEDURE IF EXISTS eb_security_user;
-        ///
-        ///CREATE PROCEDURE eb_security_user(IN _userid integer,
-        ///	IN _id integer,
-        ///	IN _fullname text,
-        ///	IN _nickname text,
-        ///	IN _email text,
-        ///	IN _pwd text,
-        ///	IN _dob date,
-        ///	IN _sex text,
-        ///	IN _alternateemail text,
-        ///	IN _phprimary text,
-        ///	IN _phsecondary text,
-        ///	IN _phlandphone text,
-        ///	IN _extension text,
-        ///	IN _fbid text,
-        ///	IN _fbname text,
-        ///	IN _roles text,
-        ///	IN _groups text,
-        ///	IN _statusid integer,
-        ///	IN _hide text,
-        ///	IN _anonymoususerid integer,
-        ///	IN _preferences text [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_security_user2 {
-            get {
-                return ResourceManager.GetString("eb_security_user2", resourceCulture);
             }
         }
         
@@ -6030,94 +5463,6 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_security_usergroup(integer, integer, text, text, text, text, text)
-        ///
-        ///-- DROP FUNCTION public.eb_security_usergroup(integer, integer, text, text, text, text, text);
-        ///
-        ///CREATE OR REPLACE FUNCTION public.eb_security_usergroup(
-        ///	_userid integer,
-        ///	_id integer,
-        ///	_name text,
-        ///	_description text,
-        ///	_users text,
-        ///	_constraints_add text,
-        ///	_constraints_del text)
-        ///    RETURNS TABLE(gid integer) 
-        ///    LANGUAGE &apos;plpgsql&apos;
-        ///    
-        ///AS $BODY$
-        ///
-        ///DECLARE 
-        ///	gid integer;
-        ///	users INTEGER[];
-        ///BEGIN
-        ///	g [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_security_usergroup {
-            get {
-                return ResourceManager.GetString("eb_security_usergroup", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to create or replace FUNCTION eb_createormodifyuserandroles(
-        ///	in_userid NUMBER,
-        ///	in_id NUMBER,
-        ///	in_fullname VARCHAR2,
-        ///	in_nickname VARCHAR2,
-        ///	in_email VARCHAR2,
-        ///	in_pwd VARCHAR2,
-        ///	in_dob DATE,
-        ///	in_sex VARCHAR2,
-        ///	in_alternateemail VARCHAR2,
-        ///	in_phnoprimary VARCHAR2,
-        ///	in_phnosecondary VARCHAR2,
-        ///	in_landline VARCHAR2,
-        ///	in_phextension VARCHAR2,
-        ///	in_fbid VARCHAR2,
-        ///	in_fbname VARCHAR2,
-        ///	in_roles_temp VARCHAR2,
-        ///	in_group_temp VARCHAR2,
-        ///    in_statusid NUMBER,
-        ///	in_hide VARCHAR2,
-        ///    in_anonymoususe [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_security_usergroup1 {
-            get {
-                return ResourceManager.GetString("eb_security_usergroup1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DROP PROCEDURE IF EXISTS eb_security_usergroup;
-        ///
-        ///CREATE PROCEDURE eb_security_usergroup(IN userid integer,
-        ///	IN id integer,
-        ///	IN name text,
-        ///	IN description text,
-        ///	IN users text,
-        ///	IN constraints_add text,
-        ///	IN constraints_del text,
-        ///    OUT out_gid integer)
-        ///BEGIN
-        ///DECLARE gid integer;
-        ///DECLARE _userid integer;
-        ///DECLARE _id integer;
-        ///DECLARE _name text;
-        ///DECLARE _description text;
-        ///DECLARE _users text;
-        ///DECLARE _constraints_add text;
-        ///DECLARE _constraints_del text;
-        ///DECLARE _keyid integer;
-        ///DECLARE _add [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_security_usergroup2 {
-            get {
-                return ResourceManager.GetString("eb_security_usergroup2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to CREATE OR ALTER PROCEDURE eb_security_usergroup
         ///	@_userid int,
         ///	@_id int,
@@ -6145,46 +5490,6 @@ namespace ExpressBase.Common {
         public static string eb_security_usergroup3 {
             get {
                 return ResourceManager.GetString("eb_security_usergroup3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_signin_log
-        ///
-        ///-- DROP TABLE public.eb_signin_log;
-        ///
-        ///CREATE TABLE eb_signin_log
-        ///(
-        ///    id serial,
-        ///    user_id integer,
-        ///    ip_address text,
-        ///    device_info text,
-        ///    is_attempt_failed char(1) DEFAULT &apos;F&apos;,	
-        ///    is_force_signout char(1)  DEFAULT &apos;F&apos;,
-        ///    signin_at timestamp without time zone,
-        ///    signout_at timestamp without time zone,
-        ///    CONSTRAINT eb_signin_log_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///
-        ///-- Index: eb_signin_log_id_idx
-        ///
-        ///-- DROP INDEX public.eb_signin_log_id_idx;
-        ///
-        ///CREATE  [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_signin_log {
-            get {
-                return ResourceManager.GetString("eb_signin_log", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Need Updation.
-        /// </summary>
-        public static string eb_signin_log1 {
-            get {
-                return ResourceManager.GetString("eb_signin_log1", resourceCulture);
             }
         }
         
@@ -6441,73 +5746,6 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_survey_lines
-        ///
-        ///-- DROP TABLE public.eb_survey_lines;
-        ///
-        ///CREATE TABLE eb_survey_lines
-        ///(
-        ///    id serial,
-        ///    masterid integer,
-        ///    questionid integer,
-        ///    eb_createdate timestamp without time zone,
-        ///    choiceids text,
-        ///    questype integer,
-        ///    answer text,
-        ///    CONSTRAINT eb_survey_lines_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///
-        ///-- Index: eb_survey_lines_id_idx
-        ///
-        ///-- DROP INDEX public.eb_survey_lines_id_idx;
-        ///
-        ///CREATE INDEX eb_survey_lines_id_idx
-        ///    ON eb_survey_lines(id);.
-        /// </summary>
-        public static string eb_survey_lines {
-            get {
-                return ResourceManager.GetString("eb_survey_lines", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- need updation.
-        /// </summary>
-        public static string eb_survey_lines1 {
-            get {
-                return ResourceManager.GetString("eb_survey_lines1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_survey_lines
-        ///(
-        ///  id integer auto_increment,
-        ///  masterid integer,
-        ///  questionid integer,
-        ///  eb_createdate datetime,
-        ///  choiceids text,
-        ///  questype integer,
-        ///  answer text,
-        ///  constraint eb_survey_lines_pkey primary key(id)
-        ///);
-        ///
-        ///
-        ///
-        ///CREATE INDEX eb_survey_lines_id_idx
-        ///ON eb_survey_lines(id) ;
-        ///
-        ///
-        ///.
-        /// </summary>
-        public static string eb_survey_lines2 {
-            get {
-                return ResourceManager.GetString("eb_survey_lines2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to CREATE SEQUENCE eb_survey_lines_id_seq START WITH 1 INCREMENT BY 1;
         ///
         ///CREATE TABLE eb_survey_lines
@@ -6526,66 +5764,6 @@ namespace ExpressBase.Common {
         public static string eb_survey_lines3 {
             get {
                 return ResourceManager.GetString("eb_survey_lines3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_survey_master
-        ///
-        ///-- DROP TABLE public.eb_survey_master;
-        ///
-        ///CREATE TABLE eb_survey_master
-        ///(
-        ///    id serial,
-        ///    surveyid integer,
-        ///    userid integer,
-        ///    anonid integer,
-        ///    eb_createdate timestamp without time zone,
-        ///    CONSTRAINT eb_survey_master_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///
-        ///-- Index: eb_survey_master_id_idx
-        ///
-        ///-- DROP INDEX public.eb_survey_master_id_idx;
-        ///
-        ///CREATE INDEX eb_survey_master_id_idx
-        ///    ON eb_survey_master(id);.
-        /// </summary>
-        public static string eb_survey_master {
-            get {
-                return ResourceManager.GetString("eb_survey_master", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- need updation.
-        /// </summary>
-        public static string eb_survey_master1 {
-            get {
-                return ResourceManager.GetString("eb_survey_master1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_survey_master
-        ///(
-        ///  id integer auto_increment,
-        ///  surveyid integer,
-        ///  userid integer,
-        ///  anonid integer,
-        ///  eb_createdate datetime,
-        ///  constraint eb_survey_master_pkey primary key(id)
-        ///);
-        ///
-        ///
-        ///CREATE INDEX eb_survey_master_id_idx
-        ///ON eb_survey_master(id);
-        ///.
-        /// </summary>
-        public static string eb_survey_master2 {
-            get {
-                return ResourceManager.GetString("eb_survey_master2", resourceCulture);
             }
         }
         
@@ -6610,60 +5788,6 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_survey_queries
-        ///
-        ///-- DROP TABLE public.eb_survey_queries;
-        ///
-        ///CREATE TABLE eb_survey_queries
-        ///(
-        ///    id serial,
-        ///    query text,
-        ///    q_type integer,
-        ///    CONSTRAINT eb_survey_queries_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///
-        ///-- Index: eb_survey_queries_id_idx
-        ///
-        ///-- DROP INDEX public.eb_survey_queries_id_idx;
-        ///
-        ///CREATE INDEX eb_survey_queries_id_idx
-        ///    ON eb_survey_queries(id);.
-        /// </summary>
-        public static string eb_survey_queries {
-            get {
-                return ResourceManager.GetString("eb_survey_queries", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- need updation.
-        /// </summary>
-        public static string eb_survey_queries1 {
-            get {
-                return ResourceManager.GetString("eb_survey_queries1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_survey_queries
-        ///(
-        ///  id integer auto_increment,
-        ///  query text,
-        ///  q_type integer,
-        ///  constraint eb_survey_queries_pkey primary key(id)
-        ///);
-        ///
-        ///CREATE INDEX eb_survey_queries_id_idx
-        ///ON eb_survey_queries(id);.
-        /// </summary>
-        public static string eb_survey_queries2 {
-            get {
-                return ResourceManager.GetString("eb_survey_queries2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to CREATE SEQUENCE eb_survey_queries_id_seq START WITH 1 INCREMENT BY 1;
         ///
         ///CREATE TABLE eb_survey_queries
@@ -6678,66 +5802,6 @@ namespace ExpressBase.Common {
         public static string eb_survey_queries3 {
             get {
                 return ResourceManager.GetString("eb_survey_queries3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_surveys
-        ///
-        ///-- DROP TABLE public.eb_surveys;
-        ///
-        ///CREATE TABLE eb_surveys
-        ///(
-        ///    id serial,
-        ///    name text,
-        ///    startdate timestamp without time zone,
-        ///    enddate timestamp without time zone,
-        ///    status integer,
-        ///    questions text,
-        ///    CONSTRAINT eb_surveys_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///
-        ///-- Index: eb_surveys_id_idx
-        ///
-        ///-- DROP INDEX public.eb_surveys_id_idx;
-        ///
-        ///CREATE INDEX eb_surveys_id_idx
-        ///    ON eb_surveys(id);.
-        /// </summary>
-        public static string eb_surveys {
-            get {
-                return ResourceManager.GetString("eb_surveys", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- need updation.
-        /// </summary>
-        public static string eb_surveys1 {
-            get {
-                return ResourceManager.GetString("eb_surveys1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_surveys
-        ///(
-        ///  id integer NOT NULL auto_increment,
-        ///  name text,
-        ///  startdate datetime,
-        ///  enddate datetime,
-        ///  status integer,
-        ///  questions text,
-        ///  constraint eb_surveys_pkey primary key(id)
-        ///);
-        ///
-        ///CREATE INDEX eb_surveys_id_idx
-        ///ON eb_surveys(id);.
-        /// </summary>
-        public static string eb_surveys2 {
-            get {
-                return ResourceManager.GetString("eb_surveys2", resourceCulture);
             }
         }
         

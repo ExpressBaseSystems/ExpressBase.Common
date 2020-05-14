@@ -52,7 +52,7 @@ namespace ExpressBase.Common.Objects
             this.TypeRegister = string.Empty;
             this.JsonToJsObjectFuncs = string.Empty;
             this.EbObjectTypes = string.Empty;
-            this.EbOnChangeUIfns = "const EbOnChangeUIfns ={}; ";
+            this.EbOnChangeUIfns = "var EbOnChangeUIfns ={}; ";
 
             this.Start = DateTime.Now;
         }

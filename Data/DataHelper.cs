@@ -88,6 +88,8 @@ namespace ExpressBase.Common.Data
                     return Convert.ToDateTime(Value);
                 else if (Type == ((int)EbDbTypes.Boolean).ToString())
                     return Convert.ToBoolean(Value);
+                else if(Type == ((int)EbDbTypes.String).ToString())  
+                    return (Value == null) ? string.Empty: Value;
                 else
                     return Value;
             }
