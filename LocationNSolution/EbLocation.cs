@@ -26,6 +26,8 @@ namespace ExpressBase.Common.LocationNSolution
 
         public string WeekHoliday2 { get; set; }
 
+        public Dictionary<int, EbLocation> Children { get; set; }
+
         public Dictionary<string, string> Meta { get; set; }
 
         public string this[string title]
