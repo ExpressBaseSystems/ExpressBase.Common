@@ -1690,15 +1690,14 @@ namespace ExpressBase.Common {
         ///    uploadts timestamp without time zone,
         ///    eb_del char(1) DEFAULT &apos;F&apos;,
         ///    filecategory integer,
-        ///    context text,   
+        ///    context text,  
+        ///	context_sec text,
         ///    CONSTRAINT eb_files_ref_pkey PRIMARY KEY (id),
         ///    CONSTRAINT eb_files_ref_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
         ///
-        ///-- Index: eb_files_ref_id_idx
-        ///
-        ///-- DROP IND [rest of string was truncated]&quot;;.
+        ///-- Index: eb_files_ref_id [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files_ref {
             get {
@@ -1819,6 +1818,7 @@ namespace ExpressBase.Common {
         ///  eb_del char(1) DEFAULT &apos;F&apos;,
         ///  filecategory integer,  
         ///  context text,
+        ///  context_sec text,
         ///  CONSTRAINT eb_files_ref_pkey PRIMARY KEY (id),
         ///  CONSTRAINT eb_files_ref_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
@@ -1829,7 +1829,7 @@ namespace ExpressBase.Common {
         ///
         ///
         ///CREATE INDEX eb_files_ref_userid_idx
-        ///ON eb_files_ref(userid);.
+        ///ON eb_files_ref(userid) [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files_ref2 {
             get {
@@ -2281,7 +2281,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE eb_keys
         ///(
-        ///    id serial,
+        ///    id bigserial,
         ///    key text NOT NULL,
         ///    CONSTRAINT eb_keys_pkey PRIMARY KEY (id)
         ///);
@@ -2292,7 +2292,8 @@ namespace ExpressBase.Common {
         ///-- DROP INDEX public.eb_keys_id_idx;
         ///
         ///CREATE INDEX eb_keys_id_idx
-        ///    ON eb_keys(id);.
+        ///    ON eb_keys(id);
+        ///.
         /// </summary>
         public static string eb_keys {
             get {
@@ -2351,7 +2352,7 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE eb_keyvalue
         ///(
-        ///    id serial,
+        ///    id bigserial,
         ///    key_id bigint NOT NULL,
         ///    lang_id integer NOT NULL,
         ///    value text NOT NULL,
@@ -2364,7 +2365,8 @@ namespace ExpressBase.Common {
         ///-- DROP INDEX public.eb_keyvalue_id_idx;
         ///
         ///CREATE INDEX eb_keyvalue_id_idx
-        ///    ON eb_keyvalue(id);.
+        ///    ON eb_keyvalue(id);
+        ///.
         /// </summary>
         public static string eb_keyvalue {
             get {
@@ -2609,7 +2611,7 @@ namespace ExpressBase.Common {
         ///    eb_created_at timestamp without time zone,
         ///    eb_lastmodified_by integer,
         ///    eb_lastmodified_at timestamp without time zone,
-        ///    eb_del character(1) DEFAULT &apos;F&apos;
+        ///    eb_del char(1) DEFAULT &apos;F&apos;
         ///);
         ///
         ///CREATE INDEX eb_location_types_id_idx ON eb_location_types(id);
@@ -2777,6 +2779,317 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_meeting_participants (
+        ///id serial,
+        ///eb_meeting_id integer,
+        ///eb_slot_participant_id bigint,
+        ///eb_created_by integer,
+        ///eb_created_at 	timestamp without time zone DEFAULT now(),
+        ///eb_lastmodified_by integer,
+        ///eb_lastmodified_at timestamp without time zone,
+        ///eb_del char(1) default &apos;F&apos;
+        ///);
+        ///
+        ///CREATE INDEX eb_meeting_participants_id_idx
+        ///ON eb_meeting_participants(id);.
+        /// </summary>
+        public static string eb_meeting_participants {
+            get {
+                return ResourceManager.GetString("eb_meeting_participants", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_meeting_participants.
+        /// </summary>
+        public static string eb_meeting_participants1 {
+            get {
+                return ResourceManager.GetString("eb_meeting_participants1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_meeting_participants.
+        /// </summary>
+        public static string eb_meeting_participants2 {
+            get {
+                return ResourceManager.GetString("eb_meeting_participants2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_meeting_participants.
+        /// </summary>
+        public static string eb_meeting_participants3 {
+            get {
+                return ResourceManager.GetString("eb_meeting_participants3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///CREATE TABLE eb_meeting_schedule(
+        ///id serial,
+        ///title text,
+        ///description text,
+        ///date  meeting_date,
+        ///time_from time without time zone,
+        ///time_to time without time zone,
+        ///duration integer,
+        ///break text ,
+        ///is_recuring char(1) default &apos;F&apos;,
+        ///is_multiple char(1) default &apos;F&apos;,
+        ///venue text,
+        ///integration	text,
+        ///max_hosts integer,
+        ///max_attendees integer,
+        ///no_of_attendee integer,
+        ///no_of_hosts  integer,	
+        ///form_ref_id  text,
+        ///form_data_id integer,
+        ///cron_expression text,
+        ///cron_exp_end date,
+        ///eb_created_by integer,
+        ///eb_cre [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_meeting_schedule {
+            get {
+                return ResourceManager.GetString("eb_meeting_schedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_meeting_schedule.
+        /// </summary>
+        public static string eb_meeting_schedule1 {
+            get {
+                return ResourceManager.GetString("eb_meeting_schedule1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_meeting_schedule.
+        /// </summary>
+        public static string eb_meeting_schedule2 {
+            get {
+                return ResourceManager.GetString("eb_meeting_schedule2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_meeting_schedule.
+        /// </summary>
+        public static string eb_meeting_schedule3 {
+            get {
+                return ResourceManager.GetString("eb_meeting_schedule3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_meeting_scheduled_participants(
+        ///id serial ,
+        ///user_id integer,
+        ///role_id integer,
+        ///user_group_id integer,
+        ///eb_meeting_schedule_id integer,
+        ///participant_type integer,
+        ///eb_created_by integer,
+        ///eb_created_at 	timestamp without time zone DEFAULT now(),
+        ///eb_lastmodified_by integer,
+        ///eb_lastmodified_at timestamp without time zone,
+        ///eb_del char(1) default &apos;F&apos;
+        ///);.
+        /// </summary>
+        public static string eb_meeting_scheduled_participants {
+            get {
+                return ResourceManager.GetString("eb_meeting_scheduled_participants", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --eb_meeting_scheduled_participants.
+        /// </summary>
+        public static string eb_meeting_scheduled_participants1 {
+            get {
+                return ResourceManager.GetString("eb_meeting_scheduled_participants1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_meeting_scheduled_participants.
+        /// </summary>
+        public static string eb_meeting_scheduled_participants2 {
+            get {
+                return ResourceManager.GetString("eb_meeting_scheduled_participants2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_meeting_scheduled_participants.
+        /// </summary>
+        public static string eb_meeting_scheduled_participants3 {
+            get {
+                return ResourceManager.GetString("eb_meeting_scheduled_participants3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_meeting_slot_participants (
+        ///id serial,
+        ///user_id integer,
+        ///role_id integer,
+        ///user_group_id integer,
+        ///eb_meeting_schedule_id integer,
+        ///Approved_slot_id integer,
+        ///email text,
+        ///name text,
+        ///phone_num text,
+        ///confirmation integer,
+        ///type_of_user integer, 	
+        ///participant_type integer,
+        ///eb_created_by integer,
+        ///eb_created_at  timestamp without time zone DEFAULT now(),
+        ///eb_lastmodified_by integer,
+        ///eb_lastmodified_at timestamp without time zone,
+        ///eb_del char(1) default &apos;F&apos;
+        ///);
+        ///
+        ///CREATE INDEX eb_meeting [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_meeting_slot_participants {
+            get {
+                return ResourceManager.GetString("eb_meeting_slot_participants", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_meeting_slot_participants.
+        /// </summary>
+        public static string eb_meeting_slot_participants1 {
+            get {
+                return ResourceManager.GetString("eb_meeting_slot_participants1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_meeting_slot_participants.
+        /// </summary>
+        public static string eb_meeting_slot_participants2 {
+            get {
+                return ResourceManager.GetString("eb_meeting_slot_participants2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_meeting_slot_participants.
+        /// </summary>
+        public static string eb_meeting_slot_participants3 {
+            get {
+                return ResourceManager.GetString("eb_meeting_slot_participants3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_meeting_slots (
+        ///id serial,
+        ///eb_meeting_schedule_id integer,
+        ///is_approved  char(1) default &apos;F&apos;,
+        ///meeting_date date ,
+        ///time_from time without time zone,
+        ///time_to	time without time zone,
+        ///eb_created_by integer,
+        ///eb_created_at  timestamp without time zone DEFAULT now(),
+        ///eb_lastmodified_by integer,
+        ///eb_lastmodified_at timestamp without time zone,
+        ///eb_del char(1)default &apos;F&apos;
+        ///);
+        ///
+        ///
+        ///CREATE INDEX eb_meeting_slots_id_idx
+        ///ON eb_meeting_slots(id);.
+        /// </summary>
+        public static string eb_meeting_slots {
+            get {
+                return ResourceManager.GetString("eb_meeting_slots", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --eb_meeting_slots.
+        /// </summary>
+        public static string eb_meeting_slots1 {
+            get {
+                return ResourceManager.GetString("eb_meeting_slots1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_meeting_slots.
+        /// </summary>
+        public static string eb_meeting_slots2 {
+            get {
+                return ResourceManager.GetString("eb_meeting_slots2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_meeting_slots.
+        /// </summary>
+        public static string eb_meeting_slots3 {
+            get {
+                return ResourceManager.GetString("eb_meeting_slots3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_meetings(
+        ///id 	serial,
+        ///eb_meeting_slots_id integer,
+        ///eb_created_by integer,
+        ///eb_created_at timestamp without time zone DEFAULT now(),
+        ///eb_lastmodified_by integer,
+        ///eb_lastmodified_at timestamp without time zone,
+        ///eb_del char(1) default &apos;F&apos;,
+        ///);
+        ///
+        ///
+        ///CREATE INDEX eb_meetings_id_idx
+        ///ON eb_meetings(id);.
+        /// </summary>
+        public static string eb_meetings {
+            get {
+                return ResourceManager.GetString("eb_meetings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --eb_meetings.
+        /// </summary>
+        public static string eb_meetings1 {
+            get {
+                return ResourceManager.GetString("eb_meetings1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_meetings.
+        /// </summary>
+        public static string eb_meetings2 {
+            get {
+                return ResourceManager.GetString("eb_meetings2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_meetings.
+        /// </summary>
+        public static string eb_meetings3 {
+            get {
+                return ResourceManager.GetString("eb_meetings3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_my_actions
         ///(
         ///    id SERIAL,
@@ -2821,7 +3134,7 @@ namespace ExpressBase.Common {
         ///    is_form_data_editable char(1) DEFAULT &apos;F&apos;,
         ///    from_datetime datetime,
         ///    expiry_datetime datetime,
-        ///    CONSTRAI [rest of string was truncated]&quot;;.
+        ///	my_action_t [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_my_actions1 {
             get {
@@ -3253,13 +3566,14 @@ namespace ExpressBase.Common {
         ///    owner_ts timestamp without time zone,
         ///    display_name  text,
         ///    is_logenabled char(1) DEFAULT &apos;F&apos;,
-        ///	is_public character(1) DEFAULT &apos;F&apos;,
+        ///	is_public char(1) DEFAULT &apos;F&apos;,
         ///    eb_del char(1) DEFAULT &apos;F&apos;,
         ///    CONSTRAINT eb_objects_pkey PRIMARY KEY (id)
         ///);
         ///
         ///
-        ///-- Index: eb_objects_id_i [rest of string was truncated]&quot;;.
+        ///-- Index: eb_objects_id_idx
+        ///        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects {
             get {
@@ -3983,9 +4297,9 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text)
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text)
         ///
-        ///-- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text);
+        ///-- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text);
         ///
         ///CREATE OR REPLACE FUNCTION public.eb_objects_save(
         ///	refidv text,
@@ -4002,9 +4316,7 @@ namespace ExpressBase.Common {
         ///    LANGUAGE &apos;plpgsql&apos;
         ///
         ///   
-        ///AS $BODY$
-        ///
-        ///DECLARE [rest of string was truncated]&quot;;.
+        ///AS $BODY [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_save1 {
             get {
@@ -4318,8 +4630,8 @@ namespace ExpressBase.Common {
         ///    status_id integer,
         ///    ver_num text,
         ///    working_mode char(1) DEFAULT &apos;F&apos;,
-        ///	eb_del char(1) DEFAULT &apos;F&apos;,
-        ///    CONSTRA [rest of string was truncated]&quot;;.
+        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    CONS [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_ver1 {
             get {
@@ -5437,7 +5749,7 @@ namespace ExpressBase.Common {
         ///    task json,
         ///    created_by integer,
         ///    created_at timestamp without time zone,
-        ///    eb_del char(1) default &apos;F&apos;,
+        ///    eb_del char(1) DEFAULT &apos;F&apos;,
         ///    jobkey text,
         ///    triggerkey text,
         ///    status numeric,

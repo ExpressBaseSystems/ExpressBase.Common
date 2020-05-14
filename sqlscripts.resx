@@ -1003,4 +1003,76 @@
   <data name="eb_location_types3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\sqlserver\objectsdb\tablecreate\eb_location_types.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="eb_meetings" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_meetings.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meetings1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\datadb\tablecreate\eb_meetings.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meetings2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\datadb\tablecreate\eb_meetings.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meetings3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\sqlserver\datadb\tablecreate\eb_meetings.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_participants" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_meeting_participants.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_participants1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\datadb\tablecreate\eb_meeting_participants.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_participants2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\datadb\tablecreate\eb_meeting_participants.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_participants3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\sqlserver\datadb\tablecreate\eb_meeting_participants.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_schedule" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_meeting_schedule.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_schedule1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\datadb\tablecreate\eb_meeting_schedule.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_schedule2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\datadb\tablecreate\eb_meeting_schedule.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_schedule3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\sqlserver\datadb\tablecreate\eb_meeting_schedule.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_scheduled_participants" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_meeting_scheduled_participants.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_scheduled_participants1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\datadb\tablecreate\eb_meeting_scheduled_participants.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_scheduled_participants2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\datadb\tablecreate\eb_meeting_scheduled_participants.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_scheduled_participants3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\sqlserver\datadb\tablecreate\eb_meeting_scheduled_participants.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_slots" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_meeting_slots .sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_slots1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\datadb\tablecreate\eb_meeting_slots.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_slots2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\datadb\tablecreate\eb_meeting_slots.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_slots3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\sqlserver\datadb\tablecreate\eb_meeting_slots.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_slot_participants" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_meeting_slot_participants.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_slot_participants1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\datadb\tablecreate\eb_meeting_slot_participants.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_slot_participants2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\datadb\tablecreate\eb_meeting_slot_participants.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_meeting_slot_participants3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\sqlserver\datadb\tablecreate\eb_meeting_slot_participants.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
 </root>
