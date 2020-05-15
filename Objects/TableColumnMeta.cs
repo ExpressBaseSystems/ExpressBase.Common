@@ -207,7 +207,8 @@ namespace ExpressBase.Common
         public bool IsLocked { get; set; }
         public string DataPushId { get; set; }
         public int SourceId { get; set; }
-        
+        public int CreatedBy { get; set; }
+
         public WebformData()
         {
             MultipleTables = new Dictionary<string, SingleTable>();
