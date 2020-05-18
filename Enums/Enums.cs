@@ -379,7 +379,8 @@ namespace ExpressBase.Common
 
     public enum MyActionTypes
     {
-        Approval = 1
+        Approval = 1,
+        Meeting = 2
     }
 }
 
