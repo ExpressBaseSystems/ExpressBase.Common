@@ -3,7 +3,7 @@ CREATE TABLE eb_meeting_schedule(
 id serial,
 title text,
 description text,
-date  meeting_date,
+meeting_date date  ,
 time_from time without time zone,
 time_to time without time zone,
 duration integer,

@@ -24,6 +24,7 @@ namespace ExpressBase.Common.Data
                     {
                         Host = Config.Host,
                         Port = Config.Port,
+                        UseDefaultCredentials = false,
                         Credentials = new NetworkCredential { UserName = Config.EmailAddress, Password = Config.Password },
                         EnableSsl = Config.EnableSsl
                     };
@@ -110,7 +111,7 @@ namespace ExpressBase.Common.Data
             bool sentStatus;
             try
             {
-                
+
                 var msg = new SendGridMessage
                 {
                     From = new EmailAddress(Config.EmailAddress, Config.Name),
