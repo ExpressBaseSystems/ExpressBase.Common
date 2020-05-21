@@ -60,7 +60,7 @@ namespace ExpressBase.Common.Data
 
                 };
                 if (attachment != null)
-                    mm.Attachments.Add(new System.Net.Mail.Attachment(new MemoryStream(attachment), attachmentname + ".pdf"));
+                    mm.Attachments.Add(new System.Net.Mail.Attachment(new MemoryStream(attachment), attachmentname));
                 if (cc != null)
                     if (cc.Length > 0)
                         foreach (string item in cc)
