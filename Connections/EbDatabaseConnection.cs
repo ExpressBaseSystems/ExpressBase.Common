@@ -279,11 +279,19 @@ namespace ExpressBase.Common.Connections
         public string Password { get; set; }
 
         public string From { get; set; }
+
     }
 
     public class EbTwilioConfig : EbSmsConfig
     {
         public override EbIntegrations Type { get { return EbIntegrations.Twilio; } }
+    }
+
+    public class EbTextLocalConfig : EbSmsConfig
+    {
+        public string ApiKey { get; set; }
+
+        public override EbIntegrations Type { get { return EbIntegrations.TextLocal;  } }
     }
 
     public class EbUnifonicConfig : EbSmsConfig
