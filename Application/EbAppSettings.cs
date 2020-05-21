@@ -107,7 +107,8 @@ namespace ExpressBase.Common.Application
 		public bool EbTag { get; set; }
 		public bool HeaderIcon { get; set; }
 		public bool HeaderSubtxt { get; set; }
-		public string BgImg { get; set; }
+		public string Bg_value { get; set; }
+		public string Bg_type { get; set; }
 		public string AppFont { get; set; }
 		public BotProperty()
 		{
