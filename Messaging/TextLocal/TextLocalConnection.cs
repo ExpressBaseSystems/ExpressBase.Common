@@ -26,21 +26,31 @@ namespace ExpressBase.Common.Messaging
         public Dictionary<string, string> SendSMS(string To, string body)
         {
             Dictionary<string, string> msgStatus = null;
+            string result;
 
             try
             {
-                string msg = HttpUtility.UrlEncode(body);
-                url = string.Format(SMS_BARE_URL, Config.ApiKey, To, body, Config.From);
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                var resp = request.GetResponse();
+                string msg = HttpUtility.UrlEncode(body);               
+                using (var wb = new WebClient())
+                {
+                    byte[] response = wb.UploadValues("https://api.textlocal.in/send/", new NameValueCollection()
+                    {
+                        {"apikey" , Config.ApiKey},
+                        {"numbers" , To},
+                        {"message" , body},
+                        {"sender" , Config.From}
+                    });
+                    result = System.Text.Encoding.UTF8.GetString(response);
+                }
 
                 msgStatus = new Dictionary<string, string>
                 {
                         {"apikey" ,  Config.ApiKey},
                         {"numbers" , To},
                         {"message" , msg},
-                        {"sender" , Config.From}
-                };                
+                        {"sender" , Config.From},
+                        {"msgStatus",  result}
+                };
             }
             catch (Exception e)
             {
