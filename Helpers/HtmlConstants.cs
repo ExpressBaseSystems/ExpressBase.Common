@@ -78,17 +78,17 @@ if(this.Hidden){
 }
 else ";
 
-        public const string SS_EnableJSfn = @"this.IsDisable = false; return $('#' + this.EbSid_CtxId +'Wraper .dropdown-toggle').prop('disabled',false).css('pointer-events', 'inherit').css('background-color', '#fff');";
+        public const string SS_EnableJSfn = @"this.__IsDisable = false; return $('#' + this.EbSid_CtxId +'Wraper .dropdown-toggle').prop('disabled',false).css('pointer-events', 'inherit').css('background-color', '#fff');";
 
-        public const string SS_DisableJSfn = @"this.IsDisable = true; return $('#' + this.EbSid_CtxId +'Wraper .dropdown-toggle').attr('disabled', 'disabled').css('pointer-events', 'none').css('background-color', '#f3f3f3');";
+        public const string SS_DisableJSfn = @"this.__IsDisable = true; return $('#' + this.EbSid_CtxId +'Wraper .dropdown-toggle').attr('disabled', 'disabled').css('pointer-events', 'none').css('background-color', '#f3f3f3');";
 
         public const string SS_IsRequiredOKJSfn = @" let val = this.getValueFromDOM(); return !this.isInVisibleInUI ? (!isNaNOrEmpty(val) && (val !== '-1') && (val !== null)) : true;";
 
         public const string SS_GetDisplayMemberJSfn = @"return $('#' + this.EbSid_CtxId +' :selected').text();";
 
-        public const string Ctrl_DisableJSfn = @"this.IsDisable = true; $('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none').find('[ui-inp]').css('background-color', '#f3f3f3');";
+        public const string Ctrl_DisableJSfn = @"this.__IsDisable = true; $('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none').find('[ui-inp]').css('background-color', '#f3f3f3');";
 
-        public const string Ctrl_EnableJSfn = @"this.IsDisable = false; $('#cont_' + this.EbSid_CtxId + ' *').prop('disabled',false).css('pointer-events', 'inherit').find('[ui-inp]').css('background-color', '#fff');";
+        public const string Ctrl_EnableJSfn = @"this.__IsDisable = false; $('#cont_' + this.EbSid_CtxId + ' *').prop('disabled',false).css('pointer-events', 'inherit').find('[ui-inp]').css('background-color', '#fff');";
 
         public const string Ctrl_IsRequiredOKJSfn = @"let val = this.getValueFromDOM(); return !this.isInVisibleInUI ? (!isNaNOrEmpty(val) && val !== null && val !== 0): true;";
 
@@ -118,7 +118,7 @@ else ";
                 ";
 
         public const string PS_EnableJSfn = @"
-this.IsDisable = false; 
+this.__IsDisable = false; 
 if(this.RenderAsSimpleSelect){"
     + SS_EnableJSfn +
 @"}
