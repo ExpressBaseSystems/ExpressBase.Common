@@ -34,6 +34,10 @@ namespace ExpressBase.Common.Objects
                 this._OnChange = new EbScript();
             if (this.DefaultValueExpression == null)
                 this.DefaultValueExpression = new EbScript();
+            if (this.ValueExpr == null)
+                this.ValueExpr = new EbScript();
+            if (this.VisibleExpr == null)
+                this.VisibleExpr = new EbScript();
             if (string.IsNullOrEmpty(this.OnChangeFn.Code) && !string.IsNullOrEmpty(_OnChange.Code))
                 this.OnChangeFn = _OnChange;
         }
@@ -41,7 +45,8 @@ namespace ExpressBase.Common.Objects
         public virtual bool IsRenderMode { get; set; }
 
         public virtual bool IsDynamicTabChild { get; set; }
-
+        
+        [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual bool IsNonDataInputControl { get; set; }
 
