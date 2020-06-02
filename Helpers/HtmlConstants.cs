@@ -128,6 +128,8 @@ else{"
 
         public const string EbSimpleSelect_JustSetValueJSfn = @"
 {
+if(p1 === null)
+    p1 = -1;
     isContained = false;
     $('#' + this.EbSid_CtxId + ' option').each(function () {
         if ($(this).attr('value') == p1) {
@@ -144,6 +146,8 @@ else{"
         public const string CB_JustSetValueJSfn = @"$('#' + this.EbSid_CtxId).prop('checked', p1 === true);";
 
         public const string EbSimpleSelect_SetValueJSfn = @"
+if(p1 === null)
+    p1 = -1;
 isContained = false;
 $('#' + this.EbSid_CtxId + ' option').each(function () {
     if ($(this).attr('value') == p1) {
