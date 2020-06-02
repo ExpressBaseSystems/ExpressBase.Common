@@ -24,6 +24,7 @@ namespace ExpressBase.Common.Data
                     {
                         Host = Config.Host,
                         Port = Config.Port,
+                        UseDefaultCredentials = false,
                         Credentials = new NetworkCredential { UserName = Config.EmailAddress, Password = Config.Password },
                         EnableSsl = Config.EnableSsl
                     };
@@ -59,7 +60,7 @@ namespace ExpressBase.Common.Data
 
                 };
                 if (attachment != null)
-                    mm.Attachments.Add(new System.Net.Mail.Attachment(new MemoryStream(attachment), attachmentname + ".pdf"));
+                    mm.Attachments.Add(new System.Net.Mail.Attachment(new MemoryStream(attachment), attachmentname));
                 if (cc != null)
                     if (cc.Length > 0)
                         foreach (string item in cc)
@@ -110,7 +111,7 @@ namespace ExpressBase.Common.Data
             bool sentStatus;
             try
             {
-                
+
                 var msg = new SendGridMessage
                 {
                     From = new EmailAddress(Config.EmailAddress, Config.Name),

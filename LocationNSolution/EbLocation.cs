@@ -67,6 +67,8 @@ namespace ExpressBase.Common.LocationNSolution
 
         public Dictionary<int, EbLocation> Locations { get; set; }
 
+        public Dictionary<int, EbLocation> LocationTree { get; set; }
+
         public List<EbLocationCustomField> LocationConfig { get; set; }
 
         public PricingTiers PricingTier { get; set; }

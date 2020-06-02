@@ -15,7 +15,7 @@ namespace ExpressBase.Common
         public const string HelpText = @"";
 
         public const string CONTROL_WRAPER_HTML4WEB = @"
-        <div id='cont_@ebsid@' ebsid='@ebsid@' name='@name@' class='Eb-ctrlContainer' @childOf@ ctype='@type@' eb-hidden='@isHidden@'>
+        <div id='cont_@ebsid@' ebsid='@ebsid@' name='@name@' class='Eb-ctrlContainer' @childOf@ ctype='@type@' eb-hidden='@isHidden@' eb-readonly='@isReadonly@'>
             <span class='eb-ctrl-label eb-label-editable' ui-label id='@ebsidLbl'>@Label@</span>
             <input id='@ebsid@lbltxtb' class='eb-lbltxtb' type='text'/> @req@ 
                 <div  id='@ebsid@Wraper' class='ctrl-cover' eb-readonly='@isReadonly@'>
@@ -78,17 +78,17 @@ if(this.Hidden){
 }
 else ";
 
-        public const string SS_EnableJSfn = @"return $('#' + this.EbSid_CtxId +'Wraper .dropdown-toggle').prop('disabled',false).css('pointer-events', 'inherit').css('background-color', '#fff');";
+        public const string SS_EnableJSfn = @"this.__IsDisable = false; return $('#' + this.EbSid_CtxId +'Wraper .dropdown-toggle').prop('disabled',false).css('pointer-events', 'inherit').css('background-color', '#fff');";
 
-        public const string SS_DisableJSfn = @"return $('#' + this.EbSid_CtxId +'Wraper .dropdown-toggle').attr('disabled', 'disabled').css('pointer-events', 'none').css('background-color', '#f3f3f3');";
+        public const string SS_DisableJSfn = @"this.__IsDisable = true; return $('#' + this.EbSid_CtxId +'Wraper .dropdown-toggle').attr('disabled', 'disabled').css('pointer-events', 'none').css('background-color', '#f3f3f3');";
 
         public const string SS_IsRequiredOKJSfn = @" let val = this.getValueFromDOM(); return !this.isInVisibleInUI ? (!isNaNOrEmpty(val) && (val !== '-1') && (val !== null)) : true;";
 
-        public const string Ctrl_EnableJSfn = @"$('#cont_' + this.EbSid_CtxId + ' *').prop('disabled',false).css('pointer-events', 'inherit').find('[ui-inp]').css('background-color', '#fff');";
-
         public const string SS_GetDisplayMemberJSfn = @"return $('#' + this.EbSid_CtxId +' :selected').text();";
 
-        public const string Ctrl_DisableJSfn = @"$('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none').find('[ui-inp]').css('background-color', '#f3f3f3');";
+        public const string Ctrl_DisableJSfn = @"this.__IsDisable = true; $('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none').find('[ui-inp]').css('background-color', '#f3f3f3');";
+
+        public const string Ctrl_EnableJSfn = @"this.__IsDisable = false; $('#cont_' + this.EbSid_CtxId + ' *').prop('disabled',false).css('pointer-events', 'inherit').find('[ui-inp]').css('background-color', '#fff');";
 
         public const string Ctrl_IsRequiredOKJSfn = @"let val = this.getValueFromDOM(); return !this.isInVisibleInUI ? (!isNaNOrEmpty(val) && val !== null && val !== 0): true;";
 
@@ -118,6 +118,7 @@ else ";
                 ";
 
         public const string PS_EnableJSfn = @"
+this.__IsDisable = false; 
 if(this.RenderAsSimpleSelect){"
     + SS_EnableJSfn +
 @"}

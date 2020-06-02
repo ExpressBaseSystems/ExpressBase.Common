@@ -20,6 +20,8 @@ namespace ExpressBase.Common.Connections
                 Primary = new Messaging.ExpertTextingConnection(conf.Primary as EbExpertTextingConfig);
             else if (conf.Primary.Type == EbIntegrations.Unifonic)
                 Primary = new Messaging.UnifonicConnection(conf.Primary as EbUnifonicConfig);
+            else if (conf.Primary.Type == EbIntegrations.TextLocal)
+                Primary = new Messaging.TextLocalConnection(conf.Primary as EbTextLocalConfig);
             if (conf.FallBack != null)
             {
                 if (conf.FallBack.Type == EbIntegrations.Twilio)
@@ -28,6 +30,8 @@ namespace ExpressBase.Common.Connections
                     FallBack = new Messaging.ExpertTextingConnection(conf.FallBack as EbExpertTextingConfig);
                 else if (conf.FallBack.Type == EbIntegrations.Unifonic)
                     FallBack = new Messaging.UnifonicConnection(conf.FallBack as EbUnifonicConfig);
+                else if (conf.FallBack.Type == EbIntegrations.TextLocal)
+                    FallBack = new Messaging.TextLocalConnection(conf.FallBack as EbTextLocalConfig);
             }
         }
 

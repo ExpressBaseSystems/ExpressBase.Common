@@ -83,7 +83,8 @@ namespace ExpressBase.Common
         AWSS3 = 14,
         Slack = 15,
         Facebook = 16,
-        Unifonic = 17
+        Unifonic = 17,
+        TextLocal = 18
     }
 
     public enum SmtpProviders
