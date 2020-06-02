@@ -8,8 +8,8 @@ time_from time without time zone,
 time_to time without time zone,
 duration integer,
 break text ,
-is_recuring char(1) default 'F',
-is_multiple char(1) default 'F',
+is_recuring "char" DEFAULT 'F'::"char",
+is_multiple "char" DEFAULT 'F'::"char",
 venue text,
 integration	text,
 max_hosts integer,
@@ -24,7 +24,8 @@ eb_created_by integer,
 eb_created_at 	timestamp without time zone DEFAULT now(),
 eb_lastmodified_by integer,
 eb_lastmodified_at timestamp without time zone,
-eb_del char(1) default 'F'
+eb_del "char" DEFAULT 'F'::"char",
+CONSTRAINT eb_meeting_schedule_pkey PRIMARY KEY (id)
 );
 
 CREATE INDEX eb_meeting_schedule_id_idx

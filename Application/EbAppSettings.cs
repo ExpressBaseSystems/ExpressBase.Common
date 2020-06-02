@@ -41,9 +41,7 @@ namespace ExpressBase.Common.Application
 		[DataMember(Order = 9)]
 		public BotProperty BotProp = new BotProperty();
 
-		//[DataMember(Order = 6)]
-		//public  Dictionary<string, string> OtherProp { get; set; } = new Dictionary<string, string>();
-
+		
 
 		public EbBotSettings()
 		{
@@ -90,6 +88,7 @@ namespace ExpressBase.Common.Application
 		public bool UserName { get; set; }
 		public string FbAppID { get; set; }
 		public string FbAppVer { get; set; }
+		public int LoginOpnCount { get; set; }
 
 		public AnonymousAuth()
 		{
@@ -99,6 +98,7 @@ namespace ExpressBase.Common.Application
 			UserName = false;
 			FbAppID = "";
 			FbAppVer = "";
+			LoginOpnCount = 1;
 		}
 	}
 

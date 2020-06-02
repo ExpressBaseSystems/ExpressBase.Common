@@ -7,7 +7,8 @@ CREATE TABLE eb_objects_favourites
     id serial,
     userid integer,
     object_id integer,
-    eb_del char(1) DEFAULT 'F'
+    eb_del "char" DEFAULT 'F'::"char",
+	CONSTRAINT eb_objects_favourites_pkey PRIMARY KEY (id)
 );
 
 -- Index: eb_objects_favourites_id_idx

@@ -8,7 +8,7 @@ CREATE TABLE eb_schedules
     task json,
     created_by integer,
     created_at timestamp without time zone,
-    eb_del char(1) DEFAULT 'F',
+    eb_del  "char" DEFAULT 'F'::"char",
     jobkey text,
     triggerkey text,
     status numeric,

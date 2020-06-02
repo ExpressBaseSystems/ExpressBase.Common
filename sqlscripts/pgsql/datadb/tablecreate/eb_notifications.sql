@@ -6,7 +6,7 @@ CREATE TABLE eb_notifications
 (
     id SERIAL,
     user_id integer,
-    message_seen char(1) DEFAULT 'F',
+	message_seen "char" DEFAULT 'F'::"char",
     notification_id text ,
     notification json,
     created_at timestamp without time zone DEFAULT now(),

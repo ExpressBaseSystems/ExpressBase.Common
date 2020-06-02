@@ -9,7 +9,7 @@ CREATE TABLE eb_objects2application
     obj_id integer,
     removed_by integer,
     removed_at timestamp without time zone,
-    eb_del char(1) DEFAULT 'F',
+    eb_del "char" DEFAULT 'F'::"char",
     CONSTRAINT eb_objects2application_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F'),
 	CONSTRAINT eb_objects2application_pkey PRIMARY KEY(id)
 );

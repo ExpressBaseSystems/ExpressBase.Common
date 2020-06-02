@@ -17,8 +17,8 @@ CREATE TABLE eb_objects_ver
     patch_ver_num integer,
     status_id integer,
     ver_num text,
-    working_mode char(1) DEFAULT 'F',
-    eb_del char(1) DEFAULT 'F',
+	working_mode "char" DEFAULT 'F'::"char",
+    eb_del "char" DEFAULT 'F'::"char",
     CONSTRAINT eb_objects_ver_pkey PRIMARY KEY (id),
     CONSTRAINT eb_objects_ver_working_mode_check CHECK (working_mode = 'T' OR working_mode = 'F')
 );

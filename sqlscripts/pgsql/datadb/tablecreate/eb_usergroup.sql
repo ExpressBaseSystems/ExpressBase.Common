@@ -7,7 +7,7 @@ CREATE TABLE eb_usergroup
     id serial,
     name text,
     description text,
-    eb_del char(1) NOT NULL DEFAULT 'F',
+    eb_del  "char" DEFAULT 'F'::"char",
     CONSTRAINT eb_usergroup_pkey PRIMARY KEY (id),
     CONSTRAINT eb_usergroup_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );

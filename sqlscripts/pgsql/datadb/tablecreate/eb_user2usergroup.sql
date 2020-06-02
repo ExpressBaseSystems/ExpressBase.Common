@@ -11,7 +11,7 @@ CREATE TABLE eb_user2usergroup
     createdat timestamp without time zone,
     revokedby integer,
     revokedat timestamp without time zone,
-    eb_del char(1) NOT NULL DEFAULT 'F',
+    eb_del  "char" DEFAULT 'F'::"char",
     CONSTRAINT eb_user2usergroup_pkey PRIMARY KEY (id),
     CONSTRAINT eb_user2usergroup_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );

@@ -7,7 +7,7 @@ CREATE TABLE eb_query_choices
     id serial,
     q_id integer,
     choice text,
-    eb_del char(1) DEFAULT 'F',
+    eb_del "char" DEFAULT 'F'::"char",
     score integer,
 	CONSTRAINT eb_query_choices_pkey PRIMARY KEY (id)
 );

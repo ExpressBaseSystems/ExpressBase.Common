@@ -8,8 +8,8 @@ CREATE TABLE eb_signin_log
     user_id integer,
     ip_address text,
     device_info text,
-    is_attempt_failed char(1) DEFAULT 'F',	
-    is_force_signout char(1)  DEFAULT 'F',
+    is_attempt_failed  "char" DEFAULT 'F'::"char",
+    is_force_signout  "char" DEFAULT 'F'::"char",
     signin_at timestamp without time zone,
     signout_at timestamp without time zone,
     CONSTRAINT eb_signin_log_pkey PRIMARY KEY (id)
