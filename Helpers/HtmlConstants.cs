@@ -138,7 +138,7 @@ if(p1 === null)
         }
     });
 
-    if(!isContained && p1 !== null)
+    if(!isContained)
         return;
     $('#' + this.EbSid_CtxId).selectpicker('val', p1)
 }";
@@ -156,7 +156,7 @@ $('#' + this.EbSid_CtxId + ' option').each(function () {
     }
 });
 
-if(!isContained && p1 !== null)
+if(!isContained)
     return;
 $('#' + this.EbSid_CtxId).selectpicker('val', p1)";
     }
