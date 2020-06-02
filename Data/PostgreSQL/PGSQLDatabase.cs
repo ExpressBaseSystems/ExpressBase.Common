@@ -1180,6 +1180,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                 ON
                    Q1.table_name = i.tablename ORDER BY tablename;
 
+
                 SELECT 
                     table_name, column_name, data_type
                 FROM
@@ -1187,7 +1188,8 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                 WHERE
                     table_schema != 'pg_catalog' AND
                     table_schema != 'information_schema' AND 
-                    table_name NOT LIKE '{0}'
+                    table_name NOT LIKE '{0}'AND
+		            is_updatable != 'NO'
                 ORDER BY table_name;
 
                SELECT
