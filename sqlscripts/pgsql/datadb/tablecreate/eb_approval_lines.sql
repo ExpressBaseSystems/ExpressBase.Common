@@ -10,6 +10,6 @@ CREATE TABLE eb_approval_lines
     eb_loc_id integer,
     eb_created_by integer,
     eb_created_at timestamp without time zone,
-    eb_del char(1) DEFAULT 'F',
+    eb_del "char" DEFAULT 'F'::"char",
     CONSTRAINT eb_approval_lines_pkey PRIMARY KEY (id)
 );
