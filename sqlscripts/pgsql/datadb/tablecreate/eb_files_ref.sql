@@ -10,7 +10,7 @@ CREATE TABLE eb_files_ref
     tags text,
     filetype text,
     uploadts timestamp without time zone,
-    eb_del char(1) DEFAULT 'F',
+    eb_del "char" DEFAULT 'F'::"char",
     filecategory integer,
     context text,  
 	context_sec text,

@@ -32,7 +32,7 @@ CREATE TABLE eb_users
     createdat text,
     statusid integer DEFAULT 0,
     hide text,
-    eb_del char(1) DEFAULT 'F',
+    eb_del  "char" DEFAULT 'F'::"char",
     dprefid integer DEFAULT 0,
 	eb_data_id integer,
 	eb_ver_id integer,

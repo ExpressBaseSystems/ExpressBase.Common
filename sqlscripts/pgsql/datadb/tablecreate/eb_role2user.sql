@@ -11,7 +11,7 @@ CREATE TABLE eb_role2user
     createdat timestamp without time zone,
     revokedby integer,
     revokedat timestamp without time zone,
-    eb_del char(1) DEFAULT 'F',
+    eb_del  "char" DEFAULT 'F'::"char",
     CONSTRAINT eb_role2user_id_pkey PRIMARY KEY (id),
     CONSTRAINT eb_role2user_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );
