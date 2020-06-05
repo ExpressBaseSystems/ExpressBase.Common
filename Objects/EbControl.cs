@@ -238,11 +238,6 @@ namespace ExpressBase.Common.Objects
         [HelpText("Set true if you want to make this control read only.")]
         public virtual bool ReadOnly { get; set; }//------------------------------
 
-        protected string ReadOnlyString//------------------------------
-        {
-            get { return (this.ReadOnly ? "background-color: #f0f0f0; border: solid 1px #bbb;' readonly" : "'"); }
-        }
-
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyGroup("Behavior")]
         [PropertyPriority(95)]
