@@ -30,14 +30,14 @@ namespace ExpressBase.Common.Messaging
 
             try
             {
-                string msg = HttpUtility.UrlEncode(body);               
+                string msg = HttpUtility.UrlEncode(body);
                 using (var wb = new WebClient())
                 {
                     byte[] response = wb.UploadValues("https://api.textlocal.in/send/", new NameValueCollection()
                     {
                         {"apikey" , Config.ApiKey},
                         {"numbers" , To},
-                        {"message" , body},
+                        {"message" , msg},
                         {"sender" , Config.From}
                     });
                     result = System.Text.Encoding.UTF8.GetString(response);
@@ -60,6 +60,5 @@ namespace ExpressBase.Common.Messaging
             Console.WriteLine(" --- SMS msg" + EbSerializers.Json_Serialize(msgStatus));
             return msgStatus;
         }
-
     }
 }
