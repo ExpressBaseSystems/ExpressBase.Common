@@ -17,7 +17,7 @@ namespace ExpressBase.Common.Messaging
 
         private const string SMS_BARE_URL = "https://api.textlocal.in/send/?apikey={0}&numbers={1}&message={2}&sender={3};";
 
-        private string url;
+        //private string url;
         public TextLocalConnection(EbTextLocalConfig con)
         {
             Config = con;

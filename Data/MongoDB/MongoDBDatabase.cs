@@ -85,12 +85,12 @@ namespace ExpressBase.Common.Data.MongoDB
 
             catch (GridFSFileNotFoundException e)
             {
-                Console.WriteLine("MongoDB File Not Found: " + filestoreid.ToString());
+                Console.WriteLine("MongoDB File Not Found: " + filestoreid.ToString() + e.Message + e.StackTrace);
             }
 
             catch (Exception e)
             {
-                Console.WriteLine("Exception:" + e.ToString());
+                Console.WriteLine("Exception:" + e.Message + e.StackTrace);
             }
             return res;
         }
@@ -114,7 +114,7 @@ namespace ExpressBase.Common.Data.MongoDB
             }
             catch (GridFSFileNotFoundException e)
             {
-                Console.WriteLine("MongoDB File Not Found: " + filename);
+                Console.WriteLine("MongoDB File Not Found: " + filename + e.Message + e.StackTrace);
             }
             catch (Exception e)
             {

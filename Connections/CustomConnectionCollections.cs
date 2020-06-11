@@ -48,7 +48,7 @@ namespace ExpressBase.Common.Connections
                 resp = Primary.SendSMS(To, Body);
                 Console.WriteLine("SMS Send With Primary");
             }
-            catch (Exception e)
+            catch
             {
                 try
                 {
@@ -104,7 +104,7 @@ namespace ExpressBase.Common.Connections
                     Console.WriteLine("Chat Connection Empty!");
 
             }
-            catch (Exception e)
+            catch
             {
                 //try
                 //{
@@ -142,7 +142,7 @@ namespace ExpressBase.Common.Connections
                     Console.WriteLine("Chat Connection Empty!");
 
             }
-            catch (Exception e)
+            catch
             {
                 //try
                 //{
@@ -180,7 +180,7 @@ namespace ExpressBase.Common.Connections
                     Console.WriteLine("Chat Connection Empty!");
 
             }
-            catch (Exception e)
+            catch
             {
                 //try
                 //{
@@ -239,7 +239,7 @@ namespace ExpressBase.Common.Connections
                     Console.WriteLine("Email Connection Empty!");
 
             }
-            catch (Exception e)
+            catch
             {
                 try
                 {

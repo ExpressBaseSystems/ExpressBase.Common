@@ -38,7 +38,7 @@ namespace ExpressBase.Common.Objects.Attributes
         Mapper = 35,// 
         ObjectSelectorCollection = 36,// 
         IconPicker = 37,// 
-        ShadowEditor= 38,// 
+        ShadowEditor = 38,// 
         //ColorPicker = 39,// 
         GradientColorPicker = 40,// 
         String64 = 41,// 
@@ -76,7 +76,7 @@ namespace ExpressBase.Common.Objects.Attributes
 
     public class ReservedValues : Attribute
     {
-        public string[] Values{ get; set; }
+        public string[] Values { get; set; }
 
         public ReservedValues(params string[] values)
         {
@@ -259,7 +259,7 @@ namespace ExpressBase.Common.Objects.Attributes
             }
             catch (Exception ee)
             {
-                ;
+                throw ee;
             }
         }
 
