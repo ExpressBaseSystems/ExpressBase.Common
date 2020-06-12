@@ -102,7 +102,7 @@ namespace ExpressBase.Common {
         ///    description text,
         ///    app_icon text,
         ///    application_type integer,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///	app_settings text,
         ///    CONSTRAINT eb_applications_pkey PRIMARY KEY (id),
         ///    CONSTRAINT eb_applications_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
@@ -111,7 +111,7 @@ namespace ExpressBase.Common {
         ///
         ///-- Index: public.eb_applications_id_idx
         ///
-        ///-- DROP INDEX public.eb_applications_id_idx [rest of string was truncated]&quot;;.
+        ///-- DROP INDEX public.eb_applications [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_applications1 {
             get {
@@ -187,14 +187,14 @@ namespace ExpressBase.Common {
         ///    eb_created_at timestamp without time zone,
         ///    eb_lastmodified_by integer,
         ///    eb_lastmodified_at timestamp without time zone,
-        ///    eb_del  char(1) DEFAULT &apos;F&apos;,
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT eb_approval_pkey PRIMARY KEY (id)
         ///);
         ///
         ///CREATE INDEX eb_approval_id_idx
         ///ON eb_approval(id);
         ///
-        ///CREATE INDEX eb_appr [rest of string was truncated]&quot;;.
+        ///CREATE INDEX e [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_approval {
             get {
@@ -215,7 +215,7 @@ namespace ExpressBase.Common {
         ///    eb_loc_id integer,
         ///    eb_created_by integer,
         ///    eb_created_at timestamp without time zone,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT eb_approval_lines_pkey PRIMARY KEY (id)
         ///);.
         /// </summary>
@@ -1484,7 +1484,7 @@ namespace ExpressBase.Common {
         ///    tags text,
         ///    filetype text,
         ///    uploadts timestamp without time zone,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    filecategory integer,
         ///    context text,  
         ///	context_sec text,
@@ -1493,7 +1493,7 @@ namespace ExpressBase.Common {
         ///);
         ///
         ///
-        ///-- Index: eb_files_ref_id [rest of string was truncated]&quot;;.
+        ///-- Index: eb_files [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files_ref {
             get {
@@ -1512,7 +1512,7 @@ namespace ExpressBase.Common {
         ///    eb_files_ref_id integer NOT NULL,
         ///    filestore_sid text,
         ///    length bigint,
-        ///    is_image char(1),
+        ///	is_image &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    imagequality_id integer,
         ///    img_manp_ser_con_id integer,
         ///    filedb_con_id integer,
@@ -1521,7 +1521,7 @@ namespace ExpressBase.Common {
         ///
         ///-- Index: eb_files_ref_variations_id_idx
         ///
-        ///-- DROP INDEX public.eb_files_ref_variations_id_idx [rest of string was truncated]&quot;;.
+        ///-- DROP INDEX public.eb_files_ref_v [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files_ref_variations {
             get {
@@ -2071,60 +2071,6 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_keys
-        ///
-        ///-- DROP TABLE public.eb_keys;
-        ///
-        ///CREATE TABLE eb_keys
-        ///(
-        ///    id bigserial,
-        ///    key text NOT NULL,
-        ///    CONSTRAINT eb_keys_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///
-        ///-- Index: eb_keys_id_idx
-        ///
-        ///-- DROP INDEX public.eb_keys_id_idx;
-        ///
-        ///CREATE INDEX eb_keys_id_idx
-        ///    ON eb_keys(id);
-        ///.
-        /// </summary>
-        public static string eb_keys {
-            get {
-                return ResourceManager.GetString("eb_keys", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- need updation.
-        /// </summary>
-        public static string eb_keys1 {
-            get {
-                return ResourceManager.GetString("eb_keys1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_keys
-        ///(
-        ///  id integer auto_increment,
-        ///  `key` text NOT NULL,
-        ///  CONSTRAINT eb_keys_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///CREATE INDEX eb_keys_id_idx
-        ///ON eb_keys(id);
-        ///.
-        /// </summary>
-        public static string eb_keys2 {
-            get {
-                return ResourceManager.GetString("eb_keys2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to CREATE SEQUENCE eb_keys_id_seq START WITH 1 INCREMENT BY 1;
         ///
         ///CREATE TABLE eb_keys
@@ -2138,66 +2084,6 @@ namespace ExpressBase.Common {
         public static string eb_keys3 {
             get {
                 return ResourceManager.GetString("eb_keys3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_keyvalue
-        ///
-        ///-- DROP TABLE public.eb_keyvalue;
-        ///
-        ///CREATE TABLE eb_keyvalue
-        ///(
-        ///    id bigserial,
-        ///    key_id bigint NOT NULL,
-        ///    lang_id integer NOT NULL,
-        ///    value text NOT NULL,
-        ///    CONSTRAINT eb_keyvalue_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///
-        ///-- Index: eb_keyvalue_id_idx
-        ///
-        ///-- DROP INDEX public.eb_keyvalue_id_idx;
-        ///
-        ///CREATE INDEX eb_keyvalue_id_idx
-        ///    ON eb_keyvalue(id);
-        ///.
-        /// </summary>
-        public static string eb_keyvalue {
-            get {
-                return ResourceManager.GetString("eb_keyvalue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- need updation.
-        /// </summary>
-        public static string eb_keyvalue1 {
-            get {
-                return ResourceManager.GetString("eb_keyvalue1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE eb_keyvalue
-        ///(
-        ///  id integer auto_increment,
-        ///  key_id bigint NOT NULL,
-        ///  lang_id integer NOT NULL,
-        ///  value text NOT NULL,
-        ///  CONSTRAINT eb_keyvalue_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///
-        ///CREATE INDEX eb_keyvalue_id_idx
-        ///ON eb_keyvalue(id);
-        ///
-        ///.
-        /// </summary>
-        public static string eb_keyvalue2 {
-            get {
-                return ResourceManager.GetString("eb_keyvalue2", resourceCulture);
             }
         }
         
@@ -2272,9 +2158,9 @@ namespace ExpressBase.Common {
         ///(
         ///    id serial,
         ///    keys text,
-        ///    isrequired char(1) DEFAULT &apos;F&apos;,
+        ///	isrequired &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///	keytype text,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT eb_locationsconfig_pkey PRIMARY KEY (id)
         ///);
         ///
@@ -2351,7 +2237,7 @@ namespace ExpressBase.Common {
         ///    eb_created_at timestamp without time zone,
         ///    eb_lastmodified_by integer,
         ///    eb_lastmodified_at timestamp without time zone,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;
         ///);
         ///
         ///CREATE INDEX eb_location_types_id_idx ON eb_location_types(id);
@@ -2527,7 +2413,8 @@ namespace ExpressBase.Common {
         ///eb_created_at 	timestamp without time zone DEFAULT now(),
         ///eb_lastmodified_by integer,
         ///eb_lastmodified_at timestamp without time zone,
-        ///eb_del char(1) default &apos;F&apos;
+        ///eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///CONSTRAINT eb_meeting_participants_pkey PRIMARY KEY (id)
         ///);
         ///
         ///CREATE INDEX eb_meeting_participants_id_idx
@@ -2549,7 +2436,24 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- eb_meeting_participants.
+        ///   Looks up a localized string similar to CREATE TABLE eb_meeting_participants 
+        ///(
+        ///	id integer auto_increment,
+        ///	eb_meeting_id integer,
+        ///	eb_slot_participant_id bigint,
+        ///	eb_created_by integer,
+        ///	eb_created_at datetime DEFAULT now(),
+        ///	eb_lastmodified_by integer,
+        ///	eb_lastmodified_at datetime,
+        ///	eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    	CONSTRAINT eb_meeting_participants_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///CREATE INDEX eb_meeting_participants_id_idx 
+        ///	ON eb_meeting_participants(id);
+        ///
+        ///CREATE INDEX eb_meeting_participants_eb_del_idx 
+        ///	ON eb_meeting_participant [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_meeting_participants2 {
             get {
@@ -2572,13 +2476,13 @@ namespace ExpressBase.Common {
         ///id serial,
         ///title text,
         ///description text,
-        ///date  meeting_date,
+        ///meeting_date date  ,
         ///time_from time without time zone,
         ///time_to time without time zone,
         ///duration integer,
         ///break text ,
-        ///is_recuring char(1) default &apos;F&apos;,
-        ///is_multiple char(1) default &apos;F&apos;,
+        ///is_recuring &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///is_multiple &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///venue text,
         ///integration	text,
         ///max_hosts integer,
@@ -2589,8 +2493,7 @@ namespace ExpressBase.Common {
         ///form_data_id integer,
         ///cron_expression text,
         ///cron_exp_end date,
-        ///eb_created_by integer,
-        ///eb_cre [rest of string was truncated]&quot;;.
+        ///eb_created_by i [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_meeting_schedule {
             get {
@@ -2608,7 +2511,30 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- eb_meeting_schedule.
+        ///   Looks up a localized string similar to CREATE TABLE eb_meeting_schedule
+        ///(
+        ///	id integer auto_increment,
+        ///	title text,
+        ///	description text,
+        ///	meeting_date date,
+        ///	time_from datetime,
+        ///	time_to datetime,
+        ///	duration integer,
+        ///	break text ,
+        ///	is_recuring char(1) DEFAULT &apos;F&apos;,
+        ///	is_multiple char(1) DEFAULT &apos;F&apos;,
+        ///	venue text,
+        ///	integration text,
+        ///	max_hosts integer,
+        ///	max_attendees integer,
+        ///	no_of_attendee integer,
+        ///	no_of_hosts	integer,	
+        ///	form_ref_id	text,
+        ///	form_data_id integer,
+        ///	cron_expression text,
+        ///	cron_exp_end date,
+        ///	eb_created_by integer,
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_meeting_schedule2 {
             get {
@@ -2638,7 +2564,9 @@ namespace ExpressBase.Common {
         ///eb_lastmodified_by integer,
         ///eb_lastmodified_at timestamp without time zone,
         ///eb_del char(1) default &apos;F&apos;
-        ///);.
+        ///);
+        ///
+        ///.
         /// </summary>
         public static string eb_meeting_scheduled_participants {
             get {
@@ -2656,7 +2584,24 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- eb_meeting_scheduled_participants.
+        ///   Looks up a localized string similar to CREATE TABLE eb_meeting_scheduled_participants
+        ///(
+        ///	id integer auto_increment ,
+        ///	user_id integer,
+        ///	role_id integer,
+        ///	user_group_id integer,
+        ///	eb_meeting_schedule_id integer,
+        ///	participant_type integer,
+        ///	eb_created_by integer,
+        ///	eb_created_at datetime DEFAULT now(),
+        ///	eb_lastmodified_by integer,
+        ///	eb_lastmodified_at datetime,
+        ///	eb_del char(1) DEFAULT &apos;F&apos;,
+        ///	CONSTRAINT eb_meeting_scheduled_participants_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///CREATE INDEX eb_meeting_scheduled_participants_id_idx 
+        ///	ON eb_meeting_sche [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_meeting_scheduled_participants2 {
             get {
@@ -2691,10 +2636,8 @@ namespace ExpressBase.Common {
         ///eb_created_at  timestamp without time zone DEFAULT now(),
         ///eb_lastmodified_by integer,
         ///eb_lastmodified_at timestamp without time zone,
-        ///eb_del char(1) default &apos;F&apos;
-        ///);
-        ///
-        ///CREATE INDEX eb_meeting [rest of string was truncated]&quot;;.
+        ///eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///CONSTRAINT eb_meeting [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_meeting_slot_participants {
             get {
@@ -2712,7 +2655,26 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- eb_meeting_slot_participants.
+        ///   Looks up a localized string similar to CREATE TABLE eb_meeting_slot_participants 
+        ///(
+        ///	id integer auto_increment,
+        ///	user_id integer,
+        ///	role_id integer,
+        ///	user_group_id integer,
+        ///	eb_meeting_schedule_id integer,
+        ///	approved_slot_id integer,
+        ///	email text,
+        ///	name text,
+        ///	phone_num text,
+        ///	confirmation integer,
+        ///	type_of_user integer, 	
+        ///	participant_type integer,
+        ///	eb_created_by integer,
+        ///	eb_created_at datetime DEFAULT now(),
+        ///	eb_lastmodified_by integer,
+        ///	eb_lastmodified_at datetime,
+        ///	eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    	CONSTRAINT eb_meeting_slot_ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_meeting_slot_participants2 {
             get {
@@ -2733,7 +2695,7 @@ namespace ExpressBase.Common {
         ///   Looks up a localized string similar to CREATE TABLE eb_meeting_slots (
         ///id serial,
         ///eb_meeting_schedule_id integer,
-        ///is_approved  char(1) default &apos;F&apos;,
+        ///is_approved &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///meeting_date date ,
         ///time_from time without time zone,
         ///time_to	time without time zone,
@@ -2741,12 +2703,13 @@ namespace ExpressBase.Common {
         ///eb_created_at  timestamp without time zone DEFAULT now(),
         ///eb_lastmodified_by integer,
         ///eb_lastmodified_at timestamp without time zone,
-        ///eb_del char(1)default &apos;F&apos;
+        ///eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///CONSTRAINT eb_meeting_slots_pkey PRIMARY KEY (id)
         ///);
         ///
         ///
         ///CREATE INDEX eb_meeting_slots_id_idx
-        ///ON eb_meeting_slots(id);.
+        ///ON eb_meet [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_meeting_slots {
             get {
@@ -2764,7 +2727,26 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- eb_meeting_slots.
+        ///   Looks up a localized string similar to CREATE TABLE eb_meeting_slots
+        ///(
+        ///	id integer auto_increment,
+        ///	eb_meeting_schedule_id integer,
+        ///	is_approved char(1) DEFAULT &apos;F&apos;,
+        ///	meeting_date date ,
+        ///	time_from datetime,
+        ///	time_to	datetime,
+        ///	eb_created_by integer,
+        ///	eb_created_at datetime DEFAULT now(),
+        ///	eb_lastmodified_by integer,
+        ///	eb_lastmodified_at datetime,
+        ///	eb_del char(1) DEFAULT &apos;F&apos;,
+        ///	CONSTRAINT eb_meeting_slots_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///CREATE INDEX eb_meeting_slots_id_idx 
+        ///	ON eb_meeting_slots(id);
+        ///
+        ///CREATE INDEX eb_meeting_slots_eb_d [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_meeting_slots2 {
             get {
@@ -2789,7 +2771,8 @@ namespace ExpressBase.Common {
         ///eb_created_at timestamp without time zone DEFAULT now(),
         ///eb_lastmodified_by integer,
         ///eb_lastmodified_at timestamp without time zone,
-        ///eb_del char(1) default &apos;F&apos;,
+        ///eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///CONSTRAINT eb_meetings_pkey PRIMARY KEY (id)
         ///);
         ///
         ///
@@ -2812,7 +2795,24 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- eb_meetings.
+        ///   Looks up a localized string similar to CREATE TABLE eb_meetings
+        ///(
+        ///	id integer auto_increment,
+        ///	eb_meeting_slots_id integer,
+        ///	eb_created_by integer,
+        ///	eb_created_at datetime DEFAULT now(),
+        ///	eb_lastmodified_by integer,
+        ///	eb_lastmodified_at datetime,
+        ///	eb_del char(1) DEFAULT &apos;F&apos;,
+        ///	CONSTRAINT eb_meetings_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///CREATE INDEX eb_meetings_id_idx 
+        ///	ON eb_meetings(id);
+        ///
+        ///CREATE INDEX eb_meetings_eb_del_idx 
+        ///	ON eb_meetings(eb_del);
+        ///.
         /// </summary>
         public static string eb_meetings2 {
             get {
@@ -2836,18 +2836,17 @@ namespace ExpressBase.Common {
         ///    user_ids text,
         ///    role_ids text,
         ///    usergroup_id integer,
-        ///    is_completed char(1),
+        ///    is_completed  &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    completed_at timestamp without time zone,
         ///    completed_by integer,
         ///    eb_stages_id integer,
         ///    form_ref_id text,
         ///    form_data_id integer,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    eb_del  &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    eb_approval_lines_id integer,
         ///    description text,
-        ///    is_form_data_editable char(1) DEFAULT &apos;F&apos;,
-        ///    from_datetime timestamp without time zone,
-        ///    expiry_datetime timestamp wit [rest of string was truncated]&quot;;.
+        ///    is_form_data_editable  &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    from_datetime timestamp without time zone [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_my_actions {
             get {
@@ -2928,7 +2927,7 @@ namespace ExpressBase.Common {
         ///(
         ///    id SERIAL,
         ///    user_id integer,
-        ///    message_seen char(1) DEFAULT &apos;F&apos;,
+        ///	message_seen &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    notification_id text ,
         ///    notification json,
         ///    created_at timestamp without time zone DEFAULT now(),
@@ -2940,7 +2939,7 @@ namespace ExpressBase.Common {
         ///-- DROP INDEX public.eb_notificationss_id_idx;
         ///
         ///CREATE INDEX eb_notificationss_id_idx
-        ///    ON eb_notifications [rest of string was truncated]&quot;;.
+        ///    ON eb_notificat [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_notifications {
             get {
@@ -3286,38 +3285,6 @@ namespace ExpressBase.Common {
         public static string eb_object_create_patch_version3 {
             get {
                 return ResourceManager.GetString("eb_object_create_patch_version3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_objects
-        ///
-        ///-- DROP TABLE public.eb_objects;
-        ///
-        ///CREATE TABLE eb_objects
-        ///(
-        ///    id serial,
-        ///    obj_name text,
-        ///    obj_type integer,
-        ///    obj_cur_status integer,
-        ///    obj_desc text,    
-        ///    obj_tags text,
-        ///    owner_uid integer,
-        ///    owner_ts timestamp without time zone,
-        ///    display_name  text,
-        ///    is_logenabled char(1) DEFAULT &apos;F&apos;,
-        ///	is_public char(1) DEFAULT &apos;F&apos;,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
-        ///    CONSTRAINT eb_objects_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///
-        ///-- Index: eb_objects_id_idx
-        ///        /// [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_objects {
-            get {
-                return ResourceManager.GetString("eb_objects", resourceCulture);
             }
         }
         
@@ -3748,7 +3715,8 @@ namespace ExpressBase.Common {
         ///    id serial,
         ///    userid integer,
         ///    object_id integer,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///	CONSTRAINT eb_objects_favourites_pkey PRIMARY KEY (id)
         ///);
         ///
         ///-- Index: eb_objects_favourites_id_idx
@@ -3944,14 +3912,14 @@ namespace ExpressBase.Common {
         ///    dependant text,
         ///    removed_by integer,
         ///    removed_at timestamp without time zone,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT eb_objects_relations_pkey PRIMARY KEY (id),
         ///    CONSTRAINT eb_objects_relations_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
         ///-- Index: eb_objects_relations_eb_del_idx
         ///
-        ///-- DROP INDEX public.eb_objects_ [rest of string was truncated]&quot;;.
+        ///-- DROP INDEX public.eb_o [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_relations1 {
             get {
@@ -4369,9 +4337,8 @@ namespace ExpressBase.Common {
         ///    patch_ver_num integer,
         ///    status_id integer,
         ///    ver_num text,
-        ///    working_mode char(1) DEFAULT &apos;F&apos;,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
-        ///    CONS [rest of string was truncated]&quot;;.
+        ///	working_mode &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_ver1 {
             get {
@@ -4472,7 +4439,7 @@ namespace ExpressBase.Common {
         ///    obj_id integer,
         ///    removed_by integer,
         ///    removed_at timestamp without time zone,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT eb_objects2application_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;),
         ///	CONSTRAINT eb_objects2application_pkey PRIMARY KEY(id)
         ///);
@@ -4480,7 +4447,7 @@ namespace ExpressBase.Common {
         ///
         ///-- Index: eb_objects2application_app_id_idx
         ///
-        ///-- DROP INDEX public. [rest of string was truncated]&quot;;.
+        ///-- DROP INDEX  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects2application1 {
             get {
@@ -4767,7 +4734,7 @@ namespace ExpressBase.Common {
         ///    id serial,
         ///    roleid integer,
         ///    locationid integer,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    eb_del  &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    eb_createdby integer,
         ///    eb_createdat timestamp without time zone,
         ///    eb_revokedby integer,
@@ -4778,9 +4745,7 @@ namespace ExpressBase.Common {
         ///
         ///-- Index: public.eb_role2location_id_idx
         ///
-        ///-- DROP INDEX public.eb_role2location_id_idx;
-        ///
-        ///CRE [rest of string was truncated]&quot;;.
+        ///-- DROP INDEX public.eb_role2location_id_idx [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2location {
             get {
@@ -4915,9 +4880,9 @@ namespace ExpressBase.Common {
         ///    op_id integer,
         ///    revokedby integer,
         ///    revokedat timestamp without time zone,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///   eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT eb_role2permission_pkey PRIMARY KEY (id),
-        ///    CONSTRAINT eb_role2permission_eb_del_check CHECK (eb_del  [rest of string was truncated]&quot;;.
+        ///    CONSTRAINT eb_role2permission_eb_del_check CHECK (e [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2permission1 {
             get {
@@ -5023,15 +4988,13 @@ namespace ExpressBase.Common {
         ///    createdat timestamp without time zone,
         ///    revokedby integer,
         ///    revokedat timestamp without time zone,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    eb_del  &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT eb_role2role_id_pkey PRIMARY KEY (id),
         ///    CONSTRAINT eb_role2role_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
         ///
-        ///-- Index: eb_role2role_eb_del_idx
-        ///
-        ///- [rest of string was truncated]&quot;;.
+        ///-- Index: eb_role2role_eb_del_ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2role1 {
             get {
@@ -5138,15 +5101,13 @@ namespace ExpressBase.Common {
         ///    createdat timestamp without time zone,
         ///    revokedby integer,
         ///    revokedat timestamp without time zone,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    eb_del  &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT eb_role2user_id_pkey PRIMARY KEY (id),
         ///    CONSTRAINT eb_role2user_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
         ///
-        ///-- Index: eb_role2user_eb_del_idx
-        ///
-        ///--  [rest of string was truncated]&quot;;.
+        ///-- Index: eb_role2user_eb_del_id [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_role2user1 {
             get {
@@ -5247,15 +5208,15 @@ namespace ExpressBase.Common {
         ///    applicationname text,
         ///    applicationid integer,
         ///    description text,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
-        ///    is_anonymous char(1) DEFAULT &apos;F&apos;,
+        ///    eb_del  &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    is_anonymous  &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT eb_roles_id_pkey PRIMARY KEY (id),
         ///    CONSTRAINT eb_rolename_unique UNIQUE (role_name),
         ///    CONSTRAINT eb_roles_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
         ///	
-        ///ALTER SEQUENCE 	eb_roles_id_seq INCRE [rest of string was truncated]&quot;;.
+        ///ALTER SEQUENCE 	eb_ro [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_roles1 {
             get {
@@ -5327,7 +5288,7 @@ namespace ExpressBase.Common {
         ///    task json,
         ///    created_by integer,
         ///    created_at timestamp without time zone,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    eb_del  &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    jobkey text,
         ///    triggerkey text,
         ///    status numeric,
@@ -5342,7 +5303,7 @@ namespace ExpressBase.Common {
         ///-- DROP INDEX public.eb_schedules_id_idx;
         ///
         ///CREATE INDEX eb_schedules_id_idx
-        ///     [rest of string was truncated]&quot;;.
+        ///  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_schedules {
             get {
@@ -5596,7 +5557,7 @@ namespace ExpressBase.Common {
         ///    action_unique_id text ,
         ///    action_name text,
         ///    eb_stages_id integer,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    eb_del  &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT &quot;eb_stage_actions _pkey&quot; PRIMARY KEY (id)
         ///);.
         /// </summary>
@@ -5636,7 +5597,7 @@ namespace ExpressBase.Common {
         ///    stage_name text,
         ///    stage_unique_id text,
         ///    form_ref_id text,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    eb_del  &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT &quot;eb_stages _pkey&quot; PRIMARY KEY (id)
         ///);
         ///.
@@ -5835,7 +5796,7 @@ namespace ExpressBase.Common {
         ///    eb_created_at timestamp without time zone,
         ///    eb_lastmodified_by integer,
         ///    eb_lastmodified_at timestamp without time zone,
-        ///    eb_del char(1) DEFAULT &apos;F&apos;,
+        ///    eb_del  &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT eb_user_types_pkey PRIMARY KEY (id)
         ///);.
         /// </summary>
@@ -5914,13 +5875,13 @@ namespace ExpressBase.Common {
         ///    createdat timestamp without time zone,
         ///    revokedby integer,
         ///    revokedat timestamp without time zone,
-        ///    eb_del char(1) NOT NULL DEFAULT &apos;F&apos;,
+        ///    eb_del  &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT eb_user2usergroup_pkey PRIMARY KEY (id),
         ///    CONSTRAINT eb_user2usergroup_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
         ///
         ///
-        ///-- Index:  [rest of string was truncated]&quot;;.
+        ///-- Index: e [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_user2usergroup1 {
             get {
@@ -6018,7 +5979,7 @@ namespace ExpressBase.Common {
         ///    id serial,
         ///    name text,
         ///    description text,
-        ///    eb_del char(1) NOT NULL DEFAULT &apos;F&apos;,
+        ///    eb_del  &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT eb_usergroup_pkey PRIMARY KEY (id),
         ///    CONSTRAINT eb_usergroup_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
@@ -6031,7 +5992,7 @@ namespace ExpressBase.Common {
         ///CREATE INDEX eb_usergroup_eb_del_idx
         ///    ON eb_usergroup(eb_del);
         ///
-        ///-- Index: eb_usergr [rest of string was truncated]&quot;;.
+        ///-- Index: eb_usergro [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_usergroup1 {
             get {
