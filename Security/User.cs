@@ -60,7 +60,7 @@ namespace ExpressBase.Security
         public string SourceIp { get; set; }
 
 
-        [DataMember(Order =14)]
+        [DataMember(Order = 14)]
         public int UserType { get; set; }
 
         private List<string> _ebObjectIds = null;
@@ -288,6 +288,7 @@ namespace ExpressBase.Security
             }
             catch (Exception e)
             {
+                Console.WriteLine("Exception in GetDetailsTenant: " + e.ToString());
                 return new User();
             }
         }
@@ -385,6 +386,7 @@ namespace ExpressBase.Security
             }
             catch (Exception e)
             {
+                Console.WriteLine("Exception in GetDetailsSocial: " + e.ToString());
                 return new User();
             }
         }
@@ -594,7 +596,7 @@ namespace ExpressBase.Security
                 {
                     if (_permissions == null)
                         _permissions = new List<string>();
-                    string _permsn =  "000" /*appid*/ + "-" + "00"/*type*/ + "-" + objid.PadLeft(5, '0') + "-" + "00" /*operation*/ + ":-1"; 
+                    string _permsn = "000" /*appid*/ + "-" + "00"/*type*/ + "-" + objid.PadLeft(5, '0') + "-" + "00" /*operation*/ + ":-1";
                     _permissions.Add(_permsn);
                 }
                 _user = new User

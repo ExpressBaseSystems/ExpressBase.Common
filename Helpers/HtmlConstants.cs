@@ -55,7 +55,10 @@ namespace ExpressBase.Common
         public const string EbSimpleSelect_GetValueFromDOMJSfn = @"
 let val = $('#' + this.EbSid_CtxId).selectpicker('val');
 val = (val === null) ? '-1' : val.toString();
-if(ebcontext.renderContext === 'WebForm' && val === '-1')
+
+val = string2EBType(val, this.EbDbType);
+
+if (ebcontext.renderContext === 'WebForm' && val.toString() === '-1')
     val = null;
 return val;";
 
@@ -128,6 +131,8 @@ else{"
 
         public const string EbSimpleSelect_JustSetValueJSfn = @"
 {
+    if(p1 === null)
+        p1 = -1;
     isContained = false;
     $('#' + this.EbSid_CtxId + ' option').each(function () {
         if ($(this).attr('value') == p1) {
@@ -144,6 +149,8 @@ else{"
         public const string CB_JustSetValueJSfn = @"$('#' + this.EbSid_CtxId).prop('checked', p1 === true);";
 
         public const string EbSimpleSelect_SetValueJSfn = @"
+if(p1 === null)
+    p1 = -1;
 isContained = false;
 $('#' + this.EbSid_CtxId + ' option').each(function () {
     if ($(this).attr('value') == p1) {

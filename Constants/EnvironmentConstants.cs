@@ -108,5 +108,9 @@ namespace ExpressBase.Common
         public const string EB_FTP_HOST = "EB_FTP_HOST";
         public const string EB_FTP_USER = "EB_FTP_USER";
         public const string EB_FTP_PASSWORD = "EB_FTP_PASSWORD";
+
+        //for push azure Notification Hub
+        public const string EB_AZURE_PNS_CON = "EB_AZURE_PNS_CON";
+        public const string EB_AZURE_PNS_HUBNAME = "EB_AZURE_PNS_HUBNAME";
     }
 }

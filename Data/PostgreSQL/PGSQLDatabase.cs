@@ -198,6 +198,8 @@ namespace ExpressBase.Common
             }
             catch (SocketException scket)
             {
+                Console.WriteLine("Postgres SocketException: " + scket.Message);
+                throw scket;
             }
 
             return dt;
@@ -225,9 +227,8 @@ namespace ExpressBase.Common
             }
             catch (SocketException scket)
             {
+                throw scket;
             }
-
-            return null;
         }
 
         public override EbDataSet DoQueries(DbConnection dbConnection, string query, params DbParameter[] parameters)
@@ -267,7 +268,7 @@ namespace ExpressBase.Common
             {
                 throw npgse;
             }
-            catch (SocketException scket) { }
+            catch (SocketException scket) { throw scket; }
 
             var dtEnd = DateTime.Now;
             Console.WriteLine(string.Format("DoQueries End Time : {0}", dtEnd));
@@ -302,9 +303,10 @@ namespace ExpressBase.Common
             {
                 throw npgse;
             }
-            catch (SocketException scket) { }
-
-            return 0;
+            catch (SocketException scket)
+            {
+                throw scket;
+            }
 
         }
 
@@ -335,7 +337,7 @@ namespace ExpressBase.Common
                         con.Close();
                     throw npgse;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket) { throw scket; }
             }
 
             return obj;
@@ -434,6 +436,7 @@ namespace ExpressBase.Common
                 }
                 catch (SocketException scket)
                 {
+                    throw scket;
                 }
             }
 
@@ -469,9 +472,9 @@ namespace ExpressBase.Common
                 }
                 catch (SocketException scket)
                 {
+                    throw scket;
                 }
             }
-
             return _list;
         }
 
@@ -557,7 +560,7 @@ namespace ExpressBase.Common
         public override T ExecuteScalar<T>(string query, params DbParameter[] parameters)
         {
             T obj = default(T);
-            
+
             try
             {
                 using (var con = GetNewConnection() as NpgsqlConnection)
@@ -579,6 +582,7 @@ namespace ExpressBase.Common
             }
             catch (SocketException scket)
             {
+                throw scket;
             }
             return obj;
         }
@@ -602,10 +606,8 @@ namespace ExpressBase.Common
                 {
                     throw npgse;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket) { throw scket; }
             }
-
-            return false;
         }
 
         public override int CreateTable(string query)
@@ -625,7 +627,10 @@ namespace ExpressBase.Common
                 {
                     throw npgse;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
             }
             return res;
         }
@@ -649,10 +654,11 @@ namespace ExpressBase.Common
                 {
                     throw npgse;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
             }
-
-            return 0;
         }
 
         public override int UpdateTable(string query, params DbParameter[] parameters)
@@ -674,10 +680,11 @@ namespace ExpressBase.Common
                 {
                     throw npgse;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
             }
-
-            return 0;
         }
 
         public override int AlterTable(string query, params DbParameter[] parameters)
@@ -699,10 +706,8 @@ namespace ExpressBase.Common
                 {
                     throw npgse;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket) { throw scket; }
             }
-
-            return 0;
         }
 
         public override int DeleteTable(string query, params DbParameter[] parameters)
@@ -724,10 +729,11 @@ namespace ExpressBase.Common
                 {
                     throw npgse;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
             }
-
-            return 0;
         }
 
         public override ColumnColletion GetColumnSchema(string table)
@@ -759,7 +765,10 @@ namespace ExpressBase.Common
                 {
                     throw npgse;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
             }
             return cols;
         }

@@ -26,7 +26,10 @@ namespace ExpressBase.Common.ProductionDBManager
                 { "boolean", new DbTypeMap4Integrity { MySQLType = "tinyint", OracleType = "to_char({0})", SQLServerType = "boolean" } },
                 { "json", new DbTypeMap4Integrity { MySQLType = "json", OracleType = "to_clob({0})", SQLServerType = "json" } },
                 { "date", new DbTypeMap4Integrity { MySQLType = "date", OracleType = "", SQLServerType = "" } },
-                { "varchar", new DbTypeMap4Integrity { MySQLType = "varchar", OracleType = "", SQLServerType = "" } }
+                { "varchar", new DbTypeMap4Integrity { MySQLType = "varchar", OracleType = "", SQLServerType = "" } },
+                { "time without time zone", new DbTypeMap4Integrity { MySQLType = "datetime", OracleType = "to_date({0})", SQLServerType = "time without time zone" } },
+                { "time with time zone", new DbTypeMap4Integrity { MySQLType = "timestamp", OracleType = "to_timestamp({0})", SQLServerType = "time with time zone" } },
+
             };
 
         public static readonly DbColumnDefaultMap4IntegrityCollection ColumnDefaultCollection = new DbColumnDefaultMap4IntegrityCollection

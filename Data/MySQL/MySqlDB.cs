@@ -177,8 +177,9 @@ namespace ExpressBase.Common
             }
             catch (SocketException scket)
             {
+                Console.WriteLine("MySQL SocketException : " + scket.Message);
+                throw scket;
             }
-
             return dt;
         }
 
@@ -281,8 +282,6 @@ namespace ExpressBase.Common
                 Console.WriteLine("MySQL Exception : " + e.Message);
                 throw e;
             }
-
-            return null;
         }
 
         protected override DbDataReader DoQueriesBasic(DbConnection dbConnection, string query, params DbParameter[] parameters)
@@ -308,9 +307,10 @@ namespace ExpressBase.Common
             {
                 throw myexce;
             }
-            catch (SocketException scket) { }
-
-            return null;
+            catch (SocketException scket)
+            {
+                throw scket;
+            }
         }
 
         public override int DoNonQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
@@ -337,9 +337,8 @@ namespace ExpressBase.Common
             }
             catch (SocketException scket)
             {
+                throw scket;
             }
-
-            return 0;
         }
 
         public override T DoQuery<T>(string query, params DbParameter[] parameters)
@@ -372,6 +371,7 @@ namespace ExpressBase.Common
                 }
                 catch (SocketException scket)
                 {
+                    throw scket;
                 }
             }
 
@@ -384,7 +384,7 @@ namespace ExpressBase.Common
             MySqlConnection con = GetNewConnection() as MySqlConnection;
             try
             {
-                
+
                 con.Open();
                 dt = DoQuery(con, query, parameters);
                 con.Close();
@@ -404,7 +404,7 @@ namespace ExpressBase.Common
             EbDataTable tbl = new EbDataTable();
             MySqlConnection con = GetNewConnection() as MySqlConnection;
             try
-            {                
+            {
                 con.Open();
                 tbl = DoProcedure(con, query, parameters);
                 con.Close();
@@ -427,7 +427,7 @@ namespace ExpressBase.Common
             }
             MySqlConnection con = GetNewConnection() as MySqlConnection;
             try
-            {                
+            {
                 con.Open();
                 ds = DoQueries(con, query, parameters);
                 con.Close();
@@ -446,7 +446,7 @@ namespace ExpressBase.Common
             int val = 0;
             MySqlConnection con = GetNewConnection() as MySqlConnection;
             try
-            {                
+            {
                 con.Open();
                 val = DoNonQuery(con, query, parameters);
                 con.Close();
@@ -489,6 +489,7 @@ namespace ExpressBase.Common
                 }
                 catch (SocketException scket)
                 {
+                    throw scket;
                 }
             }
 
@@ -524,6 +525,7 @@ namespace ExpressBase.Common
                 }
                 catch (SocketException scket)
                 {
+                    throw scket;
                 }
             }
 
@@ -662,10 +664,9 @@ namespace ExpressBase.Common
                 }
                 catch (SocketException scket)
                 {
+                    throw scket;
                 }
             }
-
-            return false;
         }
 
         public override int CreateTable(string query)
@@ -687,6 +688,7 @@ namespace ExpressBase.Common
                 }
                 catch (SocketException scket)
                 {
+                    throw scket;
                 }
             }
 
@@ -717,10 +719,11 @@ namespace ExpressBase.Common
                 {
                     throw myexce;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
             }
-
-            return 0;
         }
 
         public override int UpdateTable(string query, params DbParameter[] parameters)
@@ -746,10 +749,8 @@ namespace ExpressBase.Common
                 {
                     throw myexce;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket) { throw scket; }
             }
-
-            return 0;
         }
 
         public override int AlterTable(string query, params DbParameter[] parameters)
@@ -771,10 +772,11 @@ namespace ExpressBase.Common
                 {
                     throw myexce;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
             }
-
-            return 0;
         }
 
         public override int DeleteTable(string query, params DbParameter[] parameters)
@@ -796,10 +798,11 @@ namespace ExpressBase.Common
                 {
                     throw myexce;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
             }
-
-            return 0;
         }
 
         public override ColumnColletion GetColumnSchema(string table)
@@ -839,7 +842,10 @@ namespace ExpressBase.Common
                 {
                     throw myexce;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
             }
             return cols;
         }
@@ -1037,7 +1043,7 @@ namespace ExpressBase.Common
                         SELECT LAST_INSERT_ID();";
             }
         }
-        
+
         public override string EB_GETTABLESCHEMA
         {
             get
@@ -1384,7 +1390,7 @@ namespace ExpressBase.Common
             {
                 return @"eb_get_tagged_object(@tags);";
             }
-        }     
+        }
 
         public override string EB_GET_ALL_TAGS
         {
@@ -1576,7 +1582,7 @@ namespace ExpressBase.Common
                         @lastversioncommit_byid, @liveversionrefidval, @liveversionnumberval, @liveversioncommit_tsval, @liveversion_statusval, 
                         @liveversioncommit_byname, @liveversioncommit_byid, @owner_uidval, @owner_tsval, @owner_nameval, @is_public)";
             }
-        }               
+        }
 
         public override string EB_SAVELOCATION
         {
@@ -1664,7 +1670,7 @@ namespace ExpressBase.Common
                             (@userid, @filename, @filetype, @tags, @filecategory, NOW(),@context); 
                         SELECT LAST_INSERT_ID()";
             }
-        }                
+        }
 
         //public string EB_FILECATEGORYCHANGE
         //{

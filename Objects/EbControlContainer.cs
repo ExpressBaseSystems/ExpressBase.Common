@@ -319,6 +319,7 @@ namespace ExpressBase.Common.Objects
             {
                 if (FormObj == null)
                     throw new NullReferenceException();
+                else throw e;
             }
         }
 

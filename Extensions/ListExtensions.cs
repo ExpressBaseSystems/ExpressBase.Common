@@ -38,7 +38,7 @@ namespace ExpressBase.Common.Extensions
 
                 List.RemoveRange(from, range);
             }
-            catch (Exception e)
+            catch 
             {
 
             }

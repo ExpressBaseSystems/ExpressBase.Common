@@ -278,8 +278,6 @@ namespace ExpressBase.Common.Data.MSSQLServer
                 Console.WriteLine("SQLServer Exception : " + e.Message);
                 throw e;
             }
-
-            return null;
         }
 
         protected override DbDataReader DoQueriesBasic(DbConnection dbConnection, string query, params DbParameter[] parameters)
@@ -299,8 +297,6 @@ namespace ExpressBase.Common.Data.MSSQLServer
             {
                 throw e;
             }
-
-            return null;
         }
 
         public override int DoNonQuery(DbConnection dbConnection, string query, params DbParameter[] parameters)
@@ -321,10 +317,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
                 {
                     throw e;
                 }
-                //catch (SocketException scket) { }
             }
-
-            return 0;
         }
 
         public override T DoQuery<T>(string query, params DbParameter[] parameters)
@@ -610,8 +603,6 @@ namespace ExpressBase.Common.Data.MSSQLServer
                 }
                 //catch (SocketException scket) { }
             }
-
-            return false;
         }
 
         public override int CreateTable(string query)
@@ -655,10 +646,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
                 {
                     throw e;
                 }
-                //catch (SocketException scket) { }
             }
-
-            return 0;
         }
 
         public override int UpdateTable(string query, params DbParameter[] parameters)
@@ -680,10 +668,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
                 {
                     throw e;
                 }
-                //catch (SocketException scket) { }
             }
-
-            return 0;
         }
 
         public override int AlterTable(string query, params DbParameter[] parameters)
@@ -705,10 +690,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
                 {
                     throw e;
                 }
-                //catch (SocketException scket) { }
             }
-
-            return 0;
         }
 
         public override int DeleteTable(string query, params DbParameter[] parameters)
@@ -730,10 +712,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
                 {
                     throw e;
                 }
-                //catch (SocketException scket) { }
             }
-
-            return 0;
         }
 
         public override ColumnColletion GetColumnSchema(string table)

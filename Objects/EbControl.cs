@@ -190,10 +190,24 @@ namespace ExpressBase.Common.Objects
         [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [Alias("Readonly")]
-        [HelpText("Control will be Disabled/Readonly if set to TRUE")]
+		[OnChangeExec(@"if(pg.builderType==='BotForm'){
+							if (this.IsDisable === true ){
+								pg.ShowProperty('ProceedBtnTxt');
+							} 
+							else {
+								pg.HideProperty('ProceedBtnTxt');
+							}
+						}")]
+		[HelpText("Control will be Disabled/Readonly if set to TRUE")]
         public virtual bool IsDisable { get; set; }
 
-        [EnableInBuilder(BuilderType.BotForm)]
+		[PropertyGroup("Behavior")]
+		[EnableInBuilder(BuilderType.BotForm)]
+		[DefaultPropValue("Ok")]
+		[Alias("Proceed Button text")]
+		public string ProceedBtnTxt { get; set; }
+
+		[EnableInBuilder(BuilderType.BotForm)]
         [HelpText("Set true if you want to keep previous value in the control on subsequent form entry.")]
         [Alias("Maintain Previous Value ")]
         public virtual bool IsMaintainValue { get; set; }
@@ -237,11 +251,6 @@ namespace ExpressBase.Common.Objects
         [PropertyGroup("Behavior")]
         [HelpText("Set true if you want to make this control read only.")]
         public virtual bool ReadOnly { get; set; }//------------------------------
-
-        protected string ReadOnlyString//------------------------------
-        {
-            get { return (this.ReadOnly ? "background-color: #f0f0f0; border: solid 1px #bbb;' readonly" : "'"); }
-        }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyGroup("Behavior")]

@@ -43,8 +43,7 @@ namespace ExpressBase.Common.Data.AWSS3
             return result;
         }
         public async Task ReadObjectDataAsyncAWSS3(string filestoreid)
-        {
-            string responseBody = "";
+        { 
             try
             {
                 GetObjectRequest request = new GetObjectRequest

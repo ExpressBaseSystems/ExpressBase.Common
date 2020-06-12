@@ -190,7 +190,10 @@ namespace ExpressBase.Common.Data
                 {
                     Console.WriteLine(orcl.Message);
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
             }
 
             return dt;
@@ -274,7 +277,6 @@ namespace ExpressBase.Common.Data
             {
                 Console.WriteLine(orcl.Message);
             }
-
             return null;
         }
 
@@ -381,8 +383,10 @@ namespace ExpressBase.Common.Data
             {
                 Console.WriteLine(orcl.Message);
             }
-            catch (SocketException scket) { }
-
+            catch (SocketException scket)
+            {
+                throw scket;
+            }
             return dt;
         }
 
@@ -468,7 +472,10 @@ namespace ExpressBase.Common.Data
                     Console.WriteLine(orcl.Message);
                     throw orcl;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
             }
 
             return rslt;
@@ -493,7 +500,10 @@ namespace ExpressBase.Common.Data
                     Console.WriteLine(orcl.Message);
                     throw orcl;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
             }
             return res;
         }
@@ -522,10 +532,8 @@ namespace ExpressBase.Common.Data
                     Console.WriteLine(orcl.Message);
                     throw orcl;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket) { throw scket; }
             }
-
-            return 0;
         }
 
         public override int UpdateTable(string query, params DbParameter[] parameters)
@@ -647,7 +655,10 @@ namespace ExpressBase.Common.Data
                 {
                     throw orcl;
                 }
-                catch (SocketException scket) { }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
             }
             return cols;
         }
