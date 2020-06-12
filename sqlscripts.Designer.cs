@@ -2718,15 +2718,6 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to --eb_meeting_slots.
-        /// </summary>
-        public static string eb_meeting_slots1 {
-            get {
-                return ResourceManager.GetString("eb_meeting_slots1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE eb_meeting_slots
         ///(
         ///	id integer auto_increment,
