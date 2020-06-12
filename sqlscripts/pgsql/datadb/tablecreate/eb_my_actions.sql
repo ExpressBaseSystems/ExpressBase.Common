@@ -1,3 +1,10 @@
+-- Table: public.eb_my_actions
+
+-- DROP TABLE public.eb_my_actions;
+-- Table: public.eb_my_actions
+
+-- DROP TABLE public.eb_my_actions;
+
 CREATE TABLE eb_my_actions
 (
     id SERIAL,
@@ -21,5 +28,9 @@ CREATE TABLE eb_my_actions
 	eb_meeting_slots_id integer,
     CONSTRAINT eb_my_actions_pkey PRIMARY KEY (id)
 );
+
+-- Index: eb_my_actions_id_idx
+
+-- DROP INDEX public.eb_my_actions_id_idx;
 
 CREATE INDEX eb_my_actions_id_idx ON eb_my_actions(id);

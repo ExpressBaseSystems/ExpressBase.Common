@@ -1,3 +1,7 @@
+-- Table: public.eb_user_types
+
+-- DROP TABLE public.eb_user_types;
+
 CREATE TABLE eb_user_types
 (
     id SERIAL,
@@ -9,3 +13,10 @@ CREATE TABLE eb_user_types
     eb_del  "char" DEFAULT 'F'::"char",
     CONSTRAINT eb_user_types_pkey PRIMARY KEY (id)
 );
+
+-- Index: eb_user_types_id_idx
+
+-- DROP INDEX public.eb_user_types_id_idx;
+
+CREATE INDEX eb_user_types_id_idx
+    ON eb_user_types(id);
