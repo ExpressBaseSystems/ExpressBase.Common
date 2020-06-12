@@ -1,3 +1,7 @@
+-- Table: public.eb_approval
+
+-- DROP TABLE public.eb_approval;
+
 CREATE TABLE eb_approval
 (
     id serial,
@@ -14,8 +18,10 @@ CREATE TABLE eb_approval
     CONSTRAINT eb_approval_pkey PRIMARY KEY (id)
 );
 
+-- Index: eb_approval_id_idx
+
+-- DROP INDEX public.eb_approval_id_idx;
+
 CREATE INDEX eb_approval_id_idx
 ON eb_approval(id);
 
-CREATE INDEX eb_approval_eb_del_idx
-ON eb_approval(eb_del);

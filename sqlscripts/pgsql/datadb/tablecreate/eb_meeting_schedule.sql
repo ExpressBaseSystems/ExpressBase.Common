@@ -1,3 +1,6 @@
+-- Table: public.eb_meeting_schedule
+
+-- DROP TABLE public.eb_meeting_schedule;
 
 CREATE TABLE eb_meeting_schedule(
 id serial,
@@ -27,6 +30,10 @@ eb_lastmodified_at timestamp without time zone,
 eb_del "char" DEFAULT 'F'::"char",
 CONSTRAINT eb_meeting_schedule_pkey PRIMARY KEY (id)
 );
+
+-- Index: eb_meeting_schedule_id_idx
+
+-- DROP INDEX public.eb_meeting_schedule_id_idx;
 
 CREATE INDEX eb_meeting_schedule_id_idx
 ON eb_meeting_schedule(id);

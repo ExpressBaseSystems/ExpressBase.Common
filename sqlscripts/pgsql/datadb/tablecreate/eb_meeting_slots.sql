@@ -1,3 +1,7 @@
+-- Table: public.eb_meeting_slots
+
+-- DROP TABLE public.eb_meeting_slots;
+
 CREATE TABLE eb_meeting_slots (
 id serial,
 eb_meeting_schedule_id integer,
@@ -13,6 +17,9 @@ eb_del "char" DEFAULT 'F'::"char",
 CONSTRAINT eb_meeting_slots_pkey PRIMARY KEY (id)
 );
 
+-- Index: eb_meeting_slots_id_idx
+
+-- DROP INDEX public.eb_meeting_slots_id_idx;
 
 CREATE INDEX eb_meeting_slots_id_idx
 ON eb_meeting_slots(id);
