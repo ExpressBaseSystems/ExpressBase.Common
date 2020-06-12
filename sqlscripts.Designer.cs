@@ -2692,6 +2692,32 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE eb_meeting_slots (
+        ///id serial,
+        ///eb_meeting_schedule_id integer,
+        ///is_approved &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///meeting_date date ,
+        ///time_from time without time zone,
+        ///time_to	time without time zone,
+        ///eb_created_by integer,
+        ///eb_created_at  timestamp without time zone DEFAULT now(),
+        ///eb_lastmodified_by integer,
+        ///eb_lastmodified_at timestamp without time zone,
+        ///eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///CONSTRAINT eb_meeting_slots_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///
+        ///CREATE INDEX eb_meeting_slots_id_idx
+        ///ON eb_meet [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_meeting_slots {
+            get {
+                return ResourceManager.GetString("eb_meeting_slots", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to --eb_meeting_slots.
         /// </summary>
         public static string eb_meeting_slots1 {
