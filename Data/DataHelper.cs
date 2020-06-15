@@ -90,6 +90,8 @@ namespace ExpressBase.Common.Data
                     return Convert.ToBoolean(Value);
                 else if(Type == ((int)EbDbTypes.String).ToString())  
                     return (Value == null) ? string.Empty: Value;
+                else if (Type == ((int)EbDbTypes.Time).ToString())
+                    return TimeSpan.Parse(Value);
                 else
                     return Value;
             }
