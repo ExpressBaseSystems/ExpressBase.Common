@@ -55,16 +55,14 @@ namespace ExpressBase.Common
         public const string EbSimpleSelect_GetValueFromDOMJSfn = @"
 let val = $('#' + this.EbSid_CtxId).selectpicker('val');
 val = (val === null) ? '-1' : val.toString();
-
 val = string2EBType(val, this.EbDbType);
-
 if (ebcontext.renderContext === 'WebForm' && val.toString() === '-1')
     val = null;
 return val;";
 
         public const string PS_SetDisplayMemberJSfn = @"
 if(this.RenderAsSimpleSelect){"
-    + EbSimpleSelect_SetValueJSfn +
+    + EbSimpleSelect_JustSetValueJSfn +
 @"}
 else{                        
     EBPSSetDisplayMember.bind(this)(p1, p2);
@@ -134,13 +132,13 @@ else{"
     if(p1 === null)
         p1 = -1;
     isContained = false;
-    $('#' + this.EbSid_CtxId + ' option').each(function () {
-        if ($(this).attr('value') == p1) {
+if(this.IsMultiSelect) p1 = p1.split(',');
+    $('#' + this.EbSid_CtxId + ' option').each(function (i, opt) {
+        if ($(opt).attr('value') == p1 || (this.IsMultiSelect && p1.contains($(opt).attr('value')))) {
             isContained = true;
             return false;
         }
-    });
-
+    }.bind(this));
     if(!isContained)
         return;
     $('#' + this.EbSid_CtxId).selectpicker('val', p1)
@@ -148,19 +146,21 @@ else{"
 
         public const string CB_JustSetValueJSfn = @"$('#' + this.EbSid_CtxId).prop('checked', p1 === true);";
 
-        public const string EbSimpleSelect_SetValueJSfn = @"
-if(p1 === null)
-    p1 = -1;
-isContained = false;
-$('#' + this.EbSid_CtxId + ' option').each(function () {
-    if ($(this).attr('value') == p1) {
-        isContained = true;
-        return false;
-    }
-});
+        //        public const string EbSimpleSelect_SetValueJSfn = @"
+        //if(p1 === null)
+        //    p1 = -1;
+        //isContained = false;
+        //if(this.IsMultiSelect) p1 = p1.split(',');
+        //$('#' + this.EbSid_CtxId + ' option').each(function (i, opt) {
+        //    if ($(opt).attr('value') == p1 || (this.IsMultiSelect && p1.contains($(opt).attr('value')))) {
+        //        isContained = true;
+        //        return false;
+        //    }
+        //}.bind(this));
 
-if(!isContained)
-    return;
-$('#' + this.EbSid_CtxId).selectpicker('val', p1)";
+        //if(!isContained)
+        //    return;
+        //$('#' + this.EbSid_CtxId).selectpicker('val', p1);
+        //";
     }
 }
