@@ -1,3 +1,7 @@
+-- Table: public.eb_approval_lines
+
+-- DROP TABLE public.eb_approval_lines;
+
 CREATE TABLE eb_approval_lines
 (
     id SERIAL,
@@ -13,3 +17,9 @@ CREATE TABLE eb_approval_lines
     eb_del "char" DEFAULT 'F'::"char",
     CONSTRAINT eb_approval_lines_pkey PRIMARY KEY (id)
 );
+-- Index: eb_approval_lines_id_idx
+
+-- DROP INDEX public.eb_approval_lines_id_idx;
+
+CREATE INDEX eb_approval_lines_id_idx ON public.eb_approval_lines(id);
+
