@@ -55,7 +55,8 @@ namespace ExpressBase.Common
         public const string EbSimpleSelect_GetValueFromDOMJSfn = @"
 let val = $('#' + this.EbSid_CtxId).selectpicker('val');
 val = (val === null) ? '-1' : val.toString();
-val = string2EBType(val, this.EbDbType);
+if(!this.IsMultiSelect)    
+    val = string2EBType(val, this.EbDbType);
 if (ebcontext.renderContext === 'WebForm' && val.toString() === '-1')
     val = null;
 return val;";
@@ -133,7 +134,7 @@ else{"
         p1 = -1;
     isContained = false;
 if(this.IsMultiSelect){
-    if(!this.IsDynamic)
+    if(p1 === -1)
         p1 = p1.toString();
     p1 = p1.split(',');
 }
