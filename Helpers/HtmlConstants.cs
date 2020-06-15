@@ -132,7 +132,11 @@ else{"
     if(p1 === null)
         p1 = -1;
     isContained = false;
-if(this.IsMultiSelect) p1 = p1.split(',');
+if(this.IsMultiSelect){
+    if(!this.IsDynamic)
+        p1 = p1.toString();
+    p1 = p1.split(',');
+}
     $('#' + this.EbSid_CtxId + ' option').each(function (i, opt) {
         if ($(opt).attr('value') == p1 || (this.IsMultiSelect && p1.contains($(opt).attr('value')))) {
             isContained = true;
