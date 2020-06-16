@@ -350,6 +350,8 @@ namespace ExpressBase.Common.Objects.Attributes
 
         public const string INP_FONT_STYLE = @"setFontCss(props.FontStyle, $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-inp]'));";
 
+        public const string RENDER_INLINE = @"$(`#cont_${elementId}.Eb-ctrlContainer .list-ctrl-box`).css('flex-direction',(props.RenderInline ? 'row' : 'column'));";
+
         public static string getFunctions()
         {
             string jsonStr = "EbOnChangeUIfns.Common = {";
