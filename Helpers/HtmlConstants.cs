@@ -55,7 +55,7 @@ namespace ExpressBase.Common
         public const string EbSimpleSelect_GetValueFromDOMJSfn = @"
 let val = $('#' + this.EbSid_CtxId).selectpicker('val');
 val = (val === null) ? '-1' : val.toString();
-if(!this.IsMultiSelect)    
+if(!this.MultiSelect)    
     val = string2EBType(val, this.EbDbType);
 if (ebcontext.renderContext === 'WebForm' && val.toString() === '-1')
     val = null;
@@ -133,13 +133,13 @@ else{"
     if(p1 === null)
         p1 = -1;
     isContained = false;
-if(this.IsMultiSelect){
+if(this.MultiSelect){
     if(p1 === -1)
         p1 = p1.toString();
     p1 = p1.split(',');
 }
     $('#' + this.EbSid_CtxId + ' option').each(function (i, opt) {
-        if ($(opt).attr('value') == p1 || (this.IsMultiSelect && p1.contains($(opt).attr('value')))) {
+        if ($(opt).attr('value') == p1 || (this.MultiSelect && p1.contains($(opt).attr('value')))) {
             isContained = true;
             return false;
         }
@@ -155,9 +155,9 @@ if(this.IsMultiSelect){
         //if(p1 === null)
         //    p1 = -1;
         //isContained = false;
-        //if(this.IsMultiSelect) p1 = p1.split(',');
+        //if(this.MultiSelect) p1 = p1.split(',');
         //$('#' + this.EbSid_CtxId + ' option').each(function (i, opt) {
-        //    if ($(opt).attr('value') == p1 || (this.IsMultiSelect && p1.contains($(opt).attr('value')))) {
+        //    if ($(opt).attr('value') == p1 || (this.MultiSelect && p1.contains($(opt).attr('value')))) {
         //        isContained = true;
         //        return false;
         //    }
