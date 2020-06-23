@@ -1,8 +1,10 @@
 ﻿using ExpressBase.Common.Connections;
+using Newtonsoft.Json;
 using ServiceStack.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -43,13 +45,18 @@ namespace ExpressBase.Common.Messaging
                     result = System.Text.Encoding.UTF8.GetString(response);
                 }
 
+                var status = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(result)["status"]; 
+               
+
                 msgStatus = new Dictionary<string, string>
                 {
-                        {"apikey" ,  Config.ApiKey},
-                        {"numbers" , To},
-                        {"message" , msg},
-                        {"sender" , Config.From},
-                        {"msgStatus",  result}
+                        {"ApiKey",  Config.ApiKey},
+                        {"To" , To},
+                        {"From" , Config.From},
+                        {"Body" , msg},
+                        {"ConId", Config.Id.ToString() },
+                        {"Status",  status},
+                        {"Result", result}
                 };
             }
             catch (Exception e)
