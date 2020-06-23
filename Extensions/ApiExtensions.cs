@@ -37,5 +37,17 @@ namespace ExpressBase.Common.Extensions
             }
             return ObjIds.ToArray();
         }
+
+        public static string[] GetAccessIds(this User UserObject)
+        {
+            List<string> ObjIds = new List<string>();
+            foreach (string perm in UserObject.Permissions)
+            {
+                string id = Convert.ToInt32(perm.Split(CharConstants.DASH)[2]).ToString();
+                if (ObjIds.Contains(id))
+                    ObjIds.Add(id);
+            }
+            return ObjIds.ToArray();
+        }
     }
 }
