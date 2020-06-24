@@ -5536,6 +5536,63 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_sms_logs
+        ///
+        ///-- DROP TABLE public.eb_sms_logs;
+        ///
+        ///CREATE TABLE eb_sms_logs
+        ///(
+        ///    id serial,
+        ///    send_to text,
+        ///    send_from text,
+        ///    message_body text,
+        ///    status text,
+        ///    result text,
+        ///    refid text,
+        ///    metadata json,
+        ///    retryof integer,
+        ///    isfallback &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    con_id integer,
+        ///    req_from text,
+        ///    eb_created_by integer,
+        ///    eb_created_at timestamp without time zone,
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    CONSTRAINT eb_sms_logs_pkey PRIMAR [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_sms_logs {
+            get {
+                return ResourceManager.GetString("eb_sms_logs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_sms_logs.
+        /// </summary>
+        public static string eb_sms_logs1 {
+            get {
+                return ResourceManager.GetString("eb_sms_logs1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_sms_logs.
+        /// </summary>
+        public static string eb_sms_logs2 {
+            get {
+                return ResourceManager.GetString("eb_sms_logs2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_sms_logs.
+        /// </summary>
+        public static string eb_sms_logs3 {
+            get {
+                return ResourceManager.GetString("eb_sms_logs3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to -- For MySQL.
         /// </summary>
         public static string eb_split_str_util {

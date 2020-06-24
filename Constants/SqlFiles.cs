@@ -63,6 +63,7 @@ namespace ExpressBase.Common.Constants
                         "datadb.tablecreate.eb_meetings.sql",
                         "datadb.tablecreate.eb_meeting_participants.sql",
                         "datadb.tablecreate.eb_meeting_slot_participants.sql",
+                        "datadb.tablecreate.eb_sms_logs.sql",
                         "filesdb.tablecreate.eb_files_bytea.sql",
                         "objectsdb.functioncreate.eb_get_tagged_object.sql",
                         "objectsdb.functioncreate.eb_objects_change_status.sql",
