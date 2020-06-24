@@ -53,7 +53,7 @@ namespace ExpressBase.Common.Messaging
                         {"ApiKey",  Config.ApiKey},
                         {"To" , To},
                         {"From" , Config.From},
-                        {"Body" , msg},
+                        {"Body" , body},
                         {"ConId", Config.Id.ToString() },
                         {"Status",  status},
                         {"Result", result}
