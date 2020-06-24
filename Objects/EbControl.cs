@@ -34,6 +34,8 @@ namespace ExpressBase.Common.Objects
                 this._OnChange = new EbScript();
             if (this.DefaultValueExpression == null)
                 this.DefaultValueExpression = new EbScript();
+            //if (this.ReadOnlyExpression == null)
+            //    this.ReadOnlyExpression = new EbScript();
             if (this.ValueExpr == null)
                 this.ValueExpr = new EbScript();
             if (this.VisibleExpr == null)
@@ -152,6 +154,13 @@ namespace ExpressBase.Common.Objects
         [HelpText("Define how value of this field should be calculated.")]
         public virtual EbScript ValueExpr { get; set; }
 
+
+        //[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        //[PropertyEditor(PropertyEditorType.ScriptEditorJS)]
+        //[PropertyGroup(PGConstants.BEHAVIOR)]
+        //[HelpText("Define a readonly condition.")]
+        //public virtual EbScript ReadOnlyExpression { get; set; }
+
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
         public virtual List<string> DependedValExp { get; set; }
@@ -263,8 +272,6 @@ namespace ExpressBase.Common.Objects
         public virtual string RequiredExpression { get; set; }
 
         public virtual string UniqueExpression { get; set; }
-
-        public virtual string ReadOnlyExpression { get; set; }
 
         [PropertyGroup("Accessibility")]
         [HelpText("Set tab index for the control.")]
