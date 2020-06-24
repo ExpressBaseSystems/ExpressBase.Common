@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using Twilio.Jwt.AccessToken;
 
 namespace ExpressBase.Common.Messaging
 {
@@ -47,7 +48,9 @@ namespace ExpressBase.Common.Messaging
                                     { "From", Config.From },
                                     { "Uri", url },
                                     { "Body", Body },
-                                    { "ErrorMessage", "" }
+                                    { "ErrorMessage", "" },
+                                    { "ConId", Config.Id.ToString() },
+                                    { "Result", responseInString}
                                 };
                 }
             }

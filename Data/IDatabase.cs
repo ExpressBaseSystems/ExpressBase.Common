@@ -412,7 +412,7 @@ namespace ExpressBase.Common
             {
                 return @"SELECT applicationname,description,app_icon,application_type, app_settings FROM eb_applications WHERE id = @appid AND  eb_del = 'F';
 				                SELECT 
-				                     EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, EO.display_name,EOV.refid,EOV.working_mode
+				                     EO.id, EO.obj_type, EO.obj_name, EO.obj_desc, EO.display_name,EOV.refid,EOV.working_mode,EOV.version_num
 				                FROM
 				                     eb_objects_ver EOV,eb_objects EO
 				                INNER JOIN

@@ -122,7 +122,7 @@ namespace ExpressBase.Common.Structures
         public static readonly EbObjectType ChartVisualization = new EbObjectType(ObjectConstants.CHART_VISUALIZATION, iChartVisualization, ObjectConstants.BMW, true, "fa-bar-chart","Chart View");
         public static readonly EbObjectType BotForm = new EbObjectType(ObjectConstants.BOT_FORM, iBotForm, ObjectConstants.BXX, true, "fa-wpforms", "Bot Form");
         public static readonly EbObjectType SmsBuilder = new EbObjectType(ObjectConstants.SMS_BUILDER, iSmsBuilder, ObjectConstants.XXW, false, "fa-commenting-o", "Sms Builder");
-        public static readonly EbObjectType Api = new EbObjectType(ObjectConstants.API, iApi, ObjectConstants.XXW, false, "fa-code",null);
+        public static readonly EbObjectType Api = new EbObjectType(ObjectConstants.API, iApi, ObjectConstants.BMW, false, "fa-code",null);
         public static readonly EbObjectType MapView = new EbObjectType(ObjectConstants.MAP_VIEW, iMapView, ObjectConstants.BMW, true, "fa-map-marker", "Map View");
         public static readonly EbObjectType DashBoard = new EbObjectType(ObjectConstants.DASHBOARD, iDashBoard, ObjectConstants.BMW, true, "fa-tachometer", null);
         public static readonly EbObjectType SqlJob = new EbObjectType(ObjectConstants.SQLJOB, iSqlJob, ObjectConstants.XXW, false, "fa-tachometer", "Sql Job");

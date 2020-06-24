@@ -1,8 +1,9 @@
 ﻿using ExpressBase.Common.Data;
 using ExpressBase.Common.Messaging;
-using ExpressBase.Common.Messaging.ExpertTexting;
+//using ExpressBase.Common.Messaging.ExpertTexting;
 using ExpressBase.Common.Messaging.Slack;
-using ExpressBase.Common.Messaging.Twilio;
+//using ExpressBase.Common.Messaging.Twilio;
+using ServiceStack.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -45,7 +46,8 @@ namespace ExpressBase.Common.Connections
             try
             {
                 //  resp = this[2].SendSMS(To, Body);
-                resp = Primary.SendSMS(To, Body);
+                resp = Primary.SendSMS(To, Body);               
+                
                 Console.WriteLine("SMS Send With Primary");
             }
             catch
