@@ -643,6 +643,11 @@ namespace ExpressBase.Security
                 Console.WriteLine("Exception in logout : " + ex.Message + "\nSignInLogId : " + this.SignInLogId);
             }
         }
+
+        public bool IsAdmin()
+        {
+            return this.Roles.Contains(SystemRoles.SolutionOwner.ToString()) || this.Roles.Contains(SystemRoles.SolutionAdmin.ToString());
+        }
     }
     public class Preferences
     {
