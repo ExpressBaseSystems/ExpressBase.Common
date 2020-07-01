@@ -44,7 +44,7 @@ namespace ExpressBase.Common.Extensions
             foreach (string perm in UserObject.Permissions)
             {
                 string id = Convert.ToInt32(perm.Split(CharConstants.DASH)[2]).ToString();
-                if (ObjIds.Contains(id))
+                if (!ObjIds.Contains(id))
                     ObjIds.Add(id);
             }
             return ObjIds.ToArray();

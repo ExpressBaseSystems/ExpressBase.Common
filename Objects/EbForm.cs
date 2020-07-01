@@ -12,6 +12,10 @@ namespace ExpressBase.Common.Objects
     [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
     public class EbForm : EbControlContainer, IEBRootObject
     {
+        //public EbForm() {
+        //    DefaultValsExecOrder = new List<string>();
+        //}
+
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public override string RefId { get; set; }
@@ -63,6 +67,10 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyGroup("Validations")]
         public override List<EbValidator> Validators { get; set; }
+
+        [HideInPropertyGrid]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        public List<string> DefaultValsExecOrder { get; set; }
 
         //UI Properties
         public override string BackColor { get; set; }

@@ -22,6 +22,8 @@ namespace ExpressBase.Common.Objects
         {
             this.Validators = new List<EbValidator>();
             this.DependedValExp = new List<string>();
+            //this.DependedDisableExp = new List<string>();
+            //this.DependedHideExp = new List<string>();
             this.ValExpParams = new List<string>();
         }
 
@@ -34,12 +36,12 @@ namespace ExpressBase.Common.Objects
                 this._OnChange = new EbScript();
             if (this.DefaultValueExpression == null)
                 this.DefaultValueExpression = new EbScript();
-            //if (this.ReadOnlyExpression == null)
-            //    this.ReadOnlyExpression = new EbScript();
+            //if (this.DisableExpr == null)
+            //    this.DisableExpr = new EbScript();
             if (this.ValueExpr == null)
                 this.ValueExpr = new EbScript();
-            if (this.VisibleExpr == null)
-                this.VisibleExpr = new EbScript();
+            if (this.HideExpr == null)
+                this.HideExpr = new EbScript();
             if (string.IsNullOrEmpty(this.OnChangeFn.Code) && !string.IsNullOrEmpty(_OnChange.Code))
                 this.OnChangeFn = _OnChange;
         }
@@ -145,7 +147,7 @@ namespace ExpressBase.Common.Objects
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
         [Alias("Visible Expression")]
         [HelpText("Define conditions to decide visibility of the control.")]
-        public virtual EbScript VisibleExpr { get; set; }
+        public virtual EbScript HideExpr { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS, PropertyEditorType.ScriptEditorSQ)]
@@ -159,11 +161,20 @@ namespace ExpressBase.Common.Objects
         //[PropertyEditor(PropertyEditorType.ScriptEditorJS)]
         //[PropertyGroup(PGConstants.BEHAVIOR)]
         //[HelpText("Define a readonly condition.")]
-        //public virtual EbScript ReadOnlyExpression { get; set; }
+        //public virtual EbScript DisableExpr { get; set; }
 
+        //ValExp depended ctrls list
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
         public virtual List<string> DependedValExp { get; set; }
+
+        //[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        //[HideInPropertyGrid]
+        //public virtual List<string> DependedHideExp { get; set; }
+
+        //[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        //[HideInPropertyGrid]
+        //public virtual List<string> DependedDisableExp { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
@@ -257,9 +268,9 @@ namespace ExpressBase.Common.Objects
         [HelpText("Set true if you want to make this control read only.")]
         public virtual bool IsReadOnly { get; set; }//------------------------------
 
-        [PropertyGroup("Behavior")]
-        [HelpText("Set true if you want to make this control read only.")]
-        public virtual bool ReadOnly { get; set; }//------------------------------
+        //[PropertyGroup("Behavior")]
+        //[HelpText("Set true if you want to make this control read only.")]
+        //public virtual bool ReadOnly { get; set; }//------------------------------
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyGroup("Behavior")]
