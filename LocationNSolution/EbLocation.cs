@@ -75,13 +75,15 @@ namespace ExpressBase.Common.LocationNSolution
 
         public bool IsVersioningEnabled { get; set; }
 
+        public bool Is2faEnabled { get; set; }
+
         public Dictionary<int, string> Users { get; set; }
 
         public int PlanUserCount { get; set; }
 
+        public string OtpDelivery { get; set; }
+
         public SolutionSettings SolutionSettings { get; set; }
-
-
         public Eb_Solution()
         {
             Locations = new Dictionary<int, EbLocation>();

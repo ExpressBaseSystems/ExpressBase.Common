@@ -63,9 +63,24 @@ namespace ExpressBase.Security
         [DataMember(Order = 14)]
         public int UserType { get; set; }
 
+        [DataMember(Order = 15)]
+        [JsonIgnore]
+        public string RefreshToken { get; set; }
+
+        [DataMember(Order = 16)]
+        [JsonIgnore]
+        public string BearerToken { get; set; }
+
+        [DataMember(Order = 17)]
+        [JsonIgnore]
+        public string Otp { get; set; }
+
+        [DataMember(Order = 18)]
+        public override string PhoneNumber { get; set; }
+
         private List<string> _ebObjectIds = null;
 
-        [DataMember(Order = 15)]
+        [DataMember(Order = 19)]
         public List<string> EbObjectIds
         {
             get
@@ -611,7 +626,8 @@ namespace ExpressBase.Security
                     SignInLogId = Convert.ToInt32(ds.Rows[0][9]),
                     SourceIp = ipAddress,
                     UserGroupIds = userGroupIds,
-                    UserType = Convert.ToInt32(ds.Rows[0][12])
+                    UserType = Convert.ToInt32(ds.Rows[0][12]),
+                    PhoneNumber = ds.Rows[0][13].ToString()
                 };
                 if (!ds.Rows[0].IsDBNull(8) && !_user.Roles.Contains(SystemRoles.SolutionOwner.ToString()) && !_user.Roles.Contains(SystemRoles.SolutionAdmin.ToString()))
                 {
