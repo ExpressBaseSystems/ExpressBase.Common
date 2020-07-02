@@ -86,8 +86,6 @@ namespace ExpressBase.Common.Application
         public EbMobileSettings()
         {
             this.DataImport = new List<DataImportMobile>();
-
-            MenuApi = new EbApiMeta();
         }
     }
 
