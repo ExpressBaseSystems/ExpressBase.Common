@@ -22,8 +22,8 @@ namespace ExpressBase.Common.Objects
         {
             this.Validators = new List<EbValidator>();
             this.DependedValExp = new List<string>();
-            //this.DependedDisableExp = new List<string>();
-            //this.DependedHideExp = new List<string>();
+            this.DependedDisableExp = new List<string>();
+            this.DependedHideExp = new List<string>();
             this.ValExpParams = new List<string>();
         }
 
@@ -34,12 +34,12 @@ namespace ExpressBase.Common.Objects
                 this.OnChangeFn = new EbScript();
             if (this._OnChange == null)
                 this._OnChange = new EbScript();
-            if (this.DefaultValueExpression == null)
-                this.DefaultValueExpression = new EbScript();
-            //if (this.DisableExpr == null)
-            //    this.DisableExpr = new EbScript();
             if (this.ValueExpr == null)
                 this.ValueExpr = new EbScript();
+            if (this.DefaultValueExpression == null)
+                this.DefaultValueExpression = new EbScript();
+            if (this.DisableExpr == null)
+                this.DisableExpr = new EbScript();
             if (this.HideExpr == null)
                 this.HideExpr = new EbScript();
             if (string.IsNullOrEmpty(this.OnChangeFn.Code) && !string.IsNullOrEmpty(_OnChange.Code))
@@ -145,7 +145,7 @@ namespace ExpressBase.Common.Objects
         [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
-        [Alias("Visible Expression")]
+        [Alias("Hide Expression")]
         [HelpText("Define conditions to decide visibility of the control.")]
         public virtual EbScript HideExpr { get; set; }
 
@@ -156,25 +156,25 @@ namespace ExpressBase.Common.Objects
         [HelpText("Define how value of this field should be calculated.")]
         public virtual EbScript ValueExpr { get; set; }
 
-
-        //[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        //[PropertyEditor(PropertyEditorType.ScriptEditorJS)]
-        //[PropertyGroup(PGConstants.BEHAVIOR)]
-        //[HelpText("Define a readonly condition.")]
-        //public virtual EbScript DisableExpr { get; set; }
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
+        [Alias("Disable Expression")]
+        [PropertyGroup(PGConstants.BEHAVIOR)]
+        [HelpText("Define conditions to decide disable property of the control.")]
+        public virtual EbScript DisableExpr { get; set; }
 
         //ValExp depended ctrls list
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
         public virtual List<string> DependedValExp { get; set; }
 
-        //[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        //[HideInPropertyGrid]
-        //public virtual List<string> DependedHideExp { get; set; }
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [HideInPropertyGrid]
+        public virtual List<string> DependedHideExp { get; set; }
 
-        //[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        //[HideInPropertyGrid]
-        //public virtual List<string> DependedDisableExp { get; set; }
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [HideInPropertyGrid]
+        public virtual List<string> DependedDisableExp { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
