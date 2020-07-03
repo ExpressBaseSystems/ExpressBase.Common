@@ -22,8 +22,8 @@ namespace ExpressBase.Common.Objects
         {
             this.Validators = new List<EbValidator>();
             this.DependedValExp = new List<string>();
-            this.DependedDisableExp = new List<string>();
-            this.DependedHideExp = new List<string>();
+            this.DisableExpDependants = new List<string>();
+            this.HiddenExpDependants = new List<string>();
             this.ValExpParams = new List<string>();
         }
 
@@ -40,8 +40,8 @@ namespace ExpressBase.Common.Objects
                 this.DefaultValueExpression = new EbScript();
             if (this.DisableExpr == null)
                 this.DisableExpr = new EbScript();
-            if (this.HideExpr == null)
-                this.HideExpr = new EbScript();
+            if (this.HiddenExpr == null)
+                this.HiddenExpr = new EbScript();
             if (string.IsNullOrEmpty(this.OnChangeFn.Code) && !string.IsNullOrEmpty(_OnChange.Code))
                 this.OnChangeFn = _OnChange;
         }
@@ -147,7 +147,7 @@ namespace ExpressBase.Common.Objects
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
         [Alias("Hide Expression")]
         [HelpText("Define conditions to decide visibility of the control.")]
-        public virtual EbScript HideExpr { get; set; }
+        public virtual EbScript HiddenExpr { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS, PropertyEditorType.ScriptEditorSQ)]
@@ -158,23 +158,23 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
-        [Alias("Disable Expression")]
+        [Alias("ReadOnly Expression")]
         [PropertyGroup(PGConstants.BEHAVIOR)]
-        [HelpText("Define conditions to decide disable property of the control.")]
+        [HelpText("Define conditions to decide Disabled/Readonly property of the control.")]
         public virtual EbScript DisableExpr { get; set; }
 
-        //ValExp depended ctrls list
+        //ValExp Dependant ctrls list
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
         public virtual List<string> DependedValExp { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
-        public virtual List<string> DependedHideExp { get; set; }
+        public virtual List<string> HiddenExpDependants { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
-        public virtual List<string> DependedDisableExp { get; set; }
+        public virtual List<string> DisableExpDependants { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]

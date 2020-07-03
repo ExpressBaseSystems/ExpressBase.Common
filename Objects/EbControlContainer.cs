@@ -59,7 +59,7 @@ namespace ExpressBase.Common.Objects
         public override bool Hidden { get; set; }
 
         [JsonIgnore]
-        public override EbScript HideExpr { get; set; }
+        public override EbScript HiddenExpr { get; set; }
         
         [JsonIgnore]
         public override EbScript DisableExpr { get; set; }
