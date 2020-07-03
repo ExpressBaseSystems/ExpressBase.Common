@@ -49,7 +49,7 @@ namespace ExpressBase.Common.Objects
         public virtual bool IsRenderMode { get; set; }
 
         public virtual bool IsDynamicTabChild { get; set; }
-        
+
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual bool IsNonDataInputControl { get; set; }
@@ -60,8 +60,10 @@ namespace ExpressBase.Common.Objects
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.DashBoard)]
-        public virtual string EbSid_CtxId { 
-            get {
+        public virtual string EbSid_CtxId
+        {
+            get
+            {
                 return (!ContextId.IsNullOrEmpty()) ? string.Concat(ContextId, "_", EbSid) : EbSid;
             }
             set { }
@@ -83,7 +85,7 @@ namespace ExpressBase.Common.Objects
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.DashBoard)]
-        public virtual string ContextId 
+        public virtual string ContextId
         {
             get { return _ContextId; }
 
@@ -210,7 +212,7 @@ namespace ExpressBase.Common.Objects
         [PropertyGroup("Behavior")]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [Alias("Readonly")]
-		[OnChangeExec(@"if(pg.builderType==='BotForm'){
+        [OnChangeExec(@"if(pg.builderType==='BotForm'){
 							if (this.IsDisable === true ){
 								pg.ShowProperty('ProceedBtnTxt');
 							} 
@@ -218,16 +220,16 @@ namespace ExpressBase.Common.Objects
 								pg.HideProperty('ProceedBtnTxt');
 							}
 						}")]
-		[HelpText("Control will be Disabled/Readonly if set to TRUE")]
+        [HelpText("Control will be Disabled/Readonly if set to TRUE")]
         public virtual bool IsDisable { get; set; }
 
-		[PropertyGroup("Behavior")]
-		[EnableInBuilder(BuilderType.BotForm)]
-		[DefaultPropValue("Ok")]
-		[Alias("Proceed Button text")]
-		public string ProceedBtnTxt { get; set; }
+        [PropertyGroup("Behavior")]
+        [EnableInBuilder(BuilderType.BotForm)]
+        [DefaultPropValue("Ok")]
+        [Alias("Proceed Button text")]
+        public string ProceedBtnTxt { get; set; }
 
-		[EnableInBuilder(BuilderType.BotForm)]
+        [EnableInBuilder(BuilderType.BotForm)]
         [HelpText("Set true if you want to keep previous value in the control on subsequent form entry.")]
         [Alias("Maintain Previous Value ")]
         public virtual bool IsMaintainValue { get; set; }
@@ -249,7 +251,7 @@ namespace ExpressBase.Common.Objects
 
         [JsonIgnore]
         public virtual string DesignHtml4Bot { get; set; }
-        
+
         [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
         public virtual bool IsFullViewContol { get; set; }
@@ -327,22 +329,31 @@ namespace ExpressBase.Common.Objects
         public virtual string GetDisplayMemberJSfn { get { return @"return this.getValue();"; } set { } }
 
         [JsonIgnore]
-		public virtual string IsRequiredOKJSfn { get { return JSFnsConstants.Ctrl_IsRequiredOKJSfn; } set { } }
-
-		[JsonIgnore]
-        public virtual string SetValueJSfn { get { return @"$('#' + this.EbSid_CtxId).val(p1).trigger('change');"; } set { } }
-
-		[JsonIgnore]
-        public virtual string JustSetValueJSfn { get { return @"$('#' + this.EbSid_CtxId).val(p1)"; } set { } }
+        public virtual string IsRequiredOKJSfn { get { return JSFnsConstants.Ctrl_IsRequiredOKJSfn; } set { } }
 
         [JsonIgnore]
-        public virtual string SetDisplayMemberJSfn { get { return @"return this.setValue(p1);"; } set { } }
+        public virtual string SetValueJSfn { get { return SetDisplayMemberJSfn + @";$('#' + this.EbSid_CtxId).trigger('change');"; } set { } }
 
         [JsonIgnore]
-        public virtual string IsEmptyJSfn { get { return @" let val = this.getValue(); 
+        public virtual string SetDisplayMemberJSfn { get { return @"$('#' + this.EbSid_CtxId).val(p1)"; } set { } }//------------------
+
+        [JsonIgnore]
+        public virtual string JustSetValueJSfn
+        {
+            get { return @"
+                this.___isNotUpdateValExpDepCtrls = true;
+                this.setValue(p1);
+"; }
+            set { }
+        }
+
+        [JsonIgnore]
+        public virtual string IsEmptyJSfn
+        {
+            get { return @" let val = this.getValue(); 
                  return (isNaNOrEmpty(val) || (typeof val === 'number' && val === 0) || val === undefined || val === null);"; }
-				set { }
-		}
+            set { }
+        }
 
         [JsonIgnore]
         public virtual string HideJSfn { get { return @"$('#cont_' + this.EbSid_CtxId).hide(300); this.isInVisibleInUI = true;"; } set { } }
@@ -376,7 +387,7 @@ namespace ExpressBase.Common.Objects
 
         [JsonIgnore]
         public virtual string GetColumnJSfn { get { return @""; } set { } }
-        
+
         [JsonIgnore]
         public virtual string StyleJSFn { get { return @"EbAddInvalidStyle.bind(this)(p1, p2);"; } set { } }
 
@@ -441,11 +452,11 @@ namespace ExpressBase.Common.Objects
                 ControlHTML = string.Empty;
                 LabelHTML = bareHTML;
             }
-			if (type == "Label")
-			{
-				ControlHTML = string.Empty;
-			}
-			innerHTML = (!ChildObj.IsFullViewContol) ? (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>") : innerHTML.Replace("@style@", "style='width:100%;border:none;'");
+            if (type == "Label")
+            {
+                ControlHTML = string.Empty;
+            }
+            innerHTML = (!ChildObj.IsFullViewContol) ? (@"<div class='chat-ctrl-cont'>" + innerHTML + "</div>") : innerHTML.Replace("@style@", "style='width:100%;border:none;'");
             ResHTML = @"
 <div class='Eb-ctrlContainer iw-mTrigger' ctype='@type@'  eb-type='@type@' ebsid='@ebsid@'>
    @LabelHTML@
@@ -498,7 +509,7 @@ namespace ExpressBase.Common.Objects
         {
             return EbControl.GetSingleColumn(this, UserObj, SoluObj, Value);
         }
-        
+
         public static SingleColumn GetSingleColumn(EbControl _this, User UserObj, Eb_Solution SoluObj, object Value)
         {
             object _formattedData = Value;
