@@ -121,6 +121,31 @@ namespace ExpressBase.Common.Structures
         }
     }
 
+    public class CalendarOperations: EbOperations
+    {
+        public readonly EbOperation View;
+
+        private CalendarOperations()
+        {
+            View = new EbOperation(OperationConstants.VIEW, 0, OperationConstants.XXW);
+        }
+
+        public static EbOperations Instance
+        {
+            get
+            {
+                return new CalendarOperations();
+            }
+        }
+
+        public override IEnumerable<EbOperation> Enumerator
+        {
+            get
+            {
+                yield return View;
+            }
+        }
+    }
 
     public class CVOperations : EbOperations
     {
