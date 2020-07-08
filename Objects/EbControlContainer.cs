@@ -59,7 +59,7 @@ namespace ExpressBase.Common.Objects
         public override bool Hidden { get; set; }
 
         [JsonIgnore]
-        public override EbScript HideExpr { get; set; }
+        public override EbScript HiddenExpr { get; set; }
         
         [JsonIgnore]
         public override EbScript DisableExpr { get; set; }
@@ -259,8 +259,8 @@ namespace ExpressBase.Common.Objects
                                 opFnsJs += GetOpFnJs("isRequiredOK", _ctrlObj.IsRequiredOKJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("isEmpty", _ctrlObj.IsEmptyJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("setValue", _ctrlObj.SetValueJSfn, TypeName);
-                                opFnsJs += GetOpFnJs("justSetValue", _ctrlObj.JustSetValueJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("setDisplayMember", _ctrlObj.SetDisplayMemberJSfn, TypeName);
+                                opFnsJs += GetOpFnJs("justSetValue", _ctrlObj.JustSetValueJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("hide", _ctrlObj.HideJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("show", _ctrlObj.ShowJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("enable", _ctrlObj.EnableJSfn, TypeName);

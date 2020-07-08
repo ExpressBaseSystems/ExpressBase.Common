@@ -32,9 +32,11 @@ namespace ExpressBase.Common
         public const string PAYNOW = "/PayNow";
         public const string TWOFATOKEN = "Token";
 
+		public const string BOT_BEARER_TOKEN = "bot_bToken";
+		public const string BOT_REFRESH_TOKEN = "bot_rToken";
 
-        //Console
-        public const string WC = "wc";
+		//Console
+		public const string WC = "wc";
         public const string TC = "tc";
         public const string UC = "uc";
         public const string DC = "dc";
