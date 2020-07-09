@@ -58,7 +58,7 @@ namespace ExpressBase.Common.ServerEvents_Artifacts
         public object Msg { get; set; }
 
         [DataMember(Order = 3)]
-        public string ToSubId { get; set; }
+        public string ToSubscriptionId { get; set; }
     }
 
     [DataContract]
