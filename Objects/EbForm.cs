@@ -72,6 +72,10 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public List<string> DefaultValsExecOrder { get; set; }
 
+        [HideInPropertyGrid]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        public List<string> DoNotPersistExecOrder { get; set; }
+
         //UI Properties
         public override string BackColor { get; set; }
         public override string ForeColor { get; set; }
