@@ -74,7 +74,7 @@ namespace ExpressBase.Common.Extensions
                     {
                         Level = level,
                         Item = value,
-                        IsGroup = ((value as EbDataRow)[group] == "T" || true) ? true : false,
+                        IsGroup = ((value as EbDataRow)[group] == "T" || Convert.ToBoolean((value as EbDataRow)[group]) == true) ? true : false,
                         Children = children.AsReadOnly()
                     };
 

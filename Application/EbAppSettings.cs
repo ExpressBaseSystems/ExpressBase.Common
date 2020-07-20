@@ -41,9 +41,10 @@ namespace ExpressBase.Common.Application
         [DataMember(Order = 9)]
         public BotProperty BotProp = new BotProperty();
 
+		[DataMember(Order = 10)]
+		public bool UserType_Internal { get; set; } = false;
 
-
-        public EbBotSettings()
+		public EbBotSettings()
         {
             CssContent.Add("BOT_HEADER_PART", BotConstants.BOT_HEADER_PART);
             CssContent.Add("BOT_HEADER_ICON_CONT", BotConstants.BOT_HEADER_ICON_CONT);
@@ -103,13 +104,17 @@ namespace ExpressBase.Common.Application
         public string FbAppID { get; set; }
         public string FbAppVer { get; set; }
         public int LoginOpnCount { get; set; }
+		public bool OTP_based { get; set; }
+		public bool Password_based { get; set; }
 
-        public AnonymousAuth()
+		public AnonymousAuth()
         {
             Fblogin = false;
             EmailAuth = true;
             PhoneAuth = false;
             UserName = false;
+			OTP_based = false;
+			Password_based = false;
             FbAppID = "";
             FbAppVer = "";
             LoginOpnCount = 1;
