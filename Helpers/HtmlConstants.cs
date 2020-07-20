@@ -96,7 +96,8 @@ else ";
 
         public const string PS_JustSetValueJSfn = @"
 {
-    this.initializer.justInit = true;" + PS_SetValueJSfn +
+    this.___isNotUpdateValExpDepCtrls = true;"
+    + PS_SetValueJSfn +
 "}";
 
         public const string PS_SetValueJSfn = @"
