@@ -409,7 +409,10 @@ namespace ExpressBase.Common.Objects
 
         public virtual string GetHead() { return string.Empty; }
 
-        public virtual string GetHtml() { return string.Empty; }
+        public virtual string GetHtml()
+        {
+            return ReplacePropsInHTML(HtmlConstants.CONTROL_WRAPER_HTML4WEB); return string.Empty; 
+        }
 
         public virtual string GetHtml4Bot()
         {
