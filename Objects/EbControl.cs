@@ -22,6 +22,7 @@ namespace ExpressBase.Common.Objects
         {
             this.Validators = new List<EbValidator>();
             this.DependedValExp = new List<string>();
+            this.DrDependents = new List<string>();
             this.DisableExpDependants = new List<string>();
             this.HiddenExpDependants = new List<string>();
             this.ValExpParams = new List<string>();
@@ -169,6 +170,11 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
         public virtual List<string> DependedValExp { get; set; }
+
+        //Data reader dependents map
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [HideInPropertyGrid]
+        public virtual List<string> DrDependents { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
