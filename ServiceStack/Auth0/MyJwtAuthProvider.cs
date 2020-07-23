@@ -59,6 +59,39 @@ namespace ExpressBase.Common.ServiceStack.Auth
             return bearerToken;
         }
 
+        public override string CreateJwtRefreshToken(string userId, TimeSpan expireRefreshTokenIn) => CreateJwtRefreshToken(null, userId, expireRefreshTokenIn);
+
+        public override string CreateJwtRefreshToken(IRequest req, string userId, TimeSpan expireRefreshTokenIn)
+        {
+            if ((req.Dto as Authenticate).Meta.ContainsKey(TokenConstants.WC) && (req.Dto as Authenticate).Meta[TokenConstants.WC] == TokenConstants.MC)
+                expireRefreshTokenIn = new TimeSpan(31, 0, 0, 0);
+
+            var jwtHeader = new JsonObject
+            {
+                {"typ", "JWTR"}, //RefreshToken
+                {"alg", HashAlgorithm}
+            };
+
+            var keyId = GetKeyId(req);
+            if (keyId != null)
+                jwtHeader["kid"] = keyId;
+
+            var now = DateTime.UtcNow;
+            var jwtPayload = new JsonObject
+            {
+                {"sub", userId},
+                {"iat", now.ToUnixTime().ToString()},
+                {"exp", now.Add(expireRefreshTokenIn).ToUnixTime().ToString()},
+            };
+
+            if (Audience != null)
+                jwtPayload["aud"] = Audience;
+
+            var hashAlgoritm = GetHashAlgorithm(req);
+            var refreshToken = CreateJwt(jwtHeader, jwtPayload, hashAlgoritm);
+            return refreshToken;
+        }
+
         public override JsonObject CreateJwtPayload(
             IAuthSession session, string issuer, TimeSpan expireIn,
             string audience = null,
