@@ -573,10 +573,22 @@ namespace ExpressBase.Security
             return InitUserObject(dt, context, user_ip, string.Empty);
         }
 
+
+        public static User GetUserObject(IDatabase df, int userId, string whichConsole, string userIp, string deviceId)
+        {
+            string query = "SELECT * FROM eb_getuserobject(:uid, :wc);";
+            DbParameter[] p = new DbParameter[] {
+                df.GetNewParameter("uid", EbDbTypes.Int32,userId),
+                df.GetNewParameter("wc", EbDbTypes.String, whichConsole)
+            };
+            EbDataTable dt = df.DoQuery(query, p);
+            return InitUserObject(dt, whichConsole, userIp, deviceId);
+        }
+
         private static User InitUserObject(EbDataTable ds, string context, string ipAddress, string deviceId)
         {
-            //Columns : _userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id, _usergroup_a, _public_ids, _user_type
-            //              0         1         2        3         4           5            6                7               8              9           10             11           12
+            //Columns : _userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id, _usergroup_a, _public_ids, _user_type, phnoprimary
+            //              0         1         2        3         4           5            6                7               8              9           10             11           12          13
             User _user = null;
             int userid = Convert.ToInt32(ds.Rows[0][0]);
             if (userid > 0)
