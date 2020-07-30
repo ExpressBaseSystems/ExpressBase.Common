@@ -347,7 +347,7 @@ namespace ExpressBase.Common {
                 return ResourceManager.GetString("eb_authenticate_anonymous", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to -- FUNCTION: public.eb_authenticate_anonymous(text, text, text, text, text, text, text, text, text, text, text, text, text, integer, text)
         ///
@@ -358,7 +358,7 @@ namespace ExpressBase.Common {
         ///	in_fullname text DEFAULT NULL::text,
         ///	in_emailid text DEFAULT NULL::text,
         ///	in_phone text DEFAULT NULL::text,
-        ///	in_user_ [rest of string was truncated]&quot;;.
+        ///	in_user_ [rest of string was truncated]&quot;;..
         /// </summary>
         public static string eb_authenticate_anonymous1 {
             get {
@@ -1978,6 +1978,52 @@ namespace ExpressBase.Common {
         public static string eb_getroles3 {
             get {
                 return ResourceManager.GetString("eb_getroles3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_getuserobject(integer, text)
+        ///
+        ///-- DROP FUNCTION public.eb_getuserobject(integer, text);
+        ///
+        ///CREATE OR REPLACE FUNCTION public.eb_getuserobject(
+        ///	uid integer,
+        ///	wc text DEFAULT NULL::text)
+        ///    RETURNS TABLE(_userid integer, _status_id integer, _email text, _fullname text, _roles_a text, _rolename_a text, _permissions text, _preferencesjson text, _constraints_a text, _signin_id integer, _usergroup_a text, _public_ids text, _user_type integer, _phone text) 
+        ///    LANGUAGE &apos;plpgsql&apos;
+        ///
+        ///A [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_getuserobject {
+            get {
+                return ResourceManager.GetString("eb_getuserobject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --eb_getuserobject.
+        /// </summary>
+        public static string eb_getuserobject1 {
+            get {
+                return ResourceManager.GetString("eb_getuserobject1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --eb_getuserobject.
+        /// </summary>
+        public static string eb_getuserobject2 {
+            get {
+                return ResourceManager.GetString("eb_getuserobject2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --eb_getuserobject.
+        /// </summary>
+        public static string eb_getuserobject3 {
+            get {
+                return ResourceManager.GetString("eb_getuserobject3", resourceCulture);
             }
         }
         

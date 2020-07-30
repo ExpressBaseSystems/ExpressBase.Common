@@ -78,6 +78,7 @@ namespace ExpressBase.Common.Constants
                         "objectsdb.functioncreate.eb_object_create_patch_version.sql",
                         "objectsdb.functioncreate.eb_split_str_util.sql",
                         "objectsdb.functioncreate.eb_str_to_tbl_util.sql",
+                        "objectsdb.functioncreate.eb_getuserobject.sql",
                         "objectsdb.tablecreate.eb_applications.sql",
                         "objectsdb.tablecreate.eb_executionlogs.sql",
                         "objectsdb.tablecreate.eb_google_map.sql",

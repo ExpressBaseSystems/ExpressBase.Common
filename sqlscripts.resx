@@ -934,4 +934,16 @@
   <data name="eb_sms_logs3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\sqlserver\datadb\tablecreate\eb_sms_logs.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="eb_getuserobject" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\objectsdb\functioncreate\eb_getuserobject.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_getuserobject1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\objectsdb\functioncreate\eb_getuserobject.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_getuserobject2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\objectsdb\functioncreate\eb_getuserobject.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_getuserobject3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\sqlserver\objectsdb\functioncreate\eb_getuserobject.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
 </root>
