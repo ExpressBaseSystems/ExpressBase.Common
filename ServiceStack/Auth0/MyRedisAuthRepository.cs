@@ -16,7 +16,7 @@ namespace ExpressBase.Common.ServiceStack.Auth
         public override IUserAuth CreateUserAuth(IUserAuth newUser, string password)
         {
             using (var redis2 = factory2.GetClient())
-                redis2.Set<IUserAuth>(string.Format(TokenConstants.SUB_FORMAT, (newUser as User).CId, newUser.Email, (newUser as User).wc), newUser);
+                redis2.Set<IUserAuth>(string.Format(TokenConstants.SUB_FORMAT, (newUser as User).CId, (newUser as User).UserId, (newUser as User).wc), newUser);
 
             return newUser;
         }
@@ -24,7 +24,7 @@ namespace ExpressBase.Common.ServiceStack.Auth
         public override IUserAuth UpdateUserAuth(IUserAuth existingUser, IUserAuth newUser, string password)
         {
             using (var redis2 = factory2.GetClient())
-                redis2.Set<IUserAuth>(string.Format(TokenConstants.SUB_FORMAT, (newUser as User).CId, newUser.Email, (newUser as User).wc), newUser);
+                redis2.Set<IUserAuth>(string.Format(TokenConstants.SUB_FORMAT, (newUser as User).CId, (newUser as User).UserId, (newUser as User).wc), newUser);
 
             return newUser;
         }
@@ -32,7 +32,7 @@ namespace ExpressBase.Common.ServiceStack.Auth
         public override IUserAuth UpdateUserAuth(IUserAuth existingUser, IUserAuth newUser)
         {
             using (var redis2 = factory2.GetClient())
-                redis2.Set<IUserAuth>(string.Format(TokenConstants.SUB_FORMAT, (newUser as User).CId, newUser.Email, (newUser as User).wc), newUser);
+                redis2.Set<IUserAuth>(string.Format(TokenConstants.SUB_FORMAT, (newUser as User).CId, (newUser as User).UserId, (newUser as User).wc), newUser);
 
             return newUser;
         }
@@ -50,7 +50,7 @@ namespace ExpressBase.Common.ServiceStack.Auth
         {
             var csession = authSession as CustomUserSession;
             using (var redis2 = factory2.GetClient())
-                return redis2.Get<IUserAuth>(string.Format(TokenConstants.SUB_FORMAT, csession.CId, csession.Email, csession.WhichConsole));
+                return redis2.Get<IUserAuth>(string.Format(TokenConstants.SUB_FORMAT, csession.CId, csession.Uid, csession.WhichConsole));
         }
 
         public void Clear() { factory.Clear(); }
