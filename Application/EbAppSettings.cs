@@ -55,6 +55,8 @@ namespace ExpressBase.Common.Application
             CssContent.Add("BOT_CHAT_BUTTON", BotConstants.BOT_CHAT_BUTTON);
             CssContent.Add("BOT_IMAGE_CONT", BotConstants.BOT_IMAGE_CONT);
             CssContent.Add("BOT_BUTTON_IMAGE", BotConstants.BOT_BUTTON_IMAGE);
+            CssContent.Add("BOT_CLOSE_BUTTON", BotConstants.BOT_CLOSE_BUTTON);
+            CssContent.Add("BOT_MAXIMIZE_BUTTON", BotConstants.BOT_MAXIMIZE_BUTTON);
         }
     }
 
