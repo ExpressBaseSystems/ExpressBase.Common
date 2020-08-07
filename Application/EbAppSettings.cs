@@ -132,11 +132,14 @@ namespace ExpressBase.Common.Application
         public string Bg_type { get; set; }
         public string AppFont { get; set; }
         public string AppFontSize { get; set; }
-        public BotProperty()
+		public bool Use_Sol_logo { get; set; } 
+		public BotProperty()
         {
             EbTag = true;
             HeaderIcon = true;
             HeaderSubtxt = true;
-        }
+			Use_Sol_logo = false;
+
+		}
     }
 }
