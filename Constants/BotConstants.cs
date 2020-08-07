@@ -71,5 +71,22 @@ justify-content: center;";
 border-radius: 50%;
 height:100%;
 width: 100%;";
+	
+	public const string BOT_CLOSE_BUTTON = @"
+display: inline-block;
+float: right;
+font-size: 1.2em;
+padding: 0px 5px;
+margin: 10px 0px;
+cursor: pointer;";
+
+	public const string BOT_MAXIMIZE_BUTTON = @"
+margin-left: auto !important;
+display: inline-block;
+float: right;
+font-size: 1.2em;
+padding: 0px 5px;
+margin: 8px 3px;
+cursor: pointer;";
 	}
 }
