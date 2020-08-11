@@ -113,9 +113,9 @@ UPDATE eb_usersanonymous SET phoneno = in_phone, lastvisit = NOW(), totalvisits 
 END IF;
 
 IF is_anon_auth_req THEN
-SELECT _userid, _email, _status_id, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id, _usergroup_a, _public_ids, _user_type, _phone
+SELECT _email, _status_id, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id, _usergroup_a, _public_ids, _user_type, _phone
     FROM eb_authenticate_unified(uname => 'anonymous@anonym.com', password => '294de3557d9d00b3d2d8a1e6aab028cf', wc => in_wc, ipaddress => in_user_ip)
-    INTO out_userid, out_email, out_status_id, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson, out_constraints_a, out_signin_id, out_usergroup_a, out_public_ids, out_user_type, out_phone;
+    INTO out_email, out_status_id, out_fullname, out_roles_a, out_rolename_a, out_permissions, out_preferencesjson, out_constraints_a, out_signin_id, out_usergroup_a, out_public_ids, out_user_type, out_phone;
 END IF;
 
 RETURN QUERY
