@@ -96,6 +96,9 @@ namespace ExpressBase.Common.Data
                     return Value;
             }
         }
+
+        [DataMember(Order = 5)]
+        public bool Required { set; get; } = true;
     }
 
 }
