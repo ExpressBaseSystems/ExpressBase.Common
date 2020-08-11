@@ -46,7 +46,8 @@ namespace ExpressBase.Common.Application
 
 		public EbBotSettings()
         {
-            CssContent.Add("BOT_HEADER_PART", BotConstants.BOT_HEADER_PART);
+			//////change CssContent.Count in bote and dev controller if any css Constant is added or removed
+			CssContent.Add("BOT_HEADER_PART", BotConstants.BOT_HEADER_PART);
             CssContent.Add("BOT_HEADER_ICON_CONT", BotConstants.BOT_HEADER_ICON_CONT);
             CssContent.Add("BOT_HEADER_IMAGE", BotConstants.BOT_HEADER_IMAGE);
             CssContent.Add("BOT_HEADERSUBTEXT", BotConstants.BOT_HEADERSUBTEXT);
