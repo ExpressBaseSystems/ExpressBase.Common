@@ -594,6 +594,18 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 2)]
         public ImageMeta ImageInfo { get; set; }
     }
+	
+    public class DownloadBotExtImgRequest : EbServiceStackNoAuthRequest, IReturn<DownloadFileResponse>
+    {
+        [DataMember(Order = 1)]
+        public string RefId { get; set; }
+
+        [DataMember(Order = 2)]
+        public ImageMeta ImageInfo { get; set; }
+
+        [DataMember(Order = 3)]
+        public string SolnId { get; set; }
+    }
 
     [DataContract]
     public class FindFilesByTagRequest : EbServiceStackAuthRequest, IReturn<List<FileMeta>>
