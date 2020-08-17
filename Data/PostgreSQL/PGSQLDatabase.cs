@@ -1133,7 +1133,8 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
 	                                EO2A.app_id = @appid 
                                 {0}
                                 AND 
-	                                COALESCE(EO2A.eb_del, 'F') = 'F';
+	                                COALESCE(EO2A.eb_del, 'F') = 'F' 
+                                ORDER BY display_name;
                                 SELECT app_settings FROM eb_applications WHERE id = @appid;";
             }
         }

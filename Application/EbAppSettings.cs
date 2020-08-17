@@ -46,7 +46,8 @@ namespace ExpressBase.Common.Application
 
 		public EbBotSettings()
         {
-            CssContent.Add("BOT_HEADER_PART", BotConstants.BOT_HEADER_PART);
+			//////change CssContent.Count in bote and dev controller if any css Constant is added or removed
+			CssContent.Add("BOT_HEADER_PART", BotConstants.BOT_HEADER_PART);
             CssContent.Add("BOT_HEADER_ICON_CONT", BotConstants.BOT_HEADER_ICON_CONT);
             CssContent.Add("BOT_HEADER_IMAGE", BotConstants.BOT_HEADER_IMAGE);
             CssContent.Add("BOT_HEADERSUBTEXT", BotConstants.BOT_HEADERSUBTEXT);
@@ -55,6 +56,8 @@ namespace ExpressBase.Common.Application
             CssContent.Add("BOT_CHAT_BUTTON", BotConstants.BOT_CHAT_BUTTON);
             CssContent.Add("BOT_IMAGE_CONT", BotConstants.BOT_IMAGE_CONT);
             CssContent.Add("BOT_BUTTON_IMAGE", BotConstants.BOT_BUTTON_IMAGE);
+            CssContent.Add("BOT_CLOSE_BUTTON", BotConstants.BOT_CLOSE_BUTTON);
+            CssContent.Add("BOT_MAXIMIZE_BUTTON", BotConstants.BOT_MAXIMIZE_BUTTON);
         }
     }
 
@@ -130,11 +133,14 @@ namespace ExpressBase.Common.Application
         public string Bg_type { get; set; }
         public string AppFont { get; set; }
         public string AppFontSize { get; set; }
-        public BotProperty()
+		public bool Use_Sol_logo { get; set; } 
+		public BotProperty()
         {
             EbTag = true;
             HeaderIcon = true;
             HeaderSubtxt = true;
-        }
+			Use_Sol_logo = false;
+
+		}
     }
 }

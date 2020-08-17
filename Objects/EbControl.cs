@@ -215,7 +215,7 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.BotForm)]
         public virtual string BareControlHtml4Bot { get; set; }
 
-        [PropertyGroup("Behavior")]
+        [PropertyGroup(PGConstants.BEHAVIOR)]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [Alias("Readonly")]
         [OnChangeExec(@"if(pg.builderType==='BotForm'){

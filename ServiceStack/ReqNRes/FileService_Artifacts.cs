@@ -242,6 +242,48 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
          [DataMember(Order = 13)]
         public int InfraConID { get; set; }
     }
+	 [DataContract]
+    public class UploadLocRequest : IReturn<EbMqResponse>, IUploadImageRequest
+    {
+        [DataMember(Order = 1)]
+        public int ImageRefId { get; set; }
+
+        [DataMember(Order = 2)]
+        public EbFileCategory FileCategory { get; set; }
+
+        [DataMember(Order = 3)]
+        public byte[] Byte { get; set; }
+
+        [DataMember(Order = 4)]
+        public int ImgManpSerConId { get; set; }
+
+        [DataMember(Order = 5)]
+        public ImageQuality ImgQuality { get; set; }
+
+        [DataMember(Order = 6)]
+        public string RToken { get; set; }
+
+        [DataMember(Order = 7)]
+        public string BToken { get; set; }
+
+        [DataMember(Order = 8)]
+        public string SolnId { get; set; }
+
+        [DataMember(Order = 9)]
+        public int UserId { get; set; }
+
+        [DataMember(Order = 10)]
+        public string UserAuthId { get; set; }
+
+        [DataMember(Order = 11)]
+        public string WhichConsole { get; set; }
+
+        [DataMember(Order = 12)]
+        public string SolutionId { get; set; }
+
+         [DataMember(Order = 13)]
+        public int InfraConID { get; set; }
+    }
 
     [DataContract]
     public class ImageResizeRequest : EbMqRequest
@@ -551,6 +593,18 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 2)]
         public ImageMeta ImageInfo { get; set; }
+    }
+	
+    public class DownloadBotExtImgRequest : EbServiceStackNoAuthRequest, IReturn<DownloadFileResponse>
+    {
+        [DataMember(Order = 1)]
+        public string RefId { get; set; }
+
+        [DataMember(Order = 2)]
+        public ImageMeta ImageInfo { get; set; }
+
+        [DataMember(Order = 3)]
+        public string SolnId { get; set; }
     }
 
     [DataContract]
