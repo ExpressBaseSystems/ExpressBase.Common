@@ -24,7 +24,8 @@ CREATE TABLE eb_my_actions
     from_datetime timestamp without time zone,
     expiry_datetime timestamp without time zone,
 	my_action_type text,
-	exec_cxt_id integer,
+	except_user_ids text,
+    eb_meeting_schedule_id integer,
 	eb_meeting_slots_id integer,
     CONSTRAINT eb_my_actions_pkey PRIMARY KEY (id)
 );
