@@ -124,21 +124,21 @@ namespace ExpressBase.Common.Objects
         public virtual EbDbTypes EbDbType { get { return EbDbTypes.Decimal; } set { } }
 
         [PropertyGroup(PGConstants.HELP)]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.UserControl)]
         [PropertyPriority(98)]
         [PropertyEditor(PropertyEditorType.String64)]
         [HelpText("Help information.")]
         [OnChangeExec(@"
-        if(this.Info.trim() !== ''){
-            pg.ShowGroup('InfoIcon');
+        if(this.Info && this.Info.trim() !== ''){
+            pg.ShowProperty('InfoIcon');
         }
         else{
-            pg.HideGroup('InfoIcon');
+            pg.HideProperty('InfoIcon');
         }")]
         public virtual string Info { get; set; }
 
         [PropertyGroup(PGConstants.HELP)]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.UserControl)]
         [PropertyPriority(98)]
         [HelpText("Help information icon.")]
         [PropertyEditor(PropertyEditorType.IconPicker)]
