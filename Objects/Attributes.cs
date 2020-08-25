@@ -42,6 +42,7 @@ namespace ExpressBase.Common.Objects.Attributes
         //ColorPicker = 39,// 
         GradientColorPicker = 40,// 
         String64 = 41,// 
+        FileUploader = 42,// 
         ScriptEditorJS = 64,
         ScriptEditorCS = 128,
         ScriptEditorSQ = 256
