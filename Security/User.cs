@@ -78,9 +78,12 @@ namespace ExpressBase.Security
         [DataMember(Order = 18)]
         public override string PhoneNumber { get; set; }
 
+        [DataMember(Order = 19)]
+        public bool IsForcePWReset { get; set; }
+
         private List<string> _ebObjectIds = null;
 
-        [DataMember(Order = 19)]
+        [DataMember(Order = 20)]
         public List<string> EbObjectIds
         {
             get
@@ -191,7 +194,7 @@ namespace ExpressBase.Security
         /// 
         /// </summary>
         /// <param name="emailaddress"></param>
-        /// <returns>bool</returns>
+        /// <returns>bool</returns> 
         public static bool IsValidmail(string emailaddress)
         {
             return (Regex.IsMatch(emailaddress, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase));
@@ -587,8 +590,8 @@ namespace ExpressBase.Security
 
         private static User InitUserObject(EbDataTable ds, string context, string ipAddress, string deviceId)
         {
-            //Columns : _userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id, _usergroup_a, _public_ids, _user_type, phnoprimary
-            //              0         1         2        3         4           5            6                7               8              9           10             11           12          13
+            //Columns : _userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id, _usergroup_a, _public_ids, _user_type, phnoprimary, forcepwreset
+            //              0         1         2        3         4           5            6                7               8              9           10             11           12          13        14
             User _user = null;
             int userid = Convert.ToInt32(ds.Rows[0][0]);
             if (userid > 0)
@@ -639,7 +642,8 @@ namespace ExpressBase.Security
                     SourceIp = ipAddress,
                     UserGroupIds = userGroupIds,
                     UserType = Convert.ToInt32(ds.Rows[0][12]),
-                    PhoneNumber = ds.Rows[0][13].ToString()
+                    PhoneNumber = ds.Rows[0][13].ToString(),
+                    IsForcePWReset  = (ds.Rows[0][14].ToString() == "T") ? true : false
                 };
                 if (!ds.Rows[0].IsDBNull(8) && !_user.Roles.Contains(SystemRoles.SolutionOwner.ToString()) && !_user.Roles.Contains(SystemRoles.SolutionAdmin.ToString()))
                 {

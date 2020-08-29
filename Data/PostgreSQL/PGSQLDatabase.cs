@@ -849,7 +849,7 @@ SELECT R.id,R.role_name,R.description,A.applicationname,
             }
         }
 
-        public override string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_security_user(:_userid,:_id,:_fullname,:_nickname,:_email,:_pwd,:_dob,:_sex,:_alternateemail,:_phprimary,:_phsecondary,:_phlandphone,:_extension,:_fbid,:_fbname,:_roles,:_groups,:_statusid,:_hide,:_anonymoususerid,:_preferences,:_usertype,:_consadd,:_consdel);"; } }
+        public override string EB_SAVEUSER_QUERY { get { return "SELECT * FROM eb_security_user(:_userid, :_id, :_fullname, :_nickname, :_email, :_pwd, :_dob, :_sex, :_alternateemail, :_phprimary, :_phsecondary, :_phlandphone, :_extension, :_fbid, :_fbname, :_roles, :_groups, :_statusid, :_hide, :_anonymoususerid, :_preferences, :_usertype, :_consadd, :_consdel, :_forcepwreset, :_isolution_id);"; } }
 
         public override string EB_SAVEUSERGROUP_QUERY { get { return "SELECT * FROM eb_security_usergroup(:userid,:id,:name,:description,:users,:constraints_add,:constraints_del);"; } }
 
