@@ -9,9 +9,9 @@ CREATE OR REPLACE FUNCTION public.eb_authenticate_unified(
 	wc text DEFAULT NULL::text,
 	ipaddress text DEFAULT NULL::text,
 	deviceinfo text DEFAULT NULL::text)
-    RETURNS TABLE(_userid integer, _status_id integer, _email text, _fullname text, _roles_a text, _rolename_a text, _permissions text, _preferencesjson text, _constraints_a text, _signin_id integer, _usergroup_a text, _public_ids text, _user_type integer, _phone text) 
+    RETURNS TABLE(_userid integer, _status_id integer, _email text, _fullname text, _roles_a text, _rolename_a text, _permissions text, _preferencesjson text, _constraints_a text, _signin_id integer, _usergroup_a text, _public_ids text, _user_type integer, _phone text, _forcepwreset text) 
     LANGUAGE 'plpgsql'
-
+    
 AS $BODY$
 
 DECLARE _userid INTEGER;
@@ -31,15 +31,16 @@ DECLARE _temp1 INTEGER;
 DECLARE _public_ids TEXT;
 DECLARE _user_type INTEGER;
 DECLARE _phone TEXT;
+DECLARE _forcepwreset TEXT;
 
 BEGIN
 	_signin_id := 0;
 	-- NORMAL
 	IF uname IS NOT NULL AND password IS NOT NULL AND social IS NULL THEN
-        SELECT id, email, fullname, preferencesjson, eb_user_types_id, statusid, phnoprimary FROM eb_users 
-		WHERE (email = uname OR phnoprimary = uname) AND pwd = password AND (statusid = 0 OR statusid = 4) INTO _userid, _email, _fullname, _preferencesjson, _user_type, _status_id, _phone;
+        SELECT id, email, fullname, preferencesjson, eb_user_types_id, statusid, phnoprimary, forcepwreset FROM eb_users 
+		WHERE (email = uname OR phnoprimary = uname) AND (pwd = password OR pw = password) AND (statusid = 0 OR statusid = 4) INTO _userid, _email, _fullname, _preferencesjson, _user_type, _status_id, _phone, _forcepwreset;
 		IF _userid IS NULL THEN			
-			SELECT id, statusid FROM eb_users WHERE email = uname AND pwd = password INTO _userid, _status_id;
+			SELECT id, statusid FROM eb_users WHERE email = uname AND (pwd = password OR pw = password) INTO _userid, _status_id;
 			IF _userid IS NULL THEN
 				SELECT eb_users.id FROM eb_users WHERE eb_users.email = uname AND (statusid = 0 OR statusid = 4) INTO _userid;
 				IF _userid > 0 THEN
@@ -58,16 +59,16 @@ BEGIN
     END IF;
     -- SSO
     IF uname IS NOT NULL AND password IS NULL AND social IS NULL THEN
-        SELECT id, email, fullname, preferencesjson, eb_user_types_id, statusid, phnoprimary FROM eb_users 
-		WHERE(email = uname OR phnoprimary = uname) AND (statusid = 0 OR statusid = 4) INTO _userid, _email, _fullname, _preferencesjson, _user_type, _status_id, _phone;
+        SELECT id, email, fullname, preferencesjson, eb_user_types_id, statusid, phnoprimary, forcepwreset FROM eb_users 
+		WHERE(email = uname OR phnoprimary = uname) AND (statusid = 0 OR statusid = 4) INTO _userid, _email, _fullname, _preferencesjson, _user_type, _status_id, _phone, _forcepwreset;
 		IF _userid IS NULL THEN	
 			SELECT statusid FROM eb_users WHERE email = uname INTO _status_id;
 		END IF;
     END IF;
     -- SOCIAL
     IF uname IS NULL AND password IS NULL AND social IS NOT NULL THEN
-        SELECT id, email, fullname, preferencesjson, eb_user_types_id, statusid, phnoprimary FROM eb_users 
-		WHERE fbid = social AND (statusid = 0 OR statusid = 4) INTO _userid, _email, _fullname, _preferencesjson, _user_type, _status_id, _phone;
+        SELECT id, email, fullname, preferencesjson, eb_user_types_id, statusid, phnoprimary, _forcepwreset FROM eb_users 
+		WHERE fbid = social AND (statusid = 0 OR statusid = 4) INTO _userid, _email, _fullname, _preferencesjson, _user_type, _status_id, _phone, _forcepwreset;
 		IF _userid IS NULL THEN	
 			SELECT statusid FROM eb_users WHERE fbid = social INTO _status_id;
 		END IF;
@@ -104,8 +105,7 @@ BEGIN
 	IF _status_id IS NULL THEN
 		_status_id := 0;
 	END IF;
-    RETURN QUERY SELECT _userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id, _usergroup_a, _public_ids, _user_type, _phone;
+    RETURN QUERY SELECT _userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id, _usergroup_a, _public_ids, _user_type, _phone, _forcepwreset;
 END;
 
-$BODY$;
-
+$BODY$; 
