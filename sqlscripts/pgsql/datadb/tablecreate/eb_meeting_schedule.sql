@@ -28,6 +28,7 @@ eb_created_at 	timestamp without time zone DEFAULT now(),
 eb_lastmodified_by integer,
 eb_lastmodified_at timestamp without time zone,
 eb_del "char" DEFAULT 'F'::"char",
+meeting_opts integer,
 CONSTRAINT eb_meeting_schedule_pkey PRIMARY KEY (id)
 );
 

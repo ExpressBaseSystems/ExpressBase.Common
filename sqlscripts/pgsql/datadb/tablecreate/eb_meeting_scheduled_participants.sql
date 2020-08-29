@@ -14,6 +14,10 @@ eb_created_at 	timestamp without time zone DEFAULT now(),
 eb_lastmodified_by integer,
 eb_lastmodified_at timestamp without time zone,
 eb_del char(1) default 'F'
+type_of_user integer,
+user_ids text,
+role_ids text,
+CONSTRAINT eb_meeting_scheduled_participants_pkey PRIMARY KEY (id)
 );
 
 -- Index: eb_meeting_scheduled_participants_id_idx

@@ -123,6 +123,28 @@ namespace ExpressBase.Common.Objects
         [HideInPropertyGrid]
         public virtual EbDbTypes EbDbType { get { return EbDbTypes.Decimal; } set { } }
 
+        [PropertyGroup(PGConstants.HELP)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.UserControl)]
+        [PropertyPriority(98)]
+        [PropertyEditor(PropertyEditorType.String64)]
+        [HelpText("Help information.")]
+        [OnChangeExec(@"
+        if(this.Info && this.Info.trim() !== ''){
+            pg.ShowProperty('InfoIcon');
+        }
+        else{
+            pg.HideProperty('InfoIcon');
+        }")]
+        public virtual string Info { get; set; }
+
+        [PropertyGroup(PGConstants.HELP)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.UserControl)]
+        [PropertyPriority(98)]
+        [HelpText("Help information icon.")]
+        [PropertyEditor(PropertyEditorType.IconPicker)]
+        [DefaultPropValue("fa-question-circle")]
+        public virtual string InfoIcon { get; set; }
+
         [PropertyGroup(PGConstants.CORE)]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [UIproperty]
@@ -417,7 +439,7 @@ namespace ExpressBase.Common.Objects
 
         public virtual string GetHtml()
         {
-            return ReplacePropsInHTML(HtmlConstants.CONTROL_WRAPER_HTML4WEB); return string.Empty; 
+            return ReplacePropsInHTML(HtmlConstants.CONTROL_WRAPER_HTML4WEB);
         }
 
         public virtual string GetHtml4Bot()
