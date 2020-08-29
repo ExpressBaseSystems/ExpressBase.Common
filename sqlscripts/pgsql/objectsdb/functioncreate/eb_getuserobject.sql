@@ -5,9 +5,9 @@
 CREATE OR REPLACE FUNCTION public.eb_getuserobject(
 	uid integer,
 	wc text DEFAULT NULL::text)
-    RETURNS TABLE(_userid integer, _status_id integer, _email text, _fullname text, _roles_a text, _rolename_a text, _permissions text, _preferencesjson text, _constraints_a text, _signin_id integer, _usergroup_a text, _public_ids text, _user_type integer, _phone text) 
+    RETURNS TABLE(_userid integer, _status_id integer, _email text, _fullname text, _roles_a text, _rolename_a text, _permissions text, _preferencesjson text, _constraints_a text, _signin_id integer, _usergroup_a text, _public_ids text, _user_type integer, _phone text, _forcepwreset text) 
     LANGUAGE 'plpgsql'
-
+    
 AS $BODY$ 
 
 DECLARE _userid INTEGER;
@@ -27,15 +27,16 @@ DECLARE _temp1 INTEGER;
 DECLARE _public_ids TEXT;
 DECLARE _user_type INTEGER;
 DECLARE _phone TEXT;
+DECLARE _forcepwreset TEXT;
 
 BEGIN
 	_signin_id := 0;
 	SELECT 
-		id, email, fullname, preferencesjson, eb_user_types_id, statusid, phnoprimary FROM eb_users 
+		id, email, fullname, preferencesjson, eb_user_types_id, statusid, phnoprimary, forcepwreset FROM eb_users 
 	WHERE 
 		id = uid
 	INTO 
-		_userid, _email, _fullname, _preferencesjson, _user_type, _status_id, _phone;
+		_userid, _email, _fullname, _preferencesjson, _user_type, _status_id, _phone, _forcepwreset;
 		
     SELECT roles, role_name FROM eb_getroles(_userid, wc) INTO _roles_a, _rolename_a;
 	SELECT eb_getpermissions(string_to_array(_roles_a, ',')::int[]) INTO _permissions;
@@ -62,8 +63,7 @@ BEGIN
 		_status_id := 0;
 	END IF;
 	
-    RETURN QUERY SELECT _userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id, _usergroup_a, _public_ids, _user_type, _phone;
+    RETURN QUERY SELECT _userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id, _usergroup_a, _public_ids, _user_type, _phone, _forcepwreset;
 END;
 
-$BODY$;
-
+$BODY$; 
