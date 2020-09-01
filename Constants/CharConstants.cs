@@ -11,5 +11,6 @@
 		public const char SPACE = ' ';
         public const char SEMI_COLON = ';';
         public const char EQUALS = '=';
+        public const char AT = '@';
     }
 }
