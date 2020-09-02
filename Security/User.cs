@@ -643,7 +643,7 @@ namespace ExpressBase.Security
                     UserGroupIds = userGroupIds,
                     UserType = Convert.ToInt32(ds.Rows[0][12]),
                     PhoneNumber = ds.Rows[0][13].ToString(),
-                    IsForcePWReset  = (ds.Rows[0][14].ToString() == "T") ? true : false
+                    IsForcePWReset  = (ds.Rows[0][14].ToString() == string.Empty || ds.Rows[0][14].ToString() == "T" ) ? true : false
                 };
                 if (!ds.Rows[0].IsDBNull(8) && !_user.Roles.Contains(SystemRoles.SolutionOwner.ToString()) && !_user.Roles.Contains(SystemRoles.SolutionAdmin.ToString()))
                 {
