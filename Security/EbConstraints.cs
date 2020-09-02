@@ -50,6 +50,8 @@ namespace ExpressBase.Security
             for (int i = 0; i < add_ids.Length; i++)
             {
                 add_ids[i].ReplaceAll(";", string.Empty).ReplaceAll("$", string.Empty);
+                if (add_ids[i].IsEmpty())
+                    continue;
                 this.Constraints.Add(i, new EbConstraint()
                 {
                     KeyType = key_typ,
