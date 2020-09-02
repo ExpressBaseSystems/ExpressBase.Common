@@ -69,7 +69,14 @@ namespace ExpressBase.Common.Extensions
         {
             return EbObjectTypes.Get(Convert.ToInt32(RefId.Split("-")[2]));
         }
-        
+
         #endregion
+
+        public static TEnum ToEnum<TEnum>(this string value, bool ignoreCase = false) where TEnum : struct
+        {
+            TEnum tenumResult;
+            Enum.TryParse<TEnum>(value, ignoreCase, out tenumResult);
+            return tenumResult;
+        }
     }
 }

@@ -1151,9 +1151,9 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
 	                        COALESCE(EACT.eb_del, 'F') = 'F'
                         AND
 	                        (
-                                :userid = ANY(string_to_array(EACT.user_ids, ',')::int[])
+                                :userid = ANY(string_to_array(EACT.user_ids, ','))
 	                        OR
-	                            (string_to_array(EACT.role_ids, ',')::int[] && string_to_array(:roleids, ',')::int[])
+	                            (string_to_array(EACT.role_ids, ',') && string_to_array(:roleids, ','))
 	                        OR
 	                            EACT.usergroup_id = ANY(string_to_array(:usergroupids, ',')::int[])
 	                        )";
