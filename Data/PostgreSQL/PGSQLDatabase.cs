@@ -1156,7 +1156,8 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
 	                            (string_to_array(EACT.role_ids, ',') && string_to_array(:roleids, ','))
 	                        OR
 	                            EACT.usergroup_id = ANY(string_to_array(:usergroupids, ',')::int[])
-	                        )";
+	                        ) 
+                        ORDER BY EACT.from_datetime DESC";
             }
         }
 
