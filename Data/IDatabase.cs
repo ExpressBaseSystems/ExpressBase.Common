@@ -204,7 +204,7 @@ namespace ExpressBase.Common
                             eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
                         WHERE
                             EOV.refid = @refid AND EOS.eb_obj_ver_id = EOV.id AND EO.id = EOV.eb_objects_id
-                            AND COALESCE( EO.eb_del, 'F') = 'F'
+                            
                         ORDER BY
 	                        EOS.id DESC 
                         LIMIT 1";
