@@ -502,7 +502,7 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"SELECT id FROM eb_objects WHERE obj_name = @name ;";
+                return @"SELECT id FROM eb_objects WHERE display_name = @name ;";
             }
         }
         public virtual string EB_ENABLE_LOG

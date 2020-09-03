@@ -1552,7 +1552,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
         {
             get
             {
-                return @"SELECT id FROM eb_objects WHERE obj_name = :name ;";
+                return @"SELECT id FROM eb_objects WHERE display_name = :name ;";
             }
         }
 
