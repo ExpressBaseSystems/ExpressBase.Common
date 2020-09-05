@@ -36,7 +36,8 @@ namespace ExpressBase.Common.Helpers
 }
 
 
-namespace ExpressBase.Common {
+namespace ExpressBase.Common
+{
 
     public class AppWrapper
     {
@@ -54,8 +55,32 @@ namespace ExpressBase.Common {
 
         public List<EbObject> ObjCollection { get; set; }
 
-        public string Title { get; set; }
+        //public string Title { get; set; }
 
-        public bool IsPublic { get; set; }
+        //public bool IsPublic { get; set; }
+    }
+
+    public class ExportPackage
+    { 
+        public List<AppWrapper> Apps { get; set; }
+
+        public EbDataSet DataSet { get; set; }
+    }
+
+    public class ExportTables
+    {
+        public string TableName { get; set; }
+
+        public string Columns { get; set; }
+
+        public List<string> Rows { get; set; }
+    }
+
+    public class ExportPackageCollection
+    {
+        public string packName { get; set; }
+        public string packDesc { get; set; }
+        public string packIcon { get; set; }
+        public Dictionary<int, string> appColl { get; set; }
     }
 }
