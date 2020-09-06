@@ -880,7 +880,7 @@ SELECT id,fullname,email
             get
             {
                 return @"
-INSERT INTO eb_applications (applicationname,application_type, description,app_icon) VALUES (:applicationname,:apptype, :description,:appicon) RETURNING id;";
+INSERT INTO eb_applications (applicationname,application_type, description, app_icon, app_settings) VALUES (:applicationname,:apptype, :description,:appicon, :appSettings) RETURNING id;";
             }
         }
 
