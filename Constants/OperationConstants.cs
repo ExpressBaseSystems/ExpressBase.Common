@@ -38,6 +38,8 @@ namespace ExpressBase.Common.Constants
         public const string DELETE = "Delete";
         public const string CANCEL = "Cancel";
         public const string AUDIT_TRAIL = "AuditTrail";
+        public const string CLONE = "Clone";
+        public const string EXCEL_IMPORT = "ExcelImport";
 
         public const string VIEWLOG = "ViewLog";
         public const string EXECUTE = "Execute";
