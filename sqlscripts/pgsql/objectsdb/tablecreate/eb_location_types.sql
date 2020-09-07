@@ -10,7 +10,8 @@ CREATE TABLE eb_location_types
     eb_created_at timestamp without time zone,
     eb_lastmodified_by integer,
     eb_lastmodified_at timestamp without time zone,
-    eb_del "char" DEFAULT 'F'::"char"
+    eb_del "char" DEFAULT 'F'::"char",
+    CONSTRAINT eb_location_types_pkey PRIMARY KEY (id)
 );
 
 -- Index: eb_location_types_id_idx
