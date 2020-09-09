@@ -62,6 +62,10 @@ namespace ExpressBase.Common
 
     public class ExportPackage
     { 
+        public ExportPackage()
+        {
+            Apps = new List<AppWrapper>();
+        }
         public List<AppWrapper> Apps { get; set; }
 
         public EbDataSet DataSet { get; set; }
