@@ -318,8 +318,8 @@ namespace ExpressBase.Common
         Fail_Mode = 4,
         Preview_Mode = 5,
         Prefill_Mode = 6,
-        Export_mode = 7,
-        Draft_mode = 8
+        Export_Mode = 7,
+        Draft_Mode = 8
     }
 
 
