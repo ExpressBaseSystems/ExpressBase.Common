@@ -6,6 +6,9 @@ namespace ExpressBase.Common
 {
     public static class RoutingConstants
     {
+        public const string LIVEHOSTADDRESS = "expressbase.com";
+        public const string STAGEHOSTADDRESS = "eb-test.cloud";
+
         public const string LOCALHOST = "localhost";
         public const string WWWDOT = "www.";
 
