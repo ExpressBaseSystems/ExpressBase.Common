@@ -79,7 +79,14 @@ ELSE
 	uid := 0; 
 	SELECT md5(_pwd || _email) INTO _pwdfield;	
 	
-	SELECT COUNT(*) FROM eb_users WHERE LOWER(email)=LOWER(_email) AND COALESCE(eb_del, 'F')='F' INTO uid;
+	IF (COALESCE(_email, '') <> '') THEN
+		SELECT COUNT(*) FROM eb_users WHERE LOWER(email) = LOWER(_email) AND COALESCE(eb_del, 'F') = 'F' INTO uid;
+	END IF;
+	
+	IF (COALESCE(_phnoprimary, '') <> '') THEN
+		SELECT COUNT(*) FROM eb_users WHERE LOWER(phnoprimary) = LOWER(_phnoprimary) AND COALESCE(eb_del, 'F') = 'F' INTO uid;
+	END IF;
+			      
 	IF(uid > 0) THEN
 		uid := -2;
 	ELSE
