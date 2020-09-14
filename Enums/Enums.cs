@@ -84,7 +84,8 @@ namespace ExpressBase.Common
         Slack = 15,
         Facebook = 16,
         Unifonic = 17,
-        TextLocal = 18
+        TextLocal = 18,
+        OSM = 19,
     }
 
     public enum SmtpProviders
@@ -106,7 +107,8 @@ namespace ExpressBase.Common
 
     public enum MapVendors
     {
-        GOOGLEMAP
+        GOOGLEMAP =1,
+        OSM =2,
     }
     public enum SendGridVendors
     {

@@ -422,6 +422,10 @@ namespace ExpressBase.Common.Connections
     {
         public override EbIntegrations Type { get { return EbIntegrations.GoogleMap; } }
     }
+     public class OpenStreetMapConfig : EbMapConfig
+    {
+        public override EbIntegrations Type { get { return EbIntegrations.OSM; } }
+    }
 
 
     public class EbIntegration
