@@ -8,7 +8,7 @@ namespace ExpressBase.Common
     {
         public const string LIVEHOSTADDRESS = ".expressbase.com";
         public const string STAGEHOSTADDRESS = ".eb-test.cloud";
-        public const string LOCALHOSTADDRESS = ".localhost:41500";
+        public const string LOCALHOSTADDRESS = ".localhost";
 
         public const string LOCALHOST = "localhost";
         public const string WWWDOT = "www.";
