@@ -68,16 +68,13 @@ namespace ExpressBase.Common
         }
         public List<AppWrapper> Apps { get; set; }
 
-        public EbDataSet DataSet { get; set; }
+        public PackageDataSets DataSet { get; set; }
     }
 
-    public class ExportTables
+    public class PackageDataSets 
     {
-        public string TableName { get; set; }
-
-        public string Columns { get; set; }
-
-        public List<string> Rows { get; set; }
+        public EbDataSet FullExportTables { get; set; }
+        public EbDataSet ConditionalExportTables { get; set; }
     }
 
     public class ExportPackageCollection
