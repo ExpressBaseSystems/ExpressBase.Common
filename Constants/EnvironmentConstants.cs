@@ -112,5 +112,8 @@ namespace ExpressBase.Common
         //for push azure Notification Hub
         public const string EB_AZURE_PNS_CON = "EB_AZURE_PNS_CON";
         public const string EB_AZURE_PNS_HUBNAME = "EB_AZURE_PNS_HUBNAME";
+
+        public const string MOVEON_AZURE_PNS_CON = "MOVEON_AZURE_PNS_CON";
+        public const string MOVEON_AZURE_PNS_HUBNAME = "MOVEON_AZURE_PNS_HUBNAME";
     }
 }
