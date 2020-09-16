@@ -19,7 +19,7 @@ namespace ExpressBase.Common {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class sqlscripts {
@@ -347,7 +347,7 @@ namespace ExpressBase.Common {
                 return ResourceManager.GetString("eb_authenticate_anonymous", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to -- FUNCTION: public.eb_authenticate_anonymous(text, text, text, text, text, text, text, text, text, text, text, text, text, integer, text)
         ///
@@ -358,7 +358,7 @@ namespace ExpressBase.Common {
         ///	in_fullname text DEFAULT NULL::text,
         ///	in_emailid text DEFAULT NULL::text,
         ///	in_phone text DEFAULT NULL::text,
-        ///	in_user_ [rest of string was truncated]&quot;;..
+        ///	in_user_ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_authenticate_anonymous1 {
             get {
@@ -1665,6 +1665,60 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_form_drafts
+        ///
+        ///-- DROP TABLE public.eb_form_drafts;
+        ///
+        ///CREATE TABLE public.eb_form_drafts
+        ///(
+        ///    id SERIAL,
+        ///    title text,
+        ///    form_data_json text,
+        ///    form_ref_id text,
+        ///    form_data_id integer,
+        ///    is_submitted &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    eb_loc_id integer,
+        ///    eb_created_by integer,
+        ///    eb_created_at timestamp without time zone,
+        ///    eb_lastmodified_at timestamp without time zone,
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    CONSTRAINT eb_form_drafts_pkey PRIMARY KEY (id [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_form_drafts {
+            get {
+                return ResourceManager.GetString("eb_form_drafts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_form_drafts.
+        /// </summary>
+        public static string eb_form_drafts1 {
+            get {
+                return ResourceManager.GetString("eb_form_drafts1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_form_drafts.
+        /// </summary>
+        public static string eb_form_drafts2 {
+            get {
+                return ResourceManager.GetString("eb_form_drafts2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_form_drafts
+        ///.
+        /// </summary>
+        public static string eb_form_drafts3 {
+            get {
+                return ResourceManager.GetString("eb_form_drafts3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 
         ///CREATE OR REPLACE FUNCTION eb_get_tagged_object(
         ///tag CLOB
@@ -1989,10 +2043,8 @@ namespace ExpressBase.Common {
         ///CREATE OR REPLACE FUNCTION public.eb_getuserobject(
         ///	uid integer,
         ///	wc text DEFAULT NULL::text)
-        ///    RETURNS TABLE(_userid integer, _status_id integer, _email text, _fullname text, _roles_a text, _rolename_a text, _permissions text, _preferencesjson text, _constraints_a text, _signin_id integer, _usergroup_a text, _public_ids text, _user_type integer, _phone text) 
-        ///    LANGUAGE &apos;plpgsql&apos;
-        ///
-        ///A [rest of string was truncated]&quot;;.
+        ///    RETURNS TABLE(_userid integer, _status_id integer, _email text, _fullname text, _roles_a text, _rolename_a text, _permissions text, _preferencesjson text, _constraints_a text, _signin_id integer, _usergroup_a text, _public_ids text, _user_type integer, _phone text, _forcepwreset text) 
+        ///    LAN [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_getuserobject {
             get {
@@ -2293,16 +2345,15 @@ namespace ExpressBase.Common {
         ///    eb_created_at timestamp without time zone,
         ///    eb_lastmodified_by integer,
         ///    eb_lastmodified_at timestamp without time zone,
-        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    CONSTRAINT eb_location_types_pkey PRIMARY KEY (id)
         ///);
         ///
         ///-- Index: eb_location_types_id_idx
         ///
         ///-- DROP INDEX public.eb_location_types_id_idx;
         ///
-        ///CREATE INDEX eb_location_types_id_idx ON eb_location_types(id);
-        ///
-        ///-- [rest of string was truncated]&quot;;.
+        ///CREATE INDEX [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_location_types {
             get {
@@ -2632,10 +2683,9 @@ namespace ExpressBase.Common {
         ///eb_created_at 	timestamp without time zone DEFAULT now(),
         ///eb_lastmodified_by integer,
         ///eb_lastmodified_at timestamp without time zone,
-        ///eb_del char(1) default &apos;F&apos;
-        ///);
-        ///
-        ///-- Index: eb_meeting_s [rest of string was truncated]&quot;;.
+        ///eb_del char(1) default &apos;F&apos;,
+        ///type_of_user integer,
+        ///user [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_meeting_scheduled_participants {
             get {
@@ -2698,7 +2748,7 @@ namespace ExpressBase.Common {
         ///role_id integer,
         ///user_group_id integer,
         ///eb_meeting_schedule_id integer,
-        ///Approved_slot_id integer,
+        ///approved_slot_id integer,
         ///email text,
         ///name text,
         ///phone_num text,
@@ -2779,7 +2829,8 @@ namespace ExpressBase.Common {
         ///eb_lastmodified_by integer,
         ///eb_lastmodified_at timestamp without time zone,
         ///eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
-        ///CONSTRAINT eb_meeting_slots_ [rest of string was truncated]&quot;;.
+        ///meeting_opts integer,
+        ///CONST [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_meeting_slots {
             get {
@@ -6255,26 +6306,30 @@ namespace ExpressBase.Common {
         ///
         ///CREATE TABLE eb_users
         ///(
-        ///    id serial,
-        ///    email text,
-        ///    pwd text,
-        ///    firstname text,
-        ///    lastname text,
-        ///    middlename text,
-        ///    dob date,
-        ///    phnoprimary text,
-        ///    phnosecondary text,
-        ///    landline text,
-        ///    phextension text,    
-        ///    alternateemail text,	
-        ///    profileimg text,
-        ///    slackjson json,
-        ///    prolink text,
-        ///    loginattempts integer DEFAULT 1,
-        ///    socialid text,
-        ///    socialname text,
-        ///    fullname text,
-        ///    nickname  [rest of string was truncated]&quot;;.
+        ///	id serial,
+        ///	email text,
+        ///	pwd text,
+        ///	firstname text,
+        ///	lastname text,
+        ///	middlename text,
+        ///	dob date,
+        ///	phnoprimary text,
+        ///	phnosecondary text,
+        ///	landline text,
+        ///	phextension text,    
+        ///	alternateemail text,	
+        ///	profileimg text,
+        ///	slackjson json,
+        ///	prolink text,
+        ///	loginattempts integer DEFAULT 1,
+        ///	socialid text,
+        ///	socialname text,
+        ///	fullname text,
+        ///	nickname text,
+        ///	sex text,
+        ///	fbid text,
+        ///	fbname text,
+        ///	preferencesj [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_users1 {
             get {
