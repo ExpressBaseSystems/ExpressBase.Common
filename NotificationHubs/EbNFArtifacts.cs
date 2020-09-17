@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ExpressBase.Common.Data;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -17,6 +18,12 @@ namespace ExpressBase.Common.NotificationHubs
         ExpressBase = 1,
         MoveOn = 2,
         kudumbaShree = 3
+    }
+
+    public enum EbNFLinkTypes
+    {
+        Page = 1,
+        Action = 2
     }
 
     public class DeviceRegistration
@@ -47,6 +54,11 @@ namespace ExpressBase.Common.NotificationHubs
     public class EbNFRequest : DeviceRegistration
     {
         public string PayLoad { set; get; }
+
+        public void SetPayload(EbNFDataTemplate template)
+        {
+            this.PayLoad = JsonConvert.SerializeObject(template);
+        }
     }
 
     [DataContract]
@@ -66,7 +78,7 @@ namespace ExpressBase.Common.NotificationHubs
         }
     }
 
-    public class EbNFDataTemplate 
+    public class EbNFDataTemplate
     {
 
     }
@@ -76,11 +88,29 @@ namespace ExpressBase.Common.NotificationHubs
         public string Title { set; get; }
 
         public string Message { set; get; }
+
+        public EbNFLink Link { set; get; }
+    }
+
+    public class EbNFLink
+    {
+        public EbNFLinkTypes LinkType { set; get; }
+
+        public string LinkRefId { set; get; }
+
+        public string ActionId { set; get; }
+
+        public Param LinkParameters { set; get; }
     }
 
     public class EbNFDataTemplateAndroid : EbNFDataTemplate
     {
         [JsonProperty("data")]
         public EbNFData Data { set; get; }
+
+        public EbNFDataTemplateAndroid()
+        {
+            Data = new EbNFData();
+        }
     }
 }
