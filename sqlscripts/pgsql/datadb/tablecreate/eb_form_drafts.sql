@@ -1,4 +1,4 @@
-﻿-- Table: public.eb_form_drafts
+-- Table: public.eb_form_drafts
 
 -- DROP TABLE public.eb_form_drafts;
 
