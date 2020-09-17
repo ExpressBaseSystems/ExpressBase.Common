@@ -16,6 +16,13 @@ namespace ExpressBase.Common
         STANDARD = 1
     }
 
+    public enum SolutionType
+    {
+        NORMAL = 1,
+        PRIMARY = 2,
+        REPLICA = 3
+    }
+
     public enum DatabaseVendors // Used to cast to EbIntegrations. Dont change order n name
     {
         PGSQL = 1,
@@ -107,8 +114,8 @@ namespace ExpressBase.Common
 
     public enum MapVendors
     {
-        GOOGLEMAP =1,
-        OSM =2,
+        GOOGLEMAP = 1,
+        OSM = 2,
     }
     public enum SendGridVendors
     {
