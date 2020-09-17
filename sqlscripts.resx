@@ -946,16 +946,4 @@
   <data name="eb_getuserobject3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\sqlserver\objectsdb\functioncreate\eb_getuserobject.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="eb_form_drafts" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sqlScripts\pgsql\datadb\tablecreate\eb_form_drafts.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="eb_form_drafts1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sqlScripts\oracle\datadb\tablecreate\eb_form_drafts.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_form_drafts2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sqlScripts\mysql\datadb\tablecreate\eb_form_drafts.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="eb_form_drafts3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sqlScripts\sqlserver\datadb\tablecreate\eb_form_drafts.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
 </root>
