@@ -3,6 +3,7 @@ using ExpressBase.Common.Constants;
 using ExpressBase.Common.Data.FTP;
 using ExpressBase.Common.Data.MongoDB;
 using ExpressBase.Common.Integrations;
+using ExpressBase.Common.LocationNSolution;
 using ExpressBase.Common.Messaging;
 using ExpressBase.Common.Messaging.Slack;
 //using ExpressBase.Common.Messaging.ExpertTexting;
@@ -83,6 +84,36 @@ namespace ExpressBase.Common.Data
                 }
 
                 return _connections;
+            }
+
+            set
+            {
+                _connections = value;
+            }
+        }
+
+        private EbConnectionsConfig _masterConnections = null;
+        private EbConnectionsConfig MasterConnections
+        {
+            get
+            {
+                if (_masterConnections == null && !string.IsNullOrEmpty(this.SolutionId))
+                {
+                    Eb_Solution s_obj = this.Redis.Get<Eb_Solution>(String.Format("solution_{0}", this.SolutionId));
+                    if (s_obj != null && !string.IsNullOrEmpty(s_obj.PrimarySolution))
+                    {
+                        if (this.Redis == null && RedisManager != null)
+                            using (this.Redis = this.RedisManager.GetClient() as RedisClient)
+                            {
+                                _masterConnections = this.Redis.Get<EbConnectionsConfig>(string.Format(CoreConstants.SOLUTION_INTEGRATION_REDIS_KEY, s_obj.PrimarySolution));
+                            }
+                        else
+                        {
+                            _masterConnections = this.Redis.Get<EbConnectionsConfig>(string.Format(CoreConstants.SOLUTION_INTEGRATION_REDIS_KEY, s_obj.PrimarySolution));
+                        }
+                    }
+                }
+                return _masterConnections;
             }
 
             set
@@ -347,15 +378,28 @@ namespace ExpressBase.Common.Data
                 if (Connections.EmailConfigs != null)
                 {
                     EmailConnection = new EbMailConCollection(Connections.EmailConfigs);
-                } 
-                //if (Connections.ChatConfigs != null)
-                //{
-                //    ChatConnection = new ChatCollection(Connections.ChatConfigs);
-                //}
+                }
+                else if (MasterConnections.EmailConfigs != null)
+                {
+                    EmailConnection = new EbMailConCollection(MasterConnections.EmailConfigs);
+                }
+
+                //SmsConfigs
                 if (Connections.SMSConfigs != null)
                 {
                     SMSConnection = new EbSmsConCollection(Connections.SMSConfigs);
                 }
+                else if (MasterConnections.SMSConfigs != null)
+                {
+                    SMSConnection = new EbSmsConCollection(MasterConnections.SMSConfigs);
+                }
+
+
+                //if (Connections.ChatConfigs != null)
+                //{
+                //    ChatConnection = new ChatCollection(Connections.ChatConfigs);
+                //}
+
                 if (Connections.CloudinaryConfigs != null && Connections.CloudinaryConfigs.Count > 0)
                 {
                     if (ImageManipulate == null)
