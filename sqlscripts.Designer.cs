@@ -1665,6 +1665,59 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_form_drafts
+        ///
+        ///-- DROP TABLE public.eb_form_drafts;
+        ///
+        ///CREATE TABLE public.eb_form_drafts
+        ///(
+        ///    id SERIAL,
+        ///    title text,
+        ///    form_data_json text,
+        ///    form_ref_id text,
+        ///    form_data_id integer,
+        ///    is_submitted &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    eb_loc_id integer,
+        ///    eb_created_by integer,
+        ///    eb_created_at timestamp without time zone,
+        ///    eb_lastmodified_at timestamp without time zone,
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    CONSTRAINT eb_form_drafts_pkey PRIMARY KEY (id [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_form_drafts {
+            get {
+                return ResourceManager.GetString("eb_form_drafts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_form_drafts.
+        /// </summary>
+        public static string eb_form_drafts1 {
+            get {
+                return ResourceManager.GetString("eb_form_drafts1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_form_drafts.
+        /// </summary>
+        public static string eb_form_drafts2 {
+            get {
+                return ResourceManager.GetString("eb_form_drafts2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_form_drafts.
+        /// </summary>
+        public static string eb_form_drafts3 {
+            get {
+                return ResourceManager.GetString("eb_form_drafts3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 
         ///CREATE OR REPLACE FUNCTION eb_get_tagged_object(
         ///tag CLOB
