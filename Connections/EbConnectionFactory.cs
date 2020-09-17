@@ -379,7 +379,7 @@ namespace ExpressBase.Common.Data
                 {
                     EmailConnection = new EbMailConCollection(Connections.EmailConfigs);
                 }
-                else if (MasterConnections.EmailConfigs != null)
+                else if (MasterConnections != null && MasterConnections.EmailConfigs != null)
                 {
                     EmailConnection = new EbMailConCollection(MasterConnections.EmailConfigs);
                 }
@@ -389,7 +389,7 @@ namespace ExpressBase.Common.Data
                 {
                     SMSConnection = new EbSmsConCollection(Connections.SMSConfigs);
                 }
-                else if (MasterConnections.SMSConfigs != null)
+                else if (MasterConnections != null && MasterConnections.SMSConfigs != null)
                 {
                     SMSConnection = new EbSmsConCollection(MasterConnections.SMSConfigs);
                 }
