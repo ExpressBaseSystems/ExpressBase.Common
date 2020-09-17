@@ -84,6 +84,11 @@ namespace ExpressBase.Common.LocationNSolution
         public string OtpDelivery { get; set; }
 
         public SolutionSettings SolutionSettings { get; set; }
+
+        public SolutionType SolutionType { get; set; }
+
+        public string PrimarySolution { get; set; }
+
         public Eb_Solution()
         {
             Locations = new Dictionary<int, EbLocation>();
