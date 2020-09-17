@@ -428,7 +428,7 @@ namespace ExpressBase.Common.Objects
 .Replace("@childOf@", this.ChildOf.IsNullOrEmpty() ? string.Empty : "childOf='" + this.ChildOf + "'")
 .Replace("@ebsid@", this.IsRenderMode && this.IsDynamicTabChild ? "@" + this.EbSid_CtxId + "_ebsid@" : this.EbSid_CtxId)
 .Replace("@isHidden@", this.Hidden.ToString().ToLower())
-.Replace("@isReadonly@", this.IsDisable.ToString().ToLower())
+.Replace("@isReadonly@", ((this.ObjType =="TVcontrol") ? false :this.IsDisable).ToString().ToLower())
 .Replace("@helpText@", this.HelpText)
 .Replace("@type@", this.ObjType)
 .Replace("@Label@", (Label ?? ""))
