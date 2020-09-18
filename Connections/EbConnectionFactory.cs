@@ -120,7 +120,7 @@ namespace ExpressBase.Common.Data
 
             set
             {
-                _connections = value;
+                _masterConnections = value;
             }
         }
 
