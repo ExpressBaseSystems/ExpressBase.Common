@@ -99,18 +99,20 @@ namespace ExpressBase.Common.Data
             {
                 if (_masterConnections == null && !string.IsNullOrEmpty(this.SolutionId))
                 {
-                    Eb_Solution s_obj = this.Redis.Get<Eb_Solution>(String.Format("solution_{0}", this.SolutionId));
+                    if (this.Redis == null && RedisManager != null)
+                        this.Redis = this.RedisManager.GetClient() as RedisClient;
+                        Eb_Solution s_obj = this.Redis.Get<Eb_Solution>(String.Format("solution_{0}", this.SolutionId));
                     if (s_obj != null && !string.IsNullOrEmpty(s_obj.PrimarySolution))
                     {
-                        if (this.Redis == null && RedisManager != null)
-                            using (this.Redis = this.RedisManager.GetClient() as RedisClient)
-                            {
+                        //if (this.Redis == null && RedisManager != null)
+                        //    using (this.Redis = this.RedisManager.GetClient() as RedisClient)
+                        //    {
                                 _masterConnections = this.Redis.Get<EbConnectionsConfig>(string.Format(CoreConstants.SOLUTION_INTEGRATION_REDIS_KEY, s_obj.PrimarySolution));
-                            }
-                        else
-                        {
-                            _masterConnections = this.Redis.Get<EbConnectionsConfig>(string.Format(CoreConstants.SOLUTION_INTEGRATION_REDIS_KEY, s_obj.PrimarySolution));
-                        }
+                        //    }
+                        //else
+                        //{
+                        //    _masterConnections = this.Redis.Get<EbConnectionsConfig>(string.Format(CoreConstants.SOLUTION_INTEGRATION_REDIS_KEY, s_obj.PrimarySolution));
+                        //}
                     }
                 }
                 return _masterConnections;
@@ -375,7 +377,7 @@ namespace ExpressBase.Common.Data
 
 
                 //EmailConfigs
-                if (Connections.EmailConfigs != null)
+                 if (Connections.EmailConfigs != null)
                 {
                     EmailConnection = new EbMailConCollection(Connections.EmailConfigs);
                 }
