@@ -107,8 +107,8 @@ namespace ExpressBase.Common.Data
                         if (this.Redis == null && RedisManager != null)
                             this.Redis = this.RedisManager.GetClient() as RedisClient;
 
-                      //  Eb_Solution s_obj = this.Redis.Get<Eb_Solution>(String.Format("solution_{0}", this.SolutionId));
-                        if ( this.SolutionType == SolutionType.REPLICA && !string.IsNullOrEmpty(this.RouterSolution))
+                        //  Eb_Solution s_obj = this.Redis.Get<Eb_Solution>(String.Format("solution_{0}", this.SolutionId));
+                        if (this.SolutionType == SolutionType.REPLICA && !string.IsNullOrEmpty(this.RouterSolution))
                         {
                             Console.WriteLine("Replica solution" + this.SolutionId + " of " + this.RouterSolution + " found.");
                             EbConnectionsConfig master = this.Redis.Get<EbConnectionsConfig>(string.Format(CoreConstants.SOLUTION_INTEGRATION_REDIS_KEY, this.RouterSolution));
@@ -192,7 +192,6 @@ namespace ExpressBase.Common.Data
         {
             this.SolutionId = solutionId;
             this.Connections = config;
-
             InitDatabases();
         }
 
@@ -221,13 +220,15 @@ namespace ExpressBase.Common.Data
 
             // the code that you want to measure comes here
 
-            Eb_Solution s_obj = this.Redis.Get<Eb_Solution>(String.Format("solution_{0}", this.SolutionId));
-            if (s_obj != null)
+            if (this.Redis != null)
             {
-                this.SolutionType = s_obj.SolutionType;
-                this.RouterSolution = s_obj.PrimarySolution;
+                Eb_Solution s_obj = this.Redis.Get<Eb_Solution>(String.Format("solution_{0}", this.SolutionId));
+                if (s_obj != null)
+                {
+                    this.SolutionType = s_obj.SolutionType;
+                    this.RouterSolution = s_obj.PrimarySolution;
+                }
             }
-
             if (this.Connections != null)
             {
                 string _userName = string.Empty;
