@@ -83,6 +83,7 @@ namespace ExpressBase.Common.Data
         public MapConfigCollection MapConfigs { get; set; }
 
         public AuthenticationCollection AUTHENTICATIONConfigs { get; set; }
+        public MobileConfig MobileConfig { get; set; }
     }
 
     public class FilesConfigCollection

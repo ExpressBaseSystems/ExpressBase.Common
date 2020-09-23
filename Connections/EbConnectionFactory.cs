@@ -45,6 +45,8 @@ namespace ExpressBase.Common.Data
 
         public EbMapConCollection MapConnection { get; private set; }
 
+        public MobileAppConnection MobileAppConnection { get; private set; }
+
         public IFTP FTP { get; private set; }
 
         private RedisManagerPool RedisManager { get; set; }
@@ -101,13 +103,13 @@ namespace ExpressBase.Common.Data
                 {
                     if (this.Redis == null && RedisManager != null)
                         this.Redis = this.RedisManager.GetClient() as RedisClient;
-                        Eb_Solution s_obj = this.Redis.Get<Eb_Solution>(String.Format("solution_{0}", this.SolutionId));
+                    Eb_Solution s_obj = this.Redis.Get<Eb_Solution>(String.Format("solution_{0}", this.SolutionId));
                     if (s_obj != null && !string.IsNullOrEmpty(s_obj.PrimarySolution))
                     {
                         //if (this.Redis == null && RedisManager != null)
                         //    using (this.Redis = this.RedisManager.GetClient() as RedisClient)
                         //    {
-                                _masterConnections = this.Redis.Get<EbConnectionsConfig>(string.Format(CoreConstants.SOLUTION_INTEGRATION_REDIS_KEY, s_obj.PrimarySolution));
+                        _masterConnections = this.Redis.Get<EbConnectionsConfig>(string.Format(CoreConstants.SOLUTION_INTEGRATION_REDIS_KEY, s_obj.PrimarySolution));
                         //    }
                         //else
                         //{
@@ -200,6 +202,7 @@ namespace ExpressBase.Common.Data
             this._connections = null;
             this.Connections = null;
             this.SolutionId = null;
+            this.MobileAppConnection = null;
         }
 
         private void InitDatabases()
@@ -377,7 +380,7 @@ namespace ExpressBase.Common.Data
 
 
                 //EmailConfigs
-                 if (Connections.EmailConfigs != null)
+                if (Connections.EmailConfigs != null)
                 {
                     EmailConnection = new EbMailConCollection(Connections.EmailConfigs);
                 }
@@ -420,6 +423,11 @@ namespace ExpressBase.Common.Data
                     }
                     MapConnection.DefaultConId = Connections.MapConfigs.DefaultConId;
                 }
+                if (Connections.MobileConfig != null)
+                {
+                    MobileAppConnection = new MobileAppConnection(Connections.MobileConfig);
+                }
+
                 //if (Connections.FTPConnection != null)
                 //    FTP = new EbFTP(Connections.FTPConnection);
 
