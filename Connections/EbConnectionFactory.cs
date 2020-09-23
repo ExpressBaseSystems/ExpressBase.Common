@@ -45,6 +45,8 @@ namespace ExpressBase.Common.Data
 
         public EbMapConCollection MapConnection { get; private set; }
 
+        public MobileAppConnection MobileAppConnection { get; private set; }
+
         public IFTP FTP { get; private set; }
 
         private RedisManagerPool RedisManager { get; set; }
@@ -52,6 +54,10 @@ namespace ExpressBase.Common.Data
         private RedisClient Redis { get; set; }
 
         private string SolutionId { get; set; }
+
+        private SolutionType SolutionType { get; set; }
+
+        private string RouterSolution { get; set; }
 
         private ILog Logger
         {
@@ -63,7 +69,6 @@ namespace ExpressBase.Common.Data
         {
             get
             {
-
                 if (_connections == null && !string.IsNullOrEmpty(this.SolutionId))
                 {
                     if (this.SolutionId == CoreConstants.EXPRESSBASE || this.SolutionId == CoreConstants.ADMIN)
@@ -92,27 +97,29 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        private EbConnectionsConfig _masterConnections = null;
-        private EbConnectionsConfig MasterConnections
+        private EbMasterConnectionsConfig _masterConnections = null;
+        private EbMasterConnectionsConfig MasterConnections
         {
             get
             {
                 if (_masterConnections == null && !string.IsNullOrEmpty(this.SolutionId))
                 {
-                    if (this.Redis == null && RedisManager != null)
-                        this.Redis = this.RedisManager.GetClient() as RedisClient;
-                        Eb_Solution s_obj = this.Redis.Get<Eb_Solution>(String.Format("solution_{0}", this.SolutionId));
-                    if (s_obj != null && !string.IsNullOrEmpty(s_obj.PrimarySolution))
+                    try
                     {
-                        //if (this.Redis == null && RedisManager != null)
-                        //    using (this.Redis = this.RedisManager.GetClient() as RedisClient)
-                        //    {
-                                _masterConnections = this.Redis.Get<EbConnectionsConfig>(string.Format(CoreConstants.SOLUTION_INTEGRATION_REDIS_KEY, s_obj.PrimarySolution));
-                        //    }
-                        //else
-                        //{
-                        //    _masterConnections = this.Redis.Get<EbConnectionsConfig>(string.Format(CoreConstants.SOLUTION_INTEGRATION_REDIS_KEY, s_obj.PrimarySolution));
-                        //}
+                        if (this.Redis == null && RedisManager != null)
+                            this.Redis = this.RedisManager.GetClient() as RedisClient;
+
+                        //  Eb_Solution s_obj = this.Redis.Get<Eb_Solution>(String.Format("solution_{0}", this.SolutionId));
+                        if (this.SolutionType == SolutionType.REPLICA && !string.IsNullOrEmpty(this.RouterSolution))
+                        {
+                            Console.WriteLine("Replica solution" + this.SolutionId + " of " + this.RouterSolution + " found.");
+                            EbConnectionsConfig master = this.Redis.Get<EbConnectionsConfig>(string.Format(CoreConstants.SOLUTION_INTEGRATION_REDIS_KEY, this.RouterSolution));
+                            _masterConnections = new EbMasterConnectionsConfig(master);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message + e.StackTrace);
                     }
                 }
                 return _masterConnections;
@@ -120,10 +127,11 @@ namespace ExpressBase.Common.Data
 
             set
             {
-                _connections = value;
+                _masterConnections = value;
             }
         }
 
+        //ProductionDB
         public EbConnectionFactory(string tenantId, IRedisClient redis, bool IsDataOnly)
         {
             if (IsDataOnly)
@@ -135,8 +143,8 @@ namespace ExpressBase.Common.Data
                 this.Redis = redis as RedisClient;
                 if (this.Connections != null)
                 {
-                    string _userName = Connections.DataDbConfig.UserName;
-                    string _passWord = Connections.DataDbConfig.Password;
+                    //string _userName = Connections.DataDbConfig.UserName;
+                    //string _passWord = Connections.DataDbConfig.Password;
 
                     // DATA DB 
                     if (Connections.DataDbConfig != null && Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
@@ -148,6 +156,7 @@ namespace ExpressBase.Common.Data
                 }
             }
         }
+
         // RETURN EITHER INFA FAC OR SOLUTION FAC
         public EbConnectionFactory(string tenantId, IRedisClient redis)
         {
@@ -166,12 +175,16 @@ namespace ExpressBase.Common.Data
             this.SolutionId = CoreConstants.EXPRESSBASE; // REMOVE DANGER
 
             if (HostContext.RequestContext.Items.Contains(CoreConstants.SOLUTION_ID)) // check the security issue
+            {
                 this.SolutionId = HostContext.RequestContext.Items[CoreConstants.SOLUTION_ID].ToString();
+                Console.WriteLine("*** HostContext - SOLUTION_ID : " + HostContext.RequestContext.Items[CoreConstants.SOLUTION_ID].ToString());
+            }
 
             if (string.IsNullOrEmpty(this.SolutionId))
                 throw new Exception("Fatal Error :: Solution Id is null or Empty!");
 
             this.RedisManager = c.Resolve<IRedisClientsManager>() as RedisManagerPool;
+            this.Redis = this.RedisManager.GetClient() as RedisClient;
             //if(SolutionId != CoreConstants.EXPRESSBASE) 
             InitDatabases();
         }
@@ -181,7 +194,6 @@ namespace ExpressBase.Common.Data
         {
             this.SolutionId = solutionId;
             this.Connections = config;
-
             InitDatabases();
         }
 
@@ -199,7 +211,10 @@ namespace ExpressBase.Common.Data
             this.MapConnection = null;
             this._connections = null;
             this.Connections = null;
+            this._masterConnections = null;
+            this.MasterConnections = null;
             this.SolutionId = null;
+            this.MobileAppConnection = null;
         }
 
         private void InitDatabases()
@@ -208,6 +223,15 @@ namespace ExpressBase.Common.Data
 
             // the code that you want to measure comes here
 
+            if (this.Redis != null)
+            {
+                Eb_Solution s_obj = this.Redis.Get<Eb_Solution>(String.Format("solution_{0}", this.SolutionId));
+                if (s_obj != null)
+                {
+                    this.SolutionType = s_obj.SolutionType;
+                    this.RouterSolution = s_obj.PrimarySolution;
+                }
+            }
             if (this.Connections != null)
             {
                 string _userName = string.Empty;
@@ -326,6 +350,7 @@ namespace ExpressBase.Common.Data
                     else if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
                         FilesDB.Add(new MySQLFilesDB(Connections.DataDbConfig));
                     FilesDB.DefaultConId = Connections.DataDbConfig.Id;
+                    Console.WriteLine("No files Db. set :" + Connections.DataDbConfig.DatabaseName);
                 }
                 else
                 {
@@ -340,13 +365,17 @@ namespace ExpressBase.Common.Data
                         else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.GoogleDrive)
                             FilesDB.Add(new GoogleDrive.GoogleDriveDatabase(Connections.FilesDbConfig.Integrations[i] as EbGoogleDriveConfig));
                         else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.PGSQL)
+                        {
                             FilesDB.Add(new PGSQLFileDatabase(Connections.FilesDbConfig.Integrations[i] as PostgresConfig));
+                            Console.WriteLine("Postgres Files Db found:" + (Connections.FilesDbConfig.Integrations[i] as PostgresConfig).DatabaseName);
+                        }
                         else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.ORACLE)
                             FilesDB.Add(new OracleFilesDB(Connections.FilesDbConfig.Integrations[i] as OracleConfig));
                         else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.MYSQL)
                             FilesDB.Add(new MySQLFilesDB(Connections.FilesDbConfig.Integrations[i] as MySqlConfig));
                         if (Connections.FilesDbConfig.DefaultConId == Connections.FilesDbConfig.Integrations[i].Id)
                             IsDefaultConIdCorrect = true;
+                        Console.WriteLine("Files Db. set :" + Connections.FilesDbConfig.Integrations[i].Type + Connections.FilesDbConfig.Integrations[i].NickName);
                     }
                     if (IsDefaultConIdCorrect)
                         FilesDB.DefaultConId = Connections.FilesDbConfig.DefaultConId;
@@ -377,11 +406,11 @@ namespace ExpressBase.Common.Data
 
 
                 //EmailConfigs
-                 if (Connections.EmailConfigs != null)
+                if (Connections.EmailConfigs != null)
                 {
                     EmailConnection = new EbMailConCollection(Connections.EmailConfigs);
                 }
-                else if (MasterConnections != null && MasterConnections.EmailConfigs != null)
+                else if (this.SolutionType == SolutionType.REPLICA && MasterConnections != null && MasterConnections.EmailConfigs != null)
                 {
                     EmailConnection = new EbMailConCollection(MasterConnections.EmailConfigs);
                 }
@@ -391,7 +420,7 @@ namespace ExpressBase.Common.Data
                 {
                     SMSConnection = new EbSmsConCollection(Connections.SMSConfigs);
                 }
-                else if (MasterConnections != null && MasterConnections.SMSConfigs != null)
+                else if (this.SolutionType == SolutionType.REPLICA && MasterConnections != null && MasterConnections.SMSConfigs != null)
                 {
                     SMSConnection = new EbSmsConCollection(MasterConnections.SMSConfigs);
                 }
@@ -420,6 +449,11 @@ namespace ExpressBase.Common.Data
                     }
                     MapConnection.DefaultConId = Connections.MapConfigs.DefaultConId;
                 }
+                if (Connections.MobileConfig != null)
+                {
+                    MobileAppConnection = new MobileAppConnection(Connections.MobileConfig);
+                }
+
                 //if (Connections.FTPConnection != null)
                 //    FTP = new EbFTP(Connections.FTPConnection);
 

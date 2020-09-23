@@ -83,6 +83,21 @@ namespace ExpressBase.Common.Data
         public MapConfigCollection MapConfigs { get; set; }
 
         public AuthenticationCollection AUTHENTICATIONConfigs { get; set; }
+        public MobileConfig MobileConfig { get; set; }
+    }
+     public class EbMasterConnectionsConfig
+    {
+        public string SolutionId { get; set; } 
+
+        public EmailConfigCollection EmailConfigs { get; set; }
+
+        public SmsConfigCollection SMSConfigs { get; set; } 
+
+        public EbMasterConnectionsConfig(EbConnectionsConfig confs)
+        {
+            this.EmailConfigs = confs.EmailConfigs;
+            this.SMSConfigs = confs.SMSConfigs;
+        }
     }
 
     public class FilesConfigCollection

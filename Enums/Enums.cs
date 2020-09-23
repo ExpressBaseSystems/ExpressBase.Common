@@ -69,7 +69,8 @@ namespace ExpressBase.Common
         Cloudinary = 9,
         MAPS = 11,
         Chat = 12,
-        AUTHENTICATION = 13
+        AUTHENTICATION = 13,
+        MOBILECONFIG = 14,
     }
 
     public enum EbIntegrations
@@ -93,6 +94,7 @@ namespace ExpressBase.Common
         Unifonic = 17,
         TextLocal = 18,
         OSM = 19,
+        MobileConfig = 20,
     }
 
     public enum SmtpProviders
