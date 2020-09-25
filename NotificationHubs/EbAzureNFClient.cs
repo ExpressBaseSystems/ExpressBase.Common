@@ -1,15 +1,64 @@
-﻿using Microsoft.Azure.NotificationHubs;
+﻿using ExpressBase.Common.Data;
+using Microsoft.Azure.NotificationHubs;
 using Microsoft.Azure.NotificationHubs.Messaging;
+using ServiceStack.Redis;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ExpressBase.Common.NotificationHubs
 {
-    public class EbAzureNotificationClient
+    public class EbAzureNFClient
     {
-        public EbAzureNotificationClient() { }
+        private readonly NotificationHubClient client;
+
+        private EbAzureNFClient(string conString, string hubName)
+        {
+            client = NotificationHubClient.CreateClientFromConnectionString(conString, hubName);
+        }
+
+        #region Client Creation
+
+        public static EbAzureNFClient Create(MobileAppConnection con)
+        {
+            if (con == null || con.IsNFConnectionsEmpty())
+                throw new Exception("Azure NotificationHub connections are empty");
+
+            Console.WriteLine("Azure connection string :" + con.AzureNFConnection);
+            Console.WriteLine("Azure HubName :" + con.AzureNFHubName);
+
+            return new EbAzureNFClient(con.AzureNFConnection, con.AzureNFHubName);
+        }
+
+        public static EbAzureNFClient Create(string conString, string hubName)
+        {
+            if (string.IsNullOrEmpty(conString) || string.IsNullOrEmpty(hubName))
+                throw new Exception("Azure NotificationHub connections are empty");
+
+            return new EbAzureNFClient(conString, hubName);
+        }
+
+        public static EbAzureNFClient Create(string iSolutionId, IRedisClient redis)
+        {
+            EbConnectionFactory factory = new EbConnectionFactory(iSolutionId, redis);
+
+            if (factory == null)
+                throw new Exception("No connection object for sid " + iSolutionId);
+
+            MobileAppConnection con = factory?.MobileAppConnection;
+
+            if (con == null || con.IsNFConnectionsEmpty())
+                throw new Exception("Azure NotificationHub connections are empty");
+
+            Console.WriteLine("Azure connection string :" + con.AzureNFConnection);
+            Console.WriteLine("Azure HubName :" + con.AzureNFHubName);
+
+            return new EbAzureNFClient(con.AzureNFConnection, con.AzureNFHubName);
+        }
+
+        #endregion
+
+        #region TagHelper Methods
 
         public string ConvertToAuthTag(string authid)
         {
@@ -26,48 +75,23 @@ namespace ExpressBase.Common.NotificationHubs
             return string.Format("global:eb_pns_tag_{0}", vendor);
         }
 
-        private NotificationHubClient GetClient(EbAppVendors vendor)
+        #endregion
+
+        #region Public API's
+
+        public async Task<string> CreateRegistrationId()
         {
-            string connectionString = string.Empty, hubName = string.Empty;
-
-            if (vendor == EbAppVendors.ExpressBase)
-            {
-                connectionString = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_AZURE_PNS_CON);
-                hubName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_AZURE_PNS_HUBNAME);
-            }
-            else if (vendor == EbAppVendors.MoveOn)
-            {
-                connectionString = Environment.GetEnvironmentVariable(EnvironmentConstants.MOVEON_AZURE_PNS_CON);
-                hubName = Environment.GetEnvironmentVariable(EnvironmentConstants.MOVEON_AZURE_PNS_HUBNAME);
-            }
-
-            Console.WriteLine("----------- Noftification clent ------------");
-            Console.WriteLine(vendor);
-            Console.WriteLine(connectionString);
-            Console.WriteLine(hubName);
-
-            return NotificationHubClient.CreateClientFromConnectionString(connectionString, hubName);
-        }
-
-        public async Task<string> CreateRegistrationId(EbAppVendors vendor)
-        {
-            var client = GetClient(vendor);
-
             return await client.CreateRegistrationIdAsync();
         }
 
-        public async Task DeleteRegistration(string registrationId, EbAppVendors vendor)
+        public async Task DeleteRegistration(string registrationId)
         {
-            var client = GetClient(vendor);
-
             await client.DeleteRegistrationAsync(registrationId);
         }
 
         public async Task<EbNFRegisterResponse> Register(string id, DeviceRegistration device)
         {
             EbNFRegisterResponse nFResponse = new EbNFRegisterResponse();
-
-            var client = GetClient(device.Vendor);
 
             try
             {
@@ -110,8 +134,6 @@ namespace ExpressBase.Common.NotificationHubs
             EbNFResponse resp = new EbNFResponse();
             try
             {
-                var client = GetClient(request.Vendor);
-
                 NotificationOutcome outcome = null;
 
                 switch (request.Platform)
@@ -164,5 +186,7 @@ namespace ExpressBase.Common.NotificationHubs
             }
             return resp;
         }
+
+        #endregion
     }
 }
