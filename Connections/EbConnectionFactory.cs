@@ -449,9 +449,14 @@ namespace ExpressBase.Common.Data
                     }
                     MapConnection.DefaultConId = Connections.MapConfigs.DefaultConId;
                 }
+
                 if (Connections.MobileConfig != null)
                 {
                     MobileAppConnection = new MobileAppConnection(Connections.MobileConfig);
+                }
+                else if (this.SolutionType == SolutionType.REPLICA && MasterConnections != null && MasterConnections.MobileConfig != null)
+                {
+                    MobileAppConnection = new MobileAppConnection(MasterConnections.MobileConfig);
                 }
 
                 //if (Connections.FTPConnection != null)

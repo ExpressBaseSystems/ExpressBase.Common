@@ -83,20 +83,24 @@ namespace ExpressBase.Common.Data
         public MapConfigCollection MapConfigs { get; set; }
 
         public AuthenticationCollection AUTHENTICATIONConfigs { get; set; }
+
         public MobileConfig MobileConfig { get; set; }
     }
-     public class EbMasterConnectionsConfig
+    public class EbMasterConnectionsConfig
     {
-        public string SolutionId { get; set; } 
+        public string SolutionId { get; set; }
 
         public EmailConfigCollection EmailConfigs { get; set; }
 
-        public SmsConfigCollection SMSConfigs { get; set; } 
+        public SmsConfigCollection SMSConfigs { get; set; }
+
+        public MobileConfig MobileConfig { get; set; }
 
         public EbMasterConnectionsConfig(EbConnectionsConfig confs)
         {
             this.EmailConfigs = confs.EmailConfigs;
             this.SMSConfigs = confs.SMSConfigs;
+            this.MobileConfig = confs.MobileConfig;
         }
     }
 
@@ -127,8 +131,8 @@ namespace ExpressBase.Common.Data
     {
         public EbSlackConfig Default { get; set; }
 
-        public List<EbSlackConfig> Fallback { get; set; }      
-        
+        public List<EbSlackConfig> Fallback { get; set; }
+
         public ChatConfigCollection()
         {
             this.Fallback = new List<EbSlackConfig>();
@@ -152,7 +156,7 @@ namespace ExpressBase.Common.Data
     public class CloudinaryConfigCollection : List<EbCloudinaryConfig>
     {
 
-    }    
+    }
 
     public class MapConfigCollection
     {
