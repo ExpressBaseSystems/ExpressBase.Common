@@ -805,15 +805,16 @@ namespace ExpressBase.Common.Data
             get
             {
                 return @"
-                                    SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY applicationname;
-									SELECT DISTINCT EO.id, EO.display_name, EO.obj_type, EO2A.app_id
-										FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
-										WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3 
-										AND EOS.id = ANY(SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id)
-										AND EO.id = EO2A.obj_id AND EO2A.eb_del = 'F';
-									SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> :id ORDER BY to_char(role_name);
-									SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';
-									SELECT id, longname, shortname FROM eb_locations;";
+                        SELECT id, applicationname FROM eb_applications where COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
+						SELECT DISTINCT EO.id, EO.display_name, EO.obj_type, EO2A.app_id
+							FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
+							WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3 
+							AND EOS.id = ANY(SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id)
+							AND EO.id = EO2A.obj_id AND COALESCE(EO2A.eb_del, 'F') = 'F';
+						SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> :id ORDER BY to_char(role_name);
+						SELECT id, role1_id, role2_id FROM eb_role2role WHERE COALESCE(eb_del, 'F') = 'F';
+						SELECT id, longname, shortname FROM eb_locations;
+                        SELECT id, fullname, email, phnoprimary FROM eb_users WHERE COALESCE(eb_del, 'F') = 'F';";
             }
         }
 
@@ -825,7 +826,7 @@ namespace ExpressBase.Common.Data
                                     SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = :id;
 									SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = :id AND eb_del = 'F';
                 					SELECT A.applicationname, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = :id AND A.eb_del = 'F';
-									SELECT A.id, A.firstname, A.email, B.id FROM eb_users A, eb_role2user B
+									SELECT A.id, A.firstname, A.email, A.phnoprimary, B.id FROM eb_users A, eb_role2user B
 										WHERE A.id = B.user_id AND A.eb_del = 'F' AND B.eb_del = 'F' AND B.role_id = :id;
 									SELECT locationid FROM eb_role2location WHERE roleid = :id AND eb_del='F';";
             }
@@ -845,14 +846,6 @@ namespace ExpressBase.Common.Data
                 return @"SELECT id, role_name, description FROM eb_roles ORDER BY to_char(role_name);
                         SELECT id, name,description FROM eb_usergroup ORDER BY name;
 						SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';";
-            }
-        }
-
-        public override string EB_GETUSERDETAILS
-        {
-            get
-            {
-                return @"SELECT id,fullname,email FROM eb_users WHERE LOWER(fullname) LIKE LOWER('%' || :searchtext || '%') AND eb_del = 'F' ORDER BY fullname ASC;";
             }
         }
 

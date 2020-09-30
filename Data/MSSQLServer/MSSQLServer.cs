@@ -872,16 +872,6 @@ namespace ExpressBase.Common.Data.MSSQLServer
         public string EB_GETUSERGROUP_QUERY_WITHOUT_SEARCHTEXT
         { get { return @""; } }
 
-        public override string EB_GETUSERDETAILS
-        {
-            get
-            {
-                return @"SELECT id,fullname,email FROM eb_users 
-                            WHERE LOWER(fullname) LIKE LOWER(CONCAT('%', @searchtext,'%')) AND eb_del = 'F' 
-                            ORDER BY fullname ASC;";
-            }
-        }
-
         public override string EB_GET_MYPROFILE_OBJID
         {
             get

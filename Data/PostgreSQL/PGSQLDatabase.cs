@@ -853,20 +853,6 @@ SELECT R.id,R.role_name,R.description,A.applicationname,
 
         public override string EB_SAVEUSERGROUP_QUERY { get { return "SELECT * FROM eb_security_usergroup(:userid,:id,:name,:description,:users,:constraints_add,:constraints_del);"; } }
 
-        public override string EB_GETUSERDETAILS
-        {
-            get
-            {
-                return @"
-SELECT id,fullname,email 
-                    FROM 
-                        eb_users 
-                    WHERE 
-                        LOWER(fullname) LIKE LOWER('%' || :searchtext || '%') AND eb_del = 'F' 
-                    ORDER BY fullname ASC;";
-            }
-        }
-
         public override string EB_GET_MYPROFILE_OBJID
         {
             get

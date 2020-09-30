@@ -67,27 +67,28 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"SELECT id, applicationname FROM eb_applications where eb_del = 'F' ORDER BY applicationname;
+                return @"SELECT id, applicationname FROM eb_applications WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
                         SELECT DISTINCT EO.id, EO.display_name, EO.obj_type, EO2A.app_id
                             FROM eb_objects EO, eb_objects_ver EOV, eb_objects_status EOS, eb_objects2application EO2A 
                             WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3 
                                 AND EOS.id = ANY(SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id)
-                                AND EO.id = EO2A.obj_id AND EO2A.eb_del = 'F' AND COALESCE(EO.eb_del, 'F') = 'F'; 
+                                AND EO.id = EO2A.obj_id AND COALESCE(EO2A.eb_del, 'F') = 'F' AND COALESCE(EO.eb_del, 'F') = 'F'; 
                         SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> @id ORDER BY role_name;
-                        SELECT id, role1_id, role2_id FROM eb_role2role WHERE eb_del = 'F';
-                        SELECT id, longname, shortname FROM eb_locations;";
+                        SELECT id, role1_id, role2_id FROM eb_role2role WHERE COALESCE(eb_del, 'F') = 'F';
+                        SELECT id, longname, shortname FROM eb_locations;
+                        SELECT id, fullname, email, phnoprimary FROM eb_users WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY fullname, email, phnoprimary;";
             }
         }
         public virtual string EB_GETMANAGEROLESRESPONSE_QUERY_EXTENDED
         {
             get
             {
-                return @"SELECT role_name,applicationid,description,is_anonymous FROM eb_roles WHERE id = @id;
-						SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = @id AND eb_del = 'F';
-						SELECT A.applicationname, A.description FROM eb_applications A, eb_roles R WHERE A.id = R.applicationid AND R.id = @id AND A.eb_del = 'F';
-						SELECT A.id, A.fullname, A.email, B.id FROM eb_users A, eb_role2user B
-							WHERE A.id = B.user_id AND A.eb_del = 'F' AND B.eb_del = 'F' AND B.role_id = @id;
-						SELECT locationid FROM eb_role2location WHERE roleid = @id AND eb_del='F';";
+                return @"SELECT R.role_name, R.applicationid, R.description, R.is_anonymous, A.id, A.applicationname, A.description FROM eb_roles R 
+                            LEFT JOIN eb_applications A ON A.id = R.applicationid WHERE COALESCE(R.eb_del, 'F') = 'F' AND COALESCE(A.eb_del, 'F') = 'F' AND R.id = @id;
+						SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = @id AND COALESCE(eb_del, 'F') = 'F';
+						SELECT A.id, A.fullname, A.email, A.phnoprimary, B.id FROM eb_users A, eb_role2user B
+							WHERE A.id = B.user_id AND COALESCE(A.eb_del, 'F') = 'F' AND COALESCE(B.eb_del, 'F') = 'F' AND B.role_id = @id;
+						SELECT locationid FROM eb_role2location WHERE roleid = @id AND COALESCE(eb_del, 'F')='F';";
             }
         }
         public virtual string EB_SAVEROLES_QUERY { get; }
@@ -111,7 +112,6 @@ namespace ExpressBase.Common
                         SELECT id, name FROM eb_user_types WHERE COALESCE(eb_del, 'F') = 'F';";
             }
         }
-        public virtual string EB_GETUSERDETAILS { get; }
         public virtual string EB_GETDBCLIENTTTABLES { get; }
         public virtual string EB_GET_MYPROFILE_OBJID { get; }
 
