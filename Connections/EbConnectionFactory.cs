@@ -25,6 +25,8 @@ namespace ExpressBase.Common.Data
 
         public IDatabase DataDBRW { get; private set; }
 
+        public Dictionary<string, IDatabase> SupportingDataDB { get; private set; }
+
         public IDatabase ObjectsDB { get; private set; }
 
         public IDatabase ObjectsDBRO { get; private set; }
@@ -202,6 +204,7 @@ namespace ExpressBase.Common.Data
             this.ObjectsDB = null;
             this.DataDB = null;
             this.DataDBRO = null;
+            this.SupportingDataDB = null;
             this.FilesDB = null;
             this.LogsDB = null;
             this.ChatConnection = null;
@@ -291,14 +294,21 @@ namespace ExpressBase.Common.Data
                 {
                     throw new Exception("No Data DB Integrated!");
                 }
-                //OBJECTS DB
 
-                if (Connections.ObjectsDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
-                    ObjectsDB = new PGSQLDatabase(Connections.ObjectsDbConfig);
-                else if (Connections.ObjectsDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
-                    ObjectsDB = new OracleDB(Connections.ObjectsDbConfig);
-                else if (Connections.ObjectsDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
-                    ObjectsDB = new MySqlDB(Connections.ObjectsDbConfig);
+                //Supporting DataDB
+                if (Connections.SupportingDataDbConfig != null&& Connections.SupportingDataDbConfig.Count > 0)
+                {
+
+                }
+
+                    //OBJECTS DB
+
+                    if (Connections.ObjectsDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
+                        ObjectsDB = new PGSQLDatabase(Connections.ObjectsDbConfig);
+                    else if (Connections.ObjectsDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
+                        ObjectsDB = new OracleDB(Connections.ObjectsDbConfig);
+                    else if (Connections.ObjectsDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
+                        ObjectsDB = new MySqlDB(Connections.ObjectsDbConfig);
 
                 // OBJECTS DB RO
                 if (!(string.IsNullOrEmpty(Connections.ObjectsDbConfig.ReadOnlyUserName) || string.IsNullOrEmpty(Connections.ObjectsDbConfig.ReadOnlyPassword)))

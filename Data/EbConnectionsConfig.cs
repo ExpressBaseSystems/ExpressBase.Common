@@ -68,6 +68,8 @@ namespace ExpressBase.Common.Data
 
         public EbDbConfig DataDbConfig { get; set; }
 
+        public List<EbDbConfig> SupportingDataDbConfig { get; set; }
+
         public FilesConfigCollection FilesDbConfig { get; set; }
 
         public EbDbConfig LogsDbConfig { get; set; }
