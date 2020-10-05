@@ -71,6 +71,7 @@ namespace ExpressBase.Common
         Chat = 12,
         AUTHENTICATION = 13,
         MOBILECONFIG = 14,
+        SUPPORTINGDATA = 15
     }
 
     public enum EbIntegrations
