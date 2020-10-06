@@ -1019,14 +1019,6 @@ namespace ExpressBase.Common
             }
         }
 
-        public override string EB_GETUSERDETAILS
-        {
-            get
-            {
-                return @"SELECT id, fullname, email FROM eb_users WHERE LOWER(fullname) LIKE LOWER(CONCAT('%', @searchtext, '%')) AND eb_del = 'F' ORDER BY fullname ASC;";
-            }
-        }
-
         public override string EB_GET_MYPROFILE_OBJID
         {
             get

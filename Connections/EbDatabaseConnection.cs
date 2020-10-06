@@ -291,7 +291,7 @@ namespace ExpressBase.Common.Connections
     {
         public string ApiKey { get; set; }
 
-        public override EbIntegrations Type { get { return EbIntegrations.TextLocal;  } }
+        public override EbIntegrations Type { get { return EbIntegrations.TextLocal; } }
     }
 
     public class EbUnifonicConfig : EbSmsConfig
@@ -373,6 +373,14 @@ namespace ExpressBase.Common.Connections
 
         public override EbIntegrations Type { get { return EbIntegrations.DropBox; } }
     }
+    public class MobileConfig : EbIntegrationConf
+    {
+        public string AzureNFHubName { get; set; }
+        public string AzureNFConnection { get; set; }
+        public string AndroidAppSignInKey { get; set; }
+        public string AndroidAppURL { get; set; }
+        public override EbIntegrations Type { get { return EbIntegrations.MobileConfig; } }
+    }
 
     public class EbAWSS3Config : EbIntegrationConf
     {
@@ -411,18 +419,19 @@ namespace ExpressBase.Common.Connections
         public override EbIntegrations Type { get { return EbIntegrations.Slack; } }
     }
 
-    public class EbfacebbokConfig : EbIntegrationConf{
+    public class EbfacebbokConfig : EbIntegrationConf
+    {
 
         public string AppId { get; set; }
         public string AppVersion { get; set; }
         public override EbIntegrations Type { get { return EbIntegrations.Facebook; } }
-    }  
+    }
 
     public class EbGoogleMapConfig : EbMapConfig
     {
         public override EbIntegrations Type { get { return EbIntegrations.GoogleMap; } }
     }
-     public class OpenStreetMapConfig : EbMapConfig
+    public class OpenStreetMapConfig : EbMapConfig
     {
         public override EbIntegrations Type { get { return EbIntegrations.OSM; } }
     }

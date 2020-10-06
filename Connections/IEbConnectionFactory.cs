@@ -31,5 +31,7 @@ namespace ExpressBase.Common.Data
         List<IImageManipulate> ImageManipulate { get; }
 
         EbMailConCollection EmailConnection { get; }
+
+        MobileAppConnection MobileAppConnection { get; }
     }
 }
