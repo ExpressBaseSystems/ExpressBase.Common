@@ -8,6 +8,7 @@ CREATE TABLE eb_approval_lines
     eb_src_id integer,
     eb_ver_id integer,
     eb_loc_id integer,
+    eb_signin_log_id integer,
     eb_created_by integer,
     eb_created_at datetime,
     eb_del char(1) DEFAULT 'F',

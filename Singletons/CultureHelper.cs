@@ -41,7 +41,9 @@ namespace ExpressBase.Common.Singletons
 			}
 		}
 
-        private static Dictionary<string, SerializedCulture> cultureinfos = new Dictionary<string, SerializedCulture>();
+		private static readonly object CultLock = new object();
+
+		private static Dictionary<string, SerializedCulture> cultureinfos = new Dictionary<string, SerializedCulture>();
 
         public static SerializedCulture GetSerializedCultureInfo(string CultureName)
         {            
@@ -54,8 +56,13 @@ namespace ExpressBase.Common.Singletons
                         return null;
                     using (var StreamReader = new StreamReader(Stream, System.Text.Encoding.UTF32))
                     using (var JsonTextReader = new JsonTextReader(StreamReader))
-                    {
-                        cultureinfos.Add(CultureName, Serialized.Deserialize<SerializedCulture>(JsonTextReader));
+                    {						
+						SerializedCulture _cult = Serialized.Deserialize<SerializedCulture>(JsonTextReader);
+						lock (CultLock)
+						{
+							if (!cultureinfos.ContainsKey(CultureName))
+								cultureinfos.Add(CultureName, _cult);
+						}
                     }
                 }
             }

@@ -53,8 +53,8 @@
   <ItemGroup>
     <PackageReference Include="AWSSDK.S3" Version="3.3.104.20" />
     <PackageReference Include="CloudinaryDotNet" Version="1.2.0" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.11.3" />
     <PackageReference Include="Dropbox.Api" Version="4.9.4" />
-    <PackageReference Include="EPPlus.Core" Version="1.5.4" />
     <PackageReference Include="FOSS.ServiceStack.Core" Version="5.0.2" />
     <PackageReference Include="FOSS.ServiceStack.Redis.Core" Version="5.0.2" />
     <PackageReference Include="Google.Apis" Version="1.41.1" />
@@ -70,6 +70,7 @@
     <PackageReference Include="protobuf-net" Version="2.3.2" />
     <PackageReference Include="Sendgrid" Version="9.11.0" />
     <PackageReference Include="Stripe.net" Version="27.15.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
     <PackageReference Include="Twilio" Version="5.9.8" />
   </ItemGroup>
 

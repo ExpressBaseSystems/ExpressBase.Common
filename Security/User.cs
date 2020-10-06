@@ -695,6 +695,9 @@ namespace ExpressBase.Security
         [DataMember(Order = 4)]
         public string DefaultDashBoard { get; set; }
 
+        //[JsonIgnore]
+        //public int CurrrentLocation { get; set; }
+
         public string GetShortDatePattern()
         {
             return CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern;
@@ -713,7 +716,8 @@ namespace ExpressBase.Security
             {
                 try
                 {
-                    return MomentJSHelpers.GenerateMomentJSFormatString(CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern, CultureHelper.GetSerializedCultureInfo(this.Locale)).ReplaceAll("[", "").ReplaceAll("]", "");
+                    SerializedCulture _cult = CultureHelper.GetSerializedCultureInfo(this.Locale);
+                    return MomentJSHelpers.GenerateMomentJSFormatString(_cult.DateTimeFormatInfo.ShortDatePattern, _cult).ReplaceAll("[", "").ReplaceAll("]", "");
                 }
                 catch (Exception ex)
                 {
@@ -747,7 +751,8 @@ namespace ExpressBase.Security
             {
                 try
                 {
-                    return MomentJSHelpers.GenerateMomentJSFormatString(CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern, CultureHelper.GetSerializedCultureInfo(this.Locale)).ReplaceAll("[", "").ReplaceAll("]", "");
+                    SerializedCulture _cult = CultureHelper.GetSerializedCultureInfo(this.Locale);
+                    return MomentJSHelpers.GenerateMomentJSFormatString(_cult.DateTimeFormatInfo.ShortTimePattern, _cult).ReplaceAll("[", "").ReplaceAll("]", "");
                 }
                 catch (Exception ex)
                 {

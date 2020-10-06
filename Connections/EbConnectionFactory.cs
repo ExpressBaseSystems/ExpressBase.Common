@@ -2,6 +2,7 @@
 using ExpressBase.Common.Constants;
 using ExpressBase.Common.Data.FTP;
 using ExpressBase.Common.Data.MongoDB;
+using ExpressBase.Common.Data.MSSQLServer;
 using ExpressBase.Common.Integrations;
 using ExpressBase.Common.LocationNSolution;
 using ExpressBase.Common.Messaging;
@@ -24,6 +25,8 @@ namespace ExpressBase.Common.Data
         public IDatabase DataDBRO { get; private set; }
 
         public IDatabase DataDBRW { get; private set; }
+
+        public Dictionary<string, IDatabase> SupportingDataDB { get; private set; }
 
         public IDatabase ObjectsDB { get; private set; }
 
@@ -202,6 +205,7 @@ namespace ExpressBase.Common.Data
             this.ObjectsDB = null;
             this.DataDB = null;
             this.DataDBRO = null;
+            this.SupportingDataDB = null;
             this.FilesDB = null;
             this.LogsDB = null;
             this.ChatConnection = null;
@@ -291,6 +295,25 @@ namespace ExpressBase.Common.Data
                 {
                     throw new Exception("No Data DB Integrated!");
                 }
+
+                //Supporting DataDB
+                if (Connections.SupportingDataDbConfig != null && Connections.SupportingDataDbConfig.Count > 0)
+                {
+                    if (SupportingDataDB == null)
+                        SupportingDataDB = new Dictionary<string, IDatabase>();
+                    for (int i = 0; i < Connections.SupportingDataDbConfig.Count; i++)
+                    {
+                        if (Connections.SupportingDataDbConfig[i].DatabaseVendor == DatabaseVendors.PGSQL)
+                            SupportingDataDB.Add(Connections.SupportingDataDbConfig[i].NickName, new PGSQLDatabase(Connections.SupportingDataDbConfig[i]));
+                        else if (Connections.SupportingDataDbConfig[i].DatabaseVendor == DatabaseVendors.ORACLE)
+                            SupportingDataDB.Add(Connections.SupportingDataDbConfig[i].NickName, new OracleDB(Connections.SupportingDataDbConfig[i]));
+                        else if (Connections.SupportingDataDbConfig[i].DatabaseVendor == DatabaseVendors.MYSQL)
+                            SupportingDataDB.Add(Connections.SupportingDataDbConfig[i].NickName, new MySqlDB(Connections.SupportingDataDbConfig[i]));
+                        else if (Connections.SupportingDataDbConfig[i].DatabaseVendor == DatabaseVendors.MSSQL)
+                            SupportingDataDB.Add(Connections.SupportingDataDbConfig[i].NickName, new MSSQLDatabase(Connections.SupportingDataDbConfig[i]));
+                    }
+                }
+
                 //OBJECTS DB
 
                 if (Connections.ObjectsDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
