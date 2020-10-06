@@ -100,8 +100,22 @@ namespace ExpressBase.Common.LocationNSolution
         public String SignupFormRefid { get; set; }
 
         public List<EbProfileUserType> UserTypeForms { get; set; }
+        public MobileAppSettings MobileAppSettings { get; set; }
     }
 
+    public class MobileAppSettings
+    {
+        public MobileSignUpSettings MobileSignUpSettings { get; set; }
+    }
+    public class MobileSignUpSettings
+    {
+        public bool SignUp { get; set; }
+        public bool Email { get; set; }
+        public bool MobileNo { get; set; }
+        public bool Password { get; set; }
+        public bool Verification { get; set; }
+        public List<string> ProfileSetupPages { get; set; }
+    }
 
     public class EbLocationCustomField
     {
