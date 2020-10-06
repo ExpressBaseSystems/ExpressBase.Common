@@ -2,6 +2,7 @@
 using ExpressBase.Common.Constants;
 using ExpressBase.Common.Data.FTP;
 using ExpressBase.Common.Data.MongoDB;
+using ExpressBase.Common.Data.MSSQLServer;
 using ExpressBase.Common.Integrations;
 using ExpressBase.Common.LocationNSolution;
 using ExpressBase.Common.Messaging;
@@ -296,19 +297,31 @@ namespace ExpressBase.Common.Data
                 }
 
                 //Supporting DataDB
-                if (Connections.SupportingDataDbConfig != null&& Connections.SupportingDataDbConfig.Count > 0)
+                if (Connections.SupportingDataDbConfig != null && Connections.SupportingDataDbConfig.Count > 0)
                 {
-
+                    if (SupportingDataDB == null)
+                        SupportingDataDB = new Dictionary<string, IDatabase>();
+                    for (int i = 0; i < Connections.SupportingDataDbConfig.Count; i++)
+                    {
+                        if (Connections.SupportingDataDbConfig[i].DatabaseVendor == DatabaseVendors.PGSQL)
+                            SupportingDataDB.Add(Connections.SupportingDataDbConfig[i].NickName, new PGSQLDatabase(Connections.SupportingDataDbConfig[i]));
+                        else if (Connections.SupportingDataDbConfig[i].DatabaseVendor == DatabaseVendors.ORACLE)
+                            SupportingDataDB.Add(Connections.SupportingDataDbConfig[i].NickName, new OracleDB(Connections.SupportingDataDbConfig[i]));
+                        else if (Connections.SupportingDataDbConfig[i].DatabaseVendor == DatabaseVendors.MYSQL)
+                            SupportingDataDB.Add(Connections.SupportingDataDbConfig[i].NickName, new MySqlDB(Connections.SupportingDataDbConfig[i]));
+                        else if (Connections.SupportingDataDbConfig[i].DatabaseVendor == DatabaseVendors.MSSQL)
+                            SupportingDataDB.Add(Connections.SupportingDataDbConfig[i].NickName, new MSSQLDatabase(Connections.SupportingDataDbConfig[i]));
+                    }
                 }
 
-                    //OBJECTS DB
+                //OBJECTS DB
 
-                    if (Connections.ObjectsDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
-                        ObjectsDB = new PGSQLDatabase(Connections.ObjectsDbConfig);
-                    else if (Connections.ObjectsDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
-                        ObjectsDB = new OracleDB(Connections.ObjectsDbConfig);
-                    else if (Connections.ObjectsDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
-                        ObjectsDB = new MySqlDB(Connections.ObjectsDbConfig);
+                if (Connections.ObjectsDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
+                    ObjectsDB = new PGSQLDatabase(Connections.ObjectsDbConfig);
+                else if (Connections.ObjectsDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
+                    ObjectsDB = new OracleDB(Connections.ObjectsDbConfig);
+                else if (Connections.ObjectsDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
+                    ObjectsDB = new MySqlDB(Connections.ObjectsDbConfig);
 
                 // OBJECTS DB RO
                 if (!(string.IsNullOrEmpty(Connections.ObjectsDbConfig.ReadOnlyUserName) || string.IsNullOrEmpty(Connections.ObjectsDbConfig.ReadOnlyPassword)))
