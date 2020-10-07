@@ -204,8 +204,8 @@ namespace ExpressBase.Common
         public int FormVersionId { get; set; }
         public bool IsLocked { get; set; }
         public bool IsCancelled { get; set; }
-        public string DataPushId { get; set; }
-        public int SourceId { get; set; }
+        public string SrcRefId { get; set; }
+        public int SrcDataId { get; set; }
         public int CreatedBy { get; set; }
 
         public WebformData()
