@@ -134,6 +134,7 @@ namespace ExpressBase.Common.NotificationHubs
             EbNFResponse resp = new EbNFResponse();
             try
             {
+                Console.WriteLine("EbNFRequest Send start");
                 NotificationOutcome outcome = null;
 
                 switch (request.Platform)
@@ -172,21 +173,27 @@ namespace ExpressBase.Common.NotificationHubs
                     }
                 }
                 else
+                {
                     Console.WriteLine("Error at SendNotification mobile: outcome is null");
+                    Console.WriteLine("PayLoad: " + request.PayLoad + " ;; Tags :" + string.Join(",", request.Tags ?? new List<string>()));
+                }
             }
             catch (MessagingException ex)
             {
                 Console.WriteLine("Error at SendNotification mobile");
+                Console.WriteLine("PayLoad: " + request.PayLoad + " ;; Tags :" + string.Join(",", request.Tags ?? new List<string>()));
                 Console.WriteLine(ex.Message);
             }
             catch (ArgumentException ex)
             {
                 Console.WriteLine("Error at SendNotification mobile");
+                Console.WriteLine("PayLoad: " + request.PayLoad + " ;; Tags :" + string.Join(",", request.Tags ?? new List<string>()));
                 Console.WriteLine(ex.Message);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error at SendNotification mobile");
+                Console.WriteLine("PayLoad: " + request.PayLoad + " ;; Tags :" + string.Join(",", request.Tags ?? new List<string>()));
                 Console.WriteLine(ex.Message);
             }
             return resp;
