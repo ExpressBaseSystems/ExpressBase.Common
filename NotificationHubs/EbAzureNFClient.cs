@@ -171,15 +171,20 @@ namespace ExpressBase.Common.NotificationHubs
                         resp.Message = "Success";
                     }
                 }
-
+                else
+                    Console.WriteLine("Error at SendNotification mobile: outcome is null");
             }
             catch (MessagingException ex)
             {
                 Console.WriteLine("Error at SendNotification mobile");
                 Console.WriteLine(ex.Message);
             }
-
             catch (ArgumentException ex)
+            {
+                Console.WriteLine("Error at SendNotification mobile");
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine("Error at SendNotification mobile");
                 Console.WriteLine(ex.Message);
