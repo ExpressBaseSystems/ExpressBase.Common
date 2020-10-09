@@ -135,6 +135,7 @@ namespace ExpressBase.Common.NotificationHubs
             try
             {
                 Console.WriteLine("EbNFRequest Send start");
+                Console.WriteLine("PayLoad: " + request.PayLoad + " ;; Tags :" + string.Join(",", request.Tags ?? new List<string>()));
                 NotificationOutcome outcome = null;
 
                 switch (request.Platform)
@@ -161,6 +162,7 @@ namespace ExpressBase.Common.NotificationHubs
 
                 if (outcome != null)
                 {
+                    Console.WriteLine("State: " + outcome.State);
                     if (outcome.State == NotificationOutcomeState.Abandoned || outcome.State == NotificationOutcomeState.Unknown)
                     {
                         resp.Status = false;
@@ -175,25 +177,21 @@ namespace ExpressBase.Common.NotificationHubs
                 else
                 {
                     Console.WriteLine("Error at SendNotification mobile: outcome is null");
-                    Console.WriteLine("PayLoad: " + request.PayLoad + " ;; Tags :" + string.Join(",", request.Tags ?? new List<string>()));
                 }
             }
             catch (MessagingException ex)
             {
                 Console.WriteLine("Error at SendNotification mobile");
-                Console.WriteLine("PayLoad: " + request.PayLoad + " ;; Tags :" + string.Join(",", request.Tags ?? new List<string>()));
                 Console.WriteLine(ex.Message);
             }
             catch (ArgumentException ex)
             {
                 Console.WriteLine("Error at SendNotification mobile");
-                Console.WriteLine("PayLoad: " + request.PayLoad + " ;; Tags :" + string.Join(",", request.Tags ?? new List<string>()));
                 Console.WriteLine(ex.Message);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error at SendNotification mobile");
-                Console.WriteLine("PayLoad: " + request.PayLoad + " ;; Tags :" + string.Join(",", request.Tags ?? new List<string>()));
                 Console.WriteLine(ex.Message);
             }
             return resp;
