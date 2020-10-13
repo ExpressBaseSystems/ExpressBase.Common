@@ -106,6 +106,10 @@ namespace ExpressBase.Common.LocationNSolution
     public class MobileAppSettings
     {
         public MobileSignUpSettings MobileSignUpSettings { get; set; }
+        public MobileAppSettings()
+        {
+            this.MobileSignUpSettings = new MobileSignUpSettings();
+        }
     }
     public class MobileSignUpSettings
     {
@@ -115,6 +119,11 @@ namespace ExpressBase.Common.LocationNSolution
         public bool Password { get; set; }
         public bool Verification { get; set; }
         public List<string> ProfileSetupPages { get; set; }
+
+        public MobileSignUpSettings()
+        {
+            this.ProfileSetupPages = new List<string>();
+        }
     }
 
     public class EbLocationCustomField
