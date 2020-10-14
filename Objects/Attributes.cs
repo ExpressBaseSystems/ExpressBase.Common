@@ -196,6 +196,12 @@ namespace ExpressBase.Common.Objects.Attributes
             this.PropertyEditorSource = source;
         }
 
+        public PropertyEditor(PropertyEditorType type, string source, bool ShouldRefreshOnInit) : this(type)
+        {
+            this.PropertyEditorSource = source;
+            this.BooleanOption = ShouldRefreshOnInit;
+        }
+
         public PropertyEditor(PropertyEditorType type, string source, int limit) : this(type, source)
         {
             this.Limit = limit;
@@ -204,6 +210,12 @@ namespace ExpressBase.Common.Objects.Attributes
         public PropertyEditor(PropertyEditorType type, string source, string Dprop) : this(type, source)
         {
             this.DependantProp = Dprop;
+        }
+
+        public PropertyEditor(PropertyEditorType type, string source, string Dprop, bool ShouldRefreshOnInit) : this(type, source)
+        {
+            this.DependantProp = Dprop;
+            this.BooleanOption = ShouldRefreshOnInit;
         }
 
         public PropertyEditor(PropertyEditorType type, string source, string Dprop, string Dprop2) : this(type, source, Dprop)

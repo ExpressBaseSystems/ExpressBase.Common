@@ -343,7 +343,6 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             {
                 _name = prop.GetCustomAttribute<JsonPropertyAttribute>().PropertyName;
             }
-
             Meta meta = new Meta { name = _name };
             IEnumerable<Attribute> propattrs = prop.GetCustomAttributes();
             foreach (Attribute attr in propattrs)
@@ -388,6 +387,11 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     meta.Limit = PropertyEditorAttr.Limit;
                     meta.Dprop = PropertyEditorAttr.DependantProp;
                     meta.Dprop2 = PropertyEditorAttr.DependantProp2;
+
+                    if (PropertyEditorAttr.BooleanOption && (PropertyEditorAttr.PropertyEditorType == (int)PropertyEditorType.CollectionProp ||
+                        PropertyEditorAttr.PropertyEditorType == (int)PropertyEditorType.CollectionABCpropToggle ||
+                        PropertyEditorAttr.PropertyEditorType == (int)PropertyEditorType.CollectionABCFrmSrc))// collection editor - toggles a property, disable a prop (A - B - C)(if the property value is true it come))
+                        meta.Dprop2 = PropertyEditorAttr.BooleanOption.ToString();
 
                     if (PropertyEditorAttr.PropertyEditorType == (int)PropertyEditorType.DropDown && PropertyEditorAttr.BooleanOption)
                         meta.Dprop = PropertyEditorAttr.BooleanOption.ToString();
