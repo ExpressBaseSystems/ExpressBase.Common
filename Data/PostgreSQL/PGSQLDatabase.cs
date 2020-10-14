@@ -1574,6 +1574,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
 
         public byte[] DownloadFileById(string filestoreid, EbFileCategory cat)
         {
+            Console.WriteLine("PostGres FileDB Download Req in " + DBName + "ConId: "+ InfraConId + "FileStoreId: " + filestoreid);
             byte[] filebyte = null;
             int ifileid;
             Int32.TryParse(filestoreid, out ifileid);
@@ -1593,11 +1594,15 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             {
                 Console.WriteLine("Exception :  " + npg.Message);
             }
+            Console.WriteLine("FileByte Size: " + filebyte.Length);
+
             return filebyte;
         }
 
         public byte[] DownloadFileByName(string filename, EbFileCategory cat)
         {
+            Console.WriteLine("PostGres FileDB Download Req in " + DBName + "ConId: " + InfraConId + "FileName: " + filename);
+
             byte[] filebyte = null;
             try
             {
@@ -1615,6 +1620,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             {
                 Console.WriteLine("Exception :  " + npg.Message);
             }
+            Console.WriteLine("FileByte Size: " + filebyte.Length);
             return filebyte;
         }
 
