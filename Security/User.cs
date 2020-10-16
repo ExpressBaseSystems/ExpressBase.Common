@@ -297,7 +297,7 @@ namespace ExpressBase.Security
                             FullName = ds.Rows[0][2].ToString(),
                             Roles = rolesname,
                             Permissions = ds.Rows[0][4].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][4].ToString().Split(',').ToList(),
-                            Preference = !string.IsNullOrEmpty(ds.Rows[0][5].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][5].ToString()) : new Preferences { Locale = "en-US", TimeZone = "(UTC) Coordinated Universal Time" },
+                            Preference = !string.IsNullOrEmpty(ds.Rows[0][5].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][5].ToString()) : new Preferences { Locale = "en-IN", TimeZone = "(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi" },
                             SourceIp = ipAddress
                         };
                     }
@@ -637,7 +637,7 @@ namespace ExpressBase.Security
                     Roles = rolesname,
                     RoleIds = iRoleIds,
                     Permissions = _permissions,
-                    Preference = !string.IsNullOrEmpty(ds.Rows[0][7].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][7].ToString()) : new Preferences { Locale = "en-US", TimeZone = "(UTC) Coordinated Universal Time", DefaultLocation = -1 },
+                    Preference = !string.IsNullOrEmpty(ds.Rows[0][7].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][7].ToString()) : new Preferences { Locale = "en-IN", TimeZone = "(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi", DefaultLocation = -1 },
                     SignInLogId = Convert.ToInt32(ds.Rows[0][9]),
                     SourceIp = ipAddress,
                     UserGroupIds = userGroupIds,
