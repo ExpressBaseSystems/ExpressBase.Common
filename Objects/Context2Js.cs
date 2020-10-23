@@ -149,7 +149,9 @@ function ProcRecur(src_controls, dest_controls) {
             foreach (Type tool in this.TypeArray)
             {
                 if (tool.GetTypeInfo().IsSubclassOf(this.TypeOfTopEbObjectParent) ||
-                    (tool.GetTypeInfo().IsDefined(typeof(UsedWithTopObjectParent)) && tool.GetCustomAttribute<UsedWithTopObjectParent>().TopObjectParentType == this.TypeOfTopEbObjectParent) ||
+                    (tool.GetTypeInfo().IsDefined(typeof(UsedWithTopObjectParent)) &&
+                        (tool.GetCustomAttribute<UsedWithTopObjectParent>().TopObjectParentType == this.TypeOfTopEbObjectParent||
+                    tool.GetCustomAttribute<UsedWithTopObjectParent>().TopObjectParentType2 == this.TypeOfTopEbObjectParent)) ||
                     ((this.TypeOfTopEbObjectParent2 != null) ? tool.GetTypeInfo().IsSubclassOf(this.TypeOfTopEbObjectParent2) : false))
                 {
                     if (!tool.IsAbstract)
