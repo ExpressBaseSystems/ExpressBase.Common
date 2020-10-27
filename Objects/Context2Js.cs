@@ -150,8 +150,7 @@ function ProcRecur(src_controls, dest_controls) {
             {
                 if (tool.GetTypeInfo().IsSubclassOf(this.TypeOfTopEbObjectParent) ||
                     (tool.GetTypeInfo().IsDefined(typeof(UsedWithTopObjectParent)) &&
-                        (tool.GetCustomAttribute<UsedWithTopObjectParent>().TopObjectParentType == this.TypeOfTopEbObjectParent||
-                    tool.GetCustomAttribute<UsedWithTopObjectParent>().TopObjectParentType2 == this.TypeOfTopEbObjectParent)) ||
+                        (tool.GetCustomAttribute<UsedWithTopObjectParent>().TopObjectParentTypes.Contains(this.TypeOfTopEbObjectParent))) ||
                     ((this.TypeOfTopEbObjectParent2 != null) ? tool.GetTypeInfo().IsSubclassOf(this.TypeOfTopEbObjectParent2) : false))
                 {
                     if (!tool.IsAbstract)
