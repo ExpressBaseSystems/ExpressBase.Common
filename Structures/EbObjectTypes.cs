@@ -103,7 +103,7 @@ namespace ExpressBase.Common.Structures
         public const int iSqlJob = 26;
 
         public static readonly EbObjectType Null = new EbObjectType("Null", iNull, ObjectConstants.XXX, false, "fa-exclamation-triangle",null);
-        public static readonly EbObjectType WebForm = new EbObjectType(ObjectConstants.WEB_FORM, iWebForm, ObjectConstants.XXW, true, "fa-wpforms","Form");//true
+        public static readonly EbObjectType WebForm = new EbObjectType(ObjectConstants.WEB_FORM, iWebForm, ObjectConstants.XMW, true, "fa-wpforms","Form");//true
         //public static readonly EbObjectType DisplayBlock = new EbObjectType(ObjectConstants.DISPLAY_BLOCK, iDisplayBlock, ObjectConstants.XXX, false);
         public static readonly EbObjectType DataReader = new EbObjectType(ObjectConstants.DATA_READER, iDataReader, ObjectConstants.BMW, false, "fa-database", "Data Reader");
         public static readonly EbObjectType DataWriter = new EbObjectType(ObjectConstants.DATA_WRITER, iDataWriter, ObjectConstants.BMW, false, "fa-database", "Data Writer");
@@ -111,7 +111,7 @@ namespace ExpressBase.Common.Structures
         //public static readonly EbObjectType Table = new EbObjectType(ObjectConstants.TABLE, iTable, ObjectConstants.BMW, false);
         public static readonly EbObjectType SqlFunction = new EbObjectType(ObjectConstants.SQL_FUNCTION, iSqlFunction, ObjectConstants.BMW, false, "fa-code", "Sql Function");
         //public static readonly EbObjectType SqlValidator = new EbObjectType(ObjectConstants.SQL_VALIDATOR, iSqlValidator, ObjectConstants.BMW, false);
-        public static readonly EbObjectType JavascriptFunction = new EbObjectType(ObjectConstants.JAVASCRIPT_FUNCTION, iJavascriptFunction, ObjectConstants.BMW, false, "fa-file-code-o", "JavaScript Function");
+        public static readonly EbObjectType JavascriptFunction = new EbObjectType(ObjectConstants.JAVASCRIPT_FUNCTION, iJavascriptFunction, ObjectConstants.BXW, false, "fa-file-code-o", "JavaScript Function");
         //public static readonly EbObjectType JavascriptValidator = new EbObjectType(ObjectConstants.JAVASCRIPT_VALIDATOR, iJavascriptValidator, ObjectConstants.BMW, false);
         //public static readonly EbObjectType DataVisualization = new EbObjectType(ObjectConstants.DATA_VISUALIZATION, iDataVisualization, ObjectConstants.BMW, false);
         public static readonly EbObjectType FilterDialog = new EbObjectType(ObjectConstants.FILTER_DIALOG, iFilterDialog, ObjectConstants.BXW, false, "fa-filter", "Filter Dialog");
@@ -129,7 +129,7 @@ namespace ExpressBase.Common.Structures
 
 
         public static readonly EbObjectType KanBan = new EbObjectType(ObjectConstants.KANBAN, iKanBan, ObjectConstants.XXW, false, "fa-tag", null);
-        public static readonly EbObjectType CalendarView = new EbObjectType(ObjectConstants.CALENDARVIEW, iCalendarView, ObjectConstants.BMW, true, "fa-calendar", "Calendar View");
+        public static readonly EbObjectType CalendarView = new EbObjectType(ObjectConstants.CALENDARVIEW, iCalendarView, ObjectConstants.BXW, true, "fa-calendar", "Calendar View");
         public static readonly EbObjectType CsharpFunction = new EbObjectType(ObjectConstants.CSHARPFUNCTION, iCsharpFunction, ObjectConstants.XXW, false, "fa-hashtag", "C# Function");
 
         public static EbObjectType Get(int intcode)
