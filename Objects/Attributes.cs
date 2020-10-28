@@ -53,12 +53,11 @@ namespace ExpressBase.Common.Objects.Attributes
 
     public class UsedWithTopObjectParent : Attribute
     {
+        public Type[] TopObjectParentTypes { get; set; }
 
-        public Type TopObjectParentType { get; set; }
-
-        public UsedWithTopObjectParent(Type _TopObjectParentType)
+        public UsedWithTopObjectParent(params Type[] _TopObjectParentTypes)
         {
-            TopObjectParentType = _TopObjectParentType;
+            TopObjectParentTypes = _TopObjectParentTypes;
         }
     }
 
