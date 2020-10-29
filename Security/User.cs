@@ -622,12 +622,15 @@ namespace ExpressBase.Security
                     userGroupIds = Array.ConvertAll(sUgIds.Split(','), int.Parse).ToList();
                 List<string> _permissions = ds.Rows[0][6].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][6].ToString().Split(',').ToList();
 
-                foreach (string objid in ds.Rows[0][11].ToString().Split(','))
+                if (userid == 1)//public object: permission only for anonymous user
                 {
-                    if (_permissions == null)
-                        _permissions = new List<string>();
-                    string _permsn = "000" /*appid*/ + "-" + "00"/*type*/ + "-" + objid.PadLeft(5, '0') + "-" + "00" /*operation*/ + ":-1";
-                    _permissions.Add(_permsn);
+                    foreach (string objid in ds.Rows[0][11].ToString().Split(','))
+                    {
+                        if (_permissions == null)
+                            _permissions = new List<string>();
+                        string _permsn = "000" /*appid*/ + "-" + "00"/*type*/ + "-" + objid.PadLeft(5, '0') + "-" + "00" /*operation*/ + ":-1";
+                        _permissions.Add(_permsn);
+                    }
                 }
                 _user = new User
                 {
@@ -695,8 +698,8 @@ namespace ExpressBase.Security
         [DataMember(Order = 4)]
         public string DefaultDashBoard { get; set; }
 
-        //[JsonIgnore]
-        //public int CurrrentLocation { get; set; }
+        [JsonIgnore]
+        public int CurrrentLocation { get; set; }
 
         public string GetShortDatePattern()
         {
