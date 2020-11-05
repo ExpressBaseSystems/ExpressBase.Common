@@ -515,7 +515,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             {
                 _name = prop.GetCustomAttribute<JsonPropertyAttribute>().PropertyName;
             }
-            if (prop.IsDefined(typeof(DefaultPropValue)) && (prop.PropertyType.IsPrimitive || prop.PropertyType == typeof(string)))
+            if (prop.IsDefined(typeof(DefaultPropValue)) && (prop.PropertyType.IsPrimitive || prop.PropertyType == typeof(string) || prop.PropertyType.IsEnum))
             {
 
                 string DefaultVal = prop.GetCustomAttribute<DefaultPropValue>().Value;
