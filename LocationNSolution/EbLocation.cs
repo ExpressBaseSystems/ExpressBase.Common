@@ -123,6 +123,8 @@ namespace ExpressBase.Common.LocationNSolution
 
         public List<string> ProfileSetupPages { get; set; }
 
+        public bool VerifyUserByOTP { set; get; }
+
         public MobileAppSettings()
         {
             ProfileSetupPages = new List<string>();
