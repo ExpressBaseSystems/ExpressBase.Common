@@ -576,6 +576,28 @@ namespace ExpressBase.Security
             return InitUserObject(dt, context, user_ip, string.Empty);
         }
 
+        public static void UpdateVerificationStatus(IDatabase DataDB, int UserId, bool IsEmailVerified, bool IsPhoneVerified)
+        {
+            string Qry = string.Empty;
+            
+            if (IsEmailVerified)
+            {
+                Qry = $"is_email_verified = 'T', email_verified_at = {DataDB.EB_CURRENT_TIMESTAMP}";
+            }
+            if (IsPhoneVerified)
+            {
+                if (Qry != string.Empty)
+                    Qry += ", ";
+                Qry += $"is_phone_verified = 'T', phone_verified_at = {DataDB.EB_CURRENT_TIMESTAMP}";
+            }
+            if (Qry != string.Empty && UserId > 0)
+            {
+                Qry = $"UPDATE eb_users SET {Qry} WHERE id = @uid;";
+                int s = DataDB.DoNonQuery(Qry, new DbParameter[] {
+                    DataDB.GetNewParameter("uid", EbDbTypes.Int32, UserId)
+                });
+            }
+        }
 
         public static User GetUserObject(IDatabase df, int userId, string whichConsole, string userIp, string deviceId)
         {
