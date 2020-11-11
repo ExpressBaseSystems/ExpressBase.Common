@@ -73,17 +73,25 @@ namespace ExpressBase.Security
 
         [DataMember(Order = 17)]
         [JsonIgnore]
-        public string Otp { get; set; }
+        public string EmailVerifCode { get; set; }        
 
         [DataMember(Order = 18)]
-        public override string PhoneNumber { get; set; }
+        [JsonIgnore]
+        public string MobileVerifCode { get; set; }
 
         [DataMember(Order = 19)]
+        [JsonIgnore]
+        public string Otp { get; set; }
+
+        [DataMember(Order = 20)]
+        public override string PhoneNumber { get; set; }
+
+        [DataMember(Order = 21)]
         public bool IsForcePWReset { get; set; }
 
         private List<string> _ebObjectIds = null;
 
-        [DataMember(Order = 20)]
+        [DataMember(Order = 22)]
         public List<string> EbObjectIds
         {
             get
