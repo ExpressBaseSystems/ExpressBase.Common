@@ -584,6 +584,28 @@ namespace ExpressBase.Security
             return InitUserObject(dt, context, user_ip, string.Empty);
         }
 
+        public static void UpdateVerificationStatus(IDatabase DataDB, int UserId, bool IsEmailVerified, bool IsPhoneVerified)
+        {
+            string Qry = string.Empty;
+            
+            if (IsEmailVerified)
+            {
+                Qry = $"is_email_verified = 'T', email_verified_at = {DataDB.EB_CURRENT_TIMESTAMP}";
+            }
+            if (IsPhoneVerified)
+            {
+                if (Qry != string.Empty)
+                    Qry += ", ";
+                Qry += $"is_phone_verified = 'T', phone_verified_at = {DataDB.EB_CURRENT_TIMESTAMP}";
+            }
+            if (Qry != string.Empty && UserId > 0)
+            {
+                Qry = $"UPDATE eb_users SET {Qry} WHERE id = @uid;";
+                int s = DataDB.DoNonQuery(Qry, new DbParameter[] {
+                    DataDB.GetNewParameter("uid", EbDbTypes.Int32, UserId)
+                });
+            }
+        }
 
         public static User GetUserObject(IDatabase df, int userId, string whichConsole, string userIp, string deviceId)
         {
@@ -630,12 +652,15 @@ namespace ExpressBase.Security
                     userGroupIds = Array.ConvertAll(sUgIds.Split(','), int.Parse).ToList();
                 List<string> _permissions = ds.Rows[0][6].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][6].ToString().Split(',').ToList();
 
-                foreach (string objid in ds.Rows[0][11].ToString().Split(','))
+                if (userid == 1)//public object: permission only for anonymous user
                 {
-                    if (_permissions == null)
-                        _permissions = new List<string>();
-                    string _permsn = "000" /*appid*/ + "-" + "00"/*type*/ + "-" + objid.PadLeft(5, '0') + "-" + "00" /*operation*/ + ":-1";
-                    _permissions.Add(_permsn);
+                    foreach (string objid in ds.Rows[0][11].ToString().Split(','))
+                    {
+                        if (_permissions == null)
+                            _permissions = new List<string>();
+                        string _permsn = "000" /*appid*/ + "-" + "00"/*type*/ + "-" + objid.PadLeft(5, '0') + "-" + "00" /*operation*/ + ":-1";
+                        _permissions.Add(_permsn);
+                    }
                 }
                 _user = new User
                 {
@@ -703,8 +728,8 @@ namespace ExpressBase.Security
         [DataMember(Order = 4)]
         public string DefaultDashBoard { get; set; }
 
-        //[JsonIgnore]
-        //public int CurrrentLocation { get; set; }
+        [JsonIgnore]
+        public int CurrrentLocation { get; set; }
 
         public string GetShortDatePattern()
         {

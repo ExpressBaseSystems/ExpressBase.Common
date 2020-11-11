@@ -93,36 +93,46 @@ namespace ExpressBase.Common.LocationNSolution
         {
             Locations = new Dictionary<int, EbLocation>();
         }
+
+        public bool IsMobileSignupEnabled(out string refid)
+        {
+            bool exist = false;
+            refid = null;
+
+            if (SolutionSettings != null && SolutionSettings.MobileAppSettings != null)
+            {
+                refid = SolutionSettings.MobileAppSettings.SignUpPageRefId;
+                exist = SolutionSettings.MobileAppSettings.IsSignupEnabled();
+            }
+            return exist;
+        }
     }
 
     public class SolutionSettings
     {
-        public String SignupFormRefid { get; set; }
+        public string SignupFormRefid { get; set; }
 
         public List<EbProfileUserType> UserTypeForms { get; set; }
+
         public MobileAppSettings MobileAppSettings { get; set; }
     }
 
     public class MobileAppSettings
     {
-        public MobileSignUpSettings MobileSignUpSettings { get; set; }
-        public MobileAppSettings()
-        {
-            this.MobileSignUpSettings = new MobileSignUpSettings();
-        }
-    }
-    public class MobileSignUpSettings
-    {
-        public bool SignUp { get; set; }
-        public bool Email { get; set; }
-        public bool MobileNo { get; set; }
-        public bool Password { get; set; }
-        public bool Verification { get; set; }
+        public string SignUpPageRefId { set; get; }
+
         public List<string> ProfileSetupPages { get; set; }
 
-        public MobileSignUpSettings()
+        public bool VerifyUserByOTP { set; get; }
+
+        public MobileAppSettings()
         {
-            this.ProfileSetupPages = new List<string>();
+            ProfileSetupPages = new List<string>();
+        }
+
+        public bool IsSignupEnabled()
+        {
+            return !string.IsNullOrEmpty(SignUpPageRefId);
         }
     }
 
