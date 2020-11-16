@@ -14,6 +14,7 @@ namespace ExpressBase.Common.Enums
         //ImageSmall,
         //ImageMed,
         //ImageLarge,
-        LocationFile = 5
+        LocationFile = 5,
+        Audio = 6
     }
 }

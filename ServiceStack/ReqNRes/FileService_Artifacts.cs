@@ -30,7 +30,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 3)]
         public byte[] Byte { get; set; }
 
-        [DataMember(Order =4)]
+        [DataMember(Order = 4)]
         public int InfraConID { get; set; }
     }
 
@@ -239,10 +239,10 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 12)]
         public string SolutionId { get; set; }
 
-         [DataMember(Order = 13)]
+        [DataMember(Order = 13)]
         public int InfraConID { get; set; }
     }
-	 [DataContract]
+    [DataContract]
     public class UploadLocRequest : IReturn<EbMqResponse>, IUploadImageRequest
     {
         [DataMember(Order = 1)]
@@ -281,7 +281,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 12)]
         public string SolutionId { get; set; }
 
-         [DataMember(Order = 13)]
+        [DataMember(Order = 13)]
         public int InfraConID { get; set; }
     }
 
@@ -417,6 +417,16 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
     [DataContract]
     public class UploadFileAsyncRequest : EbServiceStackAuthRequest, IReturn<UploadAsyncResponse>
+    {
+        [DataMember(Order = 1)]
+        public FileMeta FileDetails { get; set; }
+
+        [DataMember(Order = 2)]
+        public byte[] FileByte { get; set; }
+    }
+
+    [DataContract]
+    public class UploadAudioAsyncRequest : EbServiceStackAuthRequest, IReturn<UploadAsyncResponse>
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
@@ -594,7 +604,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 2)]
         public ImageMeta ImageInfo { get; set; }
     }
-	
+
     public class DownloadBotExtImgRequest : EbServiceStackNoAuthRequest, IReturn<DownloadFileResponse>
     {
         [DataMember(Order = 1)]
