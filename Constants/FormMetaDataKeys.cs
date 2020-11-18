@@ -8,5 +8,6 @@
         public const string verify_email = "verify_email";
         public const string verify_phone = "verify_phone";
         public const string message = "message";
+        public const string token = "token";
     }
 }
