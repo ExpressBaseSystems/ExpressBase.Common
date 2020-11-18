@@ -40,6 +40,7 @@ namespace ExpressBase.Common.Constants
         public const string BMP = "bmp";
 
         public const string MP4 = "mp4";
+        public const string MP3 = "mp3";
 
 
         public const string TXT = "txt";
@@ -82,6 +83,7 @@ namespace ExpressBase.Common.Constants
         public const string MIME_BMP = "image/bmp";
 
         public const string MIME_MP4 = "video/mp4";
+        public const string MIME_MP3 = "audio/mp3";
 
 
         public const string MIME_TXT = "text/plain";
@@ -107,6 +109,7 @@ namespace ExpressBase.Common.Constants
             { BMP, MIME_BMP},
 
             { MP4, MIME_MP4},
+            { MP3, MIME_MP3},
 
             {TXT, MIME_TXT},
             {TEXT, MIME_TEXT},
