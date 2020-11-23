@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using ExpressBase.Security;
 
 namespace ExpressBase.Common.LocationNSolution
 {
@@ -94,17 +95,53 @@ namespace ExpressBase.Common.LocationNSolution
             Locations = new Dictionary<int, EbLocation>();
         }
 
-        public bool IsMobileSignupEnabled(out string refid)
+        public bool GetMobileSettings(out MobileAppSettings settings)
         {
-            bool exist = false;
-            refid = null;
+            settings = null;
 
             if (SolutionSettings != null && SolutionSettings.MobileAppSettings != null)
             {
-                refid = SolutionSettings.MobileAppSettings.SignUpPageRefId;
-                exist = SolutionSettings.MobileAppSettings.IsSignupEnabled();
+                settings = SolutionSettings.MobileAppSettings;
+                return true;
             }
-            return exist;
+            return false;
+        }
+
+        public List<EbLocation> GetLocationsByUser(User user)
+        {
+            List<EbLocation> locations = new List<EbLocation>();
+
+            if (this.Locations == null || this.Locations.Count <= 0)
+                return locations;
+
+            List<EbLocation> allLocations = this.Locations.Select(kvp => kvp.Value).ToList();
+
+            try
+            {
+                if (user.IsAdmin())
+                {
+                    locations.AddRange(allLocations);
+                }
+                else if (user.LocationIds == null || user.LocationIds.Count <= 0)
+                {
+                    if (user.LocationIds.Contains(-1))
+                        locations.AddRange(allLocations);
+                    else
+                    {
+                        foreach (int locid in user.LocationIds)
+                        {
+                            if (this.Locations.ContainsKey(locid))
+                                locations.Add(locations[locid]);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Unknown error occured while getting locations by user");
+                Console.WriteLine(ex.Message + ", STACKTRACE : " + ex.StackTrace);
+            }
+            return locations;
         }
     }
 
@@ -121,18 +158,21 @@ namespace ExpressBase.Common.LocationNSolution
     {
         public string SignUpPageRefId { set; get; }
 
-        public List<string> ProfileSetupPages { get; set; }
-
-        public bool VerifyUserByOTP { set; get; }
+        public List<EbProfileUserType> UserTypeForms { get; set; }
 
         public MobileAppSettings()
         {
-            ProfileSetupPages = new List<string>();
+            UserTypeForms = new List<EbProfileUserType>();
         }
 
         public bool IsSignupEnabled()
         {
             return !string.IsNullOrEmpty(SignUpPageRefId);
+        }
+
+        public string GetProfileFormIdByUserType(int id)
+        {
+            return UserTypeForms.Find(x => x.Id == id)?.RefId;
         }
     }
 
