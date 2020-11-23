@@ -32,7 +32,10 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 4)]
         public int InfraConID { get; set; }
-    }
+
+		[DataMember(Order = 5)]
+		public string SubscriptionId { get; set; }
+	}
 
     [DataContract]
     public class GetImageFtpRequest : EbMqRequest, IReturn<EbMqResponse>
@@ -67,7 +70,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         int ImageRefId { get; set; }
 
         string SolutionId { get; set; }
-    }
+
+		string SubscriptionId { get; set; }
+	}
 
     [DataContract]
     public class UploadImageRequest : IReturn<EbMqResponse>, IUploadImageRequest
@@ -111,7 +116,10 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 13)]
         public int InfraConID { get; set; }
 
-    }
+		[DataMember(Order = 14)]
+		public string SubscriptionId { get; set; }
+
+	}
 
     [DataContract]
     public class UploadImageInfraMqRequest : IReturn<EbMqResponse>, IUploadImageRequest
@@ -155,7 +163,10 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 13)]
         public int InfraConID { get; set; }
 
-    }
+		 [DataMember(Order = 14)]
+		public string SubscriptionId { get; set; }
+
+	}
 
     [DataContract]
     public class UploadDpRequest : IReturn<EbMqResponse>, IUploadImageRequest
@@ -198,7 +209,11 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 13)]
         public int InfraConID { get; set; }
-    }
+
+        [DataMember(Order = 14)]
+		public string SubscriptionId { get; set; }
+
+	}
 
     [DataContract]
     public class UploadLogoRequest : IReturn<EbMqResponse>, IUploadImageRequest
@@ -241,7 +256,10 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 13)]
         public int InfraConID { get; set; }
-    }
+
+        [DataMember(Order = 14)]
+		public string SubscriptionId { get; set; }
+	}
     [DataContract]
     public class UploadLocRequest : IReturn<EbMqResponse>, IUploadImageRequest
     {
@@ -283,7 +301,10 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 13)]
         public int InfraConID { get; set; }
-    }
+
+        [DataMember(Order = 14)]
+		public string SubscriptionId { get; set; }
+	}
 
     [DataContract]
     public class ImageResizeRequest : EbMqRequest
