@@ -55,7 +55,9 @@ namespace ExpressBase.Common.ServiceClients
                     this.BearerToken = (req.Headers[HttpHeaders.Authorization] != null) ? req.Headers[HttpHeaders.Authorization].Replace(CacheConstants.BEARER, string.Empty).Trim() : null;
                     if (!(String.IsNullOrEmpty(this.RefreshToken)))
                         this.Headers.Add(CacheConstants.RTOKEN, this.RefreshToken);
-                }
+					if (!(String.IsNullOrEmpty(req.Headers[TokenConstants.SSE_SUBSCRIP_ID])))
+						this.Headers.Add(TokenConstants.SSE_SUBSCRIP_ID, req.Headers[TokenConstants.SSE_SUBSCRIP_ID]);
+				}
             }
             catch (Exception e)
             {
