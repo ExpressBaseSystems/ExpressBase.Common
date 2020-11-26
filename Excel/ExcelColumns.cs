@@ -1,4 +1,5 @@
-﻿using ExpressBase.Common.Structures;
+﻿using ExpressBase.Common.Objects;
+using ExpressBase.Common.Structures;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,5 +25,7 @@ namespace ExpressBase.Common.Excel
         public EbDbTypes DbType { get; set; }
 
         public string TableName { get; set; }
+
+        public string ControlType { get; set; }
     }
 }
