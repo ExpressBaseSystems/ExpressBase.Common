@@ -207,6 +207,7 @@ namespace ExpressBase.Common
         public string SrcRefId { get; set; }
         public int SrcDataId { get; set; }
         public int CreatedBy { get; set; }
+        public string CreatedAt { get; set; }
 
         public WebformData()
         {

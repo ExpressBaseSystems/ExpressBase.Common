@@ -30,9 +30,12 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 3)]
         public byte[] Byte { get; set; }
 
-        [DataMember(Order =4)]
+        [DataMember(Order = 4)]
         public int InfraConID { get; set; }
-    }
+
+		[DataMember(Order = 5)]
+		public string SubscriptionId { get; set; }
+	}
 
     [DataContract]
     public class GetImageFtpRequest : EbMqRequest, IReturn<EbMqResponse>
@@ -67,7 +70,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         int ImageRefId { get; set; }
 
         string SolutionId { get; set; }
-    }
+
+		string SubscriptionId { get; set; }
+	}
 
     [DataContract]
     public class UploadImageRequest : IReturn<EbMqResponse>, IUploadImageRequest
@@ -111,7 +116,10 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 13)]
         public int InfraConID { get; set; }
 
-    }
+		[DataMember(Order = 14)]
+		public string SubscriptionId { get; set; }
+
+	}
 
     [DataContract]
     public class UploadImageInfraMqRequest : IReturn<EbMqResponse>, IUploadImageRequest
@@ -155,7 +163,10 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 13)]
         public int InfraConID { get; set; }
 
-    }
+		 [DataMember(Order = 14)]
+		public string SubscriptionId { get; set; }
+
+	}
 
     [DataContract]
     public class UploadDpRequest : IReturn<EbMqResponse>, IUploadImageRequest
@@ -198,7 +209,11 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 13)]
         public int InfraConID { get; set; }
-    }
+
+        [DataMember(Order = 14)]
+		public string SubscriptionId { get; set; }
+
+	}
 
     [DataContract]
     public class UploadLogoRequest : IReturn<EbMqResponse>, IUploadImageRequest
@@ -239,10 +254,13 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 12)]
         public string SolutionId { get; set; }
 
-         [DataMember(Order = 13)]
+        [DataMember(Order = 13)]
         public int InfraConID { get; set; }
-    }
-	 [DataContract]
+
+        [DataMember(Order = 14)]
+		public string SubscriptionId { get; set; }
+	}
+    [DataContract]
     public class UploadLocRequest : IReturn<EbMqResponse>, IUploadImageRequest
     {
         [DataMember(Order = 1)]
@@ -281,9 +299,12 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 12)]
         public string SolutionId { get; set; }
 
-         [DataMember(Order = 13)]
+        [DataMember(Order = 13)]
         public int InfraConID { get; set; }
-    }
+
+        [DataMember(Order = 14)]
+		public string SubscriptionId { get; set; }
+	}
 
     [DataContract]
     public class ImageResizeRequest : EbMqRequest
@@ -417,6 +438,16 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
     [DataContract]
     public class UploadFileAsyncRequest : EbServiceStackAuthRequest, IReturn<UploadAsyncResponse>
+    {
+        [DataMember(Order = 1)]
+        public FileMeta FileDetails { get; set; }
+
+        [DataMember(Order = 2)]
+        public byte[] FileByte { get; set; }
+    }
+
+    [DataContract]
+    public class UploadAudioAsyncRequest : EbServiceStackAuthRequest, IReturn<UploadAsyncResponse>
     {
         [DataMember(Order = 1)]
         public FileMeta FileDetails { get; set; }
@@ -594,7 +625,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 2)]
         public ImageMeta ImageInfo { get; set; }
     }
-	
+
     public class DownloadBotExtImgRequest : EbServiceStackNoAuthRequest, IReturn<DownloadFileResponse>
     {
         [DataMember(Order = 1)]

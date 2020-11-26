@@ -43,6 +43,10 @@ CREATE TABLE eb_users
 	eb_lastmodified_at timestamp without time zone,
 	pw text,
 	forcepwreset "char" DEFAULT 'T'::"char",
+	is_email_verified "char" DEFAULT 'F'::"char",
+	is_phone_verified "char" DEFAULT 'F'::"char",
+	email_verified_at timestamp without time zone,
+	phone_verified_at timestamp without time zone,
 	CONSTRAINT eb_users_pkey PRIMARY KEY (id),
 	CONSTRAINT eb_users_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );

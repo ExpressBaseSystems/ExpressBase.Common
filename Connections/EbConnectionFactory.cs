@@ -26,7 +26,7 @@ namespace ExpressBase.Common.Data
 
         public IDatabase DataDBRW { get; private set; }
 
-        public Dictionary<string, IDatabase> SupportingDataDB { get; private set; }
+        public Dictionary<int, IDatabase> SupportingDataDB { get; private set; }
 
         public IDatabase ObjectsDB { get; private set; }
 
@@ -253,7 +253,7 @@ namespace ExpressBase.Common.Data
                         DataDB = new OracleDB(Connections.DataDbConfig);
                     else if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
                         DataDB = new MySqlDB(Connections.DataDbConfig);
-
+                    DataDB.ConId = Connections.DataDbConfig.Id;
                     // DATA DB RO
                     if (!(string.IsNullOrEmpty(Connections.DataDbConfig.ReadOnlyUserName) || string.IsNullOrEmpty(Connections.DataDbConfig.ReadOnlyPassword)))
                     {
@@ -300,17 +300,17 @@ namespace ExpressBase.Common.Data
                 if (Connections.SupportingDataDbConfig != null && Connections.SupportingDataDbConfig.Count > 0)
                 {
                     if (SupportingDataDB == null)
-                        SupportingDataDB = new Dictionary<string, IDatabase>();
+                        SupportingDataDB = new Dictionary<int, IDatabase>();
                     for (int i = 0; i < Connections.SupportingDataDbConfig.Count; i++)
                     {
                         if (Connections.SupportingDataDbConfig[i].DatabaseVendor == DatabaseVendors.PGSQL)
-                            SupportingDataDB.Add(Connections.SupportingDataDbConfig[i].NickName, new PGSQLDatabase(Connections.SupportingDataDbConfig[i]));
+                            SupportingDataDB.Add(Connections.SupportingDataDbConfig[i].Id, new PGSQLDatabase(Connections.SupportingDataDbConfig[i]));
                         else if (Connections.SupportingDataDbConfig[i].DatabaseVendor == DatabaseVendors.ORACLE)
-                            SupportingDataDB.Add(Connections.SupportingDataDbConfig[i].NickName, new OracleDB(Connections.SupportingDataDbConfig[i]));
+                            SupportingDataDB.Add(Connections.SupportingDataDbConfig[i].Id, new OracleDB(Connections.SupportingDataDbConfig[i]));
                         else if (Connections.SupportingDataDbConfig[i].DatabaseVendor == DatabaseVendors.MYSQL)
-                            SupportingDataDB.Add(Connections.SupportingDataDbConfig[i].NickName, new MySqlDB(Connections.SupportingDataDbConfig[i]));
+                            SupportingDataDB.Add(Connections.SupportingDataDbConfig[i].Id, new MySqlDB(Connections.SupportingDataDbConfig[i]));
                         else if (Connections.SupportingDataDbConfig[i].DatabaseVendor == DatabaseVendors.MSSQL)
-                            SupportingDataDB.Add(Connections.SupportingDataDbConfig[i].NickName, new MSSQLDatabase(Connections.SupportingDataDbConfig[i]));
+                            SupportingDataDB.Add(Connections.SupportingDataDbConfig[i].Id, new MSSQLDatabase(Connections.SupportingDataDbConfig[i]));
                     }
                 }
 

@@ -13,6 +13,7 @@ namespace ExpressBase.Common
     {
         public virtual DatabaseVendors Vendor { get; }
         public virtual IVendorDbTypes VendorDbTypes { get; }
+        public virtual int ConId { get; set; }
 
         public abstract DbConnection GetNewConnection();
         public abstract DbConnection GetNewConnection(string dbName);

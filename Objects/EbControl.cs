@@ -332,6 +332,9 @@ namespace ExpressBase.Common.Objects
         [HelpText("Define onChange function.")]
         public virtual EbScript OnChangeFn { get; set; }
 
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm)]
+        public virtual bool Index { get; set; }
+
         public virtual string GetToolHtml()
         {
             return @"

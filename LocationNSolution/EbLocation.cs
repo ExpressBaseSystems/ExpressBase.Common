@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using ExpressBase.Security;
 
 namespace ExpressBase.Common.LocationNSolution
 {
@@ -93,36 +94,85 @@ namespace ExpressBase.Common.LocationNSolution
         {
             Locations = new Dictionary<int, EbLocation>();
         }
+
+        public bool GetMobileSettings(out MobileAppSettings settings)
+        {
+            settings = null;
+
+            if (SolutionSettings != null && SolutionSettings.MobileAppSettings != null)
+            {
+                settings = SolutionSettings.MobileAppSettings;
+                return true;
+            }
+            return false;
+        }
+
+        public List<EbLocation> GetLocationsByUser(User user)
+        {
+            List<EbLocation> locations = new List<EbLocation>();
+
+            if (this.Locations == null || this.Locations.Count <= 0)
+                return locations;
+
+            List<EbLocation> allLocations = this.Locations.Select(kvp => kvp.Value).ToList();
+
+            try
+            {
+                if (user.IsAdmin())
+                {
+                    locations.AddRange(allLocations);
+                }
+                else if (user.LocationIds == null || user.LocationIds.Count <= 0)
+                {
+                    if (user.LocationIds.Contains(-1))
+                        locations.AddRange(allLocations);
+                    else
+                    {
+                        foreach (int locid in user.LocationIds)
+                        {
+                            if (this.Locations.ContainsKey(locid))
+                                locations.Add(locations[locid]);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Unknown error occured while getting locations by user");
+                Console.WriteLine(ex.Message + ", STACKTRACE : " + ex.StackTrace);
+            }
+            return locations;
+        }
     }
 
     public class SolutionSettings
     {
-        public String SignupFormRefid { get; set; }
+        public string SignupFormRefid { get; set; }
 
         public List<EbProfileUserType> UserTypeForms { get; set; }
+
         public MobileAppSettings MobileAppSettings { get; set; }
     }
 
     public class MobileAppSettings
     {
-        public MobileSignUpSettings MobileSignUpSettings { get; set; }
+        public string SignUpPageRefId { set; get; }
+
+        public List<EbProfileUserType> UserTypeForms { get; set; }
+
         public MobileAppSettings()
         {
-            this.MobileSignUpSettings = new MobileSignUpSettings();
+            UserTypeForms = new List<EbProfileUserType>();
         }
-    }
-    public class MobileSignUpSettings
-    {
-        public bool SignUp { get; set; }
-        public bool Email { get; set; }
-        public bool MobileNo { get; set; }
-        public bool Password { get; set; }
-        public bool Verification { get; set; }
-        public List<string> ProfileSetupPages { get; set; }
 
-        public MobileSignUpSettings()
+        public bool IsSignupEnabled()
         {
-            this.ProfileSetupPages = new List<string>();
+            return !string.IsNullOrEmpty(SignUpPageRefId);
+        }
+
+        public string GetProfileFormIdByUserType(int id)
+        {
+            return UserTypeForms.Find(x => x.Id == id)?.RefId;
         }
     }
 

@@ -60,6 +60,22 @@ namespace ExpressBase.Common.ServerEvents_Artifacts
         [DataMember(Order = 3)]
         public string ToSubscriptionId { get; set; }
     }
+	
+    [DataContract]
+    public class NotifySingleSubscriptionRequest : EbServiceStackAuthRequest, IReturn<NotifyResponse>
+    {
+        [DataMember(Order = 0)]
+        public string[] ToChannel { get; set; }
+
+        [DataMember(Order = 1)]
+        public string Selector { get; set; }
+
+        [DataMember(Order = 2)]
+        public object Msg { get; set; }
+
+        [DataMember(Order = 3)]
+        public string ToSubscriptionId { get; set; }
+    }
 
     [DataContract]
     public class NotifyAllRequest : EbServiceStackAuthRequest, IReturn<NotifyResponse>

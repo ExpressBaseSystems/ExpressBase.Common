@@ -36,6 +36,7 @@ namespace ExpressBase.Common
         public const string PAYNOW = "/PayNow";
         public const string TWOFATOKEN = "Token";
         public const string RPWToken = "rpwToken";
+		public const string SSE_SUB_ID = "eb_sse_subid";
 
 		public const string BOT_BEARER_TOKEN = "bot_bToken";
 		public const string BOT_REFRESH_TOKEN = "bot_rToken";

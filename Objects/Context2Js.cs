@@ -149,7 +149,8 @@ function ProcRecur(src_controls, dest_controls) {
             foreach (Type tool in this.TypeArray)
             {
                 if (tool.GetTypeInfo().IsSubclassOf(this.TypeOfTopEbObjectParent) ||
-                    (tool.GetTypeInfo().IsDefined(typeof(UsedWithTopObjectParent)) && tool.GetCustomAttribute<UsedWithTopObjectParent>().TopObjectParentType == this.TypeOfTopEbObjectParent) ||
+                    (tool.GetTypeInfo().IsDefined(typeof(UsedWithTopObjectParent)) &&
+                        (tool.GetCustomAttribute<UsedWithTopObjectParent>().TopObjectParentTypes.Contains(this.TypeOfTopEbObjectParent))) ||
                     ((this.TypeOfTopEbObjectParent2 != null) ? tool.GetTypeInfo().IsSubclassOf(this.TypeOfTopEbObjectParent2) : false))
                 {
                     if (!tool.IsAbstract)
@@ -343,7 +344,6 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             {
                 _name = prop.GetCustomAttribute<JsonPropertyAttribute>().PropertyName;
             }
-
             Meta meta = new Meta { name = _name };
             IEnumerable<Attribute> propattrs = prop.GetCustomAttributes();
             foreach (Attribute attr in propattrs)
@@ -388,6 +388,11 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
                     meta.Limit = PropertyEditorAttr.Limit;
                     meta.Dprop = PropertyEditorAttr.DependantProp;
                     meta.Dprop2 = PropertyEditorAttr.DependantProp2;
+
+                    if (PropertyEditorAttr.BooleanOption && (PropertyEditorAttr.PropertyEditorType == (int)PropertyEditorType.CollectionProp ||
+                        PropertyEditorAttr.PropertyEditorType == (int)PropertyEditorType.CollectionABCpropToggle ||
+                        PropertyEditorAttr.PropertyEditorType == (int)PropertyEditorType.CollectionABCFrmSrc))// collection editor - toggles a property, disable a prop (A - B - C)(if the property value is true it come))
+                        meta.Dprop2 = PropertyEditorAttr.BooleanOption.ToString();
 
                     if (PropertyEditorAttr.PropertyEditorType == (int)PropertyEditorType.DropDown && PropertyEditorAttr.BooleanOption)
                         meta.Dprop = PropertyEditorAttr.BooleanOption.ToString();
@@ -510,7 +515,7 @@ var NewHtml = this.$BareControl.outerHTML(), me = this, metas = AllMetas[MyName]
             {
                 _name = prop.GetCustomAttribute<JsonPropertyAttribute>().PropertyName;
             }
-            if (prop.IsDefined(typeof(DefaultPropValue)) && (prop.PropertyType.IsPrimitive || prop.PropertyType == typeof(string)))
+            if (prop.IsDefined(typeof(DefaultPropValue)) && (prop.PropertyType.IsPrimitive || prop.PropertyType == typeof(string) || prop.PropertyType.IsEnum))
             {
 
                 string DefaultVal = prop.GetCustomAttribute<DefaultPropValue>().Value;

@@ -73,17 +73,25 @@ namespace ExpressBase.Security
 
         [DataMember(Order = 17)]
         [JsonIgnore]
-        public string Otp { get; set; }
+        public string EmailVerifCode { get; set; }        
 
         [DataMember(Order = 18)]
-        public override string PhoneNumber { get; set; }
+        [JsonIgnore]
+        public string MobileVerifCode { get; set; }
 
         [DataMember(Order = 19)]
+        [JsonIgnore]
+        public string Otp { get; set; }
+
+        [DataMember(Order = 20)]
+        public override string PhoneNumber { get; set; }
+
+        [DataMember(Order = 21)]
         public bool IsForcePWReset { get; set; }
 
         private List<string> _ebObjectIds = null;
 
-        [DataMember(Order = 20)]
+        [DataMember(Order = 22)]
         public List<string> EbObjectIds
         {
             get
@@ -297,7 +305,7 @@ namespace ExpressBase.Security
                             FullName = ds.Rows[0][2].ToString(),
                             Roles = rolesname,
                             Permissions = ds.Rows[0][4].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][4].ToString().Split(',').ToList(),
-                            Preference = !string.IsNullOrEmpty(ds.Rows[0][5].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][5].ToString()) : new Preferences { Locale = "en-US", TimeZone = "(UTC) Coordinated Universal Time" },
+                            Preference = !string.IsNullOrEmpty(ds.Rows[0][5].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][5].ToString()) : new Preferences { Locale = "en-IN", TimeZone = "(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi" },
                             SourceIp = ipAddress
                         };
                     }
@@ -576,6 +584,28 @@ namespace ExpressBase.Security
             return InitUserObject(dt, context, user_ip, string.Empty);
         }
 
+        public static void UpdateVerificationStatus(IDatabase DataDB, int UserId, bool IsEmailVerified, bool IsPhoneVerified)
+        {
+            string Qry = string.Empty;
+            
+            if (IsEmailVerified)
+            {
+                Qry = $"is_email_verified = 'T', email_verified_at = {DataDB.EB_CURRENT_TIMESTAMP}";
+            }
+            if (IsPhoneVerified)
+            {
+                if (Qry != string.Empty)
+                    Qry += ", ";
+                Qry += $"is_phone_verified = 'T', phone_verified_at = {DataDB.EB_CURRENT_TIMESTAMP}";
+            }
+            if (Qry != string.Empty && UserId > 0)
+            {
+                Qry = $"UPDATE eb_users SET {Qry} WHERE id = @uid;";
+                int s = DataDB.DoNonQuery(Qry, new DbParameter[] {
+                    DataDB.GetNewParameter("uid", EbDbTypes.Int32, UserId)
+                });
+            }
+        }
 
         public static User GetUserObject(IDatabase df, int userId, string whichConsole, string userIp, string deviceId)
         {
@@ -622,12 +652,15 @@ namespace ExpressBase.Security
                     userGroupIds = Array.ConvertAll(sUgIds.Split(','), int.Parse).ToList();
                 List<string> _permissions = ds.Rows[0][6].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][6].ToString().Split(',').ToList();
 
-                foreach (string objid in ds.Rows[0][11].ToString().Split(','))
+                if (userid == 1)//public object: permission only for anonymous user
                 {
-                    if (_permissions == null)
-                        _permissions = new List<string>();
-                    string _permsn = "000" /*appid*/ + "-" + "00"/*type*/ + "-" + objid.PadLeft(5, '0') + "-" + "00" /*operation*/ + ":-1";
-                    _permissions.Add(_permsn);
+                    foreach (string objid in ds.Rows[0][11].ToString().Split(','))
+                    {
+                        if (_permissions == null)
+                            _permissions = new List<string>();
+                        string _permsn = "000" /*appid*/ + "-" + "00"/*type*/ + "-" + objid.PadLeft(5, '0') + "-" + "00" /*operation*/ + ":-1";
+                        _permissions.Add(_permsn);
+                    }
                 }
                 _user = new User
                 {
@@ -637,7 +670,7 @@ namespace ExpressBase.Security
                     Roles = rolesname,
                     RoleIds = iRoleIds,
                     Permissions = _permissions,
-                    Preference = !string.IsNullOrEmpty(ds.Rows[0][7].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][7].ToString()) : new Preferences { Locale = "en-US", TimeZone = "(UTC) Coordinated Universal Time", DefaultLocation = -1 },
+                    Preference = !string.IsNullOrEmpty(ds.Rows[0][7].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][7].ToString()) : new Preferences { Locale = "en-IN", TimeZone = "(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi", DefaultLocation = -1 },
                     SignInLogId = Convert.ToInt32(ds.Rows[0][9]),
                     SourceIp = ipAddress,
                     UserGroupIds = userGroupIds,
@@ -695,8 +728,8 @@ namespace ExpressBase.Security
         [DataMember(Order = 4)]
         public string DefaultDashBoard { get; set; }
 
-        //[JsonIgnore]
-        //public int CurrrentLocation { get; set; }
+        [JsonIgnore]
+        public int CurrrentLocation { get; set; }
 
         public string GetShortDatePattern()
         {

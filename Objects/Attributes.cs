@@ -53,12 +53,11 @@ namespace ExpressBase.Common.Objects.Attributes
 
     public class UsedWithTopObjectParent : Attribute
     {
+        public Type[] TopObjectParentTypes { get; set; }
 
-        public Type TopObjectParentType { get; set; }
-
-        public UsedWithTopObjectParent(Type _TopObjectParentType)
+        public UsedWithTopObjectParent(params Type[] _TopObjectParentTypes)
         {
-            TopObjectParentType = _TopObjectParentType;
+            TopObjectParentTypes = _TopObjectParentTypes;
         }
     }
 
@@ -196,6 +195,12 @@ namespace ExpressBase.Common.Objects.Attributes
             this.PropertyEditorSource = source;
         }
 
+        public PropertyEditor(PropertyEditorType type, string source, bool ShouldRefreshOnInit) : this(type)
+        {
+            this.PropertyEditorSource = source;
+            this.BooleanOption = ShouldRefreshOnInit;
+        }
+
         public PropertyEditor(PropertyEditorType type, string source, int limit) : this(type, source)
         {
             this.Limit = limit;
@@ -204,6 +209,12 @@ namespace ExpressBase.Common.Objects.Attributes
         public PropertyEditor(PropertyEditorType type, string source, string Dprop) : this(type, source)
         {
             this.DependantProp = Dprop;
+        }
+
+        public PropertyEditor(PropertyEditorType type, string source, string Dprop, bool ShouldRefreshOnInit) : this(type, source)
+        {
+            this.DependantProp = Dprop;
+            this.BooleanOption = ShouldRefreshOnInit;
         }
 
         public PropertyEditor(PropertyEditorType type, string source, string Dprop, string Dprop2) : this(type, source, Dprop)

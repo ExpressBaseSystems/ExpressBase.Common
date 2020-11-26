@@ -27,7 +27,7 @@ namespace ExpressBase.Common.Data
 
         //  }
 
-        public static IEnumerable<System.Data.Common.DbParameter> GetParams(EbConnectionFactory factory, bool isPaged, List<Param> reqParams, int iLimit, int iOffset)
+        public static IEnumerable<DbParameter> GetParams(IDatabase db, bool isPaged, List<Param> reqParams, int iLimit, int iOffset)
         {
             if (isPaged)
             {
@@ -46,10 +46,10 @@ namespace ExpressBase.Common.Data
                 {
                     if (param.ValueTo != null)
                     {
-                        if (factory.ObjectsDB.Vendor == DatabaseVendors.PGSQL)
-                            yield return factory.ObjectsDB.GetNewParameter(string.Format(":{0}", param.Name), (EbDbTypes)Convert.ToInt32(param.Type), param.ValueTo);
+                        if (db.Vendor == DatabaseVendors.PGSQL)
+                            yield return db.GetNewParameter(string.Format(":{0}", param.Name), (EbDbTypes)Convert.ToInt32(param.Type), param.ValueTo);
                         else
-                            yield return factory.ObjectsDB.GetNewParameter(string.Format("{0}", param.Name), (EbDbTypes)Convert.ToInt32(param.Type), param.ValueTo);
+                            yield return db.GetNewParameter(string.Format("{0}", param.Name), (EbDbTypes)Convert.ToInt32(param.Type), param.ValueTo);
                     }
                 }
             }
