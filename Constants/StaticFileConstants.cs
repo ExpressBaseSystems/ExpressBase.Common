@@ -40,8 +40,14 @@ namespace ExpressBase.Common.Constants
         public const string BMP = "bmp";
 
         public const string MP4 = "mp4";
-        public const string MP3 = "mp3";
 
+        public const string M4A = "m4a";
+        public const string FLAC = "flac";
+        public const string MP3 = "mp3";
+        public const string WAVE = "wave";
+        public const string WMA = "wma";
+        public const string AAC = "aac";
+        public const string OPUS = "opus";
 
         public const string TXT = "txt";
         public const string TEXT = "text";
@@ -83,8 +89,14 @@ namespace ExpressBase.Common.Constants
         public const string MIME_BMP = "image/bmp";
 
         public const string MIME_MP4 = "video/mp4";
-        public const string MIME_MP3 = "audio/mp3";
 
+        public const string MIME_MP3 = "audio/mp3";
+        public const string MIME_WAVE = "audio/wave";
+        public const string MIME_AAC = "audio/aac";
+        public const string MIME_M4A = "audio/m4a";
+        public const string MIME_WMA = "audio/wma";
+        public const string MIME_OPUS = "audio/opus";
+        public const string MIME_FLAC = "audio/flac";
 
         public const string MIME_TXT = "text/plain";
         public const string MIME_TEXT = "text/plain";
@@ -109,7 +121,14 @@ namespace ExpressBase.Common.Constants
             { BMP, MIME_BMP},
 
             { MP4, MIME_MP4},
+
+            { M4A, MIME_M4A},
+            { FLAC, MIME_FLAC },
             { MP3, MIME_MP3},
+            { WAVE, MIME_WAVE},
+            { WMA, MIME_WMA},
+            { AAC, MIME_AAC},
+            { OPUS, MIME_OPUS},
 
             {TXT, MIME_TXT},
             {TEXT, MIME_TEXT},
@@ -125,11 +144,22 @@ namespace ExpressBase.Common.Constants
             {ZIP, MIME_ZIP},
         };
 
-        //Tags
         public const string TAGS = "Tags";
 
         public const string CONTEXT_DEFAULT = "default";
+
         public const string CONTEXT_LOGO = "solution_logo";
+
         public const string CONTEXT_DP = "user_dp";
+
+        public static readonly List<string> ImageTypes = new List<string>
+        {
+            JPG,JPEG,BMP,PNG
+        };
+
+        public static readonly List<string> AudioTypes = new List<string>
+        {
+            M4A,FLAC,MP3,WAVE,WMA,AAC,OPUS
+        };
     }
 }
