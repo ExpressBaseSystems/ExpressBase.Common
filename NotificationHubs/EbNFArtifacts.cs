@@ -13,13 +13,6 @@ namespace ExpressBase.Common.NotificationHubs
         ALL = 4
     }
 
-    public enum EbAppVendors
-    {
-        ExpressBase = 1,
-        MoveOn = 2,
-        kudumbaShree = 3
-    }
-
     public enum EbNFLinkTypes
     {
         Page = 1,
@@ -34,7 +27,7 @@ namespace ExpressBase.Common.NotificationHubs
 
         public List<string> Tags { get; set; }
 
-        public EbAppVendors Vendor { set; get; }
+        public string VendorName { set; get; }
     }
 
     public class EbNFRegisterResponse

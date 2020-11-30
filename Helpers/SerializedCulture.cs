@@ -82,6 +82,7 @@ namespace ExpressBase.Common
         public string packName { get; set; }
         public string packDesc { get; set; }
         public string packIcon { get; set; }
+        public string MasterSoln { get; set; }
         public Dictionary<int, List<string>> appColl { get; set; }
     }
 }
