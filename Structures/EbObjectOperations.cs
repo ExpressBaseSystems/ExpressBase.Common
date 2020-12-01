@@ -269,6 +269,7 @@ namespace ExpressBase.Common.Structures
         public readonly EbOperation AuditTrail;
         public readonly EbOperation Clone;
         public readonly EbOperation ExcelImport;
+        public readonly EbOperation OwnData;
 
         private WFOperations()
         {
@@ -280,6 +281,7 @@ namespace ExpressBase.Common.Structures
             AuditTrail = new EbOperation(OperationConstants.AUDIT_TRAIL, 5, OperationConstants.XXW);
             Clone = new EbOperation(OperationConstants.CLONE, 6, OperationConstants.XXW);
             ExcelImport = new EbOperation(OperationConstants.EXCEL_IMPORT, 7, OperationConstants.XXW);
+            OwnData = new EbOperation(OperationConstants.OWN_DATA, 8, OperationConstants.XXW);
         }
 
         public static EbOperations Instance
@@ -302,6 +304,7 @@ namespace ExpressBase.Common.Structures
                 yield return AuditTrail;
                 yield return Clone;
                 yield return ExcelImport;
+                yield return OwnData;
             }
         }
     }
