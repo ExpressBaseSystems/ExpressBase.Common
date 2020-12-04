@@ -958,4 +958,16 @@
   <data name="eb_form_drafts3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sqlscripts\sqlserver\datadb\tablecreate\eb_form_drafts.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="eb_index_table" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_index_table.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_index_table1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\oracle\datadb\tablecreate\eb_index_table.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_index_table2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\mysql\datadb\tablecreate\eb_index_table.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="eb_index_table3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sqlscripts\sqlserver\datadb\tablecreate\eb_index_table.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
 </root>

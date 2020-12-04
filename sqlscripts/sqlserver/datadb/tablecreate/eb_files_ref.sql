@@ -11,6 +11,8 @@ CREATE TABLE eb_files_ref
     eb_del "char" NOT NULL DEFAULT 'F',
     filecategory int,
     context varchar(max),
+	lastmodifiedby integer,
+	lastmodifiedat datetime2(6),
     CONSTRAINT eb_files_ref_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );
 

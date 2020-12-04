@@ -70,9 +70,9 @@ namespace ExpressBase.Common.NotificationHubs
             return string.Format("solution:{0}", solutionid);
         }
 
-        public string GlobalTag(EbAppVendors vendor)
+        public string GlobalTag(string vendorName)
         {
-            return string.Format("global:eb_pns_tag_{0}", vendor);
+            return $"global:eb_pns_tag_{vendorName}";
         }
 
         #endregion

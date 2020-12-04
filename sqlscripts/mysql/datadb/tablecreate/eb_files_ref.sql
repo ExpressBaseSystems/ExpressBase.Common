@@ -10,6 +10,8 @@ CREATE TABLE eb_files_ref
   filecategory integer,  
   context text,
   context_sec text,
+  lastmodifiedby integer,
+  lastmodifiedat datetime,
   CONSTRAINT eb_files_ref_pkey PRIMARY KEY (id),
   CONSTRAINT eb_files_ref_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
 );
