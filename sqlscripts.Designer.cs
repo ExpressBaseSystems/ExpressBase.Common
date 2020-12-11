@@ -218,12 +218,11 @@ namespace ExpressBase.Common {
         ///    eb_src_id integer,
         ///    eb_ver_id integer,
         ///    eb_loc_id integer,
+        ///    eb_signin_log_id integer,
         ///    eb_created_by integer,
         ///    eb_created_at timestamp without time zone,
         ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
-        ///    CONSTRAINT eb_approval_lines_pkey PRIMARY KEY (id)
-        ///);
-        ///-- Index: eb_approval_lin [rest of string was truncated]&quot;;.
+        ///    CONSTRAINT eb_approval_lines_pkey PRIMARY KEY (id) [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_approval_lines {
             get {
@@ -1494,12 +1493,10 @@ namespace ExpressBase.Common {
         ///    filecategory integer,
         ///    context text,  
         ///	context_sec text,
+        ///	lastmodifiedby integer,
+        ///	lastmodifiedat timestamp without timezone,
         ///    CONSTRAINT eb_files_ref_pkey PRIMARY KEY (id),
-        ///    CONSTRAINT eb_files_ref_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
-        ///);
-        ///
-        ///
-        ///-- Index: eb_files [rest of string was truncated]&quot;;.
+        ///    CONSTRAINT eb_files_ref_eb_del [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files_ref {
             get {
@@ -1621,6 +1618,8 @@ namespace ExpressBase.Common {
         ///  filecategory integer,  
         ///  context text,
         ///  context_sec text,
+        ///  lastmodifiedby integer,
+        ///  lastmodifiedat datetime,
         ///  CONSTRAINT eb_files_ref_pkey PRIMARY KEY (id),
         ///  CONSTRAINT eb_files_ref_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
         ///);
@@ -1630,8 +1629,7 @@ namespace ExpressBase.Common {
         ///ON eb_files_ref(id);
         ///
         ///
-        ///CREATE INDEX eb_files_ref_userid_idx
-        ///ON eb_files_ref(userid) [rest of string was truncated]&quot;;.
+        ///CREATE [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files_ref2 {
             get {
@@ -2170,6 +2168,64 @@ namespace ExpressBase.Common {
         public static string eb_google_map3 {
             get {
                 return ResourceManager.GetString("eb_google_map3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_index_table
+        ///
+        ///-- DROP TABLE public.eb_index_table;
+        ///
+        ///CREATE TABLE eb_index_table
+        ///(
+        ///    id bigserial,
+        ///    display_name text,
+        ///    data_json text,
+        ///    ref_id text,
+        ///    data_id integer,	
+        ///    link_type integer,
+        ///    created_by integer,
+        ///    created_at timestamp without time zone,
+        ///    modified_by integer,
+        ///    modified_at timestamp without time zone,
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    CONSTRAINT eb_index_table_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///-- Index: eb_index_table_id_idx
+        ///
+        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_index_table {
+            get {
+                return ResourceManager.GetString("eb_index_table", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_index_table.
+        /// </summary>
+        public static string eb_index_table1 {
+            get {
+                return ResourceManager.GetString("eb_index_table1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_index_table.
+        /// </summary>
+        public static string eb_index_table2 {
+            get {
+                return ResourceManager.GetString("eb_index_table2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_index_table.
+        /// </summary>
+        public static string eb_index_table3 {
+            get {
+                return ResourceManager.GetString("eb_index_table3", resourceCulture);
             }
         }
         
