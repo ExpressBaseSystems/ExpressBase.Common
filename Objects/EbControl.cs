@@ -72,7 +72,8 @@ namespace ExpressBase.Common.Objects
 
         [HideInPropertyGrid]
         [JsonIgnore]
-        public virtual string ToolNameAlias { get; set; }
+        [EnableInBuilder(BuilderType.SurveyControl)]
+        public virtual string ToolNameAlias { get { return ObjType; } set { } }
 
         [HideInPropertyGrid]
         [JsonIgnore]
@@ -225,7 +226,7 @@ namespace ExpressBase.Common.Objects
         public object ValueBE { get; set; }
 
         [HideInPropertyGrid]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         public virtual string ObjType { get { return this.GetType().Name.Substring(2, this.GetType().Name.Length - 2); } set { } }
 
         [HideInPropertyGrid]
@@ -430,7 +431,7 @@ namespace ExpressBase.Common.Objects
 .Replace("@childOf@", this.ChildOf.IsNullOrEmpty() ? string.Empty : "childOf='" + this.ChildOf + "'")
 .Replace("@ebsid@", this.IsRenderMode && this.IsDynamicTabChild ? "@" + this.EbSid_CtxId + "_ebsid@" : this.EbSid_CtxId)
 .Replace("@isHidden@", this.Hidden.ToString().ToLower())
-.Replace("@isReadonly@", ((this.ObjType =="TVcontrol") ? false :this.IsDisable).ToString().ToLower())
+.Replace("@isReadonly@", ((this.ObjType == "TVcontrol") ? false : this.IsDisable).ToString().ToLower())
 .Replace("@helpText@", this.HelpText)
 .Replace("@type@", this.ObjType)
 .Replace("@Label@", (Label ?? ""))
