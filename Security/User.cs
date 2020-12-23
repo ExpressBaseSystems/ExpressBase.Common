@@ -1,4 +1,5 @@
 ﻿using ExpressBase.Common;
+using ExpressBase.Common.Constants;
 using ExpressBase.Common.Extensions;
 using ExpressBase.Common.Helpers;
 using ExpressBase.Common.Singletons;
@@ -652,7 +653,8 @@ namespace ExpressBase.Security
                     userGroupIds = Array.ConvertAll(sUgIds.Split(','), int.Parse).ToList();
                 List<string> _permissions = ds.Rows[0][6].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][6].ToString().Split(',').ToList();
 
-                if (userid == 1)//public object: permission only for anonymous user
+                string email = ds.Rows[0][2].ToString();
+                if (email.Equals(TokenConstants.ANONYM_EMAIL))//public object: permission only for anonymous user
                 {
                     foreach (string objid in ds.Rows[0][11].ToString().Split(','))
                     {
@@ -665,7 +667,7 @@ namespace ExpressBase.Security
                 _user = new User
                 {
                     UserId = userid,
-                    Email = ds.Rows[0][2].ToString(),
+                    Email = email,
                     FullName = ds.Rows[0][3].ToString(),
                     Roles = rolesname,
                     RoleIds = iRoleIds,

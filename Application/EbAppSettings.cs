@@ -41,13 +41,13 @@ namespace ExpressBase.Common.Application
         [DataMember(Order = 9)]
         public BotProperty BotProp = new BotProperty();
 
-		[DataMember(Order = 10)]
-		public bool UserType_Internal { get; set; } = false;
+        [DataMember(Order = 10)]
+        public bool UserType_Internal { get; set; } = false;
 
-		public EbBotSettings()
+        public EbBotSettings()
         {
-			//////change CssContent.Count in bote and dev controller if any css Constant is added or removed
-			CssContent.Add("BOT_HEADER_PART", BotConstants.BOT_HEADER_PART);
+            //////change CssContent.Count in bote and dev controller if any css Constant is added or removed
+            CssContent.Add("BOT_HEADER_PART", BotConstants.BOT_HEADER_PART);
             CssContent.Add("BOT_HEADER_ICON_CONT", BotConstants.BOT_HEADER_ICON_CONT);
             CssContent.Add("BOT_HEADER_IMAGE", BotConstants.BOT_HEADER_IMAGE);
             CssContent.Add("BOT_HEADERSUBTEXT", BotConstants.BOT_HEADERSUBTEXT);
@@ -87,6 +87,8 @@ namespace ExpressBase.Common.Application
 
         public List<DataImportMobile> DataImport { set; get; }
 
+        public string DashBoardRefId { set; get; }
+
         public EbMobileSettings()
         {
             this.DataImport = new List<DataImportMobile>();
@@ -107,17 +109,17 @@ namespace ExpressBase.Common.Application
         public string FbAppID { get; set; }
         public string FbAppVer { get; set; }
         public int LoginOpnCount { get; set; }
-		public bool OTP_based { get; set; }
-		public bool Password_based { get; set; }
+        public bool OTP_based { get; set; }
+        public bool Password_based { get; set; }
 
-		public AnonymousAuth()
+        public AnonymousAuth()
         {
             Fblogin = false;
             EmailAuth = true;
             PhoneAuth = false;
             UserName = false;
-			OTP_based = false;
-			Password_based = false;
+            OTP_based = false;
+            Password_based = false;
             FbAppID = "";
             FbAppVer = "";
             LoginOpnCount = 1;
@@ -133,14 +135,14 @@ namespace ExpressBase.Common.Application
         public string Bg_type { get; set; }
         public string AppFont { get; set; }
         public string AppFontSize { get; set; }
-		public bool Use_Sol_logo { get; set; } 
-		public BotProperty()
+        public bool Use_Sol_logo { get; set; }
+        public BotProperty()
         {
             EbTag = true;
             HeaderIcon = true;
             HeaderSubtxt = true;
-			Use_Sol_logo = false;
+            Use_Sol_logo = false;
 
-		}
+        }
     }
 }
