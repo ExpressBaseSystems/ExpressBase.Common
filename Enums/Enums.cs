@@ -96,6 +96,7 @@ namespace ExpressBase.Common
         TextLocal = 18,
         OSM = 19,
         MobileConfig = 20,
+        SmsBuddy = 21,
     }
 
     public enum SmtpProviders

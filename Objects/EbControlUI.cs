@@ -37,7 +37,7 @@ namespace ExpressBase.Common.Objects
         [OnChangeUIFunction("Common.LABEL_BACKCOLOR")]
         public virtual string LabelBackColor { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         [PropertyEditor(PropertyEditorType.Expandable)]
         [PropertyGroup(PGConstants.APPEARANCE)]
         [UIproperty]
@@ -62,7 +62,7 @@ namespace ExpressBase.Common.Objects
         //[PropertyEditor(PropertyEditorType.Label)]
         //public virtual string FontFamily { get; set; }
 
-        [EnableInBuilder(BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         [PropertyGroup(PGConstants.APPEARANCE)]
         [UIproperty]
         public virtual float FontSize { get; set; }
@@ -70,24 +70,24 @@ namespace ExpressBase.Common.Objects
     }
 
 
-    [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+    [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
     public class UISides
     {
         public UISides() { }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         [DefaultPropValue(8)]
         public virtual int Top { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         [DefaultPropValue(8)]
         public virtual int Right { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         [DefaultPropValue(8)]
         public virtual int Bottom { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         [DefaultPropValue(8)]
         public virtual int Left { get; set; }
     }
