@@ -514,11 +514,11 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_broswer_exceptions
+        ///   Looks up a localized string similar to -- Table: public.eb_browser_exceptions
         ///
-        ///-- DROP TABLE public.eb_broswer_exceptions;
+        ///-- DROP TABLE public.eb_browser_exceptions;
         ///
-        ///CREATE TABLE public.eb_broswer_exceptions
+        ///CREATE TABLE public.eb_browser_exceptions
         ///(
         ///    id serial,
         ///    user_id integer,
@@ -526,46 +526,46 @@ namespace ExpressBase.Common {
         ///    ip_address text,
         ///    error_msg text,
         ///    eb_created_at timestamp without time zone,
-        ///	CONSTRAINT eb_broswer_exceptions_pkey PRIMARY KEY (id)
+        ///	CONSTRAINT eb_browser_exceptions_pkey PRIMARY KEY (id)
         ///);
         ///
-        ///-- Index: eb_broswer_exceptions_id_idx
+        ///-- Index: eb_browser_exceptions_id_idx
         ///
-        ///-- DROP INDEX public.eb_broswer_exceptions_id_idx;
+        ///-- DROP INDEX public.eb_browser_exceptions_id_idx;
         ///
-        ///CREATE INDEX eb_broswer_exceptions_id_idx
-        ///ON eb_broswer_exception [rest of string was truncated]&quot;;.
+        ///CREATE INDEX eb_browser_exceptions_id_idx
+        ///ON eb_browser_exception [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string eb_broswer_exceptions {
+        public static string eb_browser_exceptions {
             get {
-                return ResourceManager.GetString("eb_broswer_exceptions", resourceCulture);
+                return ResourceManager.GetString("eb_browser_exceptions", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- eb_broswer_exceptions.
+        ///   Looks up a localized string similar to -- eb_browser_exceptions.
         /// </summary>
-        public static string eb_broswer_exceptions1 {
+        public static string eb_browser_exceptions1 {
             get {
-                return ResourceManager.GetString("eb_broswer_exceptions1", resourceCulture);
+                return ResourceManager.GetString("eb_browser_exceptions1", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- eb_broswer_exceptions.
+        ///   Looks up a localized string similar to -- eb_browser_exceptions.
         /// </summary>
-        public static string eb_broswer_exceptions2 {
+        public static string eb_browser_exceptions2 {
             get {
-                return ResourceManager.GetString("eb_broswer_exceptions2", resourceCulture);
+                return ResourceManager.GetString("eb_browser_exceptions2", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to --eb_broswer_exceptions.
+        ///   Looks up a localized string similar to --eb_browser_exceptions.
         /// </summary>
-        public static string eb_broswer_exceptions3 {
+        public static string eb_browser_exceptions3 {
             get {
-                return ResourceManager.GetString("eb_broswer_exceptions3", resourceCulture);
+                return ResourceManager.GetString("eb_browser_exceptions3", resourceCulture);
             }
         }
         
