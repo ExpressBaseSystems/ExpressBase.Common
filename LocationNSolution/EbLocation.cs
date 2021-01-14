@@ -122,7 +122,7 @@ namespace ExpressBase.Common.LocationNSolution
                 {
                     locations.AddRange(allLocations);
                 }
-                else if (user.LocationIds == null || user.LocationIds.Count <= 0)
+                else if (user.LocationIds == null || user.LocationIds.Count > 0)
                 {
                     if (user.LocationIds.Contains(-1))
                         locations.AddRange(allLocations);
@@ -130,8 +130,10 @@ namespace ExpressBase.Common.LocationNSolution
                     {
                         foreach (int locid in user.LocationIds)
                         {
-                            if (this.Locations.ContainsKey(locid))
-                                locations.Add(locations[locid]);
+                            if (this.Locations.TryGetValue(locid, out EbLocation value))
+                            {
+                                locations.Add(value);
+                            }
                         }
                     }
                 }
