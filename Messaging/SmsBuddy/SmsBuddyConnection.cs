@@ -28,7 +28,7 @@ namespace ExpressBase.Common.Messaging
 
             try
             {
-                string msg = HttpUtility.UrlEncode(body);
+                //string msg = HttpUtility.UrlEncode(body);
                 using (var wb = new WebClient())
                 {
                     byte[] response = wb.UploadValues("http://thesmsbuddy.com/api/v1/sms/send?", new NameValueCollection()
@@ -37,7 +37,7 @@ namespace ExpressBase.Common.Messaging
                         {"type", "1" },
                         {"to" , To},
                         {"sender", Config.From},
-                        {"message" , msg} ,
+                        {"message" , body} ,
                         {"flash", "0" }
                     });
                     result = System.Text.Encoding.UTF8.GetString(response);
