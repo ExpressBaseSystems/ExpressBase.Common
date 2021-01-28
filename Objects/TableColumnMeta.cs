@@ -71,6 +71,8 @@ namespace ExpressBase.Common
         public string ObjType { get; set; }//Object type
 
         public string F { get; set; }//Formatted text for date, time etc
+
+        public string M { get; set; }//Meta
         
         public SingleColumn() { }
     }
