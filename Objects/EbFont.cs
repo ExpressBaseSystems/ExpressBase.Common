@@ -10,7 +10,7 @@ namespace ExpressBase.Common
     {
         public EbFont() { }
 
-        public string FontName { get; set; } = "Times-Roman";
+        public string FontName { get; set; } = "Roboto";
 
         public string CSSFontName
         {
