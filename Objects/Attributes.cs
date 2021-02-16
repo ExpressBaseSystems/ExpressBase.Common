@@ -49,6 +49,11 @@ namespace ExpressBase.Common.Objects.Attributes
         ScriptEditorSQ = 256
     }
 
+    public enum SurveyRoles { 
+        QuestionControl,
+        AnswerControl
+    }
+
     public class HideInToolBox : Attribute { }
     public class ShowInToolBox : Attribute { }
 
@@ -312,6 +317,16 @@ namespace ExpressBase.Common.Objects.Attributes
         public PropDataSourceJsFn(string jsCode)
         {
             JsCode = jsCode;
+        }
+    }
+
+    public class SurveyBuilderRoles : Attribute
+    {
+        public SurveyRoles[] Roles { get; set; }
+
+        public SurveyBuilderRoles(params SurveyRoles[] _surveyRoles)
+        {
+            Roles = _surveyRoles;
         }
     }
 

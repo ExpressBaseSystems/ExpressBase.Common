@@ -122,7 +122,7 @@ namespace ExpressBase.Common.LocationNSolution
                 {
                     locations.AddRange(allLocations);
                 }
-                else if (user.LocationIds == null || user.LocationIds.Count <= 0)
+                else if (user.LocationIds == null || user.LocationIds.Count > 0)
                 {
                     if (user.LocationIds.Contains(-1))
                         locations.AddRange(allLocations);
@@ -130,8 +130,10 @@ namespace ExpressBase.Common.LocationNSolution
                     {
                         foreach (int locid in user.LocationIds)
                         {
-                            if (this.Locations.ContainsKey(locid))
-                                locations.Add(locations[locid]);
+                            if (this.Locations.TryGetValue(locid, out EbLocation value))
+                            {
+                                locations.Add(value);
+                            }
                         }
                     }
                 }
@@ -152,6 +154,8 @@ namespace ExpressBase.Common.LocationNSolution
         public List<EbProfileUserType> UserTypeForms { get; set; }
 
         public MobileAppSettings MobileAppSettings { get; set; }
+
+        public EbWebFormSettings WebSettings { get; set; }
     }
 
     public class MobileAppSettings
@@ -175,6 +179,49 @@ namespace ExpressBase.Common.LocationNSolution
             return UserTypeForms.Find(x => x.Id == id)?.RefId;
         }
     }
+
+    public class EbWebFormSettings
+    {
+
+        public List<WebformStyleCont> CssContent { get; set; } = new List<WebformStyleCont>();
+        public EbWebFormSettings(bool status)
+        {
+            if (status)
+            {
+                //Common styles
+                List<WebformStyles> CommonStyles = new List<WebformStyles>();
+                CommonStyles.Add(new WebformStyles() { Selector = "form-buider-form", Css = CommonWebformStyleConst.Form_Buider_Form });
+                CommonStyles.Add(new WebformStyles() { Selector = "ctrl-cover", Css = CommonWebformStyleConst.Ctrl_Cover });
+                CommonStyles.Add(new WebformStyles() { Selector = "eb-label-editable", Css = CommonWebformStyleConst.Eb_Label_Editable });
+                CssContent.Add(new WebformStyleCont() { Hearder = "Common", CssObj = CommonStyles });
+            }
+        }
+    }
+    public class WebformStyleCont
+    {
+        public string Hearder { get; set; }
+        public List<WebformStyles> CssObj { get; set; }
+    }
+    public class WebformStyles
+    {
+        public string Selector { get; set; }
+        public string Css { get; set; }
+    }
+
+    public class CommonWebformStyleConst
+    {
+        public const string Ctrl_Cover = @"
+border: 1px solid var(--eb-bluishgray);
+display: flex;
+flex-flow: column;
+position: relative;";
+
+        public const string Form_Buider_Form = @"
+ background:white;";
+        public const string Eb_Label_Editable = @"
+ background-color: transparent;";
+    }
+
 
     public class EbLocationCustomField
     {

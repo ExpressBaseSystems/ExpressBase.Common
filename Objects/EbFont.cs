@@ -10,7 +10,7 @@ namespace ExpressBase.Common
     {
         public EbFont() { }
 
-        public string FontName { get; set; } = "Times-Roman";
+        public string FontName { get; set; } = "Roboto";
 
         public string CSSFontName
         {
@@ -60,7 +60,8 @@ namespace ExpressBase.Common
                     new EbFontFamily{ CSSFontName ="Questrial",SystemFontName="Questrial"},
                     new EbFontFamily{ CSSFontName ="Times",SystemFontName="Times-Roman"},
                     new EbFontFamily{ CSSFontName ="Tinos",SystemFontName="Times"},
-                    new EbFontFamily{ CSSFontName ="Heebo",SystemFontName="ZapfDingbats"}
+                    new EbFontFamily{ CSSFontName ="Heebo",SystemFontName="ZapfDingbats"},
+                    new EbFontFamily{ CSSFontName ="Roboto",SystemFontName="Roboto (Default)"}
                 };
             }
         }

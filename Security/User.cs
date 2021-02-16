@@ -1,4 +1,5 @@
 ﻿using ExpressBase.Common;
+using ExpressBase.Common.Constants;
 using ExpressBase.Common.Extensions;
 using ExpressBase.Common.Helpers;
 using ExpressBase.Common.Singletons;
@@ -73,7 +74,7 @@ namespace ExpressBase.Security
 
         [DataMember(Order = 17)]
         [JsonIgnore]
-        public string EmailVerifCode { get; set; }        
+        public string EmailVerifCode { get; set; }
 
         [DataMember(Order = 18)]
         [JsonIgnore]
@@ -587,7 +588,7 @@ namespace ExpressBase.Security
         public static void UpdateVerificationStatus(IDatabase DataDB, int UserId, bool IsEmailVerified, bool IsPhoneVerified)
         {
             string Qry = string.Empty;
-            
+
             if (IsEmailVerified)
             {
                 Qry = $"is_email_verified = 'T', email_verified_at = {DataDB.EB_CURRENT_TIMESTAMP}";
@@ -652,7 +653,8 @@ namespace ExpressBase.Security
                     userGroupIds = Array.ConvertAll(sUgIds.Split(','), int.Parse).ToList();
                 List<string> _permissions = ds.Rows[0][6].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][6].ToString().Split(',').ToList();
 
-                if (userid == 1)//public object: permission only for anonymous user
+                string email = ds.Rows[0][2].ToString();
+                if (email.Equals(TokenConstants.ANONYM_EMAIL))//public object: permission only for anonymous user
                 {
                     foreach (string objid in ds.Rows[0][11].ToString().Split(','))
                     {
@@ -665,7 +667,7 @@ namespace ExpressBase.Security
                 _user = new User
                 {
                     UserId = userid,
-                    Email = ds.Rows[0][2].ToString(),
+                    Email = email,
                     FullName = ds.Rows[0][3].ToString(),
                     Roles = rolesname,
                     RoleIds = iRoleIds,
@@ -676,7 +678,7 @@ namespace ExpressBase.Security
                     UserGroupIds = userGroupIds,
                     UserType = Convert.ToInt32(ds.Rows[0][12]),
                     PhoneNumber = ds.Rows[0][13].ToString(),
-                    IsForcePWReset  = (ds.Rows[0][14].ToString() == string.Empty || ds.Rows[0][14].ToString() == "T" ) ? true : false
+                    IsForcePWReset = (ds.Rows[0][14].ToString() == string.Empty || ds.Rows[0][14].ToString() == "T") ? true : false
                 };
                 if (!ds.Rows[0].IsDBNull(8) && !_user.Roles.Contains(SystemRoles.SolutionOwner.ToString()) && !_user.Roles.Contains(SystemRoles.SolutionAdmin.ToString()))
                 {
@@ -807,6 +809,73 @@ namespace ExpressBase.Security
                 {
                     Console.WriteLine("Exception thrown when tried to get short TIME ................. : " + ex.Message);
                     return DateTime.UtcNow.ToString("hh:mm tt", CultureInfo.InvariantCulture);
+                }
+            }
+        }
+        public string CurrencyPattern
+        {
+            get
+            {
+                try
+                {
+                    var NumInfo = CultureHelper.GetSerializedCultureInfo(this.Locale).NumberFormatInfo;
+                    int[] gp = NumInfo.CurrencyGroupSizes;
+                    string st = "";
+                    for (int i = gp.Length - 1; i > 0; i--)
+                        st += $"({NumInfo.CurrencyGroupSeparator}{new String('9', gp[i])}){{*|1}}";
+                    st += $"({NumInfo.CurrencyGroupSeparator}{new String('9', gp[0])}){{1|1}}";
+
+                    return st;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception in Json_Serialize ................. : " + ex.Message);
+                    return "(,99){*|1}(,999){1|1}.(9){2}";
+                }
+            }
+        }
+        public string CurrencyGroupSeperator
+        {
+            get
+            {
+                try
+                {
+                    return CultureHelper.GetSerializedCultureInfo(this.Locale).NumberFormatInfo.CurrencyGroupSeparator;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception in CurrencyGroupSeparator ................. : " + ex.Message);
+                    return ",";
+                }
+            }
+        }
+        public string CurrencyDecimalSeperator
+        {
+            get
+            {
+                try
+                {
+                    return CultureHelper.GetSerializedCultureInfo(this.Locale).NumberFormatInfo.CurrencyDecimalSeparator;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception in CurrencyDecimalSeparator ................. : " + ex.Message);
+                    return ".";
+                }
+            }
+        }
+        public int CurrencyDecimalDigits
+        {
+            get
+            {
+                try
+                {
+                    return CultureHelper.GetSerializedCultureInfo(this.Locale).NumberFormatInfo.CurrencyDecimalDigits;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception in CurrencyDecimalSeparator ................. : " + ex.Message);
+                    return 2;
                 }
             }
         }

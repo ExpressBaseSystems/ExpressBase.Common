@@ -294,6 +294,12 @@ namespace ExpressBase.Common.Connections
         public override EbIntegrations Type { get { return EbIntegrations.TextLocal; } }
     }
 
+    public class EbSmsBuddyConfig : EbSmsConfig
+    {
+        public string ApiKey { get; set; }
+
+        public override EbIntegrations Type { get { return EbIntegrations.SmsBuddy; } }
+    }
     public class EbUnifonicConfig : EbSmsConfig
     {
         public override EbIntegrations Type { get { return EbIntegrations.Unifonic; } }

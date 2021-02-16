@@ -142,7 +142,32 @@ namespace ExpressBase.Common.ServerEvents_Artifacts
 
     }
 
-    public class NotificationInfo
+	public class CheckSubscriptionId_IsActiveRequest : EbServiceStackAuthRequest, IReturn<CheckSubscriptionId_IsActiveResponse>
+	{
+		[DataMember(Order = 0)]
+		public string ToSubscriptionId { get; set; }
+
+	}
+	public class CheckSubscriptionId_IsActiveResponse 
+	{
+		public bool IsActive { get; set; }
+	}
+
+	public class GetSubscriptionId_InfoRequest : EbServiceStackAuthRequest, IReturn<GetSubscriptionId_InfoResponse>
+	{
+		[DataMember(Order = 0)]
+		public string ToSubscriptionId { get; set; }
+
+	}
+	public class GetSubscriptionId_InfoResponse
+	{
+		public string AuthId { get; set; }
+		public string UserId { get; set; }
+		public string SolnId { get; set; }
+		public string Wc { get; set; }
+	}
+
+	public class NotificationInfo
     {
         public string Title { get; set; }
 

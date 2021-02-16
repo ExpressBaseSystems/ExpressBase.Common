@@ -71,6 +71,8 @@ namespace ExpressBase.Common
         public string ObjType { get; set; }//Object type
 
         public string F { get; set; }//Formatted text for date, time etc
+
+        public string M { get; set; }//Meta
         
         public SingleColumn() { }
     }
@@ -199,6 +201,8 @@ namespace ExpressBase.Common
 
         public Dictionary<string, bool> DisableCancel { get; set; }
 
+        public Dictionary<string, bool> DisableEdit { get; set; }
+
         public string MasterTable { get; set; }
 
         public int FormVersionId { get; set; }
@@ -217,6 +221,7 @@ namespace ExpressBase.Common
             PsDm_Tables = new Dictionary<string, SingleTable>();
             DisableDelete = new Dictionary<string, bool>();
             DisableCancel = new Dictionary<string, bool>();
+            DisableEdit = new Dictionary<string, bool>();
         }
     }
 

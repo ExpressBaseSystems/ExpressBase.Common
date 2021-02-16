@@ -37,7 +37,7 @@ namespace ExpressBase.Common.Objects
                 this.Padding = new UISides();
         }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         [HideInPropertyGrid]
         [PropertyPriority(70)]
         [PropertyGroup("Behavior")]

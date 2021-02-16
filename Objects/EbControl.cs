@@ -56,11 +56,11 @@ namespace ExpressBase.Common.Objects
         public virtual bool IsNonDataInputControl { get; set; }
 
         [HideInPropertyGrid]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.DashBoard)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.DashBoard, BuilderType.SurveyControl)]
         public virtual string EbSid { get; set; }
 
         [HideInPropertyGrid]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.DashBoard)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.DashBoard, BuilderType.SurveyControl)]
         public virtual string EbSid_CtxId
         {
             get
@@ -72,7 +72,8 @@ namespace ExpressBase.Common.Objects
 
         [HideInPropertyGrid]
         [JsonIgnore]
-        public virtual string ToolNameAlias { get; set; }
+        [EnableInBuilder(BuilderType.SurveyControl)]
+        public virtual string ToolNameAlias { get { return ObjType; } set { } }
 
         [HideInPropertyGrid]
         [JsonIgnore]
@@ -85,7 +86,7 @@ namespace ExpressBase.Common.Objects
         private string _ContextId;
 
         [HideInPropertyGrid]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.DashBoard)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.DashBoard, BuilderType.SurveyControl)]
         public virtual string ContextId
         {
             get { return _ContextId; }
@@ -106,11 +107,11 @@ namespace ExpressBase.Common.Objects
         public virtual string ChildOf { get; set; }
 
         [PropertyGroup("Validations")]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         [HelpText("Set true if want unique value for this control on every form save.")]
         public virtual bool Unique { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         [OnChangeUIFunction("Common.HELP_TEXT")]
         [PropertyGroup(PGConstants.HELP)]
         [UIproperty]
@@ -146,7 +147,7 @@ namespace ExpressBase.Common.Objects
         public virtual string InfoIcon { get; set; }
 
         [PropertyGroup(PGConstants.CORE)]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         [UIproperty]
         [Unique]
         [OnChangeUIFunction("Common.LABEL")]
@@ -156,7 +157,7 @@ namespace ExpressBase.Common.Objects
         public virtual string Label { get; set; }
 
         [PropertyGroup("Validations")]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         [PropertyEditor(PropertyEditorType.Collection)]
         [HelpText("List of validators to consider before form save.")]
         public virtual List<EbValidator> Validators { get; set; }
@@ -225,7 +226,7 @@ namespace ExpressBase.Common.Objects
         public object ValueBE { get; set; }
 
         [HideInPropertyGrid]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         public virtual string ObjType { get { return this.GetType().Name.Substring(2, this.GetType().Name.Length - 2); } set { } }
 
         [HideInPropertyGrid]
@@ -273,7 +274,7 @@ namespace ExpressBase.Common.Objects
 
         [PropertyGroup("Validations")]
         [PropertyPriority(10)]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         [HelpText("Set true if you want to make sure this field is not empty when form save.")]
         public virtual bool Required { get; set; }
 
@@ -325,7 +326,7 @@ namespace ExpressBase.Common.Objects
         [HideInPropertyGrid]
         public virtual EbScript _OnChange { get; set; }// ===========================================temporary
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         [PropertyGroup("Events")]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
         [Alias("OnChange")]
@@ -430,7 +431,7 @@ namespace ExpressBase.Common.Objects
 .Replace("@childOf@", this.ChildOf.IsNullOrEmpty() ? string.Empty : "childOf='" + this.ChildOf + "'")
 .Replace("@ebsid@", this.IsRenderMode && this.IsDynamicTabChild ? "@" + this.EbSid_CtxId + "_ebsid@" : this.EbSid_CtxId)
 .Replace("@isHidden@", this.Hidden.ToString().ToLower())
-.Replace("@isReadonly@", ((this.ObjType =="TVcontrol") ? false :this.IsDisable).ToString().ToLower())
+.Replace("@isReadonly@", ((this.ObjType == "TVcontrol") ? false : this.IsDisable).ToString().ToLower())
 .Replace("@helpText@", this.HelpText)
 .Replace("@type@", this.ObjType)
 .Replace("@Label@", (Label ?? ""))
@@ -574,7 +575,7 @@ namespace ExpressBase.Common.Objects
         }
     }
 
-    [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+    [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
     [HideInToolBox]
     [UsedWithTopObjectParent(typeof(EbObject))]
     public class EbValidator
@@ -583,11 +584,11 @@ namespace ExpressBase.Common.Objects
         public EbValidator() { }
 
         [HideInPropertyGrid]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         public string EbSid { get; set; }
 
         [PropertyGroup(PGConstants.CORE)]
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         [EbRequired]
         [Unique]
         [regexCheck]
@@ -598,17 +599,17 @@ namespace ExpressBase.Common.Objects
         //[EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         //public string MaskPattern { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         public virtual bool IsDisabled { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         public virtual bool IsWarningOnly { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
         public virtual EbScript Script { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         [Alias("Failure message")]
         public virtual string FailureMSG { get; set; }
     }

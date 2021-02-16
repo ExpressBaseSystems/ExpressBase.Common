@@ -514,6 +514,62 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_browser_exceptions
+        ///
+        ///-- DROP TABLE public.eb_browser_exceptions;
+        ///
+        ///CREATE TABLE public.eb_browser_exceptions
+        ///(
+        ///    id serial,
+        ///    user_id integer,
+        ///    device_info text,
+        ///    ip_address text,
+        ///    error_msg text,
+        ///    eb_created_at timestamp without time zone,
+        ///	CONSTRAINT eb_browser_exceptions_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///-- Index: eb_browser_exceptions_id_idx
+        ///
+        ///-- DROP INDEX public.eb_browser_exceptions_id_idx;
+        ///
+        ///CREATE INDEX eb_browser_exceptions_id_idx
+        ///ON eb_browser_exception [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_browser_exceptions {
+            get {
+                return ResourceManager.GetString("eb_browser_exceptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_browser_exceptions.
+        /// </summary>
+        public static string eb_browser_exceptions1 {
+            get {
+                return ResourceManager.GetString("eb_browser_exceptions1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_browser_exceptions.
+        /// </summary>
+        public static string eb_browser_exceptions2 {
+            get {
+                return ResourceManager.GetString("eb_browser_exceptions2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --eb_browser_exceptions.
+        /// </summary>
+        public static string eb_browser_exceptions3 {
+            get {
+                return ResourceManager.GetString("eb_browser_exceptions3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to --COMPILE FUNCTIONS
         ///
         ///BEGIN
@@ -1494,9 +1550,9 @@ namespace ExpressBase.Common {
         ///    context text,  
         ///	context_sec text,
         ///	lastmodifiedby integer,
-        ///	lastmodifiedat timestamp without timezone,
+        ///	lastmodifiedat timestamp without time zone,
         ///    CONSTRAINT eb_files_ref_pkey PRIMARY KEY (id),
-        ///    CONSTRAINT eb_files_ref_eb_del [rest of string was truncated]&quot;;.
+        ///    CONSTRAINT eb_files_ref_eb_de [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files_ref {
             get {
@@ -1651,10 +1707,9 @@ namespace ExpressBase.Common {
         ///    eb_del &quot;char&quot; NOT NULL DEFAULT &apos;F&apos;,
         ///    filecategory int,
         ///    context varchar(max),
-        ///    CONSTRAINT eb_files_ref_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
-        ///);
-        ///
-        ///CREATE INDEX eb_files_ref_id_idx ON eb_fil [rest of string was truncated]&quot;;.
+        ///	lastmodifiedby integer,
+        ///	lastmodifiedat datetime2(6),
+        ///    CONSTRAINT eb_files_ref_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_files_ref3 {
             get {
