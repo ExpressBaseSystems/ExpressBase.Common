@@ -39,7 +39,7 @@ namespace ExpressBase.Common.Objects.Attributes
         ObjectSelectorCollection = 36,// 
         IconPicker = 37,// 
         ShadowEditor = 38,// 
-        //ColorPicker = 39,// 
+        ColorPicker = 39,// 
         GradientColorPicker = 40,// 
         String64 = 41,// 
         FileUploader = 42,// 
