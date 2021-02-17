@@ -43,6 +43,7 @@ namespace ExpressBase.Common.Objects.Attributes
         GradientColorPicker = 40,// 
         String64 = 41,// 
         FileUploader = 42,// 
+        PivotConfiguration = 43,// 
         ScriptEditorJS = 64,
         ScriptEditorCS = 128,
         ScriptEditorSQ = 256
