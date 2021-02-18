@@ -102,7 +102,7 @@ $('#cont_' + this.EbSid_CtxId + ' .ctrl-cover .input-group-addon').css('backgrou
         public const string PS_in_EnableJSfn = @"
 this.__IsDisable = false;
 $('#cont_' + this.EbSid_CtxId).attr('eb-readonly','false').find('.ctrl-cover').attr('eb-readonly','false');
-$('#cont_' + this.EbSid_CtxId + ' *').prop('disabled',false).css('pointer-events', 'inherit').find('[ui-inp]').css('background-color', '#fff');
+$('#cont_' + this.EbSid_CtxId + ' *').removeAttr('disabled').css('pointer-events', 'inherit').find('[ui-inp]').css('background-color', '#fff');
 $('#cont_' + this.EbSid_CtxId + ' .ctrl-cover .input-group-addon').css('background-color', 'inherit');";
 
         public const string Ctrl_DisableJSfn = @"this.__IsDisable = true; $('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none').find('[ui-inp]').css('background-color', 'var(--eb-disablegray)');$('#cont_' + this.EbSid_CtxId + ' .ctrl-cover .input-group-addon').css('background-color', 'var(--eb-disablegray)');";
