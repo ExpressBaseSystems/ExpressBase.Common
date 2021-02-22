@@ -599,7 +599,7 @@ namespace ExpressBase.Common
                             FROM
 	                            eb_files_ref B
                             WHERE
-	                            B.context = CONCAT(@context, '_@Name@') AND B.eb_del = 'F';";
+	                            B.context = CONCAT(@context, '_@Name@') AND COALESCE(B.eb_del, 'F') = 'F';";
             }
         }
         public virtual string EB_GET_SELECT_FILE_UPLOADER_CXT_SEC
@@ -611,7 +611,7 @@ namespace ExpressBase.Common
                             FROM
 	                            eb_files_ref B
                             WHERE
-	                            (B.context = CONCAT(@context, '_@Name@') OR B.context_sec = @context_sec) AND B.eb_del = 'F';";
+	                            (B.context = CONCAT(@context, '_@Name@') OR B.context_sec = @context_sec) AND COALESCE(B.eb_del, 'F') = 'F';";
             }
         }
         public virtual string EB_GET_LOG_ENABLED

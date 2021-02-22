@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using ExpressBase.Security;
 
 namespace ExpressBase.Common.LocationNSolution
@@ -156,6 +157,17 @@ namespace ExpressBase.Common.LocationNSolution
         public MobileAppSettings MobileAppSettings { get; set; }
 
         public EbWebFormSettings WebSettings { get; set; }
+
+        public EbSystemColumns SystemColumns { get; set; }
+
+        [OnDeserialized]
+        public void OnDeserialized(StreamingContext context)
+        {
+            if (SystemColumns == null || SystemColumns.Count == 0)
+                SystemColumns = new EbSystemColumns(EbSysCols.Values);
+            else
+                SystemColumns = new EbSystemColumns(EbSysCols.GetFixed(SystemColumns));
+        }
     }
 
     public class MobileAppSettings
