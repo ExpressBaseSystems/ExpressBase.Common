@@ -202,20 +202,29 @@ namespace ExpressBase.Common.LocationNSolution
             {
                 //Common styles
                 List<WebformStyles> CommonStyles = new List<WebformStyles>();
-                CommonStyles.Add(new WebformStyles() { Selector = "form-buider-form", Css = CommonWebformStyleConst.Form_Buider_Form });
-                CommonStyles.Add(new WebformStyles() { Selector = "ctrl-cover", Css = CommonWebformStyleConst.Ctrl_Cover });
-                CommonStyles.Add(new WebformStyles() { Selector = "eb-label-editable", Css = CommonWebformStyleConst.Eb_Label_Editable });
-                CssContent.Add(new WebformStyleCont() { Hearder = "Common", CssObj = CommonStyles });
+                CommonStyles.Add(new WebformStyles() { Heading ="Form Container",Selector = ".form-buider-form", Css = CommonWebformStyleConst.Form_Buider_Form });
+                CommonStyles.Add(new WebformStyles() { Heading="Common Controls" , Selector = ".ctrl-cover", Css = CommonWebformStyleConst.Ctrl_Cover });
+                CommonStyles.Add(new WebformStyles() { Heading = "Label",Selector = ".eb-label-editable", Css = CommonWebformStyleConst.Eb_Label_Editable });
+                CssContent.Add(new WebformStyleCont() { Heading = "Common" , Selector="", CssObj = CommonStyles });
+                CommonStyles = new List<WebformStyles>();
+                CommonStyles.Add(new WebformStyles() { Heading = "Label", Selector = ".eb-label-editable", Css = string.Empty });
+                CommonStyles.Add(new WebformStyles() { Heading = "Input", Selector = "input", Css = string.Empty });
+                CommonStyles.Add(new WebformStyles() { Heading = "Icon", Selector = ".input-group-addon", Css = string.Empty });
+                CommonStyles.Add(new WebformStyles() { Heading = "Container", Selector = ".ctrl-cover", Css = string.Empty });
+                CommonStyles.Add(new WebformStyles() { Heading = "Focus", Selector = ".Eb-ctrlContainer[ctype='TextBox'] .ctrl-cover:focus-within", Css = string.Empty });
+                CssContent.Add(new WebformStyleCont() { Heading = "TextBox" , Selector= "[ctype='TextBox']", CssObj = CommonStyles });
             }
         }
     }
     public class WebformStyleCont
     {
-        public string Hearder { get; set; }
+        public string Heading { get; set; }
+        public string Selector { get; set; }    
         public List<WebformStyles> CssObj { get; set; }
     }
     public class WebformStyles
     {
+        public string Heading { get; set; }
         public string Selector { get; set; }
         public string Css { get; set; }
     }
