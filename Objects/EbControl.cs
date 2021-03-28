@@ -438,6 +438,22 @@ namespace ExpressBase.Common.Objects
 .Replace("@req@ ", (Required ? "<sup style='color: red'>*</sup>" : string.Empty));
         }
 
+        //temporary for KSUM survey control        
+        protected string ReplacePropsInHTML(string Html, string BareHtml)
+        {
+            return Html
+.Replace("@barehtml@", BareHtml)
+.Replace("@name@", this.Name)
+.Replace("@childOf@", this.ChildOf.IsNullOrEmpty() ? string.Empty : "childOf='" + this.ChildOf + "'")
+.Replace("@ebsid@", this.IsRenderMode && this.IsDynamicTabChild ? "@" + this.EbSid_CtxId + "_ebsid@" : this.EbSid_CtxId)
+.Replace("@isHidden@", this.Hidden.ToString().ToLower())
+.Replace("@isReadonly@", ((this.ObjType == "TVcontrol") ? false : this.IsDisable).ToString().ToLower())
+.Replace("@helpText@", this.HelpText)
+.Replace("@type@", this.ObjType)
+.Replace("@Label@", (Label ?? ""))
+.Replace("@req@ ", (Required ? "<sup style='color: red'>*</sup>" : string.Empty));
+        }
+
         public virtual string GetHead() { return string.Empty; }
 
         public virtual string GetHtml()
