@@ -532,25 +532,25 @@ namespace ExpressBase.Common.Objects
         public virtual object GetData() { return null; }
 
         //tbl -> master table name, ins -> is insert, _col -> cols/colvals, _extqry -> extended query, ocF -> old column field
-        public virtual bool ParameterizeControl(IDatabase DataDB, List<DbParameter> param, string tbl, SingleColumn cField, bool ins, ref int i, ref string _col, ref string _val, ref string _extqry, User usr, SingleColumn ocF)
+        public virtual bool ParameterizeControl(ParameterizeCtrl_Params args)
         {
-            if (cField.Value == null || (this.EbDbType == EbDbTypes.Decimal && Convert.ToString(cField.Value) == string.Empty))
+            if (args.cField.Value == null || (this.EbDbType == EbDbTypes.Decimal && Convert.ToString(args.cField.Value) == string.Empty))
             {
-                var p = DataDB.GetNewParameter(cField.Name + "_" + i, (EbDbTypes)cField.Type);
+                var p = args.DataDB.GetNewParameter(args.cField.Name + "_" + args.i, (EbDbTypes)args.cField.Type);
                 p.Value = DBNull.Value;
-                param.Add(p);
+                args.param.Add(p);
             }
             else
-                param.Add(DataDB.GetNewParameter(cField.Name + "_" + i, (EbDbTypes)cField.Type, cField.Value));
+                args.param.Add(args.DataDB.GetNewParameter(args.cField.Name + "_" + args.i, (EbDbTypes)args.cField.Type, args.cField.Value));
 
-            if (ins)
+            if (args.ins)
             {
-                _col += string.Concat(cField.Name, ", ");
-                _val += string.Concat("@", cField.Name, "_", i, ", ");
+                args._cols += string.Concat(args.cField.Name, ", ");
+                args._vals += string.Concat("@", args.cField.Name, "_", args.i, ", ");
             }
             else
-                _col += string.Concat(cField.Name, "=@", cField.Name, "_", i, ", ");
-            i++;
+                args._colvals += string.Concat(args.cField.Name, "=@", args.cField.Name, "_", args.i, ", ");
+            args.i++;
             return true;
         }
 
@@ -628,6 +628,94 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         [Alias("Failure message")]
         public virtual string FailureMSG { get; set; }
+    }
+
+    //tbl -> master table name, ins -> is insert, _col -> cols/colvals, _extqry -> extended query, ocF -> old column field
+    public class ParameterizeCtrl_Params
+    {
+        public ParameterizeCtrl_Params(IDatabase DataDB, List<DbParameter> param, int i, string _extqry)
+        {
+            this.DataDB = DataDB;
+            this.param = param;
+            this.i = i;
+            this._extqry = _extqry;
+        }
+
+        //for simple parameterization
+        public ParameterizeCtrl_Params(IDatabase DataDB, List<DbParameter> param, SingleColumn cField, int i, User usr)
+        {
+            this.DataDB = DataDB;
+            this.param = param;
+            this.cField = cField;
+            this.i = i;
+            this.usr = usr;
+
+            this.ins = true;
+            this._cols = string.Empty;
+            this._vals = string.Empty;
+            this._colvals = string.Empty;
+        }
+
+        public void SetFormRelated(string tbl, User usr)
+        {
+            this.tbl = tbl;
+            this.usr = usr;
+        }
+
+        public void ResetColVals()
+        {
+            this._colvals = string.Empty;
+        }
+
+        public void ResetColsAndVals()
+        {
+            this._cols = string.Empty;
+            this._vals = string.Empty;
+        }
+
+        public void InsertSet(SingleColumn cField)
+        {
+            this.ins = true;
+            this.cField = cField;
+            this.ocF = null;
+        }
+
+        public void UpdateSet(SingleColumn cField, SingleColumn ocF = null)
+        {
+            this.ins = false;
+            this.cField = cField;
+            this.ocF = ocF;
+        }
+
+        public void CopyBack(ref string _extqry, ref int i)
+        {
+            _extqry = this._extqry;
+            i = this.i;
+        }
+
+        public IDatabase DataDB { get; private set; }
+
+        public List<DbParameter> param { get; private set; }
+
+        public string tbl { get; private set; }
+
+        public SingleColumn cField { get; private set; }
+
+        public bool ins { get; private set; }
+
+        public int i { get; set; }
+
+        public string _colvals { get; set; }
+
+        public string _cols { get; set; }
+
+        public string _vals { get; set; }
+
+        public string _extqry { get; set; }
+
+        public User usr { get; private set; }
+
+        public SingleColumn ocF { get; private set; }
     }
 
     public interface IEbPlaceHolderControl { }
