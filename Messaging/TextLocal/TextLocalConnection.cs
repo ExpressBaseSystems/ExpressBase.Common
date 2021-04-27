@@ -32,6 +32,7 @@ namespace ExpressBase.Common.Messaging
 
             try
             {
+                body += "-" + Config.BrandName;
                 string msg = HttpUtility.UrlEncode(body);
                 using (var wb = new WebClient())
                 {
@@ -41,12 +42,13 @@ namespace ExpressBase.Common.Messaging
                         {"numbers" , To},
                         {"message" , msg},
                         {"sender" , Config.From}
+                       // {"test" , "1"}
                     });
                     result = System.Text.Encoding.UTF8.GetString(response);
                 }
 
-                var status = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(result)["status"]; 
-               
+                var status = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(result)["status"];
+
 
                 msgStatus = new Dictionary<string, string>
                 {

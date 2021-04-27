@@ -280,6 +280,8 @@ namespace ExpressBase.Common.Connections
 
         public string From { get; set; }
 
+        public string BrandName { get; set; }
+
     }
 
     public class EbTwilioConfig : EbSmsConfig
