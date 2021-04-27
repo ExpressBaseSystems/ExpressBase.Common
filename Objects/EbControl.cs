@@ -656,10 +656,11 @@ namespace ExpressBase.Common.Objects
             this._colvals = string.Empty;
         }
 
-        public void SetFormRelated(string tbl, User usr)
+        public void SetFormRelated(string tbl, User usr, EbControl webForm)
         {
             this.tbl = tbl;
             this.usr = usr;
+            this.webForm = webForm;
         }
 
         public void ResetColVals()
@@ -716,6 +717,8 @@ namespace ExpressBase.Common.Objects
         public User usr { get; private set; }
 
         public SingleColumn ocF { get; private set; }
+
+        public EbControl webForm { get; private set; }
     }
 
     public interface IEbPlaceHolderControl { }
