@@ -270,6 +270,9 @@ namespace ExpressBase.Common.Structures
         public readonly EbOperation Clone;
         public readonly EbOperation ExcelImport;
         public readonly EbOperation OwnData;
+        public readonly EbOperation LockUnlock;
+        public readonly EbOperation RevokeDelete;
+        public readonly EbOperation RevokeCancel;
 
         private WFOperations()
         {
@@ -282,6 +285,9 @@ namespace ExpressBase.Common.Structures
             Clone = new EbOperation(OperationConstants.CLONE, 6, OperationConstants.XXW);
             ExcelImport = new EbOperation(OperationConstants.EXCEL_IMPORT, 7, OperationConstants.XXW);
             OwnData = new EbOperation(OperationConstants.OWN_DATA, 8, OperationConstants.XXW);
+            LockUnlock = new EbOperation(OperationConstants.LOCK_UNLOCK, 9, OperationConstants.XXW);
+            RevokeDelete = new EbOperation(OperationConstants.REVOKE_DELETE, 10, OperationConstants.XXW);
+            RevokeCancel = new EbOperation(OperationConstants.REVOKE_CANCEL, 11, OperationConstants.XXW);
         }
 
         public static EbOperations Instance
@@ -305,6 +311,9 @@ namespace ExpressBase.Common.Structures
                 yield return Clone;
                 yield return ExcelImport;
                 yield return OwnData;
+                yield return LockUnlock;
+                yield return RevokeDelete;
+                yield return RevokeCancel;
             }
         }
     }

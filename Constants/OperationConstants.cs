@@ -41,6 +41,9 @@ namespace ExpressBase.Common.Constants
         public const string CLONE = "Clone";
         public const string EXCEL_IMPORT = "ExcelImport";
         public const string OWN_DATA = "OwnData";
+        public const string LOCK_UNLOCK = "Lock/Unlock";
+        public const string REVOKE_DELETE = "RevokeDelete";
+        public const string REVOKE_CANCEL = "RevokeCancel";
 
         public const string VIEWLOG = "ViewLog";
         public const string EXECUTE = "Execute";
