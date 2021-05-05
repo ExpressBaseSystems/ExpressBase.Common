@@ -83,7 +83,11 @@ namespace ExpressBase.Common.LocationNSolution
 
         public int PlanUserCount { get; set; }
 
-        public string OtpDelivery { get; set; }
+        public string OtpDelivery2fa { get; set; }
+
+        public bool IsOtpSigninEnabled { get; set; }
+
+        public string OtpDeliverySignin { get; set; }
 
         public SolutionSettings SolutionSettings { get; set; }
 
