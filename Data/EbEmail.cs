@@ -75,7 +75,7 @@ namespace ExpressBase.Common.Data
             }
             catch (Exception e)
             {
-                Console.WriteLine("Smtp Send Exception" + e.Message + e.StackTrace);
+                Console.WriteLine("Smtp Send Exception : " + Config.EmailAddress, Config.Port + " :  " + e.Message + e.StackTrace);
                 sentStatus = false;
             }
             return sentStatus;
