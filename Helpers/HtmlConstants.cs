@@ -19,13 +19,15 @@ namespace ExpressBase.Common
             <span class='eb-ctrl-label'>
                 <span ui-label class='eb-label-editable' id='@ebsid@Lbl'>@Label@</span>
                 <input id='@ebsid@lbltxtb' class='eb-lbltxtb' type='text'/>
-                <div id='@ebsid@Lblic' tabindex='-1' class='label-infoCont'></div>
+                @LblInfo@
             </span> @req@ 
-                <div  id='@ebsid@Wraper' class='ctrl-cover' eb-readonly='@isReadonly@'>
-                    @barehtml@
-                </div>
+            <div  id='@ebsid@Wraper' class='ctrl-cover' eb-readonly='@isReadonly@'>
+                @barehtml@
+            </div>
             <span class='helpText' ui-helptxt>@helpText@ </span>
         </div>";
+
+        public const string LabelInfoContHTML = @"<div id='@ebsid@Lblic' tabindex='-1' class='label-infoCont'></div>";
 
         public const string CONTROL_WRAPER_HTML4BOT = @"
 			<div id='cont_@ebsid@' ebsid='@ebsid@' name='@name@' ctype='@type@' eb-type='@type@' class='Eb-ctrlContainer iw-mTrigger' >

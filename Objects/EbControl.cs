@@ -428,6 +428,7 @@ namespace ExpressBase.Common.Objects
             return Html
 .Replace("@barehtml@", this.GetBareHtml())
 .Replace("@name@", this.Name)
+.Replace("@LblInfo@", (Info.IsNullOrEmpty() ? String.Empty : HtmlConstants.LabelInfoContHTML))
 .Replace("@childOf@", this.ChildOf.IsNullOrEmpty() ? string.Empty : "childOf='" + this.ChildOf + "'")
 .Replace("@ebsid@", this.IsRenderMode && this.IsDynamicTabChild ? "@" + this.EbSid_CtxId + "_ebsid@" : this.EbSid_CtxId)
 .Replace("@isHidden@", this.Hidden.ToString().ToLower())
