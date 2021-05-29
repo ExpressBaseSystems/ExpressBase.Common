@@ -537,20 +537,20 @@ namespace ExpressBase.Common.Objects
         {
             if (args.cField.Value == null || (this.EbDbType == EbDbTypes.Decimal && Convert.ToString(args.cField.Value) == string.Empty))
             {
-                var p = args.DataDB.GetNewParameter(args.cField.Name + "_" + args.i, (EbDbTypes)args.cField.Type);
+                var p = args.DataDB.GetNewParameter(args.cField.Name, (EbDbTypes)args.cField.Type);
                 p.Value = DBNull.Value;
                 args.param.Add(p);
             }
             else
-                args.param.Add(args.DataDB.GetNewParameter(args.cField.Name + "_" + args.i, (EbDbTypes)args.cField.Type, args.cField.Value));
+                args.param.Add(args.DataDB.GetNewParameter(args.cField.Name, (EbDbTypes)args.cField.Type, args.cField.Value));
 
             if (args.ins)
             {
                 args._cols += string.Concat(args.cField.Name, ", ");
-                args._vals += string.Concat("@", args.cField.Name, "_", args.i, ", ");
+                args._vals += string.Concat("@", args.cField.Name, ", ");
             }
             else
-                args._colvals += string.Concat(args.cField.Name, "=@", args.cField.Name, "_", args.i, ", ");
+                args._colvals += string.Concat(args.cField.Name, "=@", args.cField.Name, ", ");
             args.i++;
             return true;
         }

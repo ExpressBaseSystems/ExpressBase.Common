@@ -353,6 +353,14 @@ namespace ExpressBase.Common
         Close_Mode = 3
     }
 
+    public enum PopupWebFormSize
+    {
+        Small,
+        Medium,
+        Large,
+        FullScreen
+    }
+
     public enum WebFormDVModes
     {
         _SELECT_ = 0,
