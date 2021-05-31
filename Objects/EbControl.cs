@@ -533,24 +533,25 @@ namespace ExpressBase.Common.Objects
         public virtual object GetData() { return null; }
 
         //tbl -> master table name, ins -> is insert, _col -> cols/colvals, _extqry -> extended query, ocF -> old column field
-        public virtual bool ParameterizeControl(ParameterizeCtrl_Params args)
+        public virtual bool ParameterizeControl(ParameterizeCtrl_Params args, string crudContext)
         {
+            string paramName = args.cField.Name + crudContext;
             if (args.cField.Value == null || (this.EbDbType == EbDbTypes.Decimal && Convert.ToString(args.cField.Value) == string.Empty))
             {
-                var p = args.DataDB.GetNewParameter(args.cField.Name, (EbDbTypes)args.cField.Type);
+                var p = args.DataDB.GetNewParameter(paramName, (EbDbTypes)args.cField.Type);
                 p.Value = DBNull.Value;
                 args.param.Add(p);
             }
             else
-                args.param.Add(args.DataDB.GetNewParameter(args.cField.Name, (EbDbTypes)args.cField.Type, args.cField.Value));
+                args.param.Add(args.DataDB.GetNewParameter(paramName, (EbDbTypes)args.cField.Type, args.cField.Value));
 
             if (args.ins)
             {
                 args._cols += string.Concat(args.cField.Name, ", ");
-                args._vals += string.Concat("@", args.cField.Name, ", ");
+                args._vals += string.Concat("@", paramName, ", ");
             }
             else
-                args._colvals += string.Concat(args.cField.Name, "=@", args.cField.Name, ", ");
+                args._colvals += string.Concat(args.cField.Name, "=@", paramName, ", ");
             args.i++;
             return true;
         }

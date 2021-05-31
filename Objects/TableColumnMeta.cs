@@ -208,7 +208,9 @@ namespace ExpressBase.Common
         public int FormVersionId { get; set; }
         public bool IsLocked { get; set; }
         public bool IsCancelled { get; set; }
+        public bool IsReadOnly { get; set; } //new
         public string SrcRefId { get; set; }
+        public int SrcVerId { get; set; } //new
         public int SrcDataId { get; set; }
         public int CreatedBy { get; set; }
         public string CreatedAt { get; set; }

@@ -72,42 +72,36 @@ namespace ExpressBase.Common.LocationNSolution
         {
             get
             {
-                EbSystemColumn temp = this.Find(e => e.Default == key);
-                if (temp != null)
-                    return temp.Value;
-                throw new KeyNotFoundException("KeyNotFoundException [EbSystemColumns]: Key = " + key);
+                return this.GetItem(key).Value;
             }
         }
 
         public EbDbTypes GetDbType(string key)
         {
-            EbSystemColumn temp = this.Find(e => e.Default == key);
-            if (temp != null)
-                return (EbDbTypes)temp.Type;
-            throw new KeyNotFoundException("KeyNotFoundException [EbSystemColumns]: Key = " + key);
+            return (EbDbTypes)this.GetItem(key).Type;
         }
 
         public string GetBoolFalse(string key, bool quoted = true)
         {
-            EbSystemColumn temp = this.Find(e => e.Default == key);
-            if (temp != null)
-                return temp.Type == (int)EbDbTypes.Boolean ? (quoted ? "'F'" : "F") : "false";
-            throw new KeyNotFoundException("KeyNotFoundException [EbSystemColumns]: Key = " + key);
+            return this.GetItem(key).Type == (int)EbDbTypes.Boolean ? (quoted ? "'F'" : "F") : "false";
         }
 
         public string GetBoolTrue(string key)
         {
-            EbSystemColumn temp = this.Find(e => e.Default == key);
-            if (temp != null)
-                return temp.Type == (int)EbDbTypes.Boolean ? "'T'" : "true";
-            throw new KeyNotFoundException("KeyNotFoundException [EbSystemColumns]: Key = " + key);
+            return this.GetItem(key).Type == (int)EbDbTypes.Boolean ? "'T'" : "true";
         }
 
         public bool GetBooleanValue(string key, object val)
         {
+            return this.GetItem(key).Type == (int)EbDbTypes.Boolean ? Convert.ToString(val).Equals("T") : Convert.ToBoolean(val);
+        }
+
+        private EbSystemColumn GetItem(string key) 
+        {
             EbSystemColumn temp = this.Find(e => e.Default == key);
-            if (temp != null)
-                return temp.Type == (int)EbDbTypes.Boolean ? Convert.ToString(val).Equals("T") : Convert.ToBoolean(val);
+            if (temp != null) return temp;
+            temp = EbSysCols.Values.Find(e => e.Default == key);
+            if (temp != null) return temp;
             throw new KeyNotFoundException("KeyNotFoundException [EbSystemColumns]: Key = " + key);
         }
     }
@@ -125,10 +119,12 @@ namespace ExpressBase.Common.LocationNSolution
             new EbSystemColumn("Delete", SystemColumns.eb_del, SystemColumns.eb_del, 3),
             new EbSystemColumn("Lock", SystemColumns.eb_lock, SystemColumns.eb_lock, 3),
             new EbSystemColumn("SignIn Id", SystemColumns.eb_signin_log_id, SystemColumns.eb_signin_log_id, 1),
-            new EbSystemColumn("Form Id", SystemColumns.eb_ver_id, SystemColumns.eb_ver_id, 1),
+            new EbSystemColumn("Form Version Id", SystemColumns.eb_ver_id, SystemColumns.eb_ver_id, 1),
             new EbSystemColumn("Data Push Id", SystemColumns.eb_push_id, SystemColumns.eb_push_id, 1),
-            new EbSystemColumn("Source Id", SystemColumns.eb_src_id, SystemColumns.eb_src_id, 1),
+            new EbSystemColumn("Source Data Id", SystemColumns.eb_src_id, SystemColumns.eb_src_id, 1),
             new EbSystemColumn("Row Order", SystemColumns.eb_row_num, SystemColumns.eb_row_num, 1),
+            new EbSystemColumn("Source Version Id", SystemColumns.eb_src_ver_id, SystemColumns.eb_src_ver_id, 1),
+            new EbSystemColumn("Read Only", SystemColumns.eb_ro, SystemColumns.eb_ro, 3)
         };
 
         public static List<EbSystemColumn> Values
