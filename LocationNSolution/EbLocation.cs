@@ -95,6 +95,10 @@ namespace ExpressBase.Common.LocationNSolution
 
         public string PrimarySolution { get; set; }
 
+        public bool IsEmailIntegrated { get; set; }
+
+        public bool IsSmsIntegrated { get; set; }
+
         public Eb_Solution()
         {
             Locations = new Dictionary<int, EbLocation>();
