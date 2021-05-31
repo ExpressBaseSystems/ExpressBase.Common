@@ -16,5 +16,7 @@
         public const string eb_push_id = "eb_push_id";
         public const string eb_src_id = "eb_src_id";
         public const string eb_row_num = "eb_row_num";
+        public const string eb_src_ver_id = "eb_src_ver_id";
+        public const string eb_ro = "eb_ro";
     }
 }
