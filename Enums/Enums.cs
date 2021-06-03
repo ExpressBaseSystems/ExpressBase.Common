@@ -361,6 +361,13 @@ namespace ExpressBase.Common
         FullScreen
     }
 
+    public enum MultiPushIdTypes
+    {
+        Default, //$refid$_$multipushid$
+        Row, //eb_src_ver_id, eb_push_id
+        None
+    }
+
     public enum WebFormDVModes
     {
         _SELECT_ = 0,
