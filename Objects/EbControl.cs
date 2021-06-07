@@ -335,6 +335,10 @@ namespace ExpressBase.Common.Objects
 
         public virtual bool Index { get; set; }
 
+        //hint: New mode - EbAutoId - DataPusher - Dest Form
+        [JsonIgnore]
+        public bool BypassParameterization { get; set; }
+
         public virtual string GetToolHtml()
         {
             return @"
@@ -542,16 +546,24 @@ namespace ExpressBase.Common.Objects
                 p.Value = DBNull.Value;
                 args.param.Add(p);
             }
-            else
+            else if(!this.BypassParameterization)// (this.BypassParameterization && cField.Value == null) ~> error
                 args.param.Add(args.DataDB.GetNewParameter(paramName, (EbDbTypes)args.cField.Type, args.cField.Value));
 
             if (args.ins)
             {
-                args._cols += string.Concat(args.cField.Name, ", ");
-                args._vals += string.Concat("@", paramName, ", ");
+                args._cols += args.cField.Name + CharConstants.COMMA + CharConstants.SPACE;
+                if (this.BypassParameterization)
+                    args._vals += Convert.ToString(args.cField.Value) + CharConstants.COMMA + CharConstants.SPACE;
+                else
+                    args._vals += CharConstants.AT + paramName + CharConstants.COMMA + CharConstants.SPACE;
             }
             else
-                args._colvals += string.Concat(args.cField.Name, "=@", paramName, ", ");
+            {
+                if (this.BypassParameterization)
+                    args._colvals += args.cField.Name + CharConstants.EQUALS + Convert.ToString(args.cField.Value) + CharConstants.COMMA + CharConstants.SPACE;
+                else
+                    args._colvals += args.cField.Name + CharConstants.EQUALS + CharConstants.AT + paramName + CharConstants.COMMA + CharConstants.SPACE;
+            }
             args.i++;
             return true;
         }
