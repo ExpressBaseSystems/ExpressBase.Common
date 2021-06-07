@@ -16,6 +16,7 @@ CREATE TABLE eb_objects
 	is_logenabled "char" DEFAULT 'F'::"char",
 	is_public "char" DEFAULT 'F'::"char",
     eb_del "char" DEFAULT 'F'::"char",
+    hide_in_menu "char" DEFAULT 'F'::"char",
     CONSTRAINT eb_objects_pkey PRIMARY KEY (id)
 );
 
