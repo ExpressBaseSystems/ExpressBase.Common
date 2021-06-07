@@ -1,6 +1,6 @@
--- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text)
+-- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text, text)
 
--- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text);
+-- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text, text);
 
 CREATE OR REPLACE FUNCTION public.eb_objects_save(
 	refidv text,
@@ -12,11 +12,12 @@ CREATE OR REPLACE FUNCTION public.eb_objects_save(
 	relationsstring text,
 	tagsv text,
 	appsstring text,
-	disp_name text)
+	disp_name text,
+	hide_in_menuv text)
+
     RETURNS text
     LANGUAGE 'plpgsql'
 
-   
 AS $BODY$
 
 DECLARE refidunique text; inserted_objid integer; inserted_obj_ver_id integer; objid integer; relationsv text[]; apps integer[];
@@ -25,7 +26,7 @@ BEGIN
 	SELECT string_to_array(appsstring,',')::int[] into apps;
 	SELECT eb_objects_id FROM eb_objects_ver into objid WHERE refid=refidv;
  	
-	UPDATE eb_objects SET obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv , display_name = disp_name WHERE id = objid RETURNING id INTO inserted_objid;
+	UPDATE eb_objects SET obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv , display_name = disp_name, hide_in_menu = hide_in_menuv WHERE id = objid RETURNING id INTO inserted_objid;
     UPDATE eb_objects_ver SET obj_json = obj_jsonv WHERE refid=refidv RETURNING id INTO inserted_obj_ver_id;
    
     --relations table
@@ -72,7 +73,3 @@ BEGIN
 END;
 
 $BODY$;
-
-
-
-

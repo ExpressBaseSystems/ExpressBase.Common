@@ -1,7 +1,7 @@
 
--- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer,  text, text, text,text)
+-- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text, text, text)
 
--- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text,text);
+-- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text, text, text);
 
 CREATE OR REPLACE FUNCTION public.eb_objects_commit(
 	idv text,
@@ -14,11 +14,12 @@ CREATE OR REPLACE FUNCTION public.eb_objects_commit(
 	relationsstring text,
 	tagsv text,
 	appsstring text,
-	disp_name text)
+	disp_name text,
+	hide_in_menuv text)
     RETURNS text
     LANGUAGE 'plpgsql'
 
-    
+
 AS $BODY$
 
 DECLARE refidunique text; inserted_obj_ver_id integer; objid integer; committed_refidunique text; major integer;
@@ -32,7 +33,7 @@ BEGIN
   	UPDATE 
 			eb_objects 
 		SET 
-    		obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv, display_name = disp_name
+    		obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv, display_name = disp_name, hide_in_menu = hide_in_menuv
 		WHERE 
     		id = objid; 
 		
@@ -94,7 +95,3 @@ BEGIN
 END;
 
 $BODY$;
-
-
-
-
