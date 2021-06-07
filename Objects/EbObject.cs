@@ -46,6 +46,13 @@ namespace ExpressBase.Objects
 
         public virtual string Status { get; set; }
 
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.UserControl, BuilderType.ApiBuilder, BuilderType.DVBuilder, BuilderType.Calendar, BuilderType.MobilePage, BuilderType.SqlJob, BuilderType.DashBoard, BuilderType.SurveyControl)]
+        [PropertyGroup(PGConstants.CORE)]
+        [Unique]
+        [HideForUser]
+        [PropertyPriority(99)]
+        public virtual bool HideInMenu { get; set; }
+
         // methods
 
         public virtual void BeforeRedisSet() { }

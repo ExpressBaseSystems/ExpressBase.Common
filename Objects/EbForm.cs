@@ -23,6 +23,10 @@ namespace ExpressBase.Common.Objects
         [PropertyGroup(PGConstants.CORE)]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
         public override string DisplayName { get; set; }
+        
+        [PropertyGroup(PGConstants.CORE)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
+        public override bool HideInMenu { get; set; }
 
         [PropertyGroup(PGConstants.DATA)]
         [EbRequired]

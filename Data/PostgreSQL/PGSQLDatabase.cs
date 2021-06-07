@@ -789,14 +789,14 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"SELECT id, applicationname,app_icon
+                return @"SELECT id, applicationname, app_icon
                             FROM eb_applications
                             WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY applicationname;
                             SELECT 
 	                            OD.id as objectid, OD.obj_type,	OD.obj_name, OD.display_name, OD.refid,	EO2A.app_id
                             FROM (
 		                            SELECT 
-			                            EO.id,EO.obj_type,EO.obj_name,EO.display_name,EOV.refid
+			                            EO.id, EO.obj_type, EO.obj_name, EO.display_name, EOV.refid
 		                            FROM
 			                            eb_objects EO
 		                            LEFT JOIN 
@@ -805,6 +805,7 @@ namespace ExpressBase.Common
 			                            eb_objects_status EOS ON (EOS.eb_obj_ver_id = EOV.id)
 		                            WHERE
 			                            COALESCE(EO.eb_del, 'F') = 'F'
+			                        AND COALESCE(EO.hide_in_menu, 'F') = 'F'
 		                            AND
 			                            EO.obj_type != ANY(ARRAY[13])
 		                            AND
@@ -1341,7 +1342,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"
-                    SELECT eb_objects_create_new_object(:obj_name, :obj_desc, :obj_type, :obj_cur_status, :obj_json::json, :commit_uid, :src_pid, :cur_pid, :relations, :issave, :tags, :app_id, :s_obj_id, :s_ver_id, :disp_name)
+                    SELECT eb_objects_create_new_object(:obj_name, :obj_desc, :obj_type, :obj_cur_status, :obj_json::json, :commit_uid, :src_pid, :cur_pid, :relations, :issave, :tags, :app_id, :s_obj_id, :s_ver_id, :disp_name, :hide_in_menu)
                 ";
             }
         }
@@ -1350,7 +1351,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"
-                    SELECT eb_objects_save(:id, :obj_name, :obj_desc, :obj_type, :obj_json, :commit_uid, :relations, :tags, :app_id, :disp_name)
+                    SELECT eb_objects_save(:id, :obj_name, :obj_desc, :obj_type, :obj_json, :commit_uid, :relations, :tags, :app_id, :disp_name, :hide_in_menu)
                 ";
             }
         }
@@ -1360,7 +1361,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"
-                    SELECT eb_objects_commit(:id, :obj_name, :obj_desc, :obj_type, :obj_json, :obj_changelog,  :commit_uid, :relations, :tags, :app_id, :disp_name)
+                    SELECT eb_objects_commit(:id, :obj_name, :obj_desc, :obj_type, :obj_json, :obj_changelog,  :commit_uid, :relations, :tags, :app_id, :disp_name, :hide_in_menu)
                 ";
             }
         }
