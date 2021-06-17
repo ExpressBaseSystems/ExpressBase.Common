@@ -164,7 +164,7 @@ namespace ExpressBase.Common.Objects
 
         [PropertyGroup(PGConstants.VALUE)]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [PropertyEditor(PropertyEditorType.ScriptEditorJS)]
+        [PropertyEditor(PropertyEditorType.ScriptEditorJS, PropertyEditorType.ScriptEditorSQ)]
         [HelpText("Define default value of the control.")]
         public virtual EbScript DefaultValueExpression { get; set; }
 

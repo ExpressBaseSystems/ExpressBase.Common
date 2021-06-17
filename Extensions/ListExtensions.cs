@@ -71,6 +71,13 @@ namespace ExpressBase.Common.Extensions
                 }
             }
         }
+        
+        public static List<EbControl> GetAllControlsRecursively(this List<EbControl> controls)
+        {
+            List<EbControl> list = new List<EbControl>();
+            FlattenAllEbControlsRec(controls, ref list);
+            return list;
+        }
 
         public static EbControl[] FlattenAllEbControls(this List<EbControl> controls)
         {
