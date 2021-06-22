@@ -189,6 +189,10 @@ namespace ExpressBase.Common.Objects
         [HelpText("Define conditions to decide Disabled/Readonly property of the control.")]
         public virtual EbScript DisableExpr { get; set; }
 
+        [EnableInBuilder(BuilderType.WebForm)]
+        [PropertyGroup(PGConstants.VALUE)]
+        public virtual bool SelfTrigger { get; set; }
+
         //ValExp Dependant ctrls list
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]

@@ -46,13 +46,6 @@ namespace ExpressBase.Objects
 
         public virtual string Status { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.EmailBuilder, BuilderType.Report, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.UserControl, BuilderType.ApiBuilder, BuilderType.DVBuilder, BuilderType.Calendar, BuilderType.MobilePage, BuilderType.SqlJob, BuilderType.DashBoard, BuilderType.SurveyControl)]
-        [PropertyGroup(PGConstants.CORE)]
-        [Unique]
-        [HideForUser]
-        [PropertyPriority(99)]
-        public virtual bool HideInMenu { get; set; }
-
         // methods
 
         public virtual void BeforeRedisSet() { }
@@ -85,6 +78,8 @@ namespace ExpressBase.Objects
 
     public interface IEBRootObject
     {
+        bool HideInMenu { get; set; }
+
         //[EnableInBuilder(BuilderType.DisplayBlock, BuilderType.DataReader, BuilderType.DataWriter, BuilderType.SqlFunctions, BuilderType.FilterDialog, BuilderType.WebForm, BuilderType.MobileForm, BuilderType.UserControl, BuilderType.Report, BuilderType.DVBuilder, BuilderType.EmailBuilder, BuilderType.BotForm, BuilderType.SmsBuilder, BuilderType.ApiBuilder)]
         //string RefId { get; set; }
 

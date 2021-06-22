@@ -67,6 +67,8 @@ namespace ExpressBase.Common.Objects
         [JsonIgnore]
         public override EbScript ValueExpr { get; set; }
 
+        public override bool SelfTrigger { get; set; }
+
         //[JsonIgnore] //this prop using in DG -to prevent attribute propagation
         public override bool IsDisable { get; set; }
 
