@@ -47,6 +47,22 @@ namespace ExpressBase.Common.LocationNSolution
                     { (int)EbDbTypes.BooleanOriginal, "Boolean" }
                 };
             }
+            else if (preset == 4)//String
+            {
+                this.Type = (int)EbDbTypes.String;
+                this.PossibleTypes = new Dictionary<int, string>()
+                {
+                    { (int)EbDbTypes.String, "String" }
+                };
+            }
+            else if (preset == 5)//Decimal
+            {
+                this.Type = (int)EbDbTypes.Decimal;
+                this.PossibleTypes = new Dictionary<int, string>()
+                {
+                    { (int)EbDbTypes.Decimal, "Decimal" }
+                };
+            }
         }
 
         public EbSystemColumn(string name, string value, string def, int typ, Dictionary<int, string> possibleTyp)
@@ -124,7 +140,11 @@ namespace ExpressBase.Common.LocationNSolution
             new EbSystemColumn("Source Data Id", SystemColumns.eb_src_id, SystemColumns.eb_src_id, 1),
             new EbSystemColumn("Row Order", SystemColumns.eb_row_num, SystemColumns.eb_row_num, 1),
             new EbSystemColumn("Source Version Id", SystemColumns.eb_src_ver_id, SystemColumns.eb_src_ver_id, 1),
-            new EbSystemColumn("Read Only", SystemColumns.eb_ro, SystemColumns.eb_ro, 3)
+            new EbSystemColumn("Read Only", SystemColumns.eb_ro, SystemColumns.eb_ro, 3),
+            new EbSystemColumn("Currency Id", SystemColumns.eb_currency_id, SystemColumns.eb_currency_id, 1),
+            new EbSystemColumn("Currency Xid", SystemColumns.eb_currency_xid, SystemColumns.eb_currency_xid, 4),
+            new EbSystemColumn("Xrate1", SystemColumns.eb_xrate1, SystemColumns.eb_xrate1, 5),
+            new EbSystemColumn("Xrate2", SystemColumns.eb_xrate2, SystemColumns.eb_xrate2, 5)
         };
 
         public static List<EbSystemColumn> Values

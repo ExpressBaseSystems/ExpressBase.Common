@@ -18,5 +18,9 @@
         public const string eb_row_num = "eb_row_num";
         public const string eb_src_ver_id = "eb_src_ver_id";
         public const string eb_ro = "eb_ro";
+        public const string eb_currency_id = "eb_currency_id";
+        public const string eb_currency_xid = "eb_currency_xid";
+        public const string eb_xrate1 = "eb_xrate1";
+        public const string eb_xrate2 = "eb_xrate2";
     }
 }
