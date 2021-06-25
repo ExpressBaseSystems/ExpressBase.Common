@@ -155,7 +155,8 @@ namespace ExpressBase.Common
         SolutionDeveloper = 3,
         SolutionTester = 4,
         SolutionPM = 5,
-        SolutionUser = 6
+        SolutionUser = 6,
+        FinYearSwitcher = 7
     }
 
     public enum EbSystemRoles
