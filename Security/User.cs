@@ -738,6 +738,11 @@ namespace ExpressBase.Security
             return CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortDatePattern;
         }
 
+        public string GetLongDatePattern()
+        {
+            return CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.LongDatePattern;
+        }
+
         public string GetShortTimePattern()
         {
             return CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern;

@@ -73,6 +73,8 @@ namespace ExpressBase.Common.LocationNSolution
 
         public List<EbLocationCustomField> LocationConfig { get; set; }
 
+        public EbFinancialYears FinancialYears { get; set; }
+
         public PricingTiers PricingTier { get; set; }
 
         public bool IsVersioningEnabled { get; set; }
@@ -178,6 +180,39 @@ namespace ExpressBase.Common.LocationNSolution
         }
     }
 
+    public class EbFinancialYears
+    {
+        public EbFinancialYears() 
+        {
+            this.List = new List<EbFinancialYear>();
+        }
+
+        public List<EbFinancialYear> List { get; set; }
+
+        public int Current { get; set; }
+        public bool SysUser { get; set; }
+    }
+
+    public class EbFinancialYear
+    {
+        public int Id { get; set; }
+        public DateTime FyStart { get; set; }
+        public DateTime FyEnd { get; set; }
+        public DateTime ActStart { get; set; }
+        public DateTime ActEnd { get; set; }
+        public bool Locked { get; set; }
+        public List<int> LocIds { get; set; }
+
+        public string FyStart_s { get; set; }
+        public string FyEnd_s { get; set; }
+        public string ActStart_s { get; set; }
+        public string ActEnd_s { get; set; }
+        public string FyStart_sl { get; set; }
+        public string FyEnd_sl { get; set; }
+        public string ActStart_sl { get; set; }
+        public string ActEnd_sl { get; set; }
+    }
+
     public class MobileAppSettings
     {
         public string SignUpPageRefId { set; get; }
@@ -210,24 +245,24 @@ namespace ExpressBase.Common.LocationNSolution
             {
                 //Common styles
                 List<WebformStyles> CommonStyles = new List<WebformStyles>();
-                CommonStyles.Add(new WebformStyles() { Heading ="Form Container",Selector = ".form-buider-form", Css = CommonWebformStyleConst.Form_Buider_Form });
-                CommonStyles.Add(new WebformStyles() { Heading="Common Controls" , Selector = ".ctrl-cover", Css = CommonWebformStyleConst.Ctrl_Cover });
-                CommonStyles.Add(new WebformStyles() { Heading = "Label",Selector = ".eb-label-editable", Css = CommonWebformStyleConst.Eb_Label_Editable });
-                CssContent.Add(new WebformStyleCont() { Heading = "Common" , Selector="", CssObj = CommonStyles });
+                CommonStyles.Add(new WebformStyles() { Heading = "Form Container", Selector = ".form-buider-form", Css = CommonWebformStyleConst.Form_Buider_Form });
+                CommonStyles.Add(new WebformStyles() { Heading = "Common Controls", Selector = ".ctrl-cover", Css = CommonWebformStyleConst.Ctrl_Cover });
+                CommonStyles.Add(new WebformStyles() { Heading = "Label", Selector = ".eb-label-editable", Css = CommonWebformStyleConst.Eb_Label_Editable });
+                CssContent.Add(new WebformStyleCont() { Heading = "Common", Selector = "", CssObj = CommonStyles });
                 CommonStyles = new List<WebformStyles>();
                 CommonStyles.Add(new WebformStyles() { Heading = "Label", Selector = ".eb-label-editable", Css = string.Empty });
                 CommonStyles.Add(new WebformStyles() { Heading = "Input", Selector = "input", Css = string.Empty });
                 CommonStyles.Add(new WebformStyles() { Heading = "Icon", Selector = ".input-group-addon", Css = string.Empty });
                 CommonStyles.Add(new WebformStyles() { Heading = "Container", Selector = ".ctrl-cover", Css = string.Empty });
                 CommonStyles.Add(new WebformStyles() { Heading = "Focus", Selector = ".Eb-ctrlContainer[ctype='TextBox'] .ctrl-cover:focus-within", Css = string.Empty });
-                CssContent.Add(new WebformStyleCont() { Heading = "TextBox" , Selector= "[ctype='TextBox']", CssObj = CommonStyles });
+                CssContent.Add(new WebformStyleCont() { Heading = "TextBox", Selector = "[ctype='TextBox']", CssObj = CommonStyles });
             }
         }
     }
     public class WebformStyleCont
     {
         public string Heading { get; set; }
-        public string Selector { get; set; }    
+        public string Selector { get; set; }
         public List<WebformStyles> CssObj { get; set; }
     }
     public class WebformStyles
