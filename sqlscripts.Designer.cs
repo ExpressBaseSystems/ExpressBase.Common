@@ -1718,6 +1718,62 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_fin_years
+        ///
+        ///-- DROP TABLE public.eb_fin_years;
+        ///
+        ///CREATE TABLE eb_fin_years
+        ///(
+        ///    id serial,
+        ///    fy_start date,
+        ///    fy_end date,
+        ///    active_start date,
+        ///    active_end date,
+        ///    eb_loc_ids text,
+        ///    eb_lock &quot;char&quot;,
+        ///    locked_by integer,
+        ///    locked_at timestamp without time zone,
+        ///    eb_created_by integer,
+        ///    eb_created_at timestamp without time zone,
+        ///    eb_modified_by integer,
+        ///    eb_modified_at timestamp without time zone,
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///	CONST [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_fin_years {
+            get {
+                return ResourceManager.GetString("eb_fin_years", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_fin_years.
+        /// </summary>
+        public static string eb_fin_years1 {
+            get {
+                return ResourceManager.GetString("eb_fin_years1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_fin_years.
+        /// </summary>
+        public static string eb_fin_years2 {
+            get {
+                return ResourceManager.GetString("eb_fin_years2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_fin_years.
+        /// </summary>
+        public static string eb_fin_years3 {
+            get {
+                return ResourceManager.GetString("eb_fin_years3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to -- Table: public.eb_form_drafts
         ///
         ///-- DROP TABLE public.eb_form_drafts;
@@ -3680,9 +3736,9 @@ namespace ExpressBase.Common {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///-- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer,  text, text, text,text)
+        ///-- FUNCTION: public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text, text, text)
         ///
-        ///-- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text,text);
+        ///-- DROP FUNCTION public.eb_objects_commit(text, text, text, integer, json, text, integer, text, text, text, text, text);
         ///
         ///CREATE OR REPLACE FUNCTION public.eb_objects_commit(
         ///	idv text,
@@ -3695,9 +3751,8 @@ namespace ExpressBase.Common {
         ///	relationsstring text,
         ///	tagsv text,
         ///	appsstring text,
-        ///	disp_name text)
-        ///    RETURNS text
-        /// [rest of string was truncated]&quot;;.
+        ///	disp_name text,
+        ///	hide [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_commit1 {
             get {
@@ -3790,9 +3845,9 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text, text, text, text)
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text, text, text, text, text)
         ///
-        ///-- DROP FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text, text, text, text);
+        ///-- DROP FUNCTION public.eb_objects_create_new_object(text, text, integer, integer, json, integer, text, text, text, text, text, text, text, text, text, text);
         ///
         ///CREATE OR REPLACE FUNCTION public.eb_objects_create_new_object(
         ///	obj_namev text,
@@ -3801,7 +3856,7 @@ namespace ExpressBase.Common {
         ///	obj_cur_statusv integer,
         ///	obj_jsonv json,
         ///	commit_uidv integer,
-        ///	src_pid text,        /// [rest of string was truncated]&quot;;.
+        ///	sr [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_create_new_object1 {
             get {
@@ -4247,9 +4302,9 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text)
+        ///   Looks up a localized string similar to -- FUNCTION: public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text, text)
         ///
-        ///-- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text);
+        ///-- DROP FUNCTION public.eb_objects_save(text, text, text, integer, json, integer, text, text, text, text, text);
         ///
         ///CREATE OR REPLACE FUNCTION public.eb_objects_save(
         ///	refidv text,
@@ -4261,12 +4316,11 @@ namespace ExpressBase.Common {
         ///	relationsstring text,
         ///	tagsv text,
         ///	appsstring text,
-        ///	disp_name text)
-        ///    RETURNS text
-        ///    LANGUAGE &apos;plpgsql&apos;
+        ///	disp_name text,
+        ///	hide_in_menuv text)
         ///
-        ///   
-        ///AS $BODY [rest of string was truncated]&quot;;.
+        ///    RETURNS text
+        ///    [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_objects_save1 {
             get {

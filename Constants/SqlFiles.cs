@@ -67,6 +67,7 @@ namespace ExpressBase.Common.Constants
                         "datadb.tablecreate.eb_form_drafts.sql",
                         "datadb.tablecreate.eb_index_table.sql",
 						"datadb.tablecreate.eb_browser_exceptions.sql",
+                        "datadb.tablecreate.eb_fin_years.sql",
                         "filesdb.tablecreate.eb_files_bytea.sql",
                         "objectsdb.functioncreate.eb_get_tagged_object.sql",
                         "objectsdb.functioncreate.eb_objects_change_status.sql",
