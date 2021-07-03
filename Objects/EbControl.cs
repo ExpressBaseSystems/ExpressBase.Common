@@ -596,7 +596,7 @@ namespace ExpressBase.Common.Objects
                     _displayMember = Convert.ToString(Value);
                 }
             }
-            else if (_this.EbDbType == EbDbTypes.String)
+            else if (_this.EbDbType == EbDbTypes.String && _formattedData != null)
             {
                 _formattedData = Convert.ToString(_formattedData);
             }

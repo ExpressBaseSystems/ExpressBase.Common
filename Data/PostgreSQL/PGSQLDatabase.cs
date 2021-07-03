@@ -150,6 +150,8 @@ namespace ExpressBase.Common
                     val = Convert.ToBoolean(value) ? 'T' : 'F';
                 else if (type == EbDbTypes.BooleanOriginal)
                     val = Convert.ToBoolean(value);
+                else if (type == EbDbTypes.String)
+                    val = Convert.ToString(value);
 
                 return new NpgsqlParameter(parametername, this.VendorDbTypes.GetVendorDbType(type)) { Value = val };
             }
