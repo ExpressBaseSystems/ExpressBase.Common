@@ -573,7 +573,7 @@ namespace ExpressBase.Common.Objects
         }
 
         //get data model of the control(formatted) // Value = null => to get default SingleColumn
-        public virtual SingleColumn GetSingleColumn(User UserObj, Eb_Solution SoluObj, object Value)
+        public virtual SingleColumn GetSingleColumn(User UserObj, Eb_Solution SoluObj, object Value, bool Default)
         {
             return EbControl.GetSingleColumn(this, UserObj, SoluObj, Value);
         }
