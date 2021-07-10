@@ -22,20 +22,48 @@ namespace ExpressBase.Common.Helpers
             return dateToCheck >= startDate && dateToCheck <= endDate;
         }
 
-        public static string DateInNotification(this DateTime DateTime, string TimeZoneName)
+        public static string TimeAgo(this DateTime dateTime)
         {
-            DateTime = DateTime.ConvertFromUtc(TimeZoneName);
-            TimeSpan span = (DateTime.Now - DateTime);
-            string formatted = string.Empty;
-            if ((int)span.TotalMinutes < 5)
-                formatted = "Just Now";
-            else
-                formatted = string.Format("{0}{1}{2}",
-                span.Duration().Days > 0 ? string.Format("{0}d ", span.Days) : string.Empty,
-                span.Duration().Hours > 0 ? string.Format("{0}h ", span.Hours) : string.Empty,
-                span.Duration().Minutes > 0 ? string.Format("{0}m ", span.Minutes) : string.Empty);
+            string result;
+            var timeSpan = DateTime.UtcNow.Subtract(dateTime);
 
-            return formatted;
+            if (timeSpan <= TimeSpan.FromSeconds(60))
+            {
+                result = "Just now";
+            }
+            else if (timeSpan <= TimeSpan.FromMinutes(60))
+            {
+                result = timeSpan.Minutes > 2 ?
+                    String.Format("{0} minutes ago", timeSpan.Minutes) :
+                    "a minute ago";
+            }
+            else if (timeSpan <= TimeSpan.FromHours(24))
+            {
+                result = timeSpan.Hours > 2 ?
+                    String.Format("{0} hours ago", timeSpan.Hours) :
+                    "an hour ago";
+            }
+            else if (timeSpan <= TimeSpan.FromDays(30))
+            {
+                result = timeSpan.Days > 2 ?
+                    String.Format("{0} days ago", timeSpan.Days) :
+                    "yesterday";
+            }
+            else if (timeSpan <= TimeSpan.FromDays(365))
+            {
+                result = timeSpan.Days > 60 ?
+                    String.Format("{0} months ago", timeSpan.Days / 30) :
+                    "a month ago";
+            }
+            else
+            {
+                result = timeSpan.Days > 730 ?
+                    String.Format("{0} years ago", timeSpan.Days / 365) :
+                    "a year ago";
+            }
+
+            return result;
         }
+
     }
 }
