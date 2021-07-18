@@ -22,6 +22,25 @@ namespace ExpressBase.Common.Helpers
             return dateToCheck >= startDate && dateToCheck <= endDate;
         }
 
+        public static string TimeAgoShort(this DateTime dateTime)
+        {
+            string result;
+            var timeSpan = DateTime.UtcNow.Subtract(dateTime);
+            if (timeSpan <= TimeSpan.FromSeconds(60))
+                result = "Just now";
+            else if (timeSpan <= TimeSpan.FromMinutes(60))
+                result = timeSpan.Minutes + "m";
+            else if (timeSpan <= TimeSpan.FromHours(24))
+                result = timeSpan.Hours + "h";
+            else if (timeSpan <= TimeSpan.FromDays(30))
+                result = timeSpan.Days + "d";
+            else if (timeSpan <= TimeSpan.FromDays(365))
+                result = (timeSpan.Days / 30) + "M";
+            else
+                result = (timeSpan.Days / 365) + "y";
+            return result;
+        }
+
         public static string TimeAgo(this DateTime dateTime)
         {
             string result;
