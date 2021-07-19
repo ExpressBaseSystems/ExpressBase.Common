@@ -757,7 +757,7 @@ namespace ExpressBase.Security
                 try
                 {
                     SerializedCulture _cult = CultureHelper.GetSerializedCultureInfo(this.Locale);
-                    return MomentJSHelpers.GenerateMomentJSFormatString(_cult.DateTimeFormatInfo.ShortDatePattern, _cult).ReplaceAll("[", "").ReplaceAll("]", "");
+                    return MomentJSHelpers.GenerateMomentJSFormatString(_cult.DateTimeFormatInfo.ShortDatePattern, _cult).Replace("[", "").Replace("]", "");
                 }
                 catch (Exception ex)
                 {
@@ -792,7 +792,7 @@ namespace ExpressBase.Security
                 try
                 {
                     SerializedCulture _cult = CultureHelper.GetSerializedCultureInfo(this.Locale);
-                    return MomentJSHelpers.GenerateMomentJSFormatString(_cult.DateTimeFormatInfo.ShortTimePattern, _cult).ReplaceAll("[", "").ReplaceAll("]", "");
+                    return MomentJSHelpers.GenerateMomentJSFormatString(_cult.DateTimeFormatInfo.ShortTimePattern, _cult).Replace("[", "").Replace("]", "");
                 }
                 catch (Exception ex)
                 {
