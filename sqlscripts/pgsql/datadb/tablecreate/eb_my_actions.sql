@@ -27,7 +27,7 @@ CREATE TABLE eb_my_actions
     except_user_ids text,
     eb_meeting_schedule_id integer,
     eb_meeting_slots_id integer,
-    hide "char" DEFAULT 'F'::"char",,
+    hide "char" DEFAULT 'F'::"char",
     CONSTRAINT eb_my_actions_pkey PRIMARY KEY (id)
 );
 
