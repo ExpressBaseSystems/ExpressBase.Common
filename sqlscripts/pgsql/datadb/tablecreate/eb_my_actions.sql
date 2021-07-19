@@ -23,10 +23,11 @@ CREATE TABLE eb_my_actions
     is_form_data_editable  "char" DEFAULT 'F'::"char",
     from_datetime timestamp without time zone,
     expiry_datetime timestamp without time zone,
-	my_action_type text,
-	except_user_ids text,
+    my_action_type text,
+    except_user_ids text,
     eb_meeting_schedule_id integer,
-	eb_meeting_slots_id integer,
+    eb_meeting_slots_id integer,
+    hide "char" DEFAULT 'F'::"char",,
     CONSTRAINT eb_my_actions_pkey PRIMARY KEY (id)
 );
 
