@@ -333,7 +333,8 @@ namespace ExpressBase.Common
         Preview_Mode = 5,
         Prefill_Mode = 6,
         Export_Mode = 7,
-        Draft_Mode = 8
+        Draft_Mode = 8,
+        Clone_Mode = 9
     }
 
 
