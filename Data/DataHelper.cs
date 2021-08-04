@@ -91,7 +91,7 @@ namespace ExpressBase.Common.Data
                 else if(Type == ((int)EbDbTypes.String).ToString())  
                     return (Value == null) ? string.Empty: Value;
                 else if (Type == ((int)EbDbTypes.Time).ToString())
-                    return TimeSpan.Parse(Value);
+                    return TimeSpan.Parse(Value ?? "0");
                 else
                     return Value;
             }
