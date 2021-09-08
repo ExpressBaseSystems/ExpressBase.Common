@@ -543,6 +543,9 @@ namespace ExpressBase.Common.Objects
         //tbl -> master table name, ins -> is insert, _col -> cols/colvals, _extqry -> extended query, ocF -> old column field
         public virtual bool ParameterizeControl(ParameterizeCtrl_Params args, string crudContext)
         {
+            if (this.BypassParameterization && args.cField.Value == null)
+                throw new Exception($"Unable to proceed/bypass with value '{args.cField.Value}' for {this.Name}");
+
             string paramName = args.cField.Name + crudContext;
             if (args.cField.Value == null || (this.EbDbType == EbDbTypes.Decimal && Convert.ToString(args.cField.Value) == string.Empty))
             {
@@ -550,8 +553,16 @@ namespace ExpressBase.Common.Objects
                 p.Value = DBNull.Value;
                 args.param.Add(p);
             }
-            else if(!this.BypassParameterization)// (this.BypassParameterization && cField.Value == null) ~> error
+            else if (!this.BypassParameterization)
+            {
+                EbDbTypes _t = (EbDbTypes)args.cField.Type;
+                if (_t == EbDbTypes.Decimal || _t == EbDbTypes.Int32)
+                {
+                    if (!double.TryParse(Convert.ToString(args.cField.Value), out double temp))
+                        throw new Exception($"Unable to proceed with value '{args.cField.Value}' for {this.Name}");
+                }
                 args.param.Add(args.DataDB.GetNewParameter(paramName, (EbDbTypes)args.cField.Type, args.cField.Value));
+            }
 
             if (args.ins)
             {
@@ -592,8 +603,11 @@ namespace ExpressBase.Common.Objects
                 }
                 else
                 {
-                    _formattedData = Convert.ToDouble(Value);
                     _displayMember = Convert.ToString(Value);
+                    if (double.TryParse(_displayMember, out double _t))
+                        _formattedData = _t;
+                    else
+                        throw new Exception($"Invalid numeric value({_displayMember}) for '{_this.Name}'");
                 }
             }
             else if (_this.EbDbType == EbDbTypes.String && _formattedData != null)
