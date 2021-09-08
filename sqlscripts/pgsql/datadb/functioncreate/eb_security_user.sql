@@ -63,6 +63,13 @@ IF (COALESCE(_phnoprimary, '') <> '') THEN
 		RETURN QUERY SELECT -3;
 	END IF;
 END IF;
+	
+IF (COALESCE(_nickname, '') <> '') THEN
+	SELECT COUNT(*) FROM eb_users WHERE LOWER(nickname) = LOWER(_nickname) AND COALESCE(eb_del, 'F') = 'F' AND id <> _id INTO uid;
+	IF(uid > 0) THEN
+		RETURN QUERY SELECT -4;
+	END IF;
+END IF;
 
 IF _id > 1 THEN
 	SELECT COUNT(*) FROM eb_users WHERE id = _id INTO uid;
