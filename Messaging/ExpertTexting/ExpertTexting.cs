@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using System.Xml;
 
 namespace ExpressBase.Common.Messaging
 {
@@ -23,17 +24,47 @@ namespace ExpressBase.Common.Messaging
                 string url = string.Format(SMS_URL_BARE, Config.UserName, Config.Password, Config.ApiKey, To, body);
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 var resp = request.GetResponse();
+
+                WebHeaderCollection header = resp.Headers;
+                var encoding = ASCIIEncoding.ASCII;
+                string responseText;
+                using (var reader = new System.IO.StreamReader(resp.GetResponseStream(), encoding))
+                {
+                    responseText = reader.ReadToEnd();
+                }
+                XmlDocument Doc = new XmlDocument();
+                Doc.LoadXml(responseText);
+                XmlNode node = Doc.GetElementsByTagName("ExpertTextAPI").Item(0);
+                string status = string.Empty;
+                string result = string.Empty;
+                foreach (XmlNode item in node.ChildNodes)
+                {
+                    if ((item).NodeType == XmlNodeType.Element)
+                    {
+                        if (item.Name == "Status")
+                            if (item.FirstChild.Value == "SUCCESS")
+                            {
+                                status = item.FirstChild.Value;
+                            }
+                            else
+                            {
+                                status = "FAILED";
+                                result = item.FirstChild.Value;
+                            }
+                    }
+                }
+
                 msgStatus = new Dictionary<string, string>
                 {
                     { "To", To},
                     { "From", Config.From },
                     { "Uri", url },
                     { "Body", body },
-                    { "Status", resp.ToString() },
+                    { "Status", status.ToLower() },
                    // { "SentTime", msg.DateSent.ToString() },
-                   // { "ErrorMessage", msg.ErrorMessage }
+                    // { "ErrorMessage", msg.ErrorMessage }
                     { "ConId", Config.Id.ToString() },
-                    { "Result", resp.ToString() }
+                    { "Result", result }
                 };
             }
             catch (Exception e)
