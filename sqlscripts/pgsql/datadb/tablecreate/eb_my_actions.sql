@@ -28,6 +28,7 @@ CREATE TABLE eb_my_actions
     eb_meeting_schedule_id integer,
     eb_meeting_slots_id integer,
     hide "char" DEFAULT 'F'::"char",
+    action_type integer,
     CONSTRAINT eb_my_actions_pkey PRIMARY KEY (id)
 );
 
