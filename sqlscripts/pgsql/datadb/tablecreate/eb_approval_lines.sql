@@ -8,6 +8,7 @@ CREATE TABLE eb_approval_lines
     stage_unique_id text,
     action_unique_id text ,
     eb_my_actions_id numeric,
+    eb_approval_id integer,
     comments text,
     eb_src_id integer,
     eb_ver_id integer,
