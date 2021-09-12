@@ -6,6 +6,7 @@ CREATE TABLE eb_approval
 (
     id serial,
     review_status text,
+    status integer,
     eb_my_actions_id integer,
     eb_approval_lines_id integer,
     eb_src_id integer,
