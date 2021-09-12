@@ -27,7 +27,7 @@ namespace ExpressBase.Common.Helpers
             string result;
             var timeSpan = DateTime.UtcNow.Subtract(dateTime);
             if (timeSpan <= TimeSpan.FromSeconds(60))
-                result = "Just now";
+                result = "JN";
             else if (timeSpan <= TimeSpan.FromMinutes(60))
                 result = timeSpan.Minutes + "m";
             else if (timeSpan <= TimeSpan.FromHours(24))
