@@ -200,7 +200,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"SELECT
-                            obj_json, version_num, status, EO.obj_tags, EO.obj_type
+                            obj_json, version_num, status, EO.obj_tags, EO.obj_type, EO.display_name
                         FROM
                             eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
                         WHERE
