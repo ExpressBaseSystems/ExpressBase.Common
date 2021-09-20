@@ -534,6 +534,7 @@ namespace ExpressBase.Common
         public virtual string EB_SAVE_OBJECT { get; }
         public virtual string EB_COMMIT_OBJECT { get; }
         public virtual string EB_EXPLORE_OBJECT { get; }
+        public virtual string GET_RELATED_OBJECTS { get; }
         public virtual string EB_MAJOR_VERSION_OF_OBJECT { get; }
         public virtual string EB_MINOR_VERSION_OF_OBJECT { get; }
         public virtual string EB_CHANGE_STATUS_OBJECT { get; }

@@ -1378,6 +1378,22 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
+         public override string GET_RELATED_OBJECTS
+        {
+            get
+            {
+                return @"
+                        SELECT dominant as ref, o.display_name, v.version_num, 1 as type from eb_objects_relations r, eb_objects o, eb_objects_ver v WHERE 
+                        r.dependant =:refid AND r.eb_del ='F' AND
+                        v.refid = r.dominant AND o.id = v.eb_objects_id
+                        UNION
+                        SELECT dependant as ref, o.display_name, v.version_num, 2 as type from eb_objects_relations d, eb_objects o, eb_objects_ver v WHERE 
+                        d.dominant =:refid AND d.eb_del ='F' AND
+                        v.refid = d.dependant AND o.id = v.eb_objects_id ;                
+                ";
+            }
+        }
+
         public override string EB_MAJOR_VERSION_OF_OBJECT
         {
             get
