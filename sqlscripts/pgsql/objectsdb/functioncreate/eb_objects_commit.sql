@@ -57,7 +57,7 @@ BEGIN
 			eb_del = 'T', removed_by = commit_uidv , removed_at = NOW()
 		WHERE 
 			dominant IN(
-				SELECT unnest(ARRAY(select dominant from eb_objects_relations WHERE dependant = idv)) 
+				SELECT unnest(ARRAY(select dominant from eb_objects_relations WHERE dependant = idv and eb_del ='F')) 
 				EXCEPT 
 				SELECT unnest(ARRAY[relationsv]));
             
@@ -69,7 +69,7 @@ BEGIN
 				UNNEST(array(SELECT unnest(ARRAY[relationsv])
 			EXCEPT 
 				SELECT unnest(array(select dominant from eb_objects_relations 
-                            WHERE dependant = idv )))) as dominantvals;  
+                            WHERE dependant = idv and eb_del ='F')))) as dominantvals;  
 
 	--application table
 	UPDATE 
