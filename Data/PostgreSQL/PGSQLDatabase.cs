@@ -1383,13 +1383,13 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"
-                        SELECT dominant as ref, o.display_name, v.version_num, 1 as type from eb_objects_relations r, eb_objects o, eb_objects_ver v WHERE 
+                        SELECT * FROM (SELECT dominant as ref, o.display_name, v.version_num, 1 as rel_type, o.obj_type from eb_objects_relations r, eb_objects o, eb_objects_ver v WHERE 
                         r.dependant =:refid AND r.eb_del ='F' AND
                         v.refid = r.dominant AND o.id = v.eb_objects_id
                         UNION
-                        SELECT dependant as ref, o.display_name, v.version_num, 2 as type from eb_objects_relations d, eb_objects o, eb_objects_ver v WHERE 
+                        SELECT dependant as ref, o.display_name, v.version_num, 2 as rel_type, o.obj_type from eb_objects_relations d, eb_objects o, eb_objects_ver v WHERE 
                         d.dominant =:refid AND d.eb_del ='F' AND
-                        v.refid = d.dependant AND o.id = v.eb_objects_id ;                
+                        v.refid = d.dependant AND o.id = v.eb_objects_id)q ORDER BY q.obj_type;                
                 ";
             }
         }
