@@ -214,6 +214,9 @@ namespace ExpressBase.Common
         public int SrcDataId { get; set; }
         public int CreatedBy { get; set; }
         public string CreatedAt { get; set; }
+        public int ModifiedBy { get; set; }
+        public string ModifiedAt { get; set; }
+        public string Ts { get; set; }
 
         public WebformData()
         {
