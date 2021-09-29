@@ -9,11 +9,15 @@ namespace ExpressBase.Common.Extensions
     {
         public static DateTime ConvertToUtc(this DateTime DateTime, string TimeZone)
         {
+            if (DateTime == DateTime.MinValue)
+                return DateTime;
             return DateTime.Add(GetDifference(TimeZone));
         }
 
         public static DateTime ConvertFromUtc(this DateTime DateTime, string TimeZone)
         {
+            if (DateTime == DateTime.MinValue)
+                return DateTime;
             return DateTime.Add(GetDifference(TimeZone, true));
         }
 
