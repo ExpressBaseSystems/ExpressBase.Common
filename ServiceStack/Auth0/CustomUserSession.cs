@@ -41,58 +41,6 @@ namespace ExpressBase.Common.ServiceStack.Auth
             return true;
         }
 
-        public override bool FromToken
-        {
-            get
-            {
-                return base.FromToken;
-            }
-
-            set
-            {
-                base.FromToken = value;
-            }
-        }
-
-        public override string ProfileUrl
-        {
-            get
-            {
-                return base.ProfileUrl;
-            }
-
-            set
-            {
-                base.ProfileUrl = value;
-            }
-        }
-
-        public override string Sequence
-        {
-            get
-            {
-                return base.Sequence;
-            }
-
-            set
-            {
-                base.Sequence = value;
-            }
-        }
-
-        public override bool IsAuthenticated
-        {
-            get
-            {
-                return base.IsAuthenticated;
-            }
-
-            set
-            {
-                base.IsAuthenticated = value;
-            }
-        }
-
         public override void OnCreated(IRequest httpReq)
         {
             base.OnCreated(httpReq);

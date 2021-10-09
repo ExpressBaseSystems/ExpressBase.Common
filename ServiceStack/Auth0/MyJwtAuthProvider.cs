@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
+using System.Linq;
 
 namespace ExpressBase.Common.ServiceStack.Auth
 {
@@ -39,7 +40,7 @@ namespace ExpressBase.Common.ServiceStack.Auth
 
         public override string CreateJwtBearerToken(IRequest req, IAuthSession session, IEnumerable<string> roles = null, IEnumerable<string> perms = null)
         {
-            var jwtPayload = CreateJwtPayload(session, Issuer, ExpireTokensIn, Audience, roles, perms);
+            var jwtPayload = CreateJwtPayload(session, Issuer, ExpireTokensIn, Audiences, roles, perms);
             CreatePayloadFilter?.Invoke(jwtPayload, session);
 
             if (EncryptPayload)
@@ -94,7 +95,7 @@ namespace ExpressBase.Common.ServiceStack.Auth
 
         public override JsonObject CreateJwtPayload(
             IAuthSession session, string issuer, TimeSpan expireIn,
-            string audience = null,
+            IEnumerable<string> audience = null,
             IEnumerable<string> roles = null,
             IEnumerable<string> permissions = null)
         {
@@ -107,8 +108,11 @@ namespace ExpressBase.Common.ServiceStack.Auth
                 {TokenConstants.EXP, now.Add(expireIn).ToUnixTime().ToString()},
             };
 
-            if (audience != null)
-                jwtPayload["aud"] = audience;
+            List<string> audiences = audience.ToList();
+
+            jwtPayload["aud"] = audiences.Count == 1
+                                ? audiences[0]
+                                : audiences.ToJson();
 
             var csession = session as CustomUserSession;
 
