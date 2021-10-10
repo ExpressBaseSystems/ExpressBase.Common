@@ -85,9 +85,6 @@ namespace ExpressBase.Common.ServiceStack.Auth
                 {"exp", now.Add(expireRefreshTokenIn).ToUnixTime().ToString()},
             };
 
-            if (Audience != null)
-                jwtPayload["aud"] = Audience;
-
             var hashAlgoritm = GetHashAlgorithm(req);
             var refreshToken = CreateJwt(jwtHeader, jwtPayload, hashAlgoritm);
             return refreshToken;
@@ -107,12 +104,6 @@ namespace ExpressBase.Common.ServiceStack.Auth
                 {TokenConstants.IAT, now.ToUnixTime().ToString()},
                 {TokenConstants.EXP, now.Add(expireIn).ToUnixTime().ToString()},
             };
-
-            List<string> audiences = audience.ToList();
-
-            jwtPayload["aud"] = audiences.Count == 1
-                                ? audiences[0]
-                                : audiences.ToJson();
 
             var csession = session as CustomUserSession;
 
