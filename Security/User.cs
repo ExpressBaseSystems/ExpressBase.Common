@@ -748,6 +748,11 @@ namespace ExpressBase.Security
             return CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.ShortTimePattern;
         }
 
+        public string GetLongTimePattern()
+        {
+            return CultureHelper.GetSerializedCultureInfo(this.Locale).DateTimeFormatInfo.LongTimePattern;
+        }
+
         //----------------------------------Cultures json Test-----------------------------------
         [DataMember(Order = 6)]
         public string ShortDatePattern

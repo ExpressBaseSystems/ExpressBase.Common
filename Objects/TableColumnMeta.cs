@@ -73,12 +73,12 @@ namespace ExpressBase.Common
         public string F { get; set; }//Formatted text for date, time etc
 
         public string M { get; set; }//Meta
-        
+
         public SingleColumn() { }
     }
 
     public class SingleRow
-    {        
+    {
         public int RowId { get; set; }
 
         public int LocId { get; set; }
@@ -98,7 +98,7 @@ namespace ExpressBase.Common
         {
             Columns = new List<SingleColumn>();
         }
-        
+
         public SingleColumn GetColumn(string cname)
         {
             for (int i = 0; i < this.Columns.Count; i++)
@@ -110,7 +110,7 @@ namespace ExpressBase.Common
             }
             return null;
         }
-        
+
         public void SetColumn(string cname, SingleColumn column)
         {
             for (int i = 0; i < this.Columns.Count; i++)
@@ -128,7 +128,7 @@ namespace ExpressBase.Common
         {
             get
             {
-                for(int i = 0; i < this.Columns.Count; i++)
+                for (int i = 0; i < this.Columns.Count; i++)
                 {
                     if (this.Columns[i].Name.Equals(name))
                     {
@@ -186,7 +186,7 @@ namespace ExpressBase.Common
 
     }
 
-    public class WebformData 
+    public class WebformData
     {
         public Dictionary<string, SingleTable> MultipleTables { get; set; }
 
@@ -214,6 +214,9 @@ namespace ExpressBase.Common
         public int SrcDataId { get; set; }
         public int CreatedBy { get; set; }
         public string CreatedAt { get; set; }
+        public int ModifiedBy { get; set; }
+        public string ModifiedAt { get; set; }
+        public WebformDataInfo Info { get; set; }
 
         public WebformData()
         {
@@ -225,6 +228,15 @@ namespace ExpressBase.Common
             DisableCancel = new Dictionary<string, bool>();
             DisableEdit = new Dictionary<string, bool>();
         }
+    }
+
+    public class WebformDataInfo
+    {
+        public string CreBy { get; set; }
+        public string CreAt { get; set; }
+        public string CreFrom { get; set; }
+        public string ModBy { get; set; }
+        public string ModAt { get; set; }
     }
 
     public class WebformDataWrapper
@@ -270,7 +282,7 @@ namespace ExpressBase.Common
         public string Title { get; set; }
 
         public string ContainerName { get; set; }
-        
+
         public bool DescOdr { get; set; }//Descending order eb_row_num - datagrid
 
         public bool IsDynamic { get; set; }//datagird in dynamic tab
