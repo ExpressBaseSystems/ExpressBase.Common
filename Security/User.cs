@@ -178,7 +178,7 @@ namespace ExpressBase.Security
             List<int> _locs = new List<int>();
 
             int _objid = Convert.ToInt32(RefId.Split("-")[3].Trim());
-            Console.WriteLine("=========ObjectId:" + _objid + "============Locations: ");
+            Console.WriteLine("GetLocationsByObject => ObjectId: " + _objid);
 
             foreach (string p in this.Permissions)
             {
@@ -188,12 +188,10 @@ namespace ExpressBase.Security
                     if (lid == -1)
                         return new List<int> { -1 };
                     else if (!_locs.Contains(lid))
-                    {
                         _locs.Add(lid);
-                        Console.WriteLine(lid + "====");
-                    }
                 }
             }
+            Console.WriteLine(" => LocationsIds: " + _locs.Join(","));
             return _locs;
         }
 
