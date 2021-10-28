@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace ExpressBase.Common.Messaging
@@ -33,10 +34,16 @@ namespace ExpressBase.Common.Messaging
             try
             {
                 body += "-" + Config.BrandName;
-                string msg = HttpUtility.UrlEncode(body);
-                using (var wb = new WebClient())
+                var status = string.Empty;
+                IEnumerable<string> matches = Regex.Matches(To, @"[1-9]").OfType<Match>()
+                 .Select(m => m.Groups[0].Value)
+                 .Distinct();
+                if (matches.Count() > 0)
                 {
-                    byte[] response = wb.UploadValues("https://api.textlocal.in/send/", new NameValueCollection()
+                    string msg = HttpUtility.UrlEncode(body);
+                    using (var wb = new WebClient())
+                    {
+                        byte[] response = wb.UploadValues("https://api.textlocal.in/send/", new NameValueCollection()
                     {
                         {"apikey" , Config.ApiKey},
                         {"numbers" , To},
@@ -44,12 +51,15 @@ namespace ExpressBase.Common.Messaging
                         {"sender" , Config.From}
                        // {"test" , "1"}
                     });
-                    result = System.Text.Encoding.UTF8.GetString(response);
+                        result = System.Text.Encoding.UTF8.GetString(response);
+                    }
+                    status = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(result)["status"];
                 }
-
-                var status = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(result)["status"];
-
-
+                else
+                {
+                    status = "FAILED";
+                    result = "'To' is not a Valid number.";
+                }
                 msgStatus = new Dictionary<string, string>
                 {
                         {"ApiKey",  Config.ApiKey},
@@ -63,8 +73,9 @@ namespace ExpressBase.Common.Messaging
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception:" + e.ToString());
-                msgStatus.Add("ErrorMessage", e.ToString());
+                Console.WriteLine("Exception:" + e.Message);
+                if (!(msgStatus is null))
+                    msgStatus.Add("ErrorMessage", e.Message);
             }
             Console.WriteLine(" --- SMS msg" + EbSerializers.Json_Serialize(msgStatus));
             return msgStatus;
