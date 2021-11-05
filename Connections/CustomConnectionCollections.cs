@@ -1,13 +1,8 @@
 ﻿using ExpressBase.Common.Data;
 using ExpressBase.Common.Messaging;
-//using ExpressBase.Common.Messaging.ExpertTexting;
 using ExpressBase.Common.Messaging.Slack;
-//using ExpressBase.Common.Messaging.Twilio;
-using ServiceStack.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Text;
 
 namespace ExpressBase.Common.Connections
 {
@@ -50,8 +45,8 @@ namespace ExpressBase.Common.Connections
             try
             {
                 //  resp = this[2].SendSMS(To, Body);
-                resp = Primary.SendSMS(To, Body);               
-                
+                resp = Primary.SendSMS(To, Body);
+
                 Console.WriteLine("SMS Send With Primary");
             }
             catch
@@ -224,22 +219,22 @@ namespace ExpressBase.Common.Connections
 
         public IEmailConnection FallBack { get; set; }
 
-        public bool Send(string to, string subject, string message, string[] cc, string[] bcc, byte[] attachment, string attachmentname)
+        public SentStatus Send(string to, string subject, string message, string[] cc, string[] bcc, byte[] attachment, string attachmentname, string replyto)
         {
-            bool resp = false;
+            SentStatus status = new SentStatus();
             try
             {
                 Console.WriteLine("Inside Mail Sending to " + to);
                 if (Primary != null)
                 {
-                    Primary.Send(to, subject, message, cc, bcc, attachment, attachmentname);
+                    status = Primary.Send(to, subject, message, cc, bcc, attachment, attachmentname, replyto);
                     Console.WriteLine("Mail Send With Primary :");
 
                 }
                 else if (this.Capacity != 0)
                 {
                     Console.WriteLine("Mail Send using First Element");
-                    this[0].Send(to, subject, message, cc, bcc, attachment, attachmentname);
+                    status = this[0].Send(to, subject, message, cc, bcc, attachment, attachmentname, replyto);
                 }
                 else
                     Console.WriteLine("Email Connection Empty!");
@@ -251,7 +246,7 @@ namespace ExpressBase.Common.Connections
                 {
                     if (FallBack != null)
                     {
-                        FallBack.Send(to, subject, message, cc, bcc, attachment, attachmentname);
+                        status = FallBack.Send(to, subject, message, cc, bcc, attachment, attachmentname, replyto);
                         Console.WriteLine("Mail Send With FallBack : ");
                     }
                 }
@@ -260,7 +255,7 @@ namespace ExpressBase.Common.Connections
                     Console.WriteLine("Mail Sending Failed: " + ex.StackTrace);
                 }
             }
-            return resp;
+            return status;
         }
 
     }

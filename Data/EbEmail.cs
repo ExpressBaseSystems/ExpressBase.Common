@@ -44,41 +44,48 @@ namespace ExpressBase.Common.Data
 
         private SmtpClient Client { get; set; }
 
-
-
-        public bool Send(string to, string subject, string message, string[] cc, string[] bcc, byte[] attachment, string attachmentname)
+        public SentStatus Send(string to, string subject, string message, string[] cc, string[] bcc, byte[] attachment, string attachmentname, string replyto)
         {
-
-            bool sentStatus;
+            bool status;
+            string responseMesage = string.Empty;
             try
             {
                 MailMessage mm = new MailMessage(Config.EmailAddress, to)
                 {
                     Subject = subject,
                     IsBodyHtml = true,
-                    Body = message
-
+                    Body = message,
                 };
+
+                if (replyto != null)
+                    mm.ReplyToList.Add(replyto);
                 if (attachment != null)
                     mm.Attachments.Add(new System.Net.Mail.Attachment(new MemoryStream(attachment), attachmentname));
-                if (cc != null)
-                    if (cc.Length > 0)
-                        foreach (string item in cc)
-                            if (item != "") mm.CC.Add(item);
-                if (bcc != null)
-                    if (bcc.Length > 0)
-                        foreach (string item in bcc)
-                            if (item != "") mm.Bcc.Add(item);
+                if (cc?.Length > 0)
+                    foreach (string item in cc)
+                        if (item != "") mm.CC.Add(item);
+                if (bcc?.Length > 0)
+                    foreach (string item in bcc)
+                        if (item != "") mm.Bcc.Add(item);
+
                 Client.Send(mm);
-                sentStatus = true;
-                Console.WriteLine("Smtp Send success" + to);
+                status = true;
+                responseMesage = "Smtp Send success";
             }
             catch (Exception e)
             {
-                Console.WriteLine("Smtp Send Exception : " + Config.Id + " - " + Config.EmailAddress + " - " + Config.Port + " :  " + e.Message + e.StackTrace);
-                sentStatus = false;
+                responseMesage = "Smtp Send Exception : Port" + " - " + Config.Port + " :  " + e.Message + e.StackTrace;
+                status = false;
             }
-            return sentStatus;
+            return new SentStatus
+            {
+                Status = status.ToString(),
+                To = to,
+                From = Config.EmailAddress,
+                Body = message,
+                ConId = Config.Id,
+                Result = responseMesage
+            };
         }
     }
 
@@ -106,17 +113,18 @@ namespace ExpressBase.Common.Data
         public EbSendGridConfig Config { get; set; }
 
         private SendGridClient Client { get; set; }
-        public bool Send(string to, string subject, string message, string[] cc, string[] bcc, byte[] attachment, string attachmentname)
+        public SentStatus Send(string to, string subject, string message, string[] cc, string[] bcc, byte[] attachment, string attachmentname, string replyto)
         {
-            bool sentStatus;
+            bool status;
+            string responseMesage = string.Empty;
             try
             {
-
-                var msg = new SendGridMessage
+                SendGridMessage msg = new SendGridMessage
                 {
                     From = new EmailAddress(Config.EmailAddress, Config.Name),
                     Subject = subject,
-                    PlainTextContent = message
+                    PlainTextContent = message,
+                    ReplyTo = new EmailAddress(replyto)
                 };
                 msg.AddTo(new EmailAddress(to, "User"));
                 foreach (string i in cc)
@@ -133,16 +141,23 @@ namespace ExpressBase.Common.Data
                     msg.AddAttachment(attachmentname, file);
                 }
                 Client.SendEmailAsync(msg);
-                Console.WriteLine("SendGrid Send success" + to);
-                sentStatus = true;
+                responseMesage = "SendGrid Send success";
+                status = true;
             }
             catch (Exception e)
             {
-                Console.WriteLine("SendGrid Send Exception" + e.Message + e.StackTrace);
-                sentStatus = false;
-                throw e;
+                responseMesage = "SendGrid Send Exception" + e.Message + e.StackTrace;
+                status = false;
             }
-            return sentStatus;
+            return new SentStatus
+            {
+                Status = status.ToString(),
+                To = to,
+                From = Config.EmailAddress,
+                Body = message,
+                ConId = Config.Id,
+                Result = responseMesage
+            };
         }
     }
 }
