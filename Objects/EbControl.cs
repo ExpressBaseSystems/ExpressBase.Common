@@ -191,6 +191,7 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm)]
         [PropertyGroup(PGConstants.VALUE)]
+        [HelpText("Execute its own value expression.")]
         public virtual bool SelfTrigger { get; set; }
 
         //ValExp Dependant ctrls list
