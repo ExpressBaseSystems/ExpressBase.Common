@@ -61,7 +61,8 @@ namespace ExpressBase.Common
     }
 
     public class ExportPackage
-    { 
+    {
+        public string Name { get; set; }
         public ExportPackage()
         {
             Apps = new List<AppWrapper>();
