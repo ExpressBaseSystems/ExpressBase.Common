@@ -19,7 +19,7 @@ namespace ExpressBase.Common {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class sqlscripts {
@@ -183,6 +183,7 @@ namespace ExpressBase.Common {
         ///(
         ///    id serial,
         ///    review_status text,
+        ///    status integer,
         ///    eb_my_actions_id integer,
         ///    eb_approval_lines_id integer,
         ///    eb_src_id integer,
@@ -192,10 +193,7 @@ namespace ExpressBase.Common {
         ///    eb_lastmodified_by integer,
         ///    eb_lastmodified_at timestamp without time zone,
         ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
-        ///    CONSTRAINT eb_approval_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///- [rest of string was truncated]&quot;;.
+        ///    CONSTRAINT eb_approval_pkey PRIM [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_approval {
             get {
@@ -214,6 +212,7 @@ namespace ExpressBase.Common {
         ///    stage_unique_id text,
         ///    action_unique_id text ,
         ///    eb_my_actions_id numeric,
+        ///    eb_approval_id integer,
         ///    comments text,
         ///    eb_src_id integer,
         ///    eb_ver_id integer,
@@ -221,8 +220,8 @@ namespace ExpressBase.Common {
         ///    eb_signin_log_id integer,
         ///    eb_created_by integer,
         ///    eb_created_at timestamp without time zone,
-        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
-        ///    CONSTRAINT eb_approval_lines_pkey PRIMARY KEY (id) [rest of string was truncated]&quot;;.
+        ///    eb_lastmodified_by integer,
+        ///    eb_lastmodified_at timestamp [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_approval_lines {
             get {
@@ -2679,6 +2678,66 @@ namespace ExpressBase.Common {
         public static string eb_locations3 {
             get {
                 return ResourceManager.GetString("eb_locations3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_mail_logs
+        ///
+        ///-- DROP TABLE public.eb_mail_logs;
+        ///
+        ///CREATE TABLE eb_mail_logs
+        ///(
+        ///	id serial,
+        ///    send_to text,
+        ///    message_body text,
+        ///    status text,
+        ///    refid text,
+        ///    con_id integer,
+        ///    eb_created_by integer,
+        ///    eb_created_at timestamp without time zone,
+        ///	eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    CONSTRAINT eb_mail_logs_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///
+        ///-- Index: eb_mail_logs_id_idx
+        ///
+        ///-- DROP INDEX public.eb_mail_logs_id_idx;
+        ///
+        ///CREATE INDEX eb_mail_logs_id_idx
+        ///    ON eb_mail_ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_mail_logs {
+            get {
+                return ResourceManager.GetString("eb_mail_logs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --eb_mail_logs.
+        /// </summary>
+        public static string eb_mail_logs1 {
+            get {
+                return ResourceManager.GetString("eb_mail_logs1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --eb_mail_logs.
+        /// </summary>
+        public static string eb_mail_logs2 {
+            get {
+                return ResourceManager.GetString("eb_mail_logs2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_mail_logs.
+        /// </summary>
+        public static string eb_mail_logs3 {
+            get {
+                return ResourceManager.GetString("eb_mail_logs3", resourceCulture);
             }
         }
         
