@@ -77,12 +77,14 @@ namespace ExpressBase.Common.Data
                 responseMesage = "Smtp Send Exception : Port" + " - " + Config.Port + " :  " + e.Message + e.StackTrace;
                 status = false;
             }
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(message);
+            string message64 = System.Convert.ToBase64String(plainTextBytes);
             return new SentStatus
             {
                 Status = status.ToString(),
                 To = to,
                 From = Config.EmailAddress,
-                Body = message,
+                Body = message64,
                 ConId = Config.Id,
                 Result = responseMesage
             };
@@ -149,12 +151,14 @@ namespace ExpressBase.Common.Data
                 responseMesage = "SendGrid Send Exception" + e.Message + e.StackTrace;
                 status = false;
             }
+            var plainTextBytes = Encoding.UTF8.GetBytes(message);
+            string message64 = Convert.ToBase64String(plainTextBytes);
             return new SentStatus
             {
                 Status = status.ToString(),
                 To = to,
                 From = Config.EmailAddress,
-                Body = message,
+                Body = message64,
                 ConId = Config.Id,
                 Result = responseMesage
             };
