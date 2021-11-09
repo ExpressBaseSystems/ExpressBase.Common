@@ -1301,6 +1301,65 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_mail_logs
+        ///
+        ///-- DROP TABLE public.eb_mail_logs;
+        ///
+        ///CREATE TABLE eb_mail_logs
+        ///(
+        ///	id serial,
+        ///    send_to text,
+        ///    send_from text,
+        ///	recepients text
+        ///    message_body text,
+        ///    attachmentname text,
+        ///    subject text,
+        ///    status text,
+        ///    result text,
+        ///    refid text,
+        ///    metadata json,
+        ///    retryof integer,
+        ///    isfallback &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    con_id integer,
+        ///    req_from text,
+        ///    eb_created_by integer,
+        ///    eb_created_at timestamp without time zone,
+        ///    eb_del &quot;cha [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_email_logs {
+            get {
+                return ResourceManager.GetString("eb_email_logs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --eb_mail_logs.
+        /// </summary>
+        public static string eb_email_logs1 {
+            get {
+                return ResourceManager.GetString("eb_email_logs1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --eb_mail_logs.
+        /// </summary>
+        public static string eb_email_logs2 {
+            get {
+                return ResourceManager.GetString("eb_email_logs2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- eb_mail_logs.
+        /// </summary>
+        public static string eb_email_logs3 {
+            get {
+                return ResourceManager.GetString("eb_email_logs3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to -- Table: public.eb_executionlogs
         ///
         ///-- DROP TABLE public.eb_executionlogs;
@@ -2678,66 +2737,6 @@ namespace ExpressBase.Common {
         public static string eb_locations3 {
             get {
                 return ResourceManager.GetString("eb_locations3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_mail_logs
-        ///
-        ///-- DROP TABLE public.eb_mail_logs;
-        ///
-        ///CREATE TABLE eb_mail_logs
-        ///(
-        ///	id serial,
-        ///    send_to text,
-        ///    message_body text,
-        ///    status text,
-        ///    refid text,
-        ///    con_id integer,
-        ///    eb_created_by integer,
-        ///    eb_created_at timestamp without time zone,
-        ///	eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
-        ///    CONSTRAINT eb_mail_logs_pkey PRIMARY KEY (id)
-        ///);
-        ///
-        ///
-        ///-- Index: eb_mail_logs_id_idx
-        ///
-        ///-- DROP INDEX public.eb_mail_logs_id_idx;
-        ///
-        ///CREATE INDEX eb_mail_logs_id_idx
-        ///    ON eb_mail_ [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string eb_mail_logs {
-            get {
-                return ResourceManager.GetString("eb_mail_logs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to --eb_mail_logs.
-        /// </summary>
-        public static string eb_mail_logs1 {
-            get {
-                return ResourceManager.GetString("eb_mail_logs1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to --eb_mail_logs.
-        /// </summary>
-        public static string eb_mail_logs2 {
-            get {
-                return ResourceManager.GetString("eb_mail_logs2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- eb_mail_logs.
-        /// </summary>
-        public static string eb_mail_logs3 {
-            get {
-                return ResourceManager.GetString("eb_mail_logs3", resourceCulture);
             }
         }
         
