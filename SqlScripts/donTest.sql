@@ -5,6 +5,7 @@ using System.Text;
 namespace ExpressBase.Common.sqlscripts
 {
     class donTest
-    {
+    {  
     }
+    class test2{}
 }
