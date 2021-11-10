@@ -823,7 +823,8 @@ namespace ExpressBase.Common
 	                            COALESCE(EA.eb_del, 'F') = 'F'
                             AND OD.id = ANY('{:Ids}') 
                             AND 
-	                            COALESCE(EO2A.eb_del, 'F') = 'F';
+	                            COALESCE(EO2A.eb_del, 'F') = 'F'
+                            ORDER BY OD.display_name;
                             SELECT object_id FROM eb_objects_favourites WHERE userid=:user_id AND eb_del='F'";
             }
         }

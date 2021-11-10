@@ -941,7 +941,8 @@ namespace ExpressBase.Common
                             AND EO2A.eb_del = 'F'
                             AND EOS.status = 3
                             AND COALESCE( EO.eb_del, 'F') = 'F'
-                            AND EOS.id = ANY( SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id );
+                            AND EOS.id = ANY( SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id )
+                        ORDER BY display_name;
                         SELECT object_id FROM eb_objects_favourites WHERE userid=@user_id AND eb_del='F';";
             }
         }
