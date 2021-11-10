@@ -7,7 +7,7 @@ CREATE TABLE eb_email_logs
 	id serial,
     send_to text,
     send_from text,
-	recepients text
+	recepients json,
     message_body text,
     attachmentname text,
     subject text,
