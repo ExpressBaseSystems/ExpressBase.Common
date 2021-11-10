@@ -8,4 +8,5 @@ namespace ExpressBase.Common.sqlscripts
     {  
     }
     class test2{}
+    class test3{}
 }
