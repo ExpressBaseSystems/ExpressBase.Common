@@ -8,3 +8,4 @@ namespace ExpressBase.Common.sqlscripts
     {
     }
 }
+--test
