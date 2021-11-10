@@ -5,7 +5,7 @@ using System.Text;
 namespace ExpressBase.Common.Messaging
 {
     public class SentStatus
-    { 
+    {
         public string To { get; set; }
 
         public string From { get; set; }
@@ -28,6 +28,11 @@ namespace ExpressBase.Common.Messaging
 
         public int ConId { get; set; }
 
+        public string Subject { get; set; }
+
+        public string AttachmentName { get; set; }
+
+        public EmailRecepients Recepients { get; set; }
         //[DataMember(Order = 1)]
         //public string SolnId { get; set; }
 
@@ -40,5 +45,16 @@ namespace ExpressBase.Common.Messaging
         //[DataMember(Order = 4)]
         //public string WhichConsole { get; set; }
 
+    }
+
+    public class EmailRecepients
+    {
+        public string To { get; set; }
+
+        public string Cc { get; set; }
+
+        public string Bcc { get; set; }
+
+        public string Replyto { get; set; }
     }
 }

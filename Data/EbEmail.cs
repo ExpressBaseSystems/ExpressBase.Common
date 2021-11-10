@@ -86,7 +86,16 @@ namespace ExpressBase.Common.Data
                 From = Config.EmailAddress,
                 Body = message64,
                 ConId = Config.Id,
-                Result = responseMesage
+                Result = responseMesage,
+                Recepients = new EmailRecepients
+                {
+                    To = to,
+                    Cc = string.Join(",",cc),
+                    Bcc = string.Join(",", bcc),
+                    Replyto = replyto
+                },
+                Subject = subject,
+                AttachmentName = attachmentname
             };
         }
     }
