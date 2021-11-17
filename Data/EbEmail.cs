@@ -79,7 +79,7 @@ namespace ExpressBase.Common.Data
             }
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(message);
             string message64 = System.Convert.ToBase64String(plainTextBytes);
-            return new SentStatus
+            SentStatus SentStatus = new SentStatus
             {
                 Status = status.ToString(),
                 To = to,
@@ -90,13 +90,14 @@ namespace ExpressBase.Common.Data
                 Recepients = new EmailRecepients
                 {
                     To = to,
-                    Cc = string.Join(",",cc),
-                    Bcc = string.Join(",", bcc),
-                    Replyto = replyto
+                    Cc = (cc == null) ? "" : string.Join(",", cc),
+                    Bcc = (bcc == null) ? "" : string.Join(",", bcc),
+                    Replyto = (replyto == null) ? "" : replyto,
                 },
                 Subject = subject,
                 AttachmentName = attachmentname
             };
+            return SentStatus;
         }
     }
 
@@ -162,15 +163,25 @@ namespace ExpressBase.Common.Data
             }
             var plainTextBytes = Encoding.UTF8.GetBytes(message);
             string message64 = Convert.ToBase64String(plainTextBytes);
-            return new SentStatus
+            SentStatus SentStatus = new SentStatus
             {
                 Status = status.ToString(),
                 To = to,
                 From = Config.EmailAddress,
                 Body = message64,
                 ConId = Config.Id,
-                Result = responseMesage
+                Result = responseMesage,
+                Recepients = new EmailRecepients
+                {
+                    To = to,
+                    Cc = (cc == null) ? "" : string.Join(",", cc),
+                    Bcc = (bcc == null) ? "" : string.Join(",", bcc),
+                    Replyto = (replyto == null) ? "" : replyto,
+                },
+                Subject = subject,
+                AttachmentName = attachmentname
             };
+            return SentStatus;
         }
     }
 }
