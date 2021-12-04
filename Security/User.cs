@@ -828,11 +828,10 @@ namespace ExpressBase.Security
                 {
                     var NumInfo = CultureHelper.GetSerializedCultureInfo(this.Locale).NumberFormatInfo;
                     int[] gp = NumInfo.CurrencyGroupSizes;
-                    string st = "";
-                    for (int i = gp.Length - 1; i > 0; i--)
-                        st += $"({NumInfo.CurrencyGroupSeparator}{new String('9', gp[i])}){{*|1}}";
-                    st += $"({NumInfo.CurrencyGroupSeparator}{new String('9', gp[0])}){{1|1}}";
-
+                    string st = string.Empty;
+                    for (int i = 0; i < gp.Length - 1; i++)
+                        st = $"({NumInfo.CurrencyGroupSeparator}{new String('9', gp[i])}){{1|1}}" + st;
+                    st = $"({NumInfo.CurrencyGroupSeparator}{new String('9', gp[gp.Length - 1])}){{*|1}}" + st;
                     return st;
                 }
                 catch (Exception ex)
