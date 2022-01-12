@@ -31,5 +31,7 @@ namespace ExpressBase.Common.Constants
         public const string DATA_SETTINGS= "Data Settings";
 
         public const string ALIGNMENT= "Alignment";
+
+        public const string GENERAL= "General";
     }
 }
