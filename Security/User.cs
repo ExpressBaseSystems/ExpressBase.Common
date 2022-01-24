@@ -683,7 +683,7 @@ namespace ExpressBase.Security
                     EbConstraints constraints = new EbConstraints(ds.Rows[0][8].ToString());
                     if (!constraints.Validate(ipAddress, deviceId, _user))
                         _user.UserId = -1;
-                    if (constraints.IsIpConstraintPresent())
+                    if (!constraints.IsIpConstraintPresent())
                         _user.SourceIp = string.Empty;
                 }
                 else
