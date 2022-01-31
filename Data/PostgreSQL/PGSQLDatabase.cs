@@ -362,6 +362,11 @@ namespace ExpressBase.Common
                     con.Close();
                 throw npge;
             }
+            finally
+            {
+                if (con.State != ConnectionState.Closed)
+                    con.Close();
+            }
             return dt;
         }
 
@@ -382,6 +387,11 @@ namespace ExpressBase.Common
                 if (con.State != ConnectionState.Closed)
                     con.Close();
                 throw npgse;
+            }
+            finally
+            {
+                if (con.State != ConnectionState.Closed)
+                    con.Close();
             }
         }
 
@@ -405,6 +415,11 @@ namespace ExpressBase.Common
                 if (con.State != ConnectionState.Closed)
                     con.Close();
                 throw npgse;
+            }
+            finally
+            {
+                if (con.State != ConnectionState.Closed)
+                    con.Close();
             }
             return val;
         }
@@ -1379,7 +1394,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             }
         }
 
-         public override string GET_RELATED_OBJECTS
+        public override string GET_RELATED_OBJECTS
         {
             get
             {
@@ -1594,7 +1609,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
 
         public byte[] DownloadFileById(string filestoreid, EbFileCategory cat)
         {
-            Console.WriteLine("PostGres FileDB Download Req in " + DBName + "ConId: "+ InfraConId + "FileStoreId: " + filestoreid);
+            Console.WriteLine("PostGres FileDB Download Req in " + DBName + "ConId: " + InfraConId + "FileStoreId: " + filestoreid);
             byte[] filebyte = null;
             int ifileid;
             Int32.TryParse(filestoreid, out ifileid);
