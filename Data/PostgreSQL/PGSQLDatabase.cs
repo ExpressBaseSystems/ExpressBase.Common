@@ -584,12 +584,14 @@ namespace ExpressBase.Common
                 {
 
                     con.Open();
-                    NpgsqlCommand cmd = new NpgsqlCommand(query, con);
-                    if (parameters != null && parameters.Length > 0)
-                        cmd.Parameters.AddRange(parameters);
-                    object o = cmd.ExecuteScalar();
-                    if (o != null)
-                        obj = (T)o;
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+                        object o = cmd.ExecuteScalar();
+                        if (o != null)
+                            obj = (T)o;
+                    }
                 }
             }
             catch (Npgsql.NpgsqlException npgse)
@@ -1619,10 +1621,12 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                 {
                     con.Open();
                     string sql = "SELECT bytea FROM eb_files_bytea WHERE id = :filestore_id AND filecategory = :cat;";
-                    NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
-                    cmd.Parameters.Add(GetNewParameter(":filestore_id", EbDbTypes.Int32, ifileid));
-                    cmd.Parameters.Add(GetNewParameter(":cat", EbDbTypes.Int32, (int)cat));
-                    filebyte = (byte[])cmd.ExecuteScalar();
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(sql, con))
+                    {
+                        cmd.Parameters.Add(GetNewParameter(":filestore_id", EbDbTypes.Int32, ifileid));
+                        cmd.Parameters.Add(GetNewParameter(":cat", EbDbTypes.Int32, (int)cat));
+                        filebyte = (byte[])cmd.ExecuteScalar();
+                    }
                 }
             }
             catch (NpgsqlException npg)
@@ -1645,10 +1649,12 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                 {
                     con.Open();
                     string sql = "SELECT bytea FROM eb_files_bytea WHERE filename = :filename AND filecategory = :cat;";
-                    NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
-                    cmd.Parameters.Add(GetNewParameter(":filename", EbDbTypes.String, filename));
-                    cmd.Parameters.Add(GetNewParameter(":cat", EbDbTypes.Int32, (int)cat));
-                    filebyte = (byte[])cmd.ExecuteScalar();
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(sql, con))
+                    {
+                        cmd.Parameters.Add(GetNewParameter(":filename", EbDbTypes.String, filename));
+                        cmd.Parameters.Add(GetNewParameter(":cat", EbDbTypes.Int32, (int)cat));
+                        filebyte = (byte[])cmd.ExecuteScalar();
+                    }
                 }
             }
             catch (NpgsqlException npg)
@@ -1670,11 +1676,13 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                 {
                     con.Open();
                     string sql = "INSERT INTO eb_files_bytea (filename, bytea, filecategory) VALUES (:filename, :bytea, :cat) returning id;";
-                    NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
-                    cmd.Parameters.Add(GetNewParameter(":filename", EbDbTypes.String, filename));
-                    cmd.Parameters.Add(GetNewParameter(":bytea", EbDbTypes.Bytea, bytea));
-                    cmd.Parameters.Add(GetNewParameter(":cat", EbDbTypes.Int32, (int)cat));
-                    Int32.TryParse(cmd.ExecuteScalar().ToString(), out rtn);
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(sql, con))
+                    {
+                        cmd.Parameters.Add(GetNewParameter(":filename", EbDbTypes.String, filename));
+                        cmd.Parameters.Add(GetNewParameter(":bytea", EbDbTypes.Bytea, bytea));
+                        cmd.Parameters.Add(GetNewParameter(":cat", EbDbTypes.Int32, (int)cat));
+                        Int32.TryParse(cmd.ExecuteScalar().ToString(), out rtn);
+                    }
                 }
             }
             catch (NpgsqlException npg)
