@@ -349,23 +349,25 @@ namespace ExpressBase.Common
         {
 
             EbDataTable dt = new EbDataTable();
-            var con = GetNewConnection() as NpgsqlConnection;
-            try
+            using (var con = GetNewConnection() as NpgsqlConnection)
             {
-                con.Open();
-                dt = DoQuery(con, query, parameters);
-                con.Close();
-            }
-            catch (Npgsql.NpgsqlException npge)
-            {
-                if (con.State != ConnectionState.Closed)
+                try
+                {
+                    con.Open();
+                    dt = DoQuery(con, query, parameters);
                     con.Close();
-                throw npge;
-            }
-            finally
-            {
-                if (con.State != ConnectionState.Closed)
-                    con.Close();
+                }
+                catch (Npgsql.NpgsqlException npge)
+                {
+                    if (con.State != ConnectionState.Closed)
+                        con.Close();
+                    throw npge;
+                }
+                finally
+                {
+                    if (con.State != ConnectionState.Closed)
+                        con.Close();
+                }
             }
             return dt;
         }
@@ -373,25 +375,27 @@ namespace ExpressBase.Common
         public override EbDataSet DoQueries(string query, params DbParameter[] parameters)
         {
             EbDataSet ds = new EbDataSet();
-            var con = GetNewConnection() as NpgsqlConnection;
-            try
+            using (var con = GetNewConnection() as NpgsqlConnection)
             {
-                con.Open();
-                ds = DoQueries(con, query, parameters);
-                con.Close();
+                try
+                {
+                    con.Open();
+                    ds = DoQueries(con, query, parameters);
+                    con.Close();
 
-                return ds;
-            }
-            catch (Npgsql.NpgsqlException npgse)
-            {
-                if (con.State != ConnectionState.Closed)
-                    con.Close();
-                throw npgse;
-            }
-            finally
-            {
-                if (con.State != ConnectionState.Closed)
-                    con.Close();
+                    return ds;
+                }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    if (con.State != ConnectionState.Closed)
+                        con.Close();
+                    throw npgse;
+                }
+                finally
+                {
+                    if (con.State != ConnectionState.Closed)
+                        con.Close();
+                }
             }
         }
 
@@ -403,23 +407,25 @@ namespace ExpressBase.Common
         public override int DoNonQuery(string query, params DbParameter[] parameters)
         {
             int val;
-            NpgsqlConnection con = GetNewConnection() as NpgsqlConnection;
-            try
+            using (NpgsqlConnection con = GetNewConnection() as NpgsqlConnection)
             {
-                con.Open();
-                val = DoNonQuery(con, query, parameters);
-                con.Close();
-            }
-            catch (Npgsql.NpgsqlException npgse)
-            {
-                if (con.State != ConnectionState.Closed)
+                try
+                {
+                    con.Open();
+                    val = DoNonQuery(con, query, parameters);
                     con.Close();
-                throw npgse;
-            }
-            finally
-            {
-                if (con.State != ConnectionState.Closed)
-                    con.Close();
+                }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    if (con.State != ConnectionState.Closed)
+                        con.Close();
+                    throw npgse;
+                }
+                finally
+                {
+                    if (con.State != ConnectionState.Closed)
+                        con.Close();
+                }
             }
             return val;
         }
