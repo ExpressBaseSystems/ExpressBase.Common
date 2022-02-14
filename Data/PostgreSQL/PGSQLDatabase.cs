@@ -179,7 +179,6 @@ namespace ExpressBase.Common
             var con = dbConnection as NpgsqlConnection;
             try
             {
-
                 using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
                 {
                     if (parameters != null && parameters.Length > 0)
@@ -337,6 +336,8 @@ namespace ExpressBase.Common
                 {
                     if (con.State != ConnectionState.Closed)
                         con.Close();
+                    if ((uint)npgse.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
                     throw npgse;
                 }
                 catch (SocketException scket) { throw scket; }
@@ -361,6 +362,8 @@ namespace ExpressBase.Common
                 {
                     if (con.State != ConnectionState.Closed)
                         con.Close();
+                    if ((uint)npge.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
                     throw npge;
                 }
                 finally
@@ -389,6 +392,8 @@ namespace ExpressBase.Common
                 {
                     if (con.State != ConnectionState.Closed)
                         con.Close();
+                    if ((uint)npgse.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
                     throw npgse;
                 }
                 finally
@@ -419,6 +424,8 @@ namespace ExpressBase.Common
                 {
                     if (con.State != ConnectionState.Closed)
                         con.Close();
+                    if ((uint)npgse.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
                     throw npgse;
                 }
                 finally
@@ -454,6 +461,8 @@ namespace ExpressBase.Common
                 }
                 catch (Npgsql.NpgsqlException npgse)
                 {
+                    if ((uint)npgse.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
                     Console.WriteLine("Postgres Exception: " + npgse.Message);
                     throw npgse;
                 }
@@ -490,6 +499,8 @@ namespace ExpressBase.Common
                 }
                 catch (Npgsql.NpgsqlException npgse)
                 {
+                    if ((uint)npgse.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
                     Console.WriteLine("Postgres Exception: " + npgse.Message);
                     throw npgse;
                 }
@@ -583,12 +594,10 @@ namespace ExpressBase.Common
         public override T ExecuteScalar<T>(string query, params DbParameter[] parameters)
         {
             T obj = default(T);
-
-            try
+            using (var con = GetNewConnection() as NpgsqlConnection)
             {
-                using (var con = GetNewConnection() as NpgsqlConnection)
+                try
                 {
-
                     con.Open();
                     using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
                     {
@@ -599,15 +608,18 @@ namespace ExpressBase.Common
                             obj = (T)o;
                     }
                 }
-            }
-            catch (Npgsql.NpgsqlException npgse)
-            {
-                Console.WriteLine("Postgres Exception: " + npgse.Message);
-                throw npgse;
-            }
-            catch (SocketException scket)
-            {
-                throw scket;
+
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    if ((uint)npgse.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
+                    Console.WriteLine("Postgres Exception: " + npgse.Message);
+                    throw npgse;
+                }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
             }
             return obj;
         }
@@ -629,6 +641,8 @@ namespace ExpressBase.Common
                 }
                 catch (Npgsql.NpgsqlException npgse)
                 {
+                    if ((uint)npgse.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
                     throw npgse;
                 }
                 catch (SocketException scket) { throw scket; }
@@ -650,6 +664,8 @@ namespace ExpressBase.Common
                 }
                 catch (Npgsql.NpgsqlException npgse)
                 {
+                    if ((uint)npgse.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
                     throw npgse;
                 }
                 catch (SocketException scket)
@@ -677,6 +693,8 @@ namespace ExpressBase.Common
                 }
                 catch (Npgsql.NpgsqlException npgse)
                 {
+                    if ((uint)npgse.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
                     throw npgse;
                 }
                 catch (SocketException scket)
@@ -703,6 +721,8 @@ namespace ExpressBase.Common
                 }
                 catch (Npgsql.NpgsqlException npgse)
                 {
+                    if ((uint)npgse.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
                     throw npgse;
                 }
                 catch (SocketException scket)
@@ -729,6 +749,8 @@ namespace ExpressBase.Common
                 }
                 catch (Npgsql.NpgsqlException npgse)
                 {
+                    if ((uint)npgse.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
                     throw npgse;
                 }
                 catch (SocketException scket) { throw scket; }
@@ -752,6 +774,8 @@ namespace ExpressBase.Common
                 }
                 catch (Npgsql.NpgsqlException npgse)
                 {
+                    if ((uint)npgse.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
                     throw npgse;
                 }
                 catch (SocketException scket)
@@ -788,6 +812,8 @@ namespace ExpressBase.Common
                 }
                 catch (Npgsql.NpgsqlException npgse)
                 {
+                    if ((uint)npgse.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
                     throw npgse;
                 }
                 catch (SocketException scket)
@@ -1621,9 +1647,9 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             byte[] filebyte = null;
             int ifileid;
             Int32.TryParse(filestoreid, out ifileid);
-            try
+            using (NpgsqlConnection con = GetNewConnection() as NpgsqlConnection)
             {
-                using (NpgsqlConnection con = GetNewConnection() as NpgsqlConnection)
+                try
                 {
                     con.Open();
                     string sql = "SELECT bytea FROM eb_files_bytea WHERE id = :filestore_id AND filecategory = :cat;";
@@ -1634,10 +1660,12 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                         filebyte = (byte[])cmd.ExecuteScalar();
                     }
                 }
-            }
-            catch (NpgsqlException npg)
-            {
-                Console.WriteLine("Exception :  " + npg.Message);
+                catch (NpgsqlException npg)
+                {
+                    if ((uint)npg.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
+                    Console.WriteLine("Exception :  " + npg.Message);
+                }
             }
             Console.WriteLine("FileByte Size: " + filebyte.Length);
 
@@ -1649,9 +1677,9 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             Console.WriteLine("PostGres FileDB Download Req in " + DBName + "ConId: " + InfraConId + "FileName: " + filename);
 
             byte[] filebyte = null;
-            try
+            using (NpgsqlConnection con = GetNewConnection() as NpgsqlConnection)
             {
-                using (NpgsqlConnection con = GetNewConnection() as NpgsqlConnection)
+                try
                 {
                     con.Open();
                     string sql = "SELECT bytea FROM eb_files_bytea WHERE filename = :filename AND filecategory = :cat;";
@@ -1662,10 +1690,12 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                         filebyte = (byte[])cmd.ExecuteScalar();
                     }
                 }
-            }
-            catch (NpgsqlException npg)
-            {
-                Console.WriteLine("Exception :  " + npg.Message);
+                catch (NpgsqlException npg)
+                {
+                    if ((uint)npg.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
+                    Console.WriteLine("Exception :  " + npg.Message);
+                }
             }
             Console.WriteLine("FileByte Size: " + filebyte.Length);
             return filebyte;
@@ -1676,9 +1706,9 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             Console.WriteLine("Before PostGre Upload File");
 
             int rtn = 0;
-            try
+            using (NpgsqlConnection con = GetNewConnection() as NpgsqlConnection)
             {
-                using (NpgsqlConnection con = GetNewConnection() as NpgsqlConnection)
+                try
                 {
                     con.Open();
                     string sql = "INSERT INTO eb_files_bytea (filename, bytea, filecategory) VALUES (:filename, :bytea, :cat) returning id;";
@@ -1690,10 +1720,12 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                         Int32.TryParse(cmd.ExecuteScalar().ToString(), out rtn);
                     }
                 }
-            }
-            catch (NpgsqlException npg)
-            {
-                Console.WriteLine("Exception :  " + npg.Message);
+                catch (NpgsqlException npg)
+                {
+                    if ((uint)npg.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
+                    Console.WriteLine("Exception :  " + npg.Message);
+                }
             }
             Console.WriteLine("After PostGre Upload File , fileStore id: " + rtn.ToString());
             return rtn.ToString();
