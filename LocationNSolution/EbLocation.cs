@@ -221,6 +221,10 @@ namespace ExpressBase.Common.LocationNSolution
 
         public bool MaintenanceMode { get; set; }
 
+        public string MaintenanceMessage { get; set; }
+
+        public string LatestAppVersion { get; set; }
+
         public MobileAppSettings()
         {
             UserTypeForms = new List<EbProfileUserType>();
