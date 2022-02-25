@@ -995,15 +995,15 @@
     <value>sqlscripts\sqlserver\datadb\tablecreate\eb_fin_years.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_email_logs" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\pgsql\datadb\tablecreate\eb_email_logs.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>sqlscripts\pgsql\datadb\tablecreate\eb_email_logs.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_email_logs1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\oracle\datadb\tablecreate\eb_email_logs.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>sqlscripts\oracle\datadb\tablecreate\eb_email_logs.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_email_logs2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\mysql\datadb\tablecreate\eb_email_logs.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>sqlscripts\mysql\datadb\tablecreate\eb_email_logs.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="eb_email_logs3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SqlScripts\sqlserver\datadb\tablecreate\eb_email_logs.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>sqlscripts\sqlserver\datadb\tablecreate\eb_email_logs.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>
