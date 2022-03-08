@@ -14,11 +14,11 @@ namespace ExpressBase.Common.ServiceClients
     {
         public EbMqClient()
         {
-            this.BaseUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_MQ_URL);
-            this.RefreshTokenUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_GET_ACCESS_TOKEN_URL);
+            //this.BaseUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_MQ_URL);
+            //this.RefreshTokenUri = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_GET_ACCESS_TOKEN_URL);
 
-            //this.BaseUri = "http://localhost:41700";
-            //this.RefreshTokenUri = "http://localhost:41600/access-token";
+            this.BaseUri = "http://localhost:41700";
+            this.RefreshTokenUri = "http://localhost:41600/access-token";
         }
 
         //public EbMqClient(Container c)
