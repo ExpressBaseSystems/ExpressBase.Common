@@ -287,6 +287,8 @@ namespace ExpressBase.Common
 
         public bool IsDynamic { get; set; }//datagird in dynamic tab
 
+        public bool DoNotPersist { get; set; }//DoNotPersist datagrid
+
         public TableSchema()
         {
             Columns = new List<ColumnSchema>();
