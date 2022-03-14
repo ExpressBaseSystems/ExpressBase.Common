@@ -182,7 +182,7 @@ namespace ExpressBase.Common.LocationNSolution
 
     public class EbFinancialYears
     {
-        public EbFinancialYears() 
+        public EbFinancialYears()
         {
             this.List = new List<EbFinancialYear>();
         }
@@ -219,6 +219,12 @@ namespace ExpressBase.Common.LocationNSolution
 
         public List<EbProfileUserType> UserTypeForms { get; set; }
 
+        public bool MaintenanceMode { get; set; }
+
+        public string MaintenanceMessage { get; set; }
+
+        public string LatestAppVersion { get; set; }
+
         public MobileAppSettings()
         {
             UserTypeForms = new List<EbProfileUserType>();
@@ -232,6 +238,11 @@ namespace ExpressBase.Common.LocationNSolution
         public string GetProfileFormIdByUserType(int id)
         {
             return UserTypeForms.Find(x => x.Id == id)?.RefId;
+        }
+
+        public string IsMaintenanceMode()
+        {
+            return MaintenanceMode ? "checked" : "";
         }
     }
 

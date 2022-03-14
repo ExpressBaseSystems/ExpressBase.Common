@@ -38,7 +38,7 @@ namespace ExpressBase.Common.Extensions
 
                 List.RemoveRange(from, range);
             }
-            catch 
+            catch
             {
 
             }
@@ -71,7 +71,7 @@ namespace ExpressBase.Common.Extensions
                 }
             }
         }
-        
+
         public static List<EbControl> GetAllControlsRecursively(this List<EbControl> controls)
         {
             List<EbControl> list = new List<EbControl>();
@@ -99,12 +99,12 @@ namespace ExpressBase.Common.Extensions
             }
         }
 
-        public static List<DbParameter> ParamsToDbParameters(this List<Param> Params, EbConnectionFactory factory)
+        public static List<DbParameter> ParamsToDbParameters(this List<Param> Params, IDatabase DataDB)
         {
             List<DbParameter> DbParams = new List<DbParameter>();
             foreach (Param p in Params)
             {
-                DbParams.Add(factory.DataDB.GetNewParameter(p.Name, (EbDbTypes)Convert.ToInt32(p.Type), p.ValueTo));
+                DbParams.Add(DataDB.GetNewParameter(p.Name, (EbDbTypes)Convert.ToInt32(p.Type), p.ValueTo));
             }
             return DbParams;
         }

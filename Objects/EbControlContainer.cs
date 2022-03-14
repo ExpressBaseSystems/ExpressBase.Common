@@ -60,7 +60,7 @@ namespace ExpressBase.Common.Objects
 
         [JsonIgnore]
         public override EbScript HiddenExpr { get; set; }
-        
+
         [JsonIgnore]
         public override EbScript DisableExpr { get; set; }
 
@@ -72,7 +72,6 @@ namespace ExpressBase.Common.Objects
         //[JsonIgnore] //this prop using in DG -to prevent attribute propagation
         public override bool IsDisable { get; set; }
 
-        [JsonIgnore]
         public override bool DoNotPersist { get; set; }
 
         public override EbScript OnChangeFn { get; set; }
