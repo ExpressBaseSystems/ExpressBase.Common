@@ -71,7 +71,9 @@ namespace ExpressBase.Common
         Chat = 12,
         AUTHENTICATION = 13,
         MOBILECONFIG = 14,
-        SUPPORTINGDATA = 15
+        SUPPORTINGDATA = 15,
+        IMAP = 16,
+        POP3 = 17
     }
 
     public enum EbIntegrations
@@ -97,13 +99,24 @@ namespace ExpressBase.Common
         OSM = 19,
         MobileConfig = 20,
         SmsBuddy = 21,
+        IMAP = 22,
+        POP3 = 23
     }
 
-    public enum SmtpProviders
+    public enum EmailProviders
     {
-        Gmail = 1
+        Gmail = 1,
+        Yahoo = 2,
+        ZohoMail = 3,
+        Others = 4
     }
 
+    public enum EmailProtocols
+    {
+        SMTP = 0,
+        IMAP = 1,
+        POP3 = 2
+    }
     //public enum EbConnections
     //{
     //    EbOBJECTS = 1,

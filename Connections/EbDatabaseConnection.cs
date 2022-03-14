@@ -334,7 +334,9 @@ namespace ExpressBase.Common.Connections
 
     public class EbSmtpConfig : EbEmailConfig
     {
-        public SmtpProviders ProviderName { get; set; }
+        public EmailProviders ProviderName { get; set; }
+
+        public EmailProtocols Protocol { get; set; }
 
         public string Host { get; set; }
 
@@ -354,6 +356,40 @@ namespace ExpressBase.Common.Connections
         public string Name { get; set; }
 
         public override EbIntegrations Type { get; set; }
+    }
+
+    public class EbImapConfig : EbEmailConfig
+    {
+        public EmailProviders ProviderName { get; set; }
+
+        public EmailProtocols Protocol { get; set; }
+
+        public string Host { get; set; }
+
+        public int Port { get; set; }
+
+        public string Password { get; set; }
+
+        public bool EnableSsl { get; set; }
+
+        public override EbIntegrations Type { get { return EbIntegrations.IMAP; } }
+    }
+
+    public class EbPop3Config : EbEmailConfig
+    {
+        public EmailProviders ProviderName { get; set; }
+
+        public EmailProtocols Protocol { get; set; }
+
+        public string Host { get; set; }
+
+        public int Port { get; set; }
+
+        public string Password { get; set; }
+
+        public bool EnableSsl { get; set; }
+
+        public override EbIntegrations Type { get { return EbIntegrations.POP3; } }
     }
 
     public class EbCloudinaryConfig : EbIntegrationConf

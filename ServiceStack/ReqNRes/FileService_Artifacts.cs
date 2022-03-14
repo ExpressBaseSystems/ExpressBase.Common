@@ -424,6 +424,22 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         {
             this.FileDetails = new FileMeta();
         }
+    } 
+    public class FileUploadInternalRequest : EbServiceStackAuthRequest, IReturn<FileUploadResponse>
+    {
+        [DataMember(Order = 1)]
+        public FileMeta FileDetails { get; set; }
+
+        [DataMember(Order = 2)]
+        public byte[] FileByte { get; set; }
+
+        [DataMember(Order = 3)]
+        public EbFileCategory FileCategory { get; set; }
+
+        public FileUploadInternalRequest()
+        {
+            this.FileDetails = new FileMeta();
+        }
     }
 
     [DataContract]

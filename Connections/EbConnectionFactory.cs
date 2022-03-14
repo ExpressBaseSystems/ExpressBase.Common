@@ -40,6 +40,8 @@ namespace ExpressBase.Common.Data
 
         public EbMailConCollection EmailConnection { get; private set; }
 
+        public EBMailRetrieveConCollection EmailRetrieveConnection { get; private set; }
+
         public EbSmsConCollection SMSConnection { get; private set; }
 
         public List<IImageManipulate> ImageManipulate { get; private set; }
@@ -432,6 +434,7 @@ namespace ExpressBase.Common.Data
                 if (Connections.EmailConfigs != null)
                 {
                     EmailConnection = new EbMailConCollection(Connections.EmailConfigs);
+                    EmailRetrieveConnection = new EBMailRetrieveConCollection(Connections.EmailConfigs);
                 }
                 else if (this.SolutionType == SolutionType.REPLICA && MasterConnections != null && MasterConnections.EmailConfigs != null)
                 {

@@ -160,6 +160,7 @@ namespace ExpressBase.Common.Connections
             }
             return res;
         }
+
         public Dictionary<int, string> GetAllGroup()
         {
             Dictionary<int, string> res = null;
@@ -199,6 +200,7 @@ namespace ExpressBase.Common.Connections
             return res;
         }
     }
+
     public class EbMailConCollection : List<IEmailConnection>
     {
         public EbMailConCollection(EmailConfigCollection conf)
@@ -259,6 +261,41 @@ namespace ExpressBase.Common.Connections
         }
 
     }
+
+    public class EBMailRetrieveConCollection : List<IEmailRetrieveConnection>
+    {
+        public EBMailRetrieveConCollection(EmailConfigCollection conf)
+        {
+            if (conf?.ImapConfigs.Count > 0)
+            {
+                foreach (EbEmailConfig c in conf.ImapConfigs)
+                {
+                    this.Add(new EbImap(c as EbImapConfig));
+                }
+            }
+            if (conf?.Pop3Configs.Count > 0)
+            {
+                foreach (EbEmailConfig c in conf.Pop3Configs)
+                {
+                    this.Add(new EbPOP3(c as EbPop3Config));
+                }
+            }
+        }
+
+        new public IEmailRetrieveConnection this[int id]
+        {
+            get
+            {
+                foreach (IEmailRetrieveConnection c in this)
+                {
+                    if (c.ConId == id)
+                        return c;
+                }
+                return null;
+            }
+        }
+    }
+
     public class EbMapConCollection : List<EbMaps>
     {
         public int DefaultConId { get; set; }

@@ -57,7 +57,7 @@ namespace ExpressBase.Common.Connections
                                     Host = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_EMAIL_HOST),
                                     Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_EMAIL_PASSWORD),
                                     Port = Convert.ToInt32(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_EMAIL_PORT)),
-                                    ProviderName = SmtpProviders.Gmail,
+                                    ProviderName = EmailProviders.Gmail,
                                     Id = 1,
                                     NickName = "EbTest",
                                     IsDefault = true,

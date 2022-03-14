@@ -146,6 +146,15 @@ namespace ExpressBase.Common.Data
         public EbEmailConfig Primary { get; set; }
 
         public EbEmailConfig FallBack { get; set; }
+
+        public List<EbEmailConfig> ImapConfigs { get; set; }
+
+        public List<EbEmailConfig> Pop3Configs { get; set; }
+        public EmailConfigCollection()
+        {
+            this.ImapConfigs = new List<EbEmailConfig>();
+            this.Pop3Configs = new List<EbEmailConfig>();
+        }
     }
 
     public class SmsConfigCollection
