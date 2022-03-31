@@ -85,7 +85,7 @@ if(this.Hidden){
 }
 else ";
 
-        public const string SS_EnableJSfn = @"this.__IsDisable = false; return $('#' + this.EbSid_CtxId +'Wraper .dropdown-toggle').prop('disabled',false).css('pointer-events', 'inherit').css('background-color', '#fff');";
+        public const string SS_EnableJSfn = @"this.__IsDisable = false; return $('#' + this.EbSid_CtxId +'Wraper .dropdown-toggle').removeAttr('disabled').css('pointer-events', 'inherit').css('background-color', '#fff');";
 
         public const string SS_DisableJSfn = @"this.__IsDisable = true; return $('#' + this.EbSid_CtxId +'Wraper .dropdown-toggle').attr('disabled', 'disabled').css('pointer-events', 'none').css('background-color', 'var(--eb-disablegray)');";
 
@@ -109,7 +109,7 @@ $('#cont_' + this.EbSid_CtxId + ' .ctrl-cover .input-group-addon').css('backgrou
 
         public const string Ctrl_DisableJSfn = @"this.__IsDisable = true; $('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none').find('[ui-inp]').css('background-color', 'var(--eb-disablegray)');$('#cont_' + this.EbSid_CtxId + ' .ctrl-cover .input-group-addon').css('background-color', 'var(--eb-disablegray)');";
 
-        public const string Ctrl_EnableJSfn = @"this.__IsDisable = false; $('#cont_' + this.EbSid_CtxId + ' *').prop('disabled',false).css('pointer-events', 'inherit').find('[ui-inp]').css('background-color', '#fff');$('#cont_' + this.EbSid_CtxId + ' .ctrl-cover .input-group-addon').css('background-color', 'inherit');";
+        public const string Ctrl_EnableJSfn = @"this.__IsDisable = false; $('#cont_' + this.EbSid_CtxId + ' *').removeAttr('disabled').css('pointer-events', 'inherit').find('[ui-inp]').css('background-color', '#fff');$('#cont_' + this.EbSid_CtxId + ' .ctrl-cover .input-group-addon').css('background-color', 'inherit');";
 
         public const string Ctrl_IsRequiredOKJSfn = @"let val = this.getValue(); return !this.isInVisibleInUI ? (!isNaNOrEmpty(val) && val !== null && val !== 0): true;";
 
