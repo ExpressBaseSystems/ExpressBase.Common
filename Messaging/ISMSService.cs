@@ -1,4 +1,5 @@
-﻿using ServiceStack;
+﻿using ExpressBase.Common.ServiceClients;
+using ServiceStack;
 using System.Collections.Generic; 
 
 namespace ExpressBase.Common.Messaging
@@ -17,7 +18,7 @@ namespace ExpressBase.Common.Messaging
     {
         int ConId { get; set; }
 
-        RetrieverResponse Retrieve(Service service);
+        RetrieverResponse Retrieve(Service service, System.DateTime DefaultSyncDate, EbStaticFileClient FileClient, string SolnId);
     }
 
     public class RetrieverMessage

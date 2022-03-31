@@ -2,6 +2,7 @@
 using ExpressBase.Common.Constants;
 using ExpressBase.Common.EbServiceStack.ReqNRes;
 using ExpressBase.Common.Messaging;
+using ExpressBase.Common.ServiceClients;
 using S22.Imap;
 using S22.Pop3;
 using SendGrid;
@@ -193,7 +194,6 @@ namespace ExpressBase.Common.Data
 
     public class EbImap : IEmailRetrieveConnection
     {
-
         public EbImapConfig Config { get; set; }
 
         public int ConId { get; set; }
@@ -217,7 +217,7 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        public RetrieverResponse Retrieve(Service service)
+        public RetrieverResponse Retrieve(Service service, DateTime DefaultSyncDate, EbStaticFileClient FileClient, string SolnId)
         {
             RetrieverResponse response = new RetrieverResponse();
             using (ImapClient Client = new ImapClient(Config.Host, Config.Port, Config.EmailAddress, Config.Password, S22.Imap.AuthMethod.Login, true))
@@ -228,14 +228,15 @@ namespace ExpressBase.Common.Data
                     int uidsCount = 0;
                     uint LastSyncedUid = service.Redis.Get<uint>("MailRetrieve_LastsyncedId_" + this.ConId);
 
-                    if (LastSyncedUid == 0)
+                    if (LastSyncedUid == 0)// if value is not in redis
                     {
-                        uidsCount = Client.Search(SearchCondition.Unseen()).Count();
+                        IEnumerable<uint> x = Client.Search(SearchCondition.SentSince(DefaultSyncDate));
+                        uidsCount = x.Count();
                         if (uidsCount > 0)
-                            LastSyncedUid = Client.Search(SearchCondition.Unseen()).Min();
+                            LastSyncedUid = x.Min();
                     }
 
-                    uidsCount = (uidsCount == 0) ? Client.Search(SearchCondition.GreaterThan(LastSyncedUid)).Where(a => a != MaxUid).Where(a => a != LastSyncedUid).Count() : 0;
+                    uidsCount = (uidsCount == 0) ? Client.Search(SearchCondition.GreaterThan(LastSyncedUid)).Where(a => a != MaxUid).Where(a => a != LastSyncedUid).Count() : uidsCount;
                     if (uidsCount > 0)
                     {
                         MaxUid = LastSyncedUid;
@@ -245,29 +246,35 @@ namespace ExpressBase.Common.Data
                             MaxUid = uids.Count() > 0 ? uids.Max() : MaxUid;
 
                             IEnumerable<MailMessage> messages = Client.GetMessages(uids);
+
                             foreach (MailMessage m in messages)
                             {
                                 List<int> _attachments = new List<int>();
+
                                 foreach (System.Net.Mail.Attachment _a in m.Attachments)
                                 {
-                                    FileUploadInternalRequest request = new FileUploadInternalRequest();
-
                                     _a.ContentStream.Seek(0, SeekOrigin.Begin);
                                     byte[] myFileContent = new byte[_a.ContentStream.Length];
                                     _a.ContentStream.Read(myFileContent, 0, myFileContent.Length);
 
-                                    request.FileByte = myFileContent;
+                                    FileUploadRequest request = new FileUploadRequest
+                                    {
+                                        FileByte = myFileContent
+                                    };
                                     request.FileDetails.FileName = _a.Name;
                                     request.FileDetails.FileType = _a.Name.Split('.').Last();
                                     request.FileDetails.Length = request.FileByte.Length;
                                     request.FileDetails.FileCategory = Enums.EbFileCategory.File;
                                     request.FileDetails.MetaDataDictionary = new Dictionary<String, List<string>>();
+                                    request.SolnId = SolnId;
+                                    FileUploadResponse resp = service.Gateway.Send<FileUploadResponse>(request);
 
-                                    FileUploadResponse res = service.Gateway.Send<FileUploadResponse>(request);
-                                    _attachments.Add(res.FileRefId);
+                                    _attachments.Add(resp.FileRefId);
                                 }
+
                                 response.RetrieverMessages.Add(new RetrieverMessage { Message = m, Attachemnts = _attachments });
                             }
+
                         }
                         service.Redis.Set("MailRetrieve_LastsyncedId_" + this.ConId, MaxUid);
                     }
@@ -307,7 +314,7 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        public RetrieverResponse Retrieve(Service service)
+        public RetrieverResponse Retrieve(Service service, DateTime DefaultSyncDate, EbStaticFileClient FileClient, string SolnId)
         {
             RetrieverResponse response = new RetrieverResponse();
             using (Pop3Client Client = new Pop3Client(Config.Host, Config.Port, Config.EmailAddress, Config.Password, S22.Pop3.AuthMethod.Login, true))
