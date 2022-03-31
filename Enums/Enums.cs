@@ -320,7 +320,8 @@ namespace ExpressBase.Common
         ReportTask = 3,
         MyJob = 4,
         SqlJobTask = 5,
-        Slack = 6
+        Slack = 6,
+        ApiTask = 7
     }
 
     public enum DeliveryMechanisms

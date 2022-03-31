@@ -9,6 +9,8 @@ namespace ExpressBase.Common.Structures
     {
         public int ObjId { get; set; }
 
+        public string RefId { get; set; }
+
         public List<Param> Params { get; set; }
 
         public string SolnId { get; set; }
@@ -24,6 +26,8 @@ namespace ExpressBase.Common.Structures
         public string Message { get; set; }
 
         public DeliveryMechanisms DeliveryMechanisms { get; set; }
+
+        public Dictionary<string, object> ApiData { set; get; }
 
     }
 }
