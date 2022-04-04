@@ -217,7 +217,7 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        public RetrieverResponse Retrieve(Service service, DateTime DefaultSyncDate, EbStaticFileClient FileClient, string SolnId)
+        public RetrieverResponse Retrieve(Service service, DateTime DefaultSyncDate, EbStaticFileClient FileClient, string SolnId, bool isMq)
         {
             RetrieverResponse response = new RetrieverResponse();
             using (ImapClient Client = new ImapClient(Config.Host, Config.Port, Config.EmailAddress, Config.Password, S22.Imap.AuthMethod.Login, true))
@@ -256,19 +256,39 @@ namespace ExpressBase.Common.Data
                                     _a.ContentStream.Seek(0, SeekOrigin.Begin);
                                     byte[] myFileContent = new byte[_a.ContentStream.Length];
                                     _a.ContentStream.Read(myFileContent, 0, myFileContent.Length);
+                                    FileUploadResponse resp;
 
-                                    FileUploadRequest request = new FileUploadRequest
+                                    if (isMq)
                                     {
-                                        FileByte = myFileContent
-                                    };
-                                    request.FileDetails.FileName = _a.Name;
-                                    request.FileDetails.FileType = _a.Name.Split('.').Last();
-                                    request.FileDetails.Length = request.FileByte.Length;
-                                    request.FileDetails.FileCategory = Enums.EbFileCategory.File;
-                                    request.FileDetails.MetaDataDictionary = new Dictionary<String, List<string>>();
-                                    request.SolnId = SolnId;
-                                    FileUploadResponse resp = service.Gateway.Send<FileUploadResponse>(request);
+                                        FileUploadRequest request = new FileUploadRequest
+                                        {
+                                            FileByte = myFileContent
+                                        };
+                                        request.FileDetails.FileName = _a.Name;
+                                        request.FileDetails.FileType = _a.Name.Split('.').Last();
+                                        request.FileDetails.Length = request.FileByte.Length;
+                                        request.FileDetails.FileCategory = Enums.EbFileCategory.File;
+                                        request.FileDetails.MetaDataDictionary = new Dictionary<String, List<string>>();
+                                        request.SolnId = SolnId;
 
+                                        resp = service.Gateway.Send<FileUploadResponse>(request);
+                                    }
+                                    else
+                                    {
+                                        FileUploadInternalRequest request = new FileUploadInternalRequest
+                                        {
+                                            FileByte = myFileContent
+                                        };
+                                        request.FileDetails.FileName = _a.Name;
+                                        request.FileDetails.FileType = _a.Name.Split('.').Last();
+                                        request.FileDetails.Length = request.FileByte.Length;
+                                        request.FileDetails.FileCategory = Enums.EbFileCategory.File;
+                                        request.FileDetails.MetaDataDictionary = new Dictionary<String, List<string>>();
+                                        request.SolnId = SolnId;
+
+                                        resp = service.Gateway.Send<FileUploadResponse>(request);
+
+                                    }
                                     _attachments.Add(resp.FileRefId);
                                 }
 
@@ -314,7 +334,7 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        public RetrieverResponse Retrieve(Service service, DateTime DefaultSyncDate, EbStaticFileClient FileClient, string SolnId)
+        public RetrieverResponse Retrieve(Service service, DateTime DefaultSyncDate, EbStaticFileClient FileClient, string SolnId, bool isMq)
         {
             RetrieverResponse response = new RetrieverResponse();
             using (Pop3Client Client = new Pop3Client(Config.Host, Config.Port, Config.EmailAddress, Config.Password, S22.Pop3.AuthMethod.Login, true))

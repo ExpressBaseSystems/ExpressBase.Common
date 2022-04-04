@@ -18,7 +18,7 @@ namespace ExpressBase.Common.Messaging
     {
         int ConId { get; set; }
 
-        RetrieverResponse Retrieve(Service service, System.DateTime DefaultSyncDate, EbStaticFileClient FileClient, string SolnId);
+        RetrieverResponse Retrieve(Service service, System.DateTime DefaultSyncDate, EbStaticFileClient FileClient, string SolnId, bool isMq);
     }
 
     public class RetrieverMessage
