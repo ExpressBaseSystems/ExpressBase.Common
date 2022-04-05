@@ -279,7 +279,7 @@ namespace ExpressBase.Common.Data
                             }
 
                         }
-                        //service.Redis.Set("MailRetrieve_LastsyncedId_" + this.ConId, MaxUid);
+                        service.Redis.Set("MailRetrieve_LastsyncedId_" + this.ConId, MaxUid);
                     }
                 }
                 catch (S22.Imap.InvalidCredentialsException)
