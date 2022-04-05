@@ -274,7 +274,7 @@ namespace ExpressBase.Common.Data
                                     }
                                 }
 
-                                if (!SubmitAttachmentAsMultipleForm)
+                                if (!SubmitAttachmentAsMultipleForm || m.Attachments.Count == 0)
                                     response.RetrieverMessages.Add(new RetrieverMessage { Message = m, Attachemnts = _attachments });
                             }
 
