@@ -15,6 +15,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using Attachment = System.Net.Mail.Attachment;
 
 namespace ExpressBase.Common.Data
 {
@@ -198,6 +199,12 @@ namespace ExpressBase.Common.Data
 
         public int ConId { get; set; }
 
+        uint MaxUid = 0;
+
+        int uidsCount = 0;
+
+        uint LastSyncedUid = 0;
+
         public EbImap(EbImapConfig config)
         {
             try
@@ -217,16 +224,15 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        public RetrieverResponse Retrieve(Service service, DateTime DefaultSyncDate, EbStaticFileClient FileClient, string SolnId, bool isMq)
+        public RetrieverResponse Retrieve(Service service, DateTime DefaultSyncDate, EbStaticFileClient FileClient, string SolnId, bool isMq, bool SubmitAttachmentAsMultipleForm)
         {
             RetrieverResponse response = new RetrieverResponse();
+
             using (ImapClient Client = new ImapClient(Config.Host, Config.Port, Config.EmailAddress, Config.Password, S22.Imap.AuthMethod.Login, true))
             {
                 try
                 {
-                    uint MaxUid = 0;
-                    int uidsCount = 0;
-                    uint LastSyncedUid = service.Redis.Get<uint>("MailRetrieve_LastsyncedId_" + this.ConId);
+                    LastSyncedUid = service.Redis.Get<uint>("MailRetrieve_LastsyncedId_" + this.ConId);
 
                     if (LastSyncedUid == 0)// if value is not in redis
                     {
@@ -236,13 +242,17 @@ namespace ExpressBase.Common.Data
                             LastSyncedUid = x.Min();
                     }
 
-                    uidsCount = (uidsCount == 0) ? Client.Search(SearchCondition.GreaterThan(LastSyncedUid)).Where(a => a != MaxUid).Where(a => a != LastSyncedUid).Count() : uidsCount;
+                    uidsCount = (uidsCount == 0) ? Client.Search(SearchCondition.GreaterThan(LastSyncedUid)).Where(a => a != MaxUid)
+                        .Where(a => a != LastSyncedUid).Count() : uidsCount;
+
                     if (uidsCount > 0)
                     {
                         MaxUid = LastSyncedUid;
+
                         for (int i = 0; i <= uidsCount / 50; i++)
                         {
                             IEnumerable<uint> uids = Client.Search(SearchCondition.GreaterThan(MaxUid).And(SearchCondition.LessThan(MaxUid + 51)));
+
                             MaxUid = uids.Count() > 0 ? uids.Max() : MaxUid;
 
                             IEnumerable<MailMessage> messages = Client.GetMessages(uids);
@@ -253,50 +263,23 @@ namespace ExpressBase.Common.Data
 
                                 foreach (System.Net.Mail.Attachment _a in m.Attachments)
                                 {
-                                    _a.ContentStream.Seek(0, SeekOrigin.Begin);
-                                    byte[] myFileContent = new byte[_a.ContentStream.Length];
-                                    _a.ContentStream.Read(myFileContent, 0, myFileContent.Length);
-                                    FileUploadResponse resp;
+                                    int fileId = UploadAttachment(_a, service, SolnId, isMq);
 
-                                    if (isMq)
+                                    _attachments.Add(fileId);
+
+                                    if (SubmitAttachmentAsMultipleForm)
                                     {
-                                        FileUploadRequest request = new FileUploadRequest
-                                        {
-                                            FileByte = myFileContent
-                                        };
-                                        request.FileDetails.FileName = _a.Name;
-                                        request.FileDetails.FileType = _a.Name.Split('.').Last();
-                                        request.FileDetails.Length = request.FileByte.Length;
-                                        request.FileDetails.FileCategory = Enums.EbFileCategory.File;
-                                        request.FileDetails.MetaDataDictionary = new Dictionary<String, List<string>>();
-                                        request.SolnId = SolnId;
-
-                                        resp = service.Gateway.Send<FileUploadResponse>(request);
+                                        response.RetrieverMessages.Add(new RetrieverMessage { Message = m, Attachemnts = _attachments });
+                                        _attachments = new List<int>();
                                     }
-                                    else
-                                    {
-                                        FileUploadInternalRequest request = new FileUploadInternalRequest
-                                        {
-                                            FileByte = myFileContent
-                                        };
-                                        request.FileDetails.FileName = _a.Name;
-                                        request.FileDetails.FileType = _a.Name.Split('.').Last();
-                                        request.FileDetails.Length = request.FileByte.Length;
-                                        request.FileDetails.FileCategory = Enums.EbFileCategory.File;
-                                        request.FileDetails.MetaDataDictionary = new Dictionary<String, List<string>>();
-                                        request.SolnId = SolnId;
-
-                                        resp = service.Gateway.Send<FileUploadResponse>(request);
-
-                                    }
-                                    _attachments.Add(resp.FileRefId);
                                 }
 
-                                response.RetrieverMessages.Add(new RetrieverMessage { Message = m, Attachemnts = _attachments });
+                                if (!SubmitAttachmentAsMultipleForm)
+                                    response.RetrieverMessages.Add(new RetrieverMessage { Message = m, Attachemnts = _attachments });
                             }
 
                         }
-                        service.Redis.Set("MailRetrieve_LastsyncedId_" + this.ConId, MaxUid);
+                        //service.Redis.Set("MailRetrieve_LastsyncedId_" + this.ConId, MaxUid);
                     }
                 }
                 catch (S22.Imap.InvalidCredentialsException)
@@ -305,6 +288,51 @@ namespace ExpressBase.Common.Data
                 }
             }
             return response;
+        }
+
+        public int UploadAttachment(Attachment _a, Service service, string SolnId, bool isMq)
+        {
+            FileUploadResponse resp;
+
+            _a.ContentStream.Seek(0, SeekOrigin.Begin);
+            byte[] myFileContent = new byte[_a.ContentStream.Length];
+            _a.ContentStream.Read(myFileContent, 0, myFileContent.Length);
+
+            FileMeta meta = new FileMeta
+            {
+                FileName = _a.Name,
+                FileType = _a.Name.Split('.').Last(),
+                Length = myFileContent.Length,
+                FileCategory = Enums.EbFileCategory.File,
+                MetaDataDictionary = new Dictionary<String, List<string>>(),
+            };
+
+            if (isMq)
+            {
+                FileUploadRequest request = new FileUploadRequest
+                {
+                    FileByte = myFileContent,
+                    FileDetails = meta
+                };
+
+                request.SolnId = SolnId;
+
+                resp = service.Gateway.Send<FileUploadResponse>(request);
+            }
+            else
+            {
+                FileUploadInternalRequest request = new FileUploadInternalRequest
+                {
+                    FileByte = myFileContent,
+                    FileDetails = meta
+                };
+                request.SolnId = SolnId;
+
+                resp = service.Gateway.Send<FileUploadResponse>(request);
+
+            }
+
+            return resp.FileRefId;
         }
     }
 
@@ -334,7 +362,7 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        public RetrieverResponse Retrieve(Service service, DateTime DefaultSyncDate, EbStaticFileClient FileClient, string SolnId, bool isMq)
+        public RetrieverResponse Retrieve(Service service, DateTime DefaultSyncDate, EbStaticFileClient FileClient, string SolnId, bool isMq, bool SubmitAttachmentAsMultipleForm)
         {
             RetrieverResponse response = new RetrieverResponse();
             using (Pop3Client Client = new Pop3Client(Config.Host, Config.Port, Config.EmailAddress, Config.Password, S22.Pop3.AuthMethod.Login, true))
