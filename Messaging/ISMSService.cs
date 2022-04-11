@@ -26,6 +26,8 @@ namespace ExpressBase.Common.Messaging
         public System.Net.Mail.MailMessage Message { get; set; }
 
         public List<int> Attachemnts { get; set; }
+
+        public string AttachmentsName { get; set; }
     }
 
     public class RetrieverResponse

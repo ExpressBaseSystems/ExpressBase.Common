@@ -260,25 +260,44 @@ namespace ExpressBase.Common.Data
                             foreach (MailMessage m in messages)
                             {
                                 List<int> _attachments = new List<int>();
+                                List<string> attachment_names = new List<string>(); ;
 
                                 foreach (System.Net.Mail.Attachment _a in m.Attachments)
                                 {
                                     int fileId = UploadAttachment(_a, service, SolnId, isMq);
 
                                     _attachments.Add(fileId);
-
                                     if (SubmitAttachmentAsMultipleForm)
                                     {
-                                        response.RetrieverMessages.Add(new RetrieverMessage { Message = m, Attachemnts = _attachments });
+                                        response.RetrieverMessages.Add(new RetrieverMessage
+                                        {
+                                            Message = m,
+                                            Attachemnts = _attachments,
+                                            AttachmentsName = _a.Name
+                                        });
+
                                         _attachments = new List<int>();
                                     }
+                                    else
+                                    {
+                                        attachment_names.Add(_a.Name);
+                                    }
+
                                 }
 
                                 if (!SubmitAttachmentAsMultipleForm || m.Attachments.Count == 0)
-                                    response.RetrieverMessages.Add(new RetrieverMessage { Message = m, Attachemnts = _attachments });
+                                {
+                                    response.RetrieverMessages.Add(new RetrieverMessage
+                                    {
+                                        Message = m,
+                                        Attachemnts = _attachments,
+                                        AttachmentsName = string.Join(',', attachment_names)
+                                    });
+                                }
                             }
 
                         }
+
                         service.Redis.Set("MailRetrieve_LastsyncedId_" + this.ConId, MaxUid);
                     }
                 }
