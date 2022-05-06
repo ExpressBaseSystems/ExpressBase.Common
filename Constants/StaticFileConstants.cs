@@ -30,6 +30,7 @@ namespace ExpressBase.Common.Constants
         public const string UPLOADSUCCESS = "cmd.onUploadSuccess";
         public const string UPLOADFAILURE = "cmd.onUploadFailure";
         public const string EXPORTTOEXCELSUCCESS = "cmd.onExportToExcel";
+        public const string PDFDOWNLOADSUCCESS = "cmd.onPdfDownload";
         //Controller Types Url catg strings
 
 
