@@ -43,7 +43,7 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
 
         public int CreatedBy { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public string CreatedAt { get; set; }
 
         public bool IsDeleted { get; set; }
 
