@@ -1,5 +1,6 @@
-﻿using CloudinaryDotNet;
-using ExpressBase.Common.EbServiceStack.ReqNRes;
+﻿using ExpressBase.Common.EbServiceStack.ReqNRes;
+using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace ExpressBase.Common.ServiceStack.ReqNRes
@@ -16,5 +17,36 @@ namespace ExpressBase.Common.ServiceStack.ReqNRes
     {
         [DataMember(Order = 1)]
         string test = string.Empty;
+    }
+
+    public class GetDownloadFileRequest : EbServiceStackAuthRequest
+    {
+        public int Id { get; set; }
+
+        public bool IsGetAll { get; set; }
+    }
+
+    public class GetDownloadFileResponse
+    {
+        public FileDownloadObject FileDownloadObject { get; set; }
+
+        public List<FileDownloadObject> AllDownloadObjects { get; set; }
+    }
+
+    public class FileDownloadObject
+    {
+        public int Id { get; set; }
+
+        public string Filename { get; set; }
+
+        public byte[] FileBytea { get; set; }
+
+        public int CreatedBy { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public bool IsGenerating { get; set; }
     }
 }

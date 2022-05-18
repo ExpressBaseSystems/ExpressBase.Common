@@ -1301,16 +1301,75 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_mail_logs
+        ///   Looks up a localized string similar to -- Table: public.eb_downloads
         ///
-        ///-- DROP TABLE public.eb_mail_logs;
+        ///-- DROP TABLE IF EXISTS public.eb_downloads;
         ///
-        ///CREATE TABLE eb_mail_logs
+        ///CREATE TABLE public.eb_downloads
+        ///(
+        ///    id serial,
+        ///    filename text,
+        ///    bytea bytea,
+        ///    eb_created_by integer,
+        ///    eb_created_at timestamp without time zone,
+        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    CONSTRAINT eb_downloads_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///
+        ///
+        ///-- Index: eb_downloads_id_idx
+        ///
+        ///-- DROP INDEX public.eb_downloads_id_idx;
+        ///
+        ///CREATE INDEX eb_downloads_id_idx
+        ///    ON eb_downloads(id);.
+        /// </summary>
+        public static string eb_downloads {
+            get {
+                return ResourceManager.GetString("eb_downloads", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_downloads .
+        /// </summary>
+        public static string eb_downloads1 {
+            get {
+                return ResourceManager.GetString("eb_downloads1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_downloads.
+        /// </summary>
+        public static string eb_downloads2 {
+            get {
+                return ResourceManager.GetString("eb_downloads2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_downloads
+        /// .
+        /// </summary>
+        public static string eb_downloads3 {
+            get {
+                return ResourceManager.GetString("eb_downloads3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_email_logs
+        ///
+        ///-- DROP TABLE public.eb_email_logs;
+        ///
+        ///CREATE TABLE eb_email_logs
         ///(
         ///	id serial,
         ///    send_to text,
         ///    send_from text,
-        ///	recepients text
+        ///	recepients json,
         ///    message_body text,
         ///    attachmentname text,
         ///    subject text,
@@ -1324,7 +1383,7 @@ namespace ExpressBase.Common {
         ///    req_from text,
         ///    eb_created_by integer,
         ///    eb_created_at timestamp without time zone,
-        ///    eb_del &quot;cha [rest of string was truncated]&quot;;.
+        ///    eb_del  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_email_logs {
             get {
@@ -1843,13 +1902,16 @@ namespace ExpressBase.Common {
         ///    form_data_json text,
         ///    form_ref_id text,
         ///    form_data_id integer,
+        ///    draft_type integer,
+        ///	message text,
+        ///	stack_trace text,
+        ///	eb_signin_log_id integer,
         ///    is_submitted &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    eb_loc_id integer,
         ///    eb_created_by integer,
         ///    eb_created_at timestamp without time zone,
         ///    eb_lastmodified_at timestamp without time zone,
-        ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
-        ///    CONSTRAINT eb_form_drafts_pkey PRIMARY KEY (id [rest of string was truncated]&quot;;.
+        ///  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_form_drafts {
             get {
