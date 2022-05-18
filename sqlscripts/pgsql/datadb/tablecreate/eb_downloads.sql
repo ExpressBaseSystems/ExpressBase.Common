@@ -1,4 +1,4 @@
-﻿-- Table: public.eb_downloads
+-- Table: public.eb_downloads
 
 -- DROP TABLE IF EXISTS public.eb_downloads;
 
