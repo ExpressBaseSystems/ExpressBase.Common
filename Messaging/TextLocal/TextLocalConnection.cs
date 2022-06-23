@@ -33,7 +33,7 @@ namespace ExpressBase.Common.Messaging
 
             try
             {
-                body += "-" + Config.BrandName;
+                body += " -" + Config.BrandName;
                 var status = string.Empty;
                 IEnumerable<string> matches = Regex.Matches(To, @"[1-9]").OfType<Match>()
                  .Select(m => m.Groups[0].Value)
