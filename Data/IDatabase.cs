@@ -84,7 +84,7 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"SELECT R.role_name, R.applicationid, R.description, R.is_anonymous, A.id, A.applicationname, A.description FROM eb_roles R 
+                return @"SELECT R.role_name, R.applicationid, R.description, R.is_anonymous, R.is_primary, A.id, A.applicationname, A.description FROM eb_roles R 
                             LEFT JOIN eb_applications A ON A.id = R.applicationid WHERE COALESCE(R.eb_del, 'F') = 'F' AND COALESCE(A.eb_del, 'F') = 'F' AND R.id = @id;
 						SELECT permissionname,obj_id,op_id FROM eb_role2permission WHERE role_id = @id AND COALESCE(eb_del, 'F') = 'F';
 						SELECT A.id, A.fullname, A.email, A.phnoprimary, B.id FROM eb_users A, eb_role2user B

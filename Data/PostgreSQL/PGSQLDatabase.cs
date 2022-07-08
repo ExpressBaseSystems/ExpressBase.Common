@@ -898,7 +898,7 @@ SELECT R.id,R.role_name,R.description,A.applicationname,
         {
             get
             {
-                return @"SELECT eb_create_or_update_rbac_roles(:role_id, :applicationid, :createdby, :role_name, :description, :is_anonym, :users, :dependants, :permission, :locations);";
+                return @"SELECT eb_create_or_update_rbac_roles(:role_id, :applicationid, :createdby, :role_name, :description, :is_anonym, :is_primary, :users, :dependants, :permission, :locations);";
             }
         }
 
