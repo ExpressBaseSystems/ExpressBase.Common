@@ -9,6 +9,7 @@ CREATE OR REPLACE FUNCTION public.eb_create_or_update_rbac_roles(
 	role_name text,
 	description text,
 	isanonym text,
+	isprimary text,
 	users text,
 	dependantroles text,
 	permissions text,
@@ -30,7 +31,7 @@ _dependantroles := string_to_array(dependantroles, ',')::integer[];
 _permissions := string_to_array(permissions, ',');
 _locations := string_to_array(locations, ',')::integer[];
 
-SELECT * FROM eb_create_or_update_role(applicationid, role_name, description, isanonym, userid, _permissions, roleid) INTO rid;
+SELECT * FROM eb_create_or_update_role(applicationid, role_name, description, isanonym, isprimary, userid, _permissions, roleid) INTO rid;
   
 IF isanonym = 'T' THEN
 	_users := '{1}';
