@@ -50,7 +50,7 @@ BEGIN
 			) AS ROLES
 		) AS qury
 		LEFT JOIN
-			(SELECT * FROM eb_roles WHERE eb_del = 'F' AND applicationid = ANY(SELECT eb_applications.id FROM eb_applications WHERE application_type=ANY(app_type))) r
+			(SELECT * FROM eb_roles WHERE eb_del = 'F' AND (applicationid = ANY(SELECT eb_applications.id FROM eb_applications WHERE application_type=ANY(app_type)) OR is_primary='T')) r
 		ON
 			qury.role_id = r.id
 		) UROLES
