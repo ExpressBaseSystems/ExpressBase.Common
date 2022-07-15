@@ -1182,21 +1182,27 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
         {
             get
             {
-                return @"SELECT * FROM 
-                            eb_my_actions EACT 
+                return @"SELECT EACT.* FROM 
+                            eb_my_actions EACT, eb_approval APP
                         WHERE
-	                        COALESCE(EACT.is_completed, 'F') = 'F'
-                        AND
-	                        COALESCE(EACT.eb_del, 'F') = 'F'
-                        AND
+                            EACT.id = APP.eb_my_actions_id AND
+                            COALESCE(APP.eb_del, 'F') = 'F' AND
+	                        COALESCE(EACT.is_completed, 'F') = 'F' AND
+	                        COALESCE(EACT.eb_del, 'F') = 'F' AND
 	                        (
-                                :userid = ANY(string_to_array(EACT.user_ids, ','))
-	                        OR
-	                            (string_to_array(EACT.role_ids, ',') && string_to_array(:roleids, ','))
-	                        OR
+                                :userid = ANY(string_to_array(EACT.user_ids, ',')) OR
+	                            (string_to_array(EACT.role_ids, ',') && string_to_array(:roleids, ',')) OR
 	                            EACT.usergroup_id = ANY(string_to_array(:usergroupids, ',')::int[])
-	                        ) 
+	                        ) {0}
                         ORDER BY EACT.from_datetime DESC";
+            }
+        }
+
+        public override string EB_GET_MYACTIONS_LOC_PART
+        {
+            get
+            {
+                return @"AND (COALESCE(APP.eb_loc_id, 0) = 0 OR COALESCE(APP.eb_loc_id, 0) = ANY(string_to_array(:locids, ',')::int[]))";
             }
         }
 
