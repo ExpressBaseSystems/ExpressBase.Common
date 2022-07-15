@@ -16,6 +16,7 @@ CREATE TABLE eb_approval
     eb_lastmodified_by integer,
     eb_lastmodified_at timestamp without time zone,
     eb_del "char" DEFAULT 'F'::"char",
+    eb_loc_id integer,
     CONSTRAINT eb_approval_pkey PRIMARY KEY (id)
 );
 
