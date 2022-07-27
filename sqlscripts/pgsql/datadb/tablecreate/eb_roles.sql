@@ -10,7 +10,10 @@ CREATE TABLE eb_roles
     applicationid integer,
     description text,
     eb_del  "char" DEFAULT 'F'::"char",
-    is_anonymous  "char" DEFAULT 'F'::"char",
+    is_anonymous "char" DEFAULT 'F'::"char",
+    eb_ver_id integer,
+    eb_data_id integer,
+    is_primary "char" DEFAULT 'F'::"char",
     CONSTRAINT eb_roles_id_pkey PRIMARY KEY (id),
     CONSTRAINT eb_rolename_unique UNIQUE (role_name),
     CONSTRAINT eb_roles_eb_del_check CHECK (eb_del = 'T' OR eb_del = 'F')
