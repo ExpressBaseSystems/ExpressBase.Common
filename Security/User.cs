@@ -358,7 +358,7 @@ namespace ExpressBase.Security
                         df.GetNewParameter("deviceinfo", EbDbTypes.String, deviceInfo)
                     });
                 }
-                return InitUserObject(dt, context, ipAddress, deviceId);
+                return InitUserObject(dt, context, ipAddress, deviceId, true);
             }
             catch (Exception e)
             {
@@ -407,7 +407,7 @@ namespace ExpressBase.Security
                         df.GetNewParameter("deviceinfo", EbDbTypes.String, deviceInfo)
                     });
                 }
-                return InitUserObject(dt, context, ipAddress, deviceId);
+                return InitUserObject(dt, context, ipAddress, deviceId, true);
             }
             catch (Exception e)
             {
@@ -456,7 +456,7 @@ namespace ExpressBase.Security
                         df.GetNewParameter("deviceinfo", EbDbTypes.String, deviceInfo)
                     });
                 }
-                return InitUserObject(dt, context, ipAddress, deviceId);
+                return InitUserObject(dt, context, ipAddress, deviceId, true);
             }
             catch (Exception e)
             {
@@ -580,7 +580,7 @@ namespace ExpressBase.Security
 
                 dt = df.DoQuery(sql, paramlist.ToArray());
             }
-            return InitUserObject(dt, context, user_ip, string.Empty);
+            return InitUserObject(dt, context, user_ip, string.Empty, true);
         }
 
         public static void UpdateVerificationStatus(IDatabase DataDB, int UserId, bool IsEmailVerified, bool IsPhoneVerified)
@@ -614,10 +614,11 @@ namespace ExpressBase.Security
                 df.GetNewParameter("wc", EbDbTypes.String, whichConsole)
             };
             EbDataTable dt = df.DoQuery(query, p);
-            return InitUserObject(dt, whichConsole, userIp, deviceId);
+            User _user = InitUserObject(dt, whichConsole, userIp, deviceId, false);
+            return _user.UserId == userId ? _user : null;
         }
 
-        private static User InitUserObject(EbDataTable ds, string context, string ipAddress, string deviceId)
+        private static User InitUserObject(EbDataTable ds, string context, string ipAddress, string deviceId, bool loginInit)
         {
             //Columns : _userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id, _usergroup_a, _public_ids, _user_type, phnoprimary, forcepwreset
             //              0         1         2        3         4           5            6                7               8              9           10             11           12          13        14
@@ -681,7 +682,7 @@ namespace ExpressBase.Security
                 if (!ds.Rows[0].IsDBNull(8) && !_user.Roles.Contains(SystemRoles.SolutionOwner.ToString()) && !_user.Roles.Contains(SystemRoles.SolutionAdmin.ToString()))
                 {
                     EbConstraints constraints = new EbConstraints(ds.Rows[0][8].ToString());
-                    if (!constraints.Validate(ipAddress, deviceId, _user))
+                    if (!constraints.Validate(ipAddress, deviceId, _user, loginInit))
                         _user.UserId = -1;
                     if (!constraints.IsIpConstraintPresent())
                         _user.SourceIp = string.Empty;

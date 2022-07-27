@@ -155,7 +155,7 @@ namespace ExpressBase.Security
             return string.Format(DataDB.EB_GET_SELECT_CONSTRAINTS, (int)_keyTyp, _keyIdParam);
         }
 
-        public bool Validate(string ip, string device, User user)
+        public bool Validate(string ip, string device, User user, bool loginInit)
         {
             Dictionary<EbConstraintTypes, bool> _status = new Dictionary<EbConstraintTypes, bool>();
             List<int> _locs = new List<int>();
@@ -164,9 +164,14 @@ namespace ExpressBase.Security
                 foreach (KeyValuePair<int, EbConstraintOTV> _c in _cons.Value.Values)
                 {
                     if (_c.Value.Type == EbConstraintTypes.User_Location)
+                    {
                         _locs.Add(_c.Value.GetValue());
+                        continue;
+                    }
                     else
                     {
+                        if (!loginInit)
+                            continue;
                         if (!_status.ContainsKey(_c.Value.Type))
                             _status.Add(_c.Value.Type, false);
                     }
