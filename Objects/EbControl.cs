@@ -49,8 +49,6 @@ namespace ExpressBase.Common.Objects
 
         public virtual bool IsRenderMode { get; set; }
 
-        public virtual bool IsDynamicTabChild { get; set; }
-
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual bool IsNonDataInputControl { get; set; }
@@ -439,7 +437,7 @@ namespace ExpressBase.Common.Objects
 .Replace("@name@", this.Name)
 .Replace("@LblInfo@", (Info.IsNullOrEmpty() ? String.Empty : HtmlConstants.LabelInfoContHTML))
 .Replace("@childOf@", this.ChildOf.IsNullOrEmpty() ? string.Empty : "childOf='" + this.ChildOf + "'")
-.Replace("@ebsid@", this.IsRenderMode && this.IsDynamicTabChild ? "@" + this.EbSid_CtxId + "_ebsid@" : this.EbSid_CtxId)
+.Replace("@ebsid@", this.EbSid_CtxId)
 .Replace("@isHidden@", this.Hidden.ToString().ToLower())
 .Replace("@isReadonly@", ((this.ObjType == "TVcontrol") ? false : this.IsDisable).ToString().ToLower())
 .Replace("@helpText@", this.HelpText)
@@ -455,7 +453,7 @@ namespace ExpressBase.Common.Objects
 .Replace("@barehtml@", BareHtml)
 .Replace("@name@", this.Name)
 .Replace("@childOf@", this.ChildOf.IsNullOrEmpty() ? string.Empty : "childOf='" + this.ChildOf + "'")
-.Replace("@ebsid@", this.IsRenderMode && this.IsDynamicTabChild ? "@" + this.EbSid_CtxId + "_ebsid@" : this.EbSid_CtxId)
+.Replace("@ebsid@", this.EbSid_CtxId)
 .Replace("@isHidden@", this.Hidden.ToString().ToLower())
 .Replace("@isReadonly@", ((this.ObjType == "TVcontrol") ? false : this.IsDisable).ToString().ToLower())
 .Replace("@helpText@", this.HelpText)

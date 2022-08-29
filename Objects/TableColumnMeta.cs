@@ -285,7 +285,7 @@ namespace ExpressBase.Common
 
         public bool DescOdr { get; set; }//Descending order eb_row_num - datagrid
 
-        public bool IsDynamic { get; set; }//datagird in dynamic tab
+        //public bool IsDynamic { get; set; }//datagird in dynamic tab
 
         public bool DoNotPersist { get; set; }//DoNotPersist datagrid
 

@@ -58,7 +58,7 @@ namespace ExpressBase.Common.Objects
         //[JsonIgnore]
         public override bool Hidden { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore]
         public override EbScript HiddenExpr { get; set; }
 
         [JsonIgnore]
@@ -116,6 +116,70 @@ namespace ExpressBase.Common.Objects
 
         [JsonIgnore]
         public override EbScript DefaultValueExpression { get; set; }
+
+
+        [JsonIgnore]
+        public override string GetValueJSfn { get { return string.Empty; } set { } }
+
+        [JsonIgnore]
+        public override string GetValueFromDOMJSfn { get { return string.Empty; } set { } }
+
+        [JsonIgnore]
+        public override string GetDisplayMemberFromDOMJSfn { get { return string.Empty; } set { } }
+
+        [JsonIgnore]
+        public override string GetDisplayMemberJSfn { get { return string.Empty; } set { } }
+
+        [JsonIgnore]
+        public override string IsRequiredOKJSfn { get { return string.Empty; } set { } }
+
+        [JsonIgnore]
+        public override string SetValueJSfn { get { return string.Empty; } set { } }
+
+        [JsonIgnore]
+        public override string SetDisplayMemberJSfn { get { return string.Empty; } set { } }
+
+        [JsonIgnore]
+        public override string JustSetValueJSfn { get { return string.Empty; } set { } }
+
+        [JsonIgnore]
+        public override string IsEmptyJSfn { get { return string.Empty; } set { } }
+
+        //[JsonIgnore]
+        //public override string HideJSfn { get { return string.Empty; } set { } }
+
+        //[JsonIgnore]
+        //public override string ShowJSfn { get { return string.Empty; } set { } }
+
+        //[JsonIgnore]
+        //public override string EnableJSfn { get { return string.Empty; } set { } }
+
+        //[JsonIgnore]
+        //public override string DisableJSfn { get { return string.Empty; } set { } }
+
+        [JsonIgnore]
+        public override string ResetJSfn { get { return string.Empty; } set { } }
+
+        [JsonIgnore]
+        public override string RefreshJSfn { get { return string.Empty; } set { } }
+
+        [JsonIgnore]
+        public override string ClearJSfn { get { return string.Empty; } set { } }
+
+        [JsonIgnore]
+        public override string OnChangeBindJSFn { get { return string.Empty; } set { } }
+
+        [JsonIgnore]
+        public override string AddInvalidStyleJSFn { get { return string.Empty; } set { } }
+
+        [JsonIgnore]
+        public override string RemoveInvalidStyleJSFn { get { return string.Empty; } set { } }
+
+        [JsonIgnore]
+        public override string GetColumnJSfn { get { return string.Empty; } set { } }
+
+        [JsonIgnore]
+        public override string StyleJSFn { get { return string.Empty; } set { } }
 
         //methods
 
