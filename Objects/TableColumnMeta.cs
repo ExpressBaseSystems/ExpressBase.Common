@@ -284,9 +284,7 @@ namespace ExpressBase.Common
 
         public string ContainerName { get; set; }
 
-        public EbScript IntegrityColumnExpr { get; set; }//dg
-
-        public string IntegrityColumn { get; set; }//dg
+        public string CustomSelectQuery { get; set; }
 
         public bool DescOdr { get; set; }//Descending order eb_row_num - datagrid
 
