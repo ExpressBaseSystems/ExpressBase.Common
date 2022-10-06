@@ -355,10 +355,10 @@ namespace ExpressBase.Common.Objects
         }
 
         [JsonIgnore]
-        public virtual string GetValueJSfn { get { return @"return this.DataVals.Value"; } set { } }
+        public virtual string GetValueJSfn { get { return @"return this.DataVals.Value;"; } set { } }
 
         [JsonIgnore]
-        public virtual string GetPreviousValueJSfn { get { return @"return this.DataVals.PrevValue"; } set { } }
+        public virtual string GetPreviousValueJSfn { get { return @"return this.DataVals.PrevValue;"; } set { } }
 
         [JsonIgnore]
         public virtual string GetValueFromDOMJSfn { get { return @"return $('#' + this.EbSid_CtxId).val();"; } set { } }
