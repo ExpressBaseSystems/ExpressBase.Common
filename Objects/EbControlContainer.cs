@@ -318,6 +318,7 @@ namespace ExpressBase.Common.Objects
                                 EbControl _ctrlObj = (ctrlObj as EbControl);
                                 string opFnsJs = string.Empty;
                                 opFnsJs += GetOpFnJs("getValue", _ctrlObj.GetValueJSfn, TypeName);
+                                opFnsJs += GetOpFnJs("getPreviousValue", _ctrlObj.GetPreviousValueJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("getValueFromDOM", _ctrlObj.GetValueFromDOMJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("getDisplayMember", _ctrlObj.GetDisplayMemberJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("getDisplayMemberFromDOM", _ctrlObj.GetDisplayMemberFromDOMJSfn, TypeName);
