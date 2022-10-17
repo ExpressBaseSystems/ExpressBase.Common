@@ -293,6 +293,11 @@ namespace ExpressBase.Common.Objects
         [HelpText("Set true if you dont want to save value from this field.")]
         public virtual bool DoNotPersist { get; set; }
 
+        [PropertyGroup(PGConstants.DATA)]
+        [EnableInBuilder(BuilderType.WebForm)]
+        [HelpText("Set true if you dont want to import value to this field.")]
+        public virtual bool DoNotImport { get; set; }
+
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         public virtual bool IsSysControl { get; set; }//is placeholder control
