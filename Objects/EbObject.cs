@@ -37,6 +37,7 @@ namespace ExpressBase.Objects
         [Unique]
         [HideForUser]
         [PropertyPriority(99)]
+        [PropertyEditor(PropertyEditorType.MultiLanguageKeySelector)]
         public virtual string DisplayName { get; set; }
 
         [PropertyGroup(PGConstants.HELP)]

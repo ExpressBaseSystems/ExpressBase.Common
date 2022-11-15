@@ -81,6 +81,8 @@ namespace ExpressBase.Common.LocationNSolution
 
         public bool Is2faEnabled { get; set; }
 
+        public bool IsMultiLanguageEnabled { get; set; }
+
         public Dictionary<int, string> Users { get; set; }
 
         public int PlanUserCount { get; set; }

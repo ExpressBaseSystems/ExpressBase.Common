@@ -200,56 +200,6 @@ namespace ExpressBase.Common.Objects
             return string.Empty;
         }
 
-        public EbControlContainer Localize(Dictionary<string, string> Keys)
-        {
-            EbControl[] controls = this.Controls.FlattenAllEbControls();
-
-            foreach (EbControl control in controls)
-            {
-                PropertyInfo[] props = control.GetType().GetProperties();
-
-                foreach (PropertyInfo prop in props)
-                {
-                    if (prop.DeclaringType == typeof(string))
-                    {
-                        if (prop.IsDefined(typeof(PropertyEditor))
-                            && prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == (int)PropertyEditorType.MultiLanguageKeySelector)
-                        {
-
-                            string oldVal = prop.GetValue(control, null) as string;
-                            string newVal = (Keys.ContainsKey(oldVal)) ? Keys[oldVal] : oldVal;
-
-                            prop.SetValue(control, newVal, null);
-                        }
-                    }
-                }
-            }
-
-            return this;
-        }
-
-        //Get all proprty value which 
-        public static string[] GetKeys(object formObj)
-        {
-            EbControlContainer _formObj = formObj as EbControlContainer;
-            List<string> templist = new List<string>();
-            EbControl[] controls = _formObj.Controls.FlattenAllEbControls();// get all objects in the form
-
-            foreach (EbControl control in controls)
-            {
-                PropertyInfo[] props = control.GetType().GetProperties();
-                foreach (PropertyInfo prop in props)
-                {
-                    if (prop.IsDefined(typeof(PropertyEditor)) && prop.GetCustomAttribute<PropertyEditor>().PropertyEditorType == (int)PropertyEditorType.MultiLanguageKeySelector)
-                    {
-                        string val = control.GetType().GetProperty(prop.Name).GetValue(control, null) as String;
-                        if (!val.IsNullOrEmpty() && !templist.Contains(val))
-                            templist.Add(val); ;
-                    }
-                }
-            }
-            return templist.ToArray();
-        }
 
         //foreach (EbControl control in Controls)
         //{
