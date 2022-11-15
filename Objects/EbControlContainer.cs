@@ -74,6 +74,8 @@ namespace ExpressBase.Common.Objects
 
         public override bool DoNotPersist { get; set; }
 
+        public override bool DoNotImport { get; set; }
+
         public override EbScript OnChangeFn { get; set; }
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
@@ -268,6 +270,7 @@ namespace ExpressBase.Common.Objects
                                 EbControl _ctrlObj = (ctrlObj as EbControl);
                                 string opFnsJs = string.Empty;
                                 opFnsJs += GetOpFnJs("getValue", _ctrlObj.GetValueJSfn, TypeName);
+                                opFnsJs += GetOpFnJs("getPreviousValue", _ctrlObj.GetPreviousValueJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("getValueFromDOM", _ctrlObj.GetValueFromDOMJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("getDisplayMember", _ctrlObj.GetDisplayMemberJSfn, TypeName);
                                 opFnsJs += GetOpFnJs("getDisplayMemberFromDOM", _ctrlObj.GetDisplayMemberFromDOMJSfn, TypeName);

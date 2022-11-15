@@ -1,5 +1,6 @@
 ﻿using ExpressBase.Common.Objects;
 using ExpressBase.Common.Structures;
+using ExpressBase.Objects;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -282,6 +283,8 @@ namespace ExpressBase.Common
         public string Title { get; set; }
 
         public string ContainerName { get; set; }
+
+        public string CustomSelectQuery { get; set; }
 
         public bool DescOdr { get; set; }//Descending order eb_row_num - datagrid
 
