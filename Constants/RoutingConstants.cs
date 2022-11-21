@@ -33,16 +33,18 @@ namespace ExpressBase.Common
 
         public const string BEARER_TOKEN = "bToken";
         public const string REFRESH_TOKEN = "rToken";
+        public const string WEB_BEARER_TOKEN = "web_btoken";
+        public const string WEB_REFRESH_TOKEN = "web_rtoken";
         public const string PAYNOW = "/PayNow";
         public const string TWOFATOKEN = "Token";
         public const string RPWToken = "rpwToken";
-		public const string SSE_SUB_ID = "eb_sse_subid";
+        public const string SSE_SUB_ID = "eb_sse_subid";
 
-		public const string BOT_BEARER_TOKEN = "bot_bToken";
-		public const string BOT_REFRESH_TOKEN = "bot_rToken";
+        public const string BOT_BEARER_TOKEN = "bot_bToken";
+        public const string BOT_REFRESH_TOKEN = "bot_rToken";
 
-		//Console
-		public const string WC = "wc";
+        //Console
+        public const string WC = "wc";
         public const string TC = "tc";
         public const string UC = "uc";
         public const string DC = "dc";
