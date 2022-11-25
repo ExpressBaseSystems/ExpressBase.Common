@@ -18,7 +18,7 @@ namespace ExpressBase.Common.Structures
         public bool IsAvailableInMobile { get; private set; }
         public bool IsAvailableInWeb { get; private set; }
 
-        internal EbObjectType(string name, int code, string bmw, bool isUserFacing,string icon,string alias)
+        internal EbObjectType(string name, int code, string bmw, bool isUserFacing, string icon, string alias)
         {
             Name = name;    // 38 bytes max
             IntCode = code; //4 bytes
@@ -101,13 +101,14 @@ namespace ExpressBase.Common.Structures
         public const int iCalendarView = 24;
         public const int iCsharpFunction = 25;
         public const int iSqlJob = 26;
+        public const int iHtmlPage = 27;
 
-        public static readonly EbObjectType Null = new EbObjectType("Null", iNull, ObjectConstants.XXX, false, "fa-exclamation-triangle",null);
-        public static readonly EbObjectType WebForm = new EbObjectType(ObjectConstants.WEB_FORM, iWebForm, ObjectConstants.XMW, true, "fa-wpforms","Form");//true
+        public static readonly EbObjectType Null = new EbObjectType("Null", iNull, ObjectConstants.XXX, false, "fa-exclamation-triangle", null);
+        public static readonly EbObjectType WebForm = new EbObjectType(ObjectConstants.WEB_FORM, iWebForm, ObjectConstants.XMW, true, "fa-wpforms", "Form");//true
         //public static readonly EbObjectType DisplayBlock = new EbObjectType(ObjectConstants.DISPLAY_BLOCK, iDisplayBlock, ObjectConstants.XXX, false);
         public static readonly EbObjectType DataReader = new EbObjectType(ObjectConstants.DATA_READER, iDataReader, ObjectConstants.BMW, false, "fa-database", "Data Reader");
         public static readonly EbObjectType DataWriter = new EbObjectType(ObjectConstants.DATA_WRITER, iDataWriter, ObjectConstants.BMW, false, "fa-database", "Data Writer");
-        public static readonly EbObjectType Report = new EbObjectType(ObjectConstants.REPORT, iReport, ObjectConstants.XMW, true, "fa-file-pdf-o","PDF Report");
+        public static readonly EbObjectType Report = new EbObjectType(ObjectConstants.REPORT, iReport, ObjectConstants.XMW, true, "fa-file-pdf-o", "PDF Report");
         //public static readonly EbObjectType Table = new EbObjectType(ObjectConstants.TABLE, iTable, ObjectConstants.BMW, false);
         public static readonly EbObjectType SqlFunction = new EbObjectType(ObjectConstants.SQL_FUNCTION, iSqlFunction, ObjectConstants.BMW, false, "fa-code", "Sql Function");
         //public static readonly EbObjectType SqlValidator = new EbObjectType(ObjectConstants.SQL_VALIDATOR, iSqlValidator, ObjectConstants.BMW, false);
@@ -118,14 +119,15 @@ namespace ExpressBase.Common.Structures
         public static readonly EbObjectType MobilePage = new EbObjectType(ObjectConstants.MOBILE_PAGE, iMobilePage, ObjectConstants.XMX, true, "fa-mobile", "Mobile Page");
         public static readonly EbObjectType UserControl = new EbObjectType(ObjectConstants.USER_CONTROL, iUserControl, ObjectConstants.BXW, false, "fa-puzzle-piece", "User Control");
         public static readonly EbObjectType EmailBuilder = new EbObjectType(ObjectConstants.EMAIL_BUILDER, iEmailBuilder, ObjectConstants.XMW, false, "fa-envelope-o", "Email Builder");
-        public static readonly EbObjectType TableVisualization = new EbObjectType(ObjectConstants.TABLE_VISUALIZATION, iTableVisualization, ObjectConstants.BMW, true,"fa-table","Table View");
-        public static readonly EbObjectType ChartVisualization = new EbObjectType(ObjectConstants.CHART_VISUALIZATION, iChartVisualization, ObjectConstants.BMW, true, "fa-bar-chart","Chart View");
+        public static readonly EbObjectType TableVisualization = new EbObjectType(ObjectConstants.TABLE_VISUALIZATION, iTableVisualization, ObjectConstants.BMW, true, "fa-table", "Table View");
+        public static readonly EbObjectType ChartVisualization = new EbObjectType(ObjectConstants.CHART_VISUALIZATION, iChartVisualization, ObjectConstants.BMW, true, "fa-bar-chart", "Chart View");
         public static readonly EbObjectType BotForm = new EbObjectType(ObjectConstants.BOT_FORM, iBotForm, ObjectConstants.BXX, true, "fa-wpforms", "Bot Form");
         public static readonly EbObjectType SmsBuilder = new EbObjectType(ObjectConstants.SMS_BUILDER, iSmsBuilder, ObjectConstants.XXW, false, "fa-commenting-o", "Sms Builder");
-        public static readonly EbObjectType Api = new EbObjectType(ObjectConstants.API, iApi, ObjectConstants.BMW, false, "fa-code",null);
+        public static readonly EbObjectType Api = new EbObjectType(ObjectConstants.API, iApi, ObjectConstants.BMW, false, "fa-code", null);
         public static readonly EbObjectType MapView = new EbObjectType(ObjectConstants.MAP_VIEW, iMapView, ObjectConstants.BMW, true, "fa-map-marker", "Map View");
         public static readonly EbObjectType DashBoard = new EbObjectType(ObjectConstants.DASHBOARD, iDashBoard, ObjectConstants.BMW, true, "fa-tachometer", null);
         public static readonly EbObjectType SqlJob = new EbObjectType(ObjectConstants.SQLJOB, iSqlJob, ObjectConstants.XXW, false, "fa-tachometer", "Sql Job");
+        public static readonly EbObjectType HtmlPage = new EbObjectType(ObjectConstants.HTML_PAGE, iHtmlPage, ObjectConstants.XXW, false, "fa-code", "Html Page");
 
 
         public static readonly EbObjectType KanBan = new EbObjectType(ObjectConstants.KANBAN, iKanBan, ObjectConstants.XXW, false, "fa-tag", null);
@@ -173,7 +175,8 @@ namespace ExpressBase.Common.Structures
                     DashBoard,
                     JavascriptFunction,
                     CsharpFunction,
-                    SqlJob
+                    SqlJob,
+                    HtmlPage
                 };
             }
         }

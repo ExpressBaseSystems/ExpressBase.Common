@@ -121,7 +121,7 @@ namespace ExpressBase.Common.Structures
         }
     }
 
-    public class CalendarOperations: EbOperations
+    public class CalendarOperations : EbOperations
     {
         public readonly EbOperation View;
 
@@ -409,6 +409,32 @@ namespace ExpressBase.Common.Structures
                 yield return Edit;
                 yield return Delete;
                 yield return Cancel;
+            }
+        }
+    }
+
+    public class HtmlPageOperations : EbOperations
+    {
+        public readonly EbOperation View;
+
+        private HtmlPageOperations()
+        {
+            View = new EbOperation(OperationConstants.VIEW, 0, OperationConstants.XXW);
+        }
+
+        public static EbOperations Instance
+        {
+            get
+            {
+                return new HtmlPageOperations();
+            }
+        }
+
+        public override IEnumerable<EbOperation> Enumerator
+        {
+            get
+            {
+                yield return View;
             }
         }
     }

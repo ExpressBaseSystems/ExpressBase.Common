@@ -58,6 +58,7 @@ namespace ExpressBase.Common.Objects
         DashBoard = 22,
         Calendar = 24,
         SqlJob = 26,
+        HtmlPage = 27,
         SurveyControl = 28,
         All = 100
     }
