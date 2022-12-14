@@ -68,5 +68,7 @@ namespace ExpressBase.Common
 
         //Reset PW
         public const string RESET_PASSWORD_PAGE = "/ResetPasswordIn";
+
+        public const string SUPPORT_MAIL_ID = "mailto:support@expressbase.com";
     }
 }
