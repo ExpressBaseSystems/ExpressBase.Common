@@ -97,6 +97,7 @@ else ";
 this.__IsDisable = true;
 $('#cont_' + this.EbSid_CtxId).attr('eb-readonly','true').find('.ctrl-cover').attr('eb-readonly','true');
 $('#cont_' + this.EbSid_CtxId + ' *').attr('disabled', 'disabled').css('pointer-events', 'none').find('[ui-inp]').css('background-color', 'var(--eb-disablegray)');
+$('#cont_' + this.EbSid_CtxId + ' .ps-rfshbtn').removeAttr('disabled').css('pointer-events', 'all');
 $('#cont_' + this.EbSid_CtxId + ' .ctrl-cover .input-group-addon').css('background-color', 'var(--eb-disablegray)');";
 
 
