@@ -38,5 +38,26 @@ namespace ExpressBase.Common.Helpers
                 return "Kerala Development and Innovation Strategic Council (K-DISC)";
             return null;
         }
+
+        public static string GetUserNameLabel(string Host)
+        {
+            if (Host?.ToLower()?.Contains("oloi") == true)
+                return "Email";
+            return "Email or Mobile";
+        }
+
+        public static string GetLiActiveClass(string Host, bool WithPwd)
+        {
+            if (Host?.ToLower()?.Contains("oloi") == true)
+                return WithPwd ? string.Empty : "active";
+            return WithPwd ? "active" : string.Empty;
+        }
+
+        public static string GetTabPaneActiveClass(string Host, bool WithPwd)
+        {
+            if (Host?.ToLower()?.Contains("oloi") == true)
+                return WithPwd ? string.Empty : "active in";
+            return WithPwd ? "active in" : string.Empty;
+        }
     }
 }
