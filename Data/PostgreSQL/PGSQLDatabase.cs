@@ -441,16 +441,18 @@ namespace ExpressBase.Common
 
             using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
             {
-                DbDataReader reader = cmd.ExecuteReader();
-                do
+                using (DbDataReader reader = cmd.ExecuteReader())
                 {
-                    EbDataTable dt = new EbDataTable();
-                    Type[] typeArray = this.AddColumns(dt, (reader as NpgsqlDataReader).GetColumnSchema());
-                    PrepareDataTable((reader as NpgsqlDataReader), dt, typeArray);
-                    ds.Tables.Add(dt);
-                    ds.RowNumbers += dt.Rows.Count.ToString() + ",";
+                    do
+                    {
+                        EbDataTable dt = new EbDataTable();
+                        Type[] typeArray = this.AddColumns(dt, (reader as NpgsqlDataReader).GetColumnSchema());
+                        PrepareDataTable((reader as NpgsqlDataReader), dt, typeArray);
+                        ds.Tables.Add(dt);
+                        ds.RowNumbers += dt.Rows.Count.ToString() + ",";
+                    }
+                    while (reader.NextResult());
                 }
-                while (reader.NextResult());
             }
 
             var dtEnd = DateTime.Now;
