@@ -59,5 +59,10 @@ namespace ExpressBase.Common.Helpers
                 return WithPwd ? string.Empty : "active in";
             return WithPwd ? "active in" : string.Empty;
         }
+
+        public static bool IsSupportButtonVisible(string Host)
+        {
+            return !Host?.ToLower()?.Contains("oloi") == true;
+        }
     }
 }
