@@ -36,5 +36,12 @@
         files = 2,
         image = 1
     }
+
+    public enum ViewerPosition
+    {
+        FullScreen = 0,
+        Left = 1,
+        Right = 2
+    }
 }
 

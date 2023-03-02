@@ -404,6 +404,66 @@ namespace ExpressBase.Common
             }
         }
 
+        public EbDataSet CursorDoQueries(string query)
+        {
+            using (var dbConnection = GetNewConnection() as NpgsqlConnection)
+            {
+                try
+                {
+                    dbConnection.Open();
+                    EbDataSet ds = CursorDoQueries(dbConnection, query);
+                    dbConnection.Close();
+                    return ds;
+                }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    if (dbConnection.State != ConnectionState.Closed)
+                        dbConnection.Close();
+                    if ((uint)npgse.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(dbConnection);
+                    throw npgse;
+                }
+                finally
+                {
+                    if (dbConnection.State != ConnectionState.Closed)
+                        dbConnection.Close();
+                }
+            }
+        }
+
+        public EbDataSet CursorDoQueries(DbConnection conn, string query)
+        {
+            EbDataSet ds = new EbDataSet();
+            var dtStart = DateTime.Now;
+            Console.WriteLine(string.Format("CursorDoQueries Start Time : {0}", dtStart));
+            ds.RowNumbers = "";
+            NpgsqlConnection con = conn as NpgsqlConnection;
+
+            using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
+            {
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    do
+                    {
+                        EbDataTable dt = new EbDataTable();
+                        Type[] typeArray = this.AddColumns(dt, (reader as NpgsqlDataReader).GetColumnSchema());
+                        PrepareDataTable((reader as NpgsqlDataReader), dt, typeArray);
+                        ds.Tables.Add(dt);
+                        ds.RowNumbers += dt.Rows.Count.ToString() + ",";
+                    }
+                    while (reader.NextResult());
+                }
+            }
+
+            var dtEnd = DateTime.Now;
+            var ts = (dtEnd - dtStart).TotalMilliseconds;
+            Console.WriteLine(string.Format("CursorDoQueries Execution Time : {0}", ts));
+            ds.RowNumbers = ds.RowNumbers.Substring(0, ds.RowNumbers.Length - 1);
+            ds.StartTime = dtStart;
+            ds.EndTime = dtEnd;
+            return ds;
+        }
+
         public override EbDataTable DoProcedure(string query, params DbParameter[] parameters)
         {
             return null;
