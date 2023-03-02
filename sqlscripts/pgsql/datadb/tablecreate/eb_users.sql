@@ -41,6 +41,7 @@ CREATE TABLE eb_users
 	eb_created_at timestamp without time zone,
 	eb_lastmodified_by integer,
 	eb_lastmodified_at timestamp without time zone,
+	resetpsw_code text,
 	pw text,
 	forcepwreset "char" DEFAULT 'T'::"char",
 	is_email_verified "char" DEFAULT 'F'::"char",
