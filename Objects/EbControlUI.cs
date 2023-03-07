@@ -70,24 +70,24 @@ namespace ExpressBase.Common.Objects
     }
 
 
-    [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
+    [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl, BuilderType.FilterDialog)]
     public class UISides
     {
         public UISides() { }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl, BuilderType.FilterDialog)]
         [DefaultPropValue(8)]
         public virtual int Top { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl, BuilderType.FilterDialog)]
         [DefaultPropValue(8)]
         public virtual int Right { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl, BuilderType.FilterDialog)]
         [DefaultPropValue(8)]
         public virtual int Bottom { get; set; }
 
-        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl)]
+        [EnableInBuilder(BuilderType.WebForm, BuilderType.BotForm, BuilderType.UserControl, BuilderType.SurveyControl, BuilderType.FilterDialog)]
         [DefaultPropValue(8)]
         public virtual int Left { get; set; }
     }
