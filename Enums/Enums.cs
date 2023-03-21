@@ -415,5 +415,14 @@ namespace ExpressBase.Common
         Approval = 1,
         Meeting = 2
     }
+
+    public enum FormSubmissionJobStatus
+    {
+        Default = 0,
+        WebReceived = 1,
+        SsReceived = 2,
+        SsProcessed = 3,
+        WebProcessed = 4
+    }
 }
 
