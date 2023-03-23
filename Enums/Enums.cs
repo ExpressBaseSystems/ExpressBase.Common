@@ -424,5 +424,11 @@ namespace ExpressBase.Common
         SsProcessed = 3,
         WebProcessed = 4
     }
+
+    public enum EbErrorCode
+    {
+        Default = 0,
+        DuplicateFormSubmission = 1
+    }
 }
 
