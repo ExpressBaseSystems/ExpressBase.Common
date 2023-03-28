@@ -19,7 +19,7 @@ namespace ExpressBase.Common
             this.ColumnName = columnname;
             this.Type = type;
         }
-      
+
         public EbDataColumn(int index, string columnname, EbDbTypes type)
         {
             this.ColumnIndex = index;
@@ -34,10 +34,13 @@ namespace ExpressBase.Common
         public string ColumnName { get; set; }
 
         [ProtoBuf.ProtoMember(3)]
-        public EbDbTypes Type { get; set; } 
-        
+        public EbDbTypes Type { get; set; }
+
         [ProtoBuf.ProtoMember(4)]
         public string TableName { get; set; }
+
+        [ProtoBuf.ProtoMember(5)]
+        public string DataTypeName { get; set; }
     }
 
     [ProtoBuf.ProtoContract(IgnoreListHandling = true)]
@@ -45,13 +48,13 @@ namespace ExpressBase.Common
     {
         internal EbDataTable Table { get; set; }
 
-        public ColumnColletion(){ }
+        public ColumnColletion() { }
 
         public ColumnColletion(EbDataTable table)
         {
             this.Table = table;
         }
-       
+
         public EbDataColumn this[string columnname]
         {
             get
@@ -66,17 +69,17 @@ namespace ExpressBase.Common
             }
         }
 
-		new public void Add(EbDataColumn column)
-		{
-			base.Add(column);
+        new public void Add(EbDataColumn column)
+        {
+            base.Add(column);
 
-			foreach (EbDataRow row in this.Table.Rows)
-				row.Add(null);
-		}
+            foreach (EbDataRow row in this.Table.Rows)
+                row.Add(null);
+        }
 
-		public void BaseAdd(EbDataColumn column)
-		{
-			base.Add(column);
-		}
-	}
+        public void BaseAdd(EbDataColumn column)
+        {
+            base.Add(column);
+        }
+    }
 }
