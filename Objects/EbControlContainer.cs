@@ -78,6 +78,9 @@ namespace ExpressBase.Common.Objects
 
         public override EbScript OnChangeFn { get; set; }
 
+        [JsonIgnore]
+        public override bool IsNonDataInputControl { get; set; }
+
         [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
         public virtual bool IsSpecialContainer { get; set; }
@@ -118,7 +121,6 @@ namespace ExpressBase.Common.Objects
 
         [JsonIgnore]
         public override EbScript DefaultValueExpression { get; set; }
-
 
         [JsonIgnore]
         public override string GetValueJSfn { get { return string.Empty; } set { } }
