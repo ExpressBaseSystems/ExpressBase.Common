@@ -22,47 +22,52 @@ namespace ExpressBase.Common.Helpers
 
         public static bool IsLogoVisible(string Host)
         {
-            return !Host?.ToLower()?.Contains("oloi") == true;
+            return !ContainsOloi(Host);
         }
 
         public static string GetIconUrl(string Host)
         {
-            if (Host?.ToLower()?.Contains("oloi") == true)
+            if (ContainsOloi(Host))
                 return "/images/favicon_kdisc.ico";
             return "/images/favicon.ico";
         }
 
         public static string GetLoginPageDescription(string Host)
         {
-            if (Host?.ToLower()?.Contains("oloi") == true)
+            if (ContainsOloi(Host))
                 return "Kerala Development and Innovation Strategic Council (K-DISC)";
             return null;
         }
 
         public static string GetUserNameLabel(string Host)
         {
-            if (Host?.ToLower()?.Contains("oloi") == true)
+            if (ContainsOloi(Host))
                 return "Email";
             return "Email or Mobile";
         }
 
         public static string GetLiActiveClass(string Host, bool WithPwd)
         {
-            if (Host?.ToLower()?.Contains("oloi") == true)
+            if (ContainsOloi(Host))
                 return WithPwd ? string.Empty : "active";
             return WithPwd ? "active" : string.Empty;
         }
 
         public static string GetTabPaneActiveClass(string Host, bool WithPwd)
         {
-            if (Host?.ToLower()?.Contains("oloi") == true)
+            if (ContainsOloi(Host))
                 return WithPwd ? string.Empty : "active in";
             return WithPwd ? "active in" : string.Empty;
         }
 
         public static bool IsSupportButtonVisible(string Host)
         {
-            return !Host?.ToLower()?.Contains("oloi") == true;
+            return !ContainsOloi(Host);
+        }
+
+        private static bool ContainsOloi(string Host)
+        {
+            return Host?.ToLower()?.Contains("oloi") == true;
         }
     }
 }
