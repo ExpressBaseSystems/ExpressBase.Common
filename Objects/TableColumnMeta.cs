@@ -217,6 +217,7 @@ namespace ExpressBase.Common
         public string CreatedAt { get; set; }
         public int ModifiedBy { get; set; }
         public string ModifiedAt { get; set; }
+        public string CancelReason { get; set; }
         public WebformDataInfo Info { get; set; }
 
         public WebformData()

@@ -98,7 +98,7 @@ namespace ExpressBase.Common.Objects
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
-        public string DBareHtml { get; set; }
+        public virtual string DBareHtml { get; set; }
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]

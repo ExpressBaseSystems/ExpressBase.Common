@@ -603,6 +603,7 @@ namespace ExpressBase.Common
                 typeArray[pos] = (Type)(drow["DataType"]);
                 EbDataColumn column = new EbDataColumn(columnName, ConvertToDbType(typeArray[pos]));
                 column.ColumnIndex = pos++;
+                column.DataTypeName = drow.DataTypeName;
                 dt.Columns.Add(column);
             }
             if (schema.Count > 0)

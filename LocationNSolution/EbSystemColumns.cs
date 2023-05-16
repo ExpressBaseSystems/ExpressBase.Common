@@ -75,10 +75,10 @@ namespace ExpressBase.Common.LocationNSolution
         }
     }
 
-    public class EbSystemColumns: List<EbSystemColumn>
+    public class EbSystemColumns : List<EbSystemColumn>
     {
         public EbSystemColumns() { }
-        
+
         public EbSystemColumns(List<EbSystemColumn> ebs) : base()
         {
             base.AddRange(ebs);
@@ -112,7 +112,7 @@ namespace ExpressBase.Common.LocationNSolution
             return this.GetItem(key).Type == (int)EbDbTypes.Boolean ? Convert.ToString(val).Equals("T") : Convert.ToBoolean(val);
         }
 
-        private EbSystemColumn GetItem(string key) 
+        private EbSystemColumn GetItem(string key)
         {
             EbSystemColumn temp = this.Find(e => e.Default == key);
             if (temp != null) return temp;
@@ -124,8 +124,8 @@ namespace ExpressBase.Common.LocationNSolution
 
     public static class EbSysCols
     {
-        private static List<EbSystemColumn> _Values = new List<EbSystemColumn>() 
-        { 
+        private static List<EbSystemColumn> _Values = new List<EbSystemColumn>()
+        {
             new EbSystemColumn("Created By", SystemColumns.eb_created_by, SystemColumns.eb_created_by, 1),
             new EbSystemColumn("Created At", SystemColumns.eb_created_at, SystemColumns.eb_created_at, 2),
             new EbSystemColumn("Created From", SystemColumns.eb_loc_id, SystemColumns.eb_loc_id, 1),
@@ -144,7 +144,8 @@ namespace ExpressBase.Common.LocationNSolution
             new EbSystemColumn("Currency Id", SystemColumns.eb_currency_id, SystemColumns.eb_currency_id, 1),
             new EbSystemColumn("Currency Xid", SystemColumns.eb_currency_xid, SystemColumns.eb_currency_xid, 4),
             new EbSystemColumn("Xrate1", SystemColumns.eb_xrate1, SystemColumns.eb_xrate1, 5),
-            new EbSystemColumn("Xrate2", SystemColumns.eb_xrate2, SystemColumns.eb_xrate2, 5)
+            new EbSystemColumn("Xrate2", SystemColumns.eb_xrate2, SystemColumns.eb_xrate2, 5),
+            new EbSystemColumn("Cancel Reason", SystemColumns.eb_void_reason, SystemColumns.eb_void_reason, 4)
         };
 
         public static List<EbSystemColumn> Values
