@@ -61,7 +61,10 @@ namespace ExpressBase.Common
                     new EbFontFamily{ CSSFontName ="Times",SystemFontName="Times-Roman"},
                     new EbFontFamily{ CSSFontName ="Tinos",SystemFontName="Times"},
                     new EbFontFamily{ CSSFontName ="Heebo",SystemFontName="ZapfDingbats"},
-                    new EbFontFamily{ CSSFontName ="Roboto",SystemFontName="Roboto (Default)"}
+                    new EbFontFamily{ CSSFontName ="Roboto",SystemFontName="Roboto (Default)"},
+                    new EbFontFamily{ CSSFontName ="Meera",SystemFontName="Meera"},
+                    new EbFontFamily{ CSSFontName ="Akshar Unicode",SystemFontName="Akshar Unicode"},
+                    new EbFontFamily{ CSSFontName ="Noto Serif Malayalam",SystemFontName="Noto Serif Malayalam"}
                 };
             }
         }
