@@ -166,6 +166,8 @@ namespace ExpressBase.Common.LocationNSolution
 
         public string DefaultHtmlPageRefid { get; set; }
 
+        public string GetEmployeesDrRefid { get; set; }
+
         public List<EbProfileUserType> UserTypeForms { get; set; }
 
         public MobileAppSettings MobileAppSettings { get; set; }
