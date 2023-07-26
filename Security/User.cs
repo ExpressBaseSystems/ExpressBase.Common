@@ -626,7 +626,7 @@ namespace ExpressBase.Security
             int userid = Convert.ToInt32(ds.Rows[0][0]);
             if (userid > 0)
             {
-                bool sysRoleExists = false;
+                bool devRoleExists = false;
                 string[] sRoleIds = ds.Rows[0][4].ToString().Split(',');//role id array
                 List<int> iRoleIds = new List<int>();
                 List<string> rolesname = ds.Rows[0][5].ToString().Split(',').ToList();
@@ -639,11 +639,12 @@ namespace ExpressBase.Security
                         if (id < 100 && Enum.GetName(typeof(SystemRoles), id) != null)
                         {
                             rolesname[i] = Enum.GetName(typeof(SystemRoles), id);
-                            sysRoleExists = true;
+                            if (id == (int)SystemRoles.SolutionDeveloper)
+                                devRoleExists = true;
                         }
                     }
                 }
-                if (context.Equals(RoutingConstants.DC) && !sysRoleExists)
+                if (context.Equals(RoutingConstants.DC) && !devRoleExists)
                     return null;
 
                 List<int> userGroupIds = new List<int>();
