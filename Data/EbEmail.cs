@@ -65,7 +65,7 @@ namespace ExpressBase.Common.Data
                     Body = message,
                 };
 
-                if (replyto != null)
+                if (!string.IsNullOrWhiteSpace(replyto))
                     mm.ReplyToList.Add(replyto);
                 if (attachment != null)
                     mm.Attachments.Add(new System.Net.Mail.Attachment(new MemoryStream(attachment), attachmentname));
