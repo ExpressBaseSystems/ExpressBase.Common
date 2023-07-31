@@ -16,7 +16,7 @@ namespace ExpressBase.Common
 
         public const string CONTROL_WRAPER_HTML4WEB = @"
         <div id='cont_@ebsid@' ebsid='@ebsid@' name='@name@' class='Eb-ctrlContainer' @childOf@ ctype='@type@' eb-hidden='@isHidden@' eb-readonly='@isReadonly@'>
-            <span class='eb-ctrl-label'>
+            <span class='eb-ctrl-label' @LblHide@>
                 <span ui-label class='eb-label-editable' id='@ebsid@Lbl'>@Label@</span>
                 <input id='@ebsid@lbltxtb' class='eb-lbltxtb' type='text'/>
                 @LblInfo@

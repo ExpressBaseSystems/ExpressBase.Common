@@ -451,7 +451,8 @@ namespace ExpressBase.Common.Objects
 .Replace("@helpText@", this.HelpText)
 .Replace("@type@", this.ObjType)
 .Replace("@Label@", (Label ?? ""))
-.Replace("@req@ ", (Required ? "<sup style='color: red'>*</sup>" : string.Empty));
+.Replace("@req@ ", (Required ? "<sup style='color: red'>*</sup>" : string.Empty))
+.Replace("@LblHide@", (string.IsNullOrEmpty(this.Label) && this.IsRenderMode ? "style='display:none'" : string.Empty));
         }
 
         //temporary for KSUM survey control        
