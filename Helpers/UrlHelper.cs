@@ -65,7 +65,7 @@ namespace ExpressBase.Common.Helpers
             return !ContainsOloi(Host);
         }
 
-        private static bool ContainsOloi(string Host)
+        public static bool ContainsOloi(string Host)
         {
             return Host?.ToLower()?.Contains("oloi") == true;
         }
