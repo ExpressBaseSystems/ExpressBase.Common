@@ -76,6 +76,8 @@ namespace ExpressBase.Common.Objects
 
         public override bool DoNotImport { get; set; }
 
+        public override bool DoNotClone { get; set; }
+
         public override EbScript OnChangeFn { get; set; }
 
         [JsonIgnore]

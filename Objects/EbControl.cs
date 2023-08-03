@@ -295,6 +295,16 @@ namespace ExpressBase.Common.Objects
 
         [PropertyGroup(PGConstants.DATA)]
         [EnableInBuilder(BuilderType.WebForm)]
+        [HelpText("Set true if you dont want to clone value of this field.")]
+        public virtual bool DoNotClone { get; set; }
+
+        //[PropertyGroup(PGConstants.DATA)]
+        //[EnableInBuilder(BuilderType.WebForm)]
+        //[HelpText("Set true if you dont want to export value of this field.")]
+        //public virtual bool DoNotExport { get; set; }// This property should be required in future
+
+        [PropertyGroup(PGConstants.DATA)]
+        [EnableInBuilder(BuilderType.WebForm)]
         [HelpText("Set true if you dont want to import value to this field.")]
         public virtual bool DoNotImport { get; set; }
 
