@@ -196,26 +196,55 @@ namespace ExpressBase.Common.LocationNSolution
         public List<EbFinancialYear> List { get; set; }
 
         public int Current { get; set; }
-        public bool SysUser { get; set; }
+        public bool IsFyAdmin { get; set; }
+        public bool IsFyUser { get; set; }
+
+        public EbFinancialPeriod GetFinancialPeriod(DateTime date)
+        {
+            foreach (EbFinancialYear fy in this.List)
+            {
+                foreach (EbFinancialPeriod fp in fy.List)
+                {
+                    if (date >= fp.ActStart && date <= fp.ActEnd)
+                    {
+                        return fp;
+                    }
+                }
+            }
+            return null;
+        }
     }
 
     public class EbFinancialYear
     {
+        public EbFinancialYear()
+        {
+            this.List = new List<EbFinancialPeriod>();
+        }
+
         public int Id { get; set; }
         public DateTime FyStart { get; set; }
         public DateTime FyEnd { get; set; }
-        public DateTime ActStart { get; set; }
-        public DateTime ActEnd { get; set; }
-        public bool Locked { get; set; }
-        public List<int> LocIds { get; set; }
+        public List<EbFinancialPeriod> List { get; set; }
 
         public string FyStart_s { get; set; }
         public string FyEnd_s { get; set; }
-        public string ActStart_s { get; set; }
-        public string ActEnd_s { get; set; }
         public string FyStart_sl { get; set; }
         public string FyEnd_sl { get; set; }
-        public string ActStart_sl { get; set; }
+    }
+
+    public class EbFinancialPeriod
+    {
+        public int Id { get; set; }
+        public int FyId { get; set; }
+        public DateTime ActStart { get; set; }
+        public DateTime ActEnd { get; set; }
+        public List<int> LockedIds { get; set; }
+        public List<int> PartiallyLockedIds { get; set; }
+
+        public string ActStart_s { get; set; }
+        public string ActEnd_s { get; set; }
+        public string ActStart_disp { get; set; }
         public string ActEnd_sl { get; set; }
     }
 

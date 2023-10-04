@@ -169,7 +169,8 @@ namespace ExpressBase.Common
         SolutionTester = 4,
         SolutionPM = 5,
         SolutionUser = 6,
-        FinYearSwitcher = 7
+        FinancialYearAdmin = 7,//Create/Lock/Unlock/PartialLock/PartialUnlock Fy
+        FinancialYearUser = 8//Switch to Partially locked Fy
     }
 
     public enum EbSystemRoles
