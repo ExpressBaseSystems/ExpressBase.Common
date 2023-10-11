@@ -75,6 +75,8 @@ namespace ExpressBase.Common.LocationNSolution
 
         public EbFinancialYears FinancialYears { get; set; }
 
+        public List<EbLanguage> Languages { get; set; }
+
         public PricingTiers PricingTier { get; set; }
 
         public bool IsVersioningEnabled { get; set; }
@@ -106,6 +108,7 @@ namespace ExpressBase.Common.LocationNSolution
         public Eb_Solution()
         {
             Locations = new Dictionary<int, EbLocation>();
+            Languages = new List<EbLanguage>();
         }
 
         public bool GetMobileSettings(out MobileAppSettings settings)
@@ -176,6 +179,8 @@ namespace ExpressBase.Common.LocationNSolution
 
         public EbSystemColumns SystemColumns { get; set; }
 
+        public bool EnableFinancialYear { get; set; }
+
         [OnDeserialized]
         public void OnDeserialized(StreamingContext context)
         {
@@ -184,6 +189,7 @@ namespace ExpressBase.Common.LocationNSolution
             else
                 SystemColumns = new EbSystemColumns(EbSysCols.GetFixed(SystemColumns));
         }
+
     }
 
     public class EbFinancialYears
@@ -246,6 +252,14 @@ namespace ExpressBase.Common.LocationNSolution
         public string ActEnd_s { get; set; }
         public string ActStart_disp { get; set; }
         public string ActEnd_sl { get; set; }
+    }
+
+    public class EbLanguage
+    {
+        public int Id { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string DisplayName { get; set; }
     }
 
     public class MobileAppSettings

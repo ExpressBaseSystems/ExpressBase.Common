@@ -1407,11 +1407,11 @@ namespace ExpressBase.Common
             get
             {
                 return @"SELECT count(*) FROM (SELECT * FROM eb_keys WHERE LOWER(`key`) LIKE LOWER(@KEY)) AS Temp;
-											SELECT A.id, A.`key`, B.id, B.language, C.id, C.value
+											SELECT A.id, A.`key`, B.id, B.name, C.id, C.value
 											FROM (SELECT * FROM eb_keys WHERE LOWER(`key`) LIKE LOWER(@KEY) ORDER BY `key` ASC LIMIT @LIMIT OFFSET @OFFSET ) A,
 													eb_languages B, eb_keyvalue C
 											WHERE A.id=C.key_id AND B.id = C.lang_id  
-											ORDER BY A.`key` ASC, B.language ASC;";
+											ORDER BY A.`key` ASC, B.name ASC;";
             }
         }
 

@@ -5,7 +5,11 @@
 CREATE TABLE eb_languages
 (
     id serial,
-    language text NOT NULL,
+    code text NOT NULL,
+    name text NOT NULL,
+    display_name text NOT NULL,
+    eb_row_num integer,
+    eb_del "char" DEFAULT 'F'::"char",
     CONSTRAINT eb_languages_pkey PRIMARY KEY (id)
 );
 
