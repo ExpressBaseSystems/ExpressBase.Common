@@ -461,7 +461,7 @@ namespace ExpressBase.Common.Objects
 .Replace("@helpText@", this.HelpText)
 .Replace("@type@", this.ObjType)
 .Replace("@Label@", (Label ?? ""))
-.Replace("@req@ ", (Required ? "<sup style='color: red'>*</sup>" : string.Empty))
+.Replace("@req@ ", (Required && (!this.IsRenderMode || (!string.IsNullOrWhiteSpace(this.Label) && this.IsRenderMode)) ? "<sup style='color: red'>*</sup>" : string.Empty))
 .Replace("@LblHide@", (string.IsNullOrEmpty(this.Label) && this.IsRenderMode && this.ObjType != "Label" ? "style='display:none'" : string.Empty));
         }
 
