@@ -566,6 +566,14 @@ namespace ExpressBase.Common.Objects
             {
                 this.Label = Keys[this.Label];
             }
+            if (!string.IsNullOrWhiteSpace(this.HelpText) && Keys.ContainsKey(this.HelpText))
+            {
+                this.HelpText = Keys[this.HelpText];
+            }
+            if (!string.IsNullOrWhiteSpace(this.ToolTipText) && Keys.ContainsKey(this.ToolTipText))
+            {
+                this.ToolTipText = Keys[this.ToolTipText];
+            }
         }
 
         public virtual void AddMultiLangKeys(List<string> keysList)
@@ -573,6 +581,14 @@ namespace ExpressBase.Common.Objects
             if (!string.IsNullOrWhiteSpace(this.Label) && !keysList.Contains(this.Label))
             {
                 keysList.Add(this.Label);
+            }
+            if (!string.IsNullOrWhiteSpace(this.HelpText) && !keysList.Contains(this.HelpText))
+            {
+                keysList.Add(this.HelpText);
+            }
+            if (!string.IsNullOrWhiteSpace(this.ToolTipText) && !keysList.Contains(this.ToolTipText))
+            {
+                keysList.Add(this.ToolTipText);
             }
         }
 
