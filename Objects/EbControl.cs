@@ -113,6 +113,7 @@ namespace ExpressBase.Common.Objects
         [OnChangeUIFunction("Common.HELP_TEXT")]
         [PropertyGroup(PGConstants.HELP)]
         [UIproperty]
+        [PropertyEditor(PropertyEditorType.MultiLanguageKeySelector)]
         [HelpText("Desciption about the field to show under the control.")]
         public virtual string HelpText { get; set; }
 
@@ -268,6 +269,7 @@ namespace ExpressBase.Common.Objects
 
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HelpText("Help text which shows when mouse hover the control")]
+        [PropertyEditor(PropertyEditorType.MultiLanguageKeySelector)]
         [PropertyGroup(PGConstants.HELP)]
         public virtual string ToolTipText { get; set; }
 
