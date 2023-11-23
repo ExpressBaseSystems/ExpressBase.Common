@@ -284,7 +284,7 @@ namespace ExpressBase.Common
                             EO.id = EOV.eb_objects_id  AND EO.obj_type = @type AND COALESCE(EOV.working_mode, 'F') <> 'T'
                             AND COALESCE( EO.eb_del, 'F') = 'F' 
                         ORDER BY
-                            EO.obj_name , EOV.id";
+                            EO.display_name , EOV.id";
             }
         }
 

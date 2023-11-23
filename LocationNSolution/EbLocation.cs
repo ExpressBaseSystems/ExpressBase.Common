@@ -171,6 +171,8 @@ namespace ExpressBase.Common.LocationNSolution
 
         public string GetEmployeesDrRefid { get; set; }
 
+        public string ProvisionUserFormRefid { get; set; }
+
         public List<EbProfileUserType> UserTypeForms { get; set; }
 
         public MobileAppSettings MobileAppSettings { get; set; }

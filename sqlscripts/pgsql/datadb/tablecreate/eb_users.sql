@@ -36,6 +36,7 @@ CREATE TABLE eb_users
 	dprefid integer DEFAULT 0,
 	eb_data_id integer,
 	eb_ver_id integer,
+	eb_is_mapped_user "char" DEFAULT 'F'::"char",
 	eb_user_types_id integer DEFAULT 1,
 	eb_created_by integer,
 	eb_created_at timestamp without time zone,
