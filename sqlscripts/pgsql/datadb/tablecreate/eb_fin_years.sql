@@ -7,16 +7,10 @@ CREATE TABLE eb_fin_years
     id serial,
     fy_start date,
     fy_end date,
-    active_start date,
-    active_end date,
-    eb_loc_ids text,
-    eb_lock "char",
-    locked_by integer,
-    locked_at timestamp without time zone,
     eb_created_by integer,
     eb_created_at timestamp without time zone,
-    eb_modified_by integer,
-    eb_modified_at timestamp without time zone,
+    eb_lastmodified_by integer,
+    eb_lastmodified_at timestamp without time zone,
     eb_del "char" DEFAULT 'F'::"char",
 	CONSTRAINT eb_fin_years_pkey PRIMARY KEY (id)
 );
