@@ -112,6 +112,19 @@ namespace ExpressBase.Common
             return null;
         }
 
+        public bool RemoveColumn(string cname)
+        {
+            for (int i = 0; i < this.Columns.Count; i++)
+            {
+                if (this.Columns[i].Name.Equals(cname))
+                {
+                    this.Columns.RemoveAt(i);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void SetColumn(string cname, SingleColumn column)
         {
             for (int i = 0; i < this.Columns.Count; i++)
