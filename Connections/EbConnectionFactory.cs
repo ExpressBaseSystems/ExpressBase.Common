@@ -259,22 +259,32 @@ namespace ExpressBase.Common.Data
                     // DATA DB RO
                     if (!(string.IsNullOrEmpty(Connections.DataDbConfig.ReadOnlyUserName) || string.IsNullOrEmpty(Connections.DataDbConfig.ReadOnlyPassword)))
                     {
-                        Connections.DataDbConfig.UserName = Connections.DataDbConfig.ReadOnlyUserName;
-                        Connections.DataDbConfig.Password = Connections.DataDbConfig.ReadOnlyPassword;
+                        EbDbConfig _Conf = new EbDbConfig()
+                        {
+                            Server = Connections.DataDbConfig.Server,
+                            Port = Connections.DataDbConfig.Port,
+                            DatabaseName = Connections.DataDbConfig.DatabaseName,
+                            UserName = Connections.DataDbConfig.ReadOnlyUserName,
+                            Password = Connections.DataDbConfig.ReadOnlyPassword,
+                            Timeout = Connections.DataDbConfig.Timeout,
+                            IsSSL = Connections.DataDbConfig.IsSSL
+                        };
 
                         if (!string.IsNullOrWhiteSpace(Connections.DataDbConfig.RoServer1) && Connections.DataDbConfig.RoPort1 > 0 && Connections.DataDbConfig.RoTimeout1 > 0)
                         {
-                            Connections.DataDbConfig.Server = Connections.DataDbConfig.RoServer1;
-                            Connections.DataDbConfig.Port = Connections.DataDbConfig.RoPort1;
-                            Connections.DataDbConfig.Timeout = Connections.DataDbConfig.RoTimeout1;
+                            _Conf.Server = Connections.DataDbConfig.RoServer1;
+                            _Conf.Port = Connections.DataDbConfig.RoPort1;
+                            _Conf.Timeout = Connections.DataDbConfig.RoTimeout1;
                         }
 
                         if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
-                            DataDBRO = new PGSQLDatabase(Connections.DataDbConfig);
+                            DataDBRO = new PGSQLDatabase(_Conf);
                         else if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
-                            DataDBRO = new OracleDB(Connections.DataDbConfig);
+                            DataDBRO = new OracleDB(_Conf);
                         else if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
-                            DataDBRO = new MySqlDB(Connections.DataDbConfig);
+                            DataDBRO = new MySqlDB(_Conf);
+
+
                     }
                     else if (DataDBRO == null)
                         DataDBRO = DataDB;
