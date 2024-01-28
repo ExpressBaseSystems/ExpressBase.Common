@@ -250,6 +250,12 @@ namespace ExpressBase.Common.Connections
 
         public string ReadOnlyPassword { get; set; }
 
+        public string RoServer1 { get; set; }
+
+        public int RoPort1 { get; set; }
+
+        public int RoTimeout1 { get; set; }
+
         public DatabaseVendors DatabaseVendor { get { return (DatabaseVendors)this.Type; } set { this.Type = (EbIntegrations)value; } }
     }
 

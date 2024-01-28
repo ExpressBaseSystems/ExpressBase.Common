@@ -110,8 +110,17 @@ namespace ExpressBase.Common
 
         public PGSQLDatabase(EbDbConfig dbconf)
         {
-            this.DbConfig = dbconf;
-            if (dbconf.IsSSL)
+            this.DbConfig = new EbDbConfig()
+            {
+                Server = dbconf.Server,
+                Port = dbconf.Port,
+                DatabaseName = dbconf.DatabaseName,
+                UserName = dbconf.UserName,
+                Password = dbconf.Password,
+                Timeout = dbconf.Timeout,
+                IsSSL = dbconf.IsSSL
+            };
+            if (this.DbConfig.IsSSL)
                 _cstr = string.Format(CONNECTION_STRING_BARE, this.DbConfig.Server, this.DbConfig.Port, this.DbConfig.DatabaseName, this.DbConfig.UserName, this.DbConfig.Password, this.DbConfig.Timeout);
             else
                 _cstr = string.Format(CONNECTION_STRING_BARE_WITHOUT_SSL, this.DbConfig.Server, this.DbConfig.Port, this.DbConfig.DatabaseName, this.DbConfig.UserName, this.DbConfig.Password, this.DbConfig.Timeout);

@@ -261,6 +261,14 @@ namespace ExpressBase.Common.Data
                     {
                         Connections.DataDbConfig.UserName = Connections.DataDbConfig.ReadOnlyUserName;
                         Connections.DataDbConfig.Password = Connections.DataDbConfig.ReadOnlyPassword;
+
+                        if (!string.IsNullOrWhiteSpace(Connections.DataDbConfig.RoServer1) && Connections.DataDbConfig.RoPort1 > 0 && Connections.DataDbConfig.RoTimeout1 > 0)
+                        {
+                            Connections.DataDbConfig.Server = Connections.DataDbConfig.RoServer1;
+                            Connections.DataDbConfig.Port = Connections.DataDbConfig.RoPort1;
+                            Connections.DataDbConfig.Timeout = Connections.DataDbConfig.RoTimeout1;
+                        }
+
                         if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
                             DataDBRO = new PGSQLDatabase(Connections.DataDbConfig);
                         else if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
