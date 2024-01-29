@@ -387,7 +387,27 @@ namespace ExpressBase.Common.Data
                     Connections.DataDbConfig.UserName = _userName;
                     Connections.DataDbConfig.Password = _passWord;
                     if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
+                    {
                         FilesDB.Add(new PGSQLFileDatabase(Connections.DataDbConfig));
+                        PostgresConfig ro_conf = new PostgresConfig()
+                        {
+                            Server = Connections.DataDbConfig.Server,
+                            Port = Connections.DataDbConfig.Port,
+                            DatabaseName = Connections.DataDbConfig.DatabaseName,
+                            UserName = Connections.DataDbConfig.ReadOnlyUserName,
+                            Password = Connections.DataDbConfig.ReadOnlyPassword,
+                            Timeout = Connections.DataDbConfig.Timeout,
+                            IsSSL = Connections.DataDbConfig.IsSSL,
+                            Id = Connections.DataDbConfig.Id + 1000000,
+                        };
+                        if (!string.IsNullOrWhiteSpace(Connections.DataDbConfig.RoServer1) && Connections.DataDbConfig.RoPort1 > 0 && Connections.DataDbConfig.RoTimeout1 > 0)
+                        {
+                            ro_conf.Server = Connections.DataDbConfig.RoServer1;
+                            ro_conf.Port = Connections.DataDbConfig.RoPort1;
+                            ro_conf.Timeout = Connections.DataDbConfig.RoTimeout1;
+                        }
+                        FilesDB.Add(new PGSQLFileDatabase(ro_conf));
+                    }
                     else if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
                         FilesDB.Add(new OracleFilesDB(Connections.DataDbConfig));
                     else if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
