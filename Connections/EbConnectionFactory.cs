@@ -409,7 +409,26 @@ namespace ExpressBase.Common.Data
                             FilesDB.Add(new GoogleDrive.GoogleDriveDatabase(Connections.FilesDbConfig.Integrations[i] as EbGoogleDriveConfig));
                         else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.PGSQL)
                         {
-                            FilesDB.Add(new PGSQLFileDatabase(Connections.FilesDbConfig.Integrations[i] as PostgresConfig));
+                            PostgresConfig pg_config = Connections.FilesDbConfig.Integrations[i] as PostgresConfig;
+                            FilesDB.Add(new PGSQLFileDatabase(pg_config));
+                            PostgresConfig ro_conf = new PostgresConfig()
+                            {
+                                Server = pg_config.Server,
+                                Port = pg_config.Port,
+                                DatabaseName = pg_config.DatabaseName,
+                                UserName = pg_config.ReadOnlyUserName,
+                                Password = pg_config.ReadOnlyPassword,
+                                Timeout = pg_config.Timeout,
+                                IsSSL = pg_config.IsSSL,
+                                Id = pg_config.Id + 1000000,
+                            };
+                            if (!string.IsNullOrWhiteSpace(pg_config.RoServer1) && pg_config.RoPort1 > 0 && pg_config.RoTimeout1 > 0)
+                            {
+                                ro_conf.Server = pg_config.RoServer1;
+                                ro_conf.Port = pg_config.RoPort1;
+                                ro_conf.Timeout = pg_config.RoTimeout1;
+                            }
+                            FilesDB.Add(new PGSQLFileDatabase(ro_conf));
                             Console.WriteLine("Postgres Files Db found:" + (Connections.FilesDbConfig.Integrations[i] as PostgresConfig).DatabaseName);
                         }
                         else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.ORACLE)

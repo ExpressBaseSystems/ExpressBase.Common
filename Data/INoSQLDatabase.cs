@@ -70,10 +70,10 @@ namespace ExpressBase.Common.Data
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in Upload File" + e.Message + "\nStack Trace: "+ e.StackTrace);
+                Console.WriteLine("Error in Upload File" + e.Message + "\nStack Trace: " + e.StackTrace);
                 return null;
             }
-            
+
         }
 
         public byte[] DownloadFileById(string filestoreid, EbFileCategory category, int _infraConId)
@@ -83,7 +83,7 @@ namespace ExpressBase.Common.Data
             //    _infraConId = DefaultConId;
             //}
             //this.UsedConId = _infraConId;
-            return this[_infraConId].DownloadFileById(filestoreid, category);
+            return this[_infraConId + 1000000].DownloadFileById(filestoreid, category);
         }
 
     }
