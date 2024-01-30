@@ -389,24 +389,27 @@ namespace ExpressBase.Common.Data
                     if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
                     {
                         FilesDB.Add(new PGSQLFileDatabase(Connections.DataDbConfig));
-                        PostgresConfig ro_conf = new PostgresConfig()
+                        if (!string.IsNullOrWhiteSpace(Connections.DataDbConfig.ReadOnlyUserName) && !string.IsNullOrWhiteSpace(Connections.DataDbConfig.ReadOnlyPassword))
                         {
-                            Server = Connections.DataDbConfig.Server,
-                            Port = Connections.DataDbConfig.Port,
-                            DatabaseName = Connections.DataDbConfig.DatabaseName,
-                            UserName = Connections.DataDbConfig.ReadOnlyUserName,
-                            Password = Connections.DataDbConfig.ReadOnlyPassword,
-                            Timeout = Connections.DataDbConfig.Timeout,
-                            IsSSL = Connections.DataDbConfig.IsSSL,
-                            Id = Connections.DataDbConfig.Id + 1000000,
-                        };
-                        if (!string.IsNullOrWhiteSpace(Connections.DataDbConfig.RoServer1) && Connections.DataDbConfig.RoPort1 > 0 && Connections.DataDbConfig.RoTimeout1 > 0)
-                        {
-                            ro_conf.Server = Connections.DataDbConfig.RoServer1;
-                            ro_conf.Port = Connections.DataDbConfig.RoPort1;
-                            ro_conf.Timeout = Connections.DataDbConfig.RoTimeout1;
+                            PostgresConfig ro_conf = new PostgresConfig()
+                            {
+                                Server = Connections.DataDbConfig.Server,
+                                Port = Connections.DataDbConfig.Port,
+                                DatabaseName = Connections.DataDbConfig.DatabaseName,
+                                UserName = Connections.DataDbConfig.ReadOnlyUserName,
+                                Password = Connections.DataDbConfig.ReadOnlyPassword,
+                                Timeout = Connections.DataDbConfig.Timeout,
+                                IsSSL = Connections.DataDbConfig.IsSSL,
+                                Id = Connections.DataDbConfig.Id + 1000000,
+                            };
+                            if (!string.IsNullOrWhiteSpace(Connections.DataDbConfig.RoServer1) && Connections.DataDbConfig.RoPort1 > 0 && Connections.DataDbConfig.RoTimeout1 > 0)
+                            {
+                                ro_conf.Server = Connections.DataDbConfig.RoServer1;
+                                ro_conf.Port = Connections.DataDbConfig.RoPort1;
+                                ro_conf.Timeout = Connections.DataDbConfig.RoTimeout1;
+                            }
+                            FilesDB.Add(new PGSQLFileDatabase(ro_conf));
                         }
-                        FilesDB.Add(new PGSQLFileDatabase(ro_conf));
                     }
                     else if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.ORACLE)
                         FilesDB.Add(new OracleFilesDB(Connections.DataDbConfig));
@@ -431,24 +434,27 @@ namespace ExpressBase.Common.Data
                         {
                             PostgresConfig pg_config = Connections.FilesDbConfig.Integrations[i] as PostgresConfig;
                             FilesDB.Add(new PGSQLFileDatabase(pg_config));
-                            PostgresConfig ro_conf = new PostgresConfig()
+                            if (!string.IsNullOrWhiteSpace(pg_config.ReadOnlyUserName) && !string.IsNullOrWhiteSpace(pg_config.ReadOnlyPassword))
                             {
-                                Server = pg_config.Server,
-                                Port = pg_config.Port,
-                                DatabaseName = pg_config.DatabaseName,
-                                UserName = pg_config.ReadOnlyUserName,
-                                Password = pg_config.ReadOnlyPassword,
-                                Timeout = pg_config.Timeout,
-                                IsSSL = pg_config.IsSSL,
-                                Id = pg_config.Id + 1000000,
-                            };
-                            if (!string.IsNullOrWhiteSpace(pg_config.RoServer1) && pg_config.RoPort1 > 0 && pg_config.RoTimeout1 > 0)
-                            {
-                                ro_conf.Server = pg_config.RoServer1;
-                                ro_conf.Port = pg_config.RoPort1;
-                                ro_conf.Timeout = pg_config.RoTimeout1;
+                                PostgresConfig ro_conf = new PostgresConfig()
+                                {
+                                    Server = pg_config.Server,
+                                    Port = pg_config.Port,
+                                    DatabaseName = pg_config.DatabaseName,
+                                    UserName = pg_config.ReadOnlyUserName,
+                                    Password = pg_config.ReadOnlyPassword,
+                                    Timeout = pg_config.Timeout,
+                                    IsSSL = pg_config.IsSSL,
+                                    Id = pg_config.Id + 1000000,
+                                };
+                                if (!string.IsNullOrWhiteSpace(pg_config.RoServer1) && pg_config.RoPort1 > 0 && pg_config.RoTimeout1 > 0)
+                                {
+                                    ro_conf.Server = pg_config.RoServer1;
+                                    ro_conf.Port = pg_config.RoPort1;
+                                    ro_conf.Timeout = pg_config.RoTimeout1;
+                                }
+                                FilesDB.Add(new PGSQLFileDatabase(ro_conf));
                             }
-                            FilesDB.Add(new PGSQLFileDatabase(ro_conf));
                             Console.WriteLine("Postgres Files Db found:" + (Connections.FilesDbConfig.Integrations[i] as PostgresConfig).DatabaseName);
                         }
                         else if (Connections.FilesDbConfig.Integrations[i].Type == EbIntegrations.ORACLE)

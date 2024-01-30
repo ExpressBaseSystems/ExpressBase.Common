@@ -83,7 +83,10 @@ namespace ExpressBase.Common.Data
             //    _infraConId = DefaultConId;
             //}
             //this.UsedConId = _infraConId;
-            return this[_infraConId + 1000000].DownloadFileById(filestoreid, category);
+            if (this[_infraConId + 1000000] != null)
+                return this[_infraConId + 1000000].DownloadFileById(filestoreid, category);
+
+            return this[_infraConId].DownloadFileById(filestoreid, category);
         }
 
     }
