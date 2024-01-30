@@ -305,7 +305,7 @@ namespace ExpressBase.Security
                             Roles = rolesname,
                             Permissions = ds.Rows[0][4].ToString().IsNullOrEmpty() ? new List<string>() : ds.Rows[0][4].ToString().Split(',').ToList(),
                             Preference = !string.IsNullOrEmpty(ds.Rows[0][5].ToString()) ? JsonConvert.DeserializeObject<Preferences>(ds.Rows[0][5].ToString()) : new Preferences { Locale = "en-IN", TimeZone = "(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi" },
-                            SourceIp = ipAddress
+                            //SourceIp = ipAddress //ip change leads to logout, hence commented
                         };
                     }
                 }
