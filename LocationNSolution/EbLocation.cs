@@ -213,7 +213,7 @@ namespace ExpressBase.Common.LocationNSolution
             {
                 foreach (EbFinancialPeriod fp in fy.List)
                 {
-                    if (date >= fp.ActStart && date <= fp.ActEnd)
+                    if (date.Date >= fp.ActStart.Date && date.Date <= fp.ActEnd.Date)
                     {
                         return fp;
                     }
