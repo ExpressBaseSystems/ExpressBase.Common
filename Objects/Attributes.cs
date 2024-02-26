@@ -49,7 +49,8 @@ namespace ExpressBase.Common.Objects.Attributes
         ScriptEditorSQ = 256
     }
 
-    public enum SurveyRoles { 
+    public enum SurveyRoles
+    {
         QuestionControl,
         AnswerControl
     }
@@ -375,7 +376,18 @@ namespace ExpressBase.Common.Objects.Attributes
 
         public const string INP_PADDING = @"
                 if(props.Padding) $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-inp]').css('padding', `${props.Padding.Top}px ${props.Padding.Right}px ${props.Padding.Bottom}px ${props.Padding.Left}px`);";
-
+        public const string SS_PADDING = @"
+if(props.Padding) {
+    $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('.btn').css('padding', `${props.Padding.Top}px ${props.Padding.Right}px ${props.Padding.Bottom}px ${props.Padding.Left}px`).css('height', (parseInt(props.Padding.Top) + parseInt(props.Padding.Bottom) + 20) + 'px');
+}";
+        public const string PS_PADDING = @"
+if(props.Padding) {
+    $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('.ctrl-cover').css('height', (parseInt(props.Padding.Top) + parseInt(props.Padding.Bottom) + 20) + 'px');
+}";
+        public const string AUTO_ID_PADDING = @"
+if(props.Padding) {
+    $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('.ctrl-cover input').css('padding', `${props.Padding.Top}px ${props.Padding.Right}px ${props.Padding.Bottom}px ${props.Padding.Left}px`);
+}";
         public const string INP_FONT_STYLE = @"setFontCss(props.FontStyle, $(`#cont_${elementId}.Eb-ctrlContainer`).closestInner('[ui-inp]'));";
 
         public const string RENDER_INLINE = @"$(`#cont_${elementId}.Eb-ctrlContainer .list-ctrl-box`).css('flex-direction',(props.RenderInline ? 'row' : 'column'));";
