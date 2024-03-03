@@ -183,6 +183,8 @@ namespace ExpressBase.Common.LocationNSolution
 
         public bool EnableFinancialYear { get; set; }
 
+        public bool DisbleLeadManagementSave { get; set; }
+
         [OnDeserialized]
         public void OnDeserialized(StreamingContext context)
         {
