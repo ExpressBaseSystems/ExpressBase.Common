@@ -60,6 +60,7 @@ namespace ExpressBase.Common.Objects
         SqlJob = 26,
         HtmlPage = 27,
         SurveyControl = 28,
+        MaterializedView = 29,
         All = 100
     }
 

@@ -46,5 +46,6 @@ namespace ExpressBase.Common.Constants
         public const string CSHARPFUNCTION              = "CsharpFunction";
         public const string SQLJOB                      = "SqlJob";
         public const string HTML_PAGE					= "HtmlPage";
+        public const string MATERIALIZED_VIEW			= "MaterializedView";
     }
 }

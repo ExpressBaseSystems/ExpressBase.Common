@@ -102,6 +102,8 @@ namespace ExpressBase.Common.Structures
         public const int iCsharpFunction = 25;
         public const int iSqlJob = 26;
         public const int iHtmlPage = 27;
+        //public const int iSurveyControl = 28;
+        public const int iMaterializedView = 29;
 
         public static readonly EbObjectType Null = new EbObjectType("Null", iNull, ObjectConstants.XXX, false, "fa-exclamation-triangle", null);
         public static readonly EbObjectType WebForm = new EbObjectType(ObjectConstants.WEB_FORM, iWebForm, ObjectConstants.XMW, true, "fa-wpforms", "Form");//true
@@ -128,6 +130,7 @@ namespace ExpressBase.Common.Structures
         public static readonly EbObjectType DashBoard = new EbObjectType(ObjectConstants.DASHBOARD, iDashBoard, ObjectConstants.BMW, true, "fa-tachometer", null);
         public static readonly EbObjectType SqlJob = new EbObjectType(ObjectConstants.SQLJOB, iSqlJob, ObjectConstants.XXW, false, "fa-tachometer", "Sql Job");
         public static readonly EbObjectType HtmlPage = new EbObjectType(ObjectConstants.HTML_PAGE, iHtmlPage, ObjectConstants.XXW, false, "fa-code", "Html Page");
+        public static readonly EbObjectType MaterializedView = new EbObjectType(ObjectConstants.MATERIALIZED_VIEW, iMaterializedView, ObjectConstants.XXW, false, "fa-database", "Materialized View");
 
 
         public static readonly EbObjectType KanBan = new EbObjectType(ObjectConstants.KANBAN, iKanBan, ObjectConstants.XXW, false, "fa-tag", null);
@@ -176,7 +179,8 @@ namespace ExpressBase.Common.Structures
                     JavascriptFunction,
                     CsharpFunction,
                     SqlJob,
-                    HtmlPage
+                    HtmlPage,
+                    MaterializedView
                 };
             }
         }

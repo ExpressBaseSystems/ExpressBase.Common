@@ -185,6 +185,10 @@ namespace ExpressBase.Common.LocationNSolution
 
         public bool DisbleLeadManagementSave { get; set; }
 
+        public string MaterializedViewDate { get; set; }
+
+        public List<string> MaterializedViews { get; set; }
+
         [OnDeserialized]
         public void OnDeserialized(StreamingContext context)
         {
