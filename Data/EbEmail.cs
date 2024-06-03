@@ -224,7 +224,7 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        public RetrieverResponse Retrieve(Service service, DateTime DefaultSyncDate, EbStaticFileClient FileClient, string SolnId, bool isMq, bool SubmitAttachmentAsMultipleForm)
+        public RetrieverResponse Retrieve(Service service, DateTime DefaultSyncDate, string SolnId, bool isMq, bool SubmitAttachmentAsMultipleForm)
         {
             RetrieverResponse response = new RetrieverResponse();
 
@@ -381,7 +381,7 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        public RetrieverResponse Retrieve(Service service, DateTime DefaultSyncDate, EbStaticFileClient FileClient, string SolnId, bool isMq, bool SubmitAttachmentAsMultipleForm)
+        public RetrieverResponse Retrieve(Service service, DateTime DefaultSyncDate, string SolnId, bool isMq, bool SubmitAttachmentAsMultipleForm)
         {
             RetrieverResponse response = new RetrieverResponse();
             using (Pop3Client Client = new Pop3Client(Config.Host, Config.Port, Config.EmailAddress, Config.Password, S22.Pop3.AuthMethod.Login, true))
