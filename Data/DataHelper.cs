@@ -88,8 +88,8 @@ namespace ExpressBase.Common.Data
                     return Convert.ToDateTime(Value);
                 else if (Type == ((int)EbDbTypes.Boolean).ToString())
                     return Convert.ToBoolean(Value);
-                else if(Type == ((int)EbDbTypes.String).ToString())  
-                    return (Value == null) ? string.Empty: Value;
+                else if (Type == ((int)EbDbTypes.String).ToString())
+                    return (Value == null) ? string.Empty : Value;
                 else if (Type == ((int)EbDbTypes.Time).ToString())
                     return TimeSpan.Parse(Value ?? "0");
                 else
@@ -99,6 +99,12 @@ namespace ExpressBase.Common.Data
 
         [DataMember(Order = 5)]
         public bool Required { set; get; } = true;
+
+        [DataMember(Order = 6)]
+        public string NameF { set; get; } //formatted name
+
+        [DataMember(Order = 7)]
+        public string ValueF { set; get; } //formatted value
     }
 
 }
