@@ -960,7 +960,7 @@ SELECT R.id,R.role_name,R.description,A.applicationname,
 	(SELECT COUNT(user_id) FROM eb_role2user WHERE role_id=R.id AND eb_del='F') AS user_count,
 	(SELECT COUNT(distinct permissionname) FROM eb_role2permission RP, eb_objects2application OA WHERE role_id = R.id AND app_id=A.id AND RP.obj_id=OA.obj_id AND RP.eb_del = 'F' AND OA.eb_del = 'F') AS permission_count
 FROM eb_roles R, eb_applications A
-WHERE R.applicationid = A.id AND R.role_name ~* :searchtext AND A.eb_del = 'F' 
+WHERE R.applicationid = A.id AND R.role_name ~* :searchtext AND A.eb_del = 'F' AND R.eb_del='F'
 ORDER BY A.applicationname, R.role_name;";
             }
         }
