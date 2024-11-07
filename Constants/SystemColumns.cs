@@ -23,5 +23,6 @@
         public const string eb_xrate1 = "eb_xrate1";
         public const string eb_xrate2 = "eb_xrate2";
         public const string eb_void_reason = "eb_void_reason";
+        public const string eb_loc_permissions = "eb_loc_permissions";
     }
 }
