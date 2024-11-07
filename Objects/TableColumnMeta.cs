@@ -231,6 +231,7 @@ namespace ExpressBase.Common
         public int ModifiedBy { get; set; }
         public string ModifiedAt { get; set; }
         public string CancelReason { get; set; }
+        public List<int> LocPermissions { get; set; }
         public WebformDataInfo Info { get; set; }
 
         public WebformData()
@@ -242,6 +243,7 @@ namespace ExpressBase.Common
             DisableDelete = new Dictionary<string, bool>();
             DisableCancel = new Dictionary<string, bool>();
             DisableEdit = new Dictionary<string, bool>();
+            LocPermissions = new List<int>();
         }
     }
 
