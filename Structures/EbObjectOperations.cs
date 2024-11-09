@@ -273,6 +273,7 @@ namespace ExpressBase.Common.Structures
         public readonly EbOperation LockUnlock;
         public readonly EbOperation RevokeDelete;
         public readonly EbOperation RevokeCancel;
+        public readonly EbOperation ChangeLocation;
 
         private WFOperations()
         {
@@ -288,6 +289,7 @@ namespace ExpressBase.Common.Structures
             LockUnlock = new EbOperation(OperationConstants.LOCK_UNLOCK, 9, OperationConstants.XXW);
             RevokeDelete = new EbOperation(OperationConstants.REVOKE_DELETE, 10, OperationConstants.XXW);
             RevokeCancel = new EbOperation(OperationConstants.REVOKE_CANCEL, 11, OperationConstants.XXW);
+            ChangeLocation = new EbOperation(OperationConstants.CHANGE_LOCATION, 12, OperationConstants.XXW);
         }
 
         public static EbOperations Instance
@@ -314,6 +316,7 @@ namespace ExpressBase.Common.Structures
                 yield return LockUnlock;
                 yield return RevokeDelete;
                 yield return RevokeCancel;
+                yield return ChangeLocation;
             }
         }
     }

@@ -44,6 +44,7 @@ namespace ExpressBase.Common.Constants
         public const string LOCK_UNLOCK = "Lock/Unlock";
         public const string REVOKE_DELETE = "RevokeDelete";
         public const string REVOKE_CANCEL = "RevokeCancel";
+        public const string CHANGE_LOCATION = "ChangeLocation";
 
         public const string VIEWLOG = "ViewLog";
         public const string EXECUTE = "Execute";
