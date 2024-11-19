@@ -232,6 +232,8 @@ namespace ExpressBase.Common
         public string ModifiedAt { get; set; }
         public string CancelReason { get; set; }
         public List<int> LocPermissions { get; set; }
+        public bool MultiLocViewAccess { get; set; }
+        public bool MultiLocEditAccess { get; set; }
         public WebformDataInfo Info { get; set; }
 
         public WebformData()
