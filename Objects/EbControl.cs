@@ -292,7 +292,7 @@ namespace ExpressBase.Common.Objects
 
         [PropertyGroup(PGConstants.DATA)]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
-        [HelpText("Set true if you dont want to save value from this field.")]
+        [HelpText("Set true if you dont want to save/retrieve value from this field.")]
         public virtual bool DoNotPersist { get; set; }
 
         [PropertyGroup(PGConstants.DATA)]
@@ -309,6 +309,11 @@ namespace ExpressBase.Common.Objects
         [EnableInBuilder(BuilderType.WebForm)]
         [HelpText("Set true if you dont want to import value to this field.")]
         public virtual bool DoNotImport { get; set; }
+
+        [PropertyGroup(PGConstants.DATA)]
+        [EnableInBuilder(BuilderType.WebForm)]
+        [HelpText("Set true if you dont want to save value from this field.")]
+        public virtual bool ExternalColumn { get; set; }
 
         [HideInPropertyGrid]
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]

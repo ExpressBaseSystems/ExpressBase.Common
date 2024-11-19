@@ -78,6 +78,8 @@ namespace ExpressBase.Common.Objects
 
         public override bool DoNotClone { get; set; }
 
+        public override bool ExternalColumn { get; set; }
+
         public override EbScript OnChangeFn { get; set; }
 
         [JsonIgnore]
