@@ -87,13 +87,13 @@ namespace ExpressBase.Common.Structures
 
         private TVOperations()
         {
-            Customize = new EbOperation(OperationConstants.CUSTOMIZE, 0, OperationConstants.XXX);
-            Summarize = new EbOperation(OperationConstants.SUMMARIZE, 1, OperationConstants.XXX);
-            Filter = new EbOperation(OperationConstants.FILTER, 2, OperationConstants.XXX);
-            Drilldown = new EbOperation(OperationConstants.DRILLDOWN, 3, OperationConstants.XXX);
-            PDFExport = new EbOperation(OperationConstants.PDF_EXPORT, 4, OperationConstants.XXX);
-            ExcelExport = new EbOperation(OperationConstants.EXCEL_EXPORT, 5, OperationConstants.XXX);
-            CSVExport = new EbOperation(OperationConstants.CSV_EXPORT, 6, OperationConstants.XXX);
+            Customize = new EbOperation(OperationConstants.CUSTOMIZE, 0, OperationConstants.BXW);
+            Summarize = new EbOperation(OperationConstants.SUMMARIZE, 1, OperationConstants.XXW);
+            Filter = new EbOperation(OperationConstants.FILTER, 2, OperationConstants.XXW);
+            Drilldown = new EbOperation(OperationConstants.DRILLDOWN, 3, OperationConstants.XXW);
+            PDFExport = new EbOperation(OperationConstants.PDF_EXPORT, 4, OperationConstants.XXW);
+            ExcelExport = new EbOperation(OperationConstants.EXCEL_EXPORT, 5, OperationConstants.XXW);
+            CSVExport = new EbOperation(OperationConstants.CSV_EXPORT, 6, OperationConstants.XXW);
             Print = new EbOperation(OperationConstants.PRINT, 7, OperationConstants.BMW);
         }
 
