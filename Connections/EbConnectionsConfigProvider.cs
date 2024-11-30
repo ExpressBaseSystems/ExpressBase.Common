@@ -28,7 +28,7 @@ namespace ExpressBase.Common.Connections
                             {
                                 //  DatabaseVendor = DatabaseVendors.PGSQL,
                                 Server = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_SERVER),
-                                Port = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_PORT)),
+                                Port = Convert.ToInt32(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_PORT)),
                                 DatabaseName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DBNAME),
                                 UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_USER),
                                 Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_PASSWORD),
@@ -41,7 +41,7 @@ namespace ExpressBase.Common.Connections
                             {
                                 //DatabaseVendor = DatabaseVendors.PGSQL,
                                 Server = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_SERVER),
-                                Port = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_PORT)),
+                                Port = Convert.ToInt32(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_PORT)),
                                 DatabaseName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DBNAME),
                                 UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_USER),
                                 Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_PASSWORD),
@@ -91,7 +91,7 @@ namespace ExpressBase.Common.Connections
                 DataDbConfig = new PostgresConfig
                 {
                     Server = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_DATACENTRE_SERVER),
-                    Port = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_DATACENTRE_PORT)),
+                    Port = Convert.ToInt32(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_DATACENTRE_PORT)),
                     DatabaseName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DBNAME),
                     UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_DATACENTRE_ADMIN_USER),
                     Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_DATACENTRE_ADMIN_PASSWORD),
@@ -102,7 +102,7 @@ namespace ExpressBase.Common.Connections
                 LogsDbConfig = new PostgresConfig //ALWAYS IN INFRA
                 {
                     Server = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_SERVER),
-                    Port = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_PORT)),
+                    Port = Convert.ToInt32(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_PORT)),
                     DatabaseName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DBNAME),
                     UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_USER),
                     Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_PASSWORD),
@@ -126,7 +126,7 @@ namespace ExpressBase.Common.Connections
                         DataDbConfig = new PostgresConfig
                         {
                             Server = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_DATACENTRE_SERVER),
-                            Port = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_DATACENTRE_PORT)),
+                            Port = Convert.ToInt32(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_DATACENTRE_PORT)),
                             DatabaseName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DBNAME),
                             UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_DATACENTRE_ADMIN_USER),
                             Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_DATACENTRE_ADMIN_PASSWORD),
@@ -137,7 +137,7 @@ namespace ExpressBase.Common.Connections
                         LogsDbConfig = new PostgresConfig //ALWAYS IN INFRA
                         {
                             Server = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_SERVER),
-                            Port = Convert.ToInt16(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_PORT)),
+                            Port = Convert.ToInt32(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_PORT)),
                             DatabaseName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DBNAME),
                             UserName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_USER),
                             Password = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_INFRA_DB_RW_PASSWORD),
