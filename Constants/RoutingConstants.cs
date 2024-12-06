@@ -52,6 +52,7 @@ namespace ExpressBase.Common
         public const string DC = "dc";
         public const string MC = "mc";
         public const string BC = "bc";
+        public const string PC = "pc";
 
         public const string USER_AGENT = "useragent";
 

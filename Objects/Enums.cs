@@ -61,6 +61,7 @@ namespace ExpressBase.Common.Objects
         HtmlPage = 27,
         SurveyControl = 28,
         MaterializedView = 29,
+        PosForm = 30,
         All = 100
     }
 

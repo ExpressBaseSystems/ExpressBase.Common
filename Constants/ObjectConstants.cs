@@ -6,18 +6,22 @@ namespace ExpressBase.Common.Constants
 {
     public class ObjectConstants
     {
-		public const string B_IN_BMW = "B";
-		public const string M_IN_BMW = "M";
-		public const string W_IN_BMW = "W";
+		public const string B_IN_BMWP = "B";
+		public const string M_IN_BMWP = "M";
+		public const string W_IN_BMWP = "W";
+		public const string P_IN_BMWP = "P";
 
-		public const string BMW = "BMW";
-		public const string XXX = "XXX";
-		public const string BXX = "BXX";
-		public const string BMX = "BMX";
-		public const string BXW = "BXW";
-		public const string XMW = "XMW";
-		public const string XXW = "XXW";
-		public const string XMX = "XMX";
+		public const string BMWX = "BMWX";
+		public const string XXXX = "XXXX";
+		public const string BXXX = "BXXX";
+		public const string BMXX = "BMXX";
+		public const string BXWX = "BXWX";
+		public const string XMWX = "XMWX";
+		public const string XXWX = "XXWX";
+		public const string XMXX = "XMXX";
+		public const string XXXP = "XXXP";
+		public const string XMWP = "XMWP";
+		public const string BMWP = "BMWP";
 
 		public const string WEB_FORM					= "WebForm";
 		public const string DISPLAY_BLOCK				= "DisplayBlock";
@@ -47,5 +51,6 @@ namespace ExpressBase.Common.Constants
         public const string SQLJOB                      = "SqlJob";
         public const string HTML_PAGE					= "HtmlPage";
         public const string MATERIALIZED_VIEW			= "MaterializedView";
+        public const string POS_FORM					= "PosForm";
     }
 }

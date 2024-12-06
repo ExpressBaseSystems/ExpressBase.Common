@@ -100,6 +100,17 @@ namespace ExpressBase.Common.Application
     {
 
     }
+
+    public class EbPosSettings : EbAppSettings
+    {
+        public List<DataImportMobile> DataImport { set; get; }
+
+        public EbPosSettings()
+        {
+            this.DataImport = new List<DataImportMobile>();
+        }
+    }
+
     public class AnonymousAuth
     {
         public bool Fblogin { get; set; }

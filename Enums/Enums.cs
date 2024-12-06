@@ -7,7 +7,8 @@ namespace ExpressBase.Common
     {
         Bot = 3,
         Mobile = 2,
-        Web = 1
+        Web = 1,
+        Pos = 4
     }
 
     public enum PricingTiers
@@ -170,7 +171,9 @@ namespace ExpressBase.Common
         SolutionPM = 5,
         SolutionUser = 6,
         FinancialYearAdmin = 7,//Create/Lock/Unlock/PartialLock/PartialUnlock Fy
-        FinancialYearUser = 8//Switch to Partially locked Fy
+        FinancialYearUser = 8,//Switch to Partially locked Fy
+        PosAdmin = 9,
+        PosUser = 10
     }
 
     public enum EbSystemRoles
