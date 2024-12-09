@@ -81,5 +81,12 @@ namespace ExpressBase.Common
         {
             base.Add(column);
         }
+
+        public bool Contains(string columnName)
+        {
+            return this.Any(column => column.ColumnName != null &&
+                              columnName != null &&
+                              column.ColumnName.Equals(columnName, StringComparison.OrdinalIgnoreCase));             
+        }
     }
 }

@@ -1744,7 +1744,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
                     Console.WriteLine("Exception :  " + npg.Message);
                 }
             }
-            Console.WriteLine("FileByte Size: " + filebyte.Length);
+            Console.WriteLine("FileByte Size: " + filebyte?.Length);
 
             return filebyte;
         }
