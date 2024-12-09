@@ -267,7 +267,8 @@ namespace ExpressBase.Common.Data
                             UserName = Connections.DataDbConfig.ReadOnlyUserName,
                             Password = Connections.DataDbConfig.ReadOnlyPassword,
                             Timeout = Connections.DataDbConfig.Timeout,
-                            IsSSL = Connections.DataDbConfig.IsSSL
+                            IsSSL = Connections.DataDbConfig.IsSSL,
+                            Id = Connections.DataDbConfig.Id
                         };
 
                         if (!string.IsNullOrWhiteSpace(Connections.DataDbConfig.RoServer1) && Connections.DataDbConfig.RoPort1 > 0 && Connections.DataDbConfig.RoTimeout1 > 0)
@@ -275,6 +276,7 @@ namespace ExpressBase.Common.Data
                             _Conf.Server = Connections.DataDbConfig.RoServer1;
                             _Conf.Port = Connections.DataDbConfig.RoPort1;
                             _Conf.Timeout = Connections.DataDbConfig.RoTimeout1;
+                            _Conf.Id = 0;
                         }
 
                         if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.PGSQL)
@@ -284,7 +286,7 @@ namespace ExpressBase.Common.Data
                         else if (Connections.DataDbConfig.DatabaseVendor == DatabaseVendors.MYSQL)
                             DataDBRO = new MySqlDB(_Conf);
 
-
+                        DataDBRO.ConId = _Conf.Id;
                     }
                     else if (DataDBRO == null)
                         DataDBRO = DataDB;
