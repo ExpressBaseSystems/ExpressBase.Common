@@ -247,6 +247,23 @@ namespace ExpressBase.Security
             return true;
         }
 
+        public static bool ValidatePosLocation(int pos_loc_id, User user)
+        {
+            List<string> global = new List<string>();
+            for (int i = 0; i < user.Permissions.Count; i++)
+            {
+                string[] s = user.Permissions[i].Split(":");
+                if (s[1].Equals("-1"))
+                    global.Add(s[0]);
+            }
+            user.Permissions.RemoveAll(p => Convert.ToInt32(p.Split(":")[1].Trim()) != pos_loc_id);
+            if (global.Count > 0)
+                for (int i = 0; i < global.Count; i++)
+                    user.Permissions.Add(global[i] + ":" + pos_loc_id);
+            user.SetLocationIds(new List<int>() { pos_loc_id });
+            return user.Permissions.Count > 0;
+        }
+
         public bool IsIpConstraintPresent()
         {
             foreach (KeyValuePair<int, EbConstraint> _cons in this.Constraints)

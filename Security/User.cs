@@ -168,6 +168,11 @@ namespace ExpressBase.Security
             }
         }
 
+        public void SetLocationIds(List<int> locIds)
+        {
+            _locationIds = locIds;
+        }
+
         public List<int> GetLocationsByObject(string RefId)
         {
             //Sample refid - Only for reference
@@ -347,18 +352,41 @@ namespace ExpressBase.Security
                             df.GetNewOutParameter("tmp_public_ids", EbDbTypes.String),
                             df.GetNewOutParameter("tmp_user_type", EbDbTypes.Int32)
                         });
+                    return InitUserObject(dt, context, ipAddress, deviceId, true);
                 }
                 else
                 {
-                    dt = df.DoQuery(df.EB_AUTHETICATE_USER_NORMAL, new DbParameter[] {
+                    string qry = df.EB_AUTHETICATE_USER_NORMAL;
+                    List<DbParameter> prms = new List<DbParameter>() {
                         df.GetNewParameter("uname", EbDbTypes.String, uname),
                         df.GetNewParameter("pass", EbDbTypes.String, pwd),
                         df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context),
                         df.GetNewParameter("ipaddress", EbDbTypes.String, ipAddress),
                         df.GetNewParameter("deviceinfo", EbDbTypes.String, deviceInfo)
-                    });
+                    };
+
+                    int pos_loc_id = 0;
+                    if (context == TokenConstants.PC)
+                    {
+                        if (!string.IsNullOrWhiteSpace(deviceId))
+                        {
+                            qry += "SELECT eb_loc_id FROM eb_pos_device_master WHERE device_id ilike @deviceId AND eb_del='F' AND eb_void='F'; ";
+                            prms.Add(df.GetNewParameter("deviceid", EbDbTypes.String, deviceId));
+                        }
+                        else
+                            pos_loc_id = -1;
+                    }
+                    EbDataSet ds = df.DoQueries(qry, prms.ToArray());
+                    if (ds.Tables.Count == 2)
+                    {
+                        if (ds.Tables[1].Rows.Count > 0)
+                            pos_loc_id = Convert.ToInt32(ds.Tables[1].Rows[0][0]);
+                        else
+                            pos_loc_id = -1;
+                    }
+                    return InitUserObject(ds.Tables[0], context, ipAddress, deviceId, true, pos_loc_id);
                 }
-                return InitUserObject(dt, context, ipAddress, deviceId, true);
+
             }
             catch (Exception e)
             {
@@ -618,7 +646,7 @@ namespace ExpressBase.Security
             return _user.UserId == userId ? _user : null;
         }
 
-        private static User InitUserObject(EbDataTable ds, string context, string ipAddress, string deviceId, bool loginInit)
+        private static User InitUserObject(EbDataTable ds, string context, string ipAddress, string deviceId, bool loginInit, int pos_loc_id = 0)
         {
             //Columns : _userid, _status_id, _email, _fullname, _roles_a, _rolename_a, _permissions, _preferencesjson, _constraints_a, _signin_id, _usergroup_a, _public_ids, _user_type, phnoprimary, forcepwreset
             //              0         1         2        3         4           5            6                7               8              9           10             11           12          13        14
@@ -690,6 +718,12 @@ namespace ExpressBase.Security
                 }
                 else
                     _user.SourceIp = string.Empty;
+
+                if (context == TokenConstants.PC && (pos_loc_id == -1 || (pos_loc_id > 0 && !EbConstraints.ValidatePosLocation(pos_loc_id, _user))))
+                {
+                    _user.UserId = -1;
+                }
+
                 if (_user.Preference.DefaultLocation < 1 && _user.LocationIds.Count > 0)
                 {
                     _user.Preference.DefaultLocation = _user.LocationIds[0] == -1 ? 1 : _user.LocationIds[0];
