@@ -173,6 +173,20 @@ namespace ExpressBase.Security
             _locationIds = locIds;
         }
 
+        public int GeFirstLocationIdFromPermission()
+        {
+            foreach (string p in this.Permissions)
+            {
+                if (p.Contains(":"))
+                {
+                    int lid = Convert.ToInt32(p.Split(":")[1].Trim());
+                    if (lid > 0)
+                        return lid;
+                }
+            }
+            return -1;
+        }
+
         public List<int> GetLocationsByObject(string RefId)
         {
             //Sample refid - Only for reference
