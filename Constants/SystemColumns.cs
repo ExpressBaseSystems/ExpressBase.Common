@@ -24,5 +24,14 @@
         public const string eb_xrate2 = "eb_xrate2";
         public const string eb_void_reason = "eb_void_reason";
         public const string eb_loc_permissions = "eb_loc_permissions";
+
+        //Mobile columns
+        public const string eb_created_at_device = "eb_created_at_device";
+        public const string eb_device_id = "eb_device_id";
+        public const string eb_appversion = "eb_appversion";
+
+        //Pos columns
+        public const string eb_created_at_pos = "eb_created_at_pos";
+        public const string eb_created_by_pos = "eb_created_by_pos";
     }
 }
