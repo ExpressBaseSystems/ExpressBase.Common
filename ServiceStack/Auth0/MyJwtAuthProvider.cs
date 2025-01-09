@@ -63,8 +63,13 @@ namespace ExpressBase.Common.ServiceStack.Auth
 
         public override string CreateJwtRefreshToken(IRequest req, string userId, TimeSpan expireRefreshTokenIn)
         {
-            if ((req.Dto as Authenticate).Meta.ContainsKey(TokenConstants.WC) && (req.Dto as Authenticate).Meta[TokenConstants.WC] == TokenConstants.MC)
-                expireRefreshTokenIn = new TimeSpan(31, 0, 0, 0);
+            if ((req.Dto as Authenticate).Meta.ContainsKey(TokenConstants.WC))
+            {
+                if ((req.Dto as Authenticate).Meta[TokenConstants.WC] == TokenConstants.MC)
+                    expireRefreshTokenIn = new TimeSpan(31, 0, 0, 0);
+                else if ((req.Dto as Authenticate).Meta[TokenConstants.WC] == TokenConstants.PC)
+                    expireRefreshTokenIn = new TimeSpan(7, 0, 0, 0);
+            }
 
             var jwtHeader = new JsonObject
             {
