@@ -93,7 +93,7 @@ namespace ExpressBase.Common
             }
         }
 
-        private const string CONNECTION_STRING_BARE = "Server={0}; Port={1}; Database={2}; Uid={3}; Pwd={4}; SslMode=None; Allow User Variables=True;";
+        private const string CONNECTION_STRING_BARE = "Server={0}; Port={1}; Database={2}; Uid={3}; Pwd={4}; SslMode={5}; Allow User Variables=True;";
 
         private string _cstr;
         private EbDbConfig DbConfig { get; set; }
@@ -107,13 +107,13 @@ namespace ExpressBase.Common
         public MySqlDB(EbDbConfig dbconf)
         {
             this.DbConfig = dbconf;
-            _cstr = string.Format(CONNECTION_STRING_BARE, this.DbConfig.Server, this.DbConfig.Port, this.DbConfig.DatabaseName, this.DbConfig.UserName, this.DbConfig.Password);
+            _cstr = string.Format(CONNECTION_STRING_BARE, this.DbConfig.Server, this.DbConfig.Port, this.DbConfig.DatabaseName, this.DbConfig.UserName, this.DbConfig.Password, this.DbConfig.IsSSL ? "Required" : "None");
             DBName = DbConfig.DatabaseName;
         }
 
         public override DbConnection GetNewConnection(string dbName)
         {
-            return new MySqlConnection(string.Format(CONNECTION_STRING_BARE, this.DbConfig.Server, this.DbConfig.Port, dbName, this.DbConfig.UserName, this.DbConfig.Password));
+            return new MySqlConnection(string.Format(CONNECTION_STRING_BARE, this.DbConfig.Server, this.DbConfig.Port, dbName, this.DbConfig.UserName, this.DbConfig.Password, this.DbConfig.IsSSL ? "Required" : "None"));
         }
 
         public override DbConnection GetNewConnection()
