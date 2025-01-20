@@ -33,9 +33,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 4)]
         public int InfraConID { get; set; }
 
-		[DataMember(Order = 5)]
-		public string SubscriptionId { get; set; }
-	}
+        [DataMember(Order = 5)]
+        public string SubscriptionId { get; set; }
+    }
 
     [DataContract]
     public class GetImageFtpRequest : EbMqRequest, IReturn<EbMqResponse>
@@ -71,8 +71,8 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         string SolutionId { get; set; }
 
-		string SubscriptionId { get; set; }
-	}
+        string SubscriptionId { get; set; }
+    }
 
     [DataContract]
     public class UploadImageRequest : IReturn<EbMqResponse>, IUploadImageRequest
@@ -116,10 +116,10 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 13)]
         public int InfraConID { get; set; }
 
-		[DataMember(Order = 14)]
-		public string SubscriptionId { get; set; }
+        [DataMember(Order = 14)]
+        public string SubscriptionId { get; set; }
 
-	}
+    }
 
     [DataContract]
     public class UploadImageInfraMqRequest : IReturn<EbMqResponse>, IUploadImageRequest
@@ -163,10 +163,10 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 13)]
         public int InfraConID { get; set; }
 
-		 [DataMember(Order = 14)]
-		public string SubscriptionId { get; set; }
+        [DataMember(Order = 14)]
+        public string SubscriptionId { get; set; }
 
-	}
+    }
 
     [DataContract]
     public class UploadDpRequest : IReturn<EbMqResponse>, IUploadImageRequest
@@ -211,9 +211,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         public int InfraConID { get; set; }
 
         [DataMember(Order = 14)]
-		public string SubscriptionId { get; set; }
+        public string SubscriptionId { get; set; }
 
-	}
+    }
 
     [DataContract]
     public class UploadLogoRequest : IReturn<EbMqResponse>, IUploadImageRequest
@@ -258,8 +258,8 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         public int InfraConID { get; set; }
 
         [DataMember(Order = 14)]
-		public string SubscriptionId { get; set; }
-	}
+        public string SubscriptionId { get; set; }
+    }
     [DataContract]
     public class UploadLocRequest : IReturn<EbMqResponse>, IUploadImageRequest
     {
@@ -303,8 +303,8 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         public int InfraConID { get; set; }
 
         [DataMember(Order = 14)]
-		public string SubscriptionId { get; set; }
-	}
+        public string SubscriptionId { get; set; }
+    }
 
     [DataContract]
     public class ImageResizeRequest : EbMqRequest
@@ -424,7 +424,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         {
             this.FileDetails = new FileMeta();
         }
-    } 
+    }
     public class FileUploadInternalRequest : EbServiceStackAuthRequest, IReturn<FileUploadResponse>
     {
         [DataMember(Order = 1)]
@@ -460,6 +460,34 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 2)]
         public byte[] FileByte { get; set; }
+    }
+
+    [DataContract]
+    public class GetFileRefIdByInsertingNewRowRequest : EbServiceStackAuthRequest, IReturn<FileUploadResponse>
+    {
+        [DataMember(Order = 1)]
+        public string Table { get; set; }
+
+        [DataMember(Order = 2)]
+        public string Column { get; set; }
+
+        [DataMember(Order = 3)]
+        public string Value { get; set; }
+
+        [DataMember(Order = 4)]
+        public int ObjectId { get; set; }
+
+        [DataMember(Order = 5)]
+        public string FileControlName { get; set; }
+
+        [DataMember(Order = 6)]
+        public string FileName { get; set; }
+
+        [DataMember(Order = 7)]
+        public string FileType { get; set; }
+
+        [DataMember(Order = 8)]
+        public EbFileCategory FileCategory { get; set; }
     }
 
     [DataContract]
