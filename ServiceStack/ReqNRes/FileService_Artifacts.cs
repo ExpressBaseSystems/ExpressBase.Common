@@ -497,6 +497,37 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
+    public class GetFileRefSimpleuploaderUpsertRequest : EbServiceStackAuthRequest, IReturn<FileUploadResponse>
+    {
+        [DataMember(Order = 1)]
+        public string Table { get; set; }
+
+        [DataMember(Order = 2)]
+        public string Column { get; set; }
+
+        [DataMember(Order = 3)]
+        public string Value { get; set; }
+
+        [DataMember(Order = 4)]
+        public string FileControlName { get; set; }
+
+        [DataMember(Order = 5)]
+        public string FileName { get; set; }
+
+        [DataMember(Order = 6)]
+        public string FileType { get; set; }
+
+        [DataMember(Order = 7)]
+        public EbFileCategory FileCategory { get; set; }
+
+        [DataMember(Order = 8)]
+        public string FilestoreSid { get; set; }
+
+        [DataMember(Order = 9)]
+        public Int64 FileSize { get; set; }
+    }
+
+    [DataContract]
     public class UploadAudioAsyncRequest : EbServiceStackAuthRequest, IReturn<UploadAsyncResponse>
     {
         [DataMember(Order = 1)]
