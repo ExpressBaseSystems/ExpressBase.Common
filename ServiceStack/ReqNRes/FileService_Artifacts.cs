@@ -488,6 +488,12 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 8)]
         public EbFileCategory FileCategory { get; set; }
+
+        [DataMember(Order = 9)]
+        public string FilestoreSid { get; set; }
+
+        [DataMember(Order = 10)]
+        public Int64 FileSize { get; set; }
     }
 
     [DataContract]
