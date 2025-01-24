@@ -497,7 +497,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class GetFileRefSimpleuploaderUpsertRequest : EbServiceStackAuthRequest, IReturn<FileUploadResponse>
+    public class GetFileRefSimpleuploaderUpsertRequest : EbServiceStackAuthRequest, IReturn<GetFileRefSimpleuploaderUpsertResponse>
     {
         [DataMember(Order = 1)]
         public string Table { get; set; }
@@ -525,6 +525,19 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 9)]
         public Int64 FileSize { get; set; }
+    }
+
+    [DataContract]
+    public class GetFileRefSimpleuploaderUpsertResponse : IEbSSResponse
+    {
+        [DataMember(Order = 1)]
+        public ResponseStatus ResponseStatus { get; set; }
+
+        [DataMember(Order = 2)]
+        public int FileRefId { get; set; }
+
+        [DataMember(Order = 3)]
+        public int DataId { get; set; }
     }
 
     [DataContract]
