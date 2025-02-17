@@ -37,6 +37,9 @@ namespace ExpressBase.Common.Data
                 var _dicLimit = new Param { Name = "limit", Type = ((int)EbDbTypes.Int32).ToString(), Value = ((iLimit != -1) ? iLimit.ToString() : 0.ToString()) };
                 var _dicOffset = new Param { Name = "offset", Type = ((int)EbDbTypes.Int32).ToString(), Value = iOffset.ToString() };
 
+                reqParams.RemoveAll(e => e.Name == "limit");
+                reqParams.RemoveAll(e => e.Name == "offset");
+
                 reqParams.AddRange(new Param[] { _dicLimit, _dicOffset });
             }
 
