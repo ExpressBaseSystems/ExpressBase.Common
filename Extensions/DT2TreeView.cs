@@ -18,7 +18,7 @@ namespace ExpressBase.Common.Extensions
         }
     }
 
-    public class Node<T> 
+    public class Node<T>
     {
         internal Node() { }
 
@@ -28,7 +28,7 @@ namespace ExpressBase.Common.Extensions
 
         public IList<Node<T>> Children { get; internal set; }
 
-        public bool IsGroup { set;get; }
+        public bool IsGroup { set; get; }
     }
 
     public static class DT2TreeView
@@ -45,7 +45,7 @@ namespace ExpressBase.Common.Extensions
 
             List<int> Proc = new List<int>();
             TreeData<T> treedata = new TreeData<T>();
-            treedata.Tree = source.ToTree(startWith, connectBy, null, Proc,treedata.RowsOrdered,group).ToList<Node<T>>();
+            treedata.Tree = source.ToTree(startWith, connectBy, null, Proc, treedata.RowsOrdered, group).ToList<Node<T>>();
             return treedata;
         }
 
@@ -74,7 +74,7 @@ namespace ExpressBase.Common.Extensions
                     {
                         Level = level,
                         Item = value,
-                        IsGroup = ((value as EbDataRow)[group] == "T" || Convert.ToBoolean((value as EbDataRow)[group]) == true) ? true : false,
+                        IsGroup = Convert.ToString((value as EbDataRow)[group]) == "T" || (bool.TryParse(Convert.ToString((value as EbDataRow)[group]), out bool bvalout) == true && bvalout),
                         Children = children.AsReadOnly()
                     };
 

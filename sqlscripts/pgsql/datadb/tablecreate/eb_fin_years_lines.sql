@@ -16,7 +16,7 @@ CREATE TABLE public.eb_fin_years_lines
 	eb_lastmodified_at timestamp without time zone,
 	eb_del "char" DEFAULT 'F'::"char",
 	CONSTRAINT eb_fin_years_lines_pkey PRIMARY KEY (id)
-)
+);
 
 -- Index: eb_fin_years_lines_id_idx
 
