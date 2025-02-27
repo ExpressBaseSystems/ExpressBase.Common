@@ -27,7 +27,7 @@ BEGIN
 	SELECT eb_objects_id FROM eb_objects_ver into objid WHERE refid=refidv;
  	
 	UPDATE eb_objects SET obj_name = obj_namev, obj_desc = obj_descv, obj_tags = tagsv , display_name = disp_name, hide_in_menu = hide_in_menuv WHERE id = objid RETURNING id INTO inserted_objid;
-    UPDATE eb_objects_ver SET obj_json = obj_jsonv WHERE refid=refidv RETURNING id INTO inserted_obj_ver_id;
+    UPDATE eb_objects_ver SET obj_json = obj_jsonv, commit_uid= commit_uidv, commit_ts = NOW() WHERE refid=refidv RETURNING id INTO inserted_obj_ver_id;
    
     --relations table
 	UPDATE 
