@@ -41,6 +41,7 @@ namespace ExpressBase.Common
         public const string RPWToken = "rpwToken";
         public const string SSE_SUB_ID = "eb_sse_subid";
         public const string REDIRECT_URL = "eb_rdrct_url";
+        public const string API_KEY = "api-key";
 
         public const string BOT_BEARER_TOKEN = "bot_bToken";
         public const string BOT_REFRESH_TOKEN = "bot_rToken";

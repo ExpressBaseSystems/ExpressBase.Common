@@ -90,6 +90,9 @@ namespace ExpressBase.Security
         [DataMember(Order = 21)]
         public bool IsForcePWReset { get; set; }
 
+        [DataMember(Order = 23)]
+        public int ApiKeyId { get; set; }
+
         private List<string> _ebObjectIds = null;
 
         [DataMember(Order = 22)]
