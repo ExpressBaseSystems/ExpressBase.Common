@@ -420,6 +420,11 @@ namespace ExpressBase.Common
         Meeting = 2
     }
 
+    public enum ThermalPrintTemplates
+    {
+        SalesInvoiceV1 = 1
+    }
+
     public enum FormSubmissionJobStatus
     {
         Default = 0,

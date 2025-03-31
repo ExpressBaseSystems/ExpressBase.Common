@@ -52,5 +52,6 @@ namespace ExpressBase.Common.Constants
         public const string HTML_PAGE					= "HtmlPage";
         public const string MATERIALIZED_VIEW			= "MaterializedView";
         public const string POS_FORM					= "PosForm";
+        public const string PRINT_LAYOUT				= "PrintLayout";
     }
 }

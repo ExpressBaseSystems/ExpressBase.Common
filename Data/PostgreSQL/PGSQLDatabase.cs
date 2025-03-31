@@ -928,7 +928,7 @@ namespace ExpressBase.Common
 			                            COALESCE(EO.eb_del, 'F') = 'F'
 			                        AND COALESCE(EO.hide_in_menu, 'F') = 'F'
 		                            AND
-			                            EO.obj_type != ANY(ARRAY[13])
+			                            EO.obj_type NOT IN(13,30,31)
 		                            AND
 			                            EOS.status = 3
 		                            AND 

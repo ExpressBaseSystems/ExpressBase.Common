@@ -62,6 +62,7 @@ namespace ExpressBase.Common.Objects
         SurveyControl = 28,
         MaterializedView = 29,
         PosForm = 30,
+        PrintLayout = 31,
         All = 100
     }
 

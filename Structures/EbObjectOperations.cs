@@ -387,6 +387,32 @@ namespace ExpressBase.Common.Structures
         }
     }
 
+    public class PrintLayoutOperations : EbOperations
+    {
+        public readonly EbOperation Print;
+
+        private PrintLayoutOperations()
+        {
+            Print = new EbOperation(OperationConstants.PRINT, 0, OperationConstants.XMWX);
+        }
+
+        public static EbOperations Instance
+        {
+            get
+            {
+                return new PrintLayoutOperations();
+            }
+        }
+
+        public override IEnumerable<EbOperation> Enumerator
+        {
+            get
+            {
+                yield return Print;
+            }
+        }
+    }
+
     public class SqlJobOperations : EbOperations
     {
         public readonly EbOperation ViewLog;

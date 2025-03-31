@@ -109,6 +109,7 @@ namespace ExpressBase.Common.Structures
         //public const int iSurveyControl = 28;
         public const int iMaterializedView = 29;
         public const int iPosForm = 30;
+        public const int iPrintLayout = 31;
 
         public static readonly EbObjectType Null = new EbObjectType("Null", iNull, ObjectConstants.XXXX, false, "fa-exclamation-triangle", null);
         public static readonly EbObjectType WebForm = new EbObjectType(ObjectConstants.WEB_FORM, iWebForm, ObjectConstants.XMWP, true, "fa-wpforms", "Form");//true
@@ -137,7 +138,7 @@ namespace ExpressBase.Common.Structures
         public static readonly EbObjectType HtmlPage = new EbObjectType(ObjectConstants.HTML_PAGE, iHtmlPage, ObjectConstants.XXWX, false, "fa-code", "Html Page");
         public static readonly EbObjectType MaterializedView = new EbObjectType(ObjectConstants.MATERIALIZED_VIEW, iMaterializedView, ObjectConstants.XXWX, false, "fa-database", "Materialized View");
         public static readonly EbObjectType PosForm = new EbObjectType(ObjectConstants.POS_FORM, iPosForm, ObjectConstants.XXXP, true, "fa-desktop", "Pos Form");
-
+        public static readonly EbObjectType PrintLayout = new EbObjectType(ObjectConstants.PRINT_LAYOUT, iPrintLayout, ObjectConstants.XMWX, true, "fa-print", "Print Layout");
 
         public static readonly EbObjectType KanBan = new EbObjectType(ObjectConstants.KANBAN, iKanBan, ObjectConstants.XXWX, false, "fa-tag", null);
         public static readonly EbObjectType CalendarView = new EbObjectType(ObjectConstants.CALENDARVIEW, iCalendarView, ObjectConstants.BXWX, true, "fa-calendar", "Calendar View");
@@ -187,7 +188,8 @@ namespace ExpressBase.Common.Structures
                     SqlJob,
                     HtmlPage,
                     MaterializedView,
-                    PosForm
+                    PosForm,
+                    PrintLayout
                 };
             }
         }
