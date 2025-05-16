@@ -31,23 +31,23 @@ namespace ExpressBase.Common.Messaging
 
         }
 
-        public Dictionary<string, string> SendSMS(string To, string Body)
+        public Dictionary<string, string> SendSMS(string to, string body, string sender = "")
         {
             Dictionary<string, string> msgStatus = null;
             try
             {
-                Data["msg"] = Body;
-                Data["to"] = To;
+                Data["msg"] = body;
+                Data["to"] = to;
                 var response = Client.UploadValues(Unifonic_base_url, "POST", Data);
                 string responseInString = Encoding.UTF8.GetString(response);
                 Console.WriteLine(responseInString);
                 if (response != null)
                 {
                     msgStatus = new Dictionary<string, string>{
-                                    { "To", To},
+                                    { "To", to},
                                     { "From", Config.From },
                                     { "Uri", url },
-                                    { "Body", Body },
+                                    { "Body", body },
                                     { "ErrorMessage", "" },
                                     { "ConId", Config.Id.ToString() },
                                     { "Result", responseInString}

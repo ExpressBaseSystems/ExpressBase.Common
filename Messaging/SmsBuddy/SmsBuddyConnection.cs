@@ -13,15 +13,15 @@ namespace ExpressBase.Common.Messaging
     {
         private EbSmsBuddyConfig Config { get; set; }
 
-        private const string SMS_BARE_URL = "​http://thesmsbuddy.com/api/v1/sms/send?key={0}&type={1}&to={2}&sender={3}&message={4}&flash={5};";           
-            
+        private const string SMS_BARE_URL = "​http://thesmsbuddy.com/api/v1/sms/send?key={0}&type={1}&to={2}&sender={3}&message={4}&flash={5};";
+
         //private string url;
         public SmsBuddyConnection(EbSmsBuddyConfig con)
         {
             Config = con;
         }
 
-        public Dictionary<string, string> SendSMS(string To, string body)
+        public Dictionary<string, string> SendSMS(string to, string body, string sender = "")
         {
             Dictionary<string, string> msgStatus = null;
             string result;
@@ -35,8 +35,8 @@ namespace ExpressBase.Common.Messaging
                     {
                         {"key" , Config.ApiKey},
                         {"type", "1" },
-                        {"to" , To},
-                        {"sender", Config.From},
+                        {"to" , to},
+                        {"sender", !String.IsNullOrEmpty(sender)? sender: Config.From},
                         {"message" , body} ,
                         {"flash", "0" }
                     });
@@ -48,7 +48,7 @@ namespace ExpressBase.Common.Messaging
                 msgStatus = new Dictionary<string, string>
                 {
                         {"ApiKey",  Config.ApiKey},
-                        {"To" , To},
+                        {"To" , to},
                         {"From" , Config.From},
                         {"Body" , body},
                         {"ConId", Config.Id.ToString() },

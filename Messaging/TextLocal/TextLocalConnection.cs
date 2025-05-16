@@ -26,7 +26,7 @@ namespace ExpressBase.Common.Messaging
             Config = con;
         }
 
-        public Dictionary<string, string> SendSMS(string To, string body)
+        public Dictionary<string, string> SendSMS(string to, string body, string sender = "")
         {
             Dictionary<string, string> msgStatus = null;
             string result;
@@ -34,7 +34,7 @@ namespace ExpressBase.Common.Messaging
             try
             {
                 var status = string.Empty;
-                IEnumerable<string> matches = Regex.Matches(To, @"[1-9]").OfType<Match>()
+                IEnumerable<string> matches = Regex.Matches(to, @"[1-9]").OfType<Match>()
                  .Select(m => m.Groups[0].Value)
                  .Distinct();
                 if (matches.Count() > 0)
@@ -45,9 +45,9 @@ namespace ExpressBase.Common.Messaging
                         byte[] response = wb.UploadValues("https://api.textlocal.in/send/", new NameValueCollection()
                     {
                         {"apikey" , Config.ApiKey},
-                        {"numbers" , To},
+                        {"numbers" , to},
                         {"message" , msg},
-                        {"sender" , Config.From}
+                        {"sender" , !String.IsNullOrEmpty(sender)? sender: Config.From}
                        // {"test" , "1"}
                     });
                         result = System.Text.Encoding.UTF8.GetString(response);
@@ -62,7 +62,7 @@ namespace ExpressBase.Common.Messaging
                 msgStatus = new Dictionary<string, string>
                 {
                         {"ApiKey",  Config.ApiKey},
-                        {"To" , To},
+                        {"To" , to},
                         {"From" , Config.From},
                         {"Body" , body},
                         {"ConId", Config.Id.ToString() },
