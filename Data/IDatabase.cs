@@ -205,8 +205,8 @@ namespace ExpressBase.Common
                         FROM
                             eb_objects_ver EOV, eb_objects_status EOS, eb_objects EO
                         WHERE
-                            EOV.refid = @refid AND EOS.eb_obj_ver_id = EOV.id AND EO.id = EOV.eb_objects_id
-                            
+                            EOV.refid = @refid AND EOS.eb_obj_ver_id = EOV.id AND EO.id = EOV.eb_objects_id 
+                            AND EO.eb_del = 'F' AND EOV.eb_del = 'F'                            
                         ORDER BY
 	                        EOS.id DESC 
                         LIMIT 1";
