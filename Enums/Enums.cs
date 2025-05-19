@@ -406,6 +406,9 @@ namespace ExpressBase.Common
     {
         SELECT,
         CREATE,
+        EDIT_INDEX_NAME,
+        CREATE_CONSTRAINT,
+        CREATE_INDEX,
         INSERT,
         DELETE,
         ALTER,
@@ -413,6 +416,7 @@ namespace ExpressBase.Common
         DROP,
         TRUNCATE
     }
+
 
     public enum MyActionTypes
     {

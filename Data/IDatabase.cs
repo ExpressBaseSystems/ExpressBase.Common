@@ -48,6 +48,11 @@ namespace ExpressBase.Common
         public abstract int AlterTable(string query, params DbParameter[] parameters);
         public abstract int DeleteTable(string query, params DbParameter[] parameters);
         public abstract int UpdateTable(string query, params DbParameter[] parameters);
+
+        public abstract int CreateIndex(string query, params DbParameter[] parameters);
+        public abstract int EditIndexName(string query, params DbParameter[] parameters);
+        public abstract int CreateConstraint(string query, params DbParameter[] parameters);
+
         public abstract EbDbTypes ConvertToDbType(Type typ);
         public abstract ColumnColletion GetColumnSchema(string table);
         public virtual string DBName { get; }

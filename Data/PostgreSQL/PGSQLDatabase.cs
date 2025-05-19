@@ -9,6 +9,7 @@ using MongoDB.Driver.GridFS;
 using Npgsql;
 using Npgsql.Schema;
 using NpgsqlTypes;
+using Oracle.ManagedDataAccess.Client;
 using ProtoBuf;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
 using System.Net.Sockets;
+using System.Text.RegularExpressions;
 
 namespace ExpressBase.Common
 {
@@ -854,7 +856,98 @@ namespace ExpressBase.Common
                 }
             }
         }
+        public override int CreateIndex(string query, params DbParameter[] parameters)
+        {
+            using (var con = GetNewConnection() as OracleConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (OracleCommand cmd = new OracleCommand(query, con))
+                    {
+                        cmd.BindByName = true;
 
+                        if (Regex.IsMatch(query, @"\:+") && parameters != null && parameters.Length > 0)
+                        {
+                            cmd.Parameters.AddRange(parameters);
+                        }
+
+                        return cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (OracleException orcl)
+                {
+                    Console.WriteLine(orcl.Message);
+                    throw orcl;
+                }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
+            }
+        }
+        public override int EditIndexName(string query, params DbParameter[] parameters)
+        {
+            using (var con = GetNewConnection() as NpgsqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+
+                        return cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    if ((uint)npgse.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
+                    throw npgse;
+                }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
+            }
+        }
+        public override int CreateConstraint(string query, params DbParameter[] parameters)
+        {
+            using (var con = GetNewConnection() as NpgsqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (var cmd = new NpgsqlCommand(query, con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                        {
+                            cmd.Parameters.AddRange(parameters);
+                        }
+
+                        return cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (NpgsqlException npgse)
+                {
+                    if ((uint)npgse.ErrorCode == 0x80004005)
+                    {
+                        NpgsqlConnection.ClearPool(con);
+                    }
+                    throw new Exception("NpgsqlException occurred while creating constraint.", npgse);
+                }
+                catch (SocketException scket)
+                {
+                    throw new Exception("SocketException occurred while creating constraint.", scket);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("An unexpected error occurred while creating constraint.", ex);
+                }
+            }
+        }
         public override ColumnColletion GetColumnSchema(string table)
         {
             ColumnColletion cols = new ColumnColletion();
