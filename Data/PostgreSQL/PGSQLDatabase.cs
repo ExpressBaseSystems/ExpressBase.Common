@@ -858,27 +858,24 @@ namespace ExpressBase.Common
         }
         public override int CreateIndex(string query, params DbParameter[] parameters)
         {
-            using (var con = GetNewConnection() as OracleConnection)
+            using (var con = GetNewConnection() as NpgsqlConnection)
             {
                 try
                 {
                     con.Open();
-                    using (OracleCommand cmd = new OracleCommand(query, con))
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
                     {
-                        cmd.BindByName = true;
-
-                        if (Regex.IsMatch(query, @"\:+") && parameters != null && parameters.Length > 0)
-                        {
+                        if (parameters != null && parameters.Length > 0)
                             cmd.Parameters.AddRange(parameters);
-                        }
 
                         return cmd.ExecuteNonQuery();
                     }
                 }
-                catch (OracleException orcl)
+                catch (Npgsql.NpgsqlException npgse)
                 {
-                    Console.WriteLine(orcl.Message);
-                    throw orcl;
+                    if ((uint)npgse.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
+                    throw npgse;
                 }
                 catch (SocketException scket)
                 {
@@ -886,6 +883,8 @@ namespace ExpressBase.Common
                 }
             }
         }
+
+
         public override int EditIndexName(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as NpgsqlConnection)
@@ -948,6 +947,8 @@ namespace ExpressBase.Common
                 }
             }
         }
+
+
         public override ColumnColletion GetColumnSchema(string table)
         {
             ColumnColletion cols = new ColumnColletion();
@@ -1385,61 +1386,75 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"
-                SELECT Q1.table_name, Q1.table_schema, i.indexname FROM 
-                (SELECT
-                    table_name, table_schema
-                FROM
-                    information_schema.tables s
-                WHERE
-                    table_schema != 'pg_catalog'
-                    AND table_schema != 'information_schema'
-                    AND table_type='BASE TABLE'
-                    AND table_name NOT LIKE '{0}')Q1
-                LEFT JOIN
-                    pg_indexes i
-                ON
-                   Q1.table_name = i.tablename ORDER BY tablename;
+        -- TABLES + INDEXES
+        SELECT Q1.table_name, Q1.table_schema, i.indexname FROM 
+        (SELECT
+            table_name, table_schema
+        FROM
+            information_schema.tables s
+        WHERE
+            table_schema != 'pg_catalog'
+            AND table_schema != 'information_schema'
+            AND table_type='BASE TABLE'
+            AND table_name NOT LIKE '{0}') Q1
+        LEFT JOIN
+            pg_indexes i
+        ON
+            Q1.table_name = i.tablename 
+        ORDER BY tablename;
 
+        -- COLUMNS
+        SELECT 
+            table_name, column_name, data_type
+        FROM
+            information_schema.columns
+        WHERE
+            table_schema != 'pg_catalog' AND
+            table_schema != 'information_schema' AND 
+            table_name NOT LIKE '{0}' AND
+            is_updatable != 'NO'
+        ORDER BY table_name;
 
-                SELECT 
-                    table_name, column_name, data_type
-                FROM
-                    information_schema.columns
-                WHERE
-                    table_schema != 'pg_catalog' AND
-                    table_schema != 'information_schema' AND 
-                    table_name NOT LIKE '{0}'AND
-		            is_updatable != 'NO'
-                ORDER BY table_name;
+        -- CONSTRAINTS
+        SELECT
+            c.conname AS constraint_name,
+            c.contype AS constraint_type,
+            tbl.relname AS table_name,
+            ARRAY_AGG(col.attname ORDER BY u.attposition) AS columns,
+            pg_get_constraintdef(c.oid) AS definition
+        FROM 
+            pg_constraint c
+        JOIN 
+            LATERAL UNNEST(c.conkey) WITH ORDINALITY AS u(attnum, attposition) ON TRUE
+        JOIN 
+            pg_class tbl ON tbl.oid = c.conrelid
+        JOIN 
+            pg_namespace sch ON sch.oid = tbl.relnamespace
+        JOIN 
+            pg_attribute col ON(col.attrelid = tbl.oid AND col.attnum = u.attnum)
+        WHERE
+            tbl.relname NOT LIKE '{0}'
+        GROUP BY 
+            constraint_name, constraint_type, table_name, definition
+        ORDER BY 
+            table_name;
 
-               SELECT
-                   c.conname AS constraint_name,
-                   c.contype AS constraint_type,
-                   tbl.relname AS tabless,
-                   ARRAY_AGG(col.attname
-                   ORDER BY
-                   u.attposition)
-                   AS columns,
-                   pg_get_constraintdef(c.oid) AS definition
-               FROM 
-                    pg_constraint c
-               JOIN 
-                    LATERAL UNNEST(c.conkey) WITH
-                    ORDINALITY AS u(attnum, attposition) ON TRUE
-               JOIN 
-                    pg_class tbl ON tbl.oid = c.conrelid
-               JOIN 
-                    pg_namespace sch ON sch.oid = tbl.relnamespace
-               JOIN 
-                    pg_attribute col ON(col.attrelid = tbl.oid AND col.attnum = u.attnum)
-               WHERE
-                    tbl.relname NOT LIKE '{0}'
-               GROUP BY 
-                    constraint_name, constraint_type, tabless, definition
-               ORDER BY 
-                    tabless;";
+        -- FUNCTIONS (Optional)
+        SELECT 
+            n.nspname AS function_schema,
+            p.proname AS function_name,
+            pg_get_functiondef(p.oid) AS definition
+        FROM 
+            pg_proc p
+        JOIN 
+            pg_namespace n ON n.oid = p.pronamespace
+        WHERE 
+            n.nspname NOT IN ('pg_catalog', 'information_schema')
+        ORDER BY 
+            function_schema, function_name;";
             }
         }
+
 
         //.......OBJECTS QUERIES.....          
 
