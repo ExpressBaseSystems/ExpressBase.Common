@@ -541,7 +541,7 @@ namespace ExpressBase.Common.Data.MSSQLServer
         public override EbDbTypes ConvertToDbType(Type _typ)
         {
             if (_typ == typeof(DateTime))
-                return EbDbTypes.Date;
+                return EbDbTypes.DateTime;
             else if (_typ == typeof(string))
                 return EbDbTypes.String;
             else if (_typ == typeof(bool))
