@@ -18,16 +18,16 @@ namespace ExpressBase.Common.Messaging
             Config = conf;
         }
 
-        public Dictionary<string, string> SendSMS(string To, string body)
+        public Dictionary<string, string> SendSMS(string to, string body, string sender = "")
         {
             Dictionary<string, string> msgStatus = null;
             try
             {
                 string status = string.Empty;
                 string result = string.Empty;
-                string url = string.Format(SMS_URL_BARE, Config.UserName, Config.Password, Config.ApiKey, To, body);
+                string url = string.Format(SMS_URL_BARE, Config.UserName, Config.Password, Config.ApiKey, to, body);
 
-                IEnumerable<string> matches = Regex.Matches(To, @"[1-9]").OfType<Match>()
+                IEnumerable<string> matches = Regex.Matches(to, @"[1-9]").OfType<Match>()
                  .Select(m => m.Groups[0].Value)
                  .Distinct();
                 if (matches.Count() > 0)
@@ -69,7 +69,7 @@ namespace ExpressBase.Common.Messaging
                 }
                 msgStatus = new Dictionary<string, string>
                 {
-                    { "To", To},
+                    { "To", to},
                     { "From", Config.From },
                     { "Uri", url },
                     { "Body", body },

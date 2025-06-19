@@ -39,13 +39,13 @@ namespace ExpressBase.Common.Connections
 
         public ISMSConnection FallBack { get; set; }
 
-        public Dictionary<string, string> SendSMS(string To, string Body)
+        public Dictionary<string, string> SendSMS(string to, string body, string sender)
         {
             Dictionary<string, string> resp = null;
             try
             {
                 //  resp = this[2].SendSMS(To, Body);
-                resp = Primary.SendSMS(To, Body);
+                resp = Primary.SendSMS(to, body, sender);
 
                 Console.WriteLine("SMS Send With Primary");
             }
@@ -55,7 +55,7 @@ namespace ExpressBase.Common.Connections
                 {
                     if (FallBack != null)
                     {
-                        resp = FallBack.SendSMS(To, Body);
+                        resp = FallBack.SendSMS(to, body, sender);
                         Console.WriteLine("SMS Send With Secondary");
                     }
                 }

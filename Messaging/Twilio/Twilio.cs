@@ -26,7 +26,7 @@ namespace ExpressBase.Common.Messaging
             url = string.Format(SMS_BARE_URL, Config.UserName);
         }
 
-        public Dictionary<string, string> SendSMS(string To, string body)
+        public Dictionary<string, string> SendSMS(string to, string body, string sender = "")
         {
             Dictionary<string, string> msgStatus = null;
             try
@@ -34,7 +34,7 @@ namespace ExpressBase.Common.Messaging
                 var requestContent = new FormUrlEncodedContent(new[]
                 {
                     new KeyValuePair<string, string>("From",Config.From),
-                    new KeyValuePair<string, string>("To", To),
+                    new KeyValuePair<string, string>("To", to),
                     new KeyValuePair<string, string>("Body", body)
                   });
 
@@ -45,12 +45,12 @@ namespace ExpressBase.Common.Messaging
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(
                                          System.Text.ASCIIEncoding.ASCII.GetBytes(
                                              string.Format("{0}:{1}", Config.UserName, Config.Password))));
-                 
+
                     HttpResponseMessage response = httpClient.PostAsync(url, requestContent).Result;
                     if (response.IsSuccessStatusCode)
                     {
                         msgStatus = new Dictionary<string, string>{
-                                    { "To", To},
+                                    { "To", to},
                                     { "From", Config.From },
                                     { "Uri", url },
                                     { "Body", body },
@@ -109,7 +109,7 @@ namespace ExpressBase.Common.Messaging
 //                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(
 //                                         System.Text.ASCIIEncoding.ASCII.GetBytes(
 //                                             string.Format("{0}:{1}", Config.UserName, Config.Password))));
-                 
+
 //                    HttpResponseMessage response = httpClient.PostAsync(url, requestContent).Result;
 //                    if (response.IsSuccessStatusCode)
 //                    {
