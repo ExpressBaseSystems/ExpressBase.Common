@@ -1234,7 +1234,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
 				                                AND
 					                                EOS.status = 3
 				                                AND 
-					                                EO.obj_type = ANY(ARRAY[13,3])
+					                                EO.obj_type = ANY(ARRAY[13,3,31])
 				                                AND 
 					                                EOS.id = ANY( Select MAX(id) from eb_objects_status EOS Where EOS.eb_obj_ver_id = EOV.id)
 				                                ) OD 

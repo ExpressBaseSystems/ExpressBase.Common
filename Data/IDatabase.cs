@@ -74,9 +74,9 @@ namespace ExpressBase.Common
                             WHERE EO.id = EOV.eb_objects_id AND EOV.id = EOS.eb_obj_ver_id AND EOS.status = 3 
                                 AND EOS.id = ANY(SELECT MAX(id) FROM eb_objects_status EOS WHERE EOS.eb_obj_ver_id = EOV.id)
                                 AND EO.id = EO2A.obj_id AND COALESCE(EO2A.eb_del, 'F') = 'F' AND COALESCE(EO.eb_del, 'F') = 'F'; 
-                        SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE id <> @id ORDER BY role_name;
+                        SELECT id, role_name, description, applicationid, is_anonymous FROM eb_roles WHERE COALESCE(eb_del, 'F') = 'F' AND id <> @id ORDER BY role_name;
                         SELECT id, role1_id, role2_id FROM eb_role2role WHERE COALESCE(eb_del, 'F') = 'F';
-                        SELECT id, longname, shortname FROM eb_locations;
+                        SELECT id, longname, shortname FROM eb_locations WHERE COALESCE(eb_del, 'F') = 'F';
                         SELECT id, fullname, email, phnoprimary FROM eb_users WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY fullname, email, phnoprimary;";
             }
         }
@@ -107,8 +107,8 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"SELECT id, role_name, description FROM eb_roles ORDER BY role_name;
-                        SELECT id, name,description FROM eb_usergroup ORDER BY name;
+                return @"SELECT id, role_name, description FROM eb_roles WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY role_name;
+                        SELECT id, name,description FROM eb_usergroup WHERE COALESCE(eb_del, 'F') = 'F' ORDER BY name;
 						SELECT id, role1_id, role2_id FROM eb_role2role WHERE COALESCE(eb_del, 'F') = 'F';
                         SELECT id, name FROM eb_user_types WHERE COALESCE(eb_del, 'F') = 'F';";
             }
