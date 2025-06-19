@@ -422,7 +422,9 @@ namespace ExpressBase.Common
 
     public enum ThermalPrintTemplates
     {
-        SalesInvoiceV1 = 1
+        SalesInvoiceV1 = 1,
+        SalesInvoiceV2 = 2,
+        DeliveryNoteV1 = 3
     }
 
     public enum FormSubmissionJobStatus
