@@ -38,7 +38,6 @@ namespace ExpressBase.Common.Helpers
 
 namespace ExpressBase.Common
 {
-
     public class AppWrapper
     {
         public int Id { set; get; }
@@ -72,12 +71,12 @@ namespace ExpressBase.Common
         public PackageDataSets DataSet { get; set; }
     }
 
-    public class PackageDataSets 
+    public class PackageDataSets
     {
-        public EbDataSet FullExportTables { get; set; }
-        public EbDataSet ConditionalExportTables { get; set; }
-    }
+        public EbDataSet FullExportTables { get; set; } // for replica only
+        public EbDataSet ConditionalExportTables { get; set; } // for replica 
 
+    }
     public class ExportPackageCollection
     {
         public string packName { get; set; }
@@ -87,3 +86,4 @@ namespace ExpressBase.Common
         public Dictionary<int, List<string>> appColl { get; set; }
     }
 }
+
