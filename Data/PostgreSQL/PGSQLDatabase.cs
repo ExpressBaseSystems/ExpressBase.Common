@@ -1396,7 +1396,17 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             table_schema != 'pg_catalog'
             AND table_schema != 'information_schema'
             AND table_type='BASE TABLE'
-            AND table_name NOT LIKE '{0}') Q1
+           AND (
+            table_name NOT LIKE '{0}' 
+            OR table_name IN (
+                'eb_browser_exceptions','eb_email_logs','eb_downloads','eb_fin_years','eb_fin_years_lines','eb_files_bytea' ,
+                'eb_files_ref','eb_files_ref_variations','eb_role2location','eb_role2permission','eb_role2role','eb_role2user',
+                'eb_roles','eb_signin_log','eb_user2usergroup','eb_usersanonymous','eb_usergroup','eb_users','eb_userstatus',
+                'eb_public_holidays','eb_notifications','eb_user_types','eb_my_actions','eb_approval_lines','eb_sms_logs',
+                'eb_executionlogs','eb_locations','eb_location_types'
+            )
+        )
+) AS Q1
         LEFT JOIN
             pg_indexes i
         ON
@@ -1411,8 +1421,17 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
         WHERE
             table_schema != 'pg_catalog' AND
             table_schema != 'information_schema' AND 
-            table_name NOT LIKE '{0}' AND
-            is_updatable != 'NO'
+            is_updatable != 'NO'  AND
+(
+        table_name NOT LIKE '{0}' 
+        OR table_name IN (
+            'eb_browser_exceptions','eb_email_logs','eb_downloads','eb_fin_years','eb_fin_years_lines','eb_files_bytea',
+            'eb_files_ref','eb_files_ref_variations','eb_role2location','eb_role2permission','eb_role2role','eb_role2user',
+            'eb_roles','eb_signin_log','eb_user2usergroup','eb_usersanonymous','eb_usergroup','eb_users','eb_userstatus',
+            'eb_public_holidays','eb_notifications','eb_user_types','eb_my_actions','eb_approval_lines','eb_sms_logs',
+            'eb_executionlogs','eb_locations','eb_location_types'
+        )
+    )
         ORDER BY table_name;
 
         -- CONSTRAINTS
