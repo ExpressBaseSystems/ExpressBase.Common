@@ -19,7 +19,7 @@ namespace ExpressBase.Common {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class sqlscripts {
@@ -57,6 +57,36 @@ namespace ExpressBase.Common {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- Table: public.eb_api_logs_master
+        ///
+        ///-- DROP TABLE IF EXISTS public.eb_api_logs_master;
+        ///
+        ///CREATE TABLE eb_api_logs_master
+        ///(
+        ///    id serial,
+        ///    name text,
+        ///    version text,
+        ///    refid text,
+        ///    type integer,
+        ///    params json,
+        ///    status text,
+        ///    message text,
+        ///    result json,
+        ///    eb_created_by integer,
+        ///    eb_created_at timestamp without time zone,
+        ///    eb_updated_at timestamp without time zone,
+        ///    CONSTRAINT eb_api_logs_master_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///-- Index: eb_api_logs_master_id_idx        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string eb_api_logs_master {
+            get {
+                return ResourceManager.GetString("eb_api_logs_master", resourceCulture);
             }
         }
         
@@ -193,7 +223,8 @@ namespace ExpressBase.Common {
         ///    eb_lastmodified_by integer,
         ///    eb_lastmodified_at timestamp without time zone,
         ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
-        ///    CONSTRAINT eb_approval_pkey PRIM [rest of string was truncated]&quot;;.
+        ///    eb_loc_id integer,
+        ///    CONSTRAI [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_approval {
             get {
@@ -736,11 +767,11 @@ namespace ExpressBase.Common {
         ///	role_name text,
         ///	description text,
         ///	isanonym text,
+        ///	isprimary text,
         ///	users text,
         ///	dependantroles text,
         ///	permissions text,
-        ///	locations text)
-        ///    [rest of string was truncated]&quot;;.
+        ///	lo [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_rbac_roles1 {
             get {
@@ -837,6 +868,7 @@ namespace ExpressBase.Common {
         ///	role_name text,
         ///	role_desc text,
         ///	isanonym text,
+        ///	isprimary text,
         ///	userid integer,
         ///	permissions text[],
         ///	roleid integer DEFAULT 0)
@@ -847,7 +879,7 @@ namespace ExpressBase.Common {
         ///
         ///   
         ///
-        ///DECLARE rid INTEGER; DECLARE e [rest of string was truncated]&quot;;.
+        ///DECLARE rid  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_create_or_update_role1 {
             get {
@@ -1323,7 +1355,8 @@ namespace ExpressBase.Common {
         ///-- DROP INDEX public.eb_downloads_id_idx;
         ///
         ///CREATE INDEX eb_downloads_id_idx
-        ///    ON eb_downloads(id);.
+        ///    ON eb_downloads(id);
+        ///.
         /// </summary>
         public static string eb_downloads {
             get {
@@ -1332,7 +1365,8 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_downloads .
+        ///   Looks up a localized string similar to -- Table: public.eb_downloads 
+        ///.
         /// </summary>
         public static string eb_downloads1 {
             get {
@@ -1341,7 +1375,8 @@ namespace ExpressBase.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- Table: public.eb_downloads.
+        ///   Looks up a localized string similar to -- Table: public.eb_downloads
+        ///.
         /// </summary>
         public static string eb_downloads2 {
             get {
@@ -1351,7 +1386,8 @@ namespace ExpressBase.Common {
         
         /// <summary>
         ///   Looks up a localized string similar to -- Table: public.eb_downloads
-        /// .
+        /// 
+        ///.
         /// </summary>
         public static string eb_downloads3 {
             get {
@@ -1844,18 +1880,19 @@ namespace ExpressBase.Common {
         ///    id serial,
         ///    fy_start date,
         ///    fy_end date,
-        ///    active_start date,
-        ///    active_end date,
-        ///    eb_loc_ids text,
-        ///    eb_lock &quot;char&quot;,
-        ///    locked_by integer,
-        ///    locked_at timestamp without time zone,
         ///    eb_created_by integer,
         ///    eb_created_at timestamp without time zone,
-        ///    eb_modified_by integer,
-        ///    eb_modified_at timestamp without time zone,
+        ///    eb_lastmodified_by integer,
+        ///    eb_lastmodified_at timestamp without time zone,
         ///    eb_del &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
-        ///	CONST [rest of string was truncated]&quot;;.
+        ///	CONSTRAINT eb_fin_years_pkey PRIMARY KEY (id)
+        ///);
+        ///
+        ///-- Index: eb_fin_years_id_idx
+        ///
+        ///-- DROP INDEX public.eb_fin_years_id_idx;
+        ///
+        ///CREATE INDEX eb_fin_yea [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_fin_years {
             get {
@@ -5625,14 +5662,13 @@ namespace ExpressBase.Common {
         ///    applicationid integer,
         ///    description text,
         ///    eb_del  &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
-        ///    is_anonymous  &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    is_anonymous &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
+        ///    eb_ver_id integer,
+        ///    eb_data_id integer,
+        ///    is_primary &quot;char&quot; DEFAULT &apos;F&apos;::&quot;char&quot;,
         ///    CONSTRAINT eb_roles_id_pkey PRIMARY KEY (id),
         ///    CONSTRAINT eb_rolename_unique UNIQUE (role_name),
-        ///    CONSTRAINT eb_roles_eb_del_check CHECK (eb_del = &apos;T&apos; OR eb_del = &apos;F&apos;)
-        ///);
-        ///
-        ///	
-        ///ALTER SEQUENCE 	eb_ro [rest of string was truncated]&quot;;.
+        ///    CONSTRAIN [rest of string was truncated]&quot;;.
         /// </summary>
         public static string eb_roles1 {
             get {

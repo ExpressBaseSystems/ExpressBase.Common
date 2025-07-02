@@ -72,6 +72,7 @@ namespace ExpressBase.Common.Constants
                         "datadb.tablecreate.eb_fin_years.sql",
                         "datadb.tablecreate.eb_fin_years_lines.sql",
                         "datadb.tablecreate.eb_user_api_keys.sql",
+                        "datadb.tablecreate.eb_api_logs_master.sql",
                         "filesdb.tablecreate.eb_files_bytea.sql",
                         "objectsdb.functioncreate.eb_get_tagged_object.sql",
                         "objectsdb.functioncreate.eb_objects_change_status.sql",
