@@ -414,7 +414,8 @@ namespace ExpressBase.Common
         ALTER,
         UPDATE,
         DROP,
-        TRUNCATE
+        TRUNCATE,
+        CREATE_FUNCTION
     }
 
 
