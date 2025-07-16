@@ -948,6 +948,35 @@ namespace ExpressBase.Common
             }
         }
 
+        public override int CreateFunction(string query, params DbParameter[] parameters)
+        {
+            using (var con = GetNewConnection() as NpgsqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+
+                        return cmd.ExecuteNonQuery(); // usually returns -1 for CREATE FUNCTION
+                    }
+                }
+                catch (Npgsql.NpgsqlException npgse)
+                {
+                    if ((uint)npgse.ErrorCode == 0x80004005)
+                        NpgsqlConnection.ClearPool(con);
+                    throw npgse;
+                }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
+            }
+        }
+
+
 
         public override ColumnColletion GetColumnSchema(string table)
         {
@@ -1392,7 +1421,7 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             table_name, table_schema
         FROM
             information_schema.tables s
-        WHERE
+     WHERE
             table_schema != 'pg_catalog'
             AND table_schema != 'information_schema'
             AND table_type='BASE TABLE'
@@ -1407,11 +1436,8 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             )
         )
 ) AS Q1
-        LEFT JOIN
-            pg_indexes i
-        ON
-            Q1.table_name = i.tablename 
-        ORDER BY tablename;
+LEFT JOIN pg_indexes i ON Q1.table_name = i.tablename
+ORDER BY Q1.table_name;
 
         -- COLUMNS
         SELECT 
@@ -1459,18 +1485,25 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             table_name;
 
         -- FUNCTIONS (Optional)
-        SELECT 
-            n.nspname AS function_schema,
-            p.proname AS function_name,
-            pg_get_functiondef(p.oid) AS definition
-        FROM 
-            pg_proc p
-        JOIN 
-            pg_namespace n ON n.oid = p.pronamespace
-        WHERE 
-            n.nspname NOT IN ('pg_catalog', 'information_schema')
-        ORDER BY 
-            function_schema, function_name;";
+SELECT 
+    n.nspname AS function_schema,
+    p.proname || '(' || 
+      regexp_replace(
+        COALESCE(pg_get_function_identity_arguments(p.oid), ''), 
+        '\s+DEFAULT[^,)]*', '', 'gi'
+      ) || ')' AS function_name,
+    pg_get_functiondef(p.oid) AS definition
+FROM 
+    pg_proc p
+JOIN 
+    pg_namespace n ON n.oid = p.pronamespace
+WHERE 
+    n.nspname NOT IN ('pg_catalog', 'information_schema')
+ORDER BY 
+    function_schema, function_name;
+
+
+";
             }
         }
 

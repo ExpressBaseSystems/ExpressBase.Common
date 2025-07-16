@@ -836,6 +836,38 @@ namespace ExpressBase.Common
             }
         }
 
+        public override int CreateFunction(string query, params DbParameter[] parameters)
+        {
+            if (query.Contains(":"))
+            {
+                query = query.Replace(":", "@");
+            }
+
+            using (var con = GetNewConnection() as MySqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(query, con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+
+                        return cmd.ExecuteNonQuery(); // Usually -1 for CREATE FUNCTION
+                    }
+                }
+                catch (MySqlException myexce)
+                {
+                    throw myexce;
+                }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
+            }
+        }
+
+
         public override int EditIndexName(string query, params DbParameter[] parameters)
         {
             if (query.Contains(":"))

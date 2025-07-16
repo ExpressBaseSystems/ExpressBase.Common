@@ -623,7 +623,6 @@ namespace ExpressBase.Common.Data
             return rslt;
         }
 
-
         public override int CreateIndex(string query, params DbParameter[] parameters)
         {
             using (var con = GetNewConnection() as OracleConnection)
@@ -654,6 +653,38 @@ namespace ExpressBase.Common.Data
                 }
             }
         }
+
+        public override int CreateFunction(string query, params DbParameter[] parameters)
+        {
+            using (var con = GetNewConnection() as OracleConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (OracleCommand cmd = new OracleCommand(query, con))
+                    {
+                        cmd.BindByName = true;
+
+                        if (Regex.IsMatch(query, @"\:+") && parameters != null && parameters.Length > 0)
+                        {
+                            cmd.Parameters.AddRange(parameters);
+                        }
+
+                        return cmd.ExecuteNonQuery(); // Usually returns -1 for CREATE FUNCTION
+                    }
+                }
+                catch (OracleException orcl)
+                {
+                    Console.WriteLine(orcl.Message);
+                    throw orcl;
+                }
+                catch (SocketException scket)
+                {
+                    throw scket;
+                }
+            }
+        }
+
 
         public override int EditIndexName(string query, params DbParameter[] parameters)
         {

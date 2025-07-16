@@ -52,6 +52,7 @@ namespace ExpressBase.Common
         public abstract int CreateIndex(string query, params DbParameter[] parameters);
         public abstract int EditIndexName(string query, params DbParameter[] parameters);
         public abstract int CreateConstraint(string query, params DbParameter[] parameters);
+        public abstract int CreateFunction(string query, params DbParameter[] parameters);
 
         public abstract EbDbTypes ConvertToDbType(Type typ);
         public abstract ColumnColletion GetColumnSchema(string table);

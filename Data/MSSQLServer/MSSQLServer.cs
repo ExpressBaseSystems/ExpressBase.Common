@@ -736,6 +736,27 @@ namespace ExpressBase.Common.Data.MSSQLServer
                 }
             }
         }
+        public override int CreateFunction(string query, params DbParameter[] parameters)
+        {
+            using (var con = GetNewConnection() as SqlConnection)
+            {
+                try
+                {
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        if (parameters != null && parameters.Length > 0)
+                            cmd.Parameters.AddRange(parameters);
+
+                        return cmd.ExecuteNonQuery(); // This usually returns -1 for CREATE FUNCTION
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+        }
 
         public override int EditIndexName(string query, params DbParameter[] parameters)
         {
@@ -780,8 +801,6 @@ namespace ExpressBase.Common.Data.MSSQLServer
                 }
             }
         }
-
-
 
         public override ColumnColletion GetColumnSchema(string table)
         {
