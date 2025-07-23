@@ -1415,20 +1415,21 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
             get
             {
                 return @"
-        -- TABLES + INDEXES
-        SELECT Q1.table_name, Q1.table_schema, i.indexname FROM 
-        (SELECT
-            table_name, table_schema
-        FROM
-            information_schema.tables s
-     WHERE
-            table_schema != 'pg_catalog'
-            AND table_schema != 'information_schema'
-            AND table_type='BASE TABLE'
-           AND (
-            table_name NOT LIKE '{0}' 
+-- TABLES + INDEXES
+SELECT Q1.table_name, Q1.table_schema, i.indexname FROM 
+(
+    SELECT
+        table_name, table_schema
+    FROM
+        information_schema.tables s
+    WHERE
+        table_schema != 'pg_catalog'
+        AND table_schema != 'information_schema'
+        AND table_type='BASE TABLE'
+        AND (
+            table_name NOT LIKE 'eb_%'
             OR table_name IN (
-                'eb_browser_exceptions','eb_email_logs','eb_downloads','eb_fin_years','eb_fin_years_lines','eb_files_bytea' ,
+                'eb_browser_exceptions','eb_email_logs','eb_downloads','eb_fin_years','eb_fin_years_lines','eb_files_bytea',
                 'eb_files_ref','eb_files_ref_variations','eb_role2location','eb_role2permission','eb_role2role','eb_role2user',
                 'eb_roles','eb_signin_log','eb_user2usergroup','eb_usersanonymous','eb_usergroup','eb_users','eb_userstatus',
                 'eb_public_holidays','eb_notifications','eb_user_types','eb_my_actions','eb_approval_lines','eb_sms_logs',
@@ -1439,17 +1440,17 @@ INSERT INTO eb_surveys(name, startdate, enddate, status, questions) VALUES (:nam
 LEFT JOIN pg_indexes i ON Q1.table_name = i.tablename
 ORDER BY Q1.table_name;
 
-        -- COLUMNS
-        SELECT 
-            table_name, column_name, data_type
-        FROM
-            information_schema.columns
-        WHERE
-            table_schema != 'pg_catalog' AND
-            table_schema != 'information_schema' AND 
-            is_updatable != 'NO'  AND
-(
-        table_name NOT LIKE '{0}' 
+-- COLUMNS
+SELECT 
+    table_name, column_name, data_type
+FROM
+    information_schema.columns
+WHERE
+    table_schema != 'pg_catalog'
+    AND table_schema != 'information_schema'
+    AND is_updatable != 'NO'
+    AND (
+        table_name NOT LIKE 'eb_%'
         OR table_name IN (
             'eb_browser_exceptions','eb_email_logs','eb_downloads','eb_fin_years','eb_fin_years_lines','eb_files_bytea',
             'eb_files_ref','eb_files_ref_variations','eb_role2location','eb_role2permission','eb_role2role','eb_role2user',
@@ -1458,33 +1459,42 @@ ORDER BY Q1.table_name;
             'eb_executionlogs','eb_locations','eb_location_types'
         )
     )
-        ORDER BY table_name;
+ORDER BY table_name;
 
-        -- CONSTRAINTS
-        SELECT
-            c.conname AS constraint_name,
-            c.contype AS constraint_type,
-            tbl.relname AS table_name,
-            ARRAY_AGG(col.attname ORDER BY u.attposition) AS columns,
-            pg_get_constraintdef(c.oid) AS definition
-        FROM 
-            pg_constraint c
-        JOIN 
-            LATERAL UNNEST(c.conkey) WITH ORDINALITY AS u(attnum, attposition) ON TRUE
-        JOIN 
-            pg_class tbl ON tbl.oid = c.conrelid
-        JOIN 
-            pg_namespace sch ON sch.oid = tbl.relnamespace
-        JOIN 
-            pg_attribute col ON(col.attrelid = tbl.oid AND col.attnum = u.attnum)
-        WHERE
-            tbl.relname NOT LIKE '{0}'
-        GROUP BY 
-            constraint_name, constraint_type, table_name, definition
-        ORDER BY 
-            table_name;
+-- CONSTRAINTS
+SELECT
+    c.conname AS constraint_name,
+    c.contype AS constraint_type,
+    tbl.relname AS table_name,
+    ARRAY_AGG(col.attname ORDER BY u.attposition) AS columns,
+    pg_get_constraintdef(c.oid) AS definition
+FROM 
+    pg_constraint c
+JOIN 
+    LATERAL UNNEST(c.conkey) WITH ORDINALITY AS u(attnum, attposition) ON TRUE
+JOIN 
+    pg_class tbl ON tbl.oid = c.conrelid
+JOIN 
+    pg_namespace sch ON sch.oid = tbl.relnamespace
+JOIN 
+    pg_attribute col ON(col.attrelid = tbl.oid AND col.attnum = u.attnum)
+WHERE
+    (
+        tbl.relname NOT LIKE 'eb_%'
+        OR tbl.relname IN (
+            'eb_browser_exceptions','eb_email_logs','eb_downloads','eb_fin_years','eb_fin_years_lines','eb_files_bytea',
+            'eb_files_ref','eb_files_ref_variations','eb_role2location','eb_role2permission','eb_role2role','eb_role2user',
+            'eb_roles','eb_signin_log','eb_user2usergroup','eb_usersanonymous','eb_usergroup','eb_users','eb_userstatus',
+            'eb_public_holidays','eb_notifications','eb_user_types','eb_my_actions','eb_approval_lines','eb_sms_logs',
+            'eb_executionlogs','eb_locations','eb_location_types'
+        )
+    )
+GROUP BY 
+    constraint_name, constraint_type, table_name, definition
+ORDER BY 
+    table_name;
 
-        -- FUNCTIONS (Optional)
+-- FUNCTIONS (Optional)
 SELECT 
     n.nspname AS function_schema,
     p.proname || '(' || 
@@ -1501,11 +1511,10 @@ WHERE
     n.nspname NOT IN ('pg_catalog', 'information_schema')
 ORDER BY 
     function_schema, function_name;
-
-
 ";
             }
         }
+
 
 
         //.......OBJECTS QUERIES.....          
