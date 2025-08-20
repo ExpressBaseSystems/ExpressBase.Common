@@ -72,6 +72,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         string SolutionId { get; set; }
 
         string SubscriptionId { get; set; }
+
+         string FileType { get; set; }
+
     }
 
     [DataContract]
@@ -118,6 +121,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 14)]
         public string SubscriptionId { get; set; }
+
+        [DataMember(Order = 15)]
+        public string FileType { get; set; }
 
     }
 
@@ -166,6 +172,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 14)]
         public string SubscriptionId { get; set; }
 
+        [DataMember(Order = 15)]
+        public string FileType { get; set; }
+
     }
 
     [DataContract]
@@ -213,6 +222,10 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         [DataMember(Order = 14)]
         public string SubscriptionId { get; set; }
 
+        [DataMember(Order = 15)]
+        public string FileType { get; set; }
+
+
     }
 
     [DataContract]
@@ -259,6 +272,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 14)]
         public string SubscriptionId { get; set; }
+
+        [DataMember(Order = 15)]
+        public string FileType { get; set; }
     }
     [DataContract]
     public class UploadLocRequest : IReturn<EbMqResponse>, IUploadImageRequest
@@ -304,6 +320,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 14)]
         public string SubscriptionId { get; set; }
+
+        [DataMember(Order = 15)]
+        public string FileType { get; set; }
     }
 
     [DataContract]
@@ -368,44 +387,10 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class ImageMeta
-    {
-        [DataMember(Order = 1)]
-        public string FileStoreId { get; set; }
-
-        [DataMember(Order = 2)]
-        public Int32 FileRefId { get; set; }
-
-
-        [DataMember(Order = 3)]
-        public string FileName { get; set; }
-
-        [DataMember(Order = 4)]
-        public IDictionary<string, List<string>> MetaDataDictionary { get; set; }
-
-        [DataMember(Order = 5)]
-        public DateTime UploadDateTime { get; set; }
-
-        [DataMember(Order = 6)]
-        public Int64 Length { get; set; }
-
-        [DataMember(Order = 7)]
-        public string FileType { get; set; }
-
-        [DataMember(Order = 8)]
-        public EbFileCategory FileCategory { get; set; }
-
-        [DataMember(Order = 9)]
-        public ImageQuality ImageQuality { get; set; }
-
-        [DataMember(Order = 10)]
-        public int ImgManipulationServiceId { get; set; }
-
-        [DataMember(Order = 11)]
-        public int InfraConID { get; set; }
-
+    public class ImageMeta:FileMeta
+    { 
         [DataMember(Order = 12)]
-        public string Context { get; set; }
+        public ImageQuality ImageQuality { get; set; } 
     }
 
     [DataContract]

@@ -1,4 +1,5 @@
 ﻿using ExpressBase.Common.Data;
+using ExpressBase.Common.Data.AWSS3;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -149,6 +150,26 @@ namespace ExpressBase.Common.Connections
                 }
 
                 return _dcConnections;
+            }
+        }
+
+        private static S3 _ebS3Connection = null;
+
+        public static S3 EbS3Connection
+        {
+            get
+            {
+                if (_ebS3Connection == null)
+                {
+                    _ebS3Connection =   new S3(new EbAWSS3Config
+                    {
+                        BucketName = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_S3_BUCKET_NAME),                         
+                        BucketRegion = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_S3_BUCKET_REGION),
+                        AccessKeyID = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_S3_ACCESS_KEY_ID),
+                        SecretAccessKey = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_S3_SECRET_ACCESS_KEY)                         
+                    });
+                }
+                return _ebS3Connection;
             }
         }
     }

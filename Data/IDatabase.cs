@@ -567,7 +567,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"SELECT 
-                                B.imagequality_id, B.filestore_sid, B.filedb_con_id
+                                B.imagequality_id, B.filestore_sid, B.filedb_con_id, A.filetype
                             FROM 
                                 eb_files_ref A, eb_files_ref_variations B
                             WHERE 
@@ -576,20 +576,38 @@ namespace ExpressBase.Common
                                 B.imagequality_id;";
             }
         }
+
+        public virtual string EB_DOWNLOAD_IMAGE_BY_ID2
+        {
+            get
+            {
+                return @"SELECT 
+                                B.imagequality_id, B.filestore_sid, B.filedb_con_id, A.filetype
+                            FROM 
+                                eb_files_ref A, eb_files_ref_variations B
+                            WHERE 
+                                A.id = B.eb_files_ref_id AND A.id = @fileref AND B.imagequality_id = @imagequality_id";
+            }
+        }
         public virtual string EB_DOWNLOAD_DP
         {
             get
             {
                 return @"SELECT 
-                                V.filestore_sid , V.filedb_con_id
+                                V.filestore_sid , V.filedb_con_id, A.filetype
                             FROM 
+                                eb_files_ref A 
+                            INNER JOIN
                                 eb_files_ref_variations V 
+                            ON 
+                                A.id = V.eb_files_ref_id
                             INNER JOIN 
                                 eb_users U
                             ON 
                                 V.eb_files_ref_id = U.dprefid
                             WHERE 
-                                U.id = @userid";
+                                U.id = @userid
+                            ORDER BY V.id desc limit 1";
             }
         }
         public virtual string EB_GET_SELECT_FILE_UPLOADER_CXT

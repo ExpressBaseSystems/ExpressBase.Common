@@ -25,6 +25,9 @@ namespace ExpressBase.Common
         public const string EB_STATICFILESERVER_EXT_URL = "EB_STATICFILESERVER_EXT_URL";
         public const string EB_STATICFILESERVER_INT_URL = "EB_STATICFILESERVER_INT_URL";
 
+        public const string EB_STATICFILESERVER2_INT_URL = "EB_STATICFILESERVER2_INT_URL";
+
+
         public const string EB_MQ_URL = "EB_MQ_URL";
 
         //GET ACCESS TOKEN SERVICE URL
@@ -116,5 +119,10 @@ namespace ExpressBase.Common
         public const string MOVEON_AZURE_PNS_CON = "MOVEON_AZURE_PNS_CON";
         public const string MOVEON_AZURE_PNS_HUBNAME = "MOVEON_AZURE_PNS_HUBNAME";
         public const string EB_API_SECRET = "EB_API_SECRET";
+
+        public const string EB_S3_BUCKET_NAME = "EB_S3_BUCKET_NAME";
+        public const string EB_S3_BUCKET_REGION = "EB_S3_BUCKET_REGION";
+        public const string EB_S3_ACCESS_KEY_ID = "EB_S3_ACCESS_KEY_ID";
+        public const string EB_S3_SECRET_ACCESS_KEY = "EB_S3_SECRET_ACCESS_KEY";
     }
 }

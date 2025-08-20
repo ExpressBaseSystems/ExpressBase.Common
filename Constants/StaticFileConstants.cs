@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using ExpressBase.Common.EbServiceStack.ReqNRes;
+using ExpressBase.Common.Enums;
+using ExpressBase.Common.WebApi.RequestNResponse;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ExpressBase.Common.Constants
 {
@@ -162,5 +167,53 @@ namespace ExpressBase.Common.Constants
         {
             M4A,FLAC,MP3,WAVE,WMA,AAC,OPUS
         };
+
+        public static string GetMimeType(string fname)
+        {
+            var ext = fname.Split('.').LastOrDefault()?.ToLowerInvariant();
+            if (ext != null && StaticFileConstants.GetMime.TryGetValue(ext, out string mime))
+            {
+                return mime;
+            }
+            return StaticFileConstants.MIME_UNKNOWN;
+        }
+
+        public static string GetFilePath(dynamic request)
+        {
+            EbFileCategory category = (EbFileCategory)request.FileCategory;
+
+            switch (category)
+            {
+                case EbFileCategory.Dp:
+                    if (request is UploadDpRequest)
+                        return $"StaticFiles/{request.SolnId}/dp/{request.UserId}.{request.FileType}";
+                    else
+                        return $"StaticFiles/{request.SolnId}/dp/{request.FileName}.{request.FileType}";
+
+                case EbFileCategory.File:
+                    return $"StaticFiles/{request.SolnId}/{request.FileDetails.FileRefId}";
+
+                case EbFileCategory.Images:
+                    if(request is DownloadFileRequest2) 
+                        return $"StaticFiles/{request.SolnId}/{request.ImgQuality}/{request.FileRefId}.{request.FileType}";
+                    else
+                        return $"StaticFiles/{request.SolnId}/{request.ImgQuality}/{request.ImageRefId}.{request.FileType}";
+
+                case EbFileCategory.SolLogo:
+                    return $"StaticFiles/{request.SolnId}/logo/{request.SolnId}";
+
+                case EbFileCategory.External:
+                    if (request is DownloadWikiImgRequest)
+                        return $"StaticFiles/wiki/{request.RefId}";
+                    if (request is DownloadInfraImgRequest)
+                        return $"StaticFiles/eb/{request.RefId}";
+                    if (request is DownloadBotExtImgRequest)
+                        return $"StaticFiles/botExt/{request.RefId}";
+                    throw new Exception("Unknown external request type");
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(category), $"Unsupported file category: {category}");
+            }
+        }
     }
 }

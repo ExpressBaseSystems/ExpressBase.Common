@@ -1,4 +1,7 @@
-﻿using ExpressBase.Common.Enums;
+﻿using Amazon;
+using ExpressBase.Common.Connections;
+using ExpressBase.Common.Data.AWSS3;
+using ExpressBase.Common.Enums;
 using System;
 using System.Collections.Generic;
 
@@ -32,14 +35,18 @@ namespace ExpressBase.Common.Data
 
     public class FilesCollection : List<INoSQLDatabase>
     {
+        public readonly bool isNewFileServer = true;
         public int DefaultConId { get; set; }
 
         public int UsedConId { get; set; }
-
         new public INoSQLDatabase this[int _id]
         {
             get
             {
+                if (_id == 0)
+                {
+                    return EbConnectionsConfigProvider.EbS3Connection;
+                }
                 foreach (INoSQLDatabase file in this)
                 {
                     if (file.InfraConId == _id)
@@ -51,7 +58,7 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        public string UploadFile(string filename, byte[] bytea, EbFileCategory category, int _infraConId)
+        public string UploadFile(string filename, byte[] bytea, EbFileCategory category, int _infraConId, string s3Path = "")
         {
             Console.WriteLine("Inside Upload FilesDB Collection");
 
@@ -60,7 +67,11 @@ namespace ExpressBase.Common.Data
 
             try
             {
-                if (_infraConId == 0)
+                if (isNewFileServer)
+                {
+                    return (this[0]as S3).UploadFile2(filename, bytea, category, s3Path);
+                }
+                else if (_infraConId == 0)
                 {
                     _infraConId = DefaultConId;
                 }
@@ -76,13 +87,11 @@ namespace ExpressBase.Common.Data
 
         }
 
-        public byte[] DownloadFileById(string filestoreid, EbFileCategory category, int _infraConId)
+        public byte[] DownloadFileById(string filestoreid, EbFileCategory category, int _infraConId, string s3Path = "")
         {
-            //if (_infraConId == 0)
-            //{
-            //    _infraConId = DefaultConId;
-            //}
-            //this.UsedConId = _infraConId;
+            if (isNewFileServer)
+                return (this[0] as S3).DownloadFileById2(filestoreid, category, s3Path);
+
             if (this[_infraConId + 1000000] != null)
                 return this[_infraConId + 1000000].DownloadFileById(filestoreid, category);
 

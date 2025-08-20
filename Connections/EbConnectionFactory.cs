@@ -174,6 +174,17 @@ namespace ExpressBase.Common.Data
             InitDatabases();
         }
 
+        public EbConnectionFactory(ISolutionContext context, IRedisClient redis)
+        {
+            this.SolutionId = context.TenantId;
+            if (string.IsNullOrEmpty(this.SolutionId))
+                throw new Exception("Fatal Error :: Solution Id is null or Empty!");
+
+            this.Redis = redis as RedisClient;
+
+            InitDatabases();
+        }
+
         //Call from ServiceStack
         public EbConnectionFactory(Container c)
         {
