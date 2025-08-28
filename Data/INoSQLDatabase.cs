@@ -87,6 +87,10 @@ namespace ExpressBase.Common.Data
 
         }
 
+        public string GetPresignedUrl(string s3Path) {
+            return (this[0] as S3).GetPreSignedUrl(s3Path);
+        }
+
         public byte[] DownloadFileById(string filestoreid, EbFileCategory category, int _infraConId, string s3Path = "")
         {
             if (isNewFileServer)

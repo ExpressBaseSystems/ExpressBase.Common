@@ -38,6 +38,7 @@ namespace ExpressBase.Common.Constants
         public const string PDFDOWNLOADSUCCESS = "cmd.onPdfDownload";
         //Controller Types Url catg strings
 
+        public const int MAX_CACHE_SIZE = 256 * 1024;
 
         //FileTypes
         public const string JPG = "jpg";
@@ -57,6 +58,7 @@ namespace ExpressBase.Common.Constants
 
         public const string TXT = "txt";
         public const string TEXT = "text";
+        public const string CSV = "csv";
 
         public const string PDF = "pdf";
         public const string DOC = "doc";
@@ -67,9 +69,8 @@ namespace ExpressBase.Common.Constants
         public const string PPT = "ppt";
 
         public const string ZIP = "zip";
-
         public const string DOTJPG = ".jpg";
-        public const string DOTJPEG = ".jepg";
+        public const string DOTJPEG = ".jpeg";
         public const string DOTPNG = ".png";
         public const string DOTBMP = ".bmp";
 
@@ -77,12 +78,13 @@ namespace ExpressBase.Common.Constants
 
         public const string DOTTXT = ".txt";
         public const string DOTTEXT = ".text";
+        public const string DOTCSV = ".csv";
 
         public const string DOTPDF = ".pdf";
         public const string DOTDOC = ".doc";
         public const string DOTDOCX = ".docx";
         public const string DOTXLS = ".xls";
-        public const string DOTXLSX = ".xxlsx";
+        public const string DOTXLSX = ".xlsx";
         public const string DOTPPT = ".ppt";
         public const string DOTPPTX = ".pptx";
 
@@ -106,6 +108,7 @@ namespace ExpressBase.Common.Constants
 
         public const string MIME_TXT = "text/plain";
         public const string MIME_TEXT = "text/plain";
+        public const string MIME_CSV = "text/csv";
 
         public const string MIME_PDF = "application/pdf";
         public const string MIME_DOC = "application/msword";
@@ -138,6 +141,7 @@ namespace ExpressBase.Common.Constants
 
             {TXT, MIME_TXT},
             {TEXT, MIME_TEXT},
+            {CSV, MIME_CSV},
 
             { PDF, MIME_PDF},
             {DOC, MIME_DOC},
@@ -191,16 +195,24 @@ namespace ExpressBase.Common.Constants
                         return $"StaticFiles/{request.SolnId}/dp/{request.FileName}.{request.FileType}";
 
                 case EbFileCategory.File:
-                    return $"StaticFiles/{request.SolnId}/{request.FileDetails.FileRefId}";
+                    return $"StaticFiles/{request.SolnId}/{request.FileRefId}.{request.FileType}";
+
+                case EbFileCategory.Audio:
+                    return $"StaticFiles/{request.SolnId}/{category.ToString().ToLower()}/{request.FileRefId}.{request.FileType}";
+
+                case EbFileCategory.LocationFile:
+                    return $"StaticFiles/{request.SolnId}/{category.ToString().ToLower()}/{request.FileRefId}.{request.FileType}";
 
                 case EbFileCategory.Images:
-                    if(request is DownloadFileRequest2) 
-                        return $"StaticFiles/{request.SolnId}/{request.ImgQuality}/{request.FileRefId}.{request.FileType}";
+                    string ImgQuality = ((ImageQuality)request.ImgQuality).ToString();
+
+                    if (request is DownloadFileRequest2)
+                        return $"StaticFiles/{request.SolnId}/{ImgQuality}/{request.FileRefId}.{request.FileType}";
                     else
-                        return $"StaticFiles/{request.SolnId}/{request.ImgQuality}/{request.ImageRefId}.{request.FileType}";
+                        return $"StaticFiles/{request.SolnId}/{ImgQuality}/{request.ImageRefId}.{request.FileType}";
 
                 case EbFileCategory.SolLogo:
-                    return $"StaticFiles/{request.SolnId}/logo/{request.SolnId}";
+                    return $"StaticFiles/{request.SolnId}/logo/{request.SolnId}.{request.FileType}";
 
                 case EbFileCategory.External:
                     if (request is DownloadWikiImgRequest)

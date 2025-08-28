@@ -4,6 +4,8 @@ using ExpressBase.Common.Objects;
 using ExpressBase.Common.WebApi.RequestNResponse;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using SendGrid;
+using ServiceStack;
 using ServiceStack.Auth;
 using System;
 using System.Collections.Generic;
@@ -27,24 +29,22 @@ namespace ExpressBase.Common.ServiceClients
             //_httpClient.BaseAddress = new Uri(Environment.GetEnvironmentVariable(EnvironmentConstants.EB_STATICFILESERVER2_INT_URL));
         }
 
-        public async Task<UploadAsyncResponse2> UploadImageAsync(byte[] imageBytes, ImageMeta meta, string endpoint, string solutionId, int userId, string userAuthId, int targetUserId = 0)
+        public async Task<UploadAsyncResponse2> UploadFileAsync(byte[] fileBytes, FileMeta meta, string endpoint, string solutionId, int userId, string userAuthId, int targetUserId = 0)
         {
             using (var form = new MultipartFormDataContent())
             {
-                // Add the image content
-                var imageContent = new ByteArrayContent(imageBytes);
-                imageContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/octet-stream");
-                form.Add(imageContent, "File", meta.FileName);
+                var content = new ByteArrayContent(fileBytes);
+                content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/octet-stream");
+                form.Add(content, "File", meta.FileName);
 
-                //Add metadata fields
                 form.Add(new StringContent(meta.Context ?? ""), "Context");
                 form.Add(new StringContent(meta.FileType ?? ""), "FileType");
                 form.Add(new StringContent(meta.FileName ?? ""), "FileName");
                 form.Add(new StringContent(meta.Length.ToString() ?? ""), "Length");
                 form.Add(new StringContent(((int)meta.FileCategory).ToString() ?? ""), "FileCategory");
-                form.Add(new StringContent(((int)meta.ImageQuality).ToString() ?? ""), "ImageQuality");
+                if (meta is ImageMeta)
+                    form.Add(new StringContent(((int)(meta as ImageMeta).ImageQuality).ToString() ?? ""), "ImageQuality");
 
-                // Serialize MetaDataDictionary as JSON
                 string metaJson = "{}";
                 if (meta.MetaDataDictionary != null && meta.MetaDataDictionary.Count > 0)
                 {
@@ -73,21 +73,21 @@ namespace ExpressBase.Common.ServiceClients
 
         public DownloadFileResponse2 DownloadFile(FileMeta meta, string endpoint, string solutionId, int userId, string userAuthId, ImageQuality? imageQuality = null)
         {
-            
+
             var query = new Dictionary<string, string>
             {
-                ["FileRefId"] = meta.FileRefId.ToString(),
-                ["FileCategory"] = ((int)meta.FileCategory).ToString(),
+                ["FileRefId"] = meta?.FileRefId.ToString(),
+                ["FileCategory"] = ((int)meta?.FileCategory).ToString(),
                 ["SolnId"] = solutionId,
                 ["UserId"] = userId.ToString(),
                 ["UserAuthId"] = userAuthId,
-                ["FileName"] = meta.FileName
+                ["FileName"] = meta?.FileName
             };
 
             // Only add ImageQuality if provided
             if (imageQuality.HasValue)
             {
-                query["ImgQuality"] = ((int)imageQuality.Value).ToString();
+                query["imageQuality"] = ((int)imageQuality).ToString();
             }
 
             string queryString = string.Join("&",
@@ -99,44 +99,30 @@ namespace ExpressBase.Common.ServiceClients
             HttpResponseMessage response = Client.GetAsync(url).GetAwaiter().GetResult();
             response.EnsureSuccessStatusCode();
 
-            // Read binary stream
-            var memStream = new MemoryStream();
-            using (var respStream = response.Content.ReadAsStreamAsync().GetAwaiter().GetResult())
-            {
-                respStream.CopyTo(memStream);
-            }
-
-            memStream.Position = 0;
-
-            return new DownloadFileResponse2
-            {
-                StreamWrapper = new MemorystreamWrapper { Memorystream = memStream }
-            };
+            string json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            DownloadFileResponse2 dfs = JsonConvert.DeserializeObject<DownloadFileResponse2>(json);
+            return dfs;
         }
 
-
-        public async Task<string> UploadAsync(IFormFile formFile, IFormCollection formFields, string endpoint)
+        public DownloadFileResponse2 DownloadLogo(string solutionId)
         {
-            var form = new MultipartFormDataContent();
-            var fileName = Path.GetFileName(formFile.FileName);
+            string endpoint = "download/logo";
+            var query = new Dictionary<string, string>
+            { 
+                ["SolnId"] = solutionId
+            };
+            string queryString = string.Join("&",
+                query.Select(kvp => $"{Uri.EscapeDataString(kvp.Key)}={Uri.EscapeDataString(kvp.Value)}"));
 
-            using (var stream = formFile.OpenReadStream())
-            {
-                form.Add(new StreamContent(stream), "file", fileName);
-            }
+            // Ensure proper URL formatting
+            string url = $"{endpoint}?{queryString}";
 
-
-            // Add *all other fields* from the form (including metadata)
-            foreach (var key in formFields.Keys)
-            {
-                if (key == "file") continue; // already added above
-                form.Add(new StringContent(formFields[key]), key);
-            }
-
-            var response = await Client.PostAsync(endpoint.TrimStart('/'), form);
+            HttpResponseMessage response = Client.GetAsync(url).GetAwaiter().GetResult();
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadAsStringAsync();
+            string json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            DownloadFileResponse2 dfs = JsonConvert.DeserializeObject<DownloadFileResponse2>(json);
+            return dfs;
         }
 
     }

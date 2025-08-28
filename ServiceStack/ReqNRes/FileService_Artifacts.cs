@@ -35,6 +35,9 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         [DataMember(Order = 5)]
         public string SubscriptionId { get; set; }
+
+        [DataMember(Order = 6)]
+        public string FileType { get; set; }
     }
 
     [DataContract]
@@ -73,7 +76,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
 
         string SubscriptionId { get; set; }
 
-         string FileType { get; set; }
+        string FileType { get; set; }
 
     }
 
@@ -387,10 +390,10 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
     }
 
     [DataContract]
-    public class ImageMeta:FileMeta
-    { 
+    public class ImageMeta : FileMeta
+    {
         [DataMember(Order = 12)]
-        public ImageQuality ImageQuality { get; set; } 
+        public ImageQuality ImageQuality { get; set; }
     }
 
     [DataContract]
@@ -619,12 +622,12 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         public FileMeta FileDetails { get; set; }
     }
 
-    [DataContract]
-    public class DownloadFileByRefIdRequest : EbServiceStackAuthRequest, IReturn<DownloadFileResponse>
-    {
-        [DataMember(Order = 1)]
-        public FileMeta FileDetails { get; set; }
-    }
+    //[DataContract]
+    //public class DownloadFileByRefIdRequest : EbServiceStackAuthRequest, IReturn<DownloadFileResponse>
+    //{
+    //    [DataMember(Order = 1)]
+    //    public FileMeta FileDetails { get; set; }
+    //}
 
     //[DataContract]
     //public class EbFileId

@@ -555,7 +555,7 @@ namespace ExpressBase.Common
             get
             {
                 return @"SELECT
-                                B.filestore_sid , B.filedb_con_id
+                                B.filestore_sid , B.filedb_con_id, A.filetype
                             FROM 
                                 eb_files_ref A, eb_files_ref_variations B
                             WHERE 
@@ -581,14 +581,28 @@ namespace ExpressBase.Common
         {
             get
             {
-                return @"SELECT 
-                                B.imagequality_id, B.filestore_sid, B.filedb_con_id, A.filetype
-                            FROM 
-                                eb_files_ref A, eb_files_ref_variations B
-                            WHERE 
-                                A.id = B.eb_files_ref_id AND A.id = @fileref AND B.imagequality_id = @imagequality_id";
+                return @"SELECT B.imagequality_id, B.filestore_sid, B.filedb_con_id, A.filetype
+                            FROM eb_files_ref A
+                            JOIN eb_files_ref_variations B 
+                              ON A.id = B.eb_files_ref_id
+                            WHERE A.id =  @fileref
+                              AND (B.imagequality_id = @imagequality_id OR B.imagequality_id = 0)
+                            ORDER BY CASE WHEN B.imagequality_id = @imagequality_id THEN 0 ELSE 1 END
+                            LIMIT 1; ";
             }
         }
+
+        public virtual string EB_DOWNLOAD_SOLUTION_LOGO
+        {
+            get
+            {
+                return @"SELECT 
+                            filestore_sid , V.filedb_con_id, A.filetype
+                        FROM eb_files_ref A, eb_solutions S, eb_files_ref_variations V  
+                        WHERE S.isolution_id = :solid AND V.eb_files_ref_id = S.logorefid AND A.id = V.eb_files_ref_id;";
+            }
+        }
+
         public virtual string EB_DOWNLOAD_DP
         {
             get

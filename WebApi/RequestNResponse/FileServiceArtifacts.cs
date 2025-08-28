@@ -42,12 +42,12 @@ namespace ExpressBase.Common.WebApi.RequestNResponse
 
     public class DownloadFileRequest2
     {
-         public int FileRefId { get; set; }
+        public int FileRefId { get; set; }
 
         public int FileCategory { get; set; }
 
-        public ImageQuality ImgQuality { get; set; }
-         
+        public int ImgQuality { get; set; }
+
         public string FileName { get; set; }
 
         public string SolnId { get; set; }
@@ -71,6 +71,10 @@ namespace ExpressBase.Common.WebApi.RequestNResponse
 
         [DataMember(Order = 3)]
         public ResponseStatus ResponseStatus { get; set; }
+
+        [DataMember(Order = 4)]
+        public string PreSignedUrl { get; set; }
+
     }
 
     public class UploadImageAsyncRequest2

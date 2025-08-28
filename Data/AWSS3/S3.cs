@@ -73,6 +73,20 @@ namespace ExpressBase.Common.Data.AWSS3
                 throw new Exception($"General error while uploading '{filename}': {ex.Message}", ex);
             }
         }
+
+        public string GetPreSignedUrl(string s3Path, int expiryMinutes = 1)
+        {
+            var request = new GetPreSignedUrlRequest
+            {
+                BucketName = bucketName,
+                Key = s3Path,
+                Expires = DateTime.UtcNow.AddMinutes(expiryMinutes), 
+                Verb = HttpVerb.GET
+            };
+
+            return s3Client.GetPreSignedURL(request);
+        }
+
         public byte[] DownloadFileById2(string filestoreId, EbFileCategory category, string s3Path)
         {
             return AsyncHelper.RunSync(() => ReadObjectDataAsyncAWSS3(filestoreId, category, s3Path));
