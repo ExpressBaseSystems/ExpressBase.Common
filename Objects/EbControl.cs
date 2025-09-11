@@ -193,6 +193,10 @@ namespace ExpressBase.Common.Objects
         [HelpText("Execute its own value expression.")]
         public virtual bool SelfTrigger { get; set; }
 
+        [EnableInBuilder(BuilderType.WebForm)]
+        [PropertyGroup(PGConstants.VALUE)]
+        public virtual bool IgnoreDataConsistencyCheck { get; set; }
+
         //ValExp Dependant ctrls list
         [EnableInBuilder(BuilderType.WebForm, BuilderType.FilterDialog, BuilderType.BotForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
