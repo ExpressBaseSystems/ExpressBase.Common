@@ -185,6 +185,8 @@ namespace ExpressBase.Common.LocationNSolution
 
         public bool DisbleLeadManagementSave { get; set; }
 
+        public bool EnableNewFileServer { get; set; }
+
         public string MaterializedViewDate { get; set; }
 
         public List<string> MaterializedViews { get; set; }

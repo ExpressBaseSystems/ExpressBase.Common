@@ -2,6 +2,7 @@
 using ExpressBase.Common.Connections;
 using ExpressBase.Common.Data.AWSS3;
 using ExpressBase.Common.Enums;
+using ExpressBase.Common.LocationNSolution;
 using System;
 using System.Collections.Generic;
 
@@ -35,7 +36,6 @@ namespace ExpressBase.Common.Data
 
     public class FilesCollection : List<INoSQLDatabase>
     {
-        public readonly bool isNewFileServer = true;
         public int DefaultConId { get; set; }
 
         public int UsedConId { get; set; }
@@ -58,7 +58,7 @@ namespace ExpressBase.Common.Data
             }
         }
 
-        public string UploadFile(string filename, byte[] bytea, EbFileCategory category, int _infraConId, string s3Path = "")
+        public string UploadFile(string filename, byte[] bytea, EbFileCategory category, int _infraConId, string s3Path = "", bool isNewFileServer = false)
         {
             Console.WriteLine("Inside Upload FilesDB Collection");
 
@@ -69,7 +69,7 @@ namespace ExpressBase.Common.Data
             {
                 if (isNewFileServer)
                 {
-                    return (this[0]as S3).UploadFile2(filename, bytea, category, s3Path);
+                    return (this[0] as S3).UploadFile2(filename, bytea, category, s3Path);
                 }
                 else if (_infraConId == 0)
                 {
@@ -87,11 +87,12 @@ namespace ExpressBase.Common.Data
 
         }
 
-        public string GetPresignedUrl(string s3Path) {
+        public string GetPresignedUrl(string s3Path)
+        {
             return (this[0] as S3).GetPreSignedUrl(s3Path);
         }
 
-        public byte[] DownloadFileById(string filestoreid, EbFileCategory category, int _infraConId, string s3Path = "")
+        public byte[] DownloadFileById(string filestoreid, EbFileCategory category, int _infraConId, string s3Path = "", bool isNewFileServer = false)
         {
             if (isNewFileServer)
                 return (this[0] as S3).DownloadFileById2(filestoreid, category, s3Path);

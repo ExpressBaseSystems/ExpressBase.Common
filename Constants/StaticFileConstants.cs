@@ -195,7 +195,7 @@ namespace ExpressBase.Common.Constants
                         return $"StaticFiles/{request.SolnId}/dp/{request.FileName}.{request.FileType}";
 
                 case EbFileCategory.File:
-                    return $"StaticFiles/{request.SolnId}/{request.FileRefId}.{request.FileType}";
+                    return $"StaticFiles/{request.SolnId}/file/{request.FileRefId}.{request.FileType}";
 
                 case EbFileCategory.Audio:
                     return $"StaticFiles/{request.SolnId}/{category.ToString().ToLower()}/{request.FileRefId}.{request.FileType}";
