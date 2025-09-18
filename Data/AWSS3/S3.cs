@@ -87,17 +87,17 @@ namespace ExpressBase.Common.Data.AWSS3
             return s3Client.GetPreSignedURL(request);
         }
 
-        public byte[] DownloadFileById2(string filestoreId, EbFileCategory category, string s3Path)
+        public byte[] DownloadFileById2(string s3Path)
         {
-            return AsyncHelper.RunSync(() => ReadObjectDataAsyncAWSS3(filestoreId, category, s3Path));
+            return AsyncHelper.RunSync(() => ReadObjectDataAsyncAWSS3( s3Path));
         }
 
         public byte[] DownloadFileById(string filestoreId, EbFileCategory category)
         {
-            return AsyncHelper.RunSync(() => ReadObjectDataAsyncAWSS3(filestoreId, category));
+            return null;//AsyncHelper.RunSync(() => ReadObjectDataAsyncAWSS3(filestoreId, category));
         }
 
-        public async Task<byte[]> ReadObjectDataAsyncAWSS3(string filestoreId, EbFileCategory category, string s3Path = "")
+        public async Task<byte[]> ReadObjectDataAsyncAWSS3(string s3Path = "")
         {
             try
             {
@@ -116,11 +116,11 @@ namespace ExpressBase.Common.Data.AWSS3
             }
             catch (AmazonS3Exception ex)
             {
-                throw new Exception($"AWS S3 error while downloading '{filestoreId}': {ex.Message}", ex);
+                throw new Exception($"AWS S3 error while downloading '{s3Path}': {ex.Message}", ex);
             }
             catch (Exception ex)
             {
-                throw new Exception($"General error while downloading '{filestoreId}': {ex.Message}", ex);
+                throw new Exception($"General error while downloading '{s3Path}': {ex.Message}", ex);
             }
         }
 

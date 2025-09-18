@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -58,6 +59,8 @@ namespace ExpressBase.Common.WebApi.RequestNResponse
 
         public string FileType { get; set; }
 
+        public bool NeedStreamResult { get; set; }
+
     }
 
 
@@ -67,14 +70,13 @@ namespace ExpressBase.Common.WebApi.RequestNResponse
         public FileMeta FileDetails { get; set; }
 
         [DataMember(Order = 2)]
-        public MemorystreamWrapper StreamWrapper { get; set; }
+        public byte[] FileBytes { get; set; }
 
         [DataMember(Order = 3)]
         public ResponseStatus ResponseStatus { get; set; }
 
         [DataMember(Order = 4)]
         public string PreSignedUrl { get; set; }
-
     }
 
     public class UploadImageAsyncRequest2

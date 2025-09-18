@@ -94,8 +94,8 @@ namespace ExpressBase.Common.Data
 
         public byte[] DownloadFileById(string filestoreid, EbFileCategory category, int _infraConId, string s3Path = "", bool isNewFileServer = false)
         {
-            if (isNewFileServer)
-                return (this[0] as S3).DownloadFileById2(filestoreid, category, s3Path);
+            if (isNewFileServer && _infraConId == 0)
+                return (this[0] as S3).DownloadFileById2(s3Path);
 
             if (this[_infraConId + 1000000] != null)
                 return this[_infraConId + 1000000].DownloadFileById(filestoreid, category);

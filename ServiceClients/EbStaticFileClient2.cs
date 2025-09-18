@@ -71,7 +71,7 @@ namespace ExpressBase.Common.ServiceClients
         }
 
 
-        public DownloadFileResponse2 DownloadFile(FileMeta meta, string endpoint, string solutionId, int userId, string userAuthId, ImageQuality? imageQuality = null)
+        public DownloadFileResponse2 DownloadFile(FileMeta meta, string endpoint, string solutionId, int userId, string userAuthId, ImageQuality? imageQuality = null, bool needStreamResult = false)
         {
 
             var query = new Dictionary<string, string>
@@ -81,7 +81,7 @@ namespace ExpressBase.Common.ServiceClients
                 ["SolnId"] = solutionId,
                 ["UserId"] = userId.ToString(),
                 ["UserAuthId"] = userAuthId,
-                ["FileName"] = meta?.FileName
+                ["FileName"] = meta?.FileName ?? " ",
             };
 
             // Only add ImageQuality if provided
@@ -89,6 +89,7 @@ namespace ExpressBase.Common.ServiceClients
             {
                 query["imageQuality"] = ((int)imageQuality).ToString();
             }
+            query["needStreamResult"] = needStreamResult.ToString().ToLowerInvariant();
 
             string queryString = string.Join("&",
                 query.Select(kvp => $"{Uri.EscapeDataString(kvp.Key)}={Uri.EscapeDataString(kvp.Value)}"));
@@ -104,12 +105,13 @@ namespace ExpressBase.Common.ServiceClients
             return dfs;
         }
 
-        public DownloadFileResponse2 DownloadLogo(string solutionId)
+        public DownloadFileResponse2 DownloadLogo(string solutionId, bool needStreamResult = false)
         {
             string endpoint = "download/logo";
             var query = new Dictionary<string, string>
-            { 
-                ["SolnId"] = solutionId
+            {
+                ["SolnId"] = solutionId,
+                ["needStreamResult"] = needStreamResult.ToString().ToLowerInvariant()
             };
             string queryString = string.Join("&",
                 query.Select(kvp => $"{Uri.EscapeDataString(kvp.Key)}={Uri.EscapeDataString(kvp.Value)}"));
