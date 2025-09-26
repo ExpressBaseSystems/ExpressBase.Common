@@ -71,7 +71,7 @@ namespace ExpressBase.Common.ServiceClients
         }
 
 
-        public DownloadFileResponse2 DownloadFile(FileMeta meta, string endpoint, string solutionId, int userId, string userAuthId, ImageQuality? imageQuality = null, bool needStreamResult = false)
+        public DownloadFileResponse2 DownloadFile(FileMeta meta, string endpoint, string solutionId, int userId = 0, string userAuthId = "_", ImageQuality? imageQuality = null, bool needStreamResult = false)
         {
 
             var query = new Dictionary<string, string>
