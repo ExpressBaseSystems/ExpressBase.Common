@@ -1,4 +1,5 @@
 ﻿using ExpressBase.Common.Constants;
+using ExpressBase.Commons.Models;
 using ExpressBase.Security;
 using ServiceStack;
 using ServiceStack.Auth;
@@ -123,6 +124,7 @@ namespace ExpressBase.Common.ServiceStack.Auth
             jwtPayload[TokenConstants.UID] = csession.Uid.ToString();
             jwtPayload[RoutingConstants.WC] = csession.WhichConsole;
             jwtPayload[TokenConstants.IP] = csession.SourceIp;
+            jwtPayload[UserSession.SESSION_TAG] = csession.SessionTag;
 
             return jwtPayload;
         }

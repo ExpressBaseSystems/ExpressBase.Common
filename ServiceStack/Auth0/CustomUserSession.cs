@@ -1,4 +1,5 @@
-﻿using ExpressBase.Security;
+﻿using ExpressBase.Commons.Models;
+using ExpressBase.Security;
 using ServiceStack;
 using ServiceStack.Auth;
 using ServiceStack.Caching;
@@ -6,8 +7,10 @@ using ServiceStack.Logging;
 using ServiceStack.Web;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+
 
 namespace ExpressBase.Common.ServiceStack.Auth
 {
@@ -32,9 +35,23 @@ namespace ExpressBase.Common.ServiceStack.Auth
 		[DataMember(Order = 6)]
 		public int Aid { get; set; }
 
-
         [DataMember(Order = 7)]
         public string SourceIp { get; set; }
+
+        private string _sessionTag;
+        [DataMember(Order = 8)]
+        public string SessionTag
+        {
+            get { return _sessionTag; }
+            set
+            {
+                if (UserSession.USER_SESSION_TAGS.Contains(value) == false)
+                {
+                    throw new ArgumentException("Invalid session tag");
+                }
+                _sessionTag = value;
+            }
+        }
 
         public override bool IsAuthorized(string provider)
         {
