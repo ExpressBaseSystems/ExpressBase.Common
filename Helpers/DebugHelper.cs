@@ -4,17 +4,22 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
+/// <summary>
+/// DebugHelper provides easy logging for objects, exceptions, and raw messages.
+/// Automatically adds caller info (file, line, method).
+/// You can optionally pass a "label" to distinguish logs (it will appear in the banner).
+/// </summary>
 public static class DebugHelper
 {
     /// <summary>
-    /// Prints all public instance properties (reflection-based),
+    /// Prints all public instance properties of an object (via reflection),
     /// or the whole object as JSON if printAsJson = true.
-    /// Always shows derived + base properties. Returns the printed string.
     /// </summary>
     public static string PrintObject(
         object obj,
         bool toError = false,
         bool printAsJson = false,
+        string label = null,
         [CallerMemberName] string memberName = "",
         [CallerFilePath] string filePath = "",
         [CallerLineNumber] int lineNumber = 0)
@@ -24,7 +29,7 @@ public static class DebugHelper
         if (obj == null)
         {
             string nil = $"{header} null";
-            WriteOutput(nil, toError);
+            WriteOutput(nil, toError, label);
             return nil;
         }
 
@@ -32,7 +37,6 @@ public static class DebugHelper
 
         if (printAsJson)
         {
-            // serialize entire object directly
             try
             {
                 string json = JsonConvert.SerializeObject(obj, Formatting.Indented,
@@ -76,7 +80,7 @@ public static class DebugHelper
             output = sb.ToString();
         }
 
-        WriteOutput(output, toError);
+        WriteOutput(output, toError, label);
         return output;
     }
 
@@ -86,6 +90,7 @@ public static class DebugHelper
     public static string PrintException(
         Exception ex,
         bool toError = true,
+        string label = null,
         [CallerMemberName] string memberName = "",
         [CallerFilePath] string filePath = "",
         [CallerLineNumber] int lineNumber = 0)
@@ -94,7 +99,7 @@ public static class DebugHelper
         if (ex == null)
         {
             string nil = $"{header} Exception is null";
-            WriteOutput(nil, toError);
+            WriteOutput(nil, toError, label);
             return nil;
         }
 
@@ -103,31 +108,35 @@ public static class DebugHelper
         AppendException(sb, ex, 0);
 
         string output = sb.ToString();
-        WriteOutput(output, toError);
+        WriteOutput(output, toError, label);
         return output;
     }
 
     /// <summary>
-    /// Shorthand Console.WriteLine with header info.
+    /// Shorthand log with caller info.
     /// </summary>
     public static void Log(
         object message,
         bool toError = false,
+        string label = null,
         [CallerMemberName] string memberName = "",
         [CallerFilePath] string filePath = "",
         [CallerLineNumber] int lineNumber = 0)
     {
         string header = FormatHeader(memberName, filePath, lineNumber);
         string text = $"{header} {message ?? "null"}";
-        WriteOutput(text, toError);
+        WriteOutput(text, toError, label);
     }
 
     /// <summary>
-    /// Shorthand Console.WriteLine (no header, just plain).
+    /// Shorthand log without caller info (raw message only).
     /// </summary>
-    public static void LogRaw(object message, bool toError = false)
+    public static void LogRaw(
+        object message,
+        bool toError = false,
+        string label = null)
     {
-        WriteOutput(message?.ToString() ?? "null", toError);
+        WriteOutput(message?.ToString() ?? "null", toError, label);
     }
 
     // ===== Helpers =====
@@ -175,16 +184,29 @@ public static class DebugHelper
         return $"[{time}] [{memberName} at {file}:{lineNumber}]";
     }
 
-    private static void WriteOutput(string text, bool toError)
+    /// <summary>
+    /// Writes output to console with Begin/End banners.
+    /// If "label" is provided, it appears in the banners.
+    /// </summary>
+    private static void WriteOutput(string text, bool toError, string label = null)
     {
         var sb = new System.Text.StringBuilder();
 
-        sb.AppendLine("----------Begin DebugHelper--------------");
+        // Build begin/end lines dynamically
+        string begin = label == null
+            ? "----------BEGIN DEBUG--------------"
+            : $"----------BEGIN DEBUG ({label})--------------";
+
+        string end = label == null
+            ? "----------END DEBUG--------------"
+            : $"----------END DEBUG ({label})--------------";
+
+        sb.AppendLine(begin);
         sb.AppendLine();
-        sb.AppendLine(text.TrimEnd()); // trim trailing blank space
+        sb.AppendLine(text.TrimEnd());
         sb.AppendLine();
-        sb.AppendLine("----------End DebugHelper--------------");
-        sb.AppendLine(); // extra line for spacing between multiple logs
+        sb.AppendLine(end);
+        sb.AppendLine(); // spacing between multiple logs
 
         string wrapped = sb.ToString();
 
