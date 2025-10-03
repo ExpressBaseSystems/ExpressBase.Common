@@ -31,5 +31,9 @@ namespace ExpressBase.Common.Constants
         public const string SUB_FORMAT = "{0}:{1}:{2}";
         public const string ANONYM_EMAIL = "anonymous@anonym.com";
         public const string SSE_SUBSCRIP_ID = "SSE_SubscriptionId";
+
+        public const string PUBLIC_FORM_V2_ANONYMOUS_USER_TAG = "public-form-v2-anonymous-authentication";
+        public const string PUBLIC_FORM_V2_ANONYMOUS_USER_EMAIL = "anonymous@anonym.com";
+        public const int PUBLIC_FORM_V2_ANONYMOUS_USER_APP_ID = 0;
     }
 }

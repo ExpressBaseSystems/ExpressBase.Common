@@ -36,6 +36,7 @@ namespace ExpressBase.Common
         public const string REFRESH_TOKEN = "rToken";
         public const string WEB_BEARER_TOKEN = "web_btoken";
         public const string WEB_REFRESH_TOKEN = "web_rtoken";
+        public const string WEBAUTHID = "web_authid";
         public const string PAYNOW = "/PayNow";
         public const string TWOFATOKEN = "Token";
         public const string RPWToken = "rpwToken";
