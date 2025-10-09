@@ -1,191 +1,119 @@
-﻿using System;
-using ServiceStack.Caching;
-using ServiceStack.Redis;
+﻿using ServiceStack.Redis;
+using System;
 
 namespace ExpressBase.Common.Helpers
 {
-    /// <summary>
-    /// Static helper class to simplify caching with Redis using ServiceStack's PooledRedisClientManager.
-    /// Provides typed Set/Get, GetOrSet, Remove, Exists, and raw string operations.
-    /// 
-    /// Usage:
-    ///     var redisManager = new PooledRedisClientManager(listRW, listRO);
-    ///     RedisCacheHelper.SetManager(redisManager);
-    /// 
-    ///     RedisCacheHelper.Set("foo", "bar", TimeSpan.FromMinutes(5));
-    ///     var value = RedisCacheHelper.Get<string>("foo");
-    /// </summary>
     public static class RedisCacheHelper
     {
-        // Holds the shared PooledRedisClientManager instance (set once at startup).
-        // This is a reference to the object created outside; we don't create or dispose it here.
-        private static PooledRedisClientManager _manager;
-
-        /// <summary>
-        /// Assign the Redis connection manager that this helper will use.
-        /// Must be called once on application startup with a preconfigured manager.
-        /// 
-        /// Note: Classes in C# are reference types — when you pass a manager here,
-        /// you are passing a reference to the same object, not a copy.
-        /// </summary>
-        public static void SetManager(PooledRedisClientManager manager)
+        
+        private static void CheckManager(PooledRedisClientManager manager)
         {
-            _manager = manager ?? throw new ArgumentNullException(nameof(manager));
+            if (manager == null) throw new ArgumentNullException(nameof(manager));
         }
+        
 
-        /// <summary>
-        /// Store a typed object in Redis. Overwrites if the key exists.
-        /// Uses ICacheClient for serialization/deserialization.
-        /// </summary>
-        public static void Set<T>(string key, T value, TimeSpan? expiry = null)
+        public static void Set<T>(PooledRedisClientManager manager, string key, T value, TimeSpan? expiry = null)
         {
-            ValidateManager(); // Ensure SetManager was called
-            ValidateKey(key);  // Ensure key is valid
+            ValidateKey(key);
+            CheckManager(manager);
 
-            using (var cache = _manager.GetCacheClient())
+            using (var cache = manager.GetCacheClient())
             {
-                if (expiry.HasValue)
-                    cache.Set(key, value, expiry.Value); // Set with TTL
-                else
-                    cache.Set(key, value); // Set without TTL
+                if (expiry.HasValue) cache.Set(key, value, expiry.Value);
+                else cache.Set(key, value);
             }
         }
 
-        /// <summary>
-        /// Get a typed object from Redis. Returns default(T) if not found.
-        /// </summary>
-        public static T Get<T>(string key)
+        public static T Get<T>(PooledRedisClientManager manager, string key)
         {
-            ValidateManager();
             ValidateKey(key);
+            CheckManager(manager);
 
-            using (var cache = _manager.GetReadOnlyCacheClient())
+            using (var cache = manager.GetReadOnlyCacheClient())
             {
                 return cache.Get<T>(key);
             }
         }
 
-        /// <summary>
-        /// Get a value from Redis or set it if missing.
-        /// Executes valueFactory() only if the key is absent.
-        /// </summary>
-        public static T GetOrSet<T>(string key, Func<T> valueFactory, TimeSpan? expiry = null)
+        public static T GetOrSet<T>(PooledRedisClientManager manager, string key, Func<T> valueFactory, TimeSpan? expiry = null)
         {
-            ValidateManager();
-            ValidateKey(key);
             if (valueFactory == null) throw new ArgumentNullException(nameof(valueFactory));
-
-            using (var cache = _manager.GetCacheClient())
+            ValidateKey(key);
+            CheckManager(manager);
+           
+            using (var client = manager.GetClient())
             {
-                var existing = cache.Get<T>(key);
-                if (existing != null && !existing.Equals(default(T)))
-                    return existing; // Found in cache
-
-                // Compute new value outside of cache call
-                var newValue = valueFactory();
-
-                // Store only if not null
-                if (newValue != null)
+                if (client.ContainsKey(key))
                 {
-                    if (expiry.HasValue)
-                        cache.Set(key, newValue, expiry.Value);
-                    else
-                        cache.Set(key, newValue);
+                    using (var ro = manager.GetReadOnlyCacheClient())
+                        return ro.Get<T>(key);
                 }
+            }
 
-                return newValue;
+        
+            var newValue = valueFactory();
+
+            using (var cache = manager.GetCacheClient())
+            {
+                var added = expiry.HasValue
+                    ? cache.Add(key, newValue, expiry.Value)
+                    : cache.Add(key, newValue);
+
+                return added ? newValue : cache.Get<T>(key);
             }
         }
 
-        /// <summary>
-        /// Remove an entry by key.
-        /// Returns true if removed, false if not found.
-        /// </summary>
-        public static bool Remove(string key)
+        public static bool Remove(PooledRedisClientManager manager, string key)
         {
-            ValidateManager();
             ValidateKey(key);
+            CheckManager(manager);
 
-            using (var cache = _manager.GetCacheClient())
+            using (var cache = manager.GetCacheClient())
             {
                 return cache.Remove(key);
             }
         }
 
-        /// <summary>
-        /// Check if a key exists in Redis.
-        /// Uses safe Get first, falls back to raw Redis ContainsKey.
-        /// </summary>
-        public static bool Exists(string key)
+        public static bool Exists(PooledRedisClientManager manager, string key)
         {
-            ValidateManager();
             ValidateKey(key);
+            CheckManager(manager);
 
-            try
+            using (var client = manager.GetClient())
             {
-                using (var cache = _manager.GetReadOnlyCacheClient())
-                {
-                    return cache.Get<object>(key) != null;
-                }
-            }
-            catch
-            {
-                // Fallback in case cache client errors
-                using (var client = _manager.GetClient())
-                {
-                    return client.ContainsKey(key);
-                }
+                return client.ContainsKey(key);
             }
         }
 
-        /// <summary>
-        /// Get the raw string value stored at a key (no deserialization).
-        /// </summary>
-        public static string GetRaw(string key)
+      
+        public static string GetRaw(PooledRedisClientManager manager, string key)
         {
-            ValidateManager();
             ValidateKey(key);
+            CheckManager(manager);
 
-            using (var client = _manager.GetClient())
+            using (var client = manager.GetClient())
             {
                 return client.GetValue(key);
             }
         }
 
-        /// <summary>
-        /// Set a raw string value in Redis (no serialization).
-        /// Uses atomic SetValue(key, value, TimeSpan) when expiry is provided.
-        /// </summary>
-        public static void SetRaw(string key, string rawValue, TimeSpan? expiry = null)
+        public static void SetRaw(PooledRedisClientManager manager, string key, string rawValue, TimeSpan? expiry = null)
         {
-            ValidateManager();
             ValidateKey(key);
+            CheckManager(manager);
 
-            using (var client = _manager.GetClient())
+            using (var client = manager.GetClient())
             {
-                if (expiry.HasValue)
-                    client.SetValue(key, rawValue ?? string.Empty, expiry.Value);
-                else
-                    client.SetValue(key, rawValue ?? string.Empty);
+                var val = rawValue ?? string.Empty;
+                if (expiry.HasValue) client.SetValue(key, val, expiry.Value);
+                else client.SetValue(key, val);
             }
         }
 
-        /// <summary>
-        /// Ensure the key is valid (not null/empty).
-        /// </summary>
         private static void ValidateKey(string key)
         {
             if (string.IsNullOrWhiteSpace(key))
-                throw new ArgumentException("Cache key must not be null or empty.", nameof(key));
-        }
-
-        /// <summary>
-        /// Ensure that SetManager has been called before using this helper.
-        /// </summary>
-        private static void ValidateManager()
-        {
-            if (_manager == null)
-                throw new InvalidOperationException("RedisCacheHelper not initialized. Call RedisCacheHelper.SetManager() first.");
+                throw new ArgumentException("Key must not be null or empty.", nameof(key));
         }
     }
 }
