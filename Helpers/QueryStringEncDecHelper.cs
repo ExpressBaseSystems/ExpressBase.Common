@@ -15,6 +15,22 @@ namespace ExpressBase.Common.Helpers
     /// </summary>
     public static class QueryStringEncDecHelper
     {
+
+        public static string ToEncryptedString<T>(
+            T obj,
+            string base64CurrentKey,
+            JsonSerializerSettings jsonSettings = null
+        )
+        {
+            if (obj == null) throw new ArgumentNullException(nameof(obj));
+            if (string.IsNullOrWhiteSpace(base64CurrentKey)) throw new ArgumentNullException(nameof(base64CurrentKey));
+
+            var json = JsonConvert.SerializeObject(obj, jsonSettings ?? DefaultJsonSettings());
+            var payload = AesEncryptionHelper.EncryptString(base64CurrentKey, json);
+            var valEsc = Uri.EscapeDataString(payload);
+            return valEsc;
+        }
+
         /// <summary>
         /// Serialize object to JSON, encrypt once, and return "paramName=..." ready to append.
         /// </summary>
@@ -27,12 +43,8 @@ namespace ExpressBase.Common.Helpers
             if (obj == null) throw new ArgumentNullException(nameof(obj));
             if (string.IsNullOrWhiteSpace(base64CurrentKey)) throw new ArgumentNullException(nameof(base64CurrentKey));
             if (string.IsNullOrWhiteSpace(paramName)) throw new ArgumentNullException(nameof(paramName));
-
-            var json = JsonConvert.SerializeObject(obj, jsonSettings ?? DefaultJsonSettings());
-            var payload = AesEncryptionHelper.EncryptString(base64CurrentKey, json);
             var keyEsc = Uri.EscapeDataString(paramName);
-            var valEsc = Uri.EscapeDataString(payload);
-            return keyEsc + "=" + valEsc;
+            return keyEsc + "=" + QueryStringEncDecHelper.ToEncryptedString(obj,base64CurrentKey, jsonSettings);
         }
 
         /// <summary>
