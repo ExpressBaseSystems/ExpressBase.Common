@@ -1,17 +1,19 @@
 ﻿using ExpressBase.Common.Models;
+using Microsoft.AspNetCore.Http;
 using ServiceStack.Redis;
 using System;
+using System.Web.Mvc;
 
 namespace ExpressBase.Common.Helpers
 {
     public class InternalExceptionHelper
     {
         private const string KeyPrefix = "errtk:InternalExceptioninfo:";
+        private readonly PooledRedisClientManager _pooledRedisClientManager;
 
         public InternalExceptionHelper(PooledRedisClientManager pooledRedisClientManager)
         {
-            if (pooledRedisClientManager == null) throw new ArgumentNullException(nameof(pooledRedisClientManager));
-            RedisCacheHelper.SetManager(pooledRedisClientManager);
+            _pooledRedisClientManager = pooledRedisClientManager;
         }
 
         /// <summary>
@@ -25,7 +27,7 @@ namespace ExpressBase.Common.Helpers
             var id = Guid.NewGuid().ToString("N");
             var key = KeyPrefix + id;
 
-            RedisCacheHelper.Set(key, ex, ttl);
+            RedisCacheHelper.Set(_pooledRedisClientManager, key, ex, ttl);
 
             return id;
         }
@@ -53,15 +55,12 @@ namespace ExpressBase.Common.Helpers
 
             var key = KeyPrefix + ticketId;
 
-            // If your helper returns default(T) when not found, this is safe.
-            var info = RedisCacheHelper.Get<InternalExceptioninfo>(key);
+            var info = RedisCacheHelper.Get<InternalExceptioninfo>(_pooledRedisClientManager, key);
 
-            // delete after fetch (even if null: no-op for most helpers)
-            RedisCacheHelper.Remove(key);
+            RedisCacheHelper.Remove(_pooledRedisClientManager, key);
 
             return info;
         }
-
 
     }
 }
