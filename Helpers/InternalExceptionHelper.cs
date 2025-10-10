@@ -1,8 +1,6 @@
 ﻿using ExpressBase.Common.Models;
-using Microsoft.AspNetCore.Http;
 using ServiceStack.Redis;
 using System;
-using System.Web.Mvc;
 
 namespace ExpressBase.Common.Helpers
 {
