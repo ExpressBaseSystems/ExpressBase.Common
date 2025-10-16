@@ -36,6 +36,9 @@ namespace ExpressBase.Common.ServiceStack.Auth
         [DataMember(Order = 7)]
         public string SourceIp { get; set; }
 
+        [DataMember(Order = 8)]
+        public string SessionTag { get; set; }
+
         public override bool IsAuthorized(string provider)
         {
             return true;
