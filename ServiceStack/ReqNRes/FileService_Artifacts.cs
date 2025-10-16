@@ -702,6 +702,7 @@ namespace ExpressBase.Common.EbServiceStack.ReqNRes
         public ImageMeta ImageInfo { get; set; }
     }
 
+    [Obsolete]
     public class DownloadWikiImgRequest : EbServiceStackNoAuthRequest, IReturn<DownloadFileResponse>
     {
         [DataMember(Order = 1)]
