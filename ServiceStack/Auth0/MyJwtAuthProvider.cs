@@ -123,6 +123,7 @@ namespace ExpressBase.Common.ServiceStack.Auth
             jwtPayload[TokenConstants.UID] = csession.Uid.ToString();
             jwtPayload[RoutingConstants.WC] = csession.WhichConsole;
             jwtPayload[TokenConstants.IP] = csession.SourceIp;
+            jwtPayload[TokenConstants.SESSION_TAG] = csession.SessionTag ?? null;
 
             return jwtPayload;
         }

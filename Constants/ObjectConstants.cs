@@ -53,5 +53,8 @@ namespace ExpressBase.Common.Constants
         public const string MATERIALIZED_VIEW			= "MaterializedView";
         public const string POS_FORM					= "PosForm";
         public const string PRINT_LAYOUT				= "PrintLayout";
+
+		public const int WEB_FORM_PUBLIC_STATUS_CODE = 1;
+		public const int WEB_FORM_PRIVATE_STATUS_CODE = 2;
     }
 }

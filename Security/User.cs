@@ -190,6 +190,123 @@ namespace ExpressBase.Security
             return -1;
         }
 
+        public static User Init(
+            int userId,
+            string email,
+            string fullName,
+            List<string> roles,
+            List<int> roleIds,
+            List<string> permissions,
+            Preferences preference,
+            int signInLogId,
+            string sourceIp,
+            List<int> userGroupIds,
+            int userType,
+            string phoneNumber,
+            bool IsForcePWReset
+        )
+        {
+            return new User
+            {
+                UserId = userId,
+                Email = email,
+                FullName = fullName,
+                Roles = roles,
+                RoleIds = roleIds,
+                Permissions = permissions,
+                Preference = preference,
+                SignInLogId = signInLogId,
+                SourceIp = sourceIp,
+                UserGroupIds = userGroupIds,
+                UserType = userType,
+                PhoneNumber = phoneNumber,
+                IsForcePWReset = IsForcePWReset
+            };
+        }
+
+        //TODO: change the method name
+        public static User GetOrCreateAnonymousUserForV2PublicForm(
+            IDatabase df,
+            string emailId,
+            string context = "uc", // which console is set to user console 
+            int appid = 0,
+            string userIp = null
+        )
+        {
+
+            List<DbParameter> paramlist = new List<DbParameter>();
+            string parameters = "";
+
+            parameters += "in_emailid => :emailId, ";
+            paramlist.Add(df.GetNewParameter("emailId", EbDbTypes.String, emailId));
+
+            parameters += "in_user_ip => :user_ip, ";
+            paramlist.Add(df.GetNewParameter("user_ip", EbDbTypes.String, userIp));
+
+            paramlist.Add(df.GetNewParameter("appid", EbDbTypes.Int32, appid));
+            paramlist.Add(df.GetNewParameter(RoutingConstants.WC, EbDbTypes.String, context));
+
+
+            string sql = df.EB_AUTHENTICATE_ANONYMOUS.Replace(
+                "@params",
+                (df.Vendor == DatabaseVendors.PGSQL) ? parameters.Replace("=>", ":=") : parameters
+            );
+
+            var dt = df.DoQuery(sql, paramlist.ToArray());
+
+            if (dt.Rows.Count > 0)
+            {
+                var row = dt.Rows[0];
+
+                List<int> roleIds = row["out_public_ids"] != DBNull.Value && row["out_public_ids"] is string roleIdsStr && !string.IsNullOrWhiteSpace(roleIdsStr)
+                        ? roleIdsStr.Split(',').Select(int.Parse).ToList()
+                        : new List<int>();
+
+                List<string> permissions = new List<string>();
+
+                foreach (int roleId in roleIds)
+                {
+                    permissions.Add("000" /*appid*/ + "-" + "00"/*type*/ + "-" + roleId.ToString().PadLeft(5, '0') + "-" + "00" /*operation*/ + ":-1");
+                }
+
+
+                return Init(
+                    userId: row["out_userid"] != DBNull.Value ? Convert.ToInt32(row["out_userid"]) : 0,
+                    email: row["out_email"]?.ToString(),
+                    fullName: row["out_fullname"]?.ToString(),
+
+                    roles: row["out_roles_a"] != DBNull.Value && row["out_roles_a"] is string rolesStr && !string.IsNullOrWhiteSpace(rolesStr)
+                        ? rolesStr.Split(',').ToList()
+                        : new List<string>(),
+
+                    roleIds: roleIds,
+
+                    permissions: permissions,
+
+                    preference: row["out_preferencesjson"] != DBNull.Value && row["out_preferencesjson"] is string prefJson && !string.IsNullOrWhiteSpace(prefJson)
+                        ? JsonConvert.DeserializeObject<Preferences>(prefJson)
+                        : new Preferences { Locale = "en-IN", TimeZone = "(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi", DefaultLocation = -1 }, //TODO: add to solution settings
+
+                    signInLogId: row["out_signin_id"] != DBNull.Value ? Convert.ToInt32(row["out_signin_id"]) : 0,
+
+                    sourceIp: row["out_source_ip"]?.ToString(),
+
+                    userGroupIds: row["out_usergroup_a"] != DBNull.Value && row["out_usergroup_a"] is string groupStr && !string.IsNullOrWhiteSpace(groupStr)
+                        ? groupStr.Split(',').Select(int.Parse).ToList()
+                        : new List<int>(),
+
+                    phoneNumber: row["out_phone"]?.ToString(),
+
+                    IsForcePWReset: row["out_forcepwreset"] != DBNull.Value && bool.TryParse(row["out_forcepwreset"].ToString(), out bool pwReset) && pwReset,
+
+                    userType: row["out_user_type"] != DBNull.Value ? Convert.ToInt32(row["out_user_type"]) : 0
+                );
+            }
+
+            return null;
+        }
+
+
         public List<int> GetLocationsByObject(string RefId)
         {
             //Sample refid - Only for reference

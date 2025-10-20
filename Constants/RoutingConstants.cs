@@ -74,5 +74,23 @@ namespace ExpressBase.Common
         public const string RESET_PASSWORD_PAGE = "/ResetPasswordIn";
 
         public const string SUPPORT_MAIL_ID = "mailto:support@expressbase.com";
+
+        public const string WEBAUTHID = "web_authid";
+
+        public const string INTERNAL_SOLUTION_ID = "InternalSolutionId";
+        public const string EXTERNAL_SOLUTION_ID = "ExternalSolutionId";
+        public const string CONTEXT_BEARER_TOKEN = "ContextBearerToken";
+        public const string CONTEXT_REFRESH_TOKEN = "ContextRefreshToken";
+        public const string AUTH_ID = "AuthId";
+        public const string USER = "User";
+        public const string CONSOLE = "Console";
+        public const string DEV_CONSOLE_HOST = "DevConsoleHost";
+        public const string USER_CONSOLE_HOST = "UserConsoleHost";
+        public const string BASE_HOST = "BaseHost";
+        public const string HOST = "Host";
+        public const string SUB_DOMAIN = "SubDomain";
+        public const string SCHEME = "Scheme";
+        public const string DOMAIN = "Domain";
+
     }
 }
