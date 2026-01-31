@@ -336,6 +336,8 @@ namespace ExpressBase.Common.Connections
     public class EbEmailConfig : EbIntegrationConf
     {
         public string EmailAddress { get; set; }
+
+        public string UserName { get; set; }
     }
 
     public class EbSmtpConfig : EbEmailConfig

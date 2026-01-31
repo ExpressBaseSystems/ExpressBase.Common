@@ -33,7 +33,11 @@ namespace ExpressBase.Common.Data
                         Host = Config.Host,
                         Port = Config.Port,
                         UseDefaultCredentials = false,
-                        Credentials = new NetworkCredential { UserName = Config.EmailAddress, Password = Config.Password },
+                        Credentials = new NetworkCredential
+                        {
+                            UserName = string.IsNullOrWhiteSpace(Config.UserName) ? Config.EmailAddress : Config.UserName,
+                            Password = Config.Password
+                        },
                         EnableSsl = Config.EnableSsl
                     };
                 }
