@@ -29,6 +29,8 @@ namespace ExpressBase.Common.Helpers
         {
             if (ContainsOloi(Host))
                 return "/images/favicon_kdisc.ico";
+            if (ContainsC7(Host))
+                return "/images/favicon_c7.ico";
             return "/images/favicon.ico";
         }
 
@@ -36,6 +38,8 @@ namespace ExpressBase.Common.Helpers
         {
             if (ContainsOloi(Host))
                 return "Kerala Development and Innovation Strategic Council (K-DISC)";
+            if (ContainsC7(Host))
+                return "Best Skin and Dental Clinic in Kochi - Clinic7";
             return null;
         }
 
@@ -68,6 +72,11 @@ namespace ExpressBase.Common.Helpers
         public static bool ContainsOloi(string Host)
         {
             return Host?.ToLower()?.Contains("oloi") == true;
+        }
+
+        private static bool ContainsC7(string Host)
+        {
+            return Host?.ToLower()?.Contains("clinic7") == true;
         }
     }
 }

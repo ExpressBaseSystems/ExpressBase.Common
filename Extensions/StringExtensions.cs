@@ -70,6 +70,16 @@ namespace ExpressBase.Common.Extensions
             return EbObjectTypes.Get(Convert.ToInt32(RefId.Split("-")[2]));
         }
 
+        public static int GetEbObjectId(this string RefId)
+        {
+            return Convert.ToInt32(RefId.Split("-")[3]);
+        }
+
+        public static int GetEbObjectVerionId(this string RefId)
+        {
+            return Convert.ToInt32(RefId.Split("-")[4]);
+        }
+
         #endregion
 
         public static TEnum ToEnum<TEnum>(this string value, bool ignoreCase = false) where TEnum : struct

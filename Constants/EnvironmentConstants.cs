@@ -116,5 +116,7 @@ namespace ExpressBase.Common
         public const string MOVEON_AZURE_PNS_CON = "MOVEON_AZURE_PNS_CON";
         public const string MOVEON_AZURE_PNS_HUBNAME = "MOVEON_AZURE_PNS_HUBNAME";
         public const string EB_API_SECRET = "EB_API_SECRET";
+
+        public const string EB_URL_HASH_SALT = "EB_URL_HASH_SALT";
     }
 }

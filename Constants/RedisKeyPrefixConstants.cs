@@ -10,5 +10,9 @@ namespace ExpressBase.Common.Constants
         public const string EbWebformObject = "EbWebformObject_{0}_{1}";
 
         public const string EbWebformMd5 = "EbWebformMd5_{0}_{1}";
+
+        public const string EbShortUrlCounter = "EbShortUrlCounter";
+
+        public const string EbShortUrlItem = "EbShortUrlItem_{0}";// {0} -> shortUrlId
     }
 }
