@@ -33,6 +33,9 @@ namespace ExpressBase.Common.Helpers
             return result;
         }
 
+        // Add a static object for locking
+        private static readonly object idLock = new object();
+
         public static string CreateShortUrl(string originalUrl, RedisClient Redis, TimeSpan expiry)
         {
             if (expiry == null)
@@ -40,7 +43,14 @@ namespace ExpressBase.Common.Helpers
                 expiry = new TimeSpan(1, 0, 0);
             }
 
-            long id = Redis.Get<long>(RedisKeyPrefixConstants.EbShortUrlCounter);
+            long id = 0;
+
+            lock (idLock)
+            {
+                id = Redis.Get<long>(RedisKeyPrefixConstants.EbShortUrlCounter);
+                Redis.Set(RedisKeyPrefixConstants.EbShortUrlCounter, id + 1);
+            }
+
             if (id == 0)
             {
                 id = 1; // Starting point for IDs
@@ -55,7 +65,6 @@ namespace ExpressBase.Common.Helpers
                 byte[] hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(base62Id));
                 string hashvalue = Convert.ToBase64String(hash).Replace("+", "").Replace("/", "").Substring(0, 8);
 
-                Redis.Set(RedisKeyPrefixConstants.EbShortUrlCounter, id + 1);
                 Redis.Set(string.Format(RedisKeyPrefixConstants.EbShortUrlItem, id), $"{originalUrl}&s={id}", expiry);
 
                 return $"/tiny/{base62Id}.{hashvalue}";
