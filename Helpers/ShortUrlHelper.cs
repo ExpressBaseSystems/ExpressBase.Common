@@ -63,8 +63,7 @@ namespace ExpressBase.Common.Helpers
             }
 
             string base62Id = Encode(id);
-            string secret = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_URL_HASH_SALT) ??
-                Environment.GetEnvironmentVariable(EnvironmentConstants.EB_EMAIL_PASSWORD);
+            string secret = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_URL_HASH_SALT);
 
             using (HMACSHA256 hmac = new HMACSHA256(Encoding.UTF8.GetBytes(secret)))
             {
@@ -89,8 +88,7 @@ namespace ExpressBase.Common.Helpers
             string base62Id = parts[0];
             string providedHash = parts[1];
             long id = Decode(base62Id);
-            string secret = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_URL_HASH_SALT) ??
-                Environment.GetEnvironmentVariable(EnvironmentConstants.EB_EMAIL_PASSWORD);
+            string secret = Environment.GetEnvironmentVariable(EnvironmentConstants.EB_URL_HASH_SALT);
             using (HMACSHA256 hmac = new HMACSHA256(Encoding.UTF8.GetBytes(secret)))
             {
                 byte[] hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(base62Id));
