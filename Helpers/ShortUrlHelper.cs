@@ -1,6 +1,12 @@
 ﻿using ExpressBase.Common.Constants;
+using ExpressBase.Common.Data;
+using ExpressBase.Common.Extensions;
+using Microsoft.AspNetCore.WebUtilities;
+using Newtonsoft.Json;
 using ServiceStack.Redis;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -36,7 +42,7 @@ namespace ExpressBase.Common.Helpers
         // Add a static object for locking
         private static readonly object idLock = new object();
 
-        public static string CreateShortUrl(string originalUrl, RedisClient Redis, TimeSpan expiry)
+        public static string CreateShortUrl(string RefId, string parameters, int mode, RedisClient Redis, TimeSpan expiry)
         {
             if (expiry == null)
             {
@@ -65,7 +71,9 @@ namespace ExpressBase.Common.Helpers
                 byte[] hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(base62Id));
                 string hashvalue = Convert.ToBase64String(hash).Replace("+", "").Replace("/", "").Substring(0, 8);
 
-                Redis.Set(string.Format(RedisKeyPrefixConstants.EbShortUrlItem, id), $"{originalUrl}&s={id}", expiry);
+                string longUrl = $"/PublicForm?id={RefId}&p={parameters}&m={mode}&s={id}";
+
+                Redis.Set(string.Format(RedisKeyPrefixConstants.EbShortUrlItem, id), longUrl, expiry);
 
                 return $"/tiny/{base62Id}.{hashvalue}";
             }
@@ -112,6 +120,34 @@ namespace ExpressBase.Common.Helpers
             {
 
             }
+        }
+
+        public static bool CheckEditPermissionForAnonymUser(int userId, string refId, int dataId, long shortUrlId, RedisClient Redis)
+        {
+            if (userId > 1 || dataId <= 0) return true;
+            if (shortUrlId == 0) return false;
+
+            try
+            {
+                string originalUrl = Redis.Get<string>(string.Format(RedisKeyPrefixConstants.EbShortUrlItem, shortUrlId));
+                if (string.IsNullOrEmpty(originalUrl) || !originalUrl.Contains($"/PublicForm?id={refId}&p="))
+                    return false;
+
+                string query = originalUrl.Substring(originalUrl.IndexOf('?'));
+                Dictionary<string, string> query_params = QueryHelpers.ParseQuery(query).ToDictionary(x => x.Key, x => x.Value.ToString());
+
+                if (query_params["s"] != shortUrlId.ToString())
+                    return false;
+
+                List<Param> ob = JsonConvert.DeserializeObject<List<Param>>(query_params["p"].FromBase64());
+                if (ob.Count == 1 && ob[0].Name == "id")
+                {
+                    if (ob[0].Value == dataId.ToString())
+                        return true;
+                }
+            }
+            catch (Exception ex) { }
+            return false;
         }
     }
 }
