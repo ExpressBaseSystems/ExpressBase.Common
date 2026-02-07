@@ -40,7 +40,7 @@ namespace ExpressBase.Common.Helpers
                 return "Kerala Development and Innovation Strategic Council (K-DISC)";
             if (ContainsC7(Host))
                 return "Best Skin and Dental Clinic in Kochi - Clinic7";
-            return null;
+            return "EXPRESSbase: Rapid Application Development & Delivery Platform for SMBs";
         }
 
         public static string GetUserNameLabel(string Host)
