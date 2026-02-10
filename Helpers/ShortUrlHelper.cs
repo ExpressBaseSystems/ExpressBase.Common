@@ -111,7 +111,7 @@ namespace ExpressBase.Common.Helpers
                 string originalUrl = Redis.Get<string>(string.Format(RedisKeyPrefixConstants.EbShortUrlItem, shortUrlId));
                 if (originalUrl != null)
                 {
-                    Redis.Set(string.Format(RedisKeyPrefixConstants.EbShortUrlItem, shortUrlId), $"/StatusCode/703", new TimeSpan(1, 0, 0));
+                    Redis.Set(string.Format(RedisKeyPrefixConstants.EbShortUrlItem, shortUrlId), $"/StatusCode/703", new TimeSpan(12, 0, 0));
                 }
             }
             catch (Exception ex)

@@ -85,6 +85,8 @@ namespace ExpressBase.Common.Objects
         [JsonIgnore]
         public override bool IsNonDataInputControl { get; set; }
 
+        public override bool IgnoreDataConsistencyCheck { get; set; }
+
         [EnableInBuilder(BuilderType.WebForm, BuilderType.UserControl)]
         [HideInPropertyGrid]
         public virtual bool IsSpecialContainer { get; set; }
